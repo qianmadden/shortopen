@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>shortopen — About</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: #222222;
+    --border2: #2a2a2a;
+    --gold: #c8922a;
+    --gold-light: #e4a83a;
+    --white: #f0ece4;
+    --muted: #6b6560;
+    --text: #d4cfc8;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: var(--white);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a.active { color: var(--gold); }
+
+  /* HEADER */
+  .page-header {
+    padding: 150px 48px 70px;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  .page-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.1s forwards;
+  }
+  .page-eyebrow::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+
+  /* NAME DISPLAY */
+  .name-breakdown {
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    margin-bottom: 52px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.25s forwards;
+  }
+
+  .name-word {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .word-text {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(56px, 10vw, 118px);
+    line-height: 0.93;
+    letter-spacing: -0.03em;
+    color: var(--white);
+  }
+  .word-text.gold { color: var(--gold); }
+
+  .word-def {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 12px;
+    padding-left: 3px;
+  }
+
+  /* DEFINITION CARDS */
+  .defs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .def-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 40px 36px;
+    transition: border-color 0.25s;
+  }
+  .def-card:hover { border-color: var(--gold); }
+
+  .def-word {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.55rem;
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .def-pos {
+    font-size: 0.67rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+
+  .def-text {
+    font-size: 0.93rem;
+    color: var(--text);
+    line-height: 1.82;
+  }
+  .def-text strong { color: var(--white); font-weight: 500; }
+
+  /* SECTION DIVIDER */
+  .section-divider {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 48px;
+    border: none;
+    border-top: 1px solid var(--border2);
+  }
+
+  /* PHILOSOPHY */
+  .philosophy {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 72px 48px 80px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .phil-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+  }
+
+  .phil-lead {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 2.6vw, 30px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--white);
+    line-height: 1.5;
+    max-width: 740px;
+    margin-bottom: 44px;
+    border-left: 2px solid var(--gold);
+    padding-left: 28px;
+  }
+
+  .phil-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 52px;
+    max-width: 880px;
+  }
+
+  .phil-body p {
+    font-size: 0.96rem;
+    color: var(--text);
+    line-height: 1.88;
+  }
+  .phil-body p strong { color: var(--white); font-weight: 500; }
+
+  /* PARALLELS */
+  .parallels {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .parallels-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 72px 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.75s forwards;
+  }
+
+  .parallels-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+  }
+
+  .parallel-header {
+    display: grid;
+    grid-template-columns: 1fr 48px 1fr;
+    margin-bottom: 2px;
+  }
+  .parallel-header-cell {
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 0 28px 12px;
+  }
+
+  .parallel-rows { display: flex; flex-direction: column; gap: 2px; }
+
+  .parallel-row {
+    display: grid;
+    grid-template-columns: 1fr 48px 1fr;
+    align-items: center;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    transition: border-color 0.2s;
+  }
+  .parallel-row:hover { border-color: var(--gold); }
+
+  .parallel-cell { padding: 24px 28px; }
+
+  .cell-label {
+    font-size: 0.61rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .cell-val {
+    font-size: 0.9rem;
+    color: var(--white);
+    line-height: 1.55;
+  }
+
+  .parallel-mid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    font-size: 1rem;
+    font-family: 'Playfair Display', serif;
+    padding: 24px 0;
+    border-left: 1px solid var(--border2);
+    border-right: 1px solid var(--border2);
+  }
+
+  .parallel-cell.right { border-left: 1px solid var(--border2); }
+
+  /* CLOSING */
+  .closing {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 80px 48px 110px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.9s forwards;
+  }
+
+  .closing-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 3.8vw, 48px);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+  .closing-title em { font-style: italic; color: var(--gold); }
+
+  .closing p {
+    font-size: 0.96rem;
+    color: var(--text);
+    line-height: 1.88;
+    max-width: 620px;
+    margin-bottom: 40px;
+  }
+
+  .btn-primary {
+    padding: 14px 32px;
+    background: var(--gold);
+    color: #0a0a0a;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+    margin-right: 16px;
+    margin-bottom: 12px;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  .btn-ghost {
+    padding: 14px 32px;
+    background: transparent;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid var(--border2);
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1rem; color: var(--white); }
+  .footer-logo span { color: var(--gold); }
+  .footer-copy { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 18px 24px; }
+    .nav-links { display: none; }
+    .page-header { padding: 110px 24px 50px; }
+    .defs { grid-template-columns: 1fr; }
+    .section-divider { padding: 0 24px; }
+    .philosophy { padding: 56px 24px 60px; }
+    .phil-body { grid-template-columns: 1fr; gap: 24px; }
+    .parallels-inner { padding: 56px 24px; }
+    .parallel-row { grid-template-columns: 1fr; }
+    .parallel-header { display: none; }
+    .parallel-mid { display: none; }
+    .parallel-cell.right { border-left: none; border-top: 1px solid var(--border2); }
+    .closing { padding: 60px 24px 80px; }
+    footer { padding: 30px 24px; flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">short<span>open</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#analysis">Analysis</a></li>
+    <li><a href="projections.html">Projections</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="index.html#subscribe">Subscribe</a></li>
+  </ul>
+</nav>
+
+<!-- HEADER -->
+<div class="page-header">
+  <p class="page-eyebrow">The Name. The Philosophy.</p>
+
+  <div class="name-breakdown">
+    <div class="name-word">
+      <span class="word-text">short</span>
+      <span class="word-def">fade the consensus</span>
+    </div>
+    <div class="name-word">
+      <span class="word-text gold">open</span>
+      <span class="word-def">know the line first</span>
+    </div>
+  </div>
+
+  <div class="defs">
+    <div class="def-card">
+      <div class="def-word">Short</div>
+      <div class="def-pos">verb &nbsp;·&nbsp; markets &amp; betting</div>
+      <p class="def-text">
+        In financial markets, to <strong>short</strong> is to bet against the crowd — to position yourself to profit when the consensus is wrong. In sports betting, the instinct is identical: <strong>find where public money has inflated a line past its true value, and fade it.</strong> The house doesn't beat most bettors. Groupthink does. Shorting the consensus is where the edge lives.
+      </p>
+    </div>
+
+    <div class="def-card">
+      <div class="def-word">Open</div>
+      <div class="def-pos">noun &nbsp;·&nbsp; betting markets</div>
+      <p class="def-text">
+        The <strong>open</strong> is the line before the world touches it — before public money floods in, before the sharp action moves it, before the narrative takes over. <strong>The opening number is the most honest price the market will ever offer.</strong> It reflects what the oddsmakers actually believe, not what the crowd wants. Knowing the open means knowing where value is before everyone else does.
+      </p>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider"/>
+
+<!-- PHILOSOPHY -->
+<div class="philosophy">
+  <p class="phil-eyebrow">Why It Matters</p>
+  <p class="phil-lead">
+    "Short Open" isn't just a name. It's a complete framework for how we approach every market we enter.
+  </p>
+  <div class="phil-body">
+    <p>
+      The same forces that drive inefficiency in financial markets are alive in sports betting. <strong>Crowds push prices away from fair value.</strong> Public money piles into favorites, into star players on big stages, into narratives the media is already running. Lines shift. Value disappears. The people who got there first — who knew the open — already have their edge locked in.
+    </p>
+    <p>
+      We built Short Open around that intersection. <strong>The discipline of financial market thinking applied to sports.</strong> Respect the data. Understand what the line is actually telling you. Recognize when the market is mispriced — and have the conviction to go the other direction. That's shorting the consensus. That's knowing the open. That's the whole thing.
+    </p>
+  </div>
+</div>
+
+<!-- PARALLELS -->
+<div class="parallels">
+  <div class="parallels-inner">
+    <p class="parallels-eyebrow">Two Markets. One Mindset.</p>
+
+    <div class="parallel-header">
+      <div class="parallel-header-cell">Financial Markets</div>
+      <div></div>
+      <div class="parallel-header-cell">Sports Betting Markets</div>
+    </div>
+
+    <div class="parallel-rows">
+
+      <div class="parallel-row">
+        <div class="parallel-cell">
+          <div class="cell-label">The move</div>
+          <div class="cell-val">Short a stock — bet against an overvalued consensus</div>
+        </div>
+        <div class="parallel-mid">=</div>
+        <div class="parallel-cell right">
+          <div class="cell-label">The move</div>
+          <div class="cell-val">Fade the public — bet against an inflated favorite</div>
+        </div>
+      </div>
+
+      <div class="parallel-row">
+        <div class="parallel-cell">
+          <div class="cell-label">The signal</div>
+          <div class="cell-val">Price drifts from fair value on sentiment, not fundamentals</div>
+        </div>
+        <div class="parallel-mid">=</div>
+        <div class="parallel-cell right">
+          <div class="cell-label">The signal</div>
+          <div class="cell-val">Line moves off the open on public money, not sharp action</div>
+        </div>
+      </div>
+
+      <div class="parallel-row">
+        <div class="parallel-cell">
+          <div class="cell-label">The edge</div>
+          <div class="cell-val">Research what the crowd ignores. Act before they catch up.</div>
+        </div>
+        <div class="parallel-mid">=</div>
+        <div class="parallel-cell right">
+          <div class="cell-label">The edge</div>
+          <div class="cell-val">Know the open. Lock in value before the market prices it out.</div>
+        </div>
+      </div>
+
+      <div class="parallel-row">
+        <div class="parallel-cell">
+          <div class="cell-label">The discipline</div>
+          <div class="cell-val">Process over emotion. Sample size over single trades.</div>
+        </div>
+        <div class="parallel-mid">=</div>
+        <div class="parallel-cell right">
+          <div class="cell-label">The discipline</div>
+          <div class="cell-val">Process over picks. Long-term ROI over last night's result.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CLOSING -->
+<div class="closing">
+  <h2 class="closing-title">The market is beatable.<br>The crowd makes it <em>easy.</em></h2>
+  <p>
+    Most bettors lose because they follow the same information, reach the same conclusions, and chase the same lines. Short Open exists for the ones who want to get there first — who respect the open, understand what moves a line, and build conviction from research rather than recency. The name is the whole philosophy.
+  </p>
+  <a href="projections.html" class="btn-primary">See the Projections</a>
+  <a href="index.html#subscribe" class="btn-ghost">Join the Newsletter</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">short<span>open</span></div>
+  <p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
