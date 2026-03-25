@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>shortopen — Subscribe</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: #222222;
+    --border2: #2a2a2a;
+    --gold: #c8922a;
+    --gold-light: #e4a83a;
+    --white: #f0ece4;
+    --muted: #6b6560;
+    --text: #d4cfc8;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: var(--white);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a.active { color: var(--gold); }
+
+  /* PAGE HEADER */
+  .page-header {
+    padding: 140px 48px 64px;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .page-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.1s forwards;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .page-eyebrow::before,
+  .page-eyebrow::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(36px, 5.5vw, 72px);
+    color: var(--white);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.25s forwards;
+  }
+
+  .page-title em { font-style: italic; color: var(--gold); }
+
+  .page-sub {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  /* COMING SOON BANNER */
+  .cs-banner {
+    max-width: 900px;
+    margin: 0 auto 56px;
+    padding: 0 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.5s forwards;
+  }
+
+  .cs-banner-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px 28px;
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    font-size: 0.76rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .cs-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 1.8s ease infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.65); }
+  }
+
+  /* TIERS */
+  .tiers {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 48px 100px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.6s forwards;
+  }
+
+  .tier-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 48px 40px 44px;
+    position: relative;
+    transition: border-color 0.25s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tier-card:hover { border-color: var(--gold); }
+
+  .tier-card.featured {
+    border-color: var(--gold);
+    background: var(--surface2);
+  }
+
+  .featured-label {
+    position: absolute;
+    top: -1px;
+    right: 28px;
+    background: var(--gold);
+    color: #0a0a0a;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+  }
+
+  .tier-name {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .tier-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    line-height: 1.1;
+  }
+
+  .tier-title em { font-style: italic; color: var(--gold); }
+
+  .tier-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 32px;
+    min-height: 48px;
+  }
+
+  .tier-price-area {
+    margin-bottom: 32px;
+    padding: 20px 0;
+    border-top: 1px solid var(--border2);
+    border-bottom: 1px solid var(--border2);
+  }
+
+  .tier-price-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .tier-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    font-weight: 900;
+    color: var(--gold);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .tier-price-note {
+    font-size: 0.76rem;
+    color: var(--muted);
+    margin-top: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  /* FEATURES LIST */
+  .tier-features {
+    list-style: none;
+    margin-bottom: 36px;
+    flex: 1;
+  }
+
+  .tier-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: var(--text);
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.5;
+  }
+
+  .tier-features li:last-child { border-bottom: none; }
+
+  .feat-check {
+    color: var(--gold);
+    font-size: 0.8rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .feat-lock {
+    color: #3a3a3a;
+    font-size: 0.8rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .tier-features li.locked {
+    color: var(--muted);
+    opacity: 0.45;
+  }
+
+  /* SPORT SELECTOR */
+  .sport-selector {
+    margin-bottom: 32px;
+  }
+
+  .sport-selector-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .sport-pills {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .sport-pill {
+    padding: 7px 16px;
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .sport-pill:hover { border-color: var(--muted); color: var(--white); }
+  .sport-pill.active { background: var(--gold); border-color: var(--gold); color: #0a0a0a; }
+
+  /* CTA BUTTON */
+  .tier-cta {
+    display: block;
+    width: 100%;
+    padding: 15px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+
+  .tier-cta.ghost {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid var(--border2);
+  }
+  .tier-cta.ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  .tier-cta.primary {
+    background: var(--gold);
+    color: #0a0a0a;
+  }
+  .tier-cta.primary:hover { background: var(--gold-light); }
+
+  .tier-cta:disabled,
+  .tier-cta.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* FREE TIER NOTE */
+  .free-note {
+    max-width: 900px;
+    margin: -60px auto 0;
+    padding: 0 48px 80px;
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .free-note p {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .free-note a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .free-note a:hover { text-decoration: underline; }
+
+  /* FAQ */
+  .faq {
+    border-top: 1px solid var(--border);
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 72px 48px 100px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1s forwards;
+  }
+
+  .faq-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .faq-list { display: flex; flex-direction: column; gap: 2px; }
+
+  .faq-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .faq-item:hover { border-color: var(--border2); }
+
+  .faq-q {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.94rem;
+    font-weight: 500;
+    color: var(--white);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    gap: 16px;
+  }
+
+  .faq-arrow {
+    color: var(--gold);
+    font-size: 0.8rem;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  .faq-item.open .faq-arrow { transform: rotate(180deg); }
+
+  .faq-a {
+    display: none;
+    padding: 0 24px 20px;
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.8;
+    border-top: 1px solid var(--border);
+  }
+
+  .faq-item.open .faq-a { display: block; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1rem; color: var(--white); }
+  .footer-logo span { color: var(--gold); }
+  .footer-copy { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 18px 24px; }
+    .nav-links { display: none; }
+    .page-header { padding: 110px 24px 48px; }
+    .cs-banner { padding: 0 24px; }
+    .tiers { grid-template-columns: 1fr; padding: 0 24px 80px; }
+    .free-note { padding: 20px 24px 60px; margin-top: 0; }
+    .faq { padding: 56px 24px 80px; }
+    footer { padding: 30px 24px; flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">short<span>open</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#analysis">Analysis</a></li>
+    <li><a href="projections.html">Projections</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="subscribe.html" class="active">Subscribe</a></li>
+  </ul>
+</nav>
+
+<!-- HEADER -->
+<div class="page-header">
+  <p class="page-eyebrow">Membership</p>
+  <h1 class="page-title">Pick your <em>edge.</em></h1>
+  <p class="page-sub">One sport or all of them. Pricing coming soon — get on the list now and lock in early access.</p>
+</div>
+
+<!-- COMING SOON BANNER -->
+<div class="cs-banner">
+  <div class="cs-banner-inner">
+    <div class="cs-dot"></div>
+    Pricing dropping early season — notify me when it's live
+    <div class="cs-dot"></div>
+  </div>
+</div>
+
+<!-- TIERS -->
+<div class="tiers">
+
+  <!-- TIER 1: Single Sport -->
+  <div class="tier-card">
+    <div class="tier-name">Tier 01</div>
+    <div class="tier-title">Single <em>Sport</em></div>
+    <p class="tier-desc">Full access to one sport of your choice — projections, analysis drops, and model updates.</p>
+
+    <div class="sport-selector">
+      <div class="sport-selector-label">Choose your sport</div>
+      <div class="sport-pills">
+        <button class="sport-pill active" onclick="selectSport(this, 'NBA')">NBA</button>
+        <button class="sport-pill" onclick="selectSport(this, 'MLB')">MLB</button>
+        <button class="sport-pill" onclick="selectSport(this, 'NFL')">NFL</button>
+      </div>
+    </div>
+
+    <div class="tier-price-area">
+      <div class="tier-price-label">Monthly price</div>
+      <div class="tier-price">TBD</div>
+      <div class="tier-price-note">Pricing announced early season</div>
+    </div>
+
+    <ul class="tier-features">
+      <li><span class="feat-check">✦</span> Full player projection table for your sport</li>
+      <li><span class="feat-check">✦</span> Weekly analysis drops for your sport</li>
+      <li><span class="feat-check">✦</span> DFS lineup recommendations</li>
+      <li><span class="feat-check">✦</span> Model updates throughout the season</li>
+      <li class="locked"><span class="feat-lock">—</span> Access to other sport projections</li>
+      <li class="locked"><span class="feat-lock">—</span> Cross-sport parlay analysis</li>
+      <li class="locked"><span class="feat-lock">—</span> Full all-access newsletter</li>
+    </ul>
+
+    <button class="tier-cta ghost" onclick="notifyMe()">Notify Me When Live</button>
+  </div>
+
+  <!-- TIER 2: All Access -->
+  <div class="tier-card featured">
+    <div class="featured-label">Best Value</div>
+    <div class="tier-name">Tier 02</div>
+    <div class="tier-title">All <em>Access</em></div>
+    <p class="tier-desc">Every sport, every model, every drop. The full Short Open edge — nothing locked.</p>
+
+    <div class="tier-price-area">
+      <div class="tier-price-label">Monthly price</div>
+      <div class="tier-price">TBD</div>
+      <div class="tier-price-note">Pricing announced early season</div>
+    </div>
+
+    <ul class="tier-features">
+      <li><span class="feat-check">✦</span> NBA, MLB &amp; NFL projection tables</li>
+      <li><span class="feat-check">✦</span> Weekly analysis drops — all sports</li>
+      <li><span class="feat-check">✦</span> DFS lineup optimization across leagues</li>
+      <li><span class="feat-check">✦</span> Model updates throughout every season</li>
+      <li><span class="feat-check">✦</span> Cross-sport parlay analysis</li>
+      <li><span class="feat-check">✦</span> Full all-access newsletter</li>
+      <li><span class="feat-check">✦</span> Early access to new features &amp; models</li>
+    </ul>
+
+    <button class="tier-cta primary" onclick="notifyMe()">Notify Me When Live</button>
+  </div>
+
+</div>
+
+<!-- FREE NOTE -->
+<div class="free-note">
+  <p>NBA projections are currently <a href="projections.html">free for the rest of the 2025–26 season</a>. No subscription required.</p>
+</div>
+
+<!-- FAQ -->
+<div class="faq">
+  <p class="faq-eyebrow">Questions</p>
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        When will pricing be announced?
+        <span class="faq-arrow">▾</span>
+      </button>
+      <div class="faq-a">We're releasing pricing early season. Subscribe to the newsletter and you'll be the first to know — early subscribers will get a locked-in rate before it goes public.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Can I switch sports on the Single Sport tier?
+        <span class="faq-arrow">▾</span>
+      </button>
+      <div class="faq-a">Yes — you'll be able to change your selected sport at any time. If you want access to multiple sports simultaneously, All Access is the better fit.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Is there a free tier?
+        <span class="faq-arrow">▾</span>
+      </button>
+      <div class="faq-a">NBA projections are completely free through the end of the 2025–26 season. After that, full projection access will move to paid tiers — but the newsletter will always include a free analysis drop each week.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        What does "model updates" mean?
+        <span class="faq-arrow">▾</span>
+      </button>
+      <div class="faq-a">Our projection models are updated continuously throughout each season based on recent performance, usage trends, injury reports, and line movement. You're never looking at stale numbers.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Can I cancel anytime?
+        <span class="faq-arrow">▾</span>
+      </button>
+      <div class="faq-a">Yes. No contracts, no annual lock-ins. Cancel whenever you want — you keep access through the end of your billing period.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">short<span>open</span></div>
+  <p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+</footer>
+
+<script>
+  function selectSport(btn, sport) {
+    document.querySelectorAll('.sport-pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function notifyMe() {
+    // Scroll to newsletter on index or show a simple confirmation
+    const btn = event.currentTarget;
+    const orig = btn.textContent;
+    btn.textContent = "You're on the list ✦";
+    btn.style.pointerEvents = 'none';
+    btn.style.opacity = '0.7';
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.style.pointerEvents = '';
+      btn.style.opacity = '';
+    }, 3000);
+  }
+
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  }
+</script>
+
+</body>
+</html>
