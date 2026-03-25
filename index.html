@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>shortopen — Sports Betting Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: #222222;
+    --gold: #c8922a;
+    --gold-light: #e4a83a;
+    --white: #f0ece4;
+    --muted: #6b6560;
+    --text: #d4cfc8;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: var(--white);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--gold); }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 120px;
+    background: linear-gradient(to bottom, transparent, var(--bg));
+    pointer-events: none;
+  }
+
+  /* Large background wordmark */
+  .hero-bg-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(80px, 18vw, 220px);
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(200,146,42,0.07);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-headline {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(42px, 7vw, 96px);
+    color: var(--white);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    max-width: 820px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero-headline em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    margin-top: 28px;
+    max-width: 520px;
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-cta {
+    margin-top: 44px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .btn-primary {
+    padding: 14px 32px;
+    background: var(--gold);
+    color: #0a0a0a;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    padding: 14px 32px;
+    background: transparent;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+    display: inline-block;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    padding: 12px 0;
+  }
+
+  .ticker {
+    display: flex;
+    gap: 0;
+    animation: ticker 28s linear infinite;
+    white-space: nowrap;
+  }
+
+  .ticker-item {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 40px;
+    flex-shrink: 0;
+  }
+
+  .ticker-item span { color: var(--gold); margin-right: 8px; }
+
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 100px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(28px, 4vw, 48px);
+    color: var(--white);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+
+  /* ── ABOUT ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    margin-top: 60px;
+  }
+
+  .about-text p {
+    color: var(--muted);
+    font-size: 0.97rem;
+    line-height: 1.9;
+    margin-bottom: 18px;
+  }
+
+  .about-text p strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+
+  .stat-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 32px 28px;
+    transition: border-color 0.2s;
+  }
+
+  .stat-box:hover { border-color: var(--gold); }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 2.8rem;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── POSTS ── */
+  .posts-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    max-width: 100%;
+    padding: 100px 0;
+  }
+
+  .posts-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 56px;
+  }
+
+  .post-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 36px 32px;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .post-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--gold);
+    transition: height 0.3s ease;
+  }
+
+  .post-card:hover { border-color: #333; transform: translateY(-3px); }
+  .post-card:hover::before { height: 100%; }
+
+  .post-tag {
+    font-size: 0.67rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+
+  .post-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--white);
+    line-height: 1.35;
+    margin-bottom: 14px;
+  }
+
+  .post-excerpt {
+    font-size: 0.86rem;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 24px;
+  }
+
+  .post-meta {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: #3d3d3d;
+    text-transform: uppercase;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ── SUBSCRIBE ── */
+  .subscribe-section {
+    text-align: center;
+    padding: 120px 48px;
+    position: relative;
+  }
+
+  .subscribe-section::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(200,146,42,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .subscribe-section .section-label { justify-content: center; }
+  .subscribe-section .section-label::after { display: none; }
+
+  .subscribe-body {
+    max-width: 520px;
+    margin: 0 auto 48px;
+    font-size: 0.97rem;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+
+  .subscribe-form {
+    display: flex;
+    max-width: 480px;
+    margin: 0 auto;
+    gap: 0;
+  }
+
+  .subscribe-form input {
+    flex: 1;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-right: none;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .subscribe-form input::placeholder { color: var(--muted); }
+  .subscribe-form input:focus { border-color: var(--gold); }
+
+  .subscribe-form button {
+    padding: 16px 28px;
+    background: var(--gold);
+    color: #0a0a0a;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .subscribe-form button:hover { background: var(--gold-light); }
+
+  .subscribe-note {
+    margin-top: 14px;
+    font-size: 0.74rem;
+    color: #3a3a3a;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 1rem;
+    color: var(--white);
+  }
+
+  .footer-logo span { color: var(--gold); }
+
+  .footer-copy {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 18px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 100px 24px 60px; }
+    section { padding: 70px 24px; }
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    .posts-grid { grid-template-columns: 1fr; }
+    .posts-inner { padding: 0 24px; }
+    .subscribe-section { padding: 80px 24px; }
+    footer { padding: 30px 24px; flex-direction: column; gap: 12px; text-align: center; }
+    .subscribe-form { flex-direction: column; }
+    .subscribe-form input { border-right: 1px solid var(--border); border-bottom: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">short<span>open</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#analysis">Analysis</a></li>
+    <li><a href="#subscribe">Subscribe</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-text">SHORT OPEN</div>
+  <p class="hero-eyebrow">Independent Sports Betting Analysis</p>
+  <h1 class="hero-headline">The edge is in<br><em>the research.</em></h1>
+  <p class="hero-sub">Data-driven picks, player tendency breakdowns, and market analysis — delivered to subscribers who take the game seriously.</p>
+  <div class="hero-cta">
+    <a href="#subscribe" class="btn-primary">Get the Newsletter</a>
+    <a href="#analysis" class="btn-ghost">Read Analysis</a>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item"><span>NBA</span> Player Prop Models Updated Daily</span>
+    <span class="ticker-item"><span>NFL</span> Market Inefficiency Reports</span>
+    <span class="ticker-item"><span>MLB</span> Pitcher Tendency Breakdowns</span>
+    <span class="ticker-item"><span>Golf</span> Field &amp; Course Fit Analysis</span>
+    <span class="ticker-item"><span>NBA</span> DFS Lineup Optimization</span>
+    <span class="ticker-item"><span>NFL</span> Line Movement Breakdowns</span>
+    <span class="ticker-item"><span>MLB</span> Batter vs. Pitcher Splits</span>
+    <span class="ticker-item"><span>Golf</span> Tournament Outright Value Picks</span>
+    <span class="ticker-item"><span>NBA</span> Player Prop Models Updated Daily</span>
+    <span class="ticker-item"><span>NFL</span> Market Inefficiency Reports</span>
+    <span class="ticker-item"><span>MLB</span> Pitcher Tendency Breakdowns</span>
+    <span class="ticker-item"><span>Golf</span> Field &amp; Course Fit Analysis</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label">Who We Are</p>
+  <h2 class="section-title">Built by a bettor.<br>Written for serious players.</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>Short Open started as a simple idea: <strong>most sports betting content is noise.</strong> Picks without process. Predictions without accountability. Numbers recycled from the same public models everyone else is already using.</p>
+      <p>We do it differently. Every piece of analysis starts with the raw data — player tendencies, line movement, situational splits, and market behavior. But data only tells part of the story. <strong>We also trust instinct</strong> — the kind the industry rarely accounts for. Pattern recognition built from years of watching games, not just charting them.</p>
+      <p>Our subscribers range from casual bettors looking for a sharper edge to experienced players who want a second set of eyes on their research. What they all have in common is that they <strong>take the process seriously.</strong></p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-box">
+        <div class="stat-num">3+</div>
+        <div class="stat-label">Leagues Covered</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">Weekly</div>
+        <div class="stat-label">Analysis Drop</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Independent</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">Data</div>
+        <div class="stat-label">First. Always.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANALYSIS POSTS -->
+<div class="posts-section" id="analysis">
+  <div class="posts-inner">
+    <p class="section-label">Latest Analysis</p>
+    <h2 class="section-title">Recent Breakdowns</h2>
+    <div class="posts-grid">
+
+      <div class="post-card">
+        <p class="post-tag">NBA · Player Props</p>
+        <h3 class="post-title">Why the Market Is Consistently Wrong on Back-to-Back Nights</h3>
+        <p class="post-excerpt">Books are slow to adjust usage rates on the second night of a back-to-back. Here's the pattern we've been exploiting and why it keeps showing up.</p>
+        <div class="post-meta">
+          <span>March 2026</span>
+          <span>6 min read</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <p class="post-tag">NFL · Line Movement</p>
+        <h3 class="post-title">Following Sharp Money vs. Public Money: A Practical Guide</h3>
+        <p class="post-excerpt">Line movement tells a story if you know how to read it. A breakdown of the signals that matter and the ones that are just noise.</p>
+        <div class="post-meta">
+          <span>February 2026</span>
+          <span>8 min read</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <p class="post-tag">NBA · DFS</p>
+        <h3 class="post-title">Stacking Strategy for Large-Field GPPs: Building for Ceiling, Not Floor</h3>
+        <p class="post-excerpt">Cash games and tournaments require completely different thinking. Here's how we approach lineup construction when the goal is first place, not survival.</p>
+        <div class="post-meta">
+          <span>January 2026</span>
+          <span>7 min read</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- SUBSCRIBE -->
+<div class="subscribe-section" id="subscribe">
+  <p class="section-label">Join the List</p>
+  <h2 class="section-title" style="font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(28px,4vw,48px); color:var(--white); margin-bottom:20px;">Sharp analysis.<br>Straight to your inbox.</h2>
+  <p class="subscribe-body">Weekly breakdowns, model updates, and the picks worth paying attention to. No spam. No recycled takes. Just the work.</p>
+  <form class="subscribe-form" onsubmit="handleSubmit(event)">
+    <input type="email" placeholder="Your email address" required/>
+    <button type="submit">Subscribe</button>
+  </form>
+  <p class="subscribe-note">Free to start. Unsubscribe anytime.</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">short<span>open</span></div>
+  <p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+</footer>
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    const input = e.target.querySelector('input');
+    btn.textContent = 'You\'re In';
+    btn.style.background = '#2a6e3f';
+    btn.style.color = '#fff';
+    input.value = '';
+    input.placeholder = 'Welcome to Short Open.';
+    input.disabled = true;
+  }
+
+  // Subtle scroll fade-in for cards
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.post-card, .stat-box').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
