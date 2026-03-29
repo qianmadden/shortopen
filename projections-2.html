@@ -546,7 +546,428 @@
     .pagination { padding: 0 20px 40px; }
     .coming-soon-note { padding: 0 20px 12px; }
     footer { padding: 30px 20px; flex-direction: column; gap: 12px; text-align: center; }
+    .dfs-layout { flex-direction: column; }
+    .dfs-pool { max-height: 400px; }
   }
+
+  /* ── DFS OPTIMIZER ───────────────────────────────────────── */
+  .dfs-wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 48px 80px;
+  }
+
+  .dfs-header {
+    padding: 24px 0 20px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border2);
+    margin-bottom: 24px;
+  }
+
+  .dfs-header-left h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: -0.01em;
+  }
+
+  .dfs-header-left p {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .dfs-layout {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  /* LEFT: player pool */
+  .dfs-pool {
+    flex: 1.4;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .dfs-pool-header {
+    padding: 14px 16px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border2);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .dfs-pool-title {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-right: 4px;
+  }
+
+  .dfs-search {
+    flex: 1;
+    min-width: 140px;
+    padding: 7px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    outline: none;
+  }
+  .dfs-search:focus { border-color: var(--gold); }
+  .dfs-search::placeholder { color: var(--muted); }
+
+  .dfs-pos-filter {
+    display: flex;
+    gap: 4px;
+  }
+
+  .pos-pill {
+    padding: 5px 10px;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+  .pos-pill:hover { color: var(--white); border-color: var(--muted); }
+  .pos-pill.active { background: var(--gold); border-color: var(--gold); color: #0a0a0a; }
+
+  .dfs-pool-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    max-height: 520px;
+    display: block;
+    overflow-y: auto;
+  }
+
+  .dfs-pool-table thead th { position: sticky; top: 0; z-index: 5; background: var(--bg); }
+
+  .dfs-pool-table th {
+    padding: 10px 10px;
+    background: var(--bg);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--gold);
+    user-select: none;
+  }
+  .dfs-pool-table th:hover { color: var(--gold); }
+  .dfs-pool-table th.sorted { color: var(--gold); }
+
+  .dfs-pool-table td {
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    color: var(--text);
+  }
+
+  .dfs-pool-table tbody tr { transition: background 0.12s; cursor: pointer; }
+  .dfs-pool-table tbody tr:hover { background: var(--surface2); }
+  .dfs-pool-table tbody tr.in-lineup { background: rgba(200,146,42,0.08); }
+  .dfs-pool-table tbody tr.in-lineup td { color: var(--gold); }
+
+  .pool-add-btn {
+    padding: 3px 9px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+  .pool-add-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .pool-add-btn.added { background: var(--gold); border-color: var(--gold); color: #0a0a0a; }
+
+  /* RIGHT: lineup builder */
+  .dfs-builder {
+    flex: 0 0 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* salary bar */
+  .salary-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+  }
+
+  .salary-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .salary-label {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .salary-nums {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .salary-nums span { color: var(--gold); }
+
+  .salary-track {
+    height: 4px;
+    background: var(--border2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .salary-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
+  .salary-fill.over { background: #c0392b; }
+
+  /* lineup slots */
+  .lineup-slots {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .lineup-slots-header {
+    padding: 12px 16px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border2);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .lineup-slot {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    gap: 10px;
+    min-height: 46px;
+    transition: background 0.15s;
+  }
+  .lineup-slot:last-child { border-bottom: none; }
+  .lineup-slot.filled { background: rgba(200,146,42,0.05); }
+
+  .slot-pos {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    min-width: 36px;
+    flex-shrink: 0;
+  }
+
+  .slot-player {
+    flex: 1;
+    font-size: 0.86rem;
+    color: var(--white);
+    font-weight: 400;
+  }
+
+  .slot-empty {
+    flex: 1;
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .slot-proj {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--gold);
+    min-width: 38px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .slot-salary {
+    font-size: 0.72rem;
+    color: var(--muted);
+    min-width: 48px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .slot-remove {
+    background: transparent;
+    border: none;
+    color: #3a3a3a;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 2px 4px;
+    transition: color 0.15s;
+    flex-shrink: 0;
+  }
+  .slot-remove:hover { color: #c0392b; }
+
+  /* totals row */
+  .lineup-totals {
+    background: var(--surface2);
+    border-top: 1px solid var(--gold);
+    padding: 12px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .totals-label {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .totals-proj {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--gold);
+  }
+
+  /* action buttons */
+  .dfs-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .dfs-btn {
+    flex: 1;
+    padding: 12px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.76rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .dfs-btn-primary { background: var(--gold); color: #0a0a0a; }
+  .dfs-btn-primary:hover { background: var(--gold-light); }
+
+  .dfs-btn-ghost { background: transparent; border: 1px solid var(--border2); color: var(--muted); }
+  .dfs-btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ownership warning */
+  .own-badge {
+    font-size: 0.68rem;
+    color: var(--muted);
+  }
+  .own-badge.high { color: #e4a83a; }
+
+  /* HAMBURGER MENU */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: transparent;
+    border: none;
+    z-index: 200;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    transition: all 0.25s ease;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10,10,10,0.98);
+    backdrop-filter: blur(16px);
+    z-index: 150;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 8vw, 2.4rem);
+    font-weight: 900;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    width: 80%;
+    text-align: center;
+    transition: color 0.2s;
+  }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu a:hover, .mobile-menu a.active { color: var(--gold); }
+  .mobile-menu-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 8px;
+  }
+  @media (max-width: 900px) {
+    .hamburger { display: flex; }
+    .nav-links { display: none !important; }
+  }
+
 </style>
 </head>
 <body>
@@ -556,10 +977,22 @@
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="about.html">About</a></li>
-    <li><a href="projections-2.html" class="active">Projections</a></li>
+    <li><a href="projections.html" class="active">Projections</a></li>
     <li><a href="index.html#subscribe">Subscribe</a></li>
+<button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
   </ul>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+  <a href="index.html" onclick="toggleMobileMenu()">Home</a>
+  <a href="analysis.html" onclick="toggleMobileMenu()">Analysis</a>
+  <a href="projections-2.html" onclick="toggleMobileMenu()">Projections</a>
+  <a href="about.html" onclick="toggleMobileMenu()">About</a>
+  <a href="subscribe.html" onclick="toggleMobileMenu()">Subscribe</a>
+</div>
+
 
 <div class="page-header">
   <p class="page-eyebrow">2025–26 Season</p>
@@ -571,6 +1004,8 @@
 <div class="sport-tabs">
   <button class="sport-tab active" onclick="switchSport('nba', this)">NBA <span class="tab-badge">Free</span></button>
   <button class="sport-tab" onclick="switchSport('mlb', this)">MLB <span class="tab-badge">2026</span></button>
+  <button class="sport-tab" onclick="switchSport('dfs', this)">MLB DFS <span class="tab-badge">Optimizer</span></button>
+  <button class="sport-tab" onclick="switchSport('nbadfs', this)">NBA DFS <span class="tab-badge">Optimizer</span></button>
 </div>
 
 <!-- NBA PANEL -->
@@ -629,7 +1064,7 @@
     <div class="mlb-lock-overlay">
       <div class="lock-icon">🔒</div>
       <div class="lock-title">MLB Projections<br><em>Coming Soon</em></div>
-      <p class="lock-sub">We're fine tuning our full MLB model for the 2026 season — pitcher-batter splits, park factors, platoon data, and DFS optimization.</p>
+      <p class="lock-sub">We're fine tuning our full MLB model for the 2026 season — pitcher-batter splits, park factors, platoon data, and DFS optimization. Subscribe to get notified the moment it drops.</p>
       <div class="lock-badge">Releasing early season</div>
     </div>
 
@@ -739,6 +1174,172 @@
   </div><!-- end mlb-lock-wrap -->
 
 </div><!-- end panel-mlb -->
+
+<!-- MLB DFS OPTIMIZER PANEL -->
+<div class="sport-panel" id="panel-dfs">
+<div class="dfs-wrap">
+
+  <div class="dfs-header">
+    <div class="dfs-header-left">
+      <h2>MLB DFS Optimizer — DraftKings</h2>
+      <p>$50,000 salary cap · 8-player lineup (P, C, 1B, 2B, 3B, SS, OF, OF, FLEX) · Click a player to add, click again to remove</p>
+    </div>
+  </div>
+
+  <div class="dfs-layout">
+
+    <!-- PLAYER POOL -->
+    <div class="dfs-pool">
+      <div class="dfs-pool-header">
+        <span class="dfs-pool-title">Player Pool</span>
+        <input class="dfs-search" id="dfsSearch" placeholder="Search player or team..." oninput="dfsFilter()"/>
+        <div class="dfs-pos-filter">
+          <button class="pos-pill active" onclick="dfsSetPos('ALL',this)">All</button>
+          <button class="pos-pill" onclick="dfsSetPos('P',this)">P</button>
+          <button class="pos-pill" onclick="dfsSetPos('C',this)">C</button>
+          <button class="pos-pill" onclick="dfsSetPos('1B',this)">1B</button>
+          <button class="pos-pill" onclick="dfsSetPos('2B',this)">2B</button>
+          <button class="pos-pill" onclick="dfsSetPos('3B',this)">3B</button>
+          <button class="pos-pill" onclick="dfsSetPos('SS',this)">SS</button>
+          <button class="pos-pill" onclick="dfsSetPos('OF',this)">OF</button>
+        </div>
+      </div>
+      <table class="dfs-pool-table" id="dfsPoolTable">
+        <thead>
+          <tr>
+            <th onclick="dfsSortPool(0)">+</th>
+            <th onclick="dfsSortPool(1)">Player <span class="sort-arrow">↕</span></th>
+            <th onclick="dfsSortPool(2)">Pos</th>
+            <th onclick="dfsSortPool(3)">Team</th>
+            <th onclick="dfsSortPool(4)">Opp</th>
+            <th onclick="dfsSortPool(5)">Salary <span class="sort-arrow">↕</span></th>
+            <th onclick="dfsSortPool(6)" class="sorted">Proj <span class="sort-arrow">↓</span></th>
+            <th onclick="dfsSortPool(7)">Pts/$ <span class="sort-arrow">↕</span></th>
+            <th onclick="dfsSortPool(8)">Own% <span class="sort-arrow">↕</span></th>
+            <th onclick="dfsSortPool(9)">Hand</th>
+          </tr>
+        </thead>
+        <tbody id="dfsPoolBody"></tbody>
+      </table>
+    </div>
+
+    <!-- LINEUP BUILDER -->
+    <div class="dfs-builder">
+
+      <!-- Salary bar -->
+      <div class="salary-bar">
+        <div class="salary-top">
+          <span class="salary-label">Salary Used</span>
+          <span class="salary-nums"><span id="salaryUsed">$0</span> / <span>$50,000</span></span>
+        </div>
+        <div class="salary-track">
+          <div class="salary-fill" id="salaryFill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- Slots -->
+      <div class="lineup-slots">
+        <div class="lineup-slots-header">
+          <span>Lineup</span>
+          <span id="lineupCount">0 / 9</span>
+        </div>
+        <div id="lineupSlots"></div>
+        <div class="lineup-totals">
+          <span class="totals-label">Projected FPTS</span>
+          <span class="totals-proj" id="lineupTotal">0.00</span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="dfs-actions">
+        <button class="dfs-btn dfs-btn-primary" onclick="dfsAutoOptimize()">⚡ Auto-Optimize</button>
+        <button class="dfs-btn dfs-btn-ghost" onclick="dfsClearLineup()">Clear</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div><!-- end panel-dfs -->
+
+<!-- NBA DFS OPTIMIZER PANEL -->
+<div class="sport-panel" id="panel-nbadfs">
+<div class="dfs-wrap">
+
+  <div class="dfs-header">
+    <div class="dfs-header-left">
+      <h2>NBA DFS Optimizer — DraftKings</h2>
+      <p>$50,000 salary cap · 8-player lineup (PG, SG, SF, PF, C, G, F, UTIL) · Click a player to add, click again to remove</p>
+    </div>
+  </div>
+
+  <div class="dfs-layout">
+
+    <!-- PLAYER POOL -->
+    <div class="dfs-pool">
+      <div class="dfs-pool-header">
+        <span class="dfs-pool-title">Player Pool</span>
+        <input class="dfs-search" id="nbaDfsSearch" placeholder="Search player or team..." oninput="nbaDfsFilter()"/>
+        <div class="dfs-pos-filter">
+          <button class="pos-pill active" onclick="nbaDfsSetPos('ALL',this)">All</button>
+          <button class="pos-pill" onclick="nbaDfsSetPos('PG',this)">PG</button>
+          <button class="pos-pill" onclick="nbaDfsSetPos('SG',this)">SG</button>
+          <button class="pos-pill" onclick="nbaDfsSetPos('SF',this)">SF</button>
+          <button class="pos-pill" onclick="nbaDfsSetPos('PF',this)">PF</button>
+          <button class="pos-pill" onclick="nbaDfsSetPos('C',this)">C</button>
+        </div>
+      </div>
+      <table class="dfs-pool-table" id="nbaDfsPoolTable">
+        <thead>
+          <tr>
+            <th onclick="nbaDfsSortPool(0)">+</th>
+            <th onclick="nbaDfsSortPool(1)">Player <span class="sort-arrow">↕</span></th>
+            <th onclick="nbaDfsSortPool(2)">Pos</th>
+            <th onclick="nbaDfsSortPool(3)">Team</th>
+            <th onclick="nbaDfsSortPool(4)">Salary <span class="sort-arrow">↕</span></th>
+            <th onclick="nbaDfsSortPool(5)" class="sorted">FPTS <span class="sort-arrow">↓</span></th>
+            <th onclick="nbaDfsSortPool(6)">Pts/$ <span class="sort-arrow">↕</span></th>
+            <th onclick="nbaDfsSortPool(7)">MIN <span class="sort-arrow">↕</span></th>
+            <th onclick="nbaDfsSortPool(8)">PTS</th>
+            <th onclick="nbaDfsSortPool(9)">REB</th>
+            <th onclick="nbaDfsSortPool(10)">AST</th>
+          </tr>
+        </thead>
+        <tbody id="nbaDfsPoolBody"></tbody>
+      </table>
+    </div>
+
+    <!-- LINEUP BUILDER -->
+    <div class="dfs-builder">
+      <div class="salary-bar">
+        <div class="salary-top">
+          <span class="salary-label">Salary Used</span>
+          <span class="salary-nums"><span id="nbaSalaryUsed">$0</span> / <span>$50,000</span></span>
+        </div>
+        <div class="salary-track">
+          <div class="salary-fill" id="nbaSalaryFill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="lineup-slots">
+        <div class="lineup-slots-header">
+          <span>Lineup</span>
+          <span id="nbaLineupCount">0 / 8</span>
+        </div>
+        <div id="nbaLineupSlots"></div>
+        <div class="lineup-totals">
+          <span class="totals-label">Projected FPTS</span>
+          <span class="totals-proj" id="nbaLineupTotal">0.00</span>
+        </div>
+      </div>
+
+      <div class="dfs-actions">
+        <button class="dfs-btn dfs-btn-primary" onclick="nbaDfsAutoOptimize()">⚡ Auto-Optimize</button>
+        <button class="dfs-btn dfs-btn-ghost" onclick="nbaDfsClearLineup()">Clear</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- end panel-nbadfs -->
 
 <footer>
   <div class="footer-logo">short<span>open</span></div>
@@ -1395,6 +1996,588 @@ function renderGenericPagination(containerId, total, currentPg, perP, onPage) {
 // Init MLB tables
 filterMLBHitters();
 filterMLBPitchers();
+
+// ── SPORT TAB SWITCHER (updated to include dfs + nbadfs) ───────────────
+function switchSport(sport, btn) {
+  document.querySelectorAll('.sport-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.sport-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + sport).classList.add('active');
+  if (sport === 'dfs') { dfsRenderPool(); dfsRenderLineup(); }
+  if (sport === 'nbadfs') { nbaDfsFilter(); nbaDfsRenderLineup(); }
+}
+
+// ── DFS OPTIMIZER DATA (from real DraftKings CSV) ─────────────
+// cols: 0=type, 1=name, 2=pos, 3=team, 4=opp, 5=salary, 6=proj, 7=pts$, 8=own, 9=hand
+const DFS_POOL = [
+["P","Garrett Crochet","BOS","CIN",9700,21.69,2.24,38.3,"L"],
+["P","Jacob Misiorowski","MIL","CHW",7500,17.8,2.37,18.9,"R"],
+["P","Tarik Skubal","DET","SD",10500,17.22,1.64,16.6,"L"],
+["P","Matthew Boyd","CHC","WSH",7300,17.16,2.35,14.4,"L"],
+["P","Cristopher Sanchez","PHI","TEX",9000,16.93,1.88,11.5,"L"],
+["P","Hunter Brown","HOU","LAA",9500,16.32,1.72,38.2,"R"],
+["P","Nick Pivetta","SD","DET",8200,15.78,1.92,11.9,"R"],
+["P","Paul Skenes","PIT","NYM",10000,15.11,1.51,9.6,"R"],
+["P","Freddy Peralta","NYM","PIT",9200,14.9,1.62,8.5,"R"],
+["P","Joe Ryan","MIN","BAL",8700,14.72,1.69,7.6,"R"],
+["P","Andrew Abbott","CIN","BOS",6800,12.92,1.9,4.0,"L"],
+["P","Cade Cavalli","WSH","CHC",6300,12.46,1.98,2.6,"R"],
+["P","Drew Rasmussen","TB","STL",6700,12.35,1.84,3.6,"R"],
+["P","Nathan Eovaldi","TEX","PHI",8300,12.24,1.47,3.0,"R"],
+["P","Shane Smith","CHW","MIL",6500,11.87,1.83,3.4,"R"],
+["C","Adley Rutschman","BAL","MIN",3900,8.58,2.2,11.8,"S"],
+["C","Samuel Basallo","BAL","MIN",3300,8.29,2.51,13.6,"L"],
+["C","William Contreras","MIL","CHW",4200,8.26,1.97,14.5,"R"],
+["C","Ryan Jeffers","MIN","BAL",3000,7.9,2.63,8.4,"R"],
+["C","Ivan Herrera","STL","TB",4000,7.82,1.96,9.9,"R"],
+["C","Yainer Diaz","HOU","LAA",3500,6.7,1.92,5.5,"R"],
+["C","J.T. Realmuto","PHI","TEX",3700,6.36,1.72,4.3,"R"],
+["C","Tyler Stephenson","CIN","BOS",3800,6.35,1.67,3.2,"R"],
+["C","Logan O'Hoppe","LAA","HOU",3400,6.41,1.88,2.6,"R"],
+["C","Francisco Alvarez","NYM","PIT",3300,5.83,1.77,2.1,"R"],
+["1B","Pete Alonso","BAL","MIN",5100,10.23,2.01,13.8,"R"],
+["1B","Yandy Diaz","TB","STL",4400,9.33,2.12,11.5,"R"],
+["1B","Bryce Harper","PHI","TEX",4900,8.64,1.76,6.8,"L"],
+["1B","Alec Burleson","STL","TB",3700,8.42,2.27,19.0,"L"],
+["1B","Willson Contreras","BOS","CIN",4100,8.31,2.03,6.6,"R"],
+["1B","Jonathan Aranda","TB","STL",4200,7.91,1.88,5.2,"L"],
+["1B","Jake Burger","TEX","PHI",3200,7.64,2.39,4.3,"R"],
+["1B","Andrew Vaughn","MIL","CHW",3000,7.41,2.47,9.8,"R"],
+["1B","Christian Walker","HOU","LAA",3800,6.75,1.78,2.9,"R"],
+["1B","Nolan Schanuel","LAA","HOU",3100,7.12,2.3,3.8,"L"],
+["2B","Brice Turang","MIL","CHW",4300,9.09,2.11,20.7,"L"],
+["2B","Luke Keaschall","MIN","BAL",4100,8.35,2.04,9.4,"R"],
+["2B","Jose Altuve","HOU","LAA",4400,8.05,1.83,9.3,"R"],
+["2B","Bryson Stott","PHI","TEX",3600,7.68,2.13,9.2,"L"],
+["2B","Brandon Lowe","PIT","NYM",4200,7.43,1.77,5.9,"L"],
+["2B","Gleyber Torres","DET","SD",3900,7.11,1.82,5.6,"R"],
+["2B","Marcus Semien","NYM","PIT",3100,6.3,2.03,2.7,"R"],
+["2B","Nico Hoerner","CHC","WSH",4000,6.5,1.63,5.0,"R"],
+["2B","David Hamilton","MIL","CHW",2500,7.76,3.11,13.8,"L"],
+["3B","Junior Caminero","TB","STL",5800,9.71,1.67,15.2,"R"],
+["3B","Royce Lewis","MIN","BAL",3200,7.78,2.43,5.1,"R"],
+["3B","Isaac Paredes","HOU","LAA",3600,7.33,2.04,7.3,"R"],
+["3B","Colt Keith","DET","SD",3300,7.21,2.19,4.1,"L"],
+["3B","Eugenio Suarez","CIN","BOS",4500,7.11,1.58,3.4,"R"],
+["3B","Austin Riley","ATL","--",4800,7.5,1.56,4.2,"R"],
+["3B","Alec Bohm","PHI","TEX",4000,6.7,1.67,4.4,"R"],
+["3B","Jose Ramirez","CLE","--",5200,8.1,1.56,6.8,"S"],
+["SS","Gunnar Henderson","BAL","MIN",5300,10.4,1.96,17.0,"L"],
+["SS","Zach Neto","LAA","HOU",4200,9.13,2.17,6.7,"R"],
+["SS","Trevor Story","BOS","CIN",4000,9.09,2.27,10.0,"R"],
+["SS","Trea Turner","PHI","TEX",5400,8.25,1.53,5.7,"R"],
+["SS","Carson Williams","TB","STL",2600,7.98,3.07,9.8,"R"],
+["SS","Elly De La Cruz","CIN","BOS",5500,7.62,1.38,4.0,"S"],
+["SS","Corey Seager","TEX","PHI",4300,7.12,1.66,2.5,"L"],
+["SS","Francisco Lindor","NYM","PIT",5000,8.44,1.69,4.5,"S"],
+["SS","Bobby Witt Jr.","KC","--",5100,8.8,1.72,7.2,"R"],
+["OF","Byron Buxton","MIN","BAL",5700,11.41,2.0,12.9,"R"],
+["OF","Yordan Alvarez","HOU","LAA",5200,9.78,1.88,11.0,"L"],
+["OF","Kyle Schwarber","PHI","TEX",5900,9.75,1.65,12.0,"L"],
+["OF","Juan Soto","NYM","PIT",6000,9.74,1.62,7.0,"L"],
+["OF","Wyatt Langford","TEX","PHI",4600,9.05,1.97,5.1,"R"],
+["OF","Roman Anthony","BOS","CIN",5400,8.88,1.64,7.6,"L"],
+["OF","Taylor Ward","BAL","MIN",4200,8.65,2.06,11.1,"R"],
+["OF","Jarren Duran","BOS","CIN",4900,8.59,1.75,7.1,"L"],
+["OF","Christian Yelich","MIL","CHW",4500,8.57,1.9,14.0,"L"],
+["OF","Oneil Cruz","PIT","NYM",4800,8.53,1.78,4.9,"L"],
+["OF","Austin Martin","MIN","BAL",3400,8.26,2.43,7.3,"R"],
+["OF","Matt Wallner","MIN","BAL",3400,8.22,2.42,7.0,"L"],
+["OF","Tyler O'Neill","BAL","MIN",3000,8.18,2.73,11.6,"R"],
+["OF","Fernando Tatis Jr.","SD","DET",5600,7.92,1.42,2.9,"R"],
+["OF","Riley Greene","DET","SD",4400,7.76,1.76,5.1,"L"],
+["OF","James Wood","WSH","CHC",5300,7.47,1.41,2.1,"L"],
+["OF","Kerry Carpenter","DET","SD",4400,7.83,1.78,4.7,"L"],
+["OF","Colton Cowser","BAL","MIN",3100,7.79,2.51,7.3,"L"],
+["OF","Pete Crow-Armstrong","CHC","WSH",5000,7.09,1.42,4.4,"L"]
+];
+
+// DK MLB lineup: P, C, 1B, 2B, 3B, SS, OF, OF, OF(FLEX can be any non-P)
+const DFS_SLOTS = [
+  {pos:'P', label:'P'},
+  {pos:'C', label:'C'},
+  {pos:'1B', label:'1B'},
+  {pos:'2B', label:'2B'},
+  {pos:'3B', label:'3B'},
+  {pos:'SS', label:'SS'},
+  {pos:'OF', label:'OF'},
+  {pos:'OF', label:'OF'},
+  {pos:'FLEX', label:'FLEX'} // any non-pitcher
+];
+
+const SALARY_CAP = 50000;
+let dfsLineup = new Array(9).fill(null); // indexed by slot
+let dfsPosFilter = 'ALL';
+let dfsSortCol = 6, dfsSortAsc = false;
+let dfsFiltered = [...DFS_POOL];
+
+function dfsFilter() {
+  const q = document.getElementById('dfsSearch').value.toLowerCase();
+  dfsFiltered = DFS_POOL.filter(p => {
+    const posMatch = dfsPosFilter === 'ALL' || p[0] === dfsPosFilter ||
+      (dfsPosFilter !== 'P' && DFS_SLOTS[8].pos === 'FLEX' && p[0] !== 'P');
+    const nameMatch = p[1].toLowerCase().includes(q) || p[2].toLowerCase().includes(q) || p[3].toLowerCase().includes(q);
+    return nameMatch && (dfsPosFilter === 'ALL' || p[0] === dfsPosFilter);
+  });
+  dfsRenderPool();
+}
+
+function dfsSetPos(pos, btn) {
+  dfsPosFilter = pos;
+  document.querySelectorAll('.pos-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  dfsFilter();
+}
+
+function dfsSortPool(col) {
+  if (dfsSortCol === col) dfsSortAsc = !dfsSortAsc;
+  else { dfsSortCol = col; dfsSortAsc = col <= 1; }
+  dfsRenderPool();
+}
+
+function dfsRenderPool() {
+  const colMap = [null,1,0,2,3,5,6,7,8,9]; // display col → data index
+  const dc = colMap[dfsSortCol] !== undefined ? colMap[dfsSortCol] : 6;
+
+  const sorted = [...dfsFiltered].sort((a,b) => {
+    const av = a[dc], bv = b[dc];
+    if (typeof av === 'string') return dfsSortAsc ? av.localeCompare(bv) : bv.localeCompare(av);
+    return dfsSortAsc ? av - bv : bv - av;
+  });
+
+  const inLineupNames = new Set(dfsLineup.filter(Boolean).map(p => p[1]));
+  const tbody = document.getElementById('dfsPoolBody');
+  tbody.innerHTML = '';
+
+  sorted.forEach(p => {
+    const inL = inLineupNames.has(p[1]);
+    const tr = document.createElement('tr');
+    if (inL) tr.classList.add('in-lineup');
+    tr.onclick = () => dfsTogglePlayer(p);
+    tr.innerHTML = `
+      <td><button class="pool-add-btn ${inL ? 'added' : ''}">${inL ? '✓' : '+'}</button></td>
+      <td style="color:var(--white);font-weight:400;min-width:140px">${p[1]}</td>
+      <td style="color:var(--gold);font-size:0.72rem;font-weight:600">${p[0]}</td>
+      <td>${p[2]}</td>
+      <td style="color:var(--muted)">vs ${p[3]}</td>
+      <td>$${p[4].toLocaleString()}</td>
+      <td style="color:var(--white);font-weight:500">${p[5].toFixed(2)}</td>
+      <td style="color:var(--gold-light)">${p[6].toFixed(2)}</td>
+      <td class="own-badge ${p[7] >= 20 ? 'high' : ''}">${p[7].toFixed(1)}%</td>
+      <td style="color:var(--muted)">${p[8]}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function dfsTogglePlayer(player) {
+  // Check if already in lineup — remove if so
+  const existIdx = dfsLineup.findIndex(p => p && p[1] === player[1]);
+  if (existIdx >= 0) {
+    dfsLineup[existIdx] = null;
+    dfsRenderLineup();
+    dfsRenderPool();
+    return;
+  }
+
+  // Find valid slot for this player
+  const pos = player[0]; // P, C, 1B, 2B, 3B, SS, OF
+  let placed = false;
+
+  // Try exact position slots first
+  for (let i = 0; i < 8; i++) {
+    if (DFS_SLOTS[i].pos === pos && !dfsLineup[i]) {
+      dfsLineup[i] = player;
+      placed = true;
+      break;
+    }
+  }
+
+  // Try FLEX slot (index 8) for non-pitchers
+  if (!placed && pos !== 'P' && !dfsLineup[8]) {
+    dfsLineup[8] = player;
+    placed = true;
+  }
+
+  if (!placed) {
+    // Flash the relevant slot as full
+    return;
+  }
+
+  dfsRenderLineup();
+  dfsRenderPool();
+}
+
+function dfsRenderLineup() {
+  const container = document.getElementById('lineupSlots');
+  container.innerHTML = '';
+
+  let totalSalary = 0;
+  let totalProj = 0;
+  let filled = 0;
+
+  DFS_SLOTS.forEach((slot, i) => {
+    const player = dfsLineup[i];
+    const div = document.createElement('div');
+    div.className = 'lineup-slot' + (player ? ' filled' : '');
+
+    if (player) {
+      totalSalary += player[4];
+      totalProj += player[5];
+      filled++;
+      div.innerHTML = `
+        <span class="slot-pos">${slot.label}</span>
+        <span class="slot-player">${player[1]}<br><span style="font-size:0.72rem;color:var(--muted)">${player[2]} vs ${player[3]}</span></span>
+        <span class="slot-proj">${player[5].toFixed(1)}</span>
+        <span class="slot-salary">$${player[4].toLocaleString()}</span>
+        <button class="slot-remove" onclick="event.stopPropagation();dfsRemoveSlot(${i})">✕</button>
+      `;
+    } else {
+      div.innerHTML = `
+        <span class="slot-pos">${slot.label}</span>
+        <span class="slot-empty">Empty — click a player to add</span>
+      `;
+    }
+    container.appendChild(div);
+  });
+
+  // Update salary bar
+  const pct = Math.min((totalSalary / SALARY_CAP) * 100, 100);
+  const fill = document.getElementById('salaryFill');
+  fill.style.width = pct + '%';
+  fill.className = 'salary-fill' + (totalSalary > SALARY_CAP ? ' over' : '');
+  document.getElementById('salaryUsed').textContent = '$' + totalSalary.toLocaleString();
+  document.getElementById('salaryUsed').style.color = totalSalary > SALARY_CAP ? '#c0392b' : 'var(--white)';
+
+  document.getElementById('lineupTotal').textContent = totalProj.toFixed(2);
+  document.getElementById('lineupCount').textContent = `${filled} / 9`;
+}
+
+function dfsRemoveSlot(i) {
+  dfsLineup[i] = null;
+  dfsRenderLineup();
+  dfsRenderPool();
+}
+
+function dfsClearLineup() {
+  dfsLineup = new Array(9).fill(null);
+  dfsRenderLineup();
+  dfsRenderPool();
+}
+
+function dfsAutoOptimize() {
+  // Greedy optimizer: fill each slot with best value player under salary cap
+  dfsLineup = new Array(9).fill(null);
+  let remaining = SALARY_CAP;
+
+  // For each slot, find best available player by projection
+  const used = new Set();
+
+  DFS_SLOTS.forEach((slot, slotIdx) => {
+    const eligible = DFS_POOL.filter(p => {
+      if (used.has(p[1])) return false;
+      if (slot.pos === 'FLEX') return p[0] !== 'P';
+      return p[0] === slot.pos;
+    }).sort((a,b) => b[5] - a[5]); // sort by proj desc
+
+    // Try to fit: pick best that fits budget
+    // Budget estimate: remaining / (9 - slotIdx)
+    const avgBudget = remaining / (9 - slotIdx);
+
+    // Try best player first, then fall back
+    let picked = null;
+    for (const p of eligible) {
+      if (p[4] <= remaining - (8 - slotIdx) * 2000) {
+        picked = p;
+        break;
+      }
+    }
+    // Fallback: just cheapest eligible
+    if (!picked && eligible.length) {
+      picked = eligible.sort((a,b) => a[4]-b[4])[0];
+    }
+
+    if (picked) {
+      dfsLineup[slotIdx] = picked;
+      remaining -= picked[4];
+      used.add(picked[1]);
+    }
+  });
+
+  dfsRenderLineup();
+  dfsRenderPool();
+}
+
+// Init DFS on first render (lazy)
+document.getElementById('lineupSlots') && dfsRenderLineup();
+
+// ── NBA DFS OPTIMIZER ─────────────────────────────────────────
+// DK NBA slots: PG, SG, SF, PF, C, G(PG/SG), F(SF/PF), UTIL(any)
+const NBA_DFS_SLOTS = [
+  {pos:'PG', label:'PG'},
+  {pos:'SG', label:'SG'},
+  {pos:'SF', label:'SF'},
+  {pos:'PF', label:'PF'},
+  {pos:'C',  label:'C'},
+  {pos:'G',  label:'G'},   // PG or SG
+  {pos:'F',  label:'F'},   // SF or PF
+  {pos:'UTIL', label:'UTIL'} // any
+];
+
+// Build NBA DFS pool from RAW data with DK-style salaries derived from FPTS
+// RAW cols: 0=player,1=team,2=min,3=pts,4=reb,5=ast,6=stl,7=blk,8=tov,9=usg,10=fpts,11=fpm
+// Assign positions and salaries based on player roles and projection tiers
+const NBA_POS_MAP = {
+  // Point Guards
+  "Shai Gilgeous-Alexander":"PG","Luka Dončić":"PG","Tyrese Haliburton":"PG","Trae Young":"PG",
+  "Jalen Brunson":"PG","Ja Morant":"PG","Damian Lillard":"PG","Stephen Curry":"PG",
+  "Donovan Mitchell":"PG","De'Aaron Fox":"PG","Tyrese Maxey":"PG","LaMelo Ball":"PG",
+  "Darius Garland":"PG","Cade Cunningham":"PG","Anthony Edwards":"PG","Immanuel Quickley":"PG",
+  "Keyonte George":"PG","Isaiah Collier":"PG","Stephon Castle":"PG","Dylan Harper":"PG",
+  "Jeremiah Fears":"PG","Reed Sheppard":"PG","Bub Carrington":"PG","Ajay Mitchell":"PG",
+  "Cason Wallace":"PG","Andrew Nembhard":"PG","T.J. McConnell":"PG","Russell Westbrook":"PG",
+  "Malik Monk":"PG","Jrue Holiday":"PG","Josh Hart":"PG",
+  // Shooting Guards
+  "Devin Booker":"SG","James Harden":"SG","Bradley Beal":"SG","Zach LaVine":"SG",
+  "DeMar DeRozan":"SG","Desmond Bane":"SG","Tyler Herro":"SG","Jalen Williams":"SG",
+  "Anfernee Simons":"SG","VJ Edgecombe":"SG","Quentin Grimes":"SG","Grayson Allen":"SG",
+  "Collin Gillespie":"SG","Isaiah Joe":"SG","Cason Wallace":"SG","Payton Pritchard":"SG",
+  "Brandin Podziemski":"SG","Moses Moody":"SG","Naz Reid":"SG","Duncan Robinson":"SG",
+  "Derrick White":"SG","Jalen Suggs":"SG","Anthony Black":"SG","Shaedon Sharpe":"SG",
+  "Ace Bailey":"SG","Brice Sensabaugh":"SG","Tre Johnson":"SG","Kyshawn George":"SG",
+  // Small Forwards
+  "LeBron James":"SF","Jayson Tatum":"SF","Kevin Durant":"SF","Jimmy Butler III":"SF",
+  "Paul George":"SF","OG Anunoby":"SF","Mikal Bridges":"SF","Khris Middleton":"SF",
+  "Franz Wagner":"SF","Paolo Banchero":"SF","Brandon Ingram":"SF","Scottie Barnes":"SF",
+  "RJ Barrett":"SF","Trey Murphy III":"SF","Saddiq Bey":"SF","Deni Avdija":"SF",
+  "Jerami Grant":"SF","Kyle Tucker":"SF","Toumani Camara":"SF","Michael Harris II":"SF",
+  "Bilal Coulibaly":"SF","Devin Vassell":"SF","Keldon Johnson":"SF","Julian Champagnie":"SF",
+  "Christian Braun":"SF","Peyton Watson":"SF","Max Christie":"SF","Naji Marshall":"SF",
+  // Power Forwards
+  "Giannis Antetokounmpo":"PF","Anthony Davis":"PF","Jaylen Brown":"PF","Pascal Siakam":"PF",
+  "Bam Adebayo":"PF","Karl-Anthony Towns":"PF","Domantas Sabonis":"PF","Julius Randle":"PF",
+  "Jabari Smith Jr.":"PF","Aaron Gordon":"PF","P.J. Washington":"PF","Tari Eason":"PF",
+  "Royce Lewis":"PF","Jarace Walker":"PF","Cooper Flagg":"PF","Austin Riley":"PF",
+  "Kyle Filipowski":"PF","Lauri Markkanen":"PF","Bobby Portis":"PF","Isaiah Hartenstein":"PF",
+  "Draymond Green":"PF","Al Horford":"PF","Jonathan Kuminga":"PF","Ausar Thompson":"PF",
+  "Tobias Harris":"PF","Jay Huff":"PF","Chet Holmgren":"PF",
+  // Centers
+  "Nikola Jokić":"C","Joel Embiid":"C","Victor Wembanyama":"C","Evan Mobley":"C",
+  "Rudy Gobert":"C","Jarrett Allen":"C","Alperen Sengun":"C","Derik Queen":"C",
+  "Jalen Duren":"C","Donovan Clingan":"C","Wendell Carter Jr.":"C","Daniel Gafford":"C",
+  "Ivica Zubac":"C","Mark Williams":"C","Alex Sarr":"C","Onyeka Okongwu":"C",
+  "Maxime Raynaud":"C","Jusuf Nurkić":"C","Quinten Post":"C","Isaiah Stewart":"C",
+  "Zion Williamson":"C","Nikola Vučević":"C","Brook Lopez":"C"
+};
+
+// Build NBA DFS pool from RAW with salaries based on FPTS tiers
+function buildNbaDfsPool() {
+  return RAW.map(r => {
+    const name = r[0], team = r[1], mins = r[2], pts = r[3], reb = r[4],
+          ast = r[5], fpts = r[10], fpm = r[11];
+    const pos = NBA_POS_MAP[name] || (reb >= 8 ? 'C' : ast >= 5 ? 'PG' : pts >= 22 ? 'SF' : 'SF');
+    // Salary derived from FPTS tier (DK range ~$3,000–$11,500)
+    const salary = Math.max(3000, Math.min(11500, Math.round((fpts / 65) * 11500 / 100) * 100));
+    const ptsDollar = parseFloat((fpts / (salary / 1000)).toFixed(2));
+    return [pos, name, team, salary, fpts, ptsDollar, mins, pts, reb, ast];
+    // 0=pos,1=name,2=team,3=salary,4=fpts,5=pts$,6=mins,7=pts,8=reb,9=ast
+  }).filter(p => p[4] >= 10); // only meaningful projection players
+}
+
+const NBA_DFS_POOL = buildNbaDfsPool();
+
+let nbaDfsPosFilter = 'ALL';
+let nbaDfsSortColV = 4, nbaDfsSortAscV = false;
+let nbaDfsFiltered = [...NBA_DFS_POOL];
+let nbaDfsLineup = new Array(8).fill(null);
+
+function nbaDfsFilter() {
+  const q = document.getElementById('nbaDfsSearch').value.toLowerCase();
+  nbaDfsFiltered = NBA_DFS_POOL.filter(p =>
+    (nbaDfsPosFilter === 'ALL' || p[0] === nbaDfsPosFilter) &&
+    (p[1].toLowerCase().includes(q) || p[2].toLowerCase().includes(q))
+  );
+  nbaDfsRenderPool();
+}
+
+function nbaDfsSetPos(pos, btn) {
+  nbaDfsPosFilter = pos;
+  document.querySelectorAll('#panel-nbadfs .pos-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  nbaDfsFilter();
+}
+
+function nbaDfsSortPool(col) {
+  if (nbaDfsSortColV === col) nbaDfsSortAscV = !nbaDfsSortAscV;
+  else { nbaDfsSortColV = col; nbaDfsSortAscV = col <= 1; }
+  nbaDfsRenderPool();
+}
+
+function nbaDfsRenderPool() {
+  // col display: 0=add,1=name,2=pos,3=team,4=salary,5=fpts,6=pts$,7=min,8=pts,9=reb,10=ast
+  // data:        -     1     0    2     3       4      5     6    7    8    9
+  const dataMap = [null,1,0,2,3,4,5,6,7,8,9];
+  const dc = dataMap[nbaDfsSortColV] !== undefined ? dataMap[nbaDfsSortColV] : 4;
+
+  const sorted = [...nbaDfsFiltered].sort((a,b) => {
+    const av = a[dc], bv = b[dc];
+    if (typeof av === 'string') return nbaDfsSortAscV ? av.localeCompare(bv) : bv.localeCompare(av);
+    return nbaDfsSortAscV ? av - bv : bv - av;
+  });
+
+  const inLineup = new Set(nbaDfsLineup.filter(Boolean).map(p => p[1]));
+  const tbody = document.getElementById('nbaDfsPoolBody');
+  tbody.innerHTML = '';
+
+  sorted.forEach(p => {
+    const inL = inLineup.has(p[1]);
+    const tr = document.createElement('tr');
+    if (inL) tr.classList.add('in-lineup');
+    tr.onclick = () => nbaDfsTogglePlayer(p);
+    tr.innerHTML = `
+      <td><button class="pool-add-btn ${inL ? 'added' : ''}">${inL ? '✓' : '+'}</button></td>
+      <td style="color:var(--white);font-weight:400;min-width:150px">${p[1]}</td>
+      <td style="color:var(--gold);font-size:0.72rem;font-weight:600">${p[0]}</td>
+      <td>${p[2]}</td>
+      <td>$${p[3].toLocaleString()}</td>
+      <td style="color:var(--white);font-weight:500">${p[4].toFixed(1)}</td>
+      <td style="color:var(--gold-light)">${p[5].toFixed(2)}</td>
+      <td style="color:var(--muted)">${p[6]}</td>
+      <td style="color:var(--muted)">${p[7].toFixed(1)}</td>
+      <td style="color:var(--muted)">${p[8].toFixed(1)}</td>
+      <td style="color:var(--muted)">${p[9].toFixed(1)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function nbaDfsTogglePlayer(player) {
+  const existIdx = nbaDfsLineup.findIndex(p => p && p[1] === player[1]);
+  if (existIdx >= 0) {
+    nbaDfsLineup[existIdx] = null;
+    nbaDfsRenderLineup(); nbaDfsRenderPool(); return;
+  }
+
+  const pos = player[0];
+  let placed = false;
+
+  // Try exact slots first
+  for (let i = 0; i < 5; i++) {
+    if (NBA_DFS_SLOTS[i].pos === pos && !nbaDfsLineup[i]) {
+      nbaDfsLineup[i] = player; placed = true; break;
+    }
+  }
+
+  // G slot (idx 5): PG or SG
+  if (!placed && (pos === 'PG' || pos === 'SG') && !nbaDfsLineup[5]) {
+    nbaDfsLineup[5] = player; placed = true;
+  }
+
+  // F slot (idx 6): SF or PF
+  if (!placed && (pos === 'SF' || pos === 'PF') && !nbaDfsLineup[6]) {
+    nbaDfsLineup[6] = player; placed = true;
+  }
+
+  // UTIL slot (idx 7): any
+  if (!placed && !nbaDfsLineup[7]) {
+    nbaDfsLineup[7] = player; placed = true;
+  }
+
+  nbaDfsRenderLineup(); nbaDfsRenderPool();
+}
+
+function nbaDfsRenderLineup() {
+  const container = document.getElementById('nbaLineupSlots');
+  container.innerHTML = '';
+  let totalSalary = 0, totalProj = 0, filled = 0;
+
+  NBA_DFS_SLOTS.forEach((slot, i) => {
+    const player = nbaDfsLineup[i];
+    const div = document.createElement('div');
+    div.className = 'lineup-slot' + (player ? ' filled' : '');
+
+    if (player) {
+      totalSalary += player[3];
+      totalProj += player[4];
+      filled++;
+      div.innerHTML = `
+        <span class="slot-pos">${slot.label}</span>
+        <span class="slot-player">${player[1]}<br><span style="font-size:0.72rem;color:var(--muted)">${player[0]} · ${player[2]}</span></span>
+        <span class="slot-proj">${player[4].toFixed(1)}</span>
+        <span class="slot-salary">$${player[3].toLocaleString()}</span>
+        <button class="slot-remove" onclick="event.stopPropagation();nbaDfsRemoveSlot(${i})">✕</button>
+      `;
+    } else {
+      div.innerHTML = `
+        <span class="slot-pos">${slot.label}</span>
+        <span class="slot-empty">Empty — click a player to add</span>
+      `;
+    }
+    container.appendChild(div);
+  });
+
+  const pct = Math.min((totalSalary / 50000) * 100, 100);
+  const fill = document.getElementById('nbaSalaryFill');
+  fill.style.width = pct + '%';
+  fill.className = 'salary-fill' + (totalSalary > 50000 ? ' over' : '');
+  document.getElementById('nbaSalaryUsed').textContent = '$' + totalSalary.toLocaleString();
+  document.getElementById('nbaSalaryUsed').style.color = totalSalary > 50000 ? '#c0392b' : 'var(--white)';
+  document.getElementById('nbaLineupTotal').textContent = totalProj.toFixed(2);
+  document.getElementById('nbaLineupCount').textContent = `${filled} / 8`;
+}
+
+function nbaDfsRemoveSlot(i) {
+  nbaDfsLineup[i] = null;
+  nbaDfsRenderLineup(); nbaDfsRenderPool();
+}
+
+function nbaDfsClearLineup() {
+  nbaDfsLineup = new Array(8).fill(null);
+  nbaDfsRenderLineup(); nbaDfsRenderPool();
+}
+
+function nbaDfsAutoOptimize() {
+  nbaDfsLineup = new Array(8).fill(null);
+  let remaining = 50000;
+  const used = new Set();
+
+  NBA_DFS_SLOTS.forEach((slot, slotIdx) => {
+    const slotsLeft = 8 - slotIdx;
+    const eligible = NBA_DFS_POOL.filter(p => {
+      if (used.has(p[1])) return false;
+      if (slot.pos === 'G') return p[0] === 'PG' || p[0] === 'SG';
+      if (slot.pos === 'F') return p[0] === 'SF' || p[0] === 'PF';
+      if (slot.pos === 'UTIL') return true;
+      return p[0] === slot.pos;
+    }).sort((a,b) => b[4] - a[4]);
+
+    let picked = null;
+    for (const p of eligible) {
+      if (p[3] <= remaining - (slotsLeft - 1) * 3000) {
+        picked = p; break;
+      }
+    }
+    if (!picked && eligible.length) {
+      picked = [...eligible].sort((a,b) => a[3]-b[3])[0];
+    }
+    if (picked) {
+      nbaDfsLineup[slotIdx] = picked;
+      remaining -= picked[3];
+      used.add(picked[1]);
+    }
+  });
+
+  nbaDfsRenderLineup(); nbaDfsRenderPool();
+}
+
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('hamburgerBtn');
+  menu.classList.toggle('open');
+  btn.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+}
+
 </script>
 </body>
 </html>
