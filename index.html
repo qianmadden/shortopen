@@ -538,30 +538,109 @@
     .subscribe-form { flex-direction: column; }
     .subscribe-form input { border-right: 1px solid var(--border); border-bottom: none; }
   }
+
+  /* HAMBURGER MENU */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: transparent;
+    border: none;
+    z-index: 200;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    transition: all 0.25s ease;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10,10,10,0.98);
+    backdrop-filter: blur(16px);
+    z-index: 150;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 8vw, 2.4rem);
+    font-weight: 900;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    width: 80%;
+    text-align: center;
+    transition: color 0.2s;
+  }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu a:hover, .mobile-menu a.active { color: var(--gold); }
+  .mobile-menu-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 8px;
+  }
+  @media (max-width: 900px) {
+    .hamburger { display: flex; }
+    .nav-links { display: none !important; }
+  }
+
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <a href="index.html" class="nav-logo">short<span>open</span></a>
+  <a href="#" class="nav-logo">short<span>open</span></a>
   <ul class="nav-links">
-    <li><a href="analysis.html">Analysis</a></li>
-    <li><a href="projections-2.html">Projections</a></li>
     <li><a href="about.html">About</a></li>
+    <li><a href="analysis.html">Analysis</a></li>
+    <li><a href="projections.html">Projections</a></li>
     <li><a href="subscribe.html">Subscribe</a></li>
+<button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
   </ul>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+  <a href="index.html" onclick="toggleMobileMenu()">Home</a>
+  <a href="analysis.html" onclick="toggleMobileMenu()">Analysis</a>
+  <a href="projections.html" onclick="toggleMobileMenu()">Projections</a>
+  <a href="about.html" onclick="toggleMobileMenu()">About</a>
+  <a href="subscribe.html" onclick="toggleMobileMenu()">Subscribe</a>
+</div>
+
 
 <!-- HERO -->
 <div class="hero">
   <div class="hero-bg-text">SHORT OPEN</div>
   <p class="hero-eyebrow">Independent Sports Betting Analysis</p>
   <h1 class="hero-headline">The edge is in<br><em>the research.</em></h1>
-  <p class="hero-sub">Data-driven picks, player tendency breakdowns, and market analysis — delivered to subscribers who take the game seriously.</p>
+  <p class="hero-sub">Data-driven picks, player tendency breakdowns, and market analysis — know the open, beat the market.</p>
   <div class="hero-cta">
-    <a href="#subscribe" class="btn-primary">Get the Newsletter</a>
-    <a href="#analysis" class="btn-ghost">Read Analysis</a>
+    <a href="projections.html" class="btn-primary">View Free Projections</a>
+    <a href="analysis.html" class="btn-ghost">Read Analysis</a>
   </div>
 </div>
 
@@ -586,12 +665,12 @@
 <!-- ABOUT -->
 <section id="about">
   <p class="section-label">Who We Are</p>
-  <h2 class="section-title">Built by a bettor.<br>Written for serious players.</h2>
+  <h2 class="section-title">Built by a bettor.<br>Open to everyone.</h2>
   <div class="about-grid">
     <div class="about-text">
-      <p>Short Open started as a simple idea: <strong>most sports betting content is noise.</strong> Picks without process. Predictions without accountability. Numbers recycled from the same public models everyone else is already using.</p>
-      <p>We do it differently. Every piece of analysis starts with the raw data — player tendencies, line movement, situational splits, and market behavior. But data only tells part of the story. <strong>We also trust instinct</strong> — the kind the industry rarely accounts for. Pattern recognition built from years of watching games, not just charting them.</p>
-      <p>Our subscribers range from casual bettors looking for a sharper edge to experienced players who want a second set of eyes on their research. What they all have in common is that they <strong>take the process seriously.</strong></p>
+      <p>Short Open started as a simple idea: <strong>most sports betting content is noise.</strong> Everyone has a pick. <strong>Nobody shows their work.</strong> Numbers recycled from the same public models everyone else is already using.</p>
+      <p>We do it differently. <strong>Data is a book. Instinct tells the story.</strong> Every piece of analysis starts with the raw data — player tendencies, line movement, situational splits, and market behavior.</p>
+      <p>A million dollar bankroll can always use a second set of eyes. That's exactly what Short Open is — <strong>no experience required, no bankroll minimum.</strong></p>
     </div>
     <div class="about-stats">
       <div class="stat-box">
@@ -617,8 +696,8 @@
 <!-- ANALYSIS POSTS -->
 <div class="posts-section" id="analysis">
   <div class="posts-inner">
-    <p class="section-label">Latest Analysis</p>
-    <h2 class="section-title">Recent Breakdowns</h2>
+    <p class="section-label">The Latest</p>
+    <h2 class="section-title">Recent Announcements</h2>
     <div class="posts-grid">
 
       <div class="post-card" style="border-color: #2a2a2a; position:relative; overflow:hidden;">
@@ -634,31 +713,28 @@
 
       <div class="post-card">
         <p class="post-tag">NBA · Player Props</p>
-        <h3 class="post-title">Why the Market Is Consistently Wrong on Back-to-Back Nights</h3>
-        <p class="post-excerpt">Books are slow to adjust usage rates on the second night of a back-to-back. Here's the pattern we've been exploiting and why it keeps showing up.</p>
+        <h3 class="post-title">NBA Playoffs — The Market Will Be Late. You Don't Have To Be.</h3>
+        <p class="post-excerpt">With playoffs around the corner, players are being guarded differently than they were in January. The books are slow to adjust. Player prop breakdowns dropping soon.</p>
         <div class="post-meta">
           <span>March 2026</span>
-          <span>6 min read</span>
         </div>
       </div>
 
       <div class="post-card">
-        <p class="post-tag">NFL · Line Movement</p>
-        <h3 class="post-title">Following Sharp Money vs. Public Money: A Practical Guide</h3>
-        <p class="post-excerpt">Line movement tells a story if you know how to read it. A breakdown of the signals that matter and the ones that are just noise.</p>
+        <p class="post-tag">NFL · Draft</p>
+        <h3 class="post-title">NFL Draft Breakdown — Coming Soon</h3>
+        <p class="post-excerpt">The 2026 draft class is loaded and the implications for every roster go far beyond day one. We're breaking down which teams stand to gain the most, which ones are filling holes versus building for the future, and what it all means for next season's betting markets.</p>
         <div class="post-meta">
-          <span>February 2026</span>
-          <span>8 min read</span>
+          <span>April 2026</span>
         </div>
       </div>
 
       <div class="post-card">
-        <p class="post-tag">NBA · DFS</p>
-        <h3 class="post-title">Stacking Strategy for Large-Field GPPs: Building for Ceiling, Not Floor</h3>
-        <p class="post-excerpt">Cash games and tournaments require completely different thinking. Here's how we approach lineup construction when the goal is first place, not survival.</p>
+        <p class="post-tag">PGA · Projections</p>
+        <h3 class="post-title">PGA Projections — Coming 2027</h3>
+        <p class="post-excerpt">We've recently started building out our PGA projection model — course fit analysis, strokes gained breakdowns, and field-by-field value plays. Full launch targeted for 2027.</p>
         <div class="post-meta">
-          <span>January 2026</span>
-          <span>7 min read</span>
+          <span>March 2026</span>
         </div>
       </div>
 
@@ -668,9 +744,9 @@
 
 <!-- SUBSCRIBE -->
 <div class="subscribe-section" id="subscribe">
-  <p class="section-label">Join the List</p>
-  <h2 class="section-title" style="font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(28px,4vw,48px); color:var(--white); margin-bottom:20px;">Sharp analysis.<br>Straight to your inbox.</h2>
-  <p class="subscribe-body">Weekly breakdowns, model updates, and the picks worth paying attention to. No spam. No recycled takes. Just the work.</p>
+  <p class="section-label">Weekly Drop</p>
+  <h2 class="section-title" style="font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(28px,4vw,48px); color:var(--white); margin-bottom:20px;">The open line.<br>Straight to your inbox.</h2>
+  <p class="subscribe-body">Weekly breakdowns, model updates, and market instincts. No spam. No recycled takes. <em>It all starts at the open.</em></p>
   <form class="subscribe-form" onsubmit="handleSubmit(event)">
     <input type="email" placeholder="Your email address" required/>
     <button type="submit">Subscribe</button>
@@ -713,6 +789,15 @@
     el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     observer.observe(el);
   });
+
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('hamburgerBtn');
+  menu.classList.toggle('open');
+  btn.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+}
+
 </script>
 </body>
 </html>
