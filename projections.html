@@ -1043,7 +1043,7 @@
 <!-- SPORT TABS -->
 <div class="sport-tabs">
   <button class="sport-tab active" onclick="switchSport('nba', this)">NBA <span class="tab-badge">Free</span></button>
-  <button class="sport-tab" onclick="switchSport('mlb', this)">MLB <span class="tab-badge">2026</span></button>
+  <button class="sport-tab" onclick="switchSport('mlb', this)">MLB </button>
   <button class="sport-tab" onclick="switchSport('dfs', this)">MLB DFS <span class="tab-badge">Optimizer</span></button>
   <button class="sport-tab" onclick="switchSport('nbadfs', this)">NBA DFS <span class="tab-badge">Optimizer</span></button>
 </div>
@@ -1060,10 +1060,11 @@
     <option value="">All Teams</option>
   </select>
   <select class="filter-select" id="minFilter" onchange="filterTable()">
-    <option value="0">All Minutes</option>
-    <option value="500">500+ MIN</option>
-    <option value="1000">1000+ MIN</option>
-    <option value="1500">1500+ MIN</option>
+    <option value="0">All Players</option>
+    <option value="30">30+ FPTS</option>
+    <option value="35">35+ FPTS</option>
+    <option value="40">40+ FPTS</option>
+    <option value="45">45+ FPTS</option>
   </select>
   <span class="results-count" id="resultsCount"><span id="countNum">—</span> players</span>
 </div>
@@ -1075,16 +1076,18 @@
         <th onclick="sortTable(0)" data-col="0"><span class="sort-arrow">↕</span> #</th>
         <th onclick="sortTable(1)" data-col="1">Player <span class="sort-arrow">↕</span></th>
         <th onclick="sortTable(2)" data-col="2">Team <span class="sort-arrow">↕</span></th>
-        <th onclick="sortTable(3)" data-col="3">MIN <span class="sort-arrow">↕</span></th>
-        <th onclick="sortTable(4)" data-col="4">FPTS <span class="sort-arrow">↕</span></th>
-        <th onclick="sortTable(5)" data-col="5">FP/M <span class="sort-arrow">↕</span></th>
+        <th onclick="sortTable(3)" data-col="3">FPTS <span class="sort-arrow">↕</span></th>
+        <th onclick="sortTable(4)" data-col="4">FP/M <span class="sort-arrow">↕</span></th>
+        <th onclick="sortTable(5)" data-col="5">FPTS/100 <span class="sort-arrow">↕</span></th>
         <th onclick="sortTable(6)" data-col="6">PTS <span class="sort-arrow">↕</span></th>
         <th onclick="sortTable(7)" data-col="7">REB <span class="sort-arrow">↕</span></th>
         <th onclick="sortTable(8)" data-col="8">AST <span class="sort-arrow">↕</span></th>
         <th onclick="sortTable(9)" data-col="9">STL <span class="sort-arrow">↕</span></th>
         <th onclick="sortTable(10)" data-col="10">BLK <span class="sort-arrow">↕</span></th>
-        <th onclick="sortTable(11)" data-col="11">USG% <span class="sort-arrow">↕</span></th>
-        <th onclick="sortTable(12)" data-col="12">TS% <span class="sort-arrow">↕</span></th>
+        <th onclick="sortTable(11)" data-col="11">TOV <span class="sort-arrow">↕</span></th>
+        <th onclick="sortTable(12)" data-col="12">USG% <span class="sort-arrow">↕</span></th>
+        <th onclick="sortTable(13)" data-col="13">TS% <span class="sort-arrow">↕</span></th>
+        <th onclick="sortTable(14)" data-col="14">eFG% <span class="sort-arrow">↕</span></th>
       </tr>
     </thead>
     <tbody id="tableBody"></tbody>
@@ -1098,22 +1101,7 @@
 <!-- MLB PANEL -->
 <div class="sport-panel" id="panel-mlb">
 
-  <div class="mlb-lock-wrap">
 
-    <!-- LOCK OVERLAY -->
-    <div class="mlb-lock-overlay">
-      <div class="lock-icon">🔒</div>
-      <div class="lock-title">MLB Projections<br><em>Coming Soon</em></div>
-      <p class="lock-sub">We're fine tuning our full MLB model for the 2026 season — pitcher-batter splits, park factors, platoon data, and DFS optimization. Subscribe to get notified the moment it drops.</p>
-      <div class="lock-badge">Releasing early season</div>
-    </div>
-
-    <!-- BLURRED CONTENT -->
-    <div class="mlb-lock-blur">
-
-  <div class="coming-soon-note">
-    <span>2026 Season</span> Sample projections — real data coming ahead of Opening Day.
-  </div>
 
   <!-- MLB Sub-tabs -->
   <div class="mlb-subtabs">
@@ -1131,16 +1119,6 @@
       <select class="filter-select" id="mlbHitTeam" onchange="filterMLBHitters()">
         <option value="">All Teams</option>
       </select>
-      <select class="filter-select" id="mlbHitPos" onchange="filterMLBHitters()">
-        <option value="">All Positions</option>
-        <option value="C">C</option>
-        <option value="1B">1B</option>
-        <option value="2B">2B</option>
-        <option value="3B">3B</option>
-        <option value="SS">SS</option>
-        <option value="OF">OF</option>
-        <option value="DH">DH</option>
-      </select>
       <span class="results-count"><span id="mlbHitCount">—</span> hitters</span>
     </div>
     <div class="table-wrap">
@@ -1150,16 +1128,20 @@
             <th onclick="sortMLBHitters(0)"><span class="sort-arrow">↕</span> #</th>
             <th onclick="sortMLBHitters(1)">Player <span class="sort-arrow">↕</span></th>
             <th onclick="sortMLBHitters(2)">Team <span class="sort-arrow">↕</span></th>
-            <th onclick="sortMLBHitters(3)">POS <span class="sort-arrow">↕</span></th>
-            <th onclick="sortMLBHitters(4)">FPTS <span class="sort-arrow">↕</span></th>
+            <th onclick="sortMLBHitters(3)">WAR <span class="sort-arrow">↕</span></th>
+            <th onclick="sortMLBHitters(4)">wRC+ <span class="sort-arrow">↕</span></th>
             <th onclick="sortMLBHitters(5)">AVG <span class="sort-arrow">↕</span></th>
             <th onclick="sortMLBHitters(6)">OBP <span class="sort-arrow">↕</span></th>
             <th onclick="sortMLBHitters(7)">SLG <span class="sort-arrow">↕</span></th>
-            <th onclick="sortMLBHitters(8)">HR <span class="sort-arrow">↕</span></th>
-            <th onclick="sortMLBHitters(9)">RBI <span class="sort-arrow">↕</span></th>
-            <th onclick="sortMLBHitters(10)">R <span class="sort-arrow">↕</span></th>
-            <th onclick="sortMLBHitters(11)">SB <span class="sort-arrow">↕</span></th>
-            <th onclick="sortMLBHitters(12)">K% <span class="sort-arrow">↕</span></th>
+            <th onclick="sortMLBHitters(8)">wOBA <span class="sort-arrow">↕</span></th>
+            <th onclick="sortMLBHitters(9)">xwOBA <span class="sort-arrow">↕</span></th>
+            <th onclick="sortMLBHitters(10)">HR <span class="sort-arrow">↕</span></th>
+            <th onclick="sortMLBHitters(11)">R <span class="sort-arrow">↕</span></th>
+            <th onclick="sortMLBHitters(12)">RBI <span class="sort-arrow">↕</span></th>
+            <th onclick="sortMLBHitters(13)">SB <span class="sort-arrow">↕</span></th>
+            <th onclick="sortMLBHitters(14)">BB% <span class="sort-arrow">↕</span></th>
+            <th onclick="sortMLBHitters(15)">K% <span class="sort-arrow">↕</span></th>
+            <th onclick="sortMLBHitters(16)">ISO <span class="sort-arrow">↕</span></th>
           </tr>
         </thead>
         <tbody id="mlbHitBody"></tbody>
@@ -1210,25 +1192,11 @@
     <div class="pagination" id="mlbPitPagination"></div>
   </div>
 
-  </div><!-- end mlb-lock-blur -->
-  </div><!-- end mlb-lock-wrap -->
 
 </div><!-- end panel-mlb -->
 
 <!-- MLB DFS OPTIMIZER PANEL -->
 <div class="sport-panel" id="panel-dfs">
-<div class="mlb-lock-wrap">
-
-  <!-- LOCK OVERLAY -->
-  <div class="mlb-lock-overlay">
-    <div class="lock-icon">🔒</div>
-    <div class="lock-title">MLB DFS Optimizer<br><em>Coming Soon</em></div>
-    <p class="lock-sub">We're fine tuning our full MLB model for the 2026 season — pitcher-batter splits, park factors, platoon data, and DFS optimization. Subscribe to get notified the moment it drops.</p>
-    <div class="lock-badge">Releasing early season</div>
-  </div>
-
-  <!-- BLURRED CONTENT -->
-  <div class="mlb-lock-blur">
 <div class="dfs-wrap">
 
   <div class="dfs-header">
@@ -1311,8 +1279,6 @@
     </div>
   </div>
 </div>
-  </div><!-- end mlb-lock-blur -->
-  </div><!-- end mlb-lock-wrap -->
 </div><!-- end panel-dfs -->
 
 <!-- NBA DFS OPTIMIZER PANEL -->
@@ -1325,13 +1291,10 @@
       <p>$50,000 salary cap · 8-player lineup (PG, SG, SF, PF, C, G, F, UTIL) · Click a player to add, click again to remove</p>
     </div>
     <div class="dfs-header-right">
-      <div style="display:flex;gap:8px;align-items:center">
-        <button class="csv-upload-btn" onclick="nbaSheetsLoaded=false;nbaDfsFetchSheets()" style="border-color:var(--border2);color:var(--muted)">↻ Refresh</button>
-        <label class="csv-upload-btn" for="nbaCsvUpload">
-          ↑ Upload CSV
-          <input type="file" id="nbaCsvUpload" accept=".csv" style="display:none" onchange="nbaDfsLoadCSV(this)"/>
-        </label>
-      </div>
+      <label class="csv-upload-btn" for="nbaCsvUpload">
+        ↑ Upload CSV
+        <input type="file" id="nbaCsvUpload" accept=".csv" style="display:none" onchange="nbaDfsLoadCSV(this)"/>
+      </label>
       <div id="nbaCsvStatus" class="csv-status"></div>
     </div>
   </div>
@@ -1412,202 +1375,153 @@
 
 <script>
 const RAW = [
-["Dyson Daniels","ATL",2032,12.4,7.1,6.6,2,0.5,2,16,35.3,0.98],
-["Nickeil Alexander-Walker","ATL",2021,21.6,3.8,4.1,1.3,0.6,2.3,23.8,36.8,1.02],
-["Jalen Johnson","ATL",2005,23.4,10.7,8.1,1.4,0.5,3.5,27.1,51.8,1.44],
-["Onyeka Okongwu","ATL",1819,18.4,9,3.8,1.3,1.2,2.1,20.1,40.4,1.12],
-["Zaccharie Risacher","ATL",1207,15.1,5.6,1.9,1.4,0.8,1.4,17.4,29.8,0.83],
-["Vít Krejčí","ATL",1028,14.5,3.4,2.4,1.3,0.5,1.1,14.5,27.1,0.75],
-["Mouhamed Gueye","ATL",958,10.6,8.4,2.1,1.9,1.2,1.1,13.1,30.3,0.84],
-["Luke Kennard","ATL",943,13.9,3.8,3.7,1.3,0.2,1.2,12.8,27.9,0.77],
-["CJ McCollum","ATL",682,23.5,4,4.8,1.1,0.7,2.4,26.4,39.6,1.1],
-["Corey Kispert","ATL",497,18,4.5,3,0.4,0.3,1.6,18.9,30.2,0.84],
-["Kristaps Porziņģis","ATL",413,25.4,7.6,4,0.8,1.9,1.4,26.5,46.9,1.3],
-["Trae Young","ATL",280,24.8,1.9,11.4,1.2,0.3,3.3,27.2,46.7,1.3],
-["Derrick White","BOS",2123,18.1,4.7,6,1.2,1.5,1.8,22.9,39,1.08],
-["Payton Pritchard","BOS",2047,18.7,4.6,5.9,0.8,0.1,1.5,21.2,35.9,1],
-["Jaylen Brown","BOS",1955,30.1,7.6,5.4,1,0.4,3.8,35.9,49.7,1.38],
-["Neemias Queta","BOS",1498,14.3,12.1,2.1,1.2,1.9,1.6,15.3,38,1.06],
-["Sam Hauser","BOS",1493,13.6,5.7,2.1,0.8,0.5,0.7,15,28,0.78],
-["Anfernee Simons","BOS",1202,20.8,3.5,3.5,0.8,0.2,1.7,23.3,33.5,0.93],
-["Jordan Walsh","BOS",984,10.9,8.6,1.5,1.5,0.9,1.2,11.8,28.8,0.8],
-["Jayson Tatum","BOS",54,23.3,10,6,0.7,0,2,29.9,46.8,1.3],
-["Nic Claxton","BKN",1679,15.3,8.9,4.9,0.9,1.5,1.8,17.8,37.8,1.05],
-["Michael Porter Jr.","BKN",1666,26.8,7.9,3.4,1.2,0.3,2.6,29.8,45.2,1.26],
-["Noah Clowney","BKN",1632,16.5,5.3,2.2,1,0.9,2.1,20.4,30.5,0.85],
-["Terance Mann","BKN",1363,10.9,4.6,4.7,1,0.4,1.6,13.5,26.2,0.73],
-["Egor Dëmin","BKN",1308,14.8,4.5,4.8,1.2,0.5,2.4,18.6,31.4,0.87],
-["Day'Ron Sharpe","BKN",1160,16.8,12.8,4.5,2.1,0.8,3.3,19.5,43.8,1.22],
-["Cam Thomas","BKN",582,23.1,2.7,4.6,0.2,0.1,3,30,33.8,0.94],
-["Kon Knueppel","CHA",2039,21.7,6,3.9,0.8,0.3,2.4,22.3,38.1,1.06],
-["Miles Bridges","CHA",1904,19.8,6.7,3.8,0.7,0.5,1.6,23.1,36.7,1.02],
-["LaMelo Ball","CHA",1526,25,6.3,9.4,1.5,0.3,3.6,31.1,50.9,1.41],
-["Brandon Miller","CHA",1439,24.8,6.1,4.1,1.3,1,3.4,29.2,43.1,1.2],
-["Ryan Kalkbrenner","CHA",1180,12.8,9.5,1.3,0.9,2.4,1.5,11.6,32.4,0.9],
-["Collin Sexton","CHA",938,22.9,3.1,6,1.4,0.3,3.4,25.5,38.4,1.07],
-["Donovan Mitchell","CLE",1905,30.6,4.9,6.3,1.7,0.3,3.2,32.3,50.2,1.4],
-["Jaylon Tyson","CLE",1653,17.6,6.8,2.9,1.1,0.5,1.9,18.7,34,0.95],
-["Evan Mobley","CLE",1625,19.6,9.6,4.1,0.9,2.1,2.2,22.3,43.3,1.2],
-["Jarrett Allen","CLE",1404,20,11.1,2.5,1.3,1.1,1.8,19.6,41.5,1.15],
-["De'Andre Hunter","CLE",1125,19.2,5.8,2.8,1,0.2,2.3,22.3,33.2,0.92],
-["Darius Garland","CLE",792,21.2,2.9,8.2,1,0.1,3.3,25.5,38.9,1.08],
-["James Harden","CLE",364,21,5.4,8.5,0.6,0.6,3.5,24,42.8,1.19],
-["Naji Marshall","DAL",1800,18.4,5.8,3.7,1.3,0.1,1.8,19.6,33.6,0.93],
-["Cooper Flagg","DAL",1755,21.5,7,4.5,1.3,0.9,2.4,25.8,40.9,1.14],
-["Max Christie","DAL",1750,15.6,4.2,2.6,0.6,0.4,1.5,17,27.5,0.76],
-["P.J. Washington","DAL",1421,16.3,8,2.3,1.1,1.4,2.2,20.3,34.3,0.95],
-["Klay Thompson","DAL",1248,19.2,3.8,2.3,0.8,0.5,1.6,21.9,31.5,0.87],
-["Brandon Williams","DAL",1224,21.2,4.7,6.1,1.5,0.4,3.1,25.2,39,1.08],
-["Daniel Gafford","DAL",987,14.4,11.1,1.7,1.3,2.2,2.1,14.9,36.8,1.02],
-["Anthony Davis","DAL",626,23.4,12.7,3.2,1.3,1.9,2.4,27.9,49.6,1.38],
-["Jamal Murray","DEN",2098,26.2,4.5,7.4,1,0.4,2.4,28.2,46,1.28],
-["Tim Hardaway Jr.","DEN",1752,18.4,3.4,1.7,0.7,0.2,0.7,18.1,28.4,0.79],
-["Nikola Jokić","DEN",1699,30,13,10.7,1.4,0.8,3.9,30.3,65.8,1.83],
-["Peyton Watson","DEN",1502,17.5,5.8,2.3,1.2,1.4,2.1,20.4,33.2,0.92],
-["Aaron Gordon","DEN",692,22.5,8.1,3.3,0.9,0.2,1.3,23.2,40.2,1.12],
-["Cade Cunningham","DET",1969,25.8,5.8,10.1,1.5,0.9,3.9,30.6,52.2,1.45],
-["Duncan Robinson","DET",1705,15.3,3.4,2.5,0.8,0.4,0.9,15.4,27.1,0.75],
-["Jalen Duren","DET",1479,23.8,13.8,2.2,1.1,1.1,2.3,23.1,47.7,1.32],
-["Ausar Thompson","DET",1460,14.3,8.2,4.1,2.7,1.2,2,17.7,37.6,1.04],
-["Tobias Harris","DET",1338,16.8,6.6,2.7,1.2,0.4,1.3,18.3,32.6,0.91],
-["Isaiah Stewart","DET",1210,15.6,7.9,1.8,0.4,2.6,1.8,16.7,33.8,0.94],
-["Ronald Holland II","DET",1197,14.7,7.8,2.3,2.2,0.6,2.3,18.8,33,0.92],
-["Brandin Podziemski","GSW",1785,16.4,6.7,4.8,1.4,0.2,2,19.4,35.5,0.99],
-["Moses Moody","GSW",1506,16.9,4.7,2.3,1.3,0.8,1.3,17.7,31.4,0.87],
-["Draymond Green","GSW",1434,11.3,7.4,7.1,1.1,0.8,3.5,16.9,34.1,0.95],
-["Stephen Curry","GSW",1222,31.3,4.1,5.6,1.3,0.5,3.3,31.7,49.2,1.37],
-["Jimmy Butler III","GSW",1182,23.1,6.4,5.6,1.7,0.2,1.8,23.2,43,1.2],
-["Quinten Post","GSW",1073,15.8,8.5,2.9,0.9,1,1.7,18.7,35,0.97],
-["Al Horford","GSW",894,13.7,8.3,4.3,1.2,1.9,1.6,16.3,37.2,1.03],
-["Jonathan Kuminga","GSW",476,18.3,8.8,3.8,0.6,0.5,3.5,24.4,36.1,1],
-["Amen Thompson","HOU",2261,17.1,7.5,5.1,1.5,0.6,2.4,20.1,37.3,1.04],
-["Kevin Durant","HOU",2199,25.6,5.4,4.4,0.8,0.9,3.2,27,42,1.17],
-["Jabari Smith Jr.","HOU",2058,15.8,7.1,1.9,0.8,1,1.4,17.8,31.6,0.88],
-["Alperen Sengun","HOU",1884,21.9,9.7,6.6,1.4,1.1,3.6,27.3,47.3,1.31],
-["Reed Sheppard","HOU",1628,18.9,3.8,4.5,2,0.9,2.1,21.7,37,1.03],
-["Tari Eason","HOU",1081,15,8.6,2.3,1.7,0.8,2,18.4,34.4,0.95],
-["Pascal Siakam","IND",1844,25.7,7.2,4.2,1.2,0.4,2.3,29.5,44,1.22],
-["Andrew Nembhard","IND",1572,19.6,3.2,8.4,1.1,0.2,2.9,24.2,38.3,1.07],
-["Jarace Walker","IND",1568,16.1,7.2,3.4,1.2,0.5,2.6,20.7,33.4,0.93],
-["Jay Huff","IND",1325,16.2,6.8,2.3,1,3.4,1.5,18,37.4,1.04],
-["T.J. McConnell","IND",792,19.9,4.6,10,2.3,0.4,2.6,24.4,45,1.25],
-["Kris Dunn","LAC",1765,10.2,4.3,4.8,2,0.2,1.9,12.9,26.7,0.74],
-["Kawhi Leonard","LAC",1623,31,7.1,4.1,2.2,0.5,2.3,33.3,51.8,1.44],
-["James Harden","LAC",1559,25.8,4.9,8.3,1.3,0.4,3.7,30.6,47.4,1.32],
-["John Collins","LAC",1498,17.9,6.7,1.2,1.1,1,1.8,18.7,32.4,0.9],
-["Ivica Zubac","LAC",1328,16.8,12.8,2.6,0.4,1,2.2,18.7,38.4,1.07],
-["Luka Dončić","LAL",1846,33,7.9,8.5,1.5,0.5,4.1,36.9,59.6,1.66],
-["Jake LaRavia","LAL",1634,12.6,5.5,2.6,1.7,0.6,1.5,14.8,28,0.78],
-["Rui Hachimura","LAL",1517,14.3,4.2,1.1,0.7,0.4,0.9,15.1,24,0.67],
-["Deandre Ayton","LAL",1493,16.5,10.9,1.1,0.8,1.2,1.7,16.9,35,0.97],
-["LeBron James","LAL",1456,23.3,6.1,7.6,1.2,0.7,3.3,27.9,45.3,1.26],
-["Austin Reaves","LAL",1272,25.3,5.1,5.8,1.2,0.4,3.3,27.1,43.1,1.2],
-["Jaylen Wells","MEM",1654,17.1,4.5,2.3,1.2,0.2,1.5,19.5,29.3,0.81],
-["Cam Spencer","MEM",1457,17,4.1,8.3,1.1,0.2,2,17.3,37.7,1.05],
-["Jaren Jackson Jr.","MEM",1382,22.5,6.7,2.2,1.2,1.8,2.6,25.6,40,1.11],
-["Cedric Coward","MEM",1306,18.4,8.5,3.9,0.8,0.6,2.5,20.9,37.4,1.04],
-["Santi Aldama","MEM",1198,18.1,8.6,3.8,1.1,0.9,1.7,19.7,38.8,1.08],
-["Ja Morant","MEM",569,24.6,4.1,10.2,1.3,0.4,4.5,31.5,46.7,1.3],
-["Bam Adebayo","MIA",1795,21.6,11.2,3.3,1.2,0.8,1.9,24.6,44.7,1.24],
-["Andrew Wiggins","MIA",1765,18.5,5.9,3.2,1.3,1.2,1.9,20.2,36,1],
-["Jaime Jaquez Jr.","MIA",1720,19.2,6.6,5.8,1,0.4,2.7,22.2,37.9,1.05],
-["Davion Mitchell","MIA",1532,11.2,3.2,8.6,1.3,0.2,1.9,13.5,31,0.86],
-["Norman Powell","MIA",1470,27,4.4,3.1,1.4,0.3,2.4,27,41,1.14],
-["Kel'el Ware","MIA",1376,18.2,14.9,0.9,1.4,1.8,1.4,17.9,44.8,1.24],
-["Tyler Herro","MIA",612,25.9,5.4,4.4,0.9,0.4,2.2,26.4,42.3,1.17],
-["Ryan Rollins","MIL",1960,18.7,5.3,6.1,1.7,0.5,2.9,23.8,38.7,1.08],
-["Myles Turner","MIL",1622,15.9,7.1,2,0.9,2.1,1.5,18.6,34.3,0.95],
-["Kyle Kuzma","MIL",1537,17.8,6.4,3.5,0.8,0.5,2.1,21.6,33.4,0.93],
-["Bobby Portis","MIL",1464,20,9.5,2.3,0.8,0.3,1.5,22.6,38.2,1.06],
-["Kevin Porter Jr.","MIL",1171,18.8,5.6,7.9,2.4,0.5,3.2,24.2,42.6,1.18],
-["Giannis Antetokounmpo","MIL",955,34.3,12.3,6.9,1.2,0.9,4,35.9,62.3,1.73],
-["Julius Randle","MIN",2133,23.1,7.5,5.7,1.2,0.3,2.9,26.2,43.2,1.2],
-["Donte DiVincenzo","MIN",1988,14.7,5.1,4.9,1.6,0.5,1.7,16.6,33.5,0.93],
-["Jaden McDaniels","MIN",1986,16.7,4.9,3.2,1.2,1.1,2,18.2,32.2,0.89],
-["Rudy Gobert","MIN",1924,12.5,13.1,2,0.9,1.9,1.5,12.7,36.6,1.02],
-["Anthony Edwards","MIN",1920,30,5.2,3.7,1.4,0.8,2.8,31.3,47,1.31],
-["Naz Reid","MIN",1646,19.1,8.8,3.3,1.4,1.3,2.2,21.5,40.8,1.13],
-["Trey Murphy III","NOP",2019,22.3,5.7,3.9,1.6,0.3,1.8,22.9,39.8,1.11],
-["Saddiq Bey","NOP",1823,20.4,6.7,2.9,1.1,0.1,1,21.4,36.1,1],
-["Jeremiah Fears","NOP",1678,18.8,5.3,4.6,1.6,0.5,3.2,24.6,35.8,0.99],
-["Derik Queen","NOP",1649,16.9,10,5.6,1.4,1.3,3.3,21.8,41.6,1.15],
-["Zion Williamson","NOP",1447,26.2,7.2,4.1,1.2,0.7,2.6,26.4,43.8,1.22],
-["Mikal Bridges","NYK",2223,16.2,4.4,4.2,1.5,0.9,1.1,17.7,33.4,0.93],
-["Jalen Brunson","NYK",2126,27,3.6,6.7,0.7,0.1,2.4,30.1,43.5,1.21],
-["Karl-Anthony Towns","NYK",1939,23.1,13.7,3.3,1,0.7,2.9,25.5,48,1.33],
-["OG Anunoby","NYK",1727,17.9,5.8,2.4,1.9,0.8,2.1,20,34.1,0.95],
-["Josh Hart","NYK",1622,14.2,9.1,6.1,1.3,0.4,2.4,16.9,37.7,1.05],
-["Shai Gilgeous-Alexander","OKC",1809,34.1,4.8,7.1,1.5,0.8,2.3,32.8,55.1,1.53],
-["Cason Wallace","OKC",1719,11.6,4.1,3.5,2.7,0.4,1.4,14.6,28.5,0.79],
-["Chet Holmgren","OKC",1643,21.2,11.1,2.1,0.7,2.4,2,22.1,44.1,1.23],
-["Isaiah Joe","OKC",1256,18.1,4.4,2.4,1.2,0.3,1,18,31.6,0.88],
-["Ajay Mitchell","OKC",1158,19.6,4.7,5,1.9,0.4,2.1,22.1,37.3,1.04],
-["Jalen Williams","OKC",755,21.7,5.8,6.7,1.6,0.4,2.4,26,42.3,1.17],
-["Isaiah Hartenstein","OKC",914,14.5,13.1,5,1.4,1.1,2.7,16.3,41.9,1.16],
-["Desmond Bane","ORL",2151,21.5,4.4,4.4,1.1,0.5,2.2,23.2,36.7,1.02],
-["Paolo Banchero","ORL",1843,23,8.9,5.1,0.7,0.7,3,27.9,43.6,1.21],
-["Anthony Black","ORL",1841,17.9,4.5,4.5,1.7,0.8,2.4,22.2,35,0.97],
-["Wendell Carter Jr.","ORL",1764,14.1,9.2,2.5,1,0.8,1.5,15.6,32.8,0.91],
-["Jalen Suggs","ORL",1051,18.9,5.2,7.2,2.6,1.1,3.5,23.3,43.2,1.2],
-["Franz Wagner","ORL",891,24.1,6.5,4.1,1.2,0.4,1.9,25.8,41.4,1.15],
-["Tyrese Maxey","PHI",2334,27.3,3.9,6.3,1.9,0.8,2.3,29.4,47.3,1.31],
-["VJ Edgecombe","PHI",2003,15.7,5.7,4,1.5,0.5,1.9,19.5,33,0.92],
-["Quentin Grimes","PHI",1721,15.5,4.4,4.1,1.1,0.4,2.3,17.8,30.3,0.84],
-["Joel Embiid","PHI",1029,30.7,8.7,4.5,0.7,1.2,3.4,34.4,51.4,1.43],
-["Paul George","PHI",824,18.8,6.1,4.4,1.7,0.6,1.9,22.3,38.1,1.06],
-["Royce O'Neale","PHX",1871,12.1,6.1,3.4,1.4,0.4,1.8,14.4,29.3,0.81],
-["Collin Gillespie","PHX",1819,17,5.1,5.9,1.6,0.3,2.1,19.2,36.9,1.03],
-["Devin Booker","PHX",1601,26.8,4.2,6.6,1,0.3,3.6,30.6,43.7,1.21],
-["Dillon Brooks","PHX",1530,24.6,4.3,2.1,1.2,0.2,2.1,28.9,36.2,1.01],
-["Mark Williams","PHX",1322,17.6,12.3,1.5,1.4,1.4,1.6,17.2,40,1.11],
-["Grayson Allen","PHX",1235,20.9,3.6,5,1.7,0.3,2,24,38.1,1.06],
-["Toumani Camara","POR",2183,13.8,5.8,2.7,1.1,0.4,2,16.1,28.6,0.8],
-["Donovan Clingan","POR",1636,15.6,15.2,2.8,0.7,2,1.6,16.1,44,1.22],
-["Deni Avdija","POR",1633,26.3,7.6,7.2,0.8,0.7,4.1,28.8,48.6,1.35],
-["Jerami Grant","POR",1454,22.9,4.3,2.7,0.9,0.8,2.5,23.7,35.8,0.99],
-["Shaedon Sharpe","POR",1439,25.6,5.3,3.2,1.7,0.2,3.6,29.8,40.2,1.12],
-["Jrue Holiday","POR",1038,21,5.7,7.9,1.5,0.1,3.6,23.8,42.8,1.19],
-["DeMar DeRozan","SAC",2052,20.6,3.5,4.4,1.3,0.4,1.3,22,34.5,0.96],
-["Russell Westbrook","SAC",1765,19.2,6.8,8.1,1.6,0.2,4.1,25.8,42.7,1.18],
-["Maxime Raynaud","SAC",1448,15.9,10.5,1.7,0.7,0.7,1.6,17.4,33.9,0.94],
-["Zach LaVine","SAC",1224,22,3.2,2.6,0.8,0.3,2.2,23.9,32.5,0.9],
-["Malik Monk","SAC",1165,20.6,3.2,4.4,1,0.6,2.3,24,34.6,0.96],
-["Domantas Sabonis","SAC",564,19.2,13.8,5,1.1,0.3,3.3,22.7,45.3,1.26],
-["Julian Champagnie","SAS",1780,14.8,7.6,2,1,0.6,1.2,15.1,31.5,0.87],
-["De'Aaron Fox","SAS",1727,21.6,4.3,7.2,1.4,0.3,2.6,24.9,40.9,1.14],
-["Stephon Castle","SAS",1602,19.8,5.8,8.4,1.6,0.4,3.8,25,42.3,1.18],
-["Devin Vassell","SAS",1559,16.7,4.6,2.9,1,0.5,1.1,18.4,30.7,0.85],
-["Keldon Johnson","SAS",1493,20,8.5,2,1,0.2,1.4,20,36.3,1.01],
-["Victor Wembanyama","SAS",1456,29.5,13.8,3.5,1.2,3.7,3.1,31.7,61.6,1.71],
-["Dylan Harper","SAS",1169,18.3,5.3,6.1,1.4,0.5,2.3,22.1,37.3,1.04],
-["Scottie Barnes","TOR",2089,19.9,8.3,5.7,1.4,1.7,2.8,23.5,44.1,1.22],
-["Brandon Ingram","TOR",2071,23,6.1,4.1,0.8,0.8,2.6,27.2,39.5,1.1],
-["Immanuel Quickley","TOR",1950,19.1,4.6,6.8,1.4,0.1,1.8,21.5,38.6,1.07],
-["RJ Barrett","TOR",1166,22.4,6.5,4.1,1,0.3,2,25.4,39.3,1.09],
-["Keyonte George","UTA",1766,25.7,4,6.7,1.2,0.3,3.4,28,43.3,1.2],
-["Ace Bailey","UTA",1534,16.5,5.4,2.3,1.1,0.7,1.8,20,30.5,0.85],
-["Kyle Filipowski","UTA",1458,16.5,11.1,3.6,1.5,0.8,2.5,19.2,39.8,1.1],
-["Lauri Markkanen","UTA",1443,28,7.2,2.2,1,0.5,1.6,27.4,44.2,1.23],
-["Isaiah Collier","UTA",1415,16,3.5,10.2,1.5,0.5,3.5,20.2,38.1,1.06],
-["Brice Sensabaugh","UTA",1378,20.8,4.8,2.6,1.1,0.2,2.1,23.3,33.8,0.94],
-["Jusuf Nurkić","UTA",1083,14.9,14.1,6.5,1.7,0.7,3.4,19,45.9,1.28],
-["Bub Carrington","WAS",1731,12.9,4.8,5.9,0.9,0.3,3,17.2,29.9,0.83],
-["Kyshawn George","WAS",1391,18.4,6.3,5.5,1.2,1.1,3.2,22.7,39,1.08],
-["Tre Johnson","WAS",1207,18.8,4.2,3,0.9,0.5,2.2,22.1,31.8,0.88],
-["Alex Sarr","WAS",1174,21.7,9.9,3.6,1,2.5,2.2,25.4,46.2,1.28],
-["Bilal Coulibaly","WAS",1124,14.3,5.9,3.4,1.9,1.3,2,18.3,33,0.92],
-["CJ McCollum","WAS",1082,21.9,4.1,4.2,0.8,0.3,1.9,24,36.2,1]
+["Dyson Daniels","ATL",16,52.7,51.6,12.4,7.1,6.6,2,0.5,2,35.3,0.98,46.4],
+["Nickeil Alexander-Walker","ATL",23.8,58.3,53.6,21.6,3.8,4.1,1.3,0.6,2.3,36.8,1.02,47.6],
+["Jalen Johnson","ATL",27.1,58.4,53.9,23.4,10.7,8.1,1.4,0.5,3.5,51.8,1.44,67.2],
+["Onyeka Okongwu","ATL",20.1,59.9,57.3,18.4,9,3.8,1.3,1.2,2.1,40.4,1.12,52.3],
+["Zaccharie Risacher","ATL",17.4,53.6,52.8,15.1,5.6,1.9,1.4,0.8,1.4,29.8,0.83,38.3],
+["Vít Krejčí","ATL",14.5,63.7,62.6,14.5,3.4,2.4,1.3,0.5,1.1,27.1,0.75,36.2],
+["Mouhamed Gueye","ATL",13.1,53,51.2,10.6,8.4,2.1,1.9,1.2,1.1,30.3,0.84,41.1],
+["Luke Kennard","ATL",12.8,71.3,69.2,13.9,3.8,3.7,1.3,0.2,1.2,27.9,0.77,37],
+["CJ McCollum","ATL",26.4,55.8,52.4,23.5,4,4.8,1.1,0.7,2.4,39.6,1.1,52.1],
+["Corey Kispert","ATL",18.9,59.7,56.1,18,4.5,3,0.4,0.3,1.6,30.2,0.84,39.8],
+["Keaton Wallace","ATL",16.2,53.3,52.4,12.3,3.7,6.2,1.6,0.4,1.8,30.6,0.85,41.8],
+["Asa Newell","ATL",16.4,62.8,62.8,16.3,6.6,1.6,1.2,1.1,1.7,31.7,0.88,41.4],
+["Kristaps Porziņģis","ATL",26.5,59.2,53.1,25.4,7.6,4,0.8,1.9,1.4,46.9,1.3,61.4],
+["Trae Young","ATL",27.2,57.7,48.1,24.8,1.9,11.4,1.2,0.3,3.3,46.7,1.3,57.9],
+["Jonathan Kuminga","ATL",23.1,78.7,75.8,28.8,10.3,4.5,2.3,0.5,3.6,53.2,1.48,67.2],
+["Derrick White","BOS",22.9,52.6,48.6,18.1,4.7,6,1.2,1.5,1.8,39,1.08,55],
+["Payton Pritchard","BOS",21.2,57.8,55.5,18.7,4.6,5.9,0.8,0.1,1.5,35.9,1,50.6],
+["Jaylen Brown","BOS",35.9,57.1,52.6,30.1,7.6,5.4,1,0.4,3.8,49.7,1.38,69],
+["Neemias Queta","BOS",15.3,65.7,63.9,14.3,12.1,2.1,1.2,1.9,1.6,38,1.06,54.4],
+["Jayson Tatum","BOS",29.9,49.9,45.3,23.3,10,6,0.7,0,2,46.8,1.3,63.9],
+["Nikola Vučević","BOS",21.5,53.2,50.5,17.3,11.9,3,0.7,1.2,1.5,40.8,1.13,57],
+["Nic Claxton","BKN",17.8,59.8,58,15.3,8.9,4.9,0.9,1.5,1.8,37.8,1.05,52.6],
+["Michael Porter Jr.","BKN",29.8,59.5,55.6,26.8,7.9,3.4,1.2,0.3,2.6,45.2,1.26,62.5],
+["Day'Ron Sharpe","BKN",19.5,63.8,61.4,16.8,12.8,4.5,2.1,0.8,3.3,43.8,1.22,60.6],
+["Grant Nelson","BKN",22.8,63.4,55.6,17.5,6.2,5.1,1,5.1,4.1,43.2,1.2,60.9],
+["Cam Thomas","BKN",30,52.8,46.3,23.1,2.7,4.6,0.2,0.1,3,33.8,0.94,47.7],
+["Kon Knueppel","CHA",22.3,65,61.8,21.7,6,3.9,0.8,0.3,2.4,38.1,1.06,51.7],
+["Miles Bridges","CHA",23.1,55.8,51.7,19.8,6.7,3.8,0.7,0.5,1.6,36.7,1.02,50.4],
+["LaMelo Ball","CHA",31.1,53.2,50.2,25,6.3,9.4,1.5,0.3,3.6,50.9,1.41,68.7],
+["Brandon Miller","CHA",29.2,57,52.7,24.8,6.1,4.1,1.3,1,3.4,43.1,1.2,58.8],
+["Collin Sexton","CHA",25.5,61.9,55.7,22.9,3.1,6,1.4,0.3,3.4,38.4,1.07,52.2],
+["Coby White","CHA",30.6,52.8,46.7,24.2,4.6,7.9,1,0,2.9,43.5,1.21,61.3],
+["Matas Buzelis","CHI",22.3,59.3,56,19.5,6.9,2.7,0.8,1.9,2.5,37.6,1.04,49.6],
+["Josh Giddey","CHI",25.5,57.1,52.5,20.3,9.5,9.8,1.2,0.4,4.2,49,1.36,63.9],
+["Tre Jones","CHI",17.5,62.8,57.3,16.7,3.9,7.5,1.7,0.3,1.8,36.1,1,46.6],
+["Ayo Dosunmu","CHI",20.8,63.6,60.4,20.5,4.1,5,1,0.4,1.9,36.3,1.01,47.9],
+["Jalen Smith","CHI",19.1,60.8,58.8,18,12.2,2.2,0.9,1.4,1.7,41.7,1.16,55.2],
+["Coby White","CHI",27.4,58.6,52.9,23.1,4.6,5.8,0.9,0.1,3.8,39.1,1.09,51.4],
+["Nikola Vučević","CHI",22,58.5,56.7,19.7,10.5,4.4,0.8,0.8,1.7,42.6,1.18,56.3],
+["Donovan Mitchell","CLE",32.3,61.4,56.6,30.6,4.9,6.3,1.7,0.3,3.2,50.2,1.4,66.5],
+["Evan Mobley","CLE",22.3,58.2,56.2,19.6,9.6,4.1,0.9,2.1,2.2,43.3,1.2,58.2],
+["Jarrett Allen","CLE",19.6,67,63.7,20,11.1,2.5,1.3,1.1,1.8,41.5,1.15,55.1],
+["James Harden","CLE",24,63.5,57.9,21,5.4,8.5,0.6,0.6,3.5,42.8,1.19,58.6],
+["Darius Garland","CLE",25.5,56.7,52.9,21.2,2.9,8.2,1,0.1,3.3,38.9,1.08,50.9],
+["Naji Marshall","DAL",19.6,60.8,56.4,18.4,5.8,3.7,1.3,0.1,1.8,33.6,0.93,44],
+["Cooper Flagg","DAL",25.8,54.9,50.4,21.5,7,4.5,1.3,0.9,2.4,40.9,1.14,54.2],
+["Anthony Davis","DAL",27.9,55.1,52.1,23.4,12.7,3.2,1.3,1.9,2.4,49.6,1.38,66.5],
+["Jamal Murray","DEN",28.2,61.6,56.9,26.2,4.5,7.4,1,0.4,2.4,46,1.28,62.5],
+["Nikola Jokić","DEN",30.3,68.1,62.9,30,13,10.7,1.4,0.8,3.9,65.8,1.83,86.7],
+["Aaron Gordon","DEN",23.2,62.2,57.1,22.5,8.1,3.3,0.9,0.2,1.3,40.2,1.12,55],
+["Jonas Valančiūnas","DEN",25.9,62.5,58.3,22.3,13.1,3.1,0.7,1.5,3.1,46.2,1.28,65],
+["Cade Cunningham","DET",30.6,56.1,50.8,25.8,5.8,10.1,1.5,0.9,3.9,52.2,1.45,70],
+["Jalen Duren","DET",23.1,66.2,62.7,23.8,13.8,2.2,1.1,1.1,2.3,47.7,1.32,64.1],
+["Paul Reed","DET",19.5,63.4,62.2,18.6,12.3,3.1,2.5,2.2,2.5,47,1.31,63.3],
+["Ausar Thompson","DET",17.7,54.5,52.8,14.3,8.2,4.1,2.7,1.2,2,37.6,1.04,51.3],
+["Brandin Podziemski","GSW",19.4,56.5,53.5,16.4,6.7,4.8,1.4,0.2,2,35.5,0.99,47.6],
+["Moses Moody","GSW",17.7,60.3,57.8,16.9,4.7,2.3,1.3,0.8,1.3,31.4,0.87,41.9],
+["Draymond Green","GSW",16.9,53.1,51.3,11.3,7.4,7.1,1.1,0.8,3.5,34.1,0.95,45.9],
+["Stephen Curry","GSW",31.7,63.6,58.5,31.3,4.1,5.6,1.3,0.5,3.3,49.2,1.37,64.3],
+["Jimmy Butler III","GSW",23.2,64.7,55.5,23.1,6.4,5.6,1.7,0.2,1.8,43,1.2,57.9],
+["Al Horford","GSW",16.3,56.4,54.8,13.7,8.3,4.3,1.2,1.9,1.6,37.2,1.03,50.2],
+["Amen Thompson","HOU",20.1,57.8,53.1,17.1,7.5,5.1,1.5,0.6,2.4,37.3,1.04,52.1],
+["Kevin Durant","HOU",27,63.2,57.4,25.6,5.4,4.4,0.8,0.9,3.2,42,1.17,58],
+["Alperen Sengun","HOU",27.3,55.6,52,21.9,9.7,6.6,1.4,1.1,3.6,47.3,1.31,66.2],
+["Reed Sheppard","HOU",21.7,56.5,54.9,18.9,3.8,4.5,2,0.9,2.1,37,1.03,51.1],
+["Pascal Siakam","IND",29.5,56.3,53.1,25.7,7.2,4.2,1.2,0.4,2.3,44,1.22,58.3],
+["Andrew Nembhard","IND",24.2,55.9,51.2,19.6,3.2,8.4,1.1,0.2,2.9,38.3,1.07,51],
+["T.J. McConnell","IND",24.4,55.8,54.7,19.9,4.6,10,2.3,0.4,2.6,45,1.25,59],
+["Kawhi Leonard","LAC",33.3,62.4,56.3,31,7.1,4.1,2.2,0.5,2.3,51.8,1.44,72.3],
+["James Harden","LAC",30.6,59.8,50.6,25.8,4.9,8.3,1.3,0.4,3.7,47.4,1.32,65.5],
+["Ivica Zubac","LAC",18.7,63.5,61.3,16.8,12.8,2.6,0.4,1,2.2,38.4,1.07,53.2],
+["Luka Dončić","LAL",36.9,61.4,55.9,33,7.9,8.5,1.5,0.5,4.1,59.6,1.66,79.8],
+["LeBron James","LAL",27.9,58.7,54.9,23.3,6.1,7.6,1.2,0.7,3.3,45.3,1.26,61.7],
+["Austin Reaves","LAL",27.1,65.1,57.5,25.3,5.1,5.8,1.2,0.4,3.3,43.1,1.2,58.2],
+["Jaren Jackson Jr.","MEM",25.6,57.4,53.4,22.5,6.7,2.2,1.2,1.8,2.6,40,1.11,53.2],
+["Ja Morant","MEM",31.5,52.1,44.1,24.6,4.1,10.2,1.3,0.4,4.5,46.7,1.3,60.1],
+["Ty Jerome","MEM",34.1,63.6,57.6,32.3,4.7,9,2.3,0.3,2.7,57.8,1.6,79.3],
+["Zach Edey","MEM",20.5,66.9,63.8,19,15.5,1.5,0.9,2.7,3.3,46.1,1.28,61.8],
+["Bam Adebayo","MIA",24.6,54.7,50.1,21.6,11.2,3.3,1.2,0.8,1.9,44.7,1.24,58.3],
+["Tyler Herro","MIA",26.4,62,57.9,25.9,5.4,4.4,0.9,0.4,2.2,42.3,1.17,55.3],
+["Kel'el Ware","MIA",17.9,61.8,60.1,18.2,14.9,0.9,1.4,1.8,1.4,44.8,1.24,58],
+["Norman Powell","MIA",27,61.4,56.3,27,4.4,3.1,1.4,0.3,2.4,41,1.14,52.3],
+["Giannis Antetokounmpo","MIL",35.9,67,65.1,34.3,12.3,6.9,1.2,0.9,4,62.3,1.73,84.8],
+["Kevin Porter Jr.","MIL",24.2,56.5,50.9,18.8,5.6,7.9,2.4,0.5,3.2,42.6,1.18,58.4],
+["Bobby Portis","MIL",22.6,59.5,58.6,20,9.5,2.3,0.8,0.3,1.5,38.2,1.06,53.1],
+["Ryan Rollins","MIL",23.8,56.9,55,18.7,5.3,6.1,1.7,0.5,2.9,38.7,1.08,53.1],
+["Julius Randle","MIN",26.2,58.8,52.8,23.1,7.5,5.7,1.2,0.3,2.9,43.2,1.2,57.3],
+["Anthony Edwards","MIN",31.3,62.1,58,30,5.2,3.7,1.4,0.8,2.8,47,1.31,62.4],
+["Naz Reid","MIN",21.5,58.2,56.9,19.1,8.8,3.3,1.4,1.3,2.2,40.8,1.13,53.9],
+["Rudy Gobert","MIN",12.7,67.7,70.8,12.5,13.1,2,0.9,1.9,1.5,36.6,1.02,49],
+["Trey Murphy III","NOP",22.9,61.5,57.5,22.3,5.7,3.9,1.6,0.3,1.8,39.8,1.11,52.8],
+["Zion Williamson","NOP",26.4,63.2,58.7,26.2,7.2,4.1,1.2,0.7,2.6,43.8,1.22,57.3],
+["Dejounte Murray","NOP",26.7,59.8,52.2,22.4,7.5,7.5,2.6,0.5,4.9,47.5,1.32,61.3],
+["Derik Queen","NOP",21.8,55.2,49.8,16.9,10,5.6,1.4,1.3,3.3,41.6,1.15,55.1],
+["Jalen Brunson","NYK",30.1,58.1,53.5,27,3.6,6.7,0.7,0.1,2.4,43.5,1.21,59.3],
+["Karl-Anthony Towns","NYK",25.5,61.2,54.7,23.1,13.7,3.3,1,0.7,2.9,48,1.33,65.2],
+["Josh Hart","NYK",16.9,59.2,57.3,14.2,9.1,6.1,1.3,0.4,2.4,37.7,1.05,51.4],
+["Mikal Bridges","NYK",17.7,59,57.5,16.2,4.4,4.2,1.5,0.9,1.1,33.4,0.93,45.9],
+["Shai Gilgeous-Alexander","OKC",32.8,66.7,59.5,34.1,4.8,7.1,1.5,0.8,2.3,55.1,1.53,72.5],
+["Chet Holmgren","OKC",22.1,64.6,60.7,21.2,11.1,2.1,0.7,2.4,2,44.1,1.23,59.1],
+["Jalen Williams","OKC",26,55.5,50.7,21.7,5.8,6.7,1.6,0.4,2.4,42.3,1.17,56.1],
+["Isaiah Hartenstein","OKC",16.3,64.5,63.7,14.5,13.1,5,1.4,1.1,2.7,41.9,1.16,56.8],
+["Paolo Banchero","ORL",27.9,56.8,50.2,23,8.9,5.1,0.7,0.7,3,43.6,1.21,58.9],
+["Franz Wagner","ORL",25.8,59.1,52.8,24.1,6.5,4.1,1.2,0.4,1.9,41.4,1.15,54.5],
+["Jalen Suggs","ORL",23.3,56.5,52.8,18.9,5.2,7.2,2.6,1.1,3.5,43.2,1.2,56.2],
+["Desmond Bane","ORL",23.2,60.6,55.4,21.5,4.4,4.4,1.1,0.5,2.2,36.7,1.02,49.2],
+["Tyrese Maxey","PHI",29.4,58.9,53.7,27.3,3.9,6.3,1.9,0.8,2.3,47.3,1.31,63.7],
+["Joel Embiid","PHI",34.4,60.6,53,30.7,8.7,4.5,0.7,1.2,3.4,51.4,1.43,69.2],
+["Paul George","PHI",22.3,55.6,51.7,18.8,6.1,4.4,1.7,0.6,1.9,38.1,1.06,52.2],
+["Devin Booker","PHX",30.6,57.8,49.9,26.8,4.2,6.6,1,0.3,3.6,43.7,1.21,58.5],
+["Grayson Allen","PHX",24,56.8,52.6,20.9,3.6,5,1.7,0.3,2,38.1,1.06,52.2],
+["Collin Gillespie","PHX",19.2,59.5,57.6,17,5.1,5.9,1.6,0.3,2.1,36.9,1.03,50.5],
+["Deni Avdija","POR",28.8,60.2,52.5,26.3,7.6,7.2,0.8,0.7,4.1,48.6,1.35,64.1],
+["Jrue Holiday","POR",23.8,59,56.6,21,5.7,7.9,1.5,0.1,3.6,42.8,1.19,56],
+["Shaedon Sharpe","POR",29.8,55,51.5,25.6,5.3,3.2,1.7,0.2,3.6,40.2,1.12,52.6],
+["Donovan Clingan","POR",16.1,60.5,58.7,15.6,15.2,2.8,0.7,2,1.6,44,1.22,58.7],
+["DeMar DeRozan","SAC",22,58.6,51,20.6,3.5,4.4,1.3,0.4,1.3,34.5,0.96,34.5],
+["Domantas Sabonis","SAC",22.7,59,55.4,19.2,13.8,5,1.1,0.3,3.3,45.3,1.26,45.3],
+["Russell Westbrook","SAC",25.8,53.3,50.7,19.2,6.8,8.1,1.6,0.2,4.1,42.7,1.18,42.7],
+["Zach LaVine","SAC",23.9,61.4,56.9,22,3.2,2.6,0.8,0.3,2.2,32.5,0.9,32.5],
+["Victor Wembanyama","SAS",31.7,62.1,56.1,29.5,13.8,3.5,1.2,3.7,3.1,61.6,1.71,82],
+["De'Aaron Fox","SAS",24.9,58.1,55.1,21.6,4.3,7.2,1.4,0.3,2.6,40.9,1.14,54.1],
+["Stephon Castle","SAS",25,56.3,50.9,19.8,5.8,8.4,1.6,0.4,3.8,42.3,1.18,56.2],
+["Dylan Harper","SAS",22.1,55.1,52.4,18.3,5.3,6.1,1.4,0.5,2.3,37.3,1.04,50.2],
+["Scottie Barnes","TOR",23.5,57.6,53.3,19.9,8.3,5.7,1.4,1.7,2.8,44.1,1.22,59.4],
+["Brandon Ingram","TOR",27.2,56.5,52.1,23,6.1,4.1,0.8,0.8,2.6,39.5,1.1,53.9],
+["Immanuel Quickley","TOR",21.5,58.4,54.9,19.1,4.6,6.8,1.4,0.1,1.8,38.6,1.07,52.5],
+["RJ Barrett","TOR",25.4,58.2,55.1,22.4,6.5,4.1,1,0.3,2,39.3,1.09,52.8],
+["Keyonte George","UTA",28,60.8,53.1,25.7,4,6.7,1.2,0.3,3.4,43.3,1.2,56.7],
+["Lauri Markkanen","UTA",27.4,60.8,54.8,28,7.2,2.2,1,0.5,1.6,44.2,1.23,57.5],
+["Jusuf Nurkić","UTA",19,54.8,53.8,14.9,14.1,6.5,1.7,0.7,3.4,45.9,1.28,59.4],
+["Jaren Jackson Jr.","UTA",33.7,59.8,54.1,33.5,6.5,4,3,0.5,3.5,54.1,1.5,66],
+["Alex Sarr","WAS",25.4,55.3,53,21.7,9.9,3.6,1,2.5,2.2,46.2,1.28,60.9],
+["Kyshawn George","WAS",22.7,55.9,52.4,18.4,6.3,5.5,1.2,1.1,3.2,39,1.08,51.3],
+["Trae Young","WAS",28.7,68.5,66.7,28.2,5.8,13.6,1.9,0,6.8,58.4,1.62,76.9],
+["Bub Carrington","WAS",17.2,53.2,51.2,12.9,4.8,5.9,0.9,0.3,3,29.9,0.83,39.2]
 ];
 
-// cols: 0=player,1=team,2=min,3=pts,4=reb,5=ast,6=stl,7=blk,8=tov,9=usg,10=fpts,11=fpm
+// cols: 0=player,1=team,2=usg,3=ts,4=efg,5=pts,6=reb,7=ast,8=stl,9=blk,10=tov,11=fpts,12=fpm,13=fpts100
 
-let sortCol = 10;
+let sortCol = 11;
 let sortAsc = false;
 let currentPage = 1;
 const perPage = 50;
 let filtered = [...RAW];
 
-const maxFPTS = Math.max(...RAW.map(r => r[10]));
+const maxFPTS = Math.max(...RAW.map(r => r[11]));
 
 // Populate team filter
 const teams = [...new Set(RAW.map(r => r[1]))].sort();
@@ -1618,15 +1532,26 @@ teams.forEach(t => {
   teamSel.appendChild(o);
 });
 
+function normalizeStr(s) {
+  if (!s) return '';
+  return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
 function filterTable() {
-  const search = document.getElementById('searchInput').value.toLowerCase();
-  const team = document.getElementById('teamFilter').value;
-  const minMin = parseInt(document.getElementById('minFilter').value);
+  const searchEl = document.getElementById('searchInput');
+  const teamEl = document.getElementById('teamFilter');
+  const minEl = document.getElementById('minFilter');
+  if (!searchEl || !teamEl || !minEl) return;
+
+  const search = normalizeStr(searchEl.value);
+  const team = teamEl.value;
+  const minMin = parseInt(minEl.value) || 0;
 
   filtered = RAW.filter(r => {
-    const nameMatch = r[0].toLowerCase().includes(search);
+    if (!r || !r[0]) return false;
+    const nameMatch = normalizeStr(r[0]).includes(search);
     const teamMatch = !team || r[1] === team;
-    const minMatch = r[2] >= minMin;
+    const minMatch = r[11] >= minMin; // filter by FPTS now
     return nameMatch && teamMatch && minMatch;
   });
 
@@ -1635,26 +1560,27 @@ function filterTable() {
 }
 
 function sortTable(col) {
-  // Map display col index to data index
-  const colMap = [null, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]; // header cols → data indices
-  // Actually: col 0=rank(skip), 1=player(0), 2=team(1), 3=min(2), 4=fpts(10), 5=fpm(11), 6=pts(3), 7=reb(4), 8=ast(5), 9=stl(6), 10=blk(7), 11=usg(9), 12=ts
-  const dataMap = [null, 0, 1, 2, 10, 11, 3, 4, 5, 6, 7, 9, null];
+  // new cols: 0=rank, 1=player(0), 2=team(1), 3=fpts(11), 4=fpm(12), 5=fpts100(13),
+  //           6=pts(5), 7=reb(6), 8=ast(7), 9=stl(8), 10=blk(9), 11=tov(10), 12=usg(2), 13=ts(3), 14=efg(4)
+  const dataMap = [null, 0, 1, 11, 12, 13, 5, 6, 7, 8, 9, 10, 2, 3, 4];
   const dataCol = dataMap[col];
   if (dataCol === null) return;
 
   if (sortCol === dataCol) sortAsc = !sortAsc;
   else { sortCol = dataCol; sortAsc = false; }
 
-  document.querySelectorAll('th').forEach((th, i) => {
+  document.querySelectorAll('#panel-nba th').forEach((th) => {
     th.classList.remove('sorted');
     const arrow = th.querySelector('.sort-arrow');
     if (arrow) arrow.textContent = '↕';
   });
 
-  const th = document.querySelectorAll('th')[col];
-  th.classList.add('sorted');
-  const arrow = th.querySelector('.sort-arrow');
-  if (arrow) arrow.textContent = sortAsc ? '↑' : '↓';
+  const th = document.querySelectorAll('#panel-nba th')[col];
+  if (th) {
+    th.classList.add('sorted');
+    const arrow = th.querySelector('.sort-arrow');
+    if (arrow) arrow.textContent = sortAsc ? '↑' : '↓';
+  }
 
   currentPage = 1;
   renderTable();
@@ -1678,10 +1604,12 @@ function renderTable() {
 
   page.forEach((r, i) => {
     const rank = start + i + 1;
-    const fpts = r[10];
-    const fpm = r[11];
+    // new data: 0=name,1=team,2=usg,3=ts,4=efg,5=pts,6=reb,7=ast,8=stl,9=blk,10=tov,11=fpts,12=fpm,13=fpts100
+    const fpts = r[11];
+    const fpm = r[12];
+    const fpts100 = r[13];
     const barPct = Math.round((fpts / maxFPTS) * 100);
-    const tierClass = fpts >= 45 ? 'tier-1' : '';
+    const tierClass = fpts >= 50 ? 'tier-1' : '';
 
     const tr = document.createElement('tr');
     if (tierClass) tr.className = tierClass;
@@ -1690,7 +1618,6 @@ function renderTable() {
       <td class="rank">${rank}</td>
       <td class="player-name">${r[0]}</td>
       <td class="team-badge">${r[1]}</td>
-      <td class="stat">${r[2].toLocaleString()}</td>
       <td class="fpts">
         <div class="bar-wrap">
           <div class="bar-bg"><div class="bar-fill" style="width:${barPct}%"></div></div>
@@ -1698,13 +1625,16 @@ function renderTable() {
         </div>
       </td>
       <td class="fpm">${fpm.toFixed(2)}</td>
-      <td class="stat">${r[3].toFixed(1)}</td>
-      <td class="stat">${r[4].toFixed(1)}</td>
+      <td class="stat">${fpts100.toFixed(1)}</td>
       <td class="stat">${r[5].toFixed(1)}</td>
       <td class="stat">${r[6].toFixed(1)}</td>
       <td class="stat">${r[7].toFixed(1)}</td>
-      <td class="stat">${r[9].toFixed(1)}%</td>
-      <td class="stat">—</td>
+      <td class="stat">${r[8].toFixed(1)}</td>
+      <td class="stat">${r[9].toFixed(1)}</td>
+      <td class="stat">${r[10].toFixed(1)}</td>
+      <td class="stat">${r[2].toFixed(1)}%</td>
+      <td class="stat">${r[3].toFixed(1)}%</td>
+      <td class="stat">${r[4].toFixed(1)}%</td>
     `;
     tbody.appendChild(tr);
   });
@@ -1756,9 +1686,9 @@ function renderPagination(total) {
   pg.appendChild(info);
 }
 
-// Default sort by FPTS desc
-document.querySelectorAll('#panel-nba th')[4].classList.add('sorted');
-document.querySelectorAll('#panel-nba th')[4].querySelector('.sort-arrow').textContent = '↓';
+// Default sort by FPTS desc — col index 3 in display = data index 11
+document.querySelectorAll('#panel-nba th')[3].classList.add('sorted');
+document.querySelectorAll('#panel-nba th')[3].querySelector('.sort-arrow').textContent = '↓';
 filterTable();
 
 // ── SPORT TAB SWITCHING ──────────────────────────────────────
@@ -1779,46 +1709,153 @@ function switchMLB(sub, btn) {
 // ── MLB HITTER DATA ──────────────────────────────────────────
 // cols: 0=player, 1=team, 2=pos, 3=avg, 4=obp, 5=slg, 6=hr, 7=rbi, 8=r, 9=sb, 10=kpct, 11=fpts
 const MLB_HITTERS = [
-["Aaron Judge","NYY","OF",0.291,0.406,0.593,47,114,108,5,14.2,58.4],
-["Shohei Ohtani","LAD","DH",0.311,0.408,0.654,52,130,122,28,17.1,72.1],
-["Mookie Betts","LAD","OF",0.276,0.367,0.499,28,88,105,14,14.8,49.2],
-["Freddie Freeman","LAD","1B",0.299,0.388,0.534,30,102,99,8,12.4,53.8],
-["Jose Ramirez","CLE","3B",0.284,0.360,0.521,31,96,94,22,11.6,54.7],
-["Yordan Alvarez","HOU","DH",0.302,0.406,0.586,38,108,96,2,19.8,57.3],
-["Juan Soto","NYY","OF",0.288,0.415,0.528,35,96,108,11,18.3,56.9],
-["Gunnar Henderson","BAL","SS",0.278,0.358,0.524,34,96,101,16,22.4,53.1],
-["Bo Bichette","TOR","SS",0.281,0.331,0.468,24,84,92,14,16.7,45.8],
-["Vladimir Guerrero Jr.","TOR","1B",0.296,0.371,0.532,33,104,95,3,13.2,52.4],
-["Corbin Carroll","ARI","OF",0.265,0.346,0.462,22,76,98,36,20.1,48.6],
-["Elly De La Cruz","CIN","SS",0.259,0.322,0.468,25,82,95,42,28.4,49.8],
-["Kyle Tucker","CHC","OF",0.284,0.369,0.518,27,92,96,18,15.6,51.2],
-["Adley Rutschman","BAL","C",0.272,0.368,0.462,22,78,84,5,14.8,46.3],
-["Austin Riley","ATL","3B",0.276,0.344,0.521,32,100,90,3,20.6,50.8],
-["Matt Olson","ATL","1B",0.249,0.353,0.524,38,108,92,2,25.4,51.6],
-["Julio Rodriguez","SEA","OF",0.272,0.338,0.488,28,88,98,28,19.8,49.4],
-["Marcus Semien","TEX","2B",0.262,0.332,0.454,24,82,94,10,16.2,46.1],
-["Trea Turner","PHI","SS",0.289,0.348,0.502,22,80,102,28,13.8,49.6],
-["Bryce Harper","PHI","1B",0.299,0.409,0.565,34,98,104,4,17.2,56.8],
-["Pete Alonso","NYM","1B",0.248,0.343,0.528,40,112,88,2,22.8,52.3],
-["Fernando Tatis Jr.","SD","OF",0.268,0.338,0.512,32,90,96,20,21.4,50.6],
-["Bobby Witt Jr.","KC","SS",0.281,0.330,0.506,30,98,100,32,16.8,52.4],
-["Michael Harris II","ATL","OF",0.274,0.336,0.478,24,78,92,22,16.1,47.8],
-["Corey Seager","TEX","SS",0.285,0.364,0.524,28,90,94,3,14.4,51.2],
-["Luis Robert Jr.","CWS","OF",0.266,0.318,0.502,28,84,88,18,23.8,47.4],
-["Rafael Devers","BOS","3B",0.268,0.336,0.516,32,100,88,2,18.6,50.2],
-["Jarren Duran","BOS","OF",0.278,0.338,0.484,22,72,96,24,18.2,46.8],
-["Steven Kwan","CLE","OF",0.296,0.368,0.448,14,62,94,20,9.2,44.6],
-["William Contreras","MIL","C",0.276,0.346,0.488,24,82,76,4,16.4,46.2],
-["Willy Adames","SF","SS",0.254,0.332,0.484,28,88,86,10,22.6,46.8],
-["Ketel Marte","ARI","2B",0.282,0.356,0.498,24,84,92,8,14.8,48.4],
-["Royce Lewis","MIN","3B",0.284,0.356,0.524,26,84,88,8,16.4,49.8],
-["Christian Yelich","MIL","OF",0.272,0.365,0.488,22,78,88,12,16.8,46.4],
-["Ozzie Albies","ATL","2B",0.272,0.328,0.484,26,82,92,14,15.4,47.2],
-["Cedric Mullins","BAL","OF",0.256,0.322,0.448,18,62,88,24,16.8,43.4],
-["Jazz Chisholm Jr.","NYY","OF",0.256,0.332,0.492,26,76,88,26,26.2,46.4],
-["Paul Goldschmidt","STL","1B",0.268,0.356,0.498,26,86,86,6,18.4,48.2],
-["Nolan Arenado","STL","3B",0.272,0.336,0.488,24,90,78,2,14.2,46.4],
-["Ha-Seong Kim","SD","SS",0.259,0.338,0.432,18,68,86,24,16.4,43.8]
+["Nolan Arenado","ARI",110,447,12,48,52,3,"6.30%","12.10%",0.136,0.24,0.233,0.284,0.369,0.282,0.285,81,-1.7,-11.9,4,0.7],
+["Carlos Santana","ARI",127,484,11,50,54,7,"11.00%","19.40%",0.106,0.251,0.217,0.306,0.323,0.283,0.288,80,-1,-12.1,-2.6,0.2],
+["Geraldo Perdomo","ARI",164,732,21,99,102,28,"12.80%","11.60%",0.176,0.304,0.291,0.388,0.466,0.371,0.356,139,3.5,37.1,9.4,7.2],
+["Corbin Carroll","ARI",146,654,31,109,85,32,"10.20%","23.70%",0.277,0.297,0.257,0.339,0.534,0.367,0.368,136,10.2,38.5,2.5,6.4],
+["Ketel Marte","ARI",129,569,29,88,73,4,"11.40%","14.90%",0.234,0.289,0.283,0.374,0.516,0.38,0.389,145,-3.4,26.8,-0.3,4.7],
+["Lourdes Gurriel Jr.","ARI",129,546,19,52,80,10,"5.70%","13.90%",0.17,0.254,0.248,0.295,0.418,0.307,0.314,95,-0.7,-4.2,-6.7,0.7],
+["Gabriel Moreno","ARI",85,317,9,45,40,2,"9.10%","17.00%",0.144,0.321,0.284,0.35,0.428,0.337,0.343,115,-0.5,5.3,10.2,2.7],
+["Jeff McNeil","ATH",125,471,12,43,54,4,"10.60%","12.30%",0.165,0.252,0.241,0.333,0.405,0.321,0.329,109,0.2,5,-0.3,2.1],
+["Brent Rooker","ATH",165,712,30,92,90,6,"9.10%","22.90%",0.213,0.301,0.258,0.331,0.471,0.344,0.349,119,-0.2,15.4,-18.7,2.2],
+["Tyler Soderstrom","ATH",161,637,25,75,94,8,"8.80%","23.10%",0.195,0.328,0.274,0.344,0.469,0.351,0.34,123,-0.7,16.9,-7.2,3.2],
+["Lawrence Butler","ATH",154,634,21,83,63,22,"9.30%","28.40%",0.169,0.301,0.232,0.304,0.401,0.308,0.305,94,3.3,-1.1,-2.1,1.9],
+["Shea Langeliers","ATH",126,536,34,76,78,7,"6.90%","20.00%",0.272,0.294,0.282,0.33,0.554,0.373,0.335,138,0.6,24.9,0,4.4],
+["Jacob Wilson","ATH",128,536,13,63,63,5,"5.00%","8.20%",0.132,0.316,0.307,0.35,0.439,0.344,0.302,118,-0.3,11.3,2.6,3.3],
+["Nick Kurtz","ATH",120,502,36,93,86,3,"13.30%","31.50%",0.322,0.366,0.287,0.383,0.608,0.416,0.371,168,-0.2,40,-12.3,4.6],
+["Matt Olson","ATL",165,736,29,99,95,1,"12.40%","24.70%",0.209,0.335,0.272,0.364,0.481,0.365,0.359,135,-4.8,25.7,-4.3,4.7],
+["Ozzie Albies","ATL",160,679,17,76,75,14,"8.20%","13.80%",0.127,0.26,0.243,0.308,0.37,0.298,0.299,89,1.7,-7.3,-0.4,1.5],
+["Michael Harris II","ATL",163,652,21,57,89,20,"2.50%","19.90%",0.162,0.282,0.251,0.27,0.413,0.291,0.314,85,2,-9.9,3.1,1.5],
+["Austin Riley","ATL",105,459,16,55,54,2,"6.10%","28.50%",0.164,0.342,0.262,0.312,0.426,0.32,0.331,104,-1.3,0.8,1.2,1.8],
+["Drake Baldwin","ATL",127,459,21,59,82,0,"8.70%","15.30%",0.204,0.286,0.274,0.342,0.478,0.355,0.356,128,-1.5,13.8,3.9,3.4],
+["Ronald Acuña Jr.","ATL",98,425,21,74,42,9,"16.90%","24.70%",0.22,0.348,0.283,0.409,0.503,0.394,0.392,155,1.9,29.8,-11,3.4],
+["Jurickson Profar","ATL",80,371,14,56,43,9,"12.90%","15.90%",0.189,0.261,0.245,0.353,0.434,0.346,0.325,122,0,9.8,-9.9,1.3],
+["Sean Murphy","ATL",94,337,16,34,45,0,"10.40%","31.20%",0.21,0.243,0.199,0.3,0.409,0.309,0.314,97,-0.9,-2.2,10.7,2],
+["Mike Yastrzemski","ATL",149,566,17,68,47,7,"12.70%","19.30%",0.169,0.269,0.237,0.335,0.406,0.323,0.33,108,1.7,6.8,-1.6,2.5],
+["Pete Alonso","BAL",165,722,38,88,127,1,"8.70%","23.00%",0.247,0.307,0.272,0.348,0.52,0.367,0.384,141,-5.5,29.2,-17.9,3.6],
+["Taylor Ward","BAL",160,677,36,87,103,4,"11.50%","26.30%",0.242,0.254,0.225,0.316,0.468,0.336,0.332,115,-1.2,10.8,-6.5,2.8],
+["Gunnar Henderson","BAL",157,665,17,86,68,31,"9.50%","21.50%",0.161,0.327,0.27,0.346,0.431,0.336,0.338,117,7.1,20.6,1.5,4.6],
+["Jackson Holliday","BAL",149,649,17,70,55,17,"8.60%","21.60%",0.133,0.291,0.242,0.314,0.375,0.304,0.313,96,-2.6,-6,-4.3,1.2],
+["Adley Rutschman","BAL",93,374,9,38,30,0,"11.20%","15.50%",0.149,0.246,0.225,0.313,0.374,0.304,0.326,95,-1.5,-3.6,4.2,1.4],
+["Jordan Westburg","BAL",85,352,17,59,41,1,"4.80%","22.70%",0.192,0.302,0.265,0.313,0.457,0.332,0.328,115,-1.3,4.8,1.5,1.9],
+["Willson Contreras","BOS",138,577,20,71,80,5,"8.30%","25.10%",0.186,0.317,0.255,0.346,0.441,0.344,0.358,123,-2.5,13.2,-5.1,2.8],
+["Jarren Duran","BOS",160,710,16,87,85,26,"8.90%","24.10%",0.183,0.325,0.256,0.334,0.438,0.335,0.326,111,7.5,16.8,-2.3,4],
+["Trevor Story","BOS",160,670,26,92,98,31,"4.90%","27.30%",0.17,0.326,0.26,0.303,0.43,0.317,0.313,99,7.8,6.8,-1.3,2.9],
+["Ceddanne Rafaela","BOS",159,597,16,85,64,20,"4.70%","19.80%",0.162,0.29,0.25,0.295,0.412,0.306,0.304,91,3.9,-2.4,19.3,3.8],
+["Carlos Narváez","BOS",120,453,15,52,50,1,"8.40%","24.70%",0.176,0.299,0.244,0.309,0.421,0.317,0.296,99,-2.1,-2.8,14.3,2.8],
+["Wilyer Abreu","BOS",118,430,24,55,73,6,"9.30%","23.70%",0.236,0.281,0.254,0.322,0.49,0.344,0.335,117,-1.1,7.3,5.3,2.8],
+["Roman Anthony","BOS",74,319,8,49,33,4,"13.50%","27.90%",0.163,0.408,0.293,0.398,0.456,0.375,0.372,138,1.1,15.4,0.8,2.8],
+["Ian Happ","CHC",153,677,25,89,83,6,"13.00%","23.20%",0.184,0.286,0.242,0.341,0.426,0.335,0.356,117,-3.3,10.2,-4.3,2.9],
+["Nico Hoerner","CHC",159,662,7,91,62,31,"6.20%","7.70%",0.097,0.311,0.295,0.344,0.392,0.323,0.321,109,4.9,11.8,13.7,4.9],
+["Pete Crow-Armstrong","CHC",160,661,31,93,97,37,"4.50%","23.90%",0.228,0.279,0.248,0.289,0.477,0.323,0.319,109,7.1,13.9,17.5,5.5],
+["Dansby Swanson","CHC",162,656,24,86,78,20,"7.60%","25.90%",0.171,0.293,0.241,0.299,0.411,0.308,0.346,98,4.7,3.3,7.3,3.3],
+["Seiya Suzuki","CHC",151,651,32,75,103,5,"10.90%","25.20%",0.233,0.282,0.245,0.326,0.478,0.343,0.352,123,-0.5,16.9,-13.2,2.6],
+["Michael Busch","CHC",158,606,34,81,91,4,"9.60%","23.30%",0.259,0.295,0.263,0.345,0.522,0.37,0.377,141,-3.3,25.8,-10.4,3.6],
+["Carson Kelly","CHC",114,430,17,48,51,2,"10.90%","18.80%",0.176,0.27,0.247,0.333,0.423,0.33,0.327,114,-3.3,3.6,7.9,2.6],
+["Alex Bregman","CHI",117,509,20,66,64,1,"10.20%","14.10%",0.197,0.284,0.271,0.358,0.469,0.357,0.335,127,-2,13.9,4.2,3.6],
+["Austin Hays","CHW",106,426,15,60,64,7,"6.80%","26.10%",0.185,0.326,0.264,0.312,0.449,0.324,0.3,103,1.3,2.8,-5.4,1.2],
+["Miguel Vargas","CHW",141,580,16,82,60,7,"10.00%","18.10%",0.164,0.263,0.234,0.317,0.398,0.314,0.318,101,0.1,0.5,-6.6,1.4],
+["Lenyn Sosa","CHW",142,550,22,57,75,2,"3.30%","23.60%",0.168,0.307,0.261,0.29,0.429,0.309,0.323,97,-0.5,-2.3,-5,1.2],
+["Chase Meidroth","CHW",125,518,6,56,24,14,"9.30%","14.50%",0.074,0.292,0.254,0.332,0.328,0.299,0.304,90,-1.1,-7.4,4.7,1.5],
+["Andrew Benintendi","CHW",119,478,20,57,63,1,"8.60%","18.00%",0.187,0.254,0.241,0.308,0.429,0.317,0.319,103,0.6,2,-16.8,0.2],
+["Kyle Teel","CHW",78,297,8,38,35,3,"12.50%","25.90%",0.138,0.361,0.273,0.375,0.411,0.349,0.337,125,-1.3,7.4,0.8,1.9],
+["Colson Montgomery","CHW",74,296,22,44,60,0,"9.10%","29.40%",0.291,0.268,0.242,0.315,0.532,0.359,0.337,131,-0.4,10.5,7.5,2.9],
+["Elly De La Cruz","CIN",165,713,23,103,87,37,"9.70%","26.40%",0.178,0.336,0.262,0.335,0.44,0.332,0.324,108,9.3,16.3,3.3,4.4],
+["TJ Friedl","CIN",155,699,14,84,53,13,"11.60%","17.30%",0.115,0.3,0.258,0.36,0.373,0.329,0.301,106,2,6.9,-4.3,2.6],
+["Eugenio Suárez","CIN",162,670,50,92,122,4,"7.00%","30.00%",0.297,0.242,0.227,0.297,0.523,0.346,0.317,124,-3.5,15.4,-0.9,3.8],
+["Spencer Steer","CIN",149,581,21,66,75,7,"9.10%","22.90%",0.169,0.274,0.235,0.31,0.404,0.313,0.294,95,-0.5,-3.9,-7.2,0.8],
+["José Ramírez","CLE",162,690,30,104,88,45,"9.70%","11.30%",0.217,0.277,0.279,0.356,0.496,0.355,0.34,131,7.4,32.4,4.6,6.2],
+["Steven Kwan","CLE",160,710,11,82,57,21,"7.70%","8.70%",0.1,0.283,0.271,0.328,0.371,0.307,0.308,97,0.3,-1.9,7.7,3.1],
+["Chase DeLauter","CLE",121,547,23,75,69,3,"9.00%","19.30%",0.203,0.292,0.265,0.335,0.468,0.346,0.386,124,-0.7,14.8,-6.3,2.8],
+["Kyle Manzardo","CLE",146,548,27,47,71,2,"8.90%","26.50%",0.214,0.266,0.23,0.308,0.444,0.324,0.32,109,-0.6,5.1,-14.5,1],
+["Evan Mobley","CLE",142,491,11,56,45,8,"4.70%","23.20%",0.135,0.271,0.223,0.267,0.358,0.272,0.253,73,2.2,-13.2,-5.5,-0.2],
+["Hunter Goodman","COL",147,591,31,74,91,1,"5.60%","26.10%",0.237,0.333,0.279,0.323,0.516,0.358,0.322,117,-2.5,9.4,4.2,3.4],
+["Mickey Moniak","COL",135,461,24,62,68,9,"4.80%","23.90%",0.249,0.307,0.27,0.306,0.518,0.348,0.337,110,1.2,6.7,-15.9,0.6],
+["Riley Greene","DET",160,669,36,86,112,2,"7.20%","30.50%",0.23,0.318,0.255,0.311,0.485,0.34,0.331,118,-2,12.3,-7.7,2.8],
+["Spencer Torkelson","DET",158,662,31,84,80,2,"11.20%","26.30%",0.213,0.283,0.239,0.332,0.451,0.337,0.334,116,-1,11.8,-13.9,2.1],
+["Gleyber Torres","DET",148,642,16,82,74,4,"14.00%","16.20%",0.129,0.285,0.255,0.361,0.384,0.333,0.363,113,-3.6,6.5,-2.4,2.7],
+["Dillon Dingler","DET",129,479,14,55,61,0,"4.80%","23.40%",0.151,0.345,0.279,0.328,0.43,0.329,0.353,111,-0.2,5.9,18.8,4.2],
+["Carlos Correa","HOU",148,602,13,64,54,0,"7.80%","19.10%",0.123,0.326,0.275,0.332,0.398,0.32,0.336,105,-3,0.4,4,2.6],
+["Jose Altuve","HOU",159,672,26,82,78,11,"8.90%","16.80%",0.175,0.284,0.265,0.332,0.439,0.332,0.301,114,-1.9,9.2,-10.6,2.2],
+["Jeremy Peña","HOU",127,553,17,69,62,21,"6.30%","17.20%",0.169,0.344,0.302,0.361,0.471,0.36,0.334,133,4.5,25.9,10.4,5.7],
+["Isaac Paredes","HOU",106,456,20,56,57,0,"11.40%","17.80%",0.203,0.268,0.251,0.349,0.454,0.35,0.317,126,-3.1,11.1,-2.9,2.4],
+["Yordan Alvarez","HOU",52,218,7,20,29,2,"15.10%","16.50%",0.169,0.298,0.275,0.381,0.444,0.347,0.395,124,-0.3,5.9,-5.5,0.8],
+["Bobby Witt Jr.","KCR",160,699,23,100,89,39,"7.20%","18.20%",0.202,0.336,0.297,0.352,0.498,0.36,0.367,130,7.4,31.9,23.6,8.1],
+["Vinnie Pasquantino","KCR",163,694,32,72,115,1,"7.10%","15.60%",0.207,0.27,0.263,0.321,0.47,0.338,0.333,114,-4.6,6.9,-16.9,1.4],
+["Maikel Garcia","KCR",163,679,16,82,74,24,"9.60%","12.50%",0.16,0.306,0.284,0.352,0.445,0.346,0.335,120,1.3,17.2,15,5.7],
+["Salvador Perez","KCR",158,653,31,55,101,0,"4.30%","19.30%",0.21,0.247,0.235,0.282,0.445,0.309,0.36,95,-4.8,-8.9,-8.6,0.5],
+["Kyle Tucker","LAD",139,610,22,94,75,27,"14.60%","15.10%",0.196,0.283,0.264,0.376,0.46,0.361,0.37,135,4.2,29.3,-5.1,4.6],
+["Shohei Ohtani","LAD",161,740,55,148,102,20,"15.30%","25.40%",0.336,0.312,0.279,0.393,0.616,0.417,0.425,171,3.7,66.4,-17.4,7.5],
+["Mookie Betts","LAD",153,676,21,98,86,8,"9.20%","10.20%",0.15,0.256,0.257,0.325,0.407,0.318,0.33,104,-0.4,3,8.7,3.5],
+["Freddie Freeman","LAD",150,640,24,81,91,6,"9.50%","20.00%",0.204,0.34,0.294,0.366,0.498,0.368,0.355,138,-1.7,27.3,-10.4,3.9],
+["Andy Pages","LAD",159,634,28,75,89,14,"4.60%","21.50%",0.191,0.305,0.271,0.311,0.462,0.331,0.315,113,0.6,10.4,9.3,4.2],
+["Will Smith","LAD",113,447,19,66,66,2,"14.30%","20.10%",0.212,0.338,0.295,0.4,0.507,0.391,0.38,154,-2.9,25.7,1.8,4.3],
+["Max Muncy","LAD",103,396,19,49,67,4,"16.90%","21.50%",0.223,0.265,0.242,0.379,0.465,0.366,0.376,137,0.4,17.8,-1.5,3],
+["Jo Adell","LAA",156,591,37,65,99,5,"5.80%","25.90%",0.242,0.261,0.238,0.296,0.48,0.333,0.361,112,0.4,9,-16.8,1.3],
+["Zach Neto","LAA",132,574,28,88,65,27,"6.60%","26.50%",0.224,0.306,0.255,0.322,0.48,0.341,0.342,118,3,15.2,-1.8,3.4],
+["Mike Trout","LAA",134,576,28,78,67,3,"16.30%","31.40%",0.213,0.316,0.239,0.369,0.452,0.354,0.367,126,-0.5,17.5,-13.8,2.4],
+["Nolan Schanuel","LAA",136,584,14,67,58,5,"10.80%","12.80%",0.133,0.286,0.266,0.356,0.399,0.333,0.33,112,-1.3,7.1,-10.3,1.7],
+["Xavier Edwards","MIA",142,631,3,78,43,28,"7.80%","14.10%",0.068,0.331,0.285,0.343,0.353,0.309,0.296,96,3.9,0.7,3.9,2.6],
+["Kyle Stowers","MIA",117,457,25,61,73,5,"10.50%","27.40%",0.256,0.356,0.288,0.368,0.544,0.386,0.375,149,1,27.4,-3.7,4],
+["Otto Lopez","MIA",146,606,15,67,78,16,"7.40%","13.70%",0.121,0.265,0.247,0.305,0.368,0.295,0.33,87,0.9,-8.8,11.7,2.4],
+["Jakob Marsee","MIA",58,246,5,29,33,15,"9.30%","21.50%",0.182,0.35,0.282,0.354,0.464,0.354,0.34,127,2.4,10.2,1.9,2.1],
+["William Contreras","MIL",153,674,17,91,79,6,"13.10%","18.10%",0.14,0.297,0.258,0.356,0.399,0.332,0.332,114,-3.3,7.6,6.5,3.7],
+["Brice Turang","MIL",159,674,18,100,82,24,"9.90%","22.70%",0.149,0.361,0.291,0.362,0.44,0.349,0.338,126,2.1,22.5,-0.5,4.6],
+["Christian Yelich","MIL",153,655,30,92,108,17,"9.90%","25.80%",0.19,0.33,0.269,0.348,0.46,0.349,0.331,125,3,22.4,-16.9,2.8],
+["Sal Frelick","MIL",145,608,13,79,65,19,"8.40%","13.70%",0.123,0.315,0.286,0.353,0.409,0.335,0.301,116,2.5,13.8,2.7,3.8],
+["Jackson Chourio","MIL",131,589,21,88,78,21,"5.10%","20.50%",0.193,0.308,0.27,0.308,0.463,0.328,0.307,111,3.1,11,-2,2.9],
+["Byron Buxton","MIN",129,555,35,99,83,24,"7.60%","27.40%",0.286,0.307,0.266,0.328,0.552,0.368,0.348,137,8.8,33,-1.4,5.2],
+["Ryan Jeffers","MIN",121,472,9,47,47,1,"10.80%","19.90%",0.128,0.322,0.264,0.354,0.392,0.331,0.322,112,-2.3,4.2,-0.6,2],
+["Josh Bell","MIN",143,546,22,56,64,0,"10.80%","17.00%",0.18,0.249,0.237,0.326,0.417,0.325,0.357,108,-6.1,-0.9,-16.1,0.1],
+["Trevor Larnach","MIN",145,573,17,64,61,4,"9.40%","21.50%",0.154,0.297,0.252,0.325,0.406,0.318,0.314,103,-2.1,0,-16.5,0.3],
+["Francisco Lindor","NYM",163,747,31,121,86,31,"9.20%","17.90%",0.198,0.288,0.266,0.347,0.464,0.35,0.345,129,3,28.6,9.8,6.5],
+["Juan Soto","NYM",163,730,43,121,108,38,"17.50%","19.20%",0.257,0.275,0.266,0.396,0.523,0.39,0.426,156,2.7,50.8,-17.5,5.9],
+["Bo Bichette","NYM",142,643,18,79,95,4,"6.20%","15.40%",0.168,0.34,0.305,0.35,0.473,0.354,0.35,129,-3.3,18.8,-5.9,3.6],
+["Jorge Polanco","NYM",141,539,26,66,79,6,"8.70%","15.60%",0.225,0.266,0.262,0.328,0.486,0.348,0.345,131,0.1,19.8,-12.3,2.7],
+["Francisco Alvarez","NYM",79,285,12,35,33,0,"9.80%","26.00%",0.198,0.319,0.258,0.344,0.456,0.349,0.333,128,-1.1,8.2,1.9,2],
+["Aaron Judge","NYY",155,692,55,139,117,12,"17.90%","24.10%",0.359,0.372,0.327,0.451,0.686,0.46,0.456,203,-4.1,79.5,-3.9,10.2],
+["Cody Bellinger","NYY",155,669,29,91,98,13,"8.80%","13.80%",0.207,0.277,0.274,0.336,0.481,0.349,0.328,126,1,21.7,5,5.1],
+["Jazz Chisholm Jr.","NYY",133,543,31,76,80,32,"10.70%","28.00%",0.233,0.282,0.241,0.33,0.474,0.346,0.343,124,3.1,18.5,5.4,4.4],
+["Trent Grisham","NYY",146,592,34,88,76,4,"14.20%","23.30%",0.229,0.253,0.235,0.348,0.463,0.353,0.373,129,-2.6,17.7,-6.9,3.2],
+["Ben Rice","NYY",140,539,26,75,67,3,"9.50%","19.10%",0.242,0.273,0.255,0.337,0.497,0.358,0.393,132,-2.1,18.3,-6.7,3.1],
+["Giancarlo Stanton","NYY",80,293,25,38,68,0,"9.90%","33.80%",0.318,0.355,0.284,0.356,0.602,0.402,0.36,162,-1.1,20.3,-9.1,2.2],
+["Kyle Schwarber","PHI",165,737,57,112,134,10,"14.70%","27.50%",0.321,0.251,0.238,0.361,0.559,0.389,0.399,150,-1.1,42.7,-19.9,4.8],
+["Trea Turner","PHI",144,653,15,97,69,36,"6.70%","16.80%",0.15,0.347,0.301,0.352,0.45,0.348,0.32,122,7.9,25.2,17.1,6.6],
+["Bryce Harper","PHI",135,593,27,73,76,12,"12.10%","20.90%",0.221,0.288,0.258,0.354,0.479,0.357,0.366,129,1.3,21.4,-8.4,3.4],
+["J.T. Realmuto","PHI",137,562,12,58,52,8,"6.60%","23.80%",0.125,0.321,0.254,0.316,0.38,0.306,0.314,93,0.6,-3.9,5.6,2.1],
+["Fernando Tatis Jr.","SDP",158,703,25,112,72,33,"12.80%","18.80%",0.175,0.302,0.266,0.366,0.441,0.351,0.368,130,6.1,30.8,5.7,6.1],
+["Manny Machado","SDP",162,690,27,92,95,14,"8.60%","19.30%",0.185,0.308,0.274,0.338,0.459,0.343,0.356,124,-0.8,18.8,-3.5,3.9],
+["Jackson Merrill","SDP",118,495,16,60,68,1,"6.90%","22.40%",0.191,0.31,0.262,0.316,0.452,0.329,0.341,115,2,10.7,2.5,3],
+["Ramón Laureano","SDP",135,500,25,73,78,8,"7.00%","24.20%",0.234,0.334,0.285,0.344,0.519,0.368,0.369,140,-0.5,23.2,-8.5,3.2],
+["Jake Cronenworth","SDP",138,527,11,63,59,3,"13.30%","20.90%",0.128,0.301,0.247,0.366,0.374,0.332,0.318,117,-0.7,9.8,1.3,2.9],
+["Julio Rodríguez","SEA",164,728,32,108,96,30,"6.50%","21.70%",0.202,0.299,0.262,0.321,0.465,0.337,0.345,123,3.8,23.6,6.6,5.7],
+["Cal Raleigh","SEA",163,723,60,110,126,15,"13.80%","27.40%",0.336,0.25,0.244,0.357,0.579,0.388,0.367,159,-2.6,47.2,16.5,9.1],
+["Randy Arozarena","SEA",164,727,27,100,78,32,"9.50%","26.40%",0.187,0.299,0.24,0.338,0.427,0.335,0.329,122,-1.1,17.5,-11.7,3.1],
+["Josh Naylor","SEA",151,622,20,81,92,30,"8.20%","13.80%",0.163,0.306,0.287,0.348,0.45,0.343,0.332,123,0.5,17.1,-9.8,2.9],
+["Brendan Donovan","SEA",122,533,12,68,54,4,"8.30%","13.30%",0.146,0.319,0.291,0.36,0.437,0.347,0.347,125,-0.8,14.9,0.3,3.4],
+["Rafael Devers","SFG",166,741,35,99,109,1,"15.10%","26.50%",0.225,0.309,0.252,0.37,0.477,0.363,0.365,134,-5.8,24.1,-17.1,3.3],
+["Willy Adames","SFG",163,697,30,94,87,12,"11.50%","26.40%",0.193,0.262,0.223,0.315,0.415,0.317,0.324,105,0.8,5.2,9,3.8],
+["Matt Chapman","SFG",131,547,21,76,62,9,"13.50%","23.40%",0.194,0.267,0.229,0.34,0.423,0.334,0.34,117,0.9,12,6.3,3.7],
+["Luis Arraez","SFG",157,687,8,66,61,12,"5.10%","3.20%",0.098,0.289,0.292,0.327,0.39,0.313,0.302,104,-0.3,2.7,-16.2,1],
+["Harrison Bader","SFG",149,511,17,61,54,11,"7.60%","27.40%",0.168,0.355,0.273,0.342,0.441,0.341,0.293,119,-1,10.3,2,3],
+["Alec Burleson","STL",142,560,19,57,73,6,"7.30%","14.10%",0.171,0.311,0.291,0.345,0.463,0.347,0.348,126,-0.9,16.2,-13.6,2.2],
+["Iván Herrera","STL",110,466,19,54,68,8,"9.20%","18.20%",0.177,0.305,0.277,0.364,0.454,0.356,0.371,132,0.7,18.4,-9.8,2.5],
+["Lars Nootbaar","STL",135,583,13,68,48,4,"11.00%","20.40%",0.128,0.279,0.234,0.325,0.361,0.304,0.317,96,-1.5,-4.2,-7,0.8],
+["Masyn Winn","STL",132,551,9,74,51,9,"6.20%","19.10%",0.111,0.3,0.251,0.308,0.362,0.296,0.285,91,1.6,-4.5,20,3.5],
+["Yandy Díaz","TBR",153,668,25,82,88,3,"8.70%","13.90%",0.179,0.327,0.307,0.371,0.486,0.369,0.356,138,-1.2,28.4,-20.1,3.2],
+["Junior Caminero","TBR",157,668,45,95,110,7,"6.90%","19.20%",0.266,0.26,0.263,0.314,0.529,0.357,0.348,129,-0.1,22.9,-1.6,4.5],
+["Jonathan Aranda","TBR",109,439,15,59,63,0,"10.00%","25.10%",0.178,0.412,0.321,0.399,0.499,0.387,0.385,150,-6.4,19.4,-6.3,2.9],
+["Chandler Simpson","TBR",112,453,0,56,27,44,"4.60%","9.70%",0.049,0.332,0.299,0.33,0.348,0.3,0.295,90,6.6,1.3,-8.4,0.9],
+["Brandon Nimmo","TEX",158,666,26,84,94,14,"7.70%","21.50%",0.175,0.302,0.264,0.326,0.439,0.331,0.321,116,1.4,13.8,-4.6,3.2],
+["Corey Seager","TEX",105,459,22,64,52,3,"13.10%","19.80%",0.217,0.302,0.274,0.375,0.491,0.368,0.4,139,-1.6,19.6,5.8,4.2],
+["Wyatt Langford","TEX",137,587,22,74,62,22,"12.60%","26.40%",0.185,0.293,0.237,0.337,0.421,0.331,0.347,114,1.5,11.1,6.1,3.8],
+["Vladimir Guerrero Jr.","TOR",159,694,23,97,85,6,"12.20%","13.50%",0.172,0.315,0.294,0.385,0.466,0.367,0.384,138,-2.7,28.4,-12.7,4],
+["George Springer","TOR",143,600,33,107,86,18,"11.50%","19.20%",0.252,0.334,0.305,0.393,0.557,0.404,0.4,163,2.8,47.7,-18.1,5.1],
+["Kazuma Okamoto","TOR",121,470,26,69,86,3,"9.60%","18.40%",0.204,0.271,0.253,0.333,0.457,0.339,0.386,118,-1.2,11.5,-1.9,3],
+["Alejandro Kirk","TOR",132,516,16,47,77,1,"9.50%","11.60%",0.143,0.287,0.278,0.345,0.422,0.333,0.357,115,-5.9,3.1,25.1,4.7],
+["James Wood","WSN",160,703,32,88,95,15,"12.20%","32.40%",0.219,0.345,0.252,0.346,0.471,0.35,0.357,125,-0.9,20.2,-13.8,3],
+["CJ Abrams","WSN",146,643,19,92,62,31,"5.80%","19.90%",0.174,0.296,0.256,0.315,0.429,0.322,0.31,106,7.4,12.2,-2.8,3.2],
+["Daylen Lile","WSN",94,365,9,54,42,8,"6.30%","16.20%",0.195,0.34,0.3,0.35,0.495,0.361,0.349,133,1.6,16,-13.3,1.5]
 ];
 
 // ── MLB PITCHER DATA ──────────────────────────────────────────
@@ -1857,9 +1894,10 @@ const MLB_PITCHERS = [
 ];
 
 // ── MLB HITTERS STATE ─────────────────────────────────────────
-let mlbHitSortCol = 11, mlbHitSortAsc = false, mlbHitPage = 1;
+// new cols: 0=name,1=team,2=g,3=pa,4=hr,5=r,6=rbi,7=sb,8=bb%,9=k%,10=iso,11=babip,12=avg,13=obp,14=slg,15=woba,16=xwoba,17=wrc+,18=bsr,19=off,20=def,21=war
+let mlbHitSortCol = 21, mlbHitSortAsc = false, mlbHitPage = 1;
 let mlbHitFiltered = [...MLB_HITTERS];
-const maxMLBFPTS = Math.max(...MLB_HITTERS.map(r => r[11]));
+const maxMLBWAR = Math.max(...MLB_HITTERS.map(r => r[21]));
 
 // Populate hitter team filter
 const hitTeams = [...new Set(MLB_HITTERS.map(r => r[1]))].sort();
@@ -1867,30 +1905,27 @@ const hitTeamSel = document.getElementById('mlbHitTeam');
 hitTeams.forEach(t => { const o = document.createElement('option'); o.value = t; o.textContent = t; hitTeamSel.appendChild(o); });
 
 function filterMLBHitters() {
-  const search = document.getElementById('mlbHitSearch').value.toLowerCase();
-  const team = document.getElementById('mlbHitTeam').value;
-  const pos = document.getElementById('mlbHitPos').value;
+  const search = document.getElementById('mlbHitSearch') ? document.getElementById('mlbHitSearch').value : '';
+  const team = document.getElementById('mlbHitTeam') ? document.getElementById('mlbHitTeam').value : '';
   mlbHitFiltered = MLB_HITTERS.filter(r =>
-    r[0].toLowerCase().includes(search) &&
-    (!team || r[1] === team) &&
-    (!pos || r[2] === pos)
+    normalizeStr(r[0]).includes(normalizeStr(search)) &&
+    (!team || r[1] === team)
   );
   mlbHitPage = 1;
   renderMLBHitters();
 }
 
 function sortMLBHitters(col) {
-  // dataMap: 0=rank, 1=name(0), 2=team(1), 3=pos(2), 4=fpts(11), 5=avg(3), 6=obp(4), 7=slg(5), 8=hr(6), 9=rbi(7), 10=r(8), 11=sb(9), 12=kpct(10)
-  const dataMap = [null,0,1,2,11,3,4,5,6,7,8,9,10];
+  // 0=rank, 1=name(0), 2=team(1), 3=war(21), 4=wrc+(17), 5=avg(12), 6=obp(13), 7=slg(14),
+  // 8=woba(15), 9=xwoba(16), 10=hr(4), 11=r(5), 12=rbi(6), 13=sb(7), 14=bb%(8), 15=k%(9), 16=iso(10)
+  const dataMap = [null,0,1,21,17,12,13,14,15,16,4,5,6,7,8,9,10];
   const dc = dataMap[col];
   if (dc === null) return;
   if (mlbHitSortCol === dc) mlbHitSortAsc = !mlbHitSortAsc;
   else { mlbHitSortCol = dc; mlbHitSortAsc = false; }
   document.querySelectorAll('#mlb-hitters th').forEach(th => { th.classList.remove('sorted'); const a = th.querySelector('.sort-arrow'); if(a) a.textContent='↕'; });
   const th = document.querySelectorAll('#mlb-hitters th')[col];
-  th.classList.add('sorted');
-  const arr = th.querySelector('.sort-arrow');
-  if(arr) arr.textContent = mlbHitSortAsc ? '↑' : '↓';
+  if (th) { th.classList.add('sorted'); const arr = th.querySelector('.sort-arrow'); if(arr) arr.textContent = mlbHitSortAsc ? '↑' : '↓'; }
   mlbHitPage = 1;
   renderMLBHitters();
 }
@@ -1908,28 +1943,34 @@ function renderMLBHitters() {
   const page = sorted.slice((mlbHitPage-1)*perP, mlbHitPage*perP);
   page.forEach((r, i) => {
     const rank = (mlbHitPage-1)*perP + i + 1;
-    const fpts = r[11];
-    const barPct = Math.round((fpts / maxMLBFPTS) * 100);
+    const war = r[21];
+    const warPct = Math.round((Math.max(0, war) / maxMLBWAR) * 100);
     const tr = document.createElement('tr');
+    const tierClass = war >= 5 ? 'tier-1' : '';
+    if (tierClass) tr.className = tierClass;
     tr.innerHTML = `
       <td class="rank">${rank}</td>
       <td class="player-name">${r[0]}</td>
       <td class="team-badge">${r[1]}</td>
-      <td class="stat">${r[2]}</td>
       <td class="fpts">
         <div class="bar-wrap">
-          <div class="bar-bg"><div class="bar-fill" style="width:${barPct}%"></div></div>
-          <span class="bar-val">${fpts.toFixed(1)}</span>
+          <div class="bar-bg"><div class="bar-fill" style="width:${warPct}%"></div></div>
+          <span class="bar-val">${war.toFixed(1)}</span>
         </div>
       </td>
-      <td class="stat">${r[3].toFixed(3).replace(/^0/,'')}</td>
-      <td class="stat">${r[4].toFixed(3).replace(/^0/,'')}</td>
-      <td class="stat">${r[5].toFixed(3).replace(/^0/,'')}</td>
+      <td class="stat">${r[17]}</td>
+      <td class="stat">${r[12].toFixed(3).replace(/^0/,'')}</td>
+      <td class="stat">${r[13].toFixed(3).replace(/^0/,'')}</td>
+      <td class="stat">${r[14].toFixed(3).replace(/^0/,'')}</td>
+      <td class="stat">${r[15].toFixed(3).replace(/^0/,'')}</td>
+      <td class="stat">${r[16].toFixed(3).replace(/^0/,'')}</td>
+      <td class="stat">${r[4]}</td>
+      <td class="stat">${r[5]}</td>
       <td class="stat">${r[6]}</td>
       <td class="stat">${r[7]}</td>
       <td class="stat">${r[8]}</td>
       <td class="stat">${r[9]}</td>
-      <td class="stat">${r[10].toFixed(1)}%</td>
+      <td class="stat">${r[10].toFixed(3).replace(/^0/,'')}</td>
     `;
     tbody.appendChild(tr);
   });
@@ -1950,7 +1991,7 @@ function filterMLBPitchers() {
   const team = document.getElementById('mlbPitTeam').value;
   const role = document.getElementById('mlbPitRole').value;
   mlbPitFiltered = MLB_PITCHERS.filter(r =>
-    r[0].toLowerCase().includes(search) &&
+    normalizeStr(r[0]).includes(normalizeStr(search)) &&
     (!team || r[1] === team) &&
     (!role || r[2] === role)
   );
@@ -2082,19 +2123,32 @@ function nbaDfsLoadCSV(input) {
       // Parse header to detect column format
       const headers = lines[0].split(',').map(h => h.replace(/"/g,'').trim().toLowerCase());
 
-      // Map column indices
+      // Map column indices — supports both DK format and shortopen format
       const col = {
         name: headers.findIndex(h => h === 'name' || h === 'player'),
         pos:  headers.findIndex(h => h === 'position' || h === 'pos'),
         team: headers.findIndex(h => h === 'teamabbrev' || h === 'team'),
         sal:  headers.findIndex(h => h === 'salary'),
-        proj: headers.findIndex(h => h.includes('avgpoints') || h === 'projection' || h === 'proj' || h === 'fpts'),
+        proj: headers.findIndex(h => h === 'projection' || h === 'proj' || h === 'fpts' || h.includes('avgpoints')),
+        pts:  headers.findIndex(h => h === 'points' || h === 'pts'),
+        reb:  headers.findIndex(h => h === 'rebounds' || h === 'reb'),
+        ast:  headers.findIndex(h => h === 'assists' || h === 'ast'),
+        stl:  headers.findIndex(h => h === 'steals' || h === 'stl'),
+        blk:  headers.findIndex(h => h === 'blocks' || h === 'blk'),
+        tov:  headers.findIndex(h => h === 'turnovers' || h === 'tov'),
+        usg:  headers.findIndex(h => h === 'usg%' || h === 'usg'),
+        ts:   headers.findIndex(h => h === 'ts%' || h === 'ts'),
+        efg:  headers.findIndex(h => h === 'efg%' || h === 'efg'),
+        fpm:  headers.findIndex(h => h === 'fp/m' || h === 'fpm'),
+        fpts100: headers.findIndex(h => h === 'fpts/100'),
       };
 
-      if (col.name === -1 || col.sal === -1) throw new Error('Could not find Name or Salary columns');
+      if (col.name === -1) throw new Error('Could not find Player/Name column');
+      if (col.proj === -1) throw new Error('Could not find Projection/FPTS column');
 
-      let added = 0, updated = 0;
-      const existingNames = new Map(NBA_DFS_POOL.map((p, i) => [p[1].toLowerCase(), i]));
+      // Completely rebuild the pool from the uploaded CSV
+      NBA_DFS_POOL.length = 0;
+      let count = 0;
 
       lines.slice(1).forEach(line => {
         if (!line.trim()) return;
@@ -2102,41 +2156,53 @@ function nbaDfsLoadCSV(input) {
 
         const name = cells[col.name];
         if (!name || !name.trim()) return;
-        const salary = parseInt(cells[col.sal]) || 0;
-        const proj = col.proj >= 0 ? parseFloat(cells[col.proj]) || 0 : 0;
-        const team = col.team >= 0 ? cells[col.team] : '';
+
+        const fpts   = parseFloat(cells[col.proj]) || 0;
+        if (fpts <= 0) return;
+
+        const team   = col.team >= 0 ? cells[col.team] : '';
+        const pts    = col.pts >= 0 ? parseFloat(cells[col.pts]) || 0 : 0;
+        const reb    = col.reb >= 0 ? parseFloat(cells[col.reb]) || 0 : 0;
+        const ast    = col.ast >= 0 ? parseFloat(cells[col.ast]) || 0 : 0;
         const rawPos = col.pos >= 0 ? cells[col.pos].toUpperCase() : '';
-        // Handle multi-position like PG/SG, SF/PF — take first listed
         const firstPos = rawPos.split('/')[0].trim();
         const pos = NBA_POS_MAP[name] ||
           (['PG','SG','SF','PF','C'].includes(firstPos) ? firstPos : 'SF');
 
-        const ptsDollar = proj > 0 ? parseFloat((proj / (salary/1000)).toFixed(2)) : 0;
-
-        const idx = existingNames.get(name.toLowerCase());
-        if (idx !== undefined) {
-          // Update existing player — refresh salary, proj, pts$
-          NBA_DFS_POOL[idx][3] = salary;
-          if (proj > 0) NBA_DFS_POOL[idx][4] = proj;
-          NBA_DFS_POOL[idx][5] = ptsDollar;
-          if (team) NBA_DFS_POOL[idx][2] = team;
-          updated++;
-        } else {
-          // Add new player
-          // 0=pos,1=name,2=team,3=salary,4=fpts,5=pts$,6=mins,7=pts,8=reb,9=ast
-          NBA_DFS_POOL.push([pos, name, team, salary, proj, ptsDollar, 0, 0, 0, 0]);
-          existingNames.set(name.toLowerCase(), NBA_DFS_POOL.length - 1);
-          added++;
+        // Derive salary from FPTS if no salary column
+        let salary = col.sal >= 0 ? (parseInt(cells[col.sal]) || 0) : 0;
+        if (salary < 1000) {
+          // Auto-scale will happen after all players loaded
+          salary = fpts; // temporary, replaced below
         }
+        const ptsDollar = 0; // recalculated after scaling
+
+        NBA_DFS_POOL.push([pos, name, team, salary, fpts, ptsDollar, 0, pts, reb, ast]);
+        count++;
       });
 
-      // Refresh filtered pool and re-render
+      // If no real salaries, scale linearly $3000–$10000 from min→max FPTS
+      if (col.sal === -1 || NBA_DFS_POOL.every(p => p[3] === p[4])) {
+        const maxF = Math.max(...NBA_DFS_POOL.map(p => p[4]));
+        const minF = Math.min(...NBA_DFS_POOL.map(p => p[4]));
+        const range = maxF - minF || 1;
+        NBA_DFS_POOL.forEach(p => {
+          const norm = (p[4] - minF) / range;
+          p[3] = Math.round((3000 + norm * 7000) / 100) * 100;
+          p[5] = parseFloat((p[4] / (p[3] / 1000)).toFixed(2));
+        });
+      }
+
+      if (count === 0) throw new Error('No valid players found in file');
+
+      // Refresh pool and clear lineup
       nbaDfsFiltered = [...NBA_DFS_POOL];
       nbaDfsFilter();
       nbaDfsClearLineup();
 
-      status.textContent = `✓ ${updated} updated · ${added} added`;
+      status.textContent = `✓ ${count} players loaded`;
       status.className = 'csv-status success';
+      setTimeout(() => { if(status) status.textContent = ''; }, 4000);
 
       // Reset file input so same file can be re-uploaded
       input.value = '';
@@ -2155,12 +2221,9 @@ function switchSport(sport, btn) {
   document.querySelectorAll('.sport-panel').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('panel-' + sport).classList.add('active');
+  if (sport === 'nba') { filterTable(); }
   if (sport === 'dfs') { dfsRenderPool(); dfsRenderLineup(); }
-  if (sport === 'nbadfs') {
-    nbaDfsFilter();
-    nbaDfsRenderLineup();
-    if (!nbaSheetsLoaded) nbaDfsFetchSheets();
-  }
+  if (sport === 'nbadfs') { nbaDfsFilter(); nbaDfsRenderLineup(); }
 }
 
 // ── DFS OPTIMIZER DATA (from real DraftKings CSV) ─────────────
@@ -2569,131 +2632,316 @@ const NBA_POS_MAP = {
   "Zion Williamson":"C","Nikola Vučević":"C","Brook Lopez":"C"
 };
 
-// Build NBA DFS pool from RAW with salaries based on FPTS tiers
-// DK-realistic: max $10,000, average ~$6,000 so 8-player lineup fits under $50K
-function buildNbaDfsPool() {
-  const players = RAW.map(r => {
-    const name = r[0], team = r[1], mins = r[2], pts = r[3], reb = r[4],
-          ast = r[5], fpts = r[10], fpm = r[11];
-    const pos = NBA_POS_MAP[name] || (reb >= 8 ? 'C' : ast >= 5 ? 'PG' : pts >= 22 ? 'SF' : 'SF');
-    return [pos, name, team, fpts, fpts, 0, mins, pts, reb, ast];
-  }).filter(p => p[3] >= 10);
+const NBA_SLATE_RAW = [
+["Terance Mann","BKN",13.5,57.1,53.8,10.9,4.6,4.7,1.0,0.4,1.6,26.2,0.73,36.4],
+["Drake Powell","BKN",15.0,55.2,50.0,11.3,3.2,2.8,0.9,0.3,1.9,21.7,0.6,30.4],
+["Josh Minott","BKN",15.3,48.5,50.0,9.2,4.6,2.0,2.6,0.7,2.6,23.7,0.66,34.5],
+["Ochai Agbaji","BKN",16.3,65.0,65.1,15.2,5.2,2.4,0.9,1.3,1.7,30.1,0.84,41.7],
+["Jalen Wilson","BKN",16.5,53.8,49.7,13.2,4.0,1.7,1.1,0.1,1.4,23.7,0.66,33.2],
+["E.J. Liddell","BKN",16.5,59.1,57.9,16.0,8.0,0.0,0.7,0.0,0.7,28.3,0.79,38.6],
+["Chaney Johnson","BKN",16.7,100.0,100.0,28.8,7.2,0.0,7.2,7.2,0.0,66.6,1.85,84.1],
+["Ziaire Williams","BKN",17.5,58.0,52.6,15.3,3.9,1.6,1.9,0.6,1.6,28.0,0.78,38.3],
+["Nic Claxton","BKN",17.8,59.8,58.0,15.3,8.9,4.9,0.9,1.5,1.8,37.8,1.05,52.6],
+["Ben Saraf","BKN",18.4,44.5,39.2,10.4,3.1,5.9,1.4,0.4,4.0,25.2,0.7,34.1],
+["Egor Dëmin","BKN",18.6,56.1,53.7,14.8,4.5,4.8,1.2,0.5,2.4,31.4,0.87,43.0],
+["Tyrese Martin","BKN",18.7,50.7,49.2,14.0,5.5,3.6,1.1,0.2,1.7,29.3,0.81,41.3],
+["Day\'Ron Sharpe","BKN",19.5,63.8,61.4,16.8,12.8,4.5,2.1,0.8,3.3,43.8,1.22,60.6],
+["Noah Clowney","BKN",20.4,56.0,50.4,16.5,5.3,2.2,1.0,0.9,2.1,30.5,0.85,42.1],
+["Danny Wolf","BKN",20.5,52.1,48.7,15.5,8.3,4.0,1.0,1.0,2.1,35.8,0.99,49.9],
+["Nolan Traore","BKN",20.7,49.8,46.5,13.6,2.6,5.9,1.1,0.6,3.3,28.2,0.78,39.5],
+["Tyson Etienne","BKN",22.3,39.5,39.5,13.8,0.0,1.8,0.0,0.0,1.8,18.0,0.5,24.4],
+["Grant Nelson","BKN",22.8,63.4,55.6,17.5,6.2,5.1,1.0,5.1,4.1,43.2,1.2,60.9],
+["Michael Porter Jr.","BKN",29.8,59.5,55.6,26.8,7.9,3.4,1.2,0.3,2.6,45.2,1.26,62.5],
+["Cam Thomas","BKN",30.0,52.8,46.3,23.1,2.7,4.6,0.2,0.1,3.0,33.8,0.94,47.7],
+["Mason Plumlee","CHA",8.8,75.2,75.0,7.5,11.5,4.6,1.7,0.0,2.6,31.0,0.86,43.0],
+["Sion James","CHA",10.9,54.1,48.6,8.4,5.4,3.0,0.9,0.5,1.3,22.4,0.62,31.2],
+["Josh Green","CHA",11.2,67.0,64.3,10.9,4.3,2.1,1.3,0.3,1.3,23.2,0.64,32.5],
+["Drew Peterson","CHA",11.2,14.8,12.5,2.8,5.1,1.1,1.7,0.6,0.0,15.3,0.43,21.3],
+["Ryan Kalkbrenner","CHA",11.6,74.7,74.3,12.8,9.5,1.3,0.9,2.4,1.5,32.4,0.9,43.4],
+["Moussa Diabaté","CHA",11.9,66.2,64.0,11.6,12.2,2.5,1.0,1.5,1.3,34.9,0.97,48.9],
+["Xavier Tillman","CHA",12.2,25.0,25.0,4.0,8.0,0.0,0.0,2.0,2.0,17.0,0.47,25.0],
+["Antonio Reeves","CHA",13.7,67.5,67.5,14.7,4.4,1.1,0.5,0.0,0.5,24.5,0.68,35.4],
+["Grant Williams","CHA",13.9,62.9,58.5,14.0,7.6,3.5,0.7,0.6,1.4,32.0,0.89,43.3],
+["Liam McNeeley","CHA",14.4,56.6,51.1,12.1,6.3,2.4,0.5,0.3,1.3,25.8,0.72,36.0],
+["Tidjane Salaün","CHA",15.0,63.2,62.0,14.0,9.4,1.7,1.0,0.4,1.6,31.5,0.88,43.8],
+["Pat Connaughton","CHA",16.2,60.2,58.5,14.5,7.2,2.6,1.1,0.2,1.4,30.5,0.85,43.3],
+["PJ Hall","CHA",17.6,59.4,52.0,14.1,12.7,1.5,0.6,1.5,2.9,35.2,0.98,48.0],
+["Kon Knueppel","CHA",22.3,65.0,61.8,21.7,6.0,3.9,0.8,0.3,2.4,38.1,1.06,51.7],
+["KJ Simpson","CHA",22.7,43.7,41.6,13.6,4.5,5.7,2.6,0.0,3.9,31.9,0.89,43.6],
+["Miles Bridges","CHA",23.1,55.8,51.7,19.8,6.7,3.8,0.7,0.5,1.6,36.7,1.02,50.4],
+["Tre Mann","CHA",23.2,46.2,44.3,15.5,5.1,4.7,1.3,0.3,2.9,32.0,0.89,44.6],
+["Collin Sexton","CHA",25.5,61.9,55.7,22.9,3.1,6.0,1.4,0.3,3.4,38.4,1.07,52.2],
+["Brandon Miller","CHA",29.2,57.0,52.7,24.8,6.1,4.1,1.3,1.0,3.4,43.1,1.2,58.8],
+["Coby White","CHA",30.6,52.8,46.7,24.2,4.6,7.9,1.0,0.0,2.9,43.5,1.21,61.3],
+["LaMelo Ball","CHA",31.1,53.2,50.2,25.0,6.3,9.4,1.5,0.3,3.6,50.9,1.41,68.7],
+["Dean Wade","CLE",10.1,58.3,56.7,9.5,6.9,2.5,1.3,0.7,0.4,26.5,0.74,35.6],
+["Keon Ellis","CLE",11.2,62.6,60.8,10.5,4.4,2.5,2.5,1.8,1.0,28.8,0.8,40.1],
+["Craig Porter Jr.","CLE",12.5,51.0,50.2,9.0,6.7,6.6,1.9,1.1,1.9,33.1,0.92,44.3],
+["Lonzo Ball","CLE",13.3,43.2,41.5,7.9,6.9,6.7,2.2,0.4,2.6,31.7,0.88,40.9],
+["Larry Nance Jr.","CLE",13.4,45.8,45.3,9.3,7.4,2.7,1.6,0.4,1.4,26.7,0.74,35.7],
+["Nae\'Qwan Tomlin","CLE",15.8,53.3,50.4,13.4,6.5,1.9,1.6,1.3,0.9,30.2,0.84,40.8],
+["Luke Travers","CLE",16.7,35.0,26.4,9.8,8.4,3.1,2.4,1.4,1.0,32.3,0.9,42.8],
+["Sam Merrill","CLE",16.9,66.2,64.4,17.7,3.2,3.2,0.8,0.2,1.2,30.1,0.84,39.9],
+["Jaylon Tyson","CLE",18.7,61.8,60.2,17.6,6.8,2.9,1.1,0.5,1.9,34.0,0.95,45.7],
+["Thomas Bryant","CLE",18.8,60.5,56.3,18.2,9.9,2.0,0.8,1.5,1.3,38.9,1.08,51.9],
+["Chris Livingston","CLE",18.9,60.5,57.1,19.1,6.4,2.1,2.1,0.0,0.0,34.4,0.96,45.1],
+["Tristan Enaruna","CLE",19.4,48.1,50.0,14.7,10.7,4.0,0.0,0.0,1.3,34.0,0.94,51.0],
+["Jarrett Allen","CLE",19.6,67.0,63.7,20.0,11.1,2.5,1.3,1.1,1.8,41.5,1.15,55.1],
+["Darius Brown","CLE",20.0,0.0,0.0,0.0,12.0,0.0,0.0,0.0,0.0,15.0,0.42,31.3],
+["Tyrese Proctor","CLE",21.2,53.0,49.7,16.6,3.6,4.5,1.4,0.0,2.2,31.0,0.86,42.7],
+["Dennis Schröder","CLE",21.3,51.5,44.3,14.7,3.4,6.6,1.6,0.4,2.9,32.1,0.89,44.6],
+["Evan Mobley","CLE",22.3,58.2,56.2,19.6,9.6,4.1,0.9,2.1,2.2,43.3,1.2,58.2],
+["De\'Andre Hunter","CLE",22.3,55.3,49.9,19.2,5.8,2.8,1.0,0.2,2.3,33.2,0.92,43.4],
+["James Harden","CLE",24.0,63.5,57.9,21.0,5.4,8.5,0.6,0.6,3.5,42.8,1.19,58.6],
+["Darius Garland","CLE",25.5,56.7,52.9,21.2,2.9,8.2,1.0,0.1,3.3,38.9,1.08,50.9],
+["Donovan Mitchell","CLE",32.3,61.4,56.6,30.6,4.9,6.3,1.7,0.3,3.2,50.2,1.4,66.5],
+["Dwight Powell","DAL",8.8,69.3,66.0,8.2,9.7,2.4,1.2,0.9,1.6,27.3,0.76,36.1],
+["John Poulakidas","DAL",9.4,0.0,0.0,0.0,12.9,5.1,0.0,0.0,2.6,22.5,0.63,31.3],
+["Dereck Lively II","DAL",11.7,67.0,61.1,9.4,11.6,4.1,1.3,3.4,3.1,37.8,1.05,48.9],
+["Tyus Jones","DAL",12.3,44.4,44.1,8.4,2.4,8.1,0.8,0.0,1.4,25.1,0.7,33.5],
+["Caleb Martin","DAL",12.4,52.9,51.1,9.5,6.1,3.4,1.7,0.6,1.6,26.4,0.73,34.7],
+["Jeremiah Robinson-Earl","DAL",13.2,58.6,52.9,13.0,8.9,1.8,1.2,0.0,1.2,29.1,0.81,37.3],
+["Moussa Cisse","DAL",13.4,56.7,59.0,10.8,14.1,0.7,1.0,3.1,2.1,36.6,1.02,48.4],
+["Miles Kelly","DAL",14.8,48.4,47.7,11.6,6.4,3.2,1.1,0.3,1.6,27.7,0.77,36.0],
+["Daniel Gafford","DAL",14.9,67.4,64.1,14.4,11.1,1.7,1.3,2.2,2.1,36.8,1.02,48.7],
+["Max Christie","DAL",17.0,60.2,57.0,15.6,4.2,2.6,0.6,0.4,1.5,27.5,0.76,36.6],
+["AJ Johnson","DAL",17.8,39.9,32.4,10.8,3.9,3.3,0.3,0.0,1.6,20.8,0.58,29.3],
+["Ryan Nembhard","DAL",18.7,50.5,49.3,12.8,3.6,9.3,0.6,0.0,2.9,32.1,0.89,43.4],
+["Marvin Bagley III","DAL",19.4,60.7,60.3,18.7,13.3,1.5,0.6,1.3,1.3,41.0,1.14,53.6],
+["Naji Marshall","DAL",19.6,60.8,56.4,18.4,5.8,3.7,1.3,0.1,1.8,33.6,0.93,44.0],
+["P.J. Washington","DAL",20.3,52.9,49.8,16.3,8.0,2.3,1.1,1.4,2.2,34.3,0.95,45.2],
+["Klay Thompson","DAL",21.9,53.9,53.0,19.2,3.8,2.3,0.8,0.5,1.6,31.5,0.87,40.5],
+["Khris Middleton","DAL",22.1,52.7,45.7,17.2,5.9,4.5,0.7,0.0,2.8,31.9,0.89,42.0],
+["Jaden Hardy","DAL",23.2,55.1,52.1,19.6,4.0,2.4,0.8,0.2,2.3,30.8,0.86,40.4],
+["Brandon Williams","DAL",25.2,56.5,50.2,21.2,4.7,6.1,1.5,0.4,3.1,39.0,1.08,50.5],
+["Cooper Flagg","DAL",25.8,54.9,50.4,21.5,7.0,4.5,1.3,0.9,2.4,40.9,1.14,54.2],
+["D\'Angelo Russell","DAL",26.7,51.1,47.6,19.2,4.4,7.6,0.9,0.1,3.6,37.5,1.04,49.1],
+["Anthony Davis","DAL",27.9,55.1,52.1,23.4,12.7,3.2,1.3,1.9,2.4,49.6,1.38,66.5],
+["Wendell Moore Jr.","DET",7.4,63.5,57.1,6.7,4.0,2.0,1.3,1.3,0.7,19.7,0.55,26.8],
+["Javonte Green","DET",14.7,58.3,53.7,13.5,5.6,1.3,2.4,0.6,1.3,29.0,0.81,38.8],
+["Chaz Lanier","DET",14.8,49.8,47.5,12.4,3.8,2.6,1.0,0.0,0.4,24.4,0.68,32.6],
+["Duncan Robinson","DET",15.4,60.4,58.5,15.3,3.4,2.5,0.8,0.4,0.9,27.1,0.75,36.2],
+["Kevin Huerter","DET",15.6,47.0,44.6,11.9,5.3,3.3,1.7,1.7,1.0,30.1,0.83,42.5],
+["Isaiah Stewart","DET",16.7,62.8,59.5,15.6,7.9,1.8,0.4,2.6,1.8,33.8,0.94,46.0],
+["Colby Jones","DET",16.7,33.3,33.3,10.3,20.6,10.3,0.0,0.0,0.0,51.4,1.43,71.4],
+["Tolu Smith","DET",16.8,57.1,47.6,13.5,13.5,2.5,0.8,2.0,2.0,38.8,1.08,54.1],
+["Ausar Thompson","DET",17.7,54.5,52.8,14.3,8.2,4.1,2.7,1.2,2.0,37.6,1.04,51.3],
+["Caris LeVert","DET",17.7,52.1,49.6,13.5,3.3,4.9,1.7,1.2,2.5,30.3,0.84,41.0],
+["Tobias Harris","DET",18.3,56.0,51.3,16.8,6.6,2.7,1.2,0.4,1.3,32.6,0.91,43.7],
+["Ronald Holland II","DET",18.8,52.0,47.1,14.7,7.8,2.3,2.2,0.6,2.3,33.0,0.92,44.3],
+["Bobi Klintman","DET",19.2,36.6,38.5,10.4,9.4,3.1,1.6,0.0,3.1,29.5,0.82,39.0],
+["Marcus Sasser","DET",19.3,57.2,54.1,16.0,3.2,6.3,2.6,0.3,2.6,35.5,0.99,46.9],
+["Paul Reed","DET",19.5,63.4,62.2,18.6,12.3,3.1,2.5,2.2,2.5,47.0,1.31,63.3],
+["Jaden Ivey","DET",20.3,57.0,54.5,17.5,4.7,3.4,1.0,0.8,2.3,32.1,0.89,43.1],
+["Daniss Jenkins","DET",20.9,50.4,46.6,15.9,3.8,6.2,1.8,0.4,2.7,33.7,0.94,45.1],
+["Jalen Duren","DET",23.1,66.2,62.7,23.8,13.8,2.2,1.1,1.1,2.3,47.7,1.32,64.1],
+["Cade Cunningham","DET",30.6,56.1,50.8,25.8,5.8,10.1,1.5,0.9,3.9,52.2,1.45,70.0],
+["Isaac Jones","DET",66.7,50.0,50.0,72.0,0.0,0.0,0.0,0.0,0.0,72.0,2.0,66.7],
+["Isaiah Crawford","HOU",8.9,62.5,62.5,6.9,4.2,2.1,1.4,2.1,1.4,22.2,0.62,32.0],
+["Dorian Finney-Smith","HOU",10.5,44.6,43.1,6.9,5.5,1.7,0.8,0.3,1.2,18.8,0.52,26.1],
+["Josh Okogie","HOU",11.7,55.7,54.5,9.6,5.1,1.6,1.7,0.4,1.1,22.7,0.63,32.5],
+["Steven Adams","HOU",11.9,53.5,50.4,9.2,13.6,2.4,1.1,1.0,1.7,33.1,0.92,46.0],
+["Clint Capela","HOU",13.5,52.7,50.3,10.7,13.3,1.8,1.4,2.4,1.4,36.8,1.02,51.5],
+["Jae\'Sean Tate","HOU",13.7,56.7,56.4,11.5,5.9,2.1,1.1,0.4,1.3,25.0,0.69,35.8],
+["JD Davison","HOU",15.7,47.4,46.3,10.8,4.5,5.5,1.0,0.8,1.4,28.2,0.78,41.0],
+["Aaron Holiday","HOU",17.7,56.6,53.0,15.3,2.5,2.5,1.2,0.3,1.6,25.7,0.71,35.8],
+["Jabari Smith Jr.","HOU",17.8,57.1,54.2,15.8,7.1,1.9,0.8,1.0,1.4,31.6,0.88,44.1],
+["Tari Eason","HOU",18.4,53.9,52.8,15.0,8.6,2.3,1.7,0.8,2.0,34.4,0.95,47.7],
+["Jeff Green","HOU",18.5,61.5,60.0,18.0,4.7,1.3,0.3,0.3,0.3,28.8,0.8,41.5],
+["Amen Thompson","HOU",20.1,57.8,53.1,17.1,7.5,5.1,1.5,0.6,2.4,37.3,1.04,52.1],
+["Reed Sheppard","HOU",21.7,56.5,54.9,18.9,3.8,4.5,2.0,0.9,2.1,37.0,1.03,51.1],
+["Kevin Durant","HOU",27.0,63.2,57.4,25.6,5.4,4.4,0.8,0.9,3.2,42.0,1.17,58.0],
+["Alperen Sengun","HOU",27.3,55.6,52.0,21.9,9.7,6.6,1.4,1.1,3.6,47.3,1.31,66.2],
+["Nicolas Batum","LAC",9.5,59.1,58.3,7.9,4.9,1.7,1.3,0.6,1.1,21.3,0.59,29.4],
+["Jahmyl Telfort","LAC",9.7,8.7,0.0,1.1,3.4,1.1,1.1,0.0,1.1,8.7,0.24,12.1],
+["Norchad Omier","LAC",11.8,50.0,50.0,9.0,18.0,0.0,0.0,0.0,0.0,31.5,0.88,53.8],
+["Kris Dunn","LAC",12.9,59.8,57.4,10.2,4.3,4.8,2.0,0.2,1.9,26.7,0.74,37.2],
+["Chris Paul","LAC",13.9,41.3,41.1,7.4,4.4,8.4,1.7,0.0,2.5,28.5,0.79,39.8],
+["Kobe Sanders","LAC",15.5,57.7,55.0,12.1,4.2,2.8,1.0,0.2,2.3,23.9,0.66,32.8],
+["TyTy Washington Jr.","LAC",15.5,67.9,67.9,13.2,1.4,7.6,2.8,1.4,2.1,34.6,0.96,52.1],
+["Isaiah Jackson","LAC",15.7,66.9,70.8,15.7,10.3,1.7,1.7,2.5,1.7,38.6,1.07,53.6],
+["Yanic Konan Niederhäuser","LAC",15.8,69.1,64.5,14.9,9.9,1.0,0.4,2.5,2.0,33.9,0.94,47.3],
+["Derrick Jones Jr.","LAC",15.9,62.1,59.2,15.1,4.0,1.7,1.2,1.4,1.1,28.2,0.78,38.8],
+["Kobe Brown","LAC",17.0,52.4,47.0,12.2,6.5,3.3,1.1,0.2,1.8,27.8,0.77,39.5],
+["Cam Christie","LAC",17.3,49.1,43.1,11.9,5.7,2.2,1.0,0.3,1.5,24.6,0.68,34.9],
+["Brook Lopez","LAC",18.1,54.7,52.4,14.1,5.5,2.0,1.1,1.7,1.4,30.4,0.84,42.5],
+["Jordan Miller","LAC",18.2,63.3,57.3,16.0,5.1,3.3,1.2,0.3,1.9,29.9,0.83,41.9],
+["John Collins","LAC",18.7,65.3,63.1,17.9,6.7,1.2,1.1,1.0,1.8,32.4,0.9,44.8],
+["Ivica Zubac","LAC",18.7,63.5,61.3,16.8,12.8,2.6,0.4,1.0,2.2,38.4,1.07,53.2],
+["Bogdan Bogdanović","LAC",18.9,50.0,46.5,12.8,4.9,4.4,0.9,0.1,2.2,27.6,0.77,39.2],
+["Bradley Beal","LAC",22.8,47.6,44.8,14.6,1.5,3.0,0.9,0.0,2.7,22.4,0.62,31.0],
+["Patrick Baldwin Jr.","LAC",24.0,102.5,100.0,30.0,3.0,0.0,0.0,0.0,3.0,35.3,0.98,49.0],
+["Dalano Banton","LAC",25.0,75.0,75.0,21.6,3.6,7.2,3.6,0.0,3.6,42.3,1.18,65.3],
+["Darius Garland","LAC",28.8,56.8,54.5,23.8,3.8,8.0,1.0,0.0,4.2,42.7,1.19,56.3],
+["Bennedict Mathurin","LAC",29.0,53.7,44.0,23.1,7.7,2.8,1.4,0.6,2.5,40.2,1.12,54.6],
+["James Harden","LAC",30.6,59.8,50.6,25.8,4.9,8.3,1.3,0.4,3.7,47.4,1.32,65.5],
+["Kawhi Leonard","LAC",33.3,62.4,56.3,31.0,7.1,4.1,2.2,0.5,2.3,51.8,1.44,72.3],
+["Chris Mañon","LAL",7.0,34.7,0.0,2.9,8.6,1.4,4.3,2.9,1.4,29.5,0.82,44.6],
+["Maxi Kleber","LAL",9.6,54.5,51.7,7.1,6.3,2.1,1.2,0.9,1.2,22.1,0.61,30.3],
+["Gabe Vincent","LAL",11.4,51.2,49.2,8.9,1.7,2.4,0.9,0.1,0.8,17.4,0.48,23.5],
+["Jarred Vanderbilt","LAL",12.2,54.6,52.7,9.1,9.3,2.5,1.7,0.7,1.9,28.9,0.8,39.4],
+["Jaxson Hayes","LAL",12.3,75.8,75.7,14.2,8.2,1.9,0.8,1.2,0.9,30.9,0.86,41.9],
+["Adou Thiero","LAL",12.4,55.1,47.6,9.9,6.7,2.1,1.8,0.7,1.4,25.7,0.71,35.7],
+["Jake LaRavia","LAL",14.8,57.6,54.0,12.6,5.5,2.6,1.7,0.6,1.5,28.0,0.78,37.9],
+["Rui Hachimura","LAL",15.1,61.5,60.3,14.3,4.2,1.1,0.7,0.4,0.9,24.0,0.67,32.2],
+["Luke Kennard","LAL",15.1,74.7,72.8,16.5,4.1,2.9,0.9,0.1,1.6,28.6,0.79,38.6],
+["Drew Timme","LAL",15.1,65.6,65.6,13.9,5.2,3.3,1.0,0.0,1.5,27.5,0.76,38.6],
+["Marcus Smart","LAL",15.7,54.4,50.0,12.0,3.6,3.7,1.7,0.5,2.0,26.4,0.73,35.9],
+["Bronny James","LAL",15.8,50.6,49.2,10.7,2.4,6.0,1.8,0.3,2.3,26.8,0.74,37.1],
+["Deandre Ayton","LAL",16.9,67.4,66.7,16.5,10.9,1.1,0.8,1.2,1.7,35.0,0.97,47.4],
+["Dalton Knecht","LAL",17.5,55.0,53.7,14.3,4.8,1.1,0.7,0.7,1.4,25.2,0.7,34.8],
+["Nick Smith Jr.","LAL",21.4,53.0,52.3,16.5,2.3,3.2,1.0,0.2,2.2,27.1,0.75,36.9],
+["Kobe Bufkin","LAL",21.9,39.2,31.9,12.7,3.7,2.0,0.8,1.2,1.6,24.2,0.67,32.0],
+["Austin Reaves","LAL",27.1,65.1,57.5,25.3,5.1,5.8,1.2,0.4,3.3,43.1,1.2,58.2],
+["LeBron James","LAL",27.9,58.7,54.9,23.3,6.1,7.6,1.2,0.7,3.3,45.3,1.26,61.7],
+["Luka Dončić","LAL",36.9,61.4,55.9,33.0,7.9,8.5,1.5,0.5,4.1,59.6,1.66,79.8],
+["Gary Harris","MIL",7.8,59.8,57.8,6.4,3.5,2.7,1.4,0.4,1.0,18.7,0.52,26.0],
+["Jericho Sims","MIL",8.7,82.2,84.1,8.2,10.2,2.3,0.4,0.5,2.0,25.3,0.7,35.9],
+["Amir Coffey","MIL",10.8,58.4,53.6,9.8,3.5,1.5,0.4,0.4,0.5,18.3,0.51,25.3],
+["Taurean Prince","MIL",11.0,62.3,60.5,10.4,2.8,1.7,1.3,0.4,1.1,20.6,0.57,26.7],
+["AJ Green","MIL",13.2,61.0,59.8,12.0,3.0,2.3,0.6,0.1,1.0,22.0,0.61,29.9],
+["Pete Nance","MIL",14.9,71.1,71.1,15.0,6.5,2.0,0.9,0.5,1.4,29.8,0.83,41.9],
+["Gary Trent Jr.","MIL",16.0,52.8,50.9,12.9,1.8,2.1,0.9,0.1,0.9,21.2,0.59,29.1],
+["Andre Jackson Jr.","MIL",16.3,33.9,28.8,7.6,6.1,4.7,1.4,0.4,2.3,25.2,0.7,34.9],
+["Thanasis Antetokounmpo","MIL",16.5,57.6,52.6,14.2,8.0,1.8,4.0,1.8,1.8,37.6,1.04,50.6],
+["Ousmane Dieng","MIL",18.3,53.2,52.0,14.1,6.2,3.9,1.1,0.8,1.9,32.0,0.89,43.8],
+["Myles Turner","MIL",18.6,58.2,55.2,15.9,7.1,2.0,0.9,2.1,1.5,34.3,0.95,46.5],
+["Kyle Kuzma","MIL",21.6,57.7,54.6,17.8,6.4,3.5,0.8,0.5,2.1,33.4,0.93,45.7],
+["Bobby Portis","MIL",22.6,59.5,58.6,20.0,9.5,2.3,0.8,0.3,1.5,38.2,1.06,53.1],
+["Ryan Rollins","MIL",23.8,56.9,55.0,18.7,5.3,6.1,1.7,0.5,2.9,38.7,1.08,53.1],
+["Kevin Porter Jr.","MIL",24.2,56.5,50.9,18.8,5.6,7.9,2.4,0.5,3.2,42.6,1.18,58.4],
+["Cole Anthony","MIL",25.5,48.3,47.2,16.0,5.9,8.3,1.4,0.8,4.4,38.6,1.07,52.6],
+["Cam Thomas","MIL",31.7,55.1,49.2,25.5,3.8,4.0,0.3,0.2,2.9,36.8,1.02,51.3],
+["Giannis Antetokounmpo","MIL",35.9,67.0,65.1,34.3,12.3,6.9,1.2,0.9,4.0,62.3,1.73,84.8],
+["Mark Sears","MIL",37.5,66.6,61.5,30.5,2.8,2.8,0.0,0.0,5.5,38.1,1.06,53.9],
+["Tosan Evbuomwan","NYK",5.6,0.0,0.0,0.0,9.0,0.0,0.0,0.0,0.0,11.3,0.31,16.7],
+["Trey Jemison III","NYK",9.2,60.5,57.1,5.3,9.4,1.8,0.6,1.2,3.5,21.5,0.6,29.2],
+["Mitchell Robinson","NYK",9.9,65.5,70.7,9.6,15.9,1.7,1.5,2.0,1.2,38.6,1.07,53.8],
+["Ariel Hukporti","NYK",10.3,60.8,55.8,7.6,11.5,2.0,0.7,2.0,2.3,29.2,0.81,40.5],
+["Jeremy Sochan","NYK",10.7,41.4,40.0,6.5,7.9,3.6,2.9,0.7,1.4,28.3,0.79,37.4],
+["Pacôme Dadiet","NYK",12.0,58.1,50.0,11.2,7.5,4.2,1.4,0.0,0.5,30.4,0.84,41.7],
+["Dillon Jones","NYK",12.5,51.8,30.0,10.5,9.0,6.0,3.0,0.0,0.0,37.5,1.04,51.0],
+["Guerschon Yabusele","NYK",15.1,49.9,48.6,11.0,8.6,1.8,0.6,0.5,1.5,26.8,0.74,36.8],
+["Landry Shamet","NYK",16.2,61.9,59.9,15.9,2.8,2.4,0.9,0.3,1.0,26.6,0.74,36.3],
+["Kevin McCullar Jr.","NYK",16.5,47.0,47.1,9.7,6.9,5.4,1.7,0.0,3.1,29.1,0.81,41.0],
+["Josh Hart","NYK",16.9,59.2,57.3,14.2,9.1,6.1,1.3,0.4,2.4,37.7,1.05,51.4],
+["Mohamed Diawara","NYK",17.4,59.2,58.3,14.6,5.7,2.7,1.1,0.5,1.8,29.6,0.82,41.3],
+["Miles McBride","NYK",17.5,59.2,57.5,16.6,3.3,3.6,1.1,0.2,1.0,30.0,0.83,41.5],
+["Mikal Bridges","NYK",17.7,59.0,57.5,16.2,4.4,4.2,1.5,0.9,1.1,33.4,0.93,45.9],
+["Tyler Kolek","NYK",18.3,51.5,50.7,13.3,5.0,8.4,1.0,0.2,2.9,34.0,0.94,46.3],
+["Jose Alvarado","NYK",18.9,47.7,45.9,13.3,4.4,7.5,2.5,0.3,1.7,36.0,1.0,50.8],
+["OG Anunoby","NYK",20.0,60.3,56.7,17.9,5.8,2.4,1.9,0.8,2.1,34.1,0.95,46.3],
+["Jordan Clarkson","NYK",21.0,53.9,51.0,17.5,3.3,2.5,0.8,0.3,2.0,27.8,0.77,37.6],
+["Karl-Anthony Towns","NYK",25.5,61.2,54.7,23.1,13.7,3.3,1.0,0.7,2.9,48.0,1.33,65.2],
+["Jalen Brunson","NYK",30.1,58.1,53.5,27.0,3.6,6.7,0.7,0.1,2.4,43.5,1.21,59.3],
+["Orlando Robinson","ORL",8.5,70.0,70.0,10.1,5.8,4.3,1.4,0.0,0.0,27.4,0.76,40.4],
+["Tyus Jones","ORL",9.8,44.5,43.4,6.9,2.5,5.5,1.6,0.1,0.6,22.2,0.62,29.9],
+["Jonathan Isaac","ORL",12.3,50.2,45.8,9.3,9.1,1.5,1.4,2.2,1.2,29.6,0.82,40.4],
+["Goga Bitadze","ORL",12.6,71.5,70.3,13.8,11.6,2.8,1.5,2.5,1.2,39.9,1.11,53.7],
+["Noah Penda","ORL",15.3,52.6,49.7,11.9,9.7,3.0,1.4,1.0,2.0,33.2,0.92,45.4],
+["Wendell Carter Jr.","ORL",15.6,60.7,56.2,14.1,9.2,2.5,1.0,0.8,1.5,32.8,0.91,44.1],
+["Tristan da Silva","ORL",16.0,56.5,54.6,13.8,5.6,2.2,1.4,0.5,1.2,28.3,0.79,38.6],
+["Jevon Carter","ORL",16.5,46.7,46.8,11.1,3.9,4.8,1.2,0.8,1.6,27.6,0.77,38.6],
+["Jase Richardson","ORL",16.7,56.3,53.7,14.3,3.8,3.6,0.9,0.1,1.7,26.6,0.74,36.2],
+["Jett Howard","ORL",17.4,54.5,50.3,15.5,4.6,2.6,0.5,0.6,0.7,28.4,0.79,38.9],
+["Jamal Cain","ORL",17.7,54.5,48.0,14.5,3.7,1.9,1.2,0.2,1.6,25.0,0.69,34.4],
+["Anthony Black","ORL",22.2,55.1,51.6,17.9,4.5,4.5,1.7,0.8,2.4,35.0,0.97,47.4],
+["Desmond Bane","ORL",23.2,60.6,55.4,21.5,4.4,4.4,1.1,0.5,2.2,36.7,1.02,49.2],
+["Jalen Suggs","ORL",23.3,56.5,52.8,18.9,5.2,7.2,2.6,1.1,3.5,43.2,1.2,56.2],
+["Moritz Wagner","ORL",24.9,58.9,51.8,23.0,9.4,2.4,1.6,0.1,1.6,42.0,1.17,56.5],
+["Franz Wagner","ORL",25.8,59.1,52.8,24.1,6.5,4.1,1.2,0.4,1.9,41.4,1.15,54.5],
+["Paolo Banchero","ORL",27.9,56.8,50.2,23.0,8.9,5.1,0.7,0.7,3.0,43.6,1.21,58.9],
+["Isaiah Livers","PHX",9.8,49.0,45.9,7.1,6.5,2.3,1.3,0.9,1.3,23.0,0.64,31.1],
+["Haywood Highsmith","PHX",10.4,30.7,25.0,5.1,6.9,3.4,1.7,0.0,0.0,22.3,0.62,31.7],
+["Oso Ighodaro","PHX",12.3,63.0,64.0,10.2,8.2,3.5,1.6,1.1,2.2,30.0,0.83,42.0],
+["Nigel Hayes-Davis","PHX",12.3,35.6,34.8,6.3,6.1,1.3,1.5,0.4,1.5,19.0,0.53,26.8],
+["Amir Coffey","PHX",13.3,59.7,56.8,12.2,5.8,2.6,1.0,0.2,0.2,26.4,0.73,38.7],
+["Ryan Dunn","PHX",14.3,51.1,50.8,10.6,7.6,2.7,1.5,0.8,1.5,28.6,0.79,40.2],
+["Royce O\'Neale","PHX",14.4,57.8,57.3,12.1,6.1,3.4,1.4,0.4,1.8,29.3,0.81,39.7],
+["Khaman Maluach","PHX",15.9,55.1,52.2,10.9,11.0,0.8,0.4,3.2,3.6,31.4,0.87,45.1],
+["Rasheer Fleming","PHX",16.9,51.4,50.8,13.4,7.1,0.9,0.9,0.7,1.3,27.5,0.77,39.3],
+["Mark Williams","PHX",17.2,67.0,63.5,17.6,12.3,1.5,1.4,1.4,1.6,40.0,1.11,53.9],
+["Nick Richards","PHX",17.5,53.4,49.3,12.6,12.9,1.1,0.6,2.0,3.5,33.8,0.94,46.3],
+["Jordan Goodwin","PHX",18.0,51.5,50.2,14.4,7.6,3.6,2.4,0.3,1.6,35.2,0.98,48.6],
+["Jamaree Bouyea","PHX",18.1,55.3,53.4,15.0,4.5,4.3,1.8,1.0,1.5,32.4,0.9,45.9],
+["Collin Gillespie","PHX",19.2,59.5,57.6,17.0,5.1,5.9,1.6,0.3,2.1,36.9,1.03,50.5],
+["Koby Brea","PHX",20.4,81.0,77.8,25.0,3.1,4.7,0.0,0.0,0.0,39.1,1.09,61.0],
+["Grayson Allen","PHX",24.0,56.8,52.6,20.9,3.6,5.0,1.7,0.3,2.0,38.1,1.06,52.2],
+["Dillon Brooks","PHX",28.9,54.7,50.7,24.6,4.3,2.1,1.2,0.2,2.1,36.2,1.01,48.8],
+["Devin Booker","PHX",30.6,57.8,49.9,26.8,4.2,6.6,1.0,0.3,3.6,43.7,1.21,58.5],
+["Jalen Green","PHX",32.6,46.5,43.6,23.3,5.0,3.5,1.9,0.1,3.3,38.6,1.07,53.2],
+["Kris Murray","POR",10.7,53.3,50.7,8.8,5.7,1.7,1.5,0.6,1.2,22.5,0.63,29.9],
+["Sidy Cissoko","POR",12.8,52.2,49.3,9.9,4.1,2.5,1.4,0.6,1.8,22.7,0.63,30.4],
+["Rayan Rupert","POR",13.1,44.7,43.5,8.5,5.4,2.1,1.9,0.1,1.7,22.2,0.62,30.2],
+["Robert Williams III","POR",13.3,75.8,76.1,14.8,14.3,2.3,1.5,3.2,1.8,44.9,1.25,59.7],
+["Duop Reath","POR",13.3,61.3,60.1,13.1,5.3,1.4,0.7,1.1,1.0,26.6,0.74,35.0],
+["Matisse Thybulle","POR",14.2,66.1,61.0,14.0,4.9,2.6,5.6,1.6,1.9,39.0,1.08,49.8],
+["Vít Krejčí","POR",14.7,52.8,50.9,13.5,5.0,2.9,1.0,0.6,0.9,28.2,0.78,36.1],
+["Toumani Camara","POR",16.1,56.1,54.6,13.8,5.8,2.7,1.1,0.4,2.0,28.6,0.8,37.9],
+["Donovan Clingan","POR",16.1,60.5,58.7,15.6,15.2,2.8,0.7,2.0,1.6,44.0,1.22,58.7],
+["Blake Wesley","POR",18.4,51.5,50.0,14.3,3.6,6.5,2.0,0.4,3.1,32.3,0.9,41.7],
+["Yang Hansen","POR",20.4,40.2,32.8,11.1,7.6,2.9,0.4,1.2,3.9,26.3,0.73,34.8],
+["Javonte Cooke","POR",21.9,27.5,25.6,8.8,7.3,2.7,2.3,0.0,3.4,25.4,0.7,34.0],
+["Caleb Love","POR",23.4,50.0,48.6,18.3,4.1,4.4,1.0,0.1,2.2,32.9,0.91,43.5],
+["Jerami Grant","POR",23.7,60.1,53.5,22.9,4.3,2.7,0.9,0.8,2.5,35.8,0.99,46.7],
+["Jrue Holiday","POR",23.8,59.0,56.6,21.0,5.7,7.9,1.5,0.1,3.6,42.8,1.19,56.0],
+["Scoot Henderson","POR",26.2,52.1,45.7,20.1,4.4,6.9,0.6,0.5,4.2,37.2,1.03,48.0],
+["Deni Avdija","POR",28.8,60.2,52.5,26.3,7.6,7.2,0.8,0.7,4.1,48.6,1.35,64.1],
+["Shaedon Sharpe","POR",29.8,55.0,51.5,25.6,5.3,3.2,1.7,0.2,3.6,40.2,1.12,52.6],
+["Jonathan Mogbo","TOR",11.0,49.7,50.0,7.2,9.2,2.9,1.0,1.2,1.9,26.5,0.73,36.1],
+["Mo Bamba","TOR",13.3,0.0,0.0,0.0,12.0,0.0,0.0,6.0,0.0,27.0,0.75,37.5],
+["Ochai Agbaji","TOR",13.4,49.5,45.9,10.0,5.3,1.7,0.9,0.6,1.1,22.0,0.61,30.1],
+["Jamison Battle","TOR",13.6,63.4,63.0,12.6,6.3,1.6,0.5,0.2,1.4,24.6,0.68,33.7],
+["Ja\'Kobe Walter","TOR",14.1,56.5,53.0,12.3,4.4,2.0,1.8,0.3,1.0,25.7,0.71,35.1],
+["Jakob Poeltl","TOR",14.2,70.5,70.1,14.1,10.6,3.0,1.2,0.9,2.0,35.1,0.97,47.2],
+["Collin Murray-Boyles","TOR",14.6,60.5,58.9,12.6,8.0,3.2,1.5,1.4,1.8,32.7,0.91,45.4],
+["Garrett Temple","TOR",15.6,32.9,18.8,6.0,4.3,3.4,2.6,0.9,2.6,22.5,0.63,31.6],
+["Jamal Shead","TOR",16.1,49.2,45.3,11.1,3.2,8.4,1.6,0.2,2.3,31.2,0.87,42.3],
+["Trayce Jackson-Davis","TOR",16.3,56.5,50.0,14.4,19.5,2.1,2.1,2.1,1.0,49.6,1.38,68.0],
+["Gradey Dick","TOR",17.3,54.1,49.4,14.7,5.1,1.6,1.5,0.2,1.4,27.1,0.75,36.2],
+["Sandro Mamukelashvili","TOR",18.2,62.8,60.4,17.9,7.9,3.0,1.2,0.9,1.3,37.1,1.03,50.1],
+["Alijah Martin","TOR",18.7,44.4,36.4,12.5,5.1,2.9,2.2,1.1,1.1,29.8,0.83,44.3],
+["A.J. Lawson","TOR",19.4,54.5,48.8,16.0,7.5,1.0,1.3,1.0,1.3,32.2,0.89,45.7],
+["Immanuel Quickley","TOR",21.5,58.4,54.9,19.1,4.6,6.8,1.4,0.1,1.8,38.6,1.07,52.5],
+["Chucky Hepburn","TOR",22.6,0.0,0.0,0.0,2.8,5.5,2.8,0.0,2.8,15.9,0.44,23.0],
+["Scottie Barnes","TOR",23.5,57.6,53.3,19.9,8.3,5.7,1.4,1.7,2.8,44.1,1.22,59.4],
+["RJ Barrett","TOR",25.4,58.2,55.1,22.4,6.5,4.1,1.0,0.3,2.0,39.3,1.09,52.8],
+["Brandon Ingram","TOR",27.2,56.5,52.1,23.0,6.1,4.1,0.8,0.8,2.6,39.5,1.1,53.9]
+];
 
-  // Scale salaries: max FPTS player gets $10,000, min gets $3,000
-  // Linear scale between those bounds
-  const maxFPTS = Math.max(...players.map(p => p[3]));
-  const minFPTS = Math.min(...players.map(p => p[3]));
-  const range = maxFPTS - minFPTS;
+function buildNbaDfsPool() {
+  const players = NBA_SLATE_RAW.map(r => {
+    const name = r[0], team = r[1], pts = r[5], reb = r[6], ast = r[7], fpts = r[11];
+    const pos = NBA_POS_MAP[name] || (reb >= 8 ? 'C' : ast >= 5 ? 'PG' : pts >= 22 ? 'SF' : 'SF');
+    return [pos, name, team, fpts, fpts, 0, 0, pts, reb, ast];
+  }).filter(p => p[3] >= 5);
+
+  const maxF = Math.max(...players.map(p => p[3]));
+  const minF = Math.min(...players.map(p => p[3]));
+  const range = maxF - minF || 1;
 
   return players.map(p => {
     const fpts = p[3];
-    const normalized = (fpts - minFPTS) / range; // 0 to 1
-    const salary = Math.round((3000 + normalized * 7000) / 100) * 100; // $3,000–$10,000
+    const normalized = (fpts - minF) / range;
+    const salary = Math.round((3000 + normalized * 7000) / 100) * 100;
     const ptsDollar = parseFloat((fpts / (salary / 1000)).toFixed(2));
     return [p[0], p[1], p[2], salary, fpts, ptsDollar, p[6], p[7], p[8], p[9]];
   });
 }
 
-const SHEETS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRwCY8PNCCuiFpmg09kFcg5DaHaLOin8ux7gcVRtTjNR0eTyMWz-GyWZZcG_qXnB4DdcK8PiHZyoSdr/pub?gid=0&single=true&output=csv';
-const SHEETS_PROXY = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(SHEETS_URL);
-
-// Start with hardcoded data as baseline
+// NBA DFS pool built from today\'s slate — update via CSV upload
 const NBA_DFS_POOL = buildNbaDfsPool();
 
 let nbaDfsPosFilter = 'ALL';
 let nbaDfsSortColV = 4, nbaDfsSortAscV = false;
 let nbaDfsFiltered = [...NBA_DFS_POOL];
 let nbaDfsLineup = new Array(8).fill(null);
-let nbaSheetsLoaded = false;
-
-// ── GOOGLE SHEETS FETCH ───────────────────────────────────────
-function nbaDfsFetchSheets() {
-  const status = document.getElementById('nbaCsvStatus');
-  if (status) { status.textContent = 'Syncing projections...'; status.className = 'csv-status'; }
-
-  fetch(SHEETS_PROXY)
-    .then(res => {
-      if (!res.ok) throw new Error('Sheet unavailable');
-      return res.text();
-    })
-    .then(csv => {
-      const lines = csv.trim().split('\n');
-      if (lines.length < 2) throw new Error('Sheet appears empty');
-
-      const headers = lines[0].split(',').map(h => h.replace(/"/g,'').trim().toLowerCase());
-      const col = {
-        name: headers.findIndex(h => h === 'name' || h === 'player'),
-        pos:  headers.findIndex(h => h === 'pos' || h === 'position'),
-        team: headers.findIndex(h => h === 'team' || h === 'teamabbrev'),
-        sal:  headers.findIndex(h => h === 'salary'),
-        proj: headers.findIndex(h => h === 'fpts' || h === 'proj' || h === 'projection' || h.includes('avgpoints')),
-        pts:  headers.findIndex(h => h === 'pts' || h === 'points'),
-        reb:  headers.findIndex(h => h === 'reb' || h === 'rebounds'),
-        ast:  headers.findIndex(h => h === 'ast' || h === 'assists'),
-        min:  headers.findIndex(h => h === 'min' || h === 'minutes' || h === 'mins'),
-      };
-
-      if (col.name === -1) throw new Error('No Name column found in sheet');
-
-      // Clear pool and rebuild from sheet
-      NBA_DFS_POOL.length = 0;
-      let count = 0;
-
-      lines.slice(1).forEach(line => {
-        if (!line.trim()) return;
-        const cells = line.split(',').map(c => c.replace(/"/g,'').trim());
-        const name = cells[col.name];
-        if (!name) return;
-
-        const salary = col.sal >= 0 ? (parseInt(cells[col.sal]) || 0) : 6000;
-        const fpts   = col.proj >= 0 ? (parseFloat(cells[col.proj]) || 0) : 0;
-        const team   = col.team >= 0 ? cells[col.team] : '';
-        const rawPos = col.pos >= 0 ? cells[col.pos].toUpperCase() : '';
-        const firstPos = rawPos.split('/')[0].trim();
-        const pts    = col.pts >= 0 ? parseFloat(cells[col.pts]) || 0 : 0;
-        const reb    = col.reb >= 0 ? parseFloat(cells[col.reb]) || 0 : 0;
-        const ast    = col.ast >= 0 ? parseFloat(cells[col.ast]) || 0 : 0;
-        const min    = col.min >= 0 ? parseFloat(cells[col.min]) || 0 : 0;
-
-        const pos = NBA_POS_MAP[name] ||
-          (['PG','SG','SF','PF','C'].includes(firstPos) ? firstPos : 'SF');
-        const ptsDollar = (salary > 0 && fpts > 0) ?
-          parseFloat((fpts / (salary/1000)).toFixed(2)) : 0;
-
-        if (salary >= 1000 || fpts > 0) {
-          NBA_DFS_POOL.push([pos, name, team, salary, fpts, ptsDollar, min, pts, reb, ast]);
-          count++;
-        }
-      });
-
-      if (count === 0) throw new Error('No valid players found in sheet');
-
-      nbaDfsFiltered = [...NBA_DFS_POOL];
-      nbaDfsFilter();
-      nbaSheetsLoaded = true;
-
-      if (status) {
-        status.textContent = `✓ ${count} players loaded from sheet`;
-        status.className = 'csv-status success';
-        setTimeout(() => { if(status) status.textContent = ''; }, 4000);
-      }
-    })
-    .catch(err => {
-      // Silently fall back to hardcoded data
-      if (status) {
-        status.textContent = 'Using default data';
-        status.className = 'csv-status';
-        setTimeout(() => { if(status) status.textContent = ''; }, 3000);
-      }
-      console.warn('Sheets fetch failed, using hardcoded data:', err.message);
-    });
-}
 
 function nbaDfsFilter() {
-  const q = document.getElementById('nbaDfsSearch').value.toLowerCase();
+  const q = normalizeStr(document.getElementById('nbaDfsSearch').value);
   nbaDfsFiltered = NBA_DFS_POOL.filter(p =>
     (nbaDfsPosFilter === 'ALL' || p[0] === nbaDfsPosFilter) &&
-    (p[1].toLowerCase().includes(q) || p[2].toLowerCase().includes(q))
+    (normalizeStr(p[1]).includes(q) || normalizeStr(p[2]).includes(q))
   );
   nbaDfsRenderPool();
 }
