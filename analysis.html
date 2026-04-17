@@ -95,6 +95,7 @@
   .footer-copy { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; }
 
   @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(0.65); } }
 
   @media (max-width: 900px) {
     nav { padding: 18px 24px; } .nav-links { display: none; }
@@ -104,6 +105,73 @@
     .articles-grid { grid-template-columns: 1fr; }
     footer { padding: 30px 24px; flex-direction: column; gap: 12px; text-align: center; }
   }
+
+  /* HAMBURGER MENU */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: transparent;
+    border: none;
+    z-index: 200;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    transition: all 0.25s ease;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10,10,10,0.98);
+    backdrop-filter: blur(16px);
+    z-index: 150;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 8vw, 2.4rem);
+    font-weight: 900;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    width: 80%;
+    text-align: center;
+    transition: color 0.2s;
+  }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu a:hover, .mobile-menu a.active { color: var(--gold); }
+  .mobile-menu-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 8px;
+  }
+  @media (max-width: 900px) {
+    .hamburger { display: flex; }
+    .nav-links { display: none !important; }
+  }
+
 </style>
 </head>
 <body>
@@ -111,12 +179,28 @@
 <nav>
   <a href="index.html" class="nav-logo">short<span>open</span></a>
   <ul class="nav-links">
+    <li><a href="analysis.html" class="active">Analysis</a></li>
+    <li><a href="market.html">Market</a></li>
+    <li><a href="optimizer.html">Optimizer</a></li>
+    <li><a href="hr-index.html">HR Index</a></li>
     <li><a href="about.html">About</a></li>
-    <li><a href="projections.html">Projections</a></li>
-    <li><a href="analysis.html">Analysis</a></li>
     <li><a href="subscribe.html">Subscribe</a></li>
   </ul>
+  <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+  <a href="index.html" onclick="toggleMobileMenu()">Home</a>
+  <a href="analysis.html" onclick="toggleMobileMenu()">Analysis</a>
+  <a href="market.html" onclick="toggleMobileMenu()">Market</a>
+  <a href="optimizer.html" onclick="toggleMobileMenu()">Optimizer</a>
+  <a href="hr-index.html" onclick="toggleMobileMenu()">HR Index</a>
+  <a href="about.html" onclick="toggleMobileMenu()">About</a>
+  <a href="subscribe.html" onclick="toggleMobileMenu()">Subscribe</a>
+</div>
+
 
 <div class="page-header">
   <p class="page-eyebrow">Market Education</p>
@@ -130,6 +214,7 @@
   <button class="filter-tab" onclick="switchSport('mlb',this)">MLB</button>
   <button class="filter-tab" onclick="switchSport('nfl',this)">NFL</button>
   <button class="filter-tab" onclick="switchSport('universal',this)">Universal</button>
+  <button class="filter-tab" onclick="switchSport('deepdive',this)">Deep Dive</button>
 </div>
 
 <div class="content-wrap">
@@ -497,6 +582,48 @@
   <div class="articles-grid" id="universal-cards-main"></div>
 </div>
 
+<!-- ═══════════════════════════ DEEP DIVE ═══════════════════════════ -->
+<div class="sport-section" id="section-deepdive">
+
+  <!-- Coming Soon Banner -->
+  <div style="border:1px solid var(--border2);background:var(--surface);padding:18px 28px;margin-bottom:48px;display:flex;align-items:center;gap:14px;">
+    <div style="width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0;animation:pulse 1.8s ease infinite;"></div>
+    <p style="font-size:0.78rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Work in progress — Deep Dive breakdowns coming soon. Check back regularly as new player studies drop.</p>
+  </div>
+
+  <div class="sport-section-header">
+    <div class="sport-section-title"><em>Deep Dive</em></div>
+    <div class="sport-section-count">Player trend studies</div>
+  </div>
+
+  <!-- What Deep Dive Is -->
+  <div style="background:var(--surface);border:1px solid var(--border);padding:40px 36px;margin-bottom:2px;">
+    <p style="font-size:0.65rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">What This Section Is</p>
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--white);letter-spacing:-0.01em;margin-bottom:16px;line-height:1.3;">Numbers tell you what happened. Deep Dive looks at <em style="font-style:italic;color:var(--gold);">why.</em></h3>
+    <p style="font-size:0.93rem;color:var(--text);line-height:1.88;max-width:740px;">Not every slump is a slump. Not every hot streak is real. Some players are getting measurably better — their underlying data is improving even when the box score doesn't show it yet. Others are falling off a cliff and the counting stats are the last thing to reflect it. Deep Dive is where we look at both: the players trending in directions the market hasn't priced yet, and the ones where there's more to the story than the numbers alone can explain.</p>
+  </div>
+
+  <!-- Three pillars -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:48px;">
+    <div style="background:var(--surface);border:1px solid var(--border);padding:32px 28px;">
+      <p style="font-size:0.65rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">Trending Up</p>
+      <p style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:10px;line-height:1.3;">The data is improving before the market catches on</p>
+      <p style="font-size:0.86rem;color:var(--muted);line-height:1.75;">Exit velocity climbing. Walk rate increasing. Whiff rate dropping. These are the signals that a player is getting better — even if their batting average is still catching up. We track the leading indicators, not the lagging ones.</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);padding:32px 28px;">
+      <p style="font-size:0.65rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">Falling Off</p>
+      <p style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:10px;line-height:1.3;">When the production is real — and when it's a mask</p>
+      <p style="font-size:0.86rem;color:var(--muted);line-height:1.75;">A player hitting .310 with a .260 xBA is living on luck. Their BABIP is inflated, their barrel rate is down, and regression is coming. The box score hasn't delivered the bad news yet. We will.</p>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);padding:32px 28px;">
+      <p style="font-size:0.65rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">More Than Numbers</p>
+      <p style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:10px;line-height:1.3;">Context the data alone can't capture</p>
+      <p style="font-size:0.86rem;color:var(--muted);line-height:1.75;">A player posting low numbers because they're protecting an injury. A lineup change that changed everything. A scheme adjustment nobody reported. Sometimes the most important signal isn't in the Statcast data — it's in how the game is actually being played.</p>
+    </div>
+  </div>
+
+</div><!-- end deep dive -->
+
 </div><!-- end content-wrap -->
 
 <footer>
@@ -582,6 +709,10 @@ function switchSport(sport, btn) {
   } else if (sport === 'universal') {
     document.querySelectorAll('.sport-section').forEach(s => s.classList.remove('active'));
     document.getElementById('section-universal').classList.add('active');
+  } else if (sport === 'deepdive') {
+    document.getElementById('nba-universal').style.display = 'none';
+    document.querySelectorAll('.sport-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('section-deepdive').classList.add('active');
   } else {
     document.getElementById('nba-universal').style.display = 'none';
     document.querySelectorAll('.sport-section').forEach(s => s.classList.remove('active'));
@@ -597,6 +728,15 @@ function toggleCard(card) {
   if (grid) grid.querySelectorAll('.article-card').forEach(c => c.classList.remove('open'));
   if (!isOpen) card.classList.add('open');
 }
+
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('hamburgerBtn');
+  menu.classList.toggle('open');
+  btn.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+}
+
 </script>
 </body>
 </html>

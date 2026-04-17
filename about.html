@@ -414,6 +414,73 @@
     .closing { padding: 60px 24px 80px; }
     footer { padding: 30px 24px; flex-direction: column; gap: 12px; text-align: center; }
   }
+
+  /* HAMBURGER MENU */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: transparent;
+    border: none;
+    z-index: 200;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    transition: all 0.25s ease;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10,10,10,0.98);
+    backdrop-filter: blur(16px);
+    z-index: 150;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 8vw, 2.4rem);
+    font-weight: 900;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    width: 80%;
+    text-align: center;
+    transition: color 0.2s;
+  }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu a:hover, .mobile-menu a.active { color: var(--gold); }
+  .mobile-menu-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 8px;
+  }
+  @media (max-width: 900px) {
+    .hamburger { display: flex; }
+    .nav-links { display: none !important; }
+  }
+
 </style>
 </head>
 <body>
@@ -422,12 +489,28 @@
 <nav>
   <a href="index.html" class="nav-logo">short<span>open</span></a>
   <ul class="nav-links">
-    <li><a href="index.html#analysis">Analysis</a></li>
-    <li><a href="projections-2.html">Projections</a></li>
+    <li><a href="analysis.html">Analysis</a></li>
+    <li><a href="market.html">Market</a></li>
+    <li><a href="optimizer.html">Optimizer</a></li>
+    <li><a href="hr-index.html">HR Index</a></li>
     <li><a href="about.html" class="active">About</a></li>
-    <li><a href="index.html#subscribe">Subscribe</a></li>
+    <li><a href="subscribe.html">Subscribe</a></li>
   </ul>
+  <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+  <a href="index.html" onclick="toggleMobileMenu()">Home</a>
+  <a href="analysis.html" onclick="toggleMobileMenu()">Analysis</a>
+  <a href="market.html" onclick="toggleMobileMenu()">Market</a>
+  <a href="optimizer.html" onclick="toggleMobileMenu()">Optimizer</a>
+  <a href="hr-index.html" onclick="toggleMobileMenu()">HR Index</a>
+  <a href="about.html" onclick="toggleMobileMenu()">About</a>
+  <a href="subscribe.html" onclick="toggleMobileMenu()">Subscribe</a>
+</div>
+
 
 <!-- HEADER -->
 <div class="page-header">
@@ -449,7 +532,7 @@
       <div class="def-word">Short</div>
       <div class="def-pos">verb &nbsp;·&nbsp; markets &amp; betting</div>
       <p class="def-text">
-        In financial markets, to <strong>short</strong> is to bet against the crowd — to position yourself to profit when the consensus is wrong. In sports betting, the instinct is identical: <strong>find where public money has inflated a line past its true value, and fade it.</strong> The house doesn't beat most bettors. Groupthink does. Shorting the consensus is where the edge lives.
+        In financial markets, to <strong>short</strong> is to bet against the crowd — to position yourself to profit when the consensus is wrong. In sports betting, the instinct is identical: <strong>find where public money has inflated a line past its true value, and fade it.</strong> The house doesn't beat most bettors. Groupthink does. And when enough people make the same wrong decision, being right becomes profitable.
       </p>
     </div>
 
@@ -457,7 +540,7 @@
       <div class="def-word">Open</div>
       <div class="def-pos">noun &nbsp;·&nbsp; betting markets</div>
       <p class="def-text">
-        The <strong>open</strong> is the line before the world touches it — before public money floods in, before the sharp action moves it, before the narrative takes over. <strong>The opening number is the most honest price the market will ever offer.</strong> It reflects what the oddsmakers actually believe, not what the crowd wants. Knowing the open means knowing where value is before everyone else does.
+        The <strong>open</strong> is the line before the world touches it — before public money floods in, before the sharp action moves it, before the narrative takes over. <strong>The opening number is the most honest price the market will ever offer.</strong> It reflects what the oddsmakers actually believe, not what the crowd wants. That's the window. Once it closes, the value moves with it.
       </p>
     </div>
   </div>
@@ -469,7 +552,7 @@
 <div class="philosophy">
   <p class="phil-eyebrow">Why It Matters</p>
   <p class="phil-lead">
-    "Short Open" isn't just a name. It's a complete framework for how we approach every market we enter.
+    The name isn't branding. It's the entire approach — two words that describe exactly how we read every market we enter.
   </p>
   <div class="phil-body">
     <p>
@@ -548,9 +631,9 @@
 
 <!-- CLOSING -->
 <div class="closing">
-  <h2 class="closing-title">The market is beatable.<br>The crowd makes it <em>easy.</em></h2>
+  <h2 class="closing-title">The market is beatable.<br>Narrative makes it <em>loud.</em></h2>
   <p>
-    Most bettors lose because they follow the same information, reach the same conclusions, and chase the same lines. Short Open exists for the ones who want to get there first — who respect the open, understand what moves a line, and build conviction from research rather than recency. The name is the whole philosophy.
+    Lines move for two reasons: sharp information and crowd behavior. Most of the time, it's the crowd — following the same story, drawing the same conclusion, arriving at the same bet. That's not analysis. That's recency bias dressed up as conviction. Understanding what actually moves a line, respecting the open before the noise floods in, and building a position from research rather than reaction — that's the difference between chasing markets and reading them.
   </p>
   <a href="projections.html" class="btn-primary">See the Projections</a>
   <a href="index.html#subscribe" class="btn-ghost">Join the Newsletter</a>

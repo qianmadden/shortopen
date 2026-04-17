@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>shortopen — NBA DFS Optimizer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: #222222;
+    --border2: #2a2a2a;
+    --gold: #c8922a;
+    --gold-light: #e4a83a;
+    --white: #f0ece4;
+    --muted: #6b6560;
+    --text: #d4cfc8;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: var(--white);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+  .page-header {
+    padding: 120px 48px 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .page-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .page-eyebrow::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(28px, 4vw, 52px);
+    color: var(--white);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .page-sub {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  /* ── DFS OPTIMIZER ── */
+  .dfs-wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 48px 80px;
+  }
+
+  .dfs-header {
+    padding: 20px 0 18px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border2);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .dfs-header-left h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .dfs-header-left p { font-size: 0.78rem; color: var(--muted); margin-top: 3px; }
+
+  .dfs-layout {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  /* ── POOL ── */
+  .dfs-pool {
+    flex: 1.4;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    min-width: 0;
+  }
+  .dfs-pool-header {
+    padding: 12px 14px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border2);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .dfs-pool-title {
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-right: 4px;
+    white-space: nowrap;
+  }
+  .dfs-search {
+    flex: 1;
+    min-width: 120px;
+    padding: 7px 11px;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    outline: none;
+  }
+  .dfs-search:focus { border-color: var(--gold); }
+  .dfs-search::placeholder { color: var(--muted); }
+
+  .dfs-pos-filter { display: flex; gap: 3px; flex-wrap: wrap; }
+  .pos-pill {
+    padding: 5px 9px;
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .pos-pill:hover { color: var(--white); border-color: var(--muted); }
+  .pos-pill.active { background: var(--gold); border-color: var(--gold); color: #0a0a0a; }
+
+  .pool-table-wrap {
+    max-height: 560px;
+    overflow-y: auto;
+  }
+  .dfs-pool-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.81rem;
+  }
+  .dfs-pool-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--bg);
+    padding: 9px 10px;
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--gold);
+    user-select: none;
+  }
+  .dfs-pool-table thead th:hover { color: var(--gold); }
+  .dfs-pool-table thead th.sorted { color: var(--gold); }
+  .dfs-pool-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    color: var(--text);
+  }
+  .dfs-pool-table tbody tr { transition: background 0.1s; cursor: pointer; }
+  .dfs-pool-table tbody tr:hover { background: var(--surface2); }
+  .dfs-pool-table tbody tr.in-lineup { background: rgba(200,146,42,0.08); }
+  .dfs-pool-table tbody tr.in-lineup td { color: var(--gold); }
+
+  .pool-add-btn {
+    padding: 3px 8px;
+    font-size: 0.66rem;
+    font-weight: 600;
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.12s;
+  }
+  .pool-add-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .pool-add-btn.added { background: var(--gold); border-color: var(--gold); color: #0a0a0a; }
+
+  /* variance badge */
+  .var-badge {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding: 1px 5px;
+    text-transform: uppercase;
+  }
+  .var-high { color: #e4a83a; }
+  .var-mod  { color: var(--muted); }
+  .var-low  { color: #444; }
+
+  /* ── BUILDER ── */
+  .dfs-builder {
+    flex: 0 0 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .salary-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 14px 18px;
+  }
+  .salary-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .salary-label {
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .salary-nums {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .salary-nums span { color: var(--gold); }
+  .salary-track { height: 3px; background: var(--border2); border-radius: 2px; overflow: hidden; }
+  .salary-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.3s ease; }
+  .salary-fill.over { background: #c0392b; }
+
+  .lineup-slots {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .lineup-slots-header {
+    padding: 10px 14px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border2);
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .lineup-slot {
+    display: flex;
+    align-items: center;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    gap: 8px;
+    min-height: 44px;
+  }
+  .lineup-slot:last-child { border-bottom: none; }
+  .lineup-slot.filled { background: rgba(200,146,42,0.04); }
+  .slot-pos {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    min-width: 34px;
+    flex-shrink: 0;
+  }
+  .slot-player { flex: 1; font-size: 0.84rem; color: var(--white); }
+  .slot-empty  { flex: 1; font-size: 0.76rem; color: var(--muted); font-style: italic; }
+  .slot-proj   {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--gold);
+    min-width: 36px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .slot-salary { font-size: 0.7rem; color: var(--muted); min-width: 46px; text-align: right; flex-shrink: 0; }
+  .slot-remove {
+    background: transparent;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    font-size: 0.78rem;
+    padding: 2px 4px;
+    transition: color 0.12s;
+    flex-shrink: 0;
+  }
+  .slot-remove:hover { color: #c0392b; }
+
+  .lineup-totals {
+    background: var(--surface2);
+    border-top: 1px solid var(--gold);
+    padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .totals-label {
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .totals-proj {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--gold);
+  }
+
+  .dfs-actions { display: flex; gap: 8px; }
+  .dfs-btn {
+    flex: 1;
+    padding: 11px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .dfs-btn-primary { background: var(--gold); color: #0a0a0a; }
+  .dfs-btn-primary:hover { background: var(--gold-light); }
+  .dfs-btn-ghost { background: transparent; border: 1px solid var(--border2); color: var(--muted); }
+  .dfs-btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* upload strip */
+  .upload-strip {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 48px 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .upload-strip-note { font-size: 0.76rem; color: var(--muted); }
+  .upload-strip-note strong { color: var(--text); font-weight: 500; }
+  .csv-upload-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .csv-upload-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .csv-status { font-size: 0.72rem; color: var(--muted); min-height: 16px; }
+  .csv-status.ok  { color: #4a9e6a; }
+  .csv-status.err { color: #c0392b; }
+
+  /* hamburger */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: transparent;
+    border: none;
+    z-index: 200;
+  }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); transition: all 0.25s ease; }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10,10,10,0.98);
+    backdrop-filter: blur(16px);
+    z-index: 150;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 8vw, 2.4rem);
+    font-weight: 900;
+    color: var(--white);
+    text-decoration: none;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    width: 80%;
+    text-align: center;
+    transition: color 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--gold); }
+  .mobile-menu-close {
+    position: absolute; top: 24px; right: 24px;
+    background: transparent; border: none; color: var(--muted);
+    font-size: 1.4rem; cursor: pointer; padding: 8px;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 36px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1rem; color: var(--white); }
+  .footer-logo span { color: var(--gold); }
+  .footer-copy { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; }
+
+  @media (max-width: 900px) {
+    .hamburger { display: flex; }
+    .nav-links { display: none !important; }
+    .dfs-layout { flex-direction: column; }
+    .dfs-builder { flex: none; width: 100%; }
+    .page-header { padding: 100px 20px 24px; }
+    .dfs-wrap { padding: 0 20px 60px; }
+    .upload-strip { padding: 0 20px; }
+    footer { padding: 28px 20px; flex-direction: column; gap: 10px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">short<span>open</span></a>
+  <ul class="nav-links">
+    <li><a href="analysis.html">Analysis</a></li>
+    <li><a href="market.html">Market</a></li>
+    <li><a href="optimizer.html" class="active">Optimizer</a></li>
+    <li><a href="hr-index.html">HR Index</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="subscribe.html">Subscribe</a></li>
+  </ul>
+  <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+  <a href="index.html" onclick="toggleMobileMenu()">Home</a>
+  <a href="analysis.html" onclick="toggleMobileMenu()">Analysis</a>
+  <a href="market.html" onclick="toggleMobileMenu()">Market</a>
+  <a href="optimizer.html" onclick="toggleMobileMenu()">Optimizer</a>
+  <a href="hr-index.html" onclick="toggleMobileMenu()">HR Index</a>
+  <a href="about.html" onclick="toggleMobileMenu()">About</a>
+  <a href="subscribe.html" onclick="toggleMobileMenu()">Subscribe</a>
+</div>
+
+<div class="page-header">
+  <p class="page-eyebrow">shortopen</p>
+  <h1 class="page-title">Optimizer</h1>
+  <p class="page-sub">Click any player to add them to your lineup. Hit Auto-Optimize to fill the rest, or regenerate for lineup variety.</p>
+</div>
+
+<!-- SPORT TABS -->
+<div style="max-width:1400px;margin:0 auto;padding:0 48px;display:flex;gap:2px;border-bottom:1px solid #2a2a2a;margin-bottom:0;">
+  <button id="tab-nba" onclick="switchOptSport('nba')" style="padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:#c8922a;cursor:pointer;border:none;background:transparent;border-bottom:2px solid #c8922a;margin-bottom:-1px;transition:color 0.2s;">NBA</button>
+  <button id="tab-mlb" onclick="switchOptSport('mlb')" style="padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:#6b6560;cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color 0.2s;">MLB</button>
+</div>
+
+<div id="panel-nba" style="display:block;">
+<!-- UPLOAD STRIP -->
+<div class="upload-strip">
+  <span id="slateLabel" style="display:none">NBA_optimizer.csv</span>
+  <button class="csv-upload-btn" onclick="exportCSV()">↓ Export CSV</button>
+  <label class="csv-upload-btn" for="csvUpload">↑ Upload Your Own <input type="file" id="csvUpload" accept=".csv" style="display:none" onchange="loadCSV(this)"/></label>
+  <span class="csv-status" id="csvStatus"></span>
+</div>
+
+<div class="dfs-wrap">
+  <div class="dfs-header">
+    <div class="dfs-header-left">
+      <h2>NBA — Data curated for use on DK</h2>
+      <p>$50,000 cap · 8 slots (PG, SG, SF, PF, C, G, F, UTIL) · FT-Score = projected fantasy points</p>
+    </div>
+  </div>
+
+  <div class="dfs-layout">
+
+    <!-- PLAYER POOL -->
+    <div class="dfs-pool">
+      <div class="dfs-pool-header">
+        <span class="dfs-pool-title">Player Pool</span>
+        <input class="dfs-search" id="poolSearch" placeholder="Search name or team…" oninput="filterPool()"/>
+        <div class="dfs-pos-filter" id="posFilters">
+          <button class="pos-pill active" onclick="setPosFilter('ALL',this)">All</button>
+          <button class="pos-pill" onclick="setPosFilter('PG',this)">PG</button>
+          <button class="pos-pill" onclick="setPosFilter('SG',this)">SG</button>
+          <button class="pos-pill" onclick="setPosFilter('SF',this)">SF</button>
+          <button class="pos-pill" onclick="setPosFilter('PF',this)">PF</button>
+          <button class="pos-pill" onclick="setPosFilter('C',this)">C</button>
+        </div>
+      </div>
+      <div class="pool-table-wrap">
+        <table class="dfs-pool-table" id="poolTable">
+          <thead>
+            <tr>
+              <th onclick="sortPool(0)">+</th>
+              <th onclick="sortPool(1)" class="sorted">Player ↓</th>
+              <th onclick="sortPool(2)">Pos</th>
+              <th onclick="sortPool(3)">Team</th>
+              <th onclick="sortPool(4)">Salary ↕</th>
+              <th onclick="sortPool(5)">Proj ↕</th>
+              <th onclick="sortPool(6)">Pts/$ ↕</th>
+              <th onclick="sortPool(7)">MIN ↕</th>
+              <th onclick="sortPool(8)">PTS</th>
+              <th onclick="sortPool(9)">REB</th>
+              <th onclick="sortPool(10)">AST</th>
+              <th onclick="sortPool(11)">Var</th>
+            </tr>
+          </thead>
+          <tbody id="poolBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- LINEUP BUILDER -->
+    <div class="dfs-builder">
+
+      <div class="salary-bar">
+        <div class="salary-top">
+          <span class="salary-label">Salary Used</span>
+          <span class="salary-nums"><span id="salaryUsed">$0</span> / $50,000</span>
+        </div>
+        <div class="salary-track">
+          <div class="salary-fill" id="salaryFill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="lineup-slots">
+        <div class="lineup-slots-header">
+          <span>Lineup</span>
+          <span id="lineupCount">0 / 8</span>
+        </div>
+        <div id="lineupSlots"></div>
+        <div class="lineup-totals">
+          <span class="totals-label">Projected FPTS</span>
+          <span class="totals-proj" id="lineupTotal">0.00</span>
+        </div>
+      </div>
+
+      <div class="dfs-actions">
+        <button class="dfs-btn dfs-btn-primary" onclick="autoOptimize()">⚡ Auto-Optimize</button>
+        <button class="dfs-btn dfs-btn-ghost"    onclick="clearLineup()">Clear</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div><!-- end panel-nba -->
+
+<!-- ═══════════════ MLB OPTIMIZER PANEL ═══════════════ -->
+<div id="panel-mlb" style="display:none;">
+
+<div class="upload-strip" style="justify-content:flex-end;">
+  <span class="csv-status" id="mlbCsvStatus"></span>
+</div>
+
+<div class="dfs-wrap">
+  <div class="dfs-header">
+    <div class="dfs-header-left">
+      <h2>MLB — Data curated for use on DK</h2>
+      <p>$50,000 cap · 10 slots (P, P, C, 1B, 2B, 3B, SS, OF, OF, OF) · Stack up to 5 from same team</p>
+    </div>
+  </div>
+
+  <!-- PITCHER / BATTER SUBTABS -->
+  <div style="display:flex;gap:8px;margin-bottom:20px;">
+    <button id="mlb-sub-batters" onclick="mlbSubTab('batters')" style="padding:9px 20px;font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#0a0a0a;background:#c8922a;border:1px solid #c8922a;cursor:pointer;">Batters</button>
+    <button id="mlb-sub-pitchers" onclick="mlbSubTab('pitchers')" style="padding:9px 20px;font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#6b6560;background:transparent;border:1px solid #2a2a2a;cursor:pointer;">Pitchers</button>
+  </div>
+
+  <div class="dfs-layout">
+    <!-- PLAYER POOL -->
+    <div class="dfs-pool">
+      <div class="dfs-pool-header">
+        <span class="dfs-pool-title" id="mlbPoolTitle">Batter Pool</span>
+        <input class="dfs-search" id="mlbPoolSearch" placeholder="Search name or team…" oninput="mlbFilterPool()"/>
+        <div class="dfs-pos-filter" id="mlbPosFilters">
+          <button class="pos-pill active" onclick="mlbSetPos('ALL',this)">All</button>
+          <button class="pos-pill" onclick="mlbSetPos('C',this)">C</button>
+          <button class="pos-pill" onclick="mlbSetPos('1B',this)">1B</button>
+          <button class="pos-pill" onclick="mlbSetPos('2B',this)">2B</button>
+          <button class="pos-pill" onclick="mlbSetPos('3B',this)">3B</button>
+          <button class="pos-pill" onclick="mlbSetPos('SS',this)">SS</button>
+          <button class="pos-pill" onclick="mlbSetPos('OF',this)">OF</button>
+        </div>
+      </div>
+      <div class="pool-table-wrap">
+        <!-- BATTER TABLE -->
+        <table class="dfs-pool-table" id="mlbBatterTable">
+          <thead>
+            <tr>
+              <th>+</th>
+              <th onclick="mlbSortBatters(0)" class="sorted">Player ↓</th>
+              <th>Pos</th>
+              <th onclick="mlbSortBatters(1)">Team</th>
+              <th onclick="mlbSortBatters(2)">Opp</th>
+              <th onclick="mlbSortBatters(3)">Salary ↕</th>
+              <th onclick="mlbSortBatters(4)">Proj ↕</th>
+              <th onclick="mlbSortBatters(5)">Val ↕</th>
+              <th>Hand</th>
+              <th onclick="mlbSortBatters(6)">Team Tot</th>
+              <th>I-P Var</th>
+              <th>Stack Var</th>
+            </tr>
+          </thead>
+          <tbody id="mlbBatterBody"></tbody>
+        </table>
+        <!-- PITCHER TABLE -->
+        <table class="dfs-pool-table" id="mlbPitcherTable" style="display:none;">
+          <thead>
+            <tr>
+              <th>+</th>
+              <th onclick="mlbSortPitchers(0)" class="sorted">Player ↓</th>
+              <th>Pos</th>
+              <th onclick="mlbSortPitchers(1)">Team</th>
+              <th onclick="mlbSortPitchers(2)">Opp</th>
+              <th onclick="mlbSortPitchers(3)">Salary ↕</th>
+              <th onclick="mlbSortPitchers(4)">Proj ↕</th>
+              <th onclick="mlbSortPitchers(5)">Val ↕</th>
+              <th>Hand</th>
+              <th>I-P Var</th>
+              <th onclick="mlbSortPitchers(6)">Proj K's ↕</th>
+              <th onclick="mlbSortPitchers(7)">Odds EV% ↕</th>
+            </tr>
+          </thead>
+          <tbody id="mlbPitcherBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- LINEUP BUILDER -->
+    <div class="dfs-builder">
+      <div class="salary-bar">
+        <div class="salary-top">
+          <span class="salary-label">Salary Used</span>
+          <span class="salary-nums"><span id="mlbSalaryUsed">$0</span> / $50,000</span>
+        </div>
+        <div class="salary-track">
+          <div class="salary-fill" id="mlbSalaryFill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="lineup-slots">
+        <div class="lineup-slots-header">
+          <span>Lineup</span>
+          <span id="mlbLineupCount">0 / 10</span>
+        </div>
+        <div id="mlbLineupSlots"></div>
+        <div class="lineup-totals">
+          <span class="totals-label">Projected FPTS</span>
+          <span class="totals-proj" id="mlbLineupTotal">0.00</span>
+        </div>
+      </div>
+
+      <!-- STACK INFO -->
+      <div id="mlbStackInfo" style="background:#111111;border:1px solid #2a2a2a;padding:12px 16px;margin-top:8px;font-size:0.78rem;color:#6b6560;">
+        <span style="color:#c8922a;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;font-size:0.65rem;">Stack</span><br/>
+        <span id="mlbStackStatus">No stack yet</span>
+      </div>
+
+      <div class="dfs-actions" style="margin-top:8px;">
+        <button class="dfs-btn dfs-btn-primary" onclick="mlbAutoOptimize()">⚡ Auto-Optimize</button>
+        <button class="dfs-btn dfs-btn-ghost" onclick="mlbClearLineup()">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VARIANCE LEGEND -->
+  <div style="max-width:100%;margin-top:40px;border-top:1px solid #222222;padding-top:28px;">
+    <p style="font-size:0.65rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#c8922a;margin-bottom:16px;">Variance Legend</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div style="background:#111111;border:1px solid #222222;padding:20px 22px;">
+        <p style="font-size:0.72rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:#f0ece4;margin-bottom:8px;">I-P Variance <span style="color:#c8922a;">(Individual-Player)</span></p>
+        <p style="font-size:0.84rem;color:#6b6560;line-height:1.75;">Measures a player's ceiling relative to their projection on any given night. A <strong style="color:#d4cfc8;">High</strong> I-P Variance player has the power, speed, or chaos factor to completely exceed their projected score — think a stolen base, a two-run shot, a bases-clearing double when nobody expected it. They can also go cold. These are boom-or-bust players: capable of putting up a zero or a game-breaking score. <strong style="color:#d4cfc8;">Low</strong> I-P Variance players are consistent and reliable — what you see is what you get.</p>
+      </div>
+      <div style="background:#111111;border:1px solid #222222;padding:20px 22px;">
+        <p style="font-size:0.72rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:#f0ece4;margin-bottom:8px;">Stack Variance <span style="color:#c8922a;">(Team Stack)</span></p>
+        <p style="font-size:0.84rem;color:#6b6560;line-height:1.75;">Standard DFS formats allow up to 5 hitters from the same team in a lineup. Stack Variance rates how explosive a full 5-man stack from that team can be on any given night. A <strong style="color:#d4cfc8;">High</strong> Stack Variance team can outperform dramatically — through sequential hitting, power through the lineup, speed on the bases, a soft starting pitcher, or a vulnerable bullpen. <strong style="color:#d4cfc8;">Neutral</strong> stacks are situational. <strong style="color:#d4cfc8;">Low</strong> stacks are safer but have a lower ceiling.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end dfs-wrap -->
+</div><!-- end panel-mlb -->
+
+<footer>
+  <div class="footer-logo">short<span>open</span></div>
+  <p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+</footer>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+//  PLAYER POOL — loaded from NBA_optimizer.csv
+//  Columns: Name, Team, Position, Salary, Minutes, Minutes,
+//           Points, Assists, Rebounds, Turnovers, Steals,
+//           Blocks, Baseline P+R+A, FT-Score, Variance
+//
+//  To update: click "Upload New CSV" and upload a new file with
+//  the same column format. The page will reload the pool instantly.
+// ════════════════════════════════════════════════════════════════
+
+// ── RAW DATA from NBA_optimizer.csv ─────────────────────────────
+// [Name, Team, Positions[], Salary, Minutes, Pts, Ast, Reb, FTScore, Variance]
+let POOL = [
+  ["LaMelo Ball",        "CHA", ["PG"],       8500, 34.49, 23.5,  8.11, 5.14,  46.14, "HIGH"],
+  ["Bam Adebayo",        "MIA", ["C"],         8700, 36.77, 21.13, 3.32, 10.5,  44.83, "moderate"],
+  ["Devin Booker",       "PHO", ["PG","SG"],   8900, 37.66, 27.21, 5.83, 3.9,   43.16, "moderate"],
+  ["Deni Avdija",        "POR", ["PG","SF"],   9000, 37.05, 24.5,  4.9,  6.8,   41.45, "moderate"],
+  ["Tyler Herro",        "MIA", ["PG","SG"],   7400, 34.67, 20.75, 4.17, 4.62,  35.77, "HIGH"],
+  ["Brandon Miller",     "CHA", ["SF"],        7500, 34.24, 20.59, 3.18, 5.32,  35.43, "moderate"],
+  ["Donovan Clingan",    "POR", ["C"],         7200, 28.86, 11.71, 1.95, 11.5,  35.34, "HIGH"],
+  ["Kon Knueppel",       "CHA", ["SG"],        6300, 34.63, 19.01, 3.11, 5.16,  33.08, "moderate"],
+  ["Jrue Holiday",       "POR", ["PG"],        6900, 35.49, 16.35, 5.77, 4.87,  32.94, "low"],
+  ["Jalen Green",        "PHO", ["SG"],        7100, 31.16, 18.81, 3.2,  4.09,  32.3,  "HIGH"],
+  ["Miles Bridges",      "CHA", ["PF"],        5500, 33.24, 15.45, 2.72, 5.55,  29.06, "moderate"],
+  ["Andrew Wiggins",     "MIA", ["PF"],        4500, 30.91, 13.45, 2.22, 4.45,  27.12, "low"],
+  ["Moussa Diabate",     "CHA", ["C"],         4900, 29.25, 7.91,  2.07, 10.29, 27.02, "low"],
+  ["Mark Williams",      "PHO", ["C"],         4700, 25.11, 10.71, 0.5,  9.25,  26.82, "HIGH"],
+  ["Toumani Camara",     "POR", ["SG"],        5700, 36.32, 13.14, 2.05, 4.83,  26.72, "low"],
+  ["Dillon Brooks",      "PHO", ["PF"],        6600, 32.76, 16.5,  1.74, 3.78,  26.71, "low"],
+  ["Norman Powell",      "MIA", ["SG","SF"],   5100, 27.26, 15.01, 2.03, 2.5,   25.4,  "moderate"],
+  ["Davion Mitchell",    "MIA", ["PG"],        4200, 31.21, 8.45,  5.68, 2.45,  23.34, "low"],
+  ["Jaime Jaquez Jr.",   "MIA", ["SG","SF"],   4700, 25.86, 11.22, 3.73, 3.85,  23.0,  "moderate"],
+  ["Scoot Henderson",    "POR", ["PG"],        5300, 25.48, 11.18, 3.2,  2.5,   22.11, "HIGH"],
+  ["Coby White",         "CHA", ["PG","SG"],   4200, 20.77, 13.5,  2.66, 2.28,  21.0,  "HIGH"],
+  ["Pelle Larsson",      "MIA", ["SG","SF"],   4300, 30.17, 9.87,  2.69, 3.28,  19.66, "low"],
+  ["Jordan Goodwin",     "PHO", ["SG","SF"],   3800, 21.78, 7.12,  1.48, 4.8,   19.54, "low"],
+  ["Grayson Allen",      "PHO", ["SG","SF"],   5600, 24.79, 9.82,  2.14, 2.08,  18.88, "low"],
+  ["Kel'el Ware",        "MIA", ["C"],         4400, 18.69, 6.23,  1.1,  5.96,  17.92, "HIGH"],
+  ["Collin Gillespie",   "PHO", ["PG"],        6000, 23.32, 8.19,  2.55, 2.61,  17.81, "low"],
+  ["Royce O'Neale",      "PHO", ["PF"],        4400, 24.19, 6.67,  1.78, 3.75,  17.34, "low"],
+  ["Shaedon Sharpe",     "POR", ["SG"],        5800, 20.17, 9.24,  2.23, 2.46,  17.22, "HIGH"],
+  ["Robert Williams III","POR", ["C"],         3900, 18.41, 5.4,   0.81, 6.43,  16.79, "HIGH"],
+  ["Jerami Grant",       "POR", ["PF"],        5300, 20.19, 10.33, 0.79, 2.25,  16.6,  "low"],
+  ["Oso Ighodaro",       "PHO", ["C"],         4400, 19.23, 4.69,  2.26, 4.01,  15.48, "low"],
+  ["Grant Williams",     "CHA", ["PF"],        3600, 18.17, 6.05,  1.1,  3.42,  14.46, "low"],
+  ["Ryan Kalkbrenner",   "CHA", ["C"],         3500, 16.58, 3.5,   0.83, 3.31,  10.62, "low"],
+  ["Sion James",         "CHA", ["SF","PF"],   3300, 12.39, 3.63,  1.34, 2.5,   10.23, "n/a"],
+  ["Matisse Thybulle",   "POR", ["SF","PF"],   3800, 12.37, 3.27,  0.54, 1.18,  7.9,   "n/a"],
+  ["Kris Murray",        "POR", ["SG","SF"],   3200, 5.66,  0.83,  0.51, 0.87,  3.21,  "n/a"],
+  ["Kasparas Jakucionis","MIA", ["PG"],        3500, 4.46,  1.98,  0.44, 0.0,   3.1,   "n/a"],
+  ["Josh Green",         "CHA", ["SG","SF"],   3100, 6.21,  1.03,  0.11, 0.54,  2.27,  "n/a"],
+];
+
+// NBA DFS slots
+const SLOTS = [
+  {label:'PG',   eligible: p => p[2].includes('PG')},
+  {label:'SG',   eligible: p => p[2].includes('SG')},
+  {label:'SF',   eligible: p => p[2].includes('SF')},
+  {label:'PF',   eligible: p => p[2].includes('PF')},
+  {label:'C',    eligible: p => p[2].includes('C')},
+  {label:'G',    eligible: p => p[2].includes('PG') || p[2].includes('SG')},
+  {label:'F',    eligible: p => p[2].includes('SF') || p[2].includes('PF')},
+  {label:'UTIL', eligible: p => true},
+];
+
+const CAP = 50000;
+const MIN_FLOOR = 2500;
+
+let lineup = new Array(8).fill(null);
+let posFilter = 'ALL';
+let sortCol = 5; // default sort by Proj desc
+let sortAsc = false;
+let filtered = [];
+
+// ── INIT ────────────────────────────────────────────────────────
+function init() {
+  // compute pts/$ for each player
+  POOL.forEach(p => { p._ptsDollar = parseFloat((p[8] / (p[3] / 1000)).toFixed(2)); });
+  filterPool();
+  renderLineup();
+}
+
+// ── POOL FILTER & SORT ───────────────────────────────────────────
+function filterPool() {
+  const q = (document.getElementById('poolSearch').value || '').toLowerCase();
+  filtered = POOL.filter(p => {
+    const posMatch = posFilter === 'ALL' || p[2].includes(posFilter);
+    const nameMatch = p[0].toLowerCase().includes(q) || p[1].toLowerCase().includes(q);
+    return posMatch && nameMatch;
+  });
+  renderPool();
+}
+
+function setPosFilter(pos, btn) {
+  posFilter = pos;
+  document.querySelectorAll('.pos-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterPool();
+}
+
+function sortPool(col) {
+  if (sortCol === col) sortAsc = !sortAsc;
+  else { sortCol = col; sortAsc = col === 1 || col === 2 || col === 3; }
+  // update header arrows
+  document.querySelectorAll('.dfs-pool-table thead th').forEach((th, i) => {
+    th.classList.toggle('sorted', i === col);
+  });
+  renderPool();
+}
+
+function renderPool() {
+  // data indices for sort: 0=add,1=name,2=pos[],3=team,4=sal,5=proj,6=pts$,7=min,8=pts,9=reb,10=ast,11=var
+  const colToData = [null, 0, null, 1, 3, 8, '_ptsDollar', 4, 5, 7, 6, 9];
+
+  const sortedFiltered = [...filtered].sort((a, b) => {
+    let av, bv;
+    if (sortCol === 2) { av = a[2].join('/'); bv = b[2].join('/'); }
+    else if (sortCol === 11) { const order = {HIGH:3,moderate:2,low:1,'n/a':0}; av = order[a[9]]||0; bv = order[b[9]]||0; }
+    else if (sortCol === 6) { av = a._ptsDollar; bv = b._ptsDollar; }
+    else {
+      const di = [null,0,null,1,3,8,null,4,5,7,6,null][sortCol];
+      av = di !== null ? a[di] : 0;
+      bv = di !== null ? b[di] : 0;
+    }
+    if (typeof av === 'string') return sortAsc ? av.localeCompare(bv) : bv.localeCompare(av);
+    return sortAsc ? av - bv : bv - av;
+  });
+
+  const inLineup = new Set(lineup.filter(Boolean).map(p => p[0]));
+  const tbody = document.getElementById('poolBody');
+  tbody.innerHTML = '';
+
+  sortedFiltered.forEach(p => {
+    const inL = inLineup.has(p[0]);
+    const varClass = p[9] === 'HIGH' ? 'var-high' : p[9] === 'moderate' ? 'var-mod' : 'var-low';
+    const tr = document.createElement('tr');
+    if (inL) tr.classList.add('in-lineup');
+    tr.onclick = () => togglePlayer(p);
+    tr.innerHTML = `
+      <td><button class="pool-add-btn ${inL?'added':''}">${inL?'✓':'+'}</button></td>
+      <td style="color:var(--white);font-weight:400;min-width:130px">${p[0]}</td>
+      <td style="color:var(--gold);font-size:0.7rem;font-weight:500">${p[2].join('/')}</td>
+      <td style="color:var(--muted)">${p[1]}</td>
+      <td>$${p[3].toLocaleString()}</td>
+      <td style="color:var(--white);font-weight:500">${p[8].toFixed(1)}</td>
+      <td style="color:var(--gold-light)">${p._ptsDollar.toFixed(2)}</td>
+      <td style="color:var(--muted)">${p[4].toFixed(1)}</td>
+      <td style="color:var(--muted)">${p[5].toFixed(1)}</td>
+      <td style="color:var(--muted)">${p[7].toFixed(1)}</td>
+      <td style="color:var(--muted)">${p[6].toFixed(1)}</td>
+      <td><span class="var-badge ${varClass}">${p[9]}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ── TOGGLE PLAYER ────────────────────────────────────────────────
+function togglePlayer(player) {
+  // if already in lineup, remove
+  const existIdx = lineup.findIndex(p => p && p[0] === player[0]);
+  if (existIdx >= 0) {
+    lineup[existIdx] = null;
+    renderLineup(); renderPool(); return;
+  }
+  // find first valid empty slot
+  for (let i = 0; i < 8; i++) {
+    if (!lineup[i] && SLOTS[i].eligible(player)) {
+      lineup[i] = player;
+      renderLineup(); renderPool(); return;
+    }
+  }
+  // no slot found — flash briefly
+  console.warn('No eligible slot for', player[0]);
+}
+
+// ── LINEUP RENDER ────────────────────────────────────────────────
+function renderLineup() {
+  const container = document.getElementById('lineupSlots');
+  container.innerHTML = '';
+  let totalSal = 0, totalProj = 0, filled = 0;
+
+  SLOTS.forEach((slot, i) => {
+    const p = lineup[i];
+    const div = document.createElement('div');
+    div.className = 'lineup-slot' + (p ? ' filled' : '');
+    if (p) {
+      totalSal += p[3]; totalProj += p[8]; filled++;
+      div.innerHTML = `
+        <span class="slot-pos">${slot.label}</span>
+        <span class="slot-player">${p[0]}<br><span style="font-size:0.68rem;color:var(--muted)">${p[2].join('/')} · ${p[1]}</span></span>
+        <span class="slot-proj">${p[8].toFixed(1)}</span>
+        <span class="slot-salary">$${p[3].toLocaleString()}</span>
+        <button class="slot-remove" onclick="event.stopPropagation();removeSlot(${i})">✕</button>`;
+    } else {
+      div.innerHTML = `<span class="slot-pos">${slot.label}</span><span class="slot-empty">Empty</span>`;
+    }
+    container.appendChild(div);
+  });
+
+  const pct = Math.min((totalSal / CAP) * 100, 100);
+  const fill = document.getElementById('salaryFill');
+  fill.style.width = pct + '%';
+  fill.className = 'salary-fill' + (totalSal > CAP ? ' over' : '');
+  const su = document.getElementById('salaryUsed');
+  su.textContent = '$' + totalSal.toLocaleString();
+  su.style.color = totalSal > CAP ? '#c0392b' : 'var(--white)';
+  document.getElementById('lineupTotal').textContent = totalProj.toFixed(2);
+  document.getElementById('lineupCount').textContent = filled + ' / 8';
+}
+
+function removeSlot(i) { lineup[i] = null; renderLineup(); renderPool(); }
+function clearLineup()  { lineup = new Array(8).fill(null); renderLineup(); renderPool(); }
+
+// ── AUTO-OPTIMIZE ────────────────────────────────────────────────
+function autoOptimize() {
+  // Randomized greedy with jitter — run many attempts, keep best valid lineup
+  const jitter = () => (Math.random() - 0.5) * 8;
+
+  const getEligible = (slotIdx, used) =>
+    POOL.filter(p => !used.has(p[0]) && SLOTS[slotIdx].eligible(p));
+
+  let best = null, bestProj = 0;
+
+  for (let attempt = 0; attempt < 150; attempt++) {
+    const trial = new Array(8).fill(null);
+    const used = new Set();
+    let salary = 0, valid = true;
+
+    for (let i = 0; i < 8; i++) {
+      const slotsLeft = 8 - i;
+      const maxForSlot = CAP - salary - (slotsLeft - 1) * MIN_FLOOR;
+      const pool = getEligible(i, used)
+        .filter(p => p[3] <= maxForSlot)
+        .map(p => ({ p, score: p[8] + jitter() }))
+        .sort((a, b) => b.score - a.score);
+
+      const topN = Math.min(pool.length, 5);
+      if (topN === 0) { valid = false; break; }
+
+      // weighted random pick from top 5
+      const weights = Array.from({length: topN}, (_, idx) => 1 / (idx + 1));
+      const total = weights.reduce((a, b) => a + b, 0);
+      let rand = Math.random() * total;
+      let picked = pool[0].p;
+      for (let j = 0; j < topN; j++) {
+        rand -= weights[j];
+        if (rand <= 0) { picked = pool[j].p; break; }
+      }
+      trial[i] = picked;
+      salary += picked[3];
+      used.add(picked[0]);
+    }
+
+    if (!valid || salary > CAP) continue;
+    const proj = trial.reduce((s, p) => s + (p ? p[8] : 0), 0);
+    if (proj > bestProj) { bestProj = proj; best = [...trial]; }
+  }
+
+  if (best) lineup = best;
+  renderLineup(); renderPool();
+}
+
+// ── CSV UPLOAD (replace pool) ────────────────────────────────────
+function loadCSV(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const status = document.getElementById('csvStatus');
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const lines = e.target.result.trim().split(/\r?\n/);
+      const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+      const ci = {
+        name: headers.findIndex(h => h === 'name'),
+        team: headers.findIndex(h => h === 'team'),
+        pos:  headers.findIndex(h => h === 'position'),
+        sal:  headers.findIndex(h => h === 'salary'),
+        min:  headers.findIndex(h => h === 'minutes'),
+        pts:  headers.findIndex(h => h === 'points'),
+        ast:  headers.findIndex(h => h === 'assists'),
+        reb:  headers.findIndex(h => h === 'rebounds'),
+        proj: headers.findIndex(h => h === 'ft-score'),
+        vari: headers.findIndex(h => h === 'variance'),
+      };
+      if (ci.name < 0 || ci.proj < 0) throw new Error('Missing Name or FT-Score column');
+      const g = (r, i, def=0) => i>=0 ? (parseFloat(r[i])||def) : def;
+      const gs = (r, i, def='') => i>=0 ? (r[i]||def) : def;
+
+      const newPool = lines.slice(1).map(line => {
+        const r = line.split(',').map(c => c.trim());
+        if (!r[ci.name]) return null;
+        const rawPos = gs(r, ci.pos);
+        const positions = rawPos.split('/').map(s => s.trim()).filter(Boolean);
+        return [
+          gs(r, ci.name), gs(r, ci.team), positions,
+          parseInt(r[ci.sal])||3000,
+          g(r, ci.min), g(r, ci.pts), g(r, ci.ast), g(r, ci.reb),
+          g(r, ci.proj), gs(r, ci.vari)||'n/a'
+        ];
+      }).filter(Boolean);
+
+      if (newPool.length === 0) throw new Error('No valid players found');
+      POOL = newPool;
+      POOL.forEach(p => { p._ptsDollar = parseFloat((p[8]/(p[3]/1000)).toFixed(2)); });
+
+      lineup = new Array(8).fill(null);
+      document.getElementById('slateLabel').textContent = file.name;
+      status.textContent = '✓ ' + POOL.length + ' players loaded';
+      status.className = 'csv-status ok';
+      setTimeout(() => { status.textContent = ''; status.className = 'csv-status'; }, 4000);
+      filterPool(); renderLineup();
+    } catch(err) {
+      status.textContent = '✕ ' + err.message;
+      status.className = 'csv-status err';
+    }
+    input.value = '';
+  };
+  reader.readAsText(file);
+}
+
+// ── EXPORT CSV ───────────────────────────────────────────────────
+// Downloads the current pool as a CSV. Sessions are not saved —
+// each visitor always starts with the original hardcoded data.
+function exportCSV() {
+  const headers = ['Name','Team','Position','Salary','Minutes','Points','Assists','Rebounds','FT-Score','Variance'];
+  const rows = POOL.map(p => [
+    p[0], p[1], p[2].join('/'), p[3], p[4].toFixed(2),
+    p[5].toFixed(2), p[6].toFixed(2), p[7].toFixed(2),
+    p[8].toFixed(2), p[9]
+  ]);
+  const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+  const blob = new Blob([csv], {type: 'text/csv'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = document.getElementById('slateLabel').textContent.replace(/[^a-z0-9._-]/gi,'_');
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn  = document.getElementById('hamburgerBtn');
+  menu.classList.toggle('open');
+  btn.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+}
+
+init();
+// ════════════════════════════════════════════════════════════════
+//  MLB OPTIMIZER
+// ════════════════════════════════════════════════════════════════
+
+function switchOptSport(sport) {
+  document.getElementById('panel-nba').style.display = sport === 'nba' ? 'block' : 'none';
+  document.getElementById('panel-mlb').style.display = sport === 'mlb' ? 'block' : 'none';
+  const nbaTab = document.getElementById('tab-nba');
+  const mlbTab = document.getElementById('tab-mlb');
+  nbaTab.style.color = sport === 'nba' ? '#c8922a' : '#6b6560';
+  nbaTab.style.borderBottom = sport === 'nba' ? '2px solid #c8922a' : '2px solid transparent';
+  mlbTab.style.color = sport === 'mlb' ? '#c8922a' : '#6b6560';
+  mlbTab.style.borderBottom = sport === 'mlb' ? '2px solid #c8922a' : '2px solid transparent';
+  if (sport === 'mlb') { mlbRenderBatters(); mlbRenderPitchers(); mlbRenderLineup(); }
+}
+
+// ── DATA ──────────────────────────────────────────────────────
+// Batters: Player,Salary,Position,Team,Opponent,Projection,Value,Hand,TeamTotal,IPVariance,StackVariance
+const MLB_BATTERS = [
+["Nick Kurtz",5200,"1B","ATH","TEX",10.414,2.0,"L",5.1,"High","High"],
+["Lawrence Butler",3600,"OF","ATH","TEX",8.699,2.42,"R",5.1,"High","High"],
+["Shea Langeliers",5700,"C","ATH","TEX",8.469,1.49,"R",5.1,"High","High"],
+["Tyler Soderstrom",4700,"OF","ATH","TEX",7.994,1.70,"L",5.1,"High","High"],
+["Jacob Wilson",3700,"SS","ATH","TEX",6.884,1.86,"R",5.1,"Moderate","High"],
+["Carlos Cortes",3300,"OF","ATH","TEX",6.863,2.08,"L",5.1,"Low","High"],
+["Jeff McNeil",3500,"2B","ATH","TEX",6.71,1.92,"L",5.1,"Low","High"],
+["Max Muncy",3900,"3B","ATH","TEX",5.912,1.52,"R",5.1,"Moderate","High"],
+["Denzel Clarke",2200,"OF","ATH","TEX",5.754,2.62,"R",5.1,"Low","High"],
+["Ronald Acuna Jr.",5400,"OF","ATL","MIA",10.1,1.87,"R",5.2,"High","High"],
+["Matt Olson",4500,"1B","ATL","MIA",8.829,1.96,"L",5.2,"Moderate","High"],
+["Drake Baldwin",4800,"C","ATL","MIA",8.754,1.82,"L",5.2,"Moderate","High"],
+["Austin Riley",3700,"3B","ATL","MIA",7.88,2.13,"R",5.2,"Moderate","High"],
+["Ozzie Albies",3800,"2B","ATL","MIA",7.465,1.96,"S",5.2,"Moderate","High"],
+["Michael Harris II",3200,"OF","ATL","MIA",7.325,2.29,"L",5.2,"Moderate","High"],
+["Mike Yastrzemski",3000,"OF","ATL","MIA",7.213,2.40,"L",5.2,"Low","High"],
+["Dominic Smith",3300,"1B","ATL","MIA",6.47,1.96,"L",5.2,"Low","High"],
+["Mauricio Dubon",3300,"SS","ATL","MIA",5.887,1.78,"R",5.2,"Low","High"],
+["Hunter Goodman",4300,"C","COL","HOU",7.344,1.71,"R",3.9,"High","Neutral"],
+["Mickey Moniak",3400,"OF","COL","HOU",7.337,2.16,"L",3.9,"High","Neutral"],
+["Troy Johnston",3500,"1B","COL","HOU",6.636,1.90,"L",3.9,"Low","Neutral"],
+["Ezequiel Tovar",3900,"SS","COL","HOU",6.559,1.68,"R",3.9,"Low","Neutral"],
+["Jake McCarthy",2600,"OF","COL","HOU",6.363,2.45,"L",3.9,"Low","Neutral"],
+["Willi Castro",3200,"2B","COL","HOU",5.99,1.87,"S",3.9,"Low","Neutral"],
+["Jordan Beck",2700,"OF","COL","HOU",5.791,2.14,"R",3.9,"Low","Neutral"],
+["Edouard Julien",2900,"2B","COL","HOU",5.726,1.97,"L",3.9,"High","Neutral"],
+["TJ Rumfield",3000,"1B","COL","HOU",5.657,1.89,"R",3.9,"Low","Neutral"],
+["Munetaka Murakami",4300,"1B","CWS","TB",8.113,1.89,"L",4.2,"High","Low"],
+["Colson Montgomery",4000,"3B","CWS","TB",8.075,2.02,"L",4.2,"High","Low"],
+["Andrew Benintendi",2600,"OF","CWS","TB",7.732,2.97,"L",4.2,"Low","Low"],
+["Miguel Vargas",3500,"3B","CWS","TB",6.597,1.88,"R",4.2,"Low","Low"],
+["Luisangel Acuna",2500,"OF","CWS","TB",6.147,2.46,"R",4.2,"Low","Low"],
+["Reese McGuire",2000,"C","CWS","TB",5.66,2.83,"L",4.2,"Low","Low"],
+["Yordan Alvarez",6200,"OF","HOU","COL",9.098,1.47,"L",4.9,"High","High"],
+["Carlos Correa",4500,"3B","HOU","COL",8.555,1.90,"R",4.9,"Moderate","High"],
+["Christian Walker",4700,"1B","HOU","COL",8.103,1.72,"R",4.9,"Low","High"],
+["Isaac Paredes",4200,"2B","HOU","COL",7.985,1.90,"R",4.9,"Moderate","High"],
+["Yainer Diaz",3900,"C","HOU","COL",7.653,1.96,"R",4.9,"Low","High"],
+["Cam Smith",4000,"OF","HOU","COL",7.035,1.76,"R",4.9,"Moderate","High"],
+["Brice Matthews",3600,"2B","HOU","COL",6.692,1.86,"R",4.9,"Low","High"],
+["Joey Loperfido",3800,"OF","HOU","COL",5.976,1.57,"L",4.9,"Low","High"],
+["Nick Allen",2200,"SS","HOU","COL",4.755,2.16,"R",4.9,"Low","High"],
+["Zach Neto",5200,"SS","LAA","NYY",9.917,1.91,"R",4.8,"Moderate","Moderate"],
+["Mike Trout",5500,"OF","LAA","NYY",8.469,1.54,"R",4.8,"High","Moderate"],
+["Jo Adell",4200,"OF","LAA","NYY",8.226,1.96,"R",4.8,"High","Moderate"],
+["Josh Lowe",3200,"OF","LAA","NYY",7.684,2.40,"L",4.8,"Low","Moderate"],
+["Nolan Schanuel",3600,"1B","LAA","NYY",7.496,2.08,"L",4.8,"Low","Moderate"],
+["Yoan Moncada",3400,"3B","LAA","NYY",7.286,2.14,"S",4.8,"Low","Moderate"],
+["Logan O'Hoppe",3000,"C","LAA","NYY",6.408,2.14,"R",4.8,"Low","Moderate"],
+["Adam Frazier",2900,"2B","LAA","NYY",5.729,1.98,"L",4.8,"Low","Moderate"],
+["Oswald Peraza",2800,"2B","LAA","NYY",5.633,2.01,"R",4.8,"Moderate","Moderate"],
+["Kyle Tucker",6000,"OF","LAD","NYM",9.159,1.53,"L",4.6,"Moderate","High"],
+["Freddie Freeman",5000,"1B","LAD","NYM",7.639,1.53,"L",4.6,"Moderate","High"],
+["Will Smith",4200,"C","LAD","NYM",7.143,1.70,"R",4.6,"Moderate","High"],
+["Max Muncy",4300,"3B","LAD","NYM",7.087,1.65,"L",4.6,"Moderate","High"],
+["Teoscar Hernandez",4800,"OF","LAD","NYM",6.733,1.40,"R",4.6,"Moderate","High"],
+["Andy Pages",4700,"OF","LAD","NYM",6.424,1.37,"R",4.6,"Moderate","High"],
+["Hyeseong Kim",2600,"SS","LAD","NYM",6.069,2.33,"L",4.6,"Low","High"],
+["Jakob Marsee",4500,"OF","MIA","ATL",9.154,2.03,"L",4.4,"Moderate","Low"],
+["Xavier Edwards",4800,"2B","MIA","ATL",8.418,1.75,"S",4.4,"Low","Low"],
+["Otto Lopez",4400,"SS","MIA","ATL",7.359,1.67,"R",4.4,"Low","Low"],
+["Connor Norby",2900,"1B","MIA","ATL",7.11,2.45,"R",4.4,"Low","Low"],
+["Owen Caissie",3700,"OF","MIA","ATL",6.588,1.78,"L",4.4,"Moderate","Low"],
+["Heriberto Hernandez",3000,"OF","MIA","ATL",6.459,2.15,"L",4.4,"Low","Low"],
+["Graham Pauley",2700,"3B","MIA","ATL",5.934,2.20,"L",4.4,"Low","Low"],
+["Liam Hicks",4600,"C","MIA","ATL",5.923,1.29,"L",4.4,"Moderate","Low"],
+["Deyvison De Los Santos",2100,"1B","MIA","ATL",5.712,2.72,"R",4.4,"Low","Low"],
+["Brice Turang",5600,"2B","MIL","TOR",7.637,1.36,"L",3.7,"Moderate","Low"],
+["William Contreras",5200,"C","MIL","TOR",6.938,1.33,"R",3.7,"Moderate","Low"],
+["Sal Frelick",3900,"OF","MIL","TOR",6.746,1.73,"R",3.7,"Low","Low"],
+["David Hamilton",3800,"3B","MIL","TOR",6.635,1.75,"L",3.7,"Low","Low"],
+["Garrett Mitchell",3700,"OF","MIL","TOR",6.286,1.70,"L",3.7,"Low","Low"],
+["Jake Bauers",4200,"1B","MIL","TOR",6.158,1.47,"L",3.7,"Moderate","Low"],
+["Gary Sanchez",3500,"C","MIL","TOR",5.902,1.69,"R",3.7,"High","Low"],
+["Brandon Lockridge",2600,"OF","MIL","TOR",5.512,2.12,"R",3.7,"Low","Low"],
+["Joey Ortiz",2700,"SS","MIL","TOR",5.187,1.92,"R",3.7,"Low","Low"],
+["Francisco Lindor",4600,"SS","NYM","LAD",8.266,1.80,"S",3.5,"Moderate","Low"],
+["Luis Robert Jr.",5100,"OF","NYM","LAD",7.282,1.43,"R",3.5,"High","Low"],
+["Jorge Polanco",3600,"2B","NYM","LAD",6.232,1.73,"S",3.5,"Moderate","Low"],
+["Bo Bichette",4100,"3B","NYM","LAD",6.131,1.50,"R",3.5,"Moderate","Low"],
+["Francisco Alvarez",4100,"C","NYM","LAD",5.8,1.41,"R",3.5,"High","Low"],
+["Mark Vientos",3400,"1B","NYM","LAD",5.775,1.70,"R",3.5,"Moderate","Low"],
+["Brett Baty",4000,"1B","NYM","LAD",5.744,1.44,"L",3.5,"Moderate","Low"],
+["Marcus Semien",3300,"2B","NYM","LAD",5.138,1.56,"R",3.5,"Low","Low"],
+["Carson Benge",3100,"OF","NYM","LAD",4.76,1.54,"L",3.5,"Low","Low"],
+["Aaron Judge",6500,"OF","NYY","LAA",12.024,1.85,"R",6.0,"High","Moderate"],
+["Jazz Chisholm Jr.",3900,"2B","NYY","LAA",9.534,2.44,"L",6.0,"High","Moderate"],
+["Ben Rice",5500,"1B","NYY","LAA",9.067,1.65,"L",6.0,"High","Moderate"],
+["Cody Bellinger",4500,"OF","NYY","LAA",9.036,2.01,"L",6.0,"Low","Moderate"],
+["Trent Grisham",3800,"OF","NYY","LAA",8.876,2.34,"L",6.0,"Low","Moderate"],
+["Giancarlo Stanton",4200,"OF","NYY","LAA",8.728,2.08,"R",6.0,"Moderate","Moderate"],
+["Jose Caballero",2800,"SS","NYY","LAA",8.499,3.04,"R",6.0,"Low","Moderate"],
+["Austin Wells",2800,"C","NYY","LAA",7.376,2.63,"L",6.0,"Low","Moderate"],
+["Ryan McMahon",2500,"3B","NYY","LAA",6.546,2.62,"L",6.0,"Low","Moderate"],
+["Ramon Laureano",4200,"OF","SD","SEA",8.111,1.93,"R",4.1,"High","Moderate"],
+["Jackson Merrill",4500,"OF","SD","SEA",8.104,1.80,"R",4.1,"High","Moderate"],
+["Manny Machado",4700,"3B","SD","SEA",7.608,1.62,"R",4.1,"Low","Moderate"],
+["Xander Bogaerts",4100,"SS","SD","SEA",7.087,1.73,"R",4.1,"Low","Moderate"],
+["Nick Castellanos",3000,"OF","SD","SEA",6.259,2.09,"R",4.1,"Low","Moderate"],
+["Gavin Sheets",3700,"1B","SD","SEA",6.206,1.68,"L",4.1,"High","Moderate"],
+["Jake Cronenworth",3400,"2B","SD","SEA",5.743,1.69,"L",4.1,"Low","Moderate"],
+["Ty France",2400,"1B","SD","SEA",5.386,2.24,"R",4.1,"Low","Moderate"],
+["Freddy Fermin",2600,"C","SD","SEA",4.979,1.92,"R",4.1,"Low","Moderate"],
+["Cal Raleigh",5000,"C","SEA","SD",8.869,1.77,"S",4.4,"High","Low"],
+["Julio Rodriguez",4500,"OF","SEA","SD",8.667,1.93,"R",4.4,"High","Low"],
+["Josh Naylor",3900,"1B","SEA","SD",8.157,2.09,"L",4.4,"High","Low"],
+["Brendan Donovan",4000,"3B","SEA","SD",7.536,1.88,"L",4.4,"Moderate","Low"],
+["Randy Arozarena",4200,"OF","SEA","SD",7.28,1.73,"R",4.4,"Moderate","Low"],
+["Luke Raley",3500,"OF","SEA","SD",6.461,1.85,"L",4.4,"High","Low"],
+["Dominic Canzone",3300,"OF","SEA","SD",6.05,1.83,"L",4.4,"Low","Low"],
+["J.P. Crawford",2900,"SS","SEA","SD",5.765,1.99,"L",4.4,"Low","Low"],
+["Cole Young",3100,"2B","SEA","SD",4.967,1.60,"L",4.4,"Low","Low"],
+["Chandler Simpson",4100,"OF","TB","CWS",9.503,2.32,"L",4.4,"High","Low"],
+["Junior Caminero",5100,"3B","TB","CWS",9.14,1.79,"R",4.4,"High","Low"],
+["Yandy Diaz",4900,"1B","TB","CWS",7.966,1.63,"R",4.4,"Moderate","Low"],
+["Jonathan Aranda",4100,"1B","TB","CWS",7.822,1.91,"R",4.4,"High","Low"],
+["Cedric Mullins",2800,"OF","TB","CWS",7.508,2.68,"S",4.4,"Low","Low"],
+["Jake Fraley",3100,"OF","TB","CWS",7.28,2.35,"L",4.4,"Low","Low"],
+["Richie Palacios",3500,"2B","TB","CWS",6.75,1.93,"L",4.4,"Low","Low"],
+["Taylor Walls",2400,"SS","TB","CWS",5.872,2.45,"S",4.4,"Low","Low"],
+["Hunter Feduccia",2500,"C","TB","CWS",4.738,1.90,"L",4.4,"Low","Low"],
+["Corey Seager",5000,"SS","TEX","ATH",9.308,1.86,"L",5.1,"Moderate","Low"],
+["Brandon Nimmo",4900,"OF","TEX","ATH",8.902,1.82,"L",5.1,"Low","Low"],
+["Evan Carter",4200,"OF","TEX","ATH",8.394,2.00,"L",5.1,"Low","Low"],
+["Jake Burger",4400,"1B","TEX","ATH",7.847,1.78,"R",5.1,"Low","Low"],
+["Joc Pederson",3000,"OF","TEX","ATH",7.514,2.50,"L",5.1,"High","Low"],
+["Josh H. Smith",3100,"2B","TEX","ATH",7.112,2.29,"L",5.1,"Low","Low"],
+["Josh Jung",2900,"3B","TEX","ATH",6.905,2.38,"R",5.1,"Low","Low"],
+["Danny Jansen",3200,"C","TEX","ATH",6.465,2.02,"R",5.1,"Low","Low"],
+["Ezequiel Duran",2700,"3B","TEX","ATH",5.67,2.10,"R",5.1,"Low","Low"],
+["Vladimir Guerrero Jr.",5400,"1B","TOR","MIL",8.136,1.51,"R",4.0,"High","Moderate"],
+["Daulton Varsho",4000,"OF","TOR","MIL",7.876,1.97,"L",4.0,"High","Moderate"],
+["Nathan Lukes",2600,"OF","TOR","MIL",6.995,2.69,"L",4.0,"Low","Moderate"],
+["Jesus Sanchez",3500,"OF","TOR","MIL",6.968,1.99,"L",4.0,"Low","Moderate"],
+["Kazuma Okamoto",4400,"3B","TOR","MIL",6.496,1.48,"R",4.0,"Low","Moderate"],
+["Ernie Clement",3000,"2B","TOR","MIL",6.478,2.16,"R",4.0,"Low","Moderate"],
+["Andres Gimenez",3100,"SS","TOR","MIL",6.003,1.94,"L",4.0,"Low","Moderate"],
+["Lenyn Sosa",2500,"1B","TOR","MIL",5.902,2.36,"R",4.0,"Low","Moderate"],
+["Brandon Valenzuela",2100,"C","TOR","MIL",4.373,2.08,"R",4.0,"Low","Moderate"]
+];
+
+// Pitchers: Player,Salary,Position,Team,Opponent,Projection,Value,Hand,IPVariance,PropMarket,Avg2026K,CareerBaseline,ProjK,OddsEV
+const MLB_PITCHERS = [
+["Bryce Elder",8300,"SP","ATL","MIA",13.37,1.61,"R","Low",5.5,5.3,4.5,4.74,-13.80],
+["Chad Patrick",7700,"SP","MIL","TOR",12.087,1.57,"R","Low",4.0,2.25,3.5,3.13,-21.80],
+["Chris Paddack",6200,"SP","MIA","ATL",9.497,1.53,"R","Low",3.5,4.5,4.4,4.43,26.6],
+["Clay Holmes",8700,"RP","NYM","LAD",10.161,1.17,"R","High",5.5,4.0,3.8,3.86,-29.80],
+["Dylan Cease",9700,"SP","TOR","MIL",17.57,1.81,"R","High",6.5,8.67,7.2,7.64,17.5],
+["Emerson Hancock",8500,"SP","SEA","SD",11.366,1.34,"R","Moderate",3.5,6.3,3.8,4.55,30.0],
+["J.T. Ginn",7300,"RP","ATH","TEX",11.934,1.63,"R","Low",3.0,2.0,3.9,3.33,11.0],
+["Jack Kochanowicz",6800,"SP","LAA","NYY",8.133,1.20,"R","High",4.5,4.5,3.1,3.52,-21.80],
+["Jesse Scholtens",7500,"RP","TB","CWS",10.586,1.41,"R","Low",3.5,3.5,3.9,3.78,8.0],
+["Jose Quintana",6000,"RP","COL","HOU",7.888,1.31,"L","Low",4.0,1.0,4.73,3.61,-9.70],
+["Kumar Rocker",6700,"SP","TEX","ATH",11.607,1.73,"R","Low",3.5,4.0,3.5,3.65,4.3],
+["Luis Gil",7200,"SP","NYY","LAA",12.839,1.78,"R","Moderate",4.0,3.5,5.2,4.69,17.3],
+["Randy Vasquez",8000,"SP","SD","SEA",11.474,1.43,"R","Low",4.0,6.3,4.1,4.76,19.0],
+["Sean Burke",6500,"SP","CWS","TB",13.222,2.03,"R","Low",3.5,4.25,3.9,4.01,14.4],
+["Shohei Ohtani",9500,"SP","LAD","NYM",19.176,2.02,"R","High",6.5,4.0,8.1,6.87,5.7],
+["Spencer Arrighetti",7000,"SP","HOU","COL",18.189,2.60,"R","Moderate",4.5,10.0,5.9,7.13,58.4]
+];
+
+// ── STATE ──────────────────────────────────────────────────────
+const MLB_SLOTS = [
+  {pos:'P',label:'P'},{pos:'P',label:'P'},
+  {pos:'C',label:'C'},{pos:'1B',label:'1B'},
+  {pos:'2B',label:'2B'},{pos:'3B',label:'3B'},
+  {pos:'SS',label:'SS'},
+  {pos:'OF',label:'OF'},{pos:'OF',label:'OF'},{pos:'OF',label:'OF'}
+];
+const MLB_CAP = 50000;
+let mlbLineup = new Array(10).fill(null);
+let mlbShowingBatters = true;
+let mlbPosFilter = 'ALL';
+let mlbBatSort = {col:4, asc:false};
+let mlbPitSort = {col:4, asc:false};
+let mlbBatFiltered = [...MLB_BATTERS];
+let mlbPitFiltered = [...MLB_PITCHERS];
+
+function varColor(v) {
+  if (v === 'High') return '#c8922a';
+  if (v === 'Moderate') return '#d4cfc8';
+  return '#6b6560';
+}
+
+function varBg(v) {
+  if (v === 'High') return 'rgba(200,146,42,0.12)';
+  if (v === 'Moderate') return 'rgba(212,207,200,0.08)';
+  return 'transparent';
+}
+
+function mlbSubTab(tab) {
+  mlbShowingBatters = tab === 'batters';
+  document.getElementById('mlbBatterTable').style.display = mlbShowingBatters ? '' : 'none';
+  document.getElementById('mlbPitcherTable').style.display = mlbShowingBatters ? 'none' : '';
+  document.getElementById('mlbPoolTitle').textContent = mlbShowingBatters ? 'Batter Pool' : 'Pitcher Pool';
+  const posFilters = document.getElementById('mlbPosFilters');
+  posFilters.style.display = mlbShowingBatters ? 'flex' : 'none';
+  const bb = document.getElementById('mlb-sub-batters');
+  const pb = document.getElementById('mlb-sub-pitchers');
+  bb.style.color = mlbShowingBatters ? '#0a0a0a' : '#6b6560';
+  bb.style.background = mlbShowingBatters ? '#c8922a' : 'transparent';
+  bb.style.borderColor = mlbShowingBatters ? '#c8922a' : '#2a2a2a';
+  pb.style.color = !mlbShowingBatters ? '#0a0a0a' : '#6b6560';
+  pb.style.background = !mlbShowingBatters ? '#c8922a' : 'transparent';
+  pb.style.borderColor = !mlbShowingBatters ? '#c8922a' : '#2a2a2a';
+}
+
+function mlbSetPos(pos, btn) {
+  mlbPosFilter = pos;
+  document.querySelectorAll('#mlbPosFilters .pos-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  mlbFilterPool();
+}
+
+function mlbFilterPool() {
+  const q = document.getElementById('mlbPoolSearch').value.toLowerCase();
+  mlbBatFiltered = MLB_BATTERS.filter(p =>
+    (mlbPosFilter === 'ALL' || p[2].includes(mlbPosFilter)) &&
+    (p[0].toLowerCase().includes(q) || p[3].toLowerCase().includes(q))
+  );
+  mlbPitFiltered = MLB_PITCHERS.filter(p =>
+    p[0].toLowerCase().includes(q) || p[3].toLowerCase().includes(q)
+  );
+  mlbRenderBatters();
+  mlbRenderPitchers();
+}
+
+function mlbSortBatters(col) {
+  // col: 0=name,1=team,2=opp,3=salary,4=proj,5=val,6=teamtot
+  const dataMap = [0,3,4,3,4,5,8];
+  const dc = dataMap[col];
+  if (mlbBatSort.col === dc) mlbBatSort.asc = !mlbBatSort.asc;
+  else { mlbBatSort.col = dc; mlbBatSort.asc = false; }
+  mlbRenderBatters();
+}
+
+function mlbSortPitchers(col) {
+  const dataMap = [0,3,4,3,4,5,12,13];
+  const dc = dataMap[col];
+  if (mlbPitSort.col === dc) mlbPitSort.asc = !mlbPitSort.asc;
+  else { mlbPitSort.col = dc; mlbPitSort.asc = false; }
+  mlbRenderPitchers();
+}
+
+function mlbRenderBatters() {
+  const inLineup = new Set(mlbLineup.filter(Boolean).map(p => p[0]+'|'+p[3]));
+  const sorted = [...mlbBatFiltered].sort((a,b) => {
+    const av = a[mlbBatSort.col], bv = b[mlbBatSort.col];
+    if (typeof av === 'string') return mlbBatSort.asc ? av.localeCompare(bv) : bv.localeCompare(av);
+    return mlbBatSort.asc ? av - bv : bv - av;
+  });
+  const tbody = document.getElementById('mlbBatterBody');
+  tbody.innerHTML = '';
+  sorted.forEach(p => {
+    const key = p[0]+'|'+p[3];
+    const inL = inLineup.has(key);
+    const tr = document.createElement('tr');
+    if (inL) tr.classList.add('in-lineup');
+    tr.onclick = () => mlbTogglePlayer(p, false);
+    tr.innerHTML = `
+      <td><button class="pool-add-btn ${inL?'added':''}">${inL?'✓':'+'}</button></td>
+      <td style="color:var(--white);font-weight:400;min-width:130px">${p[0]}</td>
+      <td style="color:var(--gold);font-size:0.72rem;font-weight:600">${p[2]}</td>
+      <td>${p[3]}</td>
+      <td style="color:var(--muted)">vs ${p[4]}</td>
+      <td>$${p[1].toLocaleString()}</td>
+      <td style="color:var(--white);font-weight:500">${p[5].toFixed(2)}</td>
+      <td style="color:var(--gold-light)">${p[6].toFixed(2)}</td>
+      <td style="color:var(--muted)">${p[7]}</td>
+      <td style="color:var(--muted)">${p[8] || '—'}</td>
+      <td><span style="font-size:0.7rem;font-weight:600;color:${varColor(p[9])};background:${varBg(p[9])};padding:2px 8px;">${p[9]}</span></td>
+      <td><span style="font-size:0.7rem;font-weight:600;color:${varColor(p[10])};background:${varBg(p[10])};padding:2px 8px;">${p[10]}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function mlbRenderPitchers() {
+  const inLineup = new Set(mlbLineup.filter(Boolean).map(p => p[0]+'|'+p[3]));
+  const sorted = [...mlbPitFiltered].sort((a,b) => {
+    const av = a[mlbPitSort.col], bv = b[mlbPitSort.col];
+    if (typeof av === 'string') return mlbPitSort.asc ? av.localeCompare(bv) : bv.localeCompare(av);
+    return mlbPitSort.asc ? av - bv : bv - av;
+  });
+  const tbody = document.getElementById('mlbPitcherBody');
+  tbody.innerHTML = '';
+  sorted.forEach(p => {
+    const key = p[0]+'|'+p[3];
+    const inL = inLineup.has(key);
+    const tr = document.createElement('tr');
+    if (inL) tr.classList.add('in-lineup');
+    tr.onclick = () => mlbTogglePlayer(p, true);
+    const ev = p[13];
+    const evStr = typeof ev === 'number' ? (ev > 0 ? '+'+ev.toFixed(1)+'%' : ev.toFixed(1)+'%') : ev;
+    const evColor = typeof ev === 'number' && ev > 0 ? '#3a8c5c' : '#c0392b';
+    tr.innerHTML = `
+      <td><button class="pool-add-btn ${inL?'added':''}">${inL?'✓':'+'}</button></td>
+      <td style="color:var(--white);font-weight:400;min-width:130px">${p[0]}</td>
+      <td style="color:var(--gold);font-size:0.72rem;font-weight:600">${p[2]}</td>
+      <td>${p[3]}</td>
+      <td style="color:var(--muted)">vs ${p[4]}</td>
+      <td>$${p[1].toLocaleString()}</td>
+      <td style="color:var(--white);font-weight:500">${p[5].toFixed(2)}</td>
+      <td style="color:var(--gold-light)">${p[6].toFixed(2)}</td>
+      <td style="color:var(--muted)">${p[7]}</td>
+      <td><span style="font-size:0.7rem;font-weight:600;color:${varColor(p[8])};background:${varBg(p[8])};padding:2px 8px;">${p[8]}</span></td>
+      <td style="color:var(--muted)">${p[12].toFixed(1)}</td>
+      <td style="color:${evColor};font-weight:500">${evStr}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function mlbTogglePlayer(player, isPitcher) {
+  const key = player[0]+'|'+player[3];
+  const existIdx = mlbLineup.findIndex(p => p && p[0]+'|'+p[3] === key);
+  if (existIdx >= 0) {
+    mlbLineup[existIdx] = null;
+    mlbRenderLineup(); mlbRenderBatters(); mlbRenderPitchers(); return;
+  }
+  const pos = isPitcher ? 'P' : player[2].split('/')[0];
+  let placed = false;
+  for (let i = 0; i < MLB_SLOTS.length; i++) {
+    if (!mlbLineup[i] && MLB_SLOTS[i].pos === pos) {
+      mlbLineup[i] = player; placed = true; break;
+    }
+  }
+  if (!placed) {
+    // multi-pos batters — try other eligible slots
+    if (!isPitcher) {
+      const allPos = player[2].split('/');
+      for (const ap of allPos) {
+        for (let i = 0; i < MLB_SLOTS.length; i++) {
+          if (!mlbLineup[i] && MLB_SLOTS[i].pos === ap) {
+            mlbLineup[i] = player; placed = true; break;
+          }
+        }
+        if (placed) break;
+      }
+    }
+  }
+  mlbRenderLineup(); mlbRenderBatters(); mlbRenderPitchers();
+}
+
+function mlbRenderLineup() {
+  const container = document.getElementById('mlbLineupSlots');
+  container.innerHTML = '';
+  let totalSalary = 0, totalProj = 0, filled = 0;
+
+  // Count team occurrences for stack display
+  const teamCount = {};
+  mlbLineup.forEach(p => {
+    if (p) { teamCount[p[3]] = (teamCount[p[3]] || 0) + 1; }
+  });
+  const stackTeam = Object.entries(teamCount).sort((a,b) => b[1]-a[1])[0];
+
+  MLB_SLOTS.forEach((slot, i) => {
+    const p = mlbLineup[i];
+    const div = document.createElement('div');
+    div.className = 'lineup-slot' + (p ? ' filled' : '');
+    if (p) {
+      const isPit = slot.pos === 'P';
+      totalSalary += p[1]; totalProj += p[5]; filled++;
+      const ipv = isPit ? p[8] : p[9];
+      div.innerHTML = `
+        <span class="slot-pos">${slot.label}</span>
+        <span class="slot-player">${p[0]}<br><span style="font-size:0.7rem;color:var(--muted)">${p[3]} vs ${p[4]} <span style="color:${varColor(ipv)}">${ipv} Var</span></span></span>
+        <span class="slot-proj">${p[5].toFixed(1)}</span>
+        <span class="slot-salary">$${p[1].toLocaleString()}</span>
+        <button class="slot-remove" onclick="event.stopPropagation();mlbRemoveSlot(${i})">✕</button>
+      `;
+    } else {
+      div.innerHTML = `<span class="slot-pos">${slot.label}</span><span class="slot-empty">Empty</span>`;
+    }
+    container.appendChild(div);
+  });
+
+  const pct = Math.min((totalSalary / MLB_CAP) * 100, 100);
+  const fill = document.getElementById('mlbSalaryFill');
+  fill.style.width = pct + '%';
+  fill.className = 'salary-fill' + (totalSalary > MLB_CAP ? ' over' : '');
+  document.getElementById('mlbSalaryUsed').textContent = '$' + totalSalary.toLocaleString();
+  document.getElementById('mlbSalaryUsed').style.color = totalSalary > MLB_CAP ? '#c0392b' : 'var(--white)';
+  document.getElementById('mlbLineupTotal').textContent = totalProj.toFixed(2);
+  document.getElementById('mlbLineupCount').textContent = `${filled} / 10`;
+
+  // Stack info
+  const stackEl = document.getElementById('mlbStackStatus');
+  if (stackTeam && stackTeam[1] >= 2) {
+    // Find stack variance for this team from batters
+    const rep = MLB_BATTERS.find(b => b[3] === stackTeam[0]);
+    const sv = rep ? rep[10] : '—';
+    stackEl.innerHTML = `<strong style="color:var(--white)">${stackTeam[0]}</strong> — ${stackTeam[1]} players &nbsp;·&nbsp; Stack Var: <span style="color:${varColor(sv)};font-weight:600">${sv}</span>`;
+  } else {
+    stackEl.textContent = 'No stack yet (2+ players from same team)';
+  }
+}
+
+function mlbRemoveSlot(i) {
+  mlbLineup[i] = null;
+  mlbRenderLineup(); mlbRenderBatters(); mlbRenderPitchers();
+}
+
+function mlbClearLineup() {
+  mlbLineup = new Array(10).fill(null);
+  mlbRenderLineup(); mlbRenderBatters(); mlbRenderPitchers();
+}
+
+function mlbAutoOptimize() {
+  const CAP = MLB_CAP;
+  const SLOTS = MLB_SLOTS;
+  const N = SLOTS.length;
+  const MIN_FLOOR = 2000;
+  const jitter = () => (Math.random() - 0.5) * 3;
+
+  const getEligible = (slot, used) => {
+    if (slot.pos === 'P') {
+      return MLB_PITCHERS.filter(p => !used.has(p[0]+'|'+p[3]));
+    }
+    return MLB_BATTERS.filter(p => {
+      if (used.has(p[0]+'|'+p[3])) return false;
+      return p[2].split('/').includes(slot.pos);
+    });
+  };
+
+  let best = null, bestProj = 0;
+
+  for (let attempt = 0; attempt < 100; attempt++) {
+    const lineup = new Array(N).fill(null);
+    const used = new Set();
+    let salary = 0, valid = true;
+    // Track team counts for stack cap
+    const teamCt = {};
+
+    for (let i = 0; i < N; i++) {
+      const slotsLeft = N - i;
+      const maxForSlot = CAP - salary - (slotsLeft - 1) * MIN_FLOOR;
+      const eligible = getEligible(SLOTS[i], used)
+        .filter(p => {
+          if (p[1] > maxForSlot) return false;
+          // enforce max 5 batters from same team
+          if (SLOTS[i].pos !== 'P') {
+            if ((teamCt[p[3]] || 0) >= 5) return false;
+          }
+          return true;
+        })
+        .map(p => ({ p, score: p[5] + jitter() }))
+        .sort((a, b) => b.score - a.score);
+
+      const topN = Math.min(eligible.length, 6);
+      if (topN === 0) { valid = false; break; }
+
+      const weights = eligible.slice(0, topN).map((_, idx) => 1 / (idx + 1));
+      const total = weights.reduce((a, b) => a + b, 0);
+      let rand = Math.random() * total;
+      let picked = eligible[0].p;
+      for (let j = 0; j < topN; j++) { rand -= weights[j]; if (rand <= 0) { picked = eligible[j].p; break; } }
+
+      lineup[i] = picked;
+      salary += picked[1];
+      used.add(picked[0]+'|'+picked[3]);
+      if (SLOTS[i].pos !== 'P') teamCt[picked[3]] = (teamCt[picked[3]] || 0) + 1;
+    }
+
+    if (!valid || salary > CAP) continue;
+    const proj = lineup.reduce((s, p) => s + (p ? p[5] : 0), 0);
+    if (proj > bestProj) { bestProj = proj; best = [...lineup]; }
+  }
+
+  if (best) mlbLineup = best;
+  mlbRenderLineup(); mlbRenderBatters(); mlbRenderPitchers();
+}
+
+// Init MLB tables on first load
+mlbRenderBatters();
+mlbRenderPitchers();
+mlbRenderLineup();
+
+</script>
+</body>
+</html>

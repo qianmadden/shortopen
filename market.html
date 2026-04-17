@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>shortopen — The Market</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: #222222;
+    --border2: #2a2a2a;
+    --gold: #c8922a;
+    --gold-light: #e4a83a;
+    --gold-dim: rgba(200,146,42,0.12);
+    --white: #f0ece4;
+    --muted: #6b6560;
+    --text: #d4cfc8;
+    --green: #3a8c5c;
+    --green-dim: rgba(58,140,92,0.12);
+    --red: #c0392b;
+    --red-dim: rgba(192,57,43,0.12);
+    --blue: #3a6ea8;
+    --blue-dim: rgba(58,110,168,0.1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: var(--white);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+  /* PAGE HEADER */
+  .page-header {
+    padding: 120px 48px 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 14px;
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .live-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 1.8s ease infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.3; transform: scale(0.6); }
+  }
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(28px, 4vw, 52px);
+    color: var(--white);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .page-sub {
+    font-size: 0.88rem;
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.8;
+  }
+  .page-sub em { font-style: italic; color: var(--gold); font-family: 'Playfair Display', serif; }
+
+  /* SPORT TABS */
+  .sport-tabs {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 48px;
+    display: flex;
+    gap: 2px;
+    border-bottom: 1px solid var(--border2);
+    margin-top: 28px;
+  }
+  .sport-tab {
+    padding: 14px 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .sport-tab:hover { color: var(--white); }
+  .sport-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .sport-panel { display: none; }
+  .sport-panel.active { display: block; }
+
+  /* LEGEND */
+  .legend-bar {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 48px 20px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+  .legend-dot { width: 8px; height: 8px; border-radius: 1px; flex-shrink: 0; }
+  .legend-sep { width: 1px; height: 16px; background: var(--border2); margin: 0 4px; }
+
+  /* DATE DIVIDER */
+  .date-divider {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px 48px 10px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .date-divider-label {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  .date-divider-line { flex: 1; height: 1px; background: var(--border); }
+
+  /* GAMES LIST */
+  .games-list {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 48px 60px;
+  }
+
+  /* GAME CARD */
+  .game-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-bottom: 2px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.25s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(5px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .game-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--border2);
+    transition: background 0.2s;
+  }
+  .game-card:hover::before { background: var(--gold); }
+  .game-card.edge-strong::before { background: var(--green); }
+  .game-card.edge-fade::before   { background: var(--red); }
+
+  .game-inner {
+    display: grid;
+    grid-template-columns: 260px 1fr 1fr 1fr 220px;
+    align-items: stretch;
+    min-height: 108px;
+  }
+
+  /* TEAMS COLUMN */
+  .teams-col {
+    padding: 16px 20px 16px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid var(--border);
+    gap: 4px;
+  }
+  .team-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .team-abbr {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    min-width: 32px;
+    flex-shrink: 0;
+  }
+  .team-info { display: flex; flex-direction: column; }
+  .team-name { font-size: 0.88rem; font-weight: 400; color: var(--white); }
+  .team-name.away { color: var(--text); }
+  .team-pitcher {
+    font-size: 0.66rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-top: 1px;
+  }
+  .at-symbol {
+    font-size: 0.6rem;
+    color: var(--muted);
+    opacity: 0.4;
+    padding: 2px 0;
+    align-self: center;
+  }
+  .game-time {
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ODDS COLUMNS */
+  .odds-col {
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+  }
+  .odds-col-header {
+    padding: 7px 16px;
+    font-size: 0.56rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .odds-cells { display: flex; flex-direction: column; flex: 1; }
+  .odds-cell {
+    flex: 1;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    gap: 8px;
+    min-height: 36px;
+  }
+  .odds-cell:last-child { border-bottom: none; }
+  .odds-main {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--white);
+    letter-spacing: -0.01em;
+  }
+  .odds-juice {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+  .odds-main.pos { color: #5aaa7a; }
+  .odds-main.neg { color: var(--text); }
+  .total-label {
+    font-size: 0.64rem;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-right: 3px;
+  }
+  .open-note {
+    padding: 3px 16px 6px;
+    font-size: 0.58rem;
+    color: var(--muted);
+    font-style: italic;
+    letter-spacing: 0.04em;
+  }
+
+  /* LINE MOVEMENT */
+  .move-badge {
+    font-size: 0.58rem;
+    font-weight: 600;
+    padding: 2px 5px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .move-up { background: var(--green-dim); color: var(--green); }
+  .move-dn { background: var(--red-dim); color: var(--red); }
+
+  /* EDGE COLUMN */
+  .edge-col { display: flex; flex-direction: column; }
+  .edge-col-header {
+    padding: 7px 16px;
+    font-size: 0.56rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .edge-col-header::before {
+    content: '';
+    display: inline-block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+  .edge-content {
+    flex: 1;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+  }
+  .edge-pick { display: flex; align-items: flex-start; gap: 9px; }
+  .edge-pick-pos {
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+  .edge-pick-pos.spread { background: var(--blue-dim);  color: var(--blue);  border: 1px solid rgba(58,110,168,0.3); }
+  .edge-pick-pos.total  { background: var(--gold-dim);  color: var(--gold);  border: 1px solid rgba(200,146,42,0.3); }
+  .edge-pick-pos.ml     { background: var(--green-dim); color: var(--green); border: 1px solid rgba(58,140,92,0.3); }
+  .edge-pick-pos.fade   { background: var(--red-dim);   color: var(--red);   border: 1px solid rgba(192,57,43,0.3); }
+  .edge-pick-info { flex: 1; }
+  .edge-pick-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--white);
+    line-height: 1.3;
+    font-family: 'Playfair Display', serif;
+  }
+  .ev-meter { display: flex; align-items: center; gap: 6px; margin-top: 3px; }
+  .ev-bar-bg {
+    flex: 1;
+    height: 2px;
+    background: var(--border2);
+    border-radius: 1px;
+    overflow: hidden;
+    max-width: 50px;
+  }
+  .ev-bar-fill { height: 100%; border-radius: 1px; }
+  .ev-bar-fill.pos { background: var(--green); }
+  .ev-bar-fill.neg { background: var(--red); }
+  .ev-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 500;
+    min-width: 38px;
+  }
+  .ev-label.pos-ev { color: var(--green); }
+  .ev-label.neg-ev { color: var(--red); }
+  .no-edge {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.68rem;
+    color: var(--border2);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .edge-note {
+    font-size: 0.68rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-top: 4px;
+    font-style: italic;
+    border-top: 1px solid var(--border);
+    padding-top: 7px;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1rem; color: var(--white); }
+  .footer-logo span { color: var(--gold); }
+  .footer-copy { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; }
+
+  /* HAMBURGER */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: transparent;
+    border: none;
+    z-index: 200;
+  }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); transition: all 0.25s ease; }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10,10,10,0.98);
+    backdrop-filter: blur(16px);
+    z-index: 150;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 8vw, 2.4rem);
+    font-weight: 900;
+    color: var(--white);
+    text-decoration: none;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    width: 80%;
+    text-align: center;
+    transition: color 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--gold); }
+  .mobile-menu-close {
+    position: absolute; top: 24px; right: 24px;
+    background: transparent; border: none; color: var(--muted);
+    font-size: 1.4rem; cursor: pointer; padding: 8px;
+  }
+
+  @media (max-width: 1100px) {
+    .game-inner { grid-template-columns: 200px 1fr 1fr 1fr 200px; }
+  }
+  @media (max-width: 900px) {
+    .hamburger { display: flex; }
+    .nav-links { display: none !important; }
+    .game-inner { grid-template-columns: 1fr; }
+    .teams-col, .odds-col, .edge-col { border-right: none; border-bottom: 1px solid var(--border); }
+    .edge-col { border-bottom: none; }
+    .odds-col-header, .edge-col-header { display: none; }
+    .page-header  { padding: 100px 20px 24px; }
+    .sport-tabs   { padding: 0 20px; }
+    .legend-bar   { padding: 16px 20px; }
+    .date-divider { padding: 20px 20px 8px; }
+    .games-list   { padding: 0 20px 48px; }
+    footer        { padding: 28px 20px; flex-direction: column; gap: 12px; text-align: center; }
+  }
+
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">short<span>open</span></a>
+  <ul class="nav-links">
+    <li><a href="analysis.html">Analysis</a></li>
+    <li><a href="market.html" class="active">Market</a></li>
+    <li><a href="optimizer.html">Optimizer</a></li>
+    <li><a href="hr-index.html">HR Index</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="subscribe.html">Subscribe</a></li>
+  </ul>
+  <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+  <a href="index.html" onclick="toggleMobileMenu()">Home</a>
+  <a href="analysis.html" onclick="toggleMobileMenu()">Analysis</a>
+  <a href="market.html" onclick="toggleMobileMenu()">Market</a>
+  <a href="optimizer.html" onclick="toggleMobileMenu()">Optimizer</a>
+  <a href="hr-index.html" onclick="toggleMobileMenu()">HR Index</a>
+  <a href="about.html" onclick="toggleMobileMenu()">About</a>
+  <a href="subscribe.html" onclick="toggleMobileMenu()">Subscribe</a>
+</div>
+
+<div class="page-header">
+  <div class="live-badge"><div class="live-dot"></div>Live Lines</div>
+  <h1 class="page-title">The Market.</h1>
+  <p class="page-sub">The line before the world touches it. Where it <em>opened</em>, where it moved, and where we think the edge is.</p>
+</div>
+
+<!-- SPORT TABS -->
+<div class="sport-tabs">
+  <button class="sport-tab active" onclick="switchSport('nba', this)">NBA</button>
+  <button class="sport-tab" onclick="switchSport('mlb', this)">MLB</button>
+</div>
+
+<!-- LEGEND (shared) -->
+<div class="legend-bar">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>edge — bet with line</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>spread play</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>total (o/u)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>fade / no edge</div>
+  <div class="legend-sep"></div>
+  <div class="legend-item" style="font-style:italic;font-family:'Playfair Display',serif;color:var(--gold);font-size:0.76rem">+EV = positive expected value vs. closing line</div>
+</div>
+
+<!-- NBA PANEL -->
+<div class="sport-panel active" id="panel-nba">
+  <div id="nbaContainer"></div>
+</div>
+
+<!-- MLB PANEL -->
+<div class="sport-panel" id="panel-mlb">
+  <div id="mlbContainer"></div>
+</div>
+
+
+    <div class="hr-setting">
+      <span class="hr-setting-label">PA / Game</span>
+      <input type="range" class="hr-range" min="3" max="5" step="1" value="4" id="hrPA" oninput="document.getElementById('hrPAVal').textContent=this.value;hrRender();hrUpdateDetail()"/>
+      <span class="hr-setting-val" id="hrPAVal">4</span>
+    </div>
+    <div class="hr-setting">
+      <span class="hr-setting-label">Conversion</span>
+      <input type="range" class="hr-range" min="0.25" max="0.55" step="0.01" value="0.38" id="hrConv" oninput="document.getElementById('hrConvVal').textContent=parseFloat(this.value).toFixed(2);hrRender();hrUpdateDetail()"/>
+      <span class="hr-setting-val" id="hrConvVal">0.38</span>
+    </div>
+    <span class="hr-count" id="hrCount"></span>
+  </div>
+
+  <div class="hr-layout">
+
+    <div class="hr-table-wrap">
+      <table class="hr-table">
+        <thead>
+          <tr>
+            <th style="min-width:180px">Player</th>
+            <th onclick="hrSetSort('hr_game',document.getElementById('hrsort-hr_game'))" title="HR probability per game">HR% / Game</th>
+            <th onclick="hrSetSort('xwoba',document.getElementById('hrsort-xwoba'))">xwOBA</th>
+            <th onclick="hrSetSort('barrel',document.getElementById('hrsort-barrel'))">Barrel%</th>
+            <th onclick="hrSetSort('hh',document.getElementById('hrsort-hh'))">Hard Hit%</th>
+            <th onclick="hrSetSort('k',document.getElementById('hrsort-k'))">K%</th>
+            <th onclick="hrSetSort('bb',document.getElementById('hrsort-bb'))">BB%</th>
+            <th>Whiff%</th>
+          </tr>
+        </thead>
+        <tbody id="hrTableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="hr-detail" id="hrDetail">
+      <div class="hr-empty">Click any player to see their HR probability breakdown.</div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<footer>
+  <div class="footer-logo">short<span>open</span></div>
+  <p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+</footer>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+//  SHORTOPEN — THE MARKET  ·  EDIT GAMES ARRAYS TO UPDATE SLATE
+// ════════════════════════════════════════════════════════════════
+//
+//  HOW TO EDIT:
+//  Find NBA_GAMES or MLB_GAMES below.
+//  Each game is one { } block. Fields:
+//
+//  BOTH SPORTS:
+//    day            — group label: 'Tonight' / 'WED' / 'SAT' etc.
+//    time           — tip/first pitch: '7:30PM ET'
+//    away / awayAbbr  home / homeAbbr  — full name + short code
+//    awayPitcher / homePitcher  — MLB only (pitcher name, leave '' for NBA)
+//
+//    spreadAway / spreadHome            — e.g. '+1.5' / '-1.5'
+//    spreadAwayJuice / spreadHomeJuice  — e.g. '+142' / '-172'
+//    spreadAwayMove / spreadHomeMove    — 'up', 'dn', or ''
+//    spreadOpen                         — italic note, e.g. 'Opened -2 at open'
+//
+//    mlAway / mlHome   — moneylines
+//
+//    total                              — the number, e.g. '8.5'
+//    totalOverJuice / totalUnderJuice   — e.g. '+100' / '-122'
+//    totalMove                          — 'up', 'dn', or ''
+//    totalOpen                          — italic note below total
+//
+//    edgeType   — 'spread' | 'total' | 'ml' | 'fade' | ''
+//    edgeLabel  — pick shown on card, e.g. 'CLE -1.5'
+//    edgeEV     — e.g. '+3.2' or '-1.0'
+//    edge2Type / edge2Label / edge2EV   — optional second play
+//    edgeNote   — one-line market note (italic, optional)
+//
+//  To ADD a game: copy any { ... }, block and paste before the ];
+//  To REMOVE: delete the entire { ... }, block
+//
+// ════════════════════════════════════════════════════════════════
+
+// ── NBA ─────────────────────────────────────────────────────────
+
+const NBA_GAMES = [
+
+  // ── GAME 1 ──────────────────────────────────────────────────
+  {
+    day: 'Tonight',
+    away: 'Miami Heat',        awayAbbr: 'MIA',
+    home: 'Charlotte Hornets', homeAbbr: 'CHA',
+    time: '7:30PM ET',
+
+    spreadAway: '+6',  spreadAwayJuice: '-112',  spreadAwayMove: 'up',
+    spreadHome: '-6',  spreadHomeJuice: '-108',  spreadHomeMove: '',
+    spreadOpen: 'Opened MIA +4.5',
+
+    mlAway: '+198',  mlHome: '-240',
+
+    total: '227.5',  totalOverJuice: '-115',  totalUnderJuice: '-105',
+    totalMove: 'up',  totalOpen: 'Opened 224',
+
+    edgeType: 'spread',  edgeLabel: 'MIA +6',       edgeEV: '+3.8',
+    edge2Type: 'total',  edge2Label: 'Over 227.5',  edge2EV: '+1.9',
+    edgeNote: 'Line has moved 1.5 pts toward CHA. Public on the home side — value with the dog.'
+  },
+
+  // ── GAME 2 ──────────────────────────────────────────────────
+  {
+    day: 'Tonight',
+    away: 'Portland Trail Blazers', awayAbbr: 'POR',
+    home: 'Phoenix Suns',           homeAbbr: 'PHX',
+    time: '10:00PM ET',
+
+    spreadAway: '+3',  spreadAwayJuice: '-110',  spreadAwayMove: '',
+    spreadHome: '-3',  spreadHomeJuice: '-110',  spreadHomeMove: 'dn',
+    spreadOpen: 'Opened PHX -4',
+
+    mlAway: '+128',  mlHome: '-152',
+
+    total: '216.5',  totalOverJuice: '-106',  totalUnderJuice: '-114',
+    totalMove: 'dn',  totalOpen: 'Opened 218',
+
+    edgeType: 'spread',  edgeLabel: 'POR +3',  edgeEV: '+2.1',
+    edge2Type: '',        edge2Label: '',        edge2EV: '',
+    edgeNote: 'Suns line compressed from -4. Sharp money on Portland.'
+  },
+
+  // ── GAME 3 ──────────────────────────────────────────────────
+  {
+    day: 'WED',
+    away: 'Orlando Magic',       awayAbbr: 'ORL',
+    home: 'Philadelphia 76ers',  homeAbbr: 'PHI',
+    time: '7:30PM ET',
+
+    spreadAway: '+1.5',  spreadAwayJuice: '-110',  spreadAwayMove: '',
+    spreadHome: '-1.5',  spreadHomeJuice: '-110',  spreadHomeMove: '',
+    spreadOpen: 'Opened PHI -1',
+
+    mlAway: '+104',  mlHome: '-122',
+
+    total: '222.5',  totalOverJuice: '-105',  totalUnderJuice: '-115',
+    totalMove: '',  totalOpen: 'Opened 221',
+
+    edgeType: 'total',  edgeLabel: 'Under 222.5',  edgeEV: '+2.6',
+    edge2Type: '',       edge2Label: '',             edge2EV: '',
+    edgeNote: 'Both teams rank bottom-10 in pace. Total crept up 1.5 — we like the under.'
+  },
+
+  // ── GAME 4 ──────────────────────────────────────────────────
+  {
+    day: 'WED',
+    away: 'Golden State Warriors', awayAbbr: 'GSW',
+    home: 'Los Angeles Clippers',  homeAbbr: 'LAC',
+    time: '10:00PM ET',
+
+    spreadAway: '+5',  spreadAwayJuice: '-108',  spreadAwayMove: '',
+    spreadHome: '-5',  spreadHomeJuice: '-112',  spreadHomeMove: '',
+    spreadOpen: 'Opened LAC -5',
+
+    mlAway: '+176',  mlHome: '-210',
+
+    total: '221.5',  totalOverJuice: '-105',  totalUnderJuice: '-115',
+    totalMove: '',  totalOpen: 'Opened 221.5',
+
+    edgeType: 'fade',  edgeLabel: 'No edge — line held firm',  edgeEV: '-0.5',
+    edge2Type: '',      edge2Label: '',                          edge2EV: '',
+    edgeNote: "Market hasn't moved. Nothing to exploit here."
+  },
+
+  // ── GAME 5 ──────────────────────────────────────────────────
+  {
+    day: 'SAT',
+    away: 'Toronto Raptors',     awayAbbr: 'TOR',
+    home: 'Cleveland Cavaliers', homeAbbr: 'CLE',
+    time: '1:00PM ET',
+
+    spreadAway: '+8',  spreadAwayJuice: '-108',  spreadAwayMove: 'up',
+    spreadHome: '-8',  spreadHomeJuice: '-112',  spreadHomeMove: '',
+    spreadOpen: 'Opened CLE -6.5',
+
+    mlAway: '+275',  mlHome: '-340',
+
+    total: '218.5',  totalOverJuice: '-110',  totalUnderJuice: '-110',
+    totalMove: 'dn',  totalOpen: 'Opened 220',
+
+    edgeType: 'spread',  edgeLabel: 'TOR +8',        edgeEV: '+5.2',
+    edge2Type: 'total',  edge2Label: 'Under 218.5',  edge2EV: '+3.1',
+    edgeNote: 'Line moved 1.5 pts against CLE. Total dropped 1.5 — sharp under action early.'
+  },
+
+  // ── GAME 6 ──────────────────────────────────────────────────
+  {
+    day: 'SAT',
+    away: 'Minnesota Timberwolves', awayAbbr: 'MIN',
+    home: 'Denver Nuggets',         homeAbbr: 'DEN',
+    time: '3:30PM ET',
+
+    spreadAway: '+6',  spreadAwayJuice: '-110',  spreadAwayMove: '',
+    spreadHome: '-6',  spreadHomeJuice: '-110',  spreadHomeMove: '',
+    spreadOpen: 'Opened DEN -6',
+
+    mlAway: '+190',  mlHome: '-230',
+
+    total: '230.5',  totalOverJuice: '-112',  totalUnderJuice: '-108',
+    totalMove: 'up',  totalOpen: 'Opened 228',
+
+    edgeType: 'ml',  edgeLabel: 'MIN +190',  edgeEV: '+4.0',
+    edge2Type: '',    edge2Label: '',          edge2EV: '',
+    edgeNote: 'Jokic game — public will hammer DEN ML. +190 on MIN feels generous given recent form.'
+  },
+
+];
+
+// ── MLB ─────────────────────────────────────────────────────────
+// NOTE: awayPitcher / homePitcher show under the team name.
+//       spreadAway/Home are the run-line spreads (usually ±1.5).
+//       spreadAwayJuice/homeJuice are the run-line prices.
+//       mlAway/mlHome are straight moneylines.
+//       total is the over/under (e.g. '8.5').
+
+const MLB_GAMES = [
+
+  // ── GAME 1 ──────────────────────────────────────────────────
+  {
+    day: 'WED',
+    away: 'Cleveland Guardians', awayAbbr: 'CLE',  awayPitcher: 'C Cecconi',
+    home: 'St. Louis Cardinals', homeAbbr: 'STL',  homePitcher: 'D May',
+    time: '12:36PM ET',
+
+    spreadAway: '-1.5',  spreadAwayJuice: '+164',  spreadAwayMove: '',
+    spreadHome: '+1.5',  spreadHomeJuice: '-200',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '-102',  mlHome: '-116',
+
+    total: '8.5',  totalOverJuice: '+100',  totalUnderJuice: '-122',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: '',  edgeLabel: '',  edgeEV: '',
+    edge2Type: '', edge2Label: '', edge2EV: '',
+    edgeNote: ''
+  },
+
+  // ── GAME 2 ──────────────────────────────────────────────────
+  {
+    day: 'WED',
+    away: 'Boston Red Sox',    awayAbbr: 'BOS',  awayPitcher: 'C Early',
+    home: 'Minnesota Twins',   homeAbbr: 'MIN',  homePitcher: 'S Woods Richardson',
+    time: '1:16PM ET',
+
+    spreadAway: '-1.5',  spreadAwayJuice: '+142',  spreadAwayMove: '',
+    spreadHome: '+1.5',  spreadHomeJuice: '-172',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '-126',  mlHome: '+108',
+
+    total: '7.5',  totalOverJuice: '-124',  totalUnderJuice: '+102',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: '',  edgeLabel: '',  edgeEV: '',
+    edge2Type: '', edge2Label: '', edge2EV: '',
+    edgeNote: ''
+  },
+
+  // ── GAME 3 ──────────────────────────────────────────────────
+  {
+    day: 'WED',
+    away: 'Kansas City Royals', awayAbbr: 'KCR',  awayPitcher: 'S Lugo',
+    home: 'Detroit Tigers',     homeAbbr: 'DET',  homePitcher: 'J Flaherty',
+    time: '1:41PM ET',
+
+    spreadAway: '+1.5',  spreadAwayJuice: '-210',  spreadAwayMove: '',
+    spreadHome: '-1.5',  spreadHomeJuice: '+172',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '+108',  mlHome: '-126',
+
+    total: '8',  totalOverJuice: '-105',  totalUnderJuice: '-115',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: '',  edgeLabel: '',  edgeEV: '',
+    edge2Type: '', edge2Label: '', edge2EV: '',
+    edgeNote: ''
+  },
+
+  // ── GAME 4 ──────────────────────────────────────────────────
+  {
+    day: 'WED',
+    away: 'San Francisco Giants', awayAbbr: 'SFG',  awayPitcher: 'T Mahle',
+    home: 'Cincinnati Reds',      homeAbbr: 'CIN',  homePitcher: 'R Lowder',
+    time: '6:41PM ET',
+
+    spreadAway: '-1.5',  spreadAwayJuice: '+155',  spreadAwayMove: '',
+    spreadHome: '+1.5',  spreadHomeJuice: '-188',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '-108',  mlHome: '-108',
+
+    total: '9',  totalOverJuice: '-115',  totalUnderJuice: '-105',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: '',  edgeLabel: '',  edgeEV: '',
+    edge2Type: '', edge2Label: '', edge2EV: '',
+    edgeNote: ''
+  },
+
+  // ── GAME 5 ──────────────────────────────────────────────────
+  {
+    day: 'WED',
+    away: 'Chicago Cubs',         awayAbbr: 'CHC',  awayPitcher: 'S Imanaga',
+    home: 'Philadelphia Phillies', homeAbbr: 'PHI',  homePitcher: 'J Luzardo',
+    time: '6:41PM ET',
+
+    spreadAway: '+1.5',  spreadAwayJuice: '-184',  spreadAwayMove: '',
+    spreadHome: '-1.5',  spreadHomeJuice: '+152',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '+116',  mlHome: '-136',
+
+    total: '8.5',  totalOverJuice: '-120',  totalUnderJuice: '-102',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: '',  edgeLabel: '',  edgeEV: '',
+    edge2Type: '', edge2Label: '', edge2EV: '',
+    edgeNote: ''
+  },
+
+  // ── GAME 6 ──────────────────────────────────────────────────
+  {
+    day: 'WED',
+    away: 'Miami Marlins',   awayAbbr: 'MIA',  awayPitcher: 'C Paddack',
+    home: 'Atlanta Braves',  homeAbbr: 'ATL',  homePitcher: 'B Elder',
+    time: '6:41PM ET',
+
+    spreadAway: '+1.5',  spreadAwayJuice: '-156',  spreadAwayMove: '',
+    spreadHome: '-1.5',  spreadHomeJuice: '+130',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '+136',  mlHome: '-162',
+
+    total: '8.5',  totalOverJuice: '-122',  totalUnderJuice: '+100',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: '',  edgeLabel: '',  edgeEV: '',
+    edge2Type: '', edge2Label: '', edge2EV: '',
+    edgeNote: ''
+  },
+
+  // ── GAME 7 ──────────────────────────────────────────────────
+  {
+    day: 'WED',
+    away: 'Tampa Bay Rays',    awayAbbr: 'TBR',  awayPitcher: 'J Scholtens',
+    home: 'Chicago White Sox', homeAbbr: 'CHW',  homePitcher: 'S Burke',
+    time: '7:16PM ET',
+
+    spreadAway: '-1.5',  spreadAwayJuice: '+162',  spreadAwayMove: '',
+    spreadHome: '+1.5',  spreadHomeJuice: '-196',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '-104',  mlHome: '-112',
+
+    total: '8',  totalOverJuice: '+100',  totalUnderJuice: '-122',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: '',  edgeLabel: '',  edgeEV: '',
+    edge2Type: '', edge2Label: '', edge2EV: '',
+    edgeNote: ''
+  },
+
+  // ── GAME 8 ──────────────────────────────────────────────────
+  {
+    day: 'WED',
+    away: 'Toronto Blue Jays',  awayAbbr: 'TOR',  awayPitcher: 'D Cease',
+    home: 'Milwaukee Brewers',  homeAbbr: 'MIL',  homePitcher: 'TBD',
+    time: '7:41PM ET',
+
+    spreadAway: '-1.5',  spreadAwayJuice: '+140',  spreadAwayMove: '',
+    spreadHome: '+1.5',  spreadHomeJuice: '-170',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '-124',  mlHome: '+106',
+
+    total: '7.5',  totalOverJuice: '-105',  totalUnderJuice: '-115',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: '',  edgeLabel: '',  edgeEV: '',
+    edge2Type: '', edge2Label: '', edge2EV: '',
+    edgeNote: ''
+  },
+
+  // ── GAME 9 ──────────────────────────────────────────────────
+  {
+    day: 'WED',
+    away: 'Seattle Mariners', awayAbbr: 'SEA',  awayPitcher: 'E Hancock',
+    home: 'San Diego Padres', homeAbbr: 'SDP',  homePitcher: 'TBD',
+    time: '9:41PM ET',
+
+    spreadAway: '-1.5',  spreadAwayJuice: '+152',  spreadAwayMove: '',
+    spreadHome: '+1.5',  spreadHomeJuice: '-184',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '-104',  mlHome: '-112',
+
+    total: '8',  totalOverJuice: '-115',  totalUnderJuice: '-105',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: '',  edgeLabel: '',  edgeEV: '',
+    edge2Type: '', edge2Label: '', edge2EV: '',
+    edgeNote: ''
+  },
+
+  // ── GAME 10 ─────────────────────────────────────────────────
+  {
+    day: 'WED',
+    away: 'Texas Rangers', awayAbbr: 'TEX',  awayPitcher: 'K Rocker',
+    home: 'Athletics',     homeAbbr: 'ATH',  homePitcher: 'J Ginn',
+    time: '9:41PM ET',
+
+    spreadAway: '-1.5',  spreadAwayJuice: '+150',  spreadAwayMove: '',
+    spreadHome: '+1.5',  spreadHomeJuice: '-182',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '-108',  mlHome: '-108',
+
+    total: '9.5',  totalOverJuice: '-115',  totalUnderJuice: '-105',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: '',  edgeLabel: '',  edgeEV: '',
+    edge2Type: '', edge2Label: '', edge2EV: '',
+    edgeNote: ''
+  },
+
+  // ── GAME 11 ─────────────────────────────────────────────────
+  {
+    day: 'WED',
+    away: 'New York Mets',     awayAbbr: 'NYM',  awayPitcher: 'C Holmes',
+    home: 'Los Angeles Dodgers', homeAbbr: 'LAD', homePitcher: 'S Ohtani',
+    time: '9:41PM ET',
+
+    spreadAway: '+1.5',  spreadAwayJuice: '-125',  spreadAwayMove: '',
+    spreadHome: '-1.5',  spreadHomeJuice: '+104',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '+184',  mlHome: '-220',
+
+    total: '8',  totalOverJuice: '-105',  totalUnderJuice: '-115',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: '',  edgeLabel: '',  edgeEV: '',
+    edge2Type: '', edge2Label: '', edge2EV: '',
+    edgeNote: ''
+  },
+
+];
+
+// ════════════════════════════════════════════════════════════════
+//  RENDER ENGINE — no need to edit below this line
+// ════════════════════════════════════════════════════════════════
+
+function switchSport(sport, btn) {
+  document.querySelectorAll('.sport-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.sport-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + sport).classList.add('active');
+}
+
+function renderGames(games, containerId) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+
+  const days = [], dayMap = {};
+  games.forEach(g => {
+    const d = g.day || 'Today';
+    if (!dayMap[d]) { dayMap[d] = []; days.push(d); }
+    dayMap[d].push(g);
+  });
+
+  days.forEach(day => {
+    const div = document.createElement('div');
+    div.className = 'date-divider';
+    div.innerHTML = `<span class="date-divider-label">${day}</span><div class="date-divider-line"></div>`;
+    container.appendChild(div);
+
+    const list = document.createElement('div');
+    list.className = 'games-list';
+    dayMap[day].forEach((g, i) => {
+      const card = buildCard(g);
+      card.style.animationDelay = (i * 0.04) + 's';
+      list.appendChild(card);
+    });
+    container.appendChild(list);
+  });
+}
+
+function buildCard(g) {
+  const card = document.createElement('div');
+  const edgeClass = (!g.edgeType || g.edgeType === 'fade') ? 'edge-fade' :
+    (g.edgeType === 'spread' || g.edgeType === 'ml') ? 'edge-strong' : '';
+  card.className = 'game-card ' + edgeClass;
+
+  const moveBadge = m => {
+    if (m === 'up') return `<span class="move-badge move-up">↑</span>`;
+    if (m === 'dn') return `<span class="move-badge move-dn">↓</span>`;
+    return '';
+  };
+
+  const buildPick = (type, label, ev) => {
+    if (!type || !label) return '';
+    const n = parseFloat(ev), sign = n >= 0 ? '+' : '';
+    const bar = Math.min(Math.abs(n) * 10, 100);
+    return `<div class="edge-pick">
+      <span class="edge-pick-pos ${type}">${type.toUpperCase()}</span>
+      <div class="edge-pick-info">
+        <div class="edge-pick-label">${label}</div>
+        <div class="ev-meter">
+          <div class="ev-bar-bg"><div class="ev-bar-fill ${n>=0?'pos':'neg'}" style="width:${bar}%"></div></div>
+          <span class="ev-label ${n>=0?'pos-ev':'neg-ev'}">EV ${sign}${ev}%</span>
+        </div>
+      </div>
+    </div>`;
+  };
+
+  let edgeHtml;
+  if (!g.edgeType) {
+    edgeHtml = `<div class="no-edge">No call</div>`;
+  } else {
+    const p1 = buildPick(g.edgeType, g.edgeLabel, g.edgeEV);
+    const p2 = buildPick(g.edge2Type, g.edge2Label, g.edge2EV);
+    const note = g.edgeNote ? `<div class="edge-note">${g.edgeNote}</div>` : '';
+    edgeHtml = p1 + (p1 && p2 ? '<div style="height:6px"></div>' : '') + p2 + note;
+  }
+
+  const awayP = g.awayPitcher ? `<div class="team-pitcher">${g.awayPitcher}</div>` : '';
+  const homeP = g.homePitcher ? `<div class="team-pitcher">${g.homePitcher}</div>` : '';
+
+  card.innerHTML = `
+    <div class="game-inner">
+      <div class="teams-col">
+        <div class="team-row">
+          <span class="team-abbr">${g.awayAbbr}</span>
+          <div class="team-info"><span class="team-name away">${g.away}</span>${awayP}</div>
+        </div>
+        <div class="at-symbol">@</div>
+        <div class="team-row">
+          <span class="team-abbr">${g.homeAbbr}</span>
+          <div class="team-info"><span class="team-name">${g.home}</span>${homeP}</div>
+        </div>
+        <div class="game-time">${g.day ? g.day + ' · ' : ''}${g.time}</div>
+      </div>
+
+      <div class="odds-col">
+        <div class="odds-col-header">Spread</div>
+        <div class="odds-cells">
+          <div class="odds-cell">
+            <span class="odds-main">${g.spreadAway}</span>
+            <span class="odds-juice">${g.spreadAwayJuice}</span>
+            ${moveBadge(g.spreadAwayMove)}
+          </div>
+          <div class="odds-cell">
+            <span class="odds-main">${g.spreadHome}</span>
+            <span class="odds-juice">${g.spreadHomeJuice}</span>
+            ${moveBadge(g.spreadHomeMove)}
+          </div>
+        </div>
+        ${g.spreadOpen ? `<div class="open-note">${g.spreadOpen}</div>` : ''}
+      </div>
+
+      <div class="odds-col">
+        <div class="odds-col-header">Money</div>
+        <div class="odds-cells">
+          <div class="odds-cell">
+            <span class="odds-main ${g.mlAway && g.mlAway.startsWith('+') ? 'pos' : ''}">${g.mlAway}</span>
+          </div>
+          <div class="odds-cell">
+            <span class="odds-main ${g.mlHome && g.mlHome.startsWith('+') ? 'pos' : 'neg'}">${g.mlHome}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="odds-col">
+        <div class="odds-col-header">Total</div>
+        <div class="odds-cells">
+          <div class="odds-cell">
+            <span class="odds-main"><span class="total-label">O</span>${g.total}</span>
+            <span class="odds-juice">${g.totalOverJuice}</span>
+            ${moveBadge(g.totalMove)}
+          </div>
+          <div class="odds-cell">
+            <span class="odds-main"><span class="total-label">U</span>${g.total}</span>
+            <span class="odds-juice">${g.totalUnderJuice}</span>
+          </div>
+        </div>
+        ${g.totalOpen ? `<div class="open-note">${g.totalOpen}</div>` : ''}
+      </div>
+
+      <div class="edge-col">
+        <div class="edge-col-header">shortopen</div>
+        <div class="edge-content">${edgeHtml}</div>
+      </div>
+    </div>`;
+
+  return card;
+}
+
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn  = document.getElementById('hamburgerBtn');
+  menu.classList.toggle('open');
+  btn.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+}
+
+// Init
+renderGames(NBA_GAMES, 'nbaContainer');
+renderGames(MLB_GAMES, 'mlbContainer');
+
+</script>
+</body>
+</html>
