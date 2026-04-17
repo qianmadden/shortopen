@@ -582,47 +582,6 @@
 <div class="sport-panel" id="panel-mlb">
   <div id="mlbContainer"></div>
 </div>
-
-
-    <div class="hr-setting">
-      <span class="hr-setting-label">PA / Game</span>
-      <input type="range" class="hr-range" min="3" max="5" step="1" value="4" id="hrPA" oninput="document.getElementById('hrPAVal').textContent=this.value;hrRender();hrUpdateDetail()"/>
-      <span class="hr-setting-val" id="hrPAVal">4</span>
-    </div>
-    <div class="hr-setting">
-      <span class="hr-setting-label">Conversion</span>
-      <input type="range" class="hr-range" min="0.25" max="0.55" step="0.01" value="0.38" id="hrConv" oninput="document.getElementById('hrConvVal').textContent=parseFloat(this.value).toFixed(2);hrRender();hrUpdateDetail()"/>
-      <span class="hr-setting-val" id="hrConvVal">0.38</span>
-    </div>
-    <span class="hr-count" id="hrCount"></span>
-  </div>
-
-  <div class="hr-layout">
-
-    <div class="hr-table-wrap">
-      <table class="hr-table">
-        <thead>
-          <tr>
-            <th style="min-width:180px">Player</th>
-            <th onclick="hrSetSort('hr_game',document.getElementById('hrsort-hr_game'))" title="HR probability per game">HR% / Game</th>
-            <th onclick="hrSetSort('xwoba',document.getElementById('hrsort-xwoba'))">xwOBA</th>
-            <th onclick="hrSetSort('barrel',document.getElementById('hrsort-barrel'))">Barrel%</th>
-            <th onclick="hrSetSort('hh',document.getElementById('hrsort-hh'))">Hard Hit%</th>
-            <th onclick="hrSetSort('k',document.getElementById('hrsort-k'))">K%</th>
-            <th onclick="hrSetSort('bb',document.getElementById('hrsort-bb'))">BB%</th>
-            <th>Whiff%</th>
-          </tr>
-        </thead>
-        <tbody id="hrTableBody"></tbody>
-      </table>
-    </div>
-
-    <div class="hr-detail" id="hrDetail">
-      <div class="hr-empty">Click any player to see their HR probability breakdown.</div>
-    </div>
-
-  </div>
-</div>
 </div>
 
 <footer>
@@ -675,127 +634,148 @@ const NBA_GAMES = [
   // ── GAME 1 ──────────────────────────────────────────────────
   {
     day: 'Tonight',
-    away: 'Miami Heat',        awayAbbr: 'MIA',
-    home: 'Charlotte Hornets', homeAbbr: 'CHA',
-    time: '7:30PM ET',
+    away: 'Charlotte Hornets', awayAbbr: 'CHA',
+    home: 'Orlando Magic',     homeAbbr: 'ORL',
+    time: '7:40PM ET',
 
-    spreadAway: '+6',  spreadAwayJuice: '-112',  spreadAwayMove: 'up',
-    spreadHome: '-6',  spreadHomeJuice: '-108',  spreadHomeMove: '',
-    spreadOpen: 'Opened MIA +4.5',
+    spreadAway: '-3',  spreadAwayJuice: '-112',  spreadAwayMove: '',
+    spreadHome: '+3',  spreadHomeJuice: '-108',  spreadHomeMove: '',
+    spreadOpen: 'Opened CHA -3',
 
-    mlAway: '+198',  mlHome: '-240',
+    mlAway: '-162',  mlHome: '+136',
 
-    total: '227.5',  totalOverJuice: '-115',  totalUnderJuice: '-105',
-    totalMove: 'up',  totalOpen: 'Opened 224',
+    total: '218.5',  totalOverJuice: '-108',  totalUnderJuice: '-112',
+    totalMove: '',  totalOpen: 'Opened 218.5',
 
-    edgeType: 'spread',  edgeLabel: 'MIA +6',       edgeEV: '+3.8',
-    edge2Type: 'total',  edge2Label: 'Over 227.5',  edge2EV: '+1.9',
-    edgeNote: 'Line has moved 1.5 pts toward CHA. Public on the home side — value with the dog.'
+    edgeType: 'spread',  edgeLabel: 'ORL +3',       edgeEV: '+2.1',
+    edge2Type: 'total',  edge2Label: 'Under 218.5',  edge2EV: '+1.4',
+    edgeNote: 'Hornets road favorites — public on CHA. Value with the Magic at home.'
   },
 
   // ── GAME 2 ──────────────────────────────────────────────────
   {
     day: 'Tonight',
-    away: 'Portland Trail Blazers', awayAbbr: 'POR',
-    home: 'Phoenix Suns',           homeAbbr: 'PHX',
-    time: '10:00PM ET',
+    away: 'Golden State Warriors', awayAbbr: 'GSW',
+    home: 'Phoenix Suns',          homeAbbr: 'PHX',
+    time: '10:10PM ET',
 
-    spreadAway: '+3',  spreadAwayJuice: '-110',  spreadAwayMove: '',
-    spreadHome: '-3',  spreadHomeJuice: '-110',  spreadHomeMove: 'dn',
-    spreadOpen: 'Opened PHX -4',
+    spreadAway: '+3.5',  spreadAwayJuice: '-112',  spreadAwayMove: '',
+    spreadHome: '-3.5',  spreadHomeJuice: '-108',  spreadHomeMove: '',
+    spreadOpen: 'Opened PHX -3.5',
 
-    mlAway: '+128',  mlHome: '-152',
+    mlAway: '+130',  mlHome: '-154',
 
-    total: '216.5',  totalOverJuice: '-106',  totalUnderJuice: '-114',
-    totalMove: 'dn',  totalOpen: 'Opened 218',
+    total: '219.5',  totalOverJuice: '-110',  totalUnderJuice: '-110',
+    totalMove: '',  totalOpen: 'Opened 219.5',
 
-    edgeType: 'spread',  edgeLabel: 'POR +3',  edgeEV: '+2.1',
-    edge2Type: '',        edge2Label: '',        edge2EV: '',
-    edgeNote: 'Suns line compressed from -4. Sharp money on Portland.'
+    edgeType: 'spread',  edgeLabel: 'GSW +3.5',  edgeEV: '+2.4',
+    edge2Type: '',        edge2Label: '',           edge2EV: '',
+    edgeNote: 'Warriors have covered in 5 of last 7 as road underdogs. Line held firm.'
   },
 
   // ── GAME 3 ──────────────────────────────────────────────────
   {
-    day: 'WED',
-    away: 'Orlando Magic',       awayAbbr: 'ORL',
-    home: 'Philadelphia 76ers',  homeAbbr: 'PHI',
-    time: '7:30PM ET',
+    day: 'SAT',
+    away: 'Toronto Raptors',     awayAbbr: 'TOR',
+    home: 'Cleveland Cavaliers', homeAbbr: 'CLE',
+    time: '1:10PM ET',
 
-    spreadAway: '+1.5',  spreadAwayJuice: '-110',  spreadAwayMove: '',
-    spreadHome: '-1.5',  spreadHomeJuice: '-110',  spreadHomeMove: '',
-    spreadOpen: 'Opened PHI -1',
+    spreadAway: '+8',   spreadAwayJuice: '-106',  spreadAwayMove: 'up',
+    spreadHome: '-8',   spreadHomeJuice: '-114',  spreadHomeMove: '',
+    spreadOpen: 'Opened CLE -7',
 
-    mlAway: '+104',  mlHome: '-122',
+    mlAway: '+265',  mlHome: '-330',
 
-    total: '222.5',  totalOverJuice: '-105',  totalUnderJuice: '-115',
-    totalMove: '',  totalOpen: 'Opened 221',
+    total: '219.5',  totalOverJuice: '-110',  totalUnderJuice: '-110',
+    totalMove: '',  totalOpen: 'Opened 219',
 
-    edgeType: 'total',  edgeLabel: 'Under 222.5',  edgeEV: '+2.6',
-    edge2Type: '',       edge2Label: '',             edge2EV: '',
-    edgeNote: 'Both teams rank bottom-10 in pace. Total crept up 1.5 — we like the under.'
+    edgeType: 'total',  edgeLabel: 'Under 219.5',  edgeEV: '+2.8',
+    edge2Type: '',       edge2Label: '',              edge2EV: '',
+    edgeNote: 'CLE leans defensive at home. Line moved 1pt against TOR — sharp under interest.'
   },
 
   // ── GAME 4 ──────────────────────────────────────────────────
   {
-    day: 'WED',
-    away: 'Golden State Warriors', awayAbbr: 'GSW',
-    home: 'Los Angeles Clippers',  homeAbbr: 'LAC',
-    time: '10:00PM ET',
+    day: 'SAT',
+    away: 'Minnesota Timberwolves', awayAbbr: 'MIN',
+    home: 'Denver Nuggets',         homeAbbr: 'DEN',
+    time: '3:40PM ET',
 
-    spreadAway: '+5',  spreadAwayJuice: '-108',  spreadAwayMove: '',
-    spreadHome: '-5',  spreadHomeJuice: '-112',  spreadHomeMove: '',
-    spreadOpen: 'Opened LAC -5',
+    spreadAway: '+6',  spreadAwayJuice: '-108',  spreadAwayMove: '',
+    spreadHome: '-6',  spreadHomeJuice: '-112',  spreadHomeMove: '',
+    spreadOpen: 'Opened DEN -6',
 
-    mlAway: '+176',  mlHome: '-210',
+    mlAway: '+205',  mlHome: '-250',
 
-    total: '221.5',  totalOverJuice: '-105',  totalUnderJuice: '-115',
-    totalMove: '',  totalOpen: 'Opened 221.5',
+    total: '231.5',  totalOverJuice: '-112',  totalUnderJuice: '-108',
+    totalMove: 'up',  totalOpen: 'Opened 228',
 
-    edgeType: 'fade',  edgeLabel: 'No edge — line held firm',  edgeEV: '-0.5',
-    edge2Type: '',      edge2Label: '',                          edge2EV: '',
-    edgeNote: "Market hasn't moved. Nothing to exploit here."
+    edgeType: 'ml',   edgeLabel: 'MIN +205',      edgeEV: '+3.6',
+    edge2Type: 'total', edge2Label: 'Over 231.5',  edge2EV: '+1.8',
+    edgeNote: 'Jokic game — public hammers DEN ML. Total crept up 3.5, pace matchup favors over.'
   },
 
   // ── GAME 5 ──────────────────────────────────────────────────
   {
     day: 'SAT',
-    away: 'Toronto Raptors',     awayAbbr: 'TOR',
-    home: 'Cleveland Cavaliers', homeAbbr: 'CLE',
-    time: '1:00PM ET',
+    away: 'Atlanta Hawks',  awayAbbr: 'ATL',
+    home: 'New York Knicks', homeAbbr: 'NYK',
+    time: '6:10PM ET',
 
-    spreadAway: '+8',  spreadAwayJuice: '-108',  spreadAwayMove: 'up',
-    spreadHome: '-8',  spreadHomeJuice: '-112',  spreadHomeMove: '',
-    spreadOpen: 'Opened CLE -6.5',
+    spreadAway: '+5',  spreadAwayJuice: '-106',  spreadAwayMove: '',
+    spreadHome: '-5',  spreadHomeJuice: '-114',  spreadHomeMove: '',
+    spreadOpen: 'Opened NYK -5',
 
-    mlAway: '+275',  mlHome: '-340',
+    mlAway: '+184',  mlHome: '-220',
 
-    total: '218.5',  totalOverJuice: '-110',  totalUnderJuice: '-110',
-    totalMove: 'dn',  totalOpen: 'Opened 220',
+    total: '216.5',  totalOverJuice: '-110',  totalUnderJuice: '-110',
+    totalMove: '',  totalOpen: 'Opened 216.5',
 
-    edgeType: 'spread',  edgeLabel: 'TOR +8',        edgeEV: '+5.2',
-    edge2Type: 'total',  edge2Label: 'Under 218.5',  edge2EV: '+3.1',
-    edgeNote: 'Line moved 1.5 pts against CLE. Total dropped 1.5 — sharp under action early.'
+    edgeType: 'spread',  edgeLabel: 'ATL +5',  edgeEV: '+2.2',
+    edge2Type: '',        edge2Label: '',        edge2EV: '',
+    edgeNote: 'Hawks have played Knicks tough this season. Line flat — no sharp movement either way.'
   },
 
   // ── GAME 6 ──────────────────────────────────────────────────
   {
     day: 'SAT',
-    away: 'Minnesota Timberwolves', awayAbbr: 'MIN',
-    home: 'Denver Nuggets',         homeAbbr: 'DEN',
-    time: '3:30PM ET',
+    away: 'Houston Rockets',    awayAbbr: 'HOU',
+    home: 'Los Angeles Lakers', homeAbbr: 'LAL',
+    time: '8:40PM ET',
 
-    spreadAway: '+6',  spreadAwayJuice: '-110',  spreadAwayMove: '',
-    spreadHome: '-6',  spreadHomeJuice: '-110',  spreadHomeMove: '',
-    spreadOpen: 'Opened DEN -6',
+    spreadAway: '-5',  spreadAwayJuice: '-114',  spreadAwayMove: '',
+    spreadHome: '+5',  spreadHomeJuice: '-106',  spreadHomeMove: '',
+    spreadOpen: 'Opened HOU -5',
 
-    mlAway: '+190',  mlHome: '-230',
+    mlAway: '-220',  mlHome: '+184',
 
-    total: '230.5',  totalOverJuice: '-112',  totalUnderJuice: '-108',
-    totalMove: 'up',  totalOpen: 'Opened 228',
+    total: '206.5',  totalOverJuice: '-110',  totalUnderJuice: '-110',
+    totalMove: '',  totalOpen: 'Opened 206.5',
 
-    edgeType: 'ml',  edgeLabel: 'MIN +190',  edgeEV: '+4.0',
-    edge2Type: '',    edge2Label: '',          edge2EV: '',
-    edgeNote: 'Jokic game — public will hammer DEN ML. +190 on MIN feels generous given recent form.'
+    edgeType: 'total',  edgeLabel: 'Under 206.5',  edgeEV: '+2.0',
+    edge2Type: '',       edge2Label: '',              edge2EV: '',
+    edgeNote: 'Lowest total on the board. Both teams rank top-10 in defensive rating this month.'
+  },
+
+  // ── GAME 7 ──────────────────────────────────────────────────
+  {
+    day: 'SAT',
+    away: 'Philadelphia 76ers', awayAbbr: 'PHI',
+    home: 'Boston Celtics',     homeAbbr: 'BOS',
+    time: 'TBD',
+
+    spreadAway: '+12.5',  spreadAwayJuice: '-110',  spreadAwayMove: '',
+    spreadHome: '-12.5',  spreadHomeJuice: '-110',  spreadHomeMove: '',
+    spreadOpen: 'Opened BOS -12',
+
+    mlAway: '+540',  mlHome: '-770',
+
+    total: '213.5',  totalOverJuice: '-110',  totalUnderJuice: '-110',
+    totalMove: '',  totalOpen: 'Opened 213.5',
+
+    edgeType: 'fade',  edgeLabel: 'No edge — BOS overwhelming',  edgeEV: '-1.0',
+    edge2Type: '',      edge2Label: '',                            edge2EV: '',
+    edgeNote: 'PHI severely undermanned. Monitor for garbage time scoring on the total late.'
   },
 
 ];
@@ -811,233 +791,317 @@ const MLB_GAMES = [
 
   // ── GAME 1 ──────────────────────────────────────────────────
   {
-    day: 'WED',
-    away: 'Cleveland Guardians', awayAbbr: 'CLE',  awayPitcher: 'C Cecconi',
-    home: 'St. Louis Cardinals', homeAbbr: 'STL',  homePitcher: 'D May',
-    time: '12:36PM ET',
+    day: 'Today',
+    away: 'New York Mets',  awayAbbr: 'NYM',  awayPitcher: 'K Senga',
+    home: 'Chicago Cubs',   homeAbbr: 'CHC',  homePitcher: 'E Cabrera',
+    time: '2:21PM ET',
 
-    spreadAway: '-1.5',  spreadAwayJuice: '+164',  spreadAwayMove: '',
-    spreadHome: '+1.5',  spreadHomeJuice: '-200',  spreadHomeMove: '',
+    spreadAway: '+1.5',  spreadAwayJuice: '-142',  spreadAwayMove: '',
+    spreadHome: '-1.5',  spreadHomeJuice: '+118',  spreadHomeMove: '',
     spreadOpen: '',
 
-    mlAway: '-102',  mlHome: '-116',
+    mlAway: '+134',  mlHome: '-158',
 
-    total: '8.5',  totalOverJuice: '+100',  totalUnderJuice: '-122',
+    total: '10',  totalOverJuice: '-115',  totalUnderJuice: '-105',
     totalMove: '',  totalOpen: '',
 
-    edgeType: '',  edgeLabel: '',  edgeEV: '',
-    edge2Type: '', edge2Label: '', edge2EV: '',
-    edgeNote: ''
+    edgeType: 'total',  edgeLabel: 'Over 10',  edgeEV: '+2.3',
+    edge2Type: '',       edge2Label: '',         edge2EV: '',
+    edgeNote: 'High total with two offenses that have been running hot. Senga comes back to a hitter-friendly park.'
   },
 
   // ── GAME 2 ──────────────────────────────────────────────────
   {
-    day: 'WED',
-    away: 'Boston Red Sox',    awayAbbr: 'BOS',  awayPitcher: 'C Early',
-    home: 'Minnesota Twins',   homeAbbr: 'MIN',  homePitcher: 'S Woods Richardson',
-    time: '1:16PM ET',
-
-    spreadAway: '-1.5',  spreadAwayJuice: '+142',  spreadAwayMove: '',
-    spreadHome: '+1.5',  spreadHomeJuice: '-172',  spreadHomeMove: '',
-    spreadOpen: '',
-
-    mlAway: '-126',  mlHome: '+108',
-
-    total: '7.5',  totalOverJuice: '-124',  totalUnderJuice: '+102',
-    totalMove: '',  totalOpen: '',
-
-    edgeType: '',  edgeLabel: '',  edgeEV: '',
-    edge2Type: '', edge2Label: '', edge2EV: '',
-    edgeNote: ''
-  },
-
-  // ── GAME 3 ──────────────────────────────────────────────────
-  {
-    day: 'WED',
-    away: 'Kansas City Royals', awayAbbr: 'KCR',  awayPitcher: 'S Lugo',
-    home: 'Detroit Tigers',     homeAbbr: 'DET',  homePitcher: 'J Flaherty',
-    time: '1:41PM ET',
-
-    spreadAway: '+1.5',  spreadAwayJuice: '-210',  spreadAwayMove: '',
-    spreadHome: '-1.5',  spreadHomeJuice: '+172',  spreadHomeMove: '',
-    spreadOpen: '',
-
-    mlAway: '+108',  mlHome: '-126',
-
-    total: '8',  totalOverJuice: '-105',  totalUnderJuice: '-115',
-    totalMove: '',  totalOpen: '',
-
-    edgeType: '',  edgeLabel: '',  edgeEV: '',
-    edge2Type: '', edge2Label: '', edge2EV: '',
-    edgeNote: ''
-  },
-
-  // ── GAME 4 ──────────────────────────────────────────────────
-  {
-    day: 'WED',
-    away: 'San Francisco Giants', awayAbbr: 'SFG',  awayPitcher: 'T Mahle',
-    home: 'Cincinnati Reds',      homeAbbr: 'CIN',  homePitcher: 'R Lowder',
-    time: '6:41PM ET',
-
-    spreadAway: '-1.5',  spreadAwayJuice: '+155',  spreadAwayMove: '',
-    spreadHome: '+1.5',  spreadHomeJuice: '-188',  spreadHomeMove: '',
-    spreadOpen: '',
-
-    mlAway: '-108',  mlHome: '-108',
-
-    total: '9',  totalOverJuice: '-115',  totalUnderJuice: '-105',
-    totalMove: '',  totalOpen: '',
-
-    edgeType: '',  edgeLabel: '',  edgeEV: '',
-    edge2Type: '', edge2Label: '', edge2EV: '',
-    edgeNote: ''
-  },
-
-  // ── GAME 5 ──────────────────────────────────────────────────
-  {
-    day: 'WED',
-    away: 'Chicago Cubs',         awayAbbr: 'CHC',  awayPitcher: 'S Imanaga',
-    home: 'Philadelphia Phillies', homeAbbr: 'PHI',  homePitcher: 'J Luzardo',
-    time: '6:41PM ET',
+    day: 'Today',
+    away: 'Baltimore Orioles',    awayAbbr: 'BAL',  awayPitcher: 'C Bassitt',
+    home: 'Cleveland Guardians',  homeAbbr: 'CLE',  homePitcher: 'T Bibee',
+    time: '6:11PM ET',
 
     spreadAway: '+1.5',  spreadAwayJuice: '-184',  spreadAwayMove: '',
     spreadHome: '-1.5',  spreadHomeJuice: '+152',  spreadHomeMove: '',
     spreadOpen: '',
 
-    mlAway: '+116',  mlHome: '-136',
+    mlAway: '+114',  mlHome: '-134',
 
-    total: '8.5',  totalOverJuice: '-120',  totalUnderJuice: '-102',
+    total: '8',  totalOverJuice: '-110',  totalUnderJuice: '-110',
     totalMove: '',  totalOpen: '',
 
-    edgeType: '',  edgeLabel: '',  edgeEV: '',
-    edge2Type: '', edge2Label: '', edge2EV: '',
-    edgeNote: ''
+    edgeType: 'spread',  edgeLabel: 'BAL +1.5',  edgeEV: '+2.1',
+    edge2Type: '',        edge2Label: '',           edge2EV: '',
+    edgeNote: 'Bibee has been sharp — but BAL run line at -184 is steep. ML value with Baltimore.'
+  },
+
+  // ── GAME 3 ──────────────────────────────────────────────────
+  {
+    day: 'Today',
+    away: 'Atlanta Braves',         awayAbbr: 'ATL',  awayPitcher: 'M Perez',
+    home: 'Philadelphia Phillies',  homeAbbr: 'PHI',  homePitcher: 'T Walker',
+    time: '6:41PM ET',
+
+    spreadAway: '-1.5',  spreadAwayJuice: '+142',  spreadAwayMove: '',
+    spreadHome: '+1.5',  spreadHomeJuice: '-172',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '-106',  mlHome: '-110',
+
+    total: '9.5',  totalOverJuice: '-104',  totalUnderJuice: '-118',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: 'total',  edgeLabel: 'Under 9.5',  edgeEV: '+2.6',
+    edge2Type: '',       edge2Label: '',            edge2EV: '',
+    edgeNote: 'T Walker has been stingy at home. ATL offense has cooled the last two weeks.'
+  },
+
+  // ── GAME 4 ──────────────────────────────────────────────────
+  {
+    day: 'Today',
+    away: 'San Francisco Giants',  awayAbbr: 'SFG',  awayPitcher: 'L Webb',
+    home: 'Washington Nationals',  homeAbbr: 'WSH',  homePitcher: 'Z Littell',
+    time: '6:46PM ET',
+
+    spreadAway: '-1.5',  spreadAwayJuice: '+104',  spreadAwayMove: '',
+    spreadHome: '+1.5',  spreadHomeJuice: '-125',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '-162',  mlHome: '+136',
+
+    total: '8.5',  totalOverJuice: '+102',  totalUnderJuice: '-124',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: 'spread',  edgeLabel: 'SFG -1.5',  edgeEV: '+3.1',
+    edge2Type: 'total',  edge2Label: 'Under 8.5',  edge2EV: '+1.8',
+    edgeNote: 'Webb is elite. Littell gives up contact. Run line at +104 is strong value for a Logan Webb start.'
+  },
+
+  // ── GAME 5 ──────────────────────────────────────────────────
+  {
+    day: 'Today',
+    away: 'Tampa Bay Rays',   awayAbbr: 'TBR',  awayPitcher: 'N Martinez',
+    home: 'Pittsburgh Pirates', homeAbbr: 'PIT',  homePitcher: 'B Chandler',
+    time: '6:46PM ET',
+
+    spreadAway: '+1.5',  spreadAwayJuice: '-196',  spreadAwayMove: '',
+    spreadHome: '-1.5',  spreadHomeJuice: '+162',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '+110',  mlHome: '-130',
+
+    total: '8.5',  totalOverJuice: '-105',  totalUnderJuice: '-115',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: 'ml',   edgeLabel: 'TBR ML',  edgeEV: '+2.9',
+    edge2Type: '',     edge2Label: '',        edge2EV: '',
+    edgeNote: 'Rays ML at +110 is undervalued. PIT home favorite against a competitive TB squad is a spot to fade.'
   },
 
   // ── GAME 6 ──────────────────────────────────────────────────
   {
-    day: 'WED',
-    away: 'Miami Marlins',   awayAbbr: 'MIA',  awayPitcher: 'C Paddack',
-    home: 'Atlanta Braves',  homeAbbr: 'ATL',  homePitcher: 'B Elder',
-    time: '6:41PM ET',
+    day: 'Today',
+    away: 'Kansas City Royals',  awayAbbr: 'KCR',  awayPitcher: 'M Wacha',
+    home: 'New York Yankees',    homeAbbr: 'NYY',  homePitcher: 'C Schlittler',
+    time: '7:06PM ET',
 
-    spreadAway: '+1.5',  spreadAwayJuice: '-156',  spreadAwayMove: '',
-    spreadHome: '-1.5',  spreadHomeJuice: '+130',  spreadHomeMove: '',
+    spreadAway: '+1.5',  spreadAwayJuice: '-144',  spreadAwayMove: '',
+    spreadHome: '-1.5',  spreadHomeJuice: '+120',  spreadHomeMove: '',
     spreadOpen: '',
 
-    mlAway: '+136',  mlHome: '-162',
+    mlAway: '+152',  mlHome: '-180',
 
-    total: '8.5',  totalOverJuice: '-122',  totalUnderJuice: '+100',
+    total: '8',  totalOverJuice: '-102',  totalUnderJuice: '-120',
     totalMove: '',  totalOpen: '',
 
-    edgeType: '',  edgeLabel: '',  edgeEV: '',
-    edge2Type: '', edge2Label: '', edge2EV: '',
-    edgeNote: ''
+    edgeType: 'spread',  edgeLabel: 'NYY -1.5',  edgeEV: '+2.4',
+    edge2Type: '',        edge2Label: '',           edge2EV: '',
+    edgeNote: 'Schlittler has been sharp at home. NYY run line at +120 is solid value against KC.'
   },
 
   // ── GAME 7 ──────────────────────────────────────────────────
   {
-    day: 'WED',
-    away: 'Tampa Bay Rays',    awayAbbr: 'TBR',  awayPitcher: 'J Scholtens',
-    home: 'Chicago White Sox', homeAbbr: 'CHW',  homePitcher: 'S Burke',
-    time: '7:16PM ET',
+    day: 'Today',
+    away: 'Milwaukee Brewers',  awayAbbr: 'MIL',  awayPitcher: 'TBD',
+    home: 'Miami Marlins',      homeAbbr: 'MIA',  homePitcher: 'J Junk',
+    time: '7:11PM ET',
 
     spreadAway: '-1.5',  spreadAwayJuice: '+162',  spreadAwayMove: '',
     spreadHome: '+1.5',  spreadHomeJuice: '-196',  spreadHomeMove: '',
     spreadOpen: '',
 
-    mlAway: '-104',  mlHome: '-112',
+    mlAway: '-108',  mlHome: '-108',
 
-    total: '8',  totalOverJuice: '+100',  totalUnderJuice: '-122',
+    total: '8',  totalOverJuice: '-110',  totalUnderJuice: '-110',
     totalMove: '',  totalOpen: '',
 
-    edgeType: '',  edgeLabel: '',  edgeEV: '',
-    edge2Type: '', edge2Label: '', edge2EV: '',
-    edgeNote: ''
+    edgeType: 'spread',  edgeLabel: 'MIL -1.5',  edgeEV: '+3.4',
+    edge2Type: '',        edge2Label: '',           edge2EV: '',
+    edgeNote: 'MIL run line at +162 with TBD starter is fair — monitor pitching news. Lean MIL to cover.'
   },
 
   // ── GAME 8 ──────────────────────────────────────────────────
   {
-    day: 'WED',
-    away: 'Toronto Blue Jays',  awayAbbr: 'TOR',  awayPitcher: 'D Cease',
-    home: 'Milwaukee Brewers',  homeAbbr: 'MIL',  homePitcher: 'TBD',
-    time: '7:41PM ET',
+    day: 'Today',
+    away: 'Detroit Tigers',    awayAbbr: 'DET',  awayPitcher: 'C Mize',
+    home: 'Boston Red Sox',    homeAbbr: 'BOS',  homePitcher: 'R Suarez',
+    time: '7:16PM ET',
 
-    spreadAway: '-1.5',  spreadAwayJuice: '+140',  spreadAwayMove: '',
-    spreadHome: '+1.5',  spreadHomeJuice: '-170',  spreadHomeMove: '',
+    spreadAway: '+1.5',  spreadAwayJuice: '-205',  spreadAwayMove: '',
+    spreadHome: '-1.5',  spreadHomeJuice: '+168',  spreadHomeMove: '',
     spreadOpen: '',
 
-    mlAway: '-124',  mlHome: '+106',
+    mlAway: '+108',  mlHome: '-126',
 
-    total: '7.5',  totalOverJuice: '-105',  totalUnderJuice: '-115',
+    total: '8',  totalOverJuice: '-102',  totalUnderJuice: '-120',
     totalMove: '',  totalOpen: '',
 
-    edgeType: '',  edgeLabel: '',  edgeEV: '',
-    edge2Type: '', edge2Label: '', edge2EV: '',
-    edgeNote: ''
+    edgeType: 'total',  edgeLabel: 'Under 8',  edgeEV: '+1.9',
+    edge2Type: '',       edge2Label: '',          edge2EV: '',
+    edgeNote: 'Suarez and Mize are ground ball heavy. Tight under with two pitchers who limit extra base hits.'
   },
 
   // ── GAME 9 ──────────────────────────────────────────────────
   {
-    day: 'WED',
-    away: 'Seattle Mariners', awayAbbr: 'SEA',  awayPitcher: 'E Hancock',
-    home: 'San Diego Padres', homeAbbr: 'SDP',  homePitcher: 'TBD',
-    time: '9:41PM ET',
+    day: 'Today',
+    away: 'St. Louis Cardinals',  awayAbbr: 'STL',  awayPitcher: 'K Leahy',
+    home: 'Houston Astros',       homeAbbr: 'HOU',  homePitcher: 'P Lambert',
+    time: '8:11PM ET',
 
-    spreadAway: '-1.5',  spreadAwayJuice: '+152',  spreadAwayMove: '',
-    spreadHome: '+1.5',  spreadHomeJuice: '-184',  spreadHomeMove: '',
+    spreadAway: '+1.5',  spreadAwayJuice: '-178',  spreadAwayMove: '',
+    spreadHome: '-1.5',  spreadHomeJuice: '+146',  spreadHomeMove: '',
     spreadOpen: '',
 
-    mlAway: '-104',  mlHome: '-112',
+    mlAway: '+118',  mlHome: '-138',
 
-    total: '8',  totalOverJuice: '-115',  totalUnderJuice: '-105',
+    total: '9',  totalOverJuice: '+100',  totalUnderJuice: '-122',
     totalMove: '',  totalOpen: '',
 
-    edgeType: '',  edgeLabel: '',  edgeEV: '',
-    edge2Type: '', edge2Label: '', edge2EV: '',
-    edgeNote: ''
+    edgeType: 'total',  edgeLabel: 'Over 9',  edgeEV: '+2.7',
+    edge2Type: '',       edge2Label: '',        edge2EV: '',
+    edgeNote: 'HOU offense has been rolling and Minute Maid plays small. Total at +100 is value on the over.'
   },
 
   // ── GAME 10 ─────────────────────────────────────────────────
   {
-    day: 'WED',
-    away: 'Texas Rangers', awayAbbr: 'TEX',  awayPitcher: 'K Rocker',
-    home: 'Athletics',     homeAbbr: 'ATH',  homePitcher: 'J Ginn',
-    time: '9:41PM ET',
+    day: 'Today',
+    away: 'Cincinnati Reds',  awayAbbr: 'CIN',  awayPitcher: 'B Williamson',
+    home: 'Minnesota Twins',  homeAbbr: 'MIN',  homePitcher: 'J Ryan',
+    time: '8:11PM ET',
 
-    spreadAway: '-1.5',  spreadAwayJuice: '+150',  spreadAwayMove: '',
-    spreadHome: '+1.5',  spreadHomeJuice: '-182',  spreadHomeMove: '',
+    spreadAway: '+1.5',  spreadAwayJuice: '-144',  spreadAwayMove: '',
+    spreadHome: '-1.5',  spreadHomeJuice: '+120',  spreadHomeMove: '',
     spreadOpen: '',
 
-    mlAway: '-108',  mlHome: '-108',
+    mlAway: '+144',  mlHome: '-172',
 
-    total: '9.5',  totalOverJuice: '-115',  totalUnderJuice: '-105',
+    total: '8',  totalOverJuice: '-110',  totalUnderJuice: '-110',
     totalMove: '',  totalOpen: '',
 
-    edgeType: '',  edgeLabel: '',  edgeEV: '',
-    edge2Type: '', edge2Label: '', edge2EV: '',
-    edgeNote: ''
+    edgeType: 'spread',  edgeLabel: 'MIN -1.5',  edgeEV: '+2.1',
+    edge2Type: '',        edge2Label: '',           edge2EV: '',
+    edgeNote: 'J Ryan has been one of the better starters in the AL this month. MIN run line at +120 is solid.'
   },
 
   // ── GAME 11 ─────────────────────────────────────────────────
   {
-    day: 'WED',
-    away: 'New York Mets',     awayAbbr: 'NYM',  awayPitcher: 'C Holmes',
-    home: 'Los Angeles Dodgers', homeAbbr: 'LAD', homePitcher: 'S Ohtani',
-    time: '9:41PM ET',
+    day: 'Today',
+    away: 'Los Angeles Dodgers',  awayAbbr: 'LAD',  awayPitcher: 'T Glasnow',
+    home: 'Colorado Rockies',     homeAbbr: 'COL',  homePitcher: 'T Sugano',
+    time: '8:41PM ET',
 
-    spreadAway: '+1.5',  spreadAwayJuice: '-125',  spreadAwayMove: '',
-    spreadHome: '-1.5',  spreadHomeJuice: '+104',  spreadHomeMove: '',
+    spreadAway: '-1.5',  spreadAwayJuice: '-184',  spreadAwayMove: '',
+    spreadHome: '+1.5',  spreadHomeJuice: '+152',  spreadHomeMove: '',
     spreadOpen: '',
 
-    mlAway: '+184',  mlHome: '-220',
+    mlAway: '-310',  mlHome: '+250',
 
-    total: '8',  totalOverJuice: '-105',  totalUnderJuice: '-115',
+    total: '9.5',  totalOverJuice: '-102',  totalUnderJuice: '-120',
     totalMove: '',  totalOpen: '',
 
-    edgeType: '',  edgeLabel: '',  edgeEV: '',
-    edge2Type: '', edge2Label: '', edge2EV: '',
-    edgeNote: ''
+    edgeType: 'spread',  edgeLabel: 'LAD -1.5',  edgeEV: '+3.8',
+    edge2Type: 'total',  edge2Label: 'Over 9.5',  edge2EV: '+2.2',
+    edgeNote: 'Glasnow vs Coors is an over. Rockies give up runs at home and LAD offense is elite.'
+  },
+
+  // ── GAME 12 ─────────────────────────────────────────────────
+  {
+    day: 'Today',
+    away: 'San Diego Padres',    awayAbbr: 'SDP',  awayPitcher: 'M Waldron',
+    home: 'Los Angeles Angels',  homeAbbr: 'LAA',  homePitcher: 'J Soriano',
+    time: '9:39PM ET',
+
+    spreadAway: '+1.5',  spreadAwayJuice: '-188',  spreadAwayMove: '',
+    spreadHome: '-1.5',  spreadHomeJuice: '+155',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '+114',  mlHome: '-134',
+
+    total: '8',  totalOverJuice: '-118',  totalUnderJuice: '-104',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: 'total',  edgeLabel: 'Under 8',  edgeEV: '+1.6',
+    edge2Type: '',       edge2Label: '',          edge2EV: '',
+    edgeNote: 'Both pitchers are ground ball heavy. Soriano at home limits hard contact. Lean under.'
+  },
+
+  // ── GAME 13 ─────────────────────────────────────────────────
+  {
+    day: 'Today',
+    away: 'Toronto Blue Jays',      awayAbbr: 'TOR',  awayPitcher: 'B Fisher',
+    home: 'Arizona Diamondbacks',   homeAbbr: 'ARI',  homePitcher: 'M Soroka',
+    time: '9:41PM ET',
+
+    spreadAway: '+1.5',  spreadAwayJuice: '-184',  spreadAwayMove: '',
+    spreadHome: '-1.5',  spreadHomeJuice: '+152',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '+112',  mlHome: '-132',
+
+    total: '8.5',  totalOverJuice: '-120',  totalUnderJuice: '-102',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: 'ml',   edgeLabel: 'TOR ML',  edgeEV: '+2.3',
+    edge2Type: '',     edge2Label: '',        edge2EV: '',
+    edgeNote: 'TOR ML at +112 is fair value. Soroka returning from injury — monitor status before locking in.'
+  },
+
+  // ── GAME 14 ─────────────────────────────────────────────────
+  {
+    day: 'Today',
+    away: 'Texas Rangers',    awayAbbr: 'TEX',  awayPitcher: 'J deGrom',
+    home: 'Seattle Mariners', homeAbbr: 'SEA',  homePitcher: 'L Gilbert',
+    time: '9:41PM ET',
+
+    spreadAway: '+1.5',  spreadAwayJuice: '-210',  spreadAwayMove: '',
+    spreadHome: '-1.5',  spreadHomeJuice: '+172',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '+114',  mlHome: '-134',
+
+    total: '6.5',  totalOverJuice: '-110',  totalUnderJuice: '-110',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: 'spread',  edgeLabel: 'SEA -1.5',  edgeEV: '+4.2',
+    edge2Type: 'total',  edge2Label: 'Under 6.5',  edge2EV: '+3.1',
+    edgeNote: 'deGrom vs Gilbert is the best pitching matchup of the night. Lowest total on the board. Back the under hard.'
+  },
+
+  // ── GAME 15 ─────────────────────────────────────────────────
+  {
+    day: 'Today',
+    away: 'Chicago White Sox',  awayAbbr: 'CWS',  awayPitcher: 'D Martin',
+    home: 'Athletics',          homeAbbr: 'ATH',  homePitcher: 'A Civale',
+    time: '9:41PM ET',
+
+    spreadAway: '+1.5',  spreadAwayJuice: '-152',  spreadAwayMove: '',
+    spreadHome: '-1.5',  spreadHomeJuice: '+126',  spreadHomeMove: '',
+    spreadOpen: '',
+
+    mlAway: '+134',  mlHome: '-158',
+
+    total: '9',  totalOverJuice: '-115',  totalUnderJuice: '-105',
+    totalMove: '',  totalOpen: '',
+
+    edgeType: 'spread',  edgeLabel: 'ATH -1.5',  edgeEV: '+2.8',
+    edge2Type: '',        edge2Label: '',           edge2EV: '',
+    edgeNote: 'ATH run line at +126 with home field advantage. CWS has been one of the worst road teams this season.'
   },
 
 ];
