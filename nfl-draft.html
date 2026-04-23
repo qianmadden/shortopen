@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>shortopen — NFL Draft 2026 Prospects</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,700;1,900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0a; --surface: #111111; --surface2: #181818; --surface3: #1d1d1d;
+    --border: #222222; --border2: #2a2a2a; --border3: #333333;
+    --gold: #c8922a; --gold-light: #e4a83a; --gold-dim: rgba(200,146,42,0.08);
+    --white: #f0ece4; --muted: #6b6560; --text: #d4cfc8;
+    --pos-QB: #8b5cf6; --pos-RB: #10b981; --pos-WR: #3b82f6; --pos-TE: #f59e0b;
+    --pos-OT: #6366f1; --pos-IOL: #06b6d4; --pos-Edge: #ef4444; --pos-DT: #f97316;
+    --pos-LB: #84cc16; --pos-CB: #a855f7; --pos-S: #14b8a6;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 999; opacity: 0.4; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 20px 48px; background: rgba(10,10,10,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.25rem; color: var(--white); letter-spacing: 0.04em; text-decoration: none; }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a.active { color: var(--gold); }
+
+  /* PAGE HEADER */
+  .page-header { padding: 140px 48px 56px; max-width: 1100px; margin: 0 auto; }
+  .page-eyebrow { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; opacity: 0; animation: fadeUp 0.7s ease 0.1s forwards; }
+  .page-eyebrow::after { content: ''; display: block; width: 40px; height: 1px; background: var(--gold); opacity: 0.4; }
+  .page-title { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(38px, 6vw, 80px); color: var(--white); line-height: 1.02; letter-spacing: -0.02em; margin-bottom: 20px; opacity: 0; animation: fadeUp 0.8s ease 0.25s forwards; }
+  .page-title em { font-style: italic; color: var(--gold); }
+  .page-sub { font-size: 1rem; color: var(--muted); max-width: 560px; line-height: 1.8; opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards; }
+  .dj-credit { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; padding: 6px 14px; border: 1px solid var(--border2); font-size: 0.68rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .dj-credit span { color: var(--gold); }
+
+  /* CONTROLS */
+  .controls-wrap { max-width: 1100px; margin: 0 auto; padding: 0 48px 40px; border-bottom: 1px solid var(--border2); opacity: 0; animation: fadeUp 0.7s ease 0.5s forwards; }
+  .controls-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .ctrl-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-right: 4px; white-space: nowrap; }
+  .pos-btns { display: flex; gap: 2px; flex-wrap: wrap; }
+  .pbtn { padding: 8px 16px; font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; background: var(--surface); border: 1px solid var(--border); color: var(--muted); cursor: pointer; transition: all 0.15s; }
+  .pbtn:hover { color: var(--white); border-color: var(--border3); }
+  .pbtn.on { color: var(--gold); border-color: var(--gold); background: var(--gold-dim); }
+  .search-row { display: flex; align-items: center; gap: 12px; }
+  .search-input { background: var(--surface); border: 1px solid var(--border2); color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.82rem; padding: 9px 16px; outline: none; transition: border-color 0.15s; width: 340px; }
+  .search-input::placeholder { color: var(--muted); }
+  .search-input:focus { border-color: var(--gold); }
+  .count-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+
+  /* BOARD AREA */
+  .board-wrap { max-width: 1100px; margin: 0 auto; padding: 0 48px 100px; }
+
+  /* TIER DIVIDER */
+  .tier-divider { display: flex; align-items: center; gap: 16px; padding: 28px 0 10px; }
+  .tier-name { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; white-space: nowrap; }
+  .tier-name.t1 { color: var(--gold); }
+  .tier-name.t2 { color: #9a7a3a; }
+  .tier-name.t3 { color: var(--muted); }
+  .tier-line { flex: 1; height: 1px; background: var(--border2); }
+
+  /* PROSPECT ROW */
+  .prospect-row { background: var(--surface); border: 1px solid var(--border); margin-bottom: 1px; overflow: hidden; transition: border-color 0.18s; cursor: pointer; }
+  .prospect-row:hover:not(.open) { border-color: var(--border3); }
+  .prospect-row.open { border-color: var(--gold); }
+
+  .row-top { display: flex; align-items: stretch; min-height: 72px; }
+
+  /* RANK */
+  .rank-col { width: 56px; min-width: 56px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--surface2); border-right: 1px solid var(--border); padding: 0; flex-shrink: 0; }
+  .rank-num { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 900; line-height: 1; color: var(--white); }
+  .rank-num.elite { color: var(--gold); }
+  .rank-num.high { color: var(--gold-light); }
+  .rank-move { font-size: 0.55rem; font-weight: 500; margin-top: 3px; letter-spacing: 0.06em; }
+  .rank-move.up { color: #4a9e6b; }
+  .rank-move.dn { color: #b85450; }
+  .rank-move.fl { color: var(--muted); }
+  .rank-move.nw { color: var(--gold); font-size: 0.5rem; letter-spacing: 0.08em; }
+
+  /* AVATAR */
+  .avatar-col { width: 58px; min-width: 58px; display: flex; align-items: center; justify-content: center; padding: 0 10px; flex-shrink: 0; }
+  .avatar { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; background: var(--surface3); flex-shrink: 0; }
+  .avatar-init { font-family: 'Playfair Display', serif; font-size: 0.72rem; font-weight: 700; color: var(--muted); letter-spacing: 0.02em; }
+
+  /* PLAYER INFO — expanded to fill space */
+  .info-col { flex: 1; padding: 13px 20px; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+  .player-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 900; color: var(--white); letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2; }
+  .player-meta-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .pos-pill { display: inline-flex; align-items: center; padding: 2px 8px; font-size: 0.58rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; border: 1px solid; }
+  .school-tag { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.02em; }
+  .year-tag { font-size: 0.62rem; color: var(--border3); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
+  .player-tags-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .ptag { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border2); padding: 1px 7px; background: var(--surface2); }
+  .ptag.gold { color: var(--gold); border-color: rgba(200,146,42,0.3); background: rgba(200,146,42,0.06); }
+  .comp-inline { font-size: 0.62rem; color: var(--muted); font-style: italic; }
+  .comp-inline em { color: var(--gold); font-style: normal; }
+
+  /* GRADE */
+  .grade-col { padding: 0 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; flex-shrink: 0; border-left: 1px solid var(--border); }
+  .grade-val { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; line-height: 1; }
+  .grade-val.elite { color: var(--gold); }
+  .grade-val.high { color: var(--gold-light); }
+  .grade-val.mid { color: var(--white); }
+  .grade-val.dev { color: var(--muted); }
+  .grade-label { font-size: 0.55rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .grade-tier { font-size: 0.55rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 1px; }
+  .grade-tier.elite { color: var(--gold); }
+  .grade-tier.high { color: #9abb60; }
+  .grade-tier.mid { color: var(--muted); }
+  .grade-tier.dev { color: var(--border3); }
+
+  /* CHEVRON */
+  .chevron-col { width: 36px; min-width: 36px; display: flex; align-items: center; justify-content: center; color: var(--border3); flex-shrink: 0; }
+  .chevron-col span { font-size: 0.58rem; transition: transform 0.2s; display: block; }
+  .prospect-row.open .chevron-col span { transform: rotate(180deg); color: var(--gold); }
+
+  /* SCOUTING CARD */
+  .scout-card { display: none; border-top: 1px solid var(--border2); }
+  .prospect-row.open .scout-card { display: block; }
+  .scout-inner { display: grid; grid-template-columns: 1fr 260px; }
+
+  /* LEFT */
+  .scout-left { padding: 22px 24px; border-right: 1px solid var(--border2); background: var(--surface2); }
+  .scout-sub-label { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+  .scout-sub-label::after { content: ''; flex: 1; height: 1px; background: var(--border2); }
+  .measurables { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-bottom: 18px; background: var(--border); }
+  .meas-cell { background: var(--surface); padding: 10px 12px; }
+  .meas-lbl { font-size: 0.55rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .meas-val { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; color: var(--white); }
+  .meas-val.na { color: var(--border3); }
+  .scout-text { font-size: 0.85rem; color: var(--text); line-height: 1.85; }
+  .comp-tag { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; padding: 4px 12px; background: rgba(200,146,42,0.06); border: 1px solid rgba(200,146,42,0.25); font-size: 0.62rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+
+  /* RIGHT */
+  .scout-right { background: var(--surface2); padding: 22px 20px; }
+  .grade-display { display: flex; align-items: baseline; gap: 10px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border2); }
+  .big-grade { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; line-height: 1; }
+  .big-grade.elite { color: var(--gold); }
+  .big-grade.high { color: var(--gold-light); }
+  .big-grade.mid { color: var(--white); }
+  .big-grade.dev { color: var(--muted); }
+  .grade-meta { display: flex; flex-direction: column; gap: 2px; }
+  .gm-tier { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; }
+  .gm-tier.elite { color: var(--gold); }
+  .gm-tier.high { color: #9abb60; }
+  .gm-tier.mid { color: var(--text); }
+  .gm-tier.dev { color: var(--muted); }
+  .gm-sub { font-size: 0.6rem; color: var(--muted); letter-spacing: 0.08em; }
+  .attr-list { display: flex; flex-direction: column; gap: 0; }
+  .attr-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .attr-row:last-child { border-bottom: none; }
+  .attr-name { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); flex: 1; min-width: 0; }
+  .attr-bar-wrap { width: 72px; height: 3px; background: var(--border2); flex-shrink: 0; }
+  .attr-bar { height: 100%; background: var(--gold); }
+  .attr-score { font-family: 'Playfair Display', serif; font-size: 0.82rem; font-weight: 700; color: var(--white); width: 22px; text-align: right; flex-shrink: 0; }
+
+  /* POS COLORS */
+  .pos-QB  { color: var(--pos-QB);  border-color: rgba(139,92,246,.3);  background: rgba(139,92,246,.08); }
+  .pos-RB  { color: var(--pos-RB);  border-color: rgba(16,185,129,.3);  background: rgba(16,185,129,.08); }
+  .pos-WR  { color: var(--pos-WR);  border-color: rgba(59,130,246,.3);  background: rgba(59,130,246,.08); }
+  .pos-TE  { color: var(--pos-TE);  border-color: rgba(245,158,11,.3);  background: rgba(245,158,11,.08); }
+  .pos-OT  { color: var(--pos-OT);  border-color: rgba(99,102,241,.3);  background: rgba(99,102,241,.08); }
+  .pos-IOL { color: var(--pos-IOL); border-color: rgba(6,182,212,.3);   background: rgba(6,182,212,.08); }
+  .pos-Edge{ color: var(--pos-Edge);border-color: rgba(239,68,68,.3);   background: rgba(239,68,68,.08); }
+  .pos-DT  { color: var(--pos-DT);  border-color: rgba(249,115,22,.3);  background: rgba(249,115,22,.08); }
+  .pos-LB  { color: var(--pos-LB);  border-color: rgba(132,204,22,.3);  background: rgba(132,204,22,.08); }
+  .pos-CB  { color: var(--pos-CB);  border-color: rgba(168,85,247,.3);  background: rgba(168,85,247,.08); }
+  .pos-S   { color: var(--pos-S);   border-color: rgba(20,184,166,.3);  background: rgba(20,184,166,.08); }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 40px 48px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1rem; color: var(--white); }
+  .footer-logo span { color: var(--gold); }
+  .footer-copy { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; }
+
+  /* HAMBURGER */
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: transparent; border: none; z-index: 200; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); transition: all 0.25s ease; }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .mobile-menu { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10,10,10,0.98); backdrop-filter: blur(16px); z-index: 150; flex-direction: column; align-items: center; justify-content: center; gap: 0; }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 8vw, 2.4rem); font-weight: 900; color: var(--white); text-decoration: none; letter-spacing: -0.02em; padding: 16px 0; border-bottom: 1px solid var(--border); width: 80%; text-align: center; transition: color 0.2s; }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu a:hover, .mobile-menu a.active { color: var(--gold); }
+  .mobile-menu-close { position: absolute; top: 24px; right: 24px; background: transparent; border: none; color: var(--muted); font-size: 1.4rem; cursor: pointer; padding: 8px; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 900px) {
+    nav { padding: 18px 24px; } .nav-links { display: none !important; }
+    .page-header { padding: 110px 24px 40px; }
+    .controls-wrap { padding: 0 24px 32px; }
+    .board-wrap { padding: 0 24px 80px; }
+    .search-input { width: 100%; }
+    .search-row { flex-wrap: wrap; }
+    .scout-inner { grid-template-columns: 1fr; }
+    .scout-right { border-top: 1px solid var(--border2); }
+    .measurables { grid-template-columns: repeat(2, 1fr); }
+    footer { padding: 30px 24px; flex-direction: column; gap: 12px; text-align: center; }
+    .hamburger { display: flex; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">short<span>open</span></a>
+  <ul class="nav-links">
+    <li><a href="analysis.html">Analysis</a></li>
+    <li><a href="market.html">Market</a></li>
+    <li><a href="optimizer.html">Optimizer</a></li>
+    <li><a href="hr-index.html">HR Index</a></li>
+    <li><a href="nfl-draft.html" class="active">NFL Draft</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="subscribe.html">Subscribe</a></li>
+  </ul>
+  <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+  <a href="index.html" onclick="toggleMobileMenu()">Home</a>
+  <a href="analysis.html" onclick="toggleMobileMenu()">Analysis</a>
+  <a href="market.html" onclick="toggleMobileMenu()">Market</a>
+  <a href="optimizer.html" onclick="toggleMobileMenu()">Optimizer</a>
+  <a href="hr-index.html" onclick="toggleMobileMenu()">HR Index</a>
+  <a href="nfl-draft.html" class="active" onclick="toggleMobileMenu()">NFL Draft</a>
+  <a href="about.html" onclick="toggleMobileMenu()">About</a>
+  <a href="subscribe.html" onclick="toggleMobileMenu()">Subscribe</a>
+</div>
+
+<div class="page-header">
+  <p class="page-eyebrow">2026 NFL Draft</p>
+  <h1 class="page-title">NFL Draft <em>2026</em><br>Prospects.</h1>
+  <p class="page-sub">Click any player to pull the card.</p>
+</div>
+
+<div class="controls-wrap">
+  <div class="controls-row">
+    <span class="ctrl-label">Position</span>
+    <div class="pos-btns" id="posBtns"></div>
+  </div>
+  <div class="search-row">
+    <input type="text" class="search-input" id="searchInput" placeholder="Search by name, school, or position..." oninput="filter()"/>
+    <span class="count-label" id="countLabel"></span>
+  </div>
+</div>
+
+<div class="board-wrap" id="boardWrap"></div>
+
+<footer>
+  <div class="footer-logo">short<span>open</span></div>
+  <p class="footer-copy">© 2026 shortopen. All rights reserved.</p>
+</footer>
+
+<script>
+const PROSPECTS = [
+  {rank:1,name:"Fernando Mendoza",school:"Indiana",pos:"QB",year:"R-JR",move:null,grade:6.73,ht:"6'5\"",wt:"225",age:"22.5",comp:"Matt Ryan",tags:["Franchise QB","RPO Artist","Iron Tough"],scout:"Doesn't have rare physical gifts, but his football IQ, ball placement and competitive toughness are top-class. Operates well out of shotgun leaning on the RPO game. Fast hands, excellent decisions, pinpoint accuracy on back-shoulder throws. Insanely tough — routinely absorbs big hits in the pocket. Has logged massive conversions including the national title game winner. First-round selection and potential franchise quarterback.",attrs:[{n:"Accuracy",v:93},{n:"Arm Strength",v:74},{n:"Decision Making",v:91},{n:"Mobility",v:68},{n:"Toughness",v:95}]},
+  {rank:2,name:"Jeremiyah Love",school:"Notre Dame",pos:"RB",year:"JR",move:null,grade:6.73,ht:"5'11\"",wt:"205",age:"20.8",comp:"Christian McCaffrey",tags:["Home Run Threat","Receiving Back","Spin Move Elite"],scout:"Dynamic weapon as a runner and receiver. Runs high/narrow but explodes to and through the hole. Elite speed on outside runs to capture the corner and take it the distance. Rare ability to make defenders miss without gearing down — his spin move is electric. In the passing game, he runs routes like a wideout: smooth, polished, natural. He plucks the ball effortlessly. Will immediately expand the playbook for his drafting team.",attrs:[{n:"Speed",v:96},{n:"Vision",v:88},{n:"Contact Balance",v:82},{n:"Route Running",v:84},{n:"Pass Pro",v:71}]},
+  {rank:3,name:"Sonny Styles",school:"Ohio State",pos:"LB",year:"SR",move:null,grade:6.72,ht:"6'4\"",wt:"240",age:"21.2",comp:"Fred Warner",tags:["Safety Convert","Elite Coverage","Day 1 Starter"],scout:"Tall, long and rangy linebacker who made a smooth transition from safety. Quick to key, read and fill. Uses his length to press off blocks with outstanding lateral range. Outstanding in coverage — carries slot receivers down the seam, smoothly mirrors tight ends. Explosive blitzer who runs over running backs in pass pro. His Big Ten title game performance against Indiana answered every question about his game. Hard to find prospects with his combination of speed, athleticism and instincts.",attrs:[{n:"Coverage",v:92},{n:"Run Defense",v:85},{n:"Pass Rush",v:88},{n:"Instincts",v:93},{n:"Athleticism",v:95}]},
+  {rank:4,name:"David Bailey",school:"Texas Tech",pos:"Edge",year:"SR",move:null,grade:6.78,ht:"6'4\"",wt:"253",age:"22.1",comp:"Myles Garrett (college)",tags:["Elite Get-Off","Speed Rusher","Short Corner Wins"],scout:"Ultra-explosive edge rusher with outstanding production. His game is all about get-off and winning early in the down. Eats ground in a hurry with a dip/rip move before flattening to the passer. Complements his speed rush with a sudden inside spin. His ability to create short corners to the passer is exceptional. Needs to improve consistency and physicality when holding the point of attack in run defense, but the pass-rush ability is already elite.",attrs:[{n:"Get-Off",v:96},{n:"Bend/Flexibility",v:88},{n:"Hand Technique",v:78},{n:"Run Defense",v:70},{n:"Motor",v:85}]},
+  {rank:5,name:"Arvell Reese",school:"Ohio State",pos:"Edge",year:"JR",move:null,grade:7.04,ht:"6'4\"",wt:"243",age:"20.6",comp:"Jalon Walker '25",tags:["Chess Piece","Elite Athlete","High Upside"],scout:"Fluid and explosive athlete — Ohio State used him as a chess piece at LB, on the edge, and as a QB spy. Projects best as an edge rusher. Flashes elite speed and bend. Can overpower OTs, TEs and RBs when he has a runway. Lacks a fully polished rush plan and can be late off the snap at times. Can match and mirror TEs and RBs in coverage. Against the run, generates knock-back power on the front side and has elite speed to chase from the back side.",attrs:[{n:"Athleticism",v:95},{n:"Speed/Bend",v:93},{n:"Rush Plan",v:71},{n:"Coverage",v:82},{n:"Run Defense",v:83}]},
+  {rank:6,name:"Carnell Tate",school:"Ohio State",pos:"WR",year:"JR",move:null,grade:6.71,ht:"6'3\"",wt:"195",age:"20.4",comp:"Stefon Diggs",tags:["Vertical Threat","Press Beater","Big Frame"],scout:"Tall, long wideout with better play speed than timed speed and outstanding production. Excellent suddenness to defeat press coverage. Covers ground quickly with his long stride. Strong and reliable hands in traffic — tracks the ball beautifully over his shoulder down the field. Can access an extra gear when the ball is in the air. Loose athlete that shows up on back-shoulder adjustments. Efficient footwork when working back to the quarterback. Should provide immediate impact in the vertical passing game.",attrs:[{n:"Route Running",v:87},{n:"Hands",v:88},{n:"Separation",v:85},{n:"Deep Threat",v:90},{n:"YAC",v:72}]},
+  {rank:7,name:"Rueben Bain Jr.",school:"Miami",pos:"Edge",year:"JR",move:null,grade:6.70,ht:"6'2\"",wt:"272",age:"20.9",comp:"Trent Cole",tags:["Power Rusher","Junkyard Dog","Tape Dominant"],scout:"Thick, square edge rusher with short arms but tape littered with disruption, destruction and dominance. Wins with leverage, power and polish rather than elite get-off. Launches out of his stance, uproots offensive tackles and forces open their shoulders. Has a nasty chop/rip move, violent hump move and nifty Euro step. Ragdolls tight ends with an unrelenting motor. A certified junkyard dog.",attrs:[{n:"Power",v:92},{n:"Hand Technique",v:90},{n:"Motor",v:97},{n:"Get-Off",v:73},{n:"Length",v:58}]},
+  {rank:8,name:"Caleb Downs",school:"Ohio State",pos:"S",year:"JR",move:"+1",grade:6.68,ht:"5'11\"",wt:"201",age:"20.8",comp:"Tyrann Mathieu",tags:["Nickel/SS","Plug-and-Play","Team Leader"],scout:"Versatile safety with outstanding instincts and intangibles. Primarily lined up underneath as a nickel, strong safety or nickel backer. Smooth mover who utilizes his eyes and instincts to close and limit windows. Physical with enough speed to mirror tight ends in man coverage. Outstanding blitzer with great timing and feel. Excels against the run — takes proper angles, attacks ball-carriers, dependable tackler. Handles most defensive communication. Staff raves about his intelligence and leadership.",attrs:[{n:"Instincts",v:94},{n:"Coverage",v:87},{n:"Run Support",v:88},{n:"Blitzing",v:90},{n:"Leadership",v:95}]},
+  {rank:9,name:"Mansoor Delane",school:"LSU",pos:"CB",year:"SR",move:"+1",grade:6.77,ht:"6'1\"",wt:"193",age:"23.0",comp:"Jaire Alexander",tags:["Press/Zone Versatile","Fluid Mover","Consistent"],scout:"One of the most consistent players in this draft class. Extremely loose and fluid in his change of direction. Adept at press coverage — re-routes and mirrors all over the field. In zone, plays with instincts and awareness. Goes long stretches without getting challenged because of his tight coverage. When attacked, he locates and makes plays on the ball. Always looks to get involved in run defense. Has the tools to match up with every style of receiver.",attrs:[{n:"Press Coverage",v:91},{n:"Zone Awareness",v:89},{n:"Ball Skills",v:86},{n:"Fluidity",v:93},{n:"Tackling",v:83}]},
+  {rank:10,name:"Francis Mauigoa",school:"Miami",pos:"OT",year:"JR",move:null,grade:6.48,ht:"6'5\"",wt:"322",age:"21.3",comp:"Trent Brown",tags:["Run Blocker Dominant","Massive Frame","Right Tackle"],scout:"Big, powerful right tackle prospect with a massive lower body and a firm base in pass protection. Average foot quickness out of his stance, but can bend his knees and anchor against power rushers. Fluid mover who is patient with his punch. Once he latches on, has strong hands to steer and control. In the run game, can uproot and displace defenders with upper torque and leg drive. Should immediately be a dominant run blocker in the NFL.",attrs:[{n:"Run Blocking",v:91},{n:"Pass Pro Anchor",v:83},{n:"Footwork",v:71},{n:"Hand Strength",v:90},{n:"Finishing",v:88}]},
+  {rank:11,name:"Olaivavega Ioane",school:"Penn State",pos:"IOL",year:"R-JR",move:null,grade:6.62,ht:"6'4\"",wt:"328",age:"22.4",comp:"Quenton Nelson",tags:["Guard Dominant","Impact Starter","Power-Based"],scout:"Dominant presence at left guard with outstanding strength and power. Can bend and redirect to stay attached in pass pro, handling power with ease. Aware on stunts and games. In the run game, latches on, runs his feet and always looks to finish. Tremendous upper torque to toss defenders out of the hole. Takes proper angles to the second level. Love his temperament, toughness and ability to anchor. Impact starter from Day 1.",attrs:[{n:"Run Blocking",v:92},{n:"Anchor/Power",v:94},{n:"Pass Pro",v:84},{n:"2nd Level",v:85},{n:"Awareness",v:87}]},
+  {rank:12,name:"Makai Lemon",school:"USC",pos:"WR",year:"JR",move:null,grade:6.60,ht:"5'10\"",wt:"200",age:"20.9",comp:"Amon-Ra St. Brown",tags:["Slot Specialist","Competitive Catcher","Tough After Catch"],scout:"Wideout with a running back's body and a linebacker's temperament. At his best in the slot — wins with quickness off the line, understands how to tempo routes, consistently wins in traffic. Doesn't waste steps and can explode in and out of break points. Plays bigger than his size on 50/50 balls. Ultra-competitive after the catch, breaking tackles and fighting for yards.",attrs:[{n:"Route Running",v:91},{n:"Hands",v:87},{n:"YAC",v:90},{n:"Toughness",v:93},{n:"Separation",v:86}]},
+  {rank:13,name:"Spencer Fano",school:"Utah",pos:"OT",year:"JR",move:null,grade:6.58,ht:"6'5\"",wt:"313",age:"21.0",comp:"Shaq Mason",tags:["5-Position Versatile","Explosive Mover","People Mover"],scout:"Started 11 games at left tackle as a freshman before moving to right tackle. Not all teams will view him as a tackle due to lack of arm length, but has five-position versatility. Has excellent strength and quickness — quick out of his stance, easily covers speed rushers. Core strength and knee bend help stall bull rushers despite short arms. Explosive people mover with upside.",attrs:[{n:"Footwork",v:88},{n:"Strength",v:90},{n:"Versatility",v:91},{n:"Pass Pro",v:83},{n:"Run Blocking",v:86}]},
+  {rank:14,name:"Kenyon Sadiq",school:"Oregon",pos:"TE",year:"JR",move:null,grade:6.55,ht:"6'3\"",wt:"245",age:"21.5",comp:"Darren Waller",tags:["Athletic Weapon","Vertical TE","Drop Concerns"],scout:"Short, muscled-up tight end with outstanding speed and athleticism. Very explosive in his release — able to separate vertically on seam and wheel routes. Excels on quick screens where he displays dynamic run-after-catch skills. Needs to improve dependability as a pass catcher — too many concentration drops in 2025. Competitive and tenacious as a blocker. A versatile, explosive weapon with toughness.",attrs:[{n:"Speed/Athleticism",v:92},{n:"Receiving",v:76},{n:"Blocking",v:82},{n:"RAC",v:89},{n:"Hands",v:71}]},
+  {rank:15,name:"Emmanuel McNeil-Warren",school:"Toledo",pos:"S",year:"SR",move:"+1",grade:6.50,ht:"6'2\"",wt:"210",age:"22.6",comp:"Micah Hyde",tags:["Pro Bowl Upside","High Energy","Big Hitter"],scout:"Tall, long safety with fantastic production. Every game littered with big hits, plays on the ball and high energy. Very explosive — ranges off the hash and makes plays on the sideline. Has made diving interceptions and drives on throws in front of him. Very fluid change of direction in space. Against the run, aggressive to the alley and explodes into ball-carriers. Bouncy, twitchy athlete with Pro Bowl potential.",attrs:[{n:"Range",v:90},{n:"Ball Skills",v:88},{n:"Energy/Motor",v:95},{n:"Run Support",v:87},{n:"Coverage",v:83}]},
+  {rank:16,name:"Dillon Thieneman",school:"Oregon",pos:"S",year:"JR",move:"+1",grade:6.48,ht:"6'1\"",wt:"205",age:"21.0",comp:"Budda Baker",tags:["Chess Piece Safety","Box/Deep/Slot","Coveted Profile"],scout:"Versatile chess piece — lined up in the box, deep half and over the slot. When aligned in the back end, can anticipate and range over the top. Shows fluid, smooth pedal when aligned in the slot and is quick to plant and drive on throws. Reliable tackler most of the time. Against the run, trusts his eyes and explodes into the alley. Does a lot of different tasks at a very high level. His skill set is highly coveted around the NFL.",attrs:[{n:"Versatility",v:92},{n:"Range",v:88},{n:"Coverage",v:85},{n:"Tackling",v:83},{n:"Football IQ",v:90}]},
+  {rank:17,name:"Omar Cooper Jr.",school:"Indiana",pos:"WR",year:"R-JR",move:"+1",grade:6.47,ht:"6'1\"",wt:"210",age:"22.2",comp:"DJ Moore",tags:["Combat Catcher","Explosive Press Release","Game Winner"],scout:"Strong, reliable and explosive. Uses lower-body strength to run through press coverage. Loose and fluid route runner. Plays without fear in the middle of the field — makes combat catches look easy. Can pluck the ball and stays grounded through the catch on crossers. Can elevate and play above the rim — hit the game-winner against Penn State. Has the power to break tackles and enough speed to pull away after the catch.",attrs:[{n:"Toughness",v:93},{n:"Hands",v:91},{n:"Separation",v:84},{n:"YAC",v:86},{n:"Route Running",v:85}]},
+  {rank:18,name:"Jordyn Tyson",school:"Arizona State",pos:"WR",year:"R-JR",move:"+3",grade:6.45,ht:"6'2\"",wt:"190",age:"22.1",comp:"Marquise Brown",tags:["Deep Ball Artist","Creative Routes","Durability Flag"],scout:"Explosive receiver with a lot of wow plays on his tape. Very fluid mover who incorporates a variety of releases and creativity into route-running. Has suddenness off the line and out of breaks. Weaves and gets cornerbacks off balance before exploding away. Makes incredible catches on deep balls — tracks the ball with ease over his shoulder. Durability was an issue throughout his college career.",attrs:[{n:"Explosiveness",v:93},{n:"Deep Threat",v:91},{n:"Route Creativity",v:89},{n:"Tracking",v:90},{n:"Durability",v:62}]},
+  {rank:19,name:"Jermod McCoy",school:"Tennessee",pos:"CB",year:"JR",move:"+4",grade:6.43,ht:"6'0\"",wt:"188",age:"21.5",comp:"Marshon Lattimore",tags:["Press Specialist","ACL Recover","Day 1 Starter"],scout:"Had an outstanding 2024 season but missed all of 2025 due to an ACL tear. At his best in press coverage, effectively landing his one-hand jam while maintaining balance. Always under control with his movement. In zone, sets traps knowing he can sink back and recover. Impressive ability to elevate and play the ball. Has the speed, movement and ball skills to start Day 1.",attrs:[{n:"Press Coverage",v:91},{n:"Ball Skills",v:88},{n:"Fluidity",v:87},{n:"Zone Instincts",v:84},{n:"Durability",v:65}]},
+  {rank:20,name:"Blake Miller",school:"Clemson",pos:"OT",year:"SR",move:"+1",grade:6.42,ht:"6'7\"",wt:"316",age:"23.1",comp:"Jonah Williams",tags:["Iron Man (54 Starts)","Ideal RT Profile","Wrestler Background"],scout:"Started 54 games at Clemson — a high school wrestler with ideal size, length and strength. Has enough quickness to cover up speed rushers. Uses his length and strong hands to latch and control defenders. Can sink his weight and anchor against power. In the run game, generates movement on down blocks and always strains to finish. Has the ideal physical profile for a starting NFL right tackle.",attrs:[{n:"Length/Frame",v:93},{n:"Anchor",v:88},{n:"Run Blocking",v:85},{n:"Pass Pro",v:83},{n:"Awareness",v:84}]},
+  {rank:21,name:"Colton Hood",school:"Tennessee",pos:"CB",year:"R-SO",move:"+4",grade:6.41,ht:"5'11\"",wt:"185",age:"20.3",comp:"Sauce Gardner (year 1)",tags:["Young Prospect","Complete CB","Day 1 Starter"],scout:"Average size but excellent play speed and toughness. Patient in press, staying on balance before using his hands to redirect. Fluid to turn, open up and mirror underneath. Plenty of speed to carry vertical routes. Trusts his eyes from off coverage and is efficient with his plant-and-drive. Consistently in position down the field. More than willing against the run. A complete player and very solid starter on Day 1.",attrs:[{n:"Play Speed",v:91},{n:"Press Technique",v:87},{n:"Ball Skills",v:83},{n:"Tackling",v:85},{n:"Coverage",v:88}]},
+  {rank:22,name:"Monroe Freeling",school:"Georgia",pos:"OT",year:"JR",move:"+2",grade:6.40,ht:"6'6\"",wt:"302",age:"21.1",comp:"Rashawn Slater",tags:["LT Upside","Athletic Tackle","Late Season Best"],scout:"Full-time starter at left tackle for Georgia. Ideal size, bend and agility. Quick out of his stance — bends easily and can smoothly redirect versus counter rushers. Excellent on combo blocks, attacking the hip of the DT before peeling to wall off linebackers. Needs to add core strength. Playing his best late in 2025 after battling injuries. Has starting left tackle ability if he can continue adding strength.",attrs:[{n:"Athleticism",v:90},{n:"Bend",v:89},{n:"Combo Blocks",v:88},{n:"Core Strength",v:72},{n:"Pass Pro",v:82}]},
+  {rank:23,name:"Denzel Boston",school:"Washington",pos:"WR",year:"R-JR",move:"+4",grade:6.39,ht:"6'4\"",wt:"218",age:"22.3",comp:"Courtland Sutton",tags:["Red Zone Target","Ball Winner","Big Body"],scout:"Big-framed wideout with exceptional ball skills and production. Lines up both outside and in the slot. Uses his upper-body strength to power through press coverage. An outstanding ball winner with a huge catch radius who can play above the rim in the red zone. After the catch, relies more on physicality than finesse to create extra yardage.",attrs:[{n:"Size/Frame",v:92},{n:"Ball Skills",v:93},{n:"Red Zone",v:91},{n:"Press Release",v:85},{n:"RAC",v:79}]},
+  {rank:24,name:"Kadyn Proctor",school:"Alabama",pos:"OT",year:"JR",move:"+2",grade:6.38,ht:"6'7\"",wt:"340",age:"20.9",comp:"Orlando Brown Jr.",tags:["Highest Upside OL","Enormous Frame","Skill Player Athleticism"],scout:"An enormous tackle prospect with excellent feet and agility for a big man. Explosive first step and keeps defenders off his chest. Can sink his weight and stall bull rushers. In the run game, can uncoil his hips on contact and displace defenders. Excels on down blocks. Was used as a skill player at Alabama and even caught a quick screen against Georgia. Has the most upside of any blocker in this draft.",attrs:[{n:"Size Upside",v:95},{n:"Athleticism",v:88},{n:"Run Power",v:91},{n:"Footwork",v:83},{n:"Consistency",v:73}]},
+  {rank:25,name:"KC Concepcion",school:"Texas A&M",pos:"WR",year:"JR",move:"+4",grade:6.37,ht:"5'9\"",wt:"175",age:"21.0",comp:"Tyreek Hill",tags:["Elite Burst","Drop Concerns","Explosive RAC"],scout:"Undersized receiver with elite burst and inconsistent hands. His speed jumps off the screen — a quick jab step and then he explodes down the field. Creates massive separation against quality competition. Hauls in a lot of quick-hitters. Hands have been the biggest issue — too many concentration drops. When he does finish the catch, he is dynamic with the ball in his hands.",attrs:[{n:"Speed/Burst",v:96},{n:"Separation",v:94},{n:"RAC",v:91},{n:"Hands",v:67},{n:"Size",v:58}]},
+  {rank:26,name:"Akheem Mesidor",school:"Miami",pos:"Edge",year:"SR",move:"+3",grade:6.36,ht:"6'4\"",wt:"268",age:"23.2",comp:"Nic Scourton '25",tags:["Power Rusher","Relentless Motor","TE Destroyer"],scout:"Highly productive edge rusher with ideal frame, relentless motor and pass-rush instincts. His game is more about power than pure speed. Shakes and bulls OTs, knocks their hands off and pushes/pulls for pressures. When rushing inside over guards, wins very early in the down. Never stops working his hands and refuses to stay blocked. Against the run, firmly sets the edge and consistently annihilates TEs.",attrs:[{n:"Power",v:91},{n:"Motor",v:94},{n:"Hand Activity",v:90},{n:"Inside Moves",v:87},{n:"Speed",v:74}]},
+  {rank:27,name:"T.J. Parker",school:"Clemson",pos:"Edge",year:"JR",move:"+3",grade:6.35,ht:"6'4\"",wt:"260",age:"21.3",comp:"Harold Landry",tags:["11 Sacks in 2024","Inside/Outside Flex","Value Selection"],scout:"Intriguing edge rusher with versatility to slide inside. Had a monster 2024 campaign (11 sacks) but saw production drop in 2025 (5 sacks). Rugged pass rusher with a powerful shake/bull move. Can jolt blockers before separating and closing to the quarterback. Quickness plays better when rushing inside. Helped himself at the Senior Bowl. Could be a real value selection for his drafting team.",attrs:[{n:"Power Rush",v:88},{n:"Inside Quickness",v:86},{n:"Run Defense",v:84},{n:"Versatility",v:87},{n:"Consistency",v:71}]},
+  {rank:28,name:"Cashius Howell",school:"Texas A&M",pos:"Edge",year:"SR",move:null,grade:6.34,ht:"6'2\"",wt:"244",age:"23.0",comp:"Chase Young (role player)",tags:["Undersized Dynamo","Pass Rush Variety","Underrated"],scout:"Undersized edge rusher with outstanding twitch, tenacity and production. Lacks ideal length but it didn't cause problems in film study. Wins in a variety of ways — speed, power or counters when OTs overset. Plays with a nice blend of violence and awareness. Against the run, can roll his hips and utilize leverage to set the edge. An energetic force off the edge worth selecting.",attrs:[{n:"Twitch",v:91},{n:"Pass Rush Variety",v:87},{n:"Tenacity",v:93},{n:"Run Defense",v:80},{n:"Length",v:63}]},
+  {rank:29,name:"Keldric Faulk",school:"Auburn",pos:"Edge",year:"JR",move:"+2",grade:6.33,ht:"6'5\"",wt:"255",age:"21.7",comp:"Rashan Gary",tags:["Fluid Mover","High Ceiling","Character Pick"],scout:"Versatile defensive lineman with ideal frame and length. Aligned up and down the front in Auburn's scheme. A very loose, fluid mover who lacks ideal twitch but wins with a swooping arm-over or steady pocket push. Against the run, stacks and holds the point of attack with his length and balance. Effort is good and coaches rave about his character and work ethic. A lot to dream about with his potential.",attrs:[{n:"Frame/Length",v:93},{n:"Fluidity",v:85},{n:"Run Defense",v:83},{n:"Pass Rush",v:74},{n:"Upside",v:88}]},
+  {rank:30,name:"Caleb Lomu",school:"Utah",pos:"OT",year:"R-SO",move:"+4",grade:6.32,ht:"6'6\"",wt:"300",age:"20.4",comp:"Penei Sewell (year 1)",tags:["Young Prospect","IQ Tackle","Needs Strength"],scout:"Lined up at left tackle for Utah with an ideal frame and room to add weight and strength. Average foot quickness but consistently stays square with excellent feel against stunts and games. In the run game, fits up cleanly and stays attached. Takes proper angles to the second level. Needs to add core strength but has the rest of the ingredients to be a solid starting tackle.",attrs:[{n:"Frame Upside",v:93},{n:"Pass Pro IQ",v:86},{n:"Run Blocking",v:79},{n:"Footwork",v:77},{n:"Strength (cur.)",v:71}]},
+  {rank:31,name:"Max Iheanachor",school:"Arizona State",pos:"OT",year:"SR",move:"+4",grade:6.30,ht:"6'6\"",wt:"310",age:"24.0",comp:"Dawand Jones",tags:["Late Bloomer","Senior Bowl Standout","Raw Upside"],scout:"Raw, talented right tackle who moved from Nigeria to LA at 13 and didn't play football until junior college. His tape is full of clues hinting he could end up one of the best OL in this class. Very athletic to redirect and smother counter moves. Has knock-back power in the run game. Showed a lot of promise at the Senior Bowl.",attrs:[{n:"Raw Athleticism",v:90},{n:"Run Power",v:84},{n:"Pass Pro",v:73},{n:"Development",v:91},{n:"Experience",v:64}]},
+  {rank:32,name:"CJ Allen",school:"Georgia",pos:"LB",year:"JR",move:"+2",grade:6.28,ht:"6'1\"",wt:"235",age:"21.2",comp:"Devin White",tags:["Tackle Machine","Leader/Communicator","Plays Big"],scout:"Productive, intelligent playmaker who plays bigger than his listed size. Good instincts and awareness against the run. Can thud off offensive guards or play over the top. Explosive striker with a high batting average as a tackler. Has some tightness in coverage but has enough speed to run with TEs and RBs. Sources rave about his character, leadership and communication skills.",attrs:[{n:"Run Defense",v:88},{n:"Tackling",v:91},{n:"Leadership",v:93},{n:"Coverage",v:76},{n:"Explosiveness",v:84}]},
+  {rank:33,name:"Kayden McDonald",school:"Ohio State",pos:"DT",year:"JR",move:null,grade:6.26,ht:"6'3\"",wt:"310",age:"21.0",comp:"Shelby Harris",tags:["Run Stopper","Stout Anchor","Steady Force"],scout:"Excellent size and strength for the DT position. At his best against the run — presses out blocks and disengages with violent torque. Very firm and stout, collecting tackles from guard to guard. As a pass rusher, flashes some pocket push but lacks twitch and polish to consistently win. A steady force rather than a dynamic playmaker. Will provide value on run downs.",attrs:[{n:"Run Stopping",v:91},{n:"Stoutness",v:90},{n:"Pass Rush",v:68},{n:"Torque",v:87},{n:"Lateral Chase",v:72}]},
+  {rank:34,name:"Jadarian Price",school:"Notre Dame",pos:"RB",year:"R-JR",move:"+5",grade:6.24,ht:"5'10\"",wt:"216",age:"22.3",comp:"Kareem Hunt",tags:["Patient Runner","KO Return TD x2","NFL Starter Traits"],scout:"Compact running back with terrific vision and balance. Patient runner who lets blocks develop before bursting. Runs low to the ground with supreme contact balance. Adept at stepping through low tackles and making defenders miss in space. Reliable hands. Provides home run ability as a kickoff returner — two touchdowns in 2025. NFL-starter traits.",attrs:[{n:"Vision",v:89},{n:"Contact Balance",v:90},{n:"Pass Pro",v:83},{n:"Receiving",v:80},{n:"Speed",v:84}]},
+  {rank:35,name:"Chris Johnson",school:"San Diego State",pos:"CB",year:"SR",move:"+5",grade:6.22,ht:"6'2\"",wt:"207",age:"23.5",comp:"Stephon Gilmore",tags:["Big Corner","Off Coverage Specialist","Tough Tackler"],scout:"Excellent height, bulk and movement skills for the position. Very quick feet and fluid to open up and run. Best in off coverage with excellent eyes and instincts to trigger on throws. Natural in finding and playing the ball. Extremely tough and aggressive filling vs. the run. Outstanding Combine performance after an up-and-down Senior Bowl week. Coaches rave about his character and toughness.",attrs:[{n:"Size",v:92},{n:"Off Coverage",v:88},{n:"Ball Skills",v:85},{n:"Tackling",v:87},{n:"Press Coverage",v:75}]},
+  {rank:36,name:"Ty Simpson",school:"Alabama",pos:"QB",year:"R-JR",move:"+2",grade:6.20,ht:"6'1\"",wt:"213",age:"22.0",comp:"Gardner Minshew",tags:["Sound Mechanics","Limited Starts (15)","Developmental QB"],scout:"Slightly undersized QB with sound mechanics, touch and accuracy. Quick feet in his setup — marries feet with his eyes to stay on platform. Compact delivery with enough arm strength to make all the throws. Gets sped up when the pocket collapses. Good athlete who throws well on designed boots and roll-outs. Limited number of starts (15) is a concern. Has the skill set to develop into a functional NFL starter.",attrs:[{n:"Accuracy",v:87},{n:"Mechanics",v:86},{n:"Touch",v:85},{n:"Athleticism",v:79},{n:"Experience",v:61}]},
+  {rank:37,name:"Anthony Hill Jr.",school:"Texas",pos:"LB",year:"JR",move:"+5",grade:6.18,ht:"6'3\"",wt:"240",age:"20.9",comp:"Micah Parsons (coverage role)",tags:["Speed Linebacker","Elite COD","Blitz Weapon"],scout:"Fluid mover with outstanding size and speed. Has excellent quickness and change of direction to work around blockers rather than through them. Outstanding closing speed from the back side. In pass coverage, his change of direction is elite. Reliable, chest-up tackler. A superb blitzer who relies on speed to pressure quarterbacks. Not an overly violent player but his athleticism is a major asset.",attrs:[{n:"Athleticism",v:94},{n:"Coverage",v:88},{n:"Closing Speed",v:92},{n:"Blitzing",v:87},{n:"Physical Aggression",v:71}]},
+  {rank:38,name:"Avieon Terrell",school:"Clemson",pos:"CB",year:"JR",move:"+4",grade:6.16,ht:"5'9\"",wt:"183",age:"21.1",comp:"Slot Nickel Tariq Woolen",tags:["Slot Starter","Feisty/Competitive","Blitz Machine"],scout:"Undersized cornerback with tremendous quickness and instincts — projects best as a nickel. Feisty, competitive play style. Utilizes quick feet and smooth change of direction to match up in the slot. Excellent eyes and closing speed in underneath zone. Not as effective outside where his lack of size shows. Very aggressive filling vs. the run and a stellar blitzer. Ideal nickel starter on Day 1.",attrs:[{n:"Quickness",v:93},{n:"Zone Instincts",v:90},{n:"Blitzing",v:88},{n:"Slot Coverage",v:92},{n:"Size",v:55}]},
+  {rank:39,name:"Peter Woods",school:"Clemson",pos:"DT",year:"JR",move:"+2",grade:6.14,ht:"6'2\"",wt:"295",age:"20.8",comp:"Javon Kinlaw",tags:["Violent Hands","High Upside","Inconsistent"],scout:"Thick, square DT with fabulous quickness and violent hands. Can hold the point of attack with leverage and lower-body strength. Has lateral range to make plays outside the tackle box. Flashes a nasty club/rip move. Lacks consistency game to game and lets blockers into his chest at times. His flashes are very intriguing.",attrs:[{n:"Quickness",v:90},{n:"Hand Violence",v:88},{n:"Run Defense",v:83},{n:"Pass Rush Upside",v:84},{n:"Consistency",v:68}]},
+  {rank:40,name:"Malachi Lawrence",school:"UCF",pos:"Edge",year:"SR",move:"+6",grade:6.12,ht:"6'5\"",wt:"252",age:"23.1",comp:"Yannick Ngakoue",tags:["Ideal Length/Twitch","Speed Off Edge","High Upside"],scout:"Ideal size, length and twitch for his position. At his best rushing from a loose alignment off the edge. Explodes off the line and can rip through the outside arm of the offensive tackle before bursting toward the quarterback. Has shock in his hands to uproot and unnerve blockers. Dynamic talent with the upside to emerge as one of the better pass rushers in the draft class.",attrs:[{n:"Length/Twitch",v:91},{n:"Speed Off Edge",v:89},{n:"Hand Shock",v:86},{n:"Pass Rush Upside",v:90},{n:"Run Defense",v:74}]},
+  {rank:41,name:"Lee Hunter",school:"Texas Tech",pos:"DT",year:"SR",move:"+5",grade:6.10,ht:"6'3\"",wt:"308",age:"23.3",comp:"Dre'Mont Jones",tags:["CFP Dominant","Run Stuffer","High Floor"],scout:"Thick, wide-bodied DT who was a dominant run defender at Texas Tech. Can bend and leverage single blocks before chucking them aside. Aware to defeat cut-off blocks. Flashes a quick club/swim move but plays too upright as a pass rusher. Dominant in the CFP quarterfinal against Oregon. High floor because of run-stuffing ability with room for growth in the passing game.",attrs:[{n:"Run Stuffing",v:91},{n:"Block Shedding",v:88},{n:"Awareness",v:87},{n:"Pass Rush",v:71},{n:"Body Control",v:74}]},
+  {rank:42,name:"Jacob Rodriguez",school:"Texas Tech",pos:"LB",year:"SR",move:"+1",grade:6.08,ht:"6'2\"",wt:"235",age:"23.4",comp:"Dont'a Hightower",tags:["7 Forced Fumbles '25","TFL Machine","Zone Dropper"],scout:"Off-ball linebacker with outstanding instincts, playmaking ability and intangibles. Dominant against the run — sorts through traffic to locate ball-carriers. Finds a lane and attacks with inside-out leverage. A tackle-for-loss machine. Unique ability to punch the ball away as a tackler: 13 career forced fumbles including seven last season. Zone coverage is his best coverage role.",attrs:[{n:"Run Defense",v:93},{n:"TFL Instincts",v:91},{n:"Forced Fumbles",v:96},{n:"Zone Coverage",v:83},{n:"Man Coverage",v:70}]},
+  {rank:43,name:"Brandon Cisse",school:"South Carolina",pos:"CB",year:"JR",move:null,grade:6.06,ht:"6'0\"",wt:"180",age:"20.8",comp:"Darius Slay",tags:["Speed Closer","Zone Vision","Needs Press Work"],scout:"Fast, twitchy cover corner who primarily played outside. Usually plays with his back turned to the sideline, using his elite speed to close space and make plays on the ball. A loose, fluid athlete. Not physical in press coverage — carries his hands low and relies on quick feet to mirror. Needs to play with more aggression against the run.",attrs:[{n:"Speed",v:93},{n:"Ball Tracking",v:88},{n:"Fluidity",v:89},{n:"Press Physicality",v:65},{n:"Run Defense",v:68}]},
+  {rank:44,name:"R Mason Thomas",school:"Oklahoma",pos:"Edge",year:"SR",move:"+5",grade:6.05,ht:"6'2\"",wt:"248",age:"23.2",comp:"Randy Gregory",tags:["Maniacal Motor","Non-Prototype","Difference Maker"],scout:"Instinctive and physical edge defender who lacks ideal height/length/bulk but is a difference-maker. Covers a lot of ground with his first three steps and has multiple ways to win. Draws extra blockers and still manages to disrupt. Plays with maniacal energy and effort. Doesn't fit the prototype, but will be a valuable NFL starter.",attrs:[{n:"First Step",v:90},{n:"Pass Rush Variety",v:87},{n:"Motor",v:95},{n:"Run Defense",v:84},{n:"Size",v:62}]},
+  {rank:45,name:"Zion Young",school:"Missouri",pos:"Edge",year:"SR",move:null,grade:6.03,ht:"6'5\"",wt:"268",age:"23.5",comp:"Carlos Dunlap",tags:["TE Destroyer","Power/Length","3-Down Value"],scout:"Big, powerful rusher with excellent length and competitiveness. A herky-jerky mover but has heavy hands to jolt blockers and create knock-back pop. Destroys tight ends assigned to block him. Lacks an elite get-off but has a knack for finishing once he gets to the top of his rush. Very firm and stout at the point of attack. Physical presence with three-down value.",attrs:[{n:"Power/Length",v:90},{n:"Hand Impact",v:88},{n:"Run Defense",v:87},{n:"Get-Off",v:72},{n:"Motor",v:88}]},
+  {rank:46,name:"Christen Miller",school:"Georgia",pos:"DT",year:"R-JR",move:"NR",grade:6.01,ht:"6'4\"",wt:"290",age:"22.1",comp:"Marlon Davidson",tags:["New to Board","Gifted Athlete","Needs Development"],scout:"Ideal size with average length for his position. At his best utilizing his quickness on the interior. Quick first step with swipe/club moves but gets segmented — stops his feet when he throws his hands. More disruptive than productive in film study. Makes plays on slants with his quickness. Still needs development but a gifted athlete.",attrs:[{n:"Quickness",v:87},{n:"Frame",v:91},{n:"Pass Rush Upside",v:84},{n:"Technique Polish",v:65},{n:"Consistency",v:66}]},
+  {rank:47,name:"Keylan Rutledge",school:"Georgia Tech",pos:"IOL",year:"SR",move:null,grade:5.99,ht:"6'4\"",wt:"315",age:"23.3",comp:"Chance Warmack",tags:["Nasty Finisher","Guard Day 1","Classic OL Mentality"],scout:"Excellent size and length for his position. Great awareness in the run game, fitting up consistently and straining to finish. Able to eliminate linebackers when he climbs to the second level. Sets a firm anchor in pass protection. There's a nastiness to his overall play demeanor that will endear him to offensive line coaches. Plug-and-play starter at guard in the NFL.",attrs:[{n:"Run Awareness",v:90},{n:"Anchor",v:88},{n:"Nastiness",v:92},{n:"2nd Level Blocks",v:84},{n:"Pass Pro",v:83}]},
+  {rank:48,name:"Treydan Stukes",school:"Arizona",pos:"S",year:"SR",move:"NR",grade:5.98,ht:"6'1\"",wt:"195",age:"24.0",comp:"Jordan Poyer",tags:["4.33 40-Yard Dash","10'10\" Broad Jump","New to Board"],scout:"Rangy, versatile DB who can play outside, in the slot or as single-high safety. Tied for the broad jump lead at the Combine (10'10\") and posted the 3rd-fastest 40 among safeties (4.33s). Can find and play the ball — seven interceptions and 29 pass breakups in college. Reliable tackler. Possesses a skill set teams are coveting after the Seahawks' Super Bowl season.",attrs:[{n:"Athleticism",v:93},{n:"Range",v:90},{n:"Ball Skills",v:87},{n:"Tackling",v:84},{n:"Versatility",v:89}]},
+  {rank:49,name:"Germie Bernard",school:"Alabama",pos:"WR",year:"SR",move:"+1",grade:5.96,ht:"5'11\"",wt:"205",age:"23.1",comp:null,tags:["Slot Starter","Wildcat Weapon","YAC Specialist"],scout:"Strong, sturdy wideout utilized in a variety of alignments — wide, slot, RB and Wildcat QB. Quickness is a weapon off the line and at the top of routes. Strong hands to attack the ball. Tracks the ball well down the field. At his best with the ball in his hands — quick, elusive and strong for yards after catch. Lacks home run gear. Should earn a spot as a quality starting slot receiver early.",attrs:[{n:"Quickness",v:88},{n:"Hands",v:86},{n:"YAC",v:87},{n:"Versatility",v:89},{n:"Speed (deep)",v:73}]},
+  {rank:50,name:"D'Angelo Ponds",school:"Indiana",pos:"CB",year:"JR",move:"NR",grade:5.95,ht:"5'9\"",wt:"182",age:"21.4",comp:"Aaron Glenn",tags:["43.5\" Vertical (1st at Combine)","7 INTs College","Undersized Outlier"],scout:"An outlier because of his size (5-8-5/8, 182 lbs), but teams should not ignore his production — 7 INTs and 32 pass breakups in three college seasons. Always in phase at all three levels and plays bigger than his size because of his leaping ability — led all CBs at the 2026 Combine with a 43.5-inch vertical. A very fluid mover who trusts his eyes and is quick to trigger.",attrs:[{n:"Instincts",v:91},{n:"Ball Skills",v:90},{n:"Leaping Ability",v:94},{n:"Fluidity",v:88},{n:"Size",v:52}]},
+];
+
+// Ranks 51-150 abbreviated
+const REST = [
+  [51,"Caleb Banks","Florida","DT","SR","+9",5.92,[]],
+  [52,"Chase Bisontis","Texas A&M","IOL","JR",null,5.90,[]],
+  [53,"Keionte Scott","Miami","CB","SR","+9",5.88,[]],
+  [54,"Jake Golday","Cincinnati","LB","SR",null,5.86,[]],
+  [55,"Kyle Louis","Pittsburgh","LB","R-JR",null,5.84,[]],
+  [56,"Emmanuel Pregnon","Oregon","IOL","SR",null,5.82,[]],
+  [57,"Antonio Williams","Clemson","WR","R-JR","+9",5.80,[]],
+  [58,"Bud Clark","TCU","S","SR",null,5.78,[]],
+  [59,"Caleb Tiernan","Northwestern","OT","SR",null,5.76,[]],
+  [60,"Malachi Fields","Notre Dame","WR","SR",null,5.74,[]],
+  [61,"Gabe Jacas","Illinois","Edge","SR",null,5.72,[]],
+  [62,"De'Zhaun Stribling","Mississippi","WR","SR",null,5.70,[]],
+  [63,"Gennings Dunker","Iowa","IOL","SR",null,5.68,[]],
+  [64,"A.J. Haulcy","LSU","S","SR",null,5.66,[]],
+  [65,"Derrick Moore","Michigan","Edge","SR",null,5.64,[]],
+  [66,"Eli Stowers","Vanderbilt","TE","SR",null,5.62,[]],
+  [67,"Keyron Crawford","Auburn","Edge","SR",null,5.60,[]],
+  [68,"Chris Bell","Louisville","WR","SR",null,5.58,[]],
+  [69,"Daylen Everette","Georgia","CB","SR",null,5.56,[]],
+  [70,"Deion Burks","Oklahoma","WR","SR",null,5.54,[]],
+  [71,"Oscar Delp","Georgia","TE","SR",null,5.52,[]],
+  [72,"Sam Hecht","Kansas State","IOL","SR",null,5.50,[]],
+  [73,"Tacario Davis","Washington","CB","SR",null,5.49,[]],
+  [74,"Carson Beck","Miami","QB","SR",null,5.48,[]],
+  [75,"Logan Jones","Iowa","IOL","SR",null,5.46,[]],
+  [76,"Jalon Kilgore","South Carolina","CB","JR",null,5.44,[]],
+  [77,"Jaishawn Barham","Michigan","Edge","SR",null,5.42,[]],
+  [78,"Joshua Josephs","Tennessee","Edge","SR",null,5.40,[]],
+  [79,"Mike Washington Jr.","Arkansas","RB","SR",null,5.38,[]],
+  [80,"Elijah Sarratt","Indiana","WR","SR",null,5.36,[]],
+  [81,"Max Klare","Ohio State","TE","R-JR",null,5.34,[]],
+  [82,"Chris McClellan","Missouri","DT","SR",null,5.32,[]],
+  [83,"Sam Roush","Stanford","TE","SR",null,5.30,[]],
+  [84,"Marlin Klein","Michigan","TE","R-JR",null,5.28,[]],
+  [85,"Ted Hurst","Georgia State","WR","SR",null,5.26,[]],
+  [86,"Julian Neal","Arkansas","CB","SR",null,5.24,[]],
+  [87,"Tyler Onyedim","Texas A&M","DT","SR",null,5.22,[]],
+  [88,"Genesis Smith","Arizona","S","JR",null,5.20,[]],
+  [89,"Kaleb Proctor","SE Louisiana","DT","SR",null,5.18,[]],
+  [90,"Chris Brazzell II","Tennessee","WR","R-JR",null,5.16,[]],
+  [91,"Zachariah Branch","Georgia","WR","JR",null,5.14,[]],
+  [92,"Markel Bell","Miami","OT","SR",null,5.12,[]],
+  [93,"Travis Burke","Memphis","OT","SR",null,5.10,[]],
+  [94,"Drew Allar","Penn State","QB","SR",null,5.08,[]],
+  [95,"Jalen Farmer","Kentucky","IOL","R-JR",null,5.06,[]],
+  [96,"Austin Barber","Florida","OT","SR",null,5.04,[]],
+  [97,"Brenen Thompson","Miss. State","WR","SR",null,5.02,[]],
+  [98,"Keith Abney II","Arizona State","CB","JR",null,5.00,[]],
+  [99,"Bryce Lance","North Dakota St.","WR","SR",null,4.98,[]],
+  [100,"Devin Moore","Florida","CB","SR",null,4.96,[]],
+  [101,"Garrett Nussmeier","LSU","QB","SR",null,4.94,[]],
+  [102,"Bryce Boettcher","Oregon","LB","SR",null,4.92,[]],
+  [103,"Josiah Trotter","Missouri","LB","R-SO",null,4.90,[]],
+  [104,"Malik Muhammad","Texas","CB","JR",null,4.88,[]],
+  [105,"Gracen Halton","Oklahoma","DT","SR",null,4.86,[]],
+  [106,"Harold Perkins Jr.","LSU","LB","R-JR",null,4.84,[]],
+  [107,"Dani Dennis-Sutton","Penn State","Edge","SR",null,4.82,[]],
+  [108,"Max Llewellyn","Iowa","Edge","SR",null,4.80,[]],
+  [109,"Domonique Orange","Iowa State","DT","SR",null,4.78,[]],
+  [110,"Cyrus Allen","Cincinnati","WR","SR",null,4.76,[]],
+  [111,"Dametrious Crownover","Texas A&M","OT","SR",null,4.74,[]],
+  [112,"Kendrick Law","Kentucky","WR","SR",null,4.72,[]],
+  [113,"Zane Durant","Penn State","DT","SR",null,4.70,[]],
+  [114,"Romello Height","Texas Tech","Edge","SR",null,4.68,[]],
+  [115,"Justin Jefferson","Alabama","LB","SR",null,4.66,[]],
+  [116,"Kage Casey","Boise State","OT","R-JR",null,4.64,[]],
+  [117,"Nicholas Singleton","Penn State","RB","SR",null,4.62,[]],
+  [118,"Michael Trigg","Baylor","TE","SR",null,4.60,[]],
+  [119,"Lorenzo Styles Jr.","Ohio State","S","SR",null,4.58,[]],
+  [120,"Connor Lew","Auburn","IOL","JR",null,4.56,[]],
+  [121,"Febechi Nwaiwu","Oklahoma","IOL","SR",null,4.54,[]],
+  [122,"Cole Payton","North Dakota St.","QB","SR",null,4.52,[]],
+  [123,"Emmett Johnson","Nebraska","RB","R-JR",null,4.50,[]],
+  [124,"Josh Cameron","Baylor","WR","SR",null,4.48,[]],
+  [125,"Eli Raridon","Notre Dame","TE","SR",null,4.46,[]],
+  [126,"Caleb Douglas","Texas Tech","WR","SR",null,4.44,[]],
+  [127,"Jake Slaughter","Florida","IOL","SR",null,4.42,[]],
+  [128,"Jalen Huskey","Maryland","S","SR",null,4.40,[]],
+  [129,"Skyler Bell","Connecticut","WR","SR",null,4.38,[]],
+  [130,"Bishop Fitzgerald","USC","S","SR",null,4.36,[]],
+  [131,"Kamari Ramsey","USC","S","R-JR",null,4.34,[]],
+  [132,"Rayshaun Benny","Michigan","DT","SR",null,4.32,[]],
+  [133,"Trey Zuhn III","Texas A&M","IOL","SR",null,4.30,[]],
+  [134,"Wade Woodaz","Clemson","LB","SR",null,4.28,[]],
+  [135,"Nate Boerkircher","Texas A&M","TE","SR",null,4.26,[]],
+  [136,"VJ Payne","Kansas State","S","SR",null,4.24,[]],
+  [137,"Beau Stephens","Iowa","IOL","SR",null,4.22,[]],
+  [138,"Chandler Rivers","Duke","CB","SR",null,4.20,[]],
+  [139,"Jadon Canady","Oregon","CB","SR",null,4.18,[]],
+  [140,"Charles Demmings","SFA State","CB","SR",null,4.16,[]],
+  [141,"Taylen Green","Arkansas","QB","SR",null,4.14,[]],
+  [142,"Will Kacmarek","Ohio State","TE","SR",null,4.12,[]],
+  [143,"Kaleb Elarms-Orr","TCU","LB","SR",null,4.10,[]],
+  [144,"Brian Parker II","Duke","IOL","R-JR",null,4.08,[]],
+  [145,"Justin Joly","N.C. State","TE","SR",null,4.06,[]],
+  [146,"Ja'Kobi Lane","USC","WR","JR",null,4.04,[]],
+  [147,"Parker Brailsford","Alabama","IOL","R-JR",null,4.02,[]],
+  [148,"Jordan van den Berg","Georgia Tech","DT","SR",null,4.00,[]],
+  [149,"Michael Heldman","Central Michigan","Edge","SR",null,3.98,[]],
+  [150,"Albert Regis","Texas A&M","DT","SR",null,3.96,[]],
+];
+
+REST.forEach(r => {
+  const g = r[6];
+  const baseV = Math.round(g * 13);
+  PROSPECTS.push({
+    rank:r[0], name:r[1], school:r[2], pos:r[3], year:r[4], move:r[5], grade:g,
+    ht:null, wt:null, age:null, comp:null, tags:[],
+    scout:`${r[3]} prospect from ${r[2]}. Projected as a Day ${r[0]<=64?'2':'3'} selection.`,
+    attrs:[{n:"Overall",v:baseV},{n:"Pass Impact",v:Math.max(40,baseV-3)},{n:"Run Impact",v:Math.max(40,baseV-1)},{n:"Athleticism",v:Math.max(40,baseV-5)},{n:"Technique",v:Math.max(40,baseV-4)}]
+  });
+});
+
+const POSITIONS = ['All','QB','RB','WR','TE','OT','IOL','Edge','DT','LB','CB','S'];
+let selPos = 'All', srch = '';
+
+function gc(g) { return g >= 6.5 ? 'elite' : g >= 6.2 ? 'high' : g >= 5.5 ? 'mid' : 'dev'; }
+function gtier(g) {
+  if (g >= 6.5) return {cls:'elite', label:'Round 1 · Top 10', sub:'Elite Prospect'};
+  if (g >= 6.2) return {cls:'high', label:'Round 1', sub:'First Round Grade'};
+  if (g >= 5.5) return {cls:'mid', label:'Day 2', sub:'Round 2–3 Grade'};
+  return {cls:'dev', label:'Day 3', sub:'Rounds 5–7'};
+}
+function getTier(r) { return r<=10?1:r<=32?2:r<=64?3:r<=100?4:5; }
+const TIER_LABELS = {1:'Round 1 · 1–10',2:'Round 1 · 11–32',3:'Round 2',4:'Rounds 3–4',5:'Rounds 5–7'};
+const TIER_CLS = {1:'t1',2:'t2',3:'t3',4:'t3',5:'t3'};
+function initials(n) { const p=n.split(' '); return ((p[0]?.[0]||'')+(p[p.length-1]?.[0]||'')).toUpperCase(); }
+
+function buildFilters() {
+  const wrap = document.getElementById('posBtns');
+  POSITIONS.forEach(p => {
+    const b = document.createElement('button');
+    b.className = 'pbtn' + (p==='All'?' on':'');
+    b.textContent = p;
+    b.onclick = () => { document.querySelectorAll('.pbtn').forEach(x=>x.classList.remove('on')); b.classList.add('on'); selPos=p; render(); };
+    wrap.appendChild(b);
+  });
+}
+
+function filter() { srch = document.getElementById('searchInput').value.toLowerCase(); render(); }
+
+function render() {
+  const list = PROSPECTS.filter(p => {
+    const pm = selPos==='All' || p.pos===selPos;
+    const sm = !srch || p.name.toLowerCase().includes(srch) || p.school.toLowerCase().includes(srch) || p.pos.toLowerCase().includes(srch);
+    return pm && sm;
+  });
+  document.getElementById('countLabel').textContent = list.length + ' prospects';
+  const wrap = document.getElementById('boardWrap');
+  wrap.innerHTML = '';
+  let curTier = null, curGroup = null;
+  list.forEach(p => {
+    const t = getTier(p.rank);
+    if (t !== curTier) {
+      curTier = t;
+      const div = document.createElement('div');
+      div.className = 'tier-divider';
+      div.innerHTML = `<div class="tier-name ${TIER_CLS[t]}">${TIER_LABELS[t]}</div><div class="tier-line"></div>`;
+      wrap.appendChild(div);
+      curGroup = document.createElement('div');
+      wrap.appendChild(curGroup);
+    }
+
+    const row = document.createElement('div');
+    row.className = 'prospect-row';
+    const gCls = gc(p.grade);
+    const gTier = gtier(p.grade);
+    const rCls = p.rank<=5?'elite':p.rank<=15?'high':'';
+    const mv = !p.move ? '<span class="rank-move fl">—</span>'
+      : p.move==='NR' ? '<span class="rank-move nw">NEW</span>'
+      : p.move.startsWith('+') ? `<span class="rank-move up">${p.move}</span>`
+      : `<span class="rank-move dn">${p.move}</span>`;
+
+    const tagsHTML = (p.tags||[]).slice(0,3).map(t => `<span class="ptag">${t}</span>`).join('');
+    const compHTML = p.comp ? `<span class="comp-inline">Comp: <em>${p.comp}</em></span>` : '';
+    const measHTML = `
+      <div class="measurables">
+        <div class="meas-cell"><div class="meas-lbl">Height</div><div class="meas-val ${!p.ht?'na':''}">${p.ht||'—'}</div></div>
+        <div class="meas-cell"><div class="meas-lbl">Weight</div><div class="meas-val ${!p.wt?'na':''}">${p.wt?p.wt+' lbs':'—'}</div></div>
+        <div class="meas-cell"><div class="meas-lbl">Age</div><div class="meas-val ${!p.age?'na':''}">${p.age||'—'}</div></div>
+        <div class="meas-cell"><div class="meas-lbl">Class</div><div class="meas-val">${p.year}</div></div>
+      </div>`;
+    const attrsHTML = (p.attrs||[]).map(a => `
+      <div class="attr-row">
+        <span class="attr-name">${a.n}</span>
+        <div class="attr-bar-wrap"><div class="attr-bar" style="width:${a.v}%"></div></div>
+        <span class="attr-score">${a.v}</span>
+      </div>`).join('');
+    const compTagHTML = p.comp ? `<div class="comp-tag">NFL Comp: ${p.comp}</div>` : '';
+
+    row.innerHTML = `
+      <div class="row-top" onclick="toggle(this.closest('.prospect-row'))">
+        <div class="rank-col"><div class="rank-num ${rCls}">${p.rank}</div>${mv}</div>
+        <div class="avatar-col"><div class="avatar"><span class="avatar-init">${initials(p.name)}</span></div></div>
+        <div class="info-col">
+          <div class="player-name">${p.name}</div>
+          <div class="player-meta-row">
+            <span class="pos-pill pos-${p.pos}">${p.pos}</span>
+            <span class="school-tag">${p.school}</span>
+            <span class="year-tag">${p.year}</span>
+          </div>
+          <div class="player-tags-row">
+            ${tagsHTML}${compHTML}
+          </div>
+        </div>
+        <div class="grade-col">
+          <div class="grade-val ${gCls}">${p.grade.toFixed(2)}</div>
+          <div class="grade-label">Grade</div>
+          <div class="grade-tier ${gTier.cls}">${gTier.label}</div>
+        </div>
+        <div class="chevron-col"><span>▾</span></div>
+      </div>
+      <div class="scout-card">
+        <div class="scout-inner">
+          <div class="scout-left">
+            <div class="scout-sub-label">Measurables</div>
+            ${measHTML}
+            <div class="scout-sub-label">Scouting Report</div>
+            <div class="scout-text">${p.scout}${compTagHTML}</div>
+          </div>
+          <div class="scout-right">
+            <div class="scout-sub-label">Grade</div>
+            <div class="grade-display">
+              <div class="big-grade ${gCls}">${p.grade.toFixed(2)}</div>
+              <div class="grade-meta">
+                <div class="gm-tier ${gTier.cls}">${gTier.label}</div>
+                <div class="gm-sub">${gTier.sub}</div>
+              </div>
+            </div>
+            <div class="scout-sub-label">Attribute Grades</div>
+            <div class="attr-list">${attrsHTML}</div>
+          </div>
+        </div>
+      </div>`;
+    curGroup.appendChild(row);
+  });
+}
+
+function toggle(row) {
+  const isOpen = row.classList.contains('open');
+  document.querySelectorAll('.prospect-row.open').forEach(r => r.classList.remove('open'));
+  if (!isOpen) row.classList.add('open');
+}
+
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('hamburgerBtn');
+  menu.classList.toggle('open');
+  btn.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+}
+
+buildFilters();
+render();
+</script>
+</body>
+</html>
