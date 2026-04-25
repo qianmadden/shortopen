@@ -143,15 +143,15 @@
   /* ── POOL ── */
   .dfs-pool {
     flex: 1.4;
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: #1e1e1e;
+    border: 1px solid #2e2e2e;
     overflow: hidden;
     min-width: 0;
   }
   .dfs-pool-header {
     padding: 12px 14px;
-    background: var(--surface2);
-    border-bottom: 1px solid var(--border2);
+    background: #252525;
+    border-bottom: 1px solid #333;
     display: flex;
     gap: 8px;
     align-items: center;
@@ -201,6 +201,8 @@
   .pool-table-wrap {
     max-height: 560px;
     overflow-y: auto;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .dfs-pool-table {
     width: 100%;
@@ -211,7 +213,7 @@
     position: sticky;
     top: 0;
     z-index: 5;
-    background: var(--bg);
+    background: #252525;
     padding: 9px 10px;
     font-size: 0.6rem;
     font-weight: 500;
@@ -233,7 +235,7 @@
     color: var(--text);
   }
   .dfs-pool-table tbody tr { transition: background 0.1s; cursor: pointer; }
-  .dfs-pool-table tbody tr:hover { background: var(--surface2); }
+  .dfs-pool-table tbody tr:hover { background: #252525; }
   .dfs-pool-table tbody tr.in-lineup { background: rgba(200,146,42,0.08); }
   .dfs-pool-table tbody tr.in-lineup td { color: var(--gold); }
 
@@ -272,8 +274,8 @@
   }
 
   .salary-bar {
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: #1e1e1e;
+    border: 1px solid #2e2e2e;
     padding: 14px 18px;
   }
   .salary-top {
@@ -301,14 +303,14 @@
   .salary-fill.over { background: #c0392b; }
 
   .lineup-slots {
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: #1e1e1e;
+    border: 1px solid #2e2e2e;
     overflow: hidden;
   }
   .lineup-slots-header {
     padding: 10px 14px;
-    background: var(--surface2);
-    border-bottom: 1px solid var(--border2);
+    background: #252525;
+    border-bottom: 1px solid #333;
     font-size: 0.66rem;
     font-weight: 500;
     letter-spacing: 0.16em;
@@ -322,7 +324,7 @@
     display: flex;
     align-items: center;
     padding: 9px 12px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid #2e2e2e;
     gap: 8px;
     min-height: 44px;
   }
@@ -362,7 +364,7 @@
   .slot-remove:hover { color: #c0392b; }
 
   .lineup-totals {
-    background: var(--surface2);
+    background: #252525;
     border-top: 1px solid var(--gold);
     padding: 10px 12px;
     display: flex;
@@ -501,7 +503,19 @@
     .dfs-wrap { padding: 0 20px 60px; }
     .upload-strip { padding: 0 20px; }
     footer { padding: 28px 20px; flex-direction: column; gap: 10px; text-align: center; }
+    .dfs-pool-table { font-size: 0.72rem; }
+    .dfs-pool-table td, .dfs-pool-table th { padding: 6px 6px; white-space: nowrap; }
+    .pool-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .salary-bar { padding: 10px 14px; }
+    .lineup-slot { padding: 7px 10px; }
+    .opt-tabs { overflow-x: auto; white-space: nowrap; }
   }
+
+  .pk-high    { color: #22c55e !important; font-weight: 600; }
+  .pk-mid     { color: #eab308 !important; font-weight: 600; }
+  .pk-low     { color: #64748b !important; }
+  .tt-hot     { color: #22c55e !important; font-weight: 600; }
+  .tt-neutral { color: #888888 !important; }
 </style>
 </head>
 <body>
@@ -791,65 +805,91 @@
 // ── RAW DATA from NBA_optimizer.csv ─────────────────────────────
 // [Name, Team, Positions[], Salary, Minutes, Pts, Ast, Reb, FTScore, Variance]
 let POOL = [
-  ["Victor Wembanyama", "SA", ["C"], 11500, 33.4, 24.6, 0, 11.4, 52.6, "HIGH", 39.0],
-  ["Jayson Tatum", "BOS", ["PF"], 9700, 37.5, 23.4, 0, 10.6, 50.4, "HIGH", 40.1],
-  ["LeBron James", "LAL", ["PF"], 9800, 37.8, 23.4, 0, 6.8, 46.5, "HIGH", 38.4],
-  ["Tyrese Maxey", "PHI", ["PG"], 9000, 40.7, 26.8, 0, 3.4, 44.9, "HIGH", 36.5],
-  ["Deni Avdija", "POR", ["SF", "PF"], 9100, 38.5, 23.9, 0, 7.2, 43.8, "HIGH", 37.1],
-  ["Alperen Sengun", "HOU", ["C"], 8300, 34.8, 21.0, 0, 8.7, 43.7, "HIGH", 35.5],
-  ["Jaylen Brown", "BOS", ["SG", "SF"], 9200, 38.0, 26.2, 0, 6.1, 42.3, "HIGH", 36.9],
-  ["Kevin Durant", "HOU", ["SF"], 8200, 40.6, 24.2, 0, 5.1, 40.0, "HIGH", 34.1],
-  ["Amen Thompson", "HOU", ["PG"], 7900, 41.1, 17.4, 0, 7.2, 37.9, "HIGH", 30.3],
-  ["Stephon Castle", "SA", ["SG"], 8000, 35.8, 18.4, 0, 5.9, 37.2, "HIGH", 30.8],
-  ["De'Aaron Fox", "SA", ["PG"], 7500, 33.3, 19.7, 0, 3.3, 35.0, "moderate", 28.4],
-  ["Paul George", "PHI", ["SF", "PF"], 7200, 35.5, 18.3, 0, 5.1, 33.4, "low", 26.9],
-  ["Jrue Holiday", "POR", ["PG", "SG"], 7300, 36.6, 15.8, 0, 4.3, 32.2, "low", 26.6],
-  ["VJ Edgecombe", "PHI", ["PG", "SG"], 7400, 40.8, 15.8, 0, 5.6, 31.6, "HIGH", 25.4],
-  ["Derrick White", "BOS", ["PG"], 6400, 37.6, 13.9, 0, 4.1, 31.4, "HIGH", 22.4],
-  ["Donovan Clingan", "POR", ["C"], 6600, 26.6, 9.7, 0, 9.9, 29.4, "HIGH", 21.5],
-  ["Austin Reaves", "LAL", ["PG", "SG"], 7800, 30.5, 16.3, 0, 3.4, 29.0, "HIGH", 24.0],
-  ["Jabari Smith Jr.", "HOU", ["PF", "C"], 6000, 38.5, 15.4, 0, 6.3, 28.3, "low", 23.1],
-  ["Marcus Smart", "LAL", ["SG", "SF"], 6000, 32.9, 11.8, 0, 2.4, 27.1, "low", 19.3],
-  ["Devin Vassell", "SA", ["SF"], 5700, 33.0, 14.6, 0, 4.3, 27.0, "low", 21.1],
-  ["Luke Kennard", "LAL", ["PG", "SG"], 5900, 28.9, 14.0, 0, 3.7, 26.3, "low", 20.8],
-  ["Deandre Ayton", "LAL", ["C"], 5800, 30.3, 12.4, 0, 8.0, 25.8, "low", 21.0],
-  ["Kelly Oubre Jr.", "PHI", ["SG", "SF"], 5600, 34.0, 13.1, 0, 5.3, 25.2, "low", 20.0],
-  ["Payton Pritchard", "BOS", ["PG", "SG"], 6100, 31.8, 13.0, 0, 3.0, 24.5, "low", 20.0],
-  ["Scoot Henderson", "POR", ["PG"], 5000, 29.3, 14.5, 0, 2.3, 24.4, "HIGH", 19.9],
-  ["Neemias Queta", "BOS", ["C"], 5600, 26.4, 9.4, 0, 7.5, 24.3, "low", 18.4],
-  ["Rui Hachimura", "LAL", ["SF", "PF"], 5200, 37.8, 13.3, 0, 3.9, 23.0, "low", 18.1],
-  ["Toumani Camara", "POR", ["SF"], 5300, 34.6, 10.3, 0, 4.3, 21.9, "low", 16.2],
-  ["Julian Champagnie", "SA", ["SF", "PF"], 4800, 27.8, 9.3, 0, 5.3, 21.6, "low", 16.1],
-  ["Andre Drummond", "PHI", ["C"], 4900, 23.7, 6.3, 0, 8.0, 21.4, "low", 15.9],
-  ["Tari Eason", "HOU", ["SG", "SF"], 4500, 26.3, 9.9, 0, 5.4, 21.3, "low", 16.6],
-  ["Reed Sheppard", "HOU", ["PG", "SG"], 4400, 23.6, 10.4, 0, 2.1, 20.9, "low", 15.4],
-  ["Luke Kornet", "SA", ["C"], 4500, 15.7, 7.9, 0, 7.5, 20.7, "low", 16.7],
-  ["Dylan Harper", "SA", ["PG", "SG"], 4700, 22.0, 10.4, 0, 3.1, 20.7, "HIGH", 16.6],
-  ["Robert Williams III", "POR", ["C"], 4300, 19.1, 7.0, 0, 6.8, 20.3, "low", 15.3],
-  ["Keldon Johnson", "SA", ["SG", "SF"], 4200, 20.4, 11.4, 0, 4.4, 20.1, "low", 16.7],
-  ["Nikola Vucevic", "BOS", ["C"], 4200, 20.8, 7.7, 0, 4.9, 17.5, "HIGH", 14.2],
-  ["Sam Hauser", "BOS", ["SF", "PF"], 4600, 27.1, 8.6, 0, 3.6, 17.5, "low", 13.5],
-  ["Shaedon Sharpe", "POR", ["PG", "SG"], 4100, 21.0, 10.3, 0, 2.0, 16.1, "HIGH", 13.8],
-  ["Jerami Grant", "POR", ["PF"], 4200, 20.0, 9.4, 0, 2.0, 15.6, "low", 12.0],
-  ["Quentin Grimes", "PHI", ["PG", "SG"], 4300, 23.1, 7.1, 0, 2.1, 13.8, "low", 10.7],
-  ["Jaxson Hayes", "LAL", ["C"], 3800, 18.4, 5.7, 0, 3.6, 13.4, "low", 9.8],
-  ["Josh Okogie", "HOU", ["SG", "SF"], 3700, 23.1, 4.3, 0, 2.6, 12.0, "low", 8.0],
-  ["Jake LaRavia", "LAL", ["SG", "SF"], 4000, 14.4, 4.3, 0, 2.8, 11.6, "low", 8.2],
-  ["Adem Bona", "PHI", ["C"], 3300, 17.7, 3.6, 0, 3.8, 11.0, "low", 7.9],
-  ["Justin Edwards", "PHI", ["SF", "PF"], 3200, 14.6, 4.5, 0, 2.0, 10.3, "low", 7.4],
-  ["Baylor Scheierman", "BOS", ["SG", "SF"], 3300, 11.7, 3.4, 0, 1.6, 7.6, "low", 5.7],
-  ["Harrison Barnes", "SA", ["PF"], 3600, 14.9, 4.1, 0, 1.0, 7.3, "low", 5.7],
-  ["Matisse Thybulle", "POR", ["SF", "PF"], 3100, 9.4, 2.6, 0, 1.1, 6.9, "low", 4.3],
-  ["Dominick Barlow", "PHI", ["PF", "C"], 3100, 9.9, 2.3, 0, 2.2, 6.7, "low", 5.1],
-  ["Jarred Vanderbilt", "LAL", ["PF"], 3300, 6.2, 1.3, 0, 1.6, 4.9, "low", 3.5],
-  ["Jordan Walsh", "BOS", ["PF"], 3100, 7.9, 1.9, 0, 1.4, 4.8, "low", 3.6],
-  ["Clint Capela", "HOU", ["C"], 3100, 4.5, 1.4, 0, 1.6, 4.3, "low", 3.1],
-  ["Aaron Holiday", "HOU", ["PG", "SG"], 3200, 5.7, 1.6, 0, 0.5, 3.4, "low", 2.4],
-  ["Kris Murray", "POR", ["SG", "SF"], 3100, 5.0, 0.8, 0, 0.8, 2.9, "low", 2.1],
-  ["Carter Bryant", "SA", ["SF"], 3100, 3.8, 0.9, 0, 0.8, 2.6, "low", 1.8],
-  ["Luka Garza", "BOS", ["C"], 3000, 1.3, 0.8, 0, 0.5, 1.6, "low", 1.3],
-  ["Jae'Sean Tate", "HOU", ["SF", "PF"], 3300, 1.7, 0.3, 0, 0.2, 0.6, "low", 0.5],
-  ["Bronny James", "LAL", ["PG"], 3100, 2.8, 0.0, 0, 0.0, 0.2, "low", 0.0],
+  ["Nikola Jokic", "DEN", ["C"], 12600, 40.6, 31.2, 9.6, 13.7, 67.5, "HIGH", 55.0],
+  ["Cade Cunningham", "DET", ["PG"], 10200, 38.9, 27.8, 9.3, 5.5, 52.2, "HIGH", 43.0],
+  ["Shai Gilgeous-Alexander", "OKC", ["PG"], 9900, 36.5, 31.2, 7.0, 4.4, 50.6, "HIGH", 43.0],
+  ["Anthony Edwards", "MIN", ["SG"], 8700, 38.7, 26.8, 4.1, 5.7, 45.5, "HIGH", 37.0],
+  ["Jamal Murray", "DEN", ["PG"], 9000, 39.1, 25.8, 6.2, 4.9, 44.1, "HIGH", 37.0],
+  ["Karl-Anthony Towns", "NY", ["PF", "C"], 8600, 33.8, 20.5, 3.1, 11.5, 43.1, "HIGH", 35.0],
+  ["Jalen Johnson", "ATL", ["PF"], 9100, 39.2, 20.4, 6.1, 9.6, 43.0, "HIGH", 36.0],
+  ["Jalen Brunson", "NY", ["PG"], 8500, 37.3, 27.5, 6.8, 3.1, 42.9, "moderate", 37.0],
+  ["Paolo Banchero", "ORL", ["PF"], 8500, 37.6, 21.2, 5.2, 7.7, 40.1, "HIGH", 34.0],
+  ["Devin Booker", "PHO", ["PG", "SG"], 8400, 38.5, 23.4, 5.4, 4.7, 37.8, "moderate", 33.0],
+  ["Chet Holmgren", "OKC", ["PF"], 7900, 32.3, 17.0, 1.6, 8.9, 37.3, "moderate", 28.0],
+  ["Julius Randle", "MIN", ["PF"], 7200, 34.8, 19.8, 4.5, 6.7, 35.9, "moderate", 31.0],
+  ["Jalen Duren", "DET", ["C"], 8000, 33.5, 16.5, 2.0, 10.1, 35.6, "HIGH", 29.0],
+  ["Jalen Green", "PHO", ["SG"], 7600, 34.4, 19.4, 2.9, 4.7, 33.7, "HIGH", 27.0],
+  ["CJ McCollum", "ATL", ["PG", "SG"], 6900, 35.3, 19.4, 3.8, 3.0, 32.9, "low", 26.0],
+  ["Rudy Gobert", "MIN", ["C"], 6000, 34.0, 10.4, 1.6, 11.1, 32.7, "low", 23.0],
+  ["Desmond Bane", "ORL", ["SG"], 7100, 36.1, 18.3, 3.3, 3.9, 32.2, "moderate", 26.0],
+  ["Jalen Suggs", "ORL", ["PG"], 6900, 34.7, 14.3, 4.9, 4.1, 32.0, "low", 23.0],
+  ["Josh Hart", "NY", ["SG", "SF"], 6600, 35.9, 11.1, 4.8, 8.6, 31.6, "low", 25.0],
+  ["Nickeil Alexander-Walker", "ATL", ["PG", "SG"], 6700, 38.1, 18.3, 3.1, 3.1, 31.6, "low", 25.0],
+  ["OG Anunoby", "NY", ["PF"], 6000, 37.5, 16.6, 2.2, 5.5, 30.3, "low", 24.0],
+  ["Tobias Harris", "DET", ["PF"], 5900, 34.0, 15.5, 2.1, 5.8, 29.8, "low", 23.0],
+  ["Onyeka Okongwu", "ATL", ["C"], 6100, 32.4, 12.5, 2.0, 7.6, 29.7, "low", 22.0],
+  ["Dyson Daniels", "ATL", ["SF"], 6000, 34.7, 9.4, 5.2, 6.6, 29.6, "low", 21.0],
+  ["Franz Wagner", "ORL", ["SF"], 6500, 32.7, 17.1, 2.9, 4.5, 29.5, "moderate", 25.0],
+  ["Jaden McDaniels", "MIN", ["SF"], 5800, 35.8, 15.6, 2.6, 4.5, 28.4, "low", 23.0],
+  ["Dillon Brooks", "PHO", ["PF"], 5800, 35.1, 17.6, 2.1, 4.1, 27.1, "low", 24.0],
+  ["Ajay Mitchell", "OKC", ["PG"], 4700, 28.1, 13.5, 3.5, 3.5, 26.0, "low", 21.0],
+  ["Aaron Gordon", "DEN", ["PF", "C"], 5800, 33.4, 13.2, 2.3, 5.3, 25.7, "low", 21.0],
+  ["Jonathan Kuminga", "ATL", ["SF", "PF"], 5100, 27.1, 14.1, 1.8, 5.0, 25.6, "HIGH", 21.0],
+  ["Isaiah Hartenstein", "OKC", ["C"], 5500, 25.1, 7.9, 3.2, 8.4, 25.4, "moderate", 20.0],
+  ["Ausar Thompson", "DET", ["SF"], 5600, 28.3, 9.2, 2.7, 5.7, 25.3, "low", 18.0],
+  ["Wendell Carter Jr.", "ORL", ["C"], 5700, 32.3, 9.9, 1.7, 7.2, 24.7, "low", 19.0],
+  ["Donte DiVincenzo", "MIN", ["PG"], 5200, 30.6, 11.1, 3.5, 3.6, 24.4, "low", 18.0],
+  ["Ayo Dosunmu", "MIN", ["SG", "SF"], 4800, 25.6, 11.9, 3.1, 3.2, 22.6, "low", 18.0],
+  ["Christian Braun", "DEN", ["SG"], 4700, 34.0, 11.2, 2.0, 4.7, 22.5, "low", 18.0],
+  ["Naz Reid", "MIN", ["PF", "C"], 4700, 25.9, 9.8, 1.7, 4.8, 22.4, "low", 16.0],
+  ["Cameron Johnson", "DEN", ["SF", "PF"], 4700, 32.4, 11.4, 2.2, 3.1, 21.7, "moderate", 17.0],
+  ["Collin Gillespie", "PHO", ["PG"], 3700, 27.7, 8.8, 2.9, 3.5, 21.0, "low", 15.0],
+  ["Oso Ighodaro", "PHO", ["C"], 4400, 26.8, 5.9, 2.6, 6.7, 20.7, "low", 15.0],
+  ["Mikal Bridges", "NY", ["SF"], 5200, 31.6, 10.6, 2.3, 2.7, 20.6, "low", 16.0],
+  ["Royce O'Neale", "PHO", ["PF"], 4500, 26.9, 7.2, 2.2, 4.8, 20.5, "low", 14.0],
+  ["Anthony Black", "ORL", ["PG", "SG"], 4600, 22.5, 8.8, 2.2, 2.7, 19.6, "low", 14.0],
+  ["Cason Wallace", "OKC", ["SG", "SF"], 4400, 26.1, 7.9, 2.6, 2.8, 19.4, "low", 13.0],
+  ["Alex Caruso", "OKC", ["SF", "PF"], 3900, 23.5, 7.2, 2.7, 4.2, 18.6, "low", 14.0],
+  ["Mitchell Robinson", "NY", ["C"], 4200, 18.6, 5.8, 0.4, 6.7, 18.5, "HIGH", 13.0],
+  ["Jordan Goodwin", "PHO", ["SG", "SF"], 4900, 24.1, 7.2, 1.1, 4.3, 17.4, "low", 13.0],
+  ["Duncan Robinson", "DET", ["SG"], 4200, 26.7, 10.0, 1.9, 2.1, 17.4, "low", 14.0],
+  ["Tim Hardaway Jr.", "DEN", ["SG", "SF"], 4000, 25.5, 10.3, 1.1, 1.9, 17.4, "low", 13.0],
+  ["Miles McBride", "NY", ["PG", "SG"], 3800, 24.5, 8.4, 2.1, 2.0, 17.0, "low", 13.0],
+  ["Luguentz Dort", "OKC", ["SG"], 3900, 28.6, 7.8, 1.6, 3.2, 16.1, "low", 12.5],
+  ["Jaylin Williams", "OKC", ["C"], 3300, 14.0, 4.5, 2.1, 4.6, 15.9, "low", 11.2],
+  ["Bruce Brown", "DEN", ["PG", "SG"], 3700, 20.7, 6.3, 1.9, 3.2, 15.8, "low", 11.4],
+  ["Daniss Jenkins", "DET", ["PG"], 3600, 19.0, 5.7, 2.9, 2.4, 15.2, "low", 11.0],
+  ["Isaiah Stewart", "DET", ["PF", "C"], 4000, 20.7, 6.4, 0.5, 3.7, 15.1, "low", 10.6],
+  ["Kevin Huerter", "DET", ["SG", "SF"], 3400, 17.2, 5.5, 1.8, 2.1, 13.6, "low", 9.4],
+  ["Goga Bitadze", "ORL", ["C"], 3500, 15.6, 3.7, 1.0, 4.0, 13.6, "low", 8.7],
+  ["Tristan da Silva", "ORL", ["SF", "PF"], 3400, 20.2, 5.4, 1.1, 2.3, 10.9, "low", 8.8],
+  ["Aaron Wiggins", "OKC", ["SF", "PF"], 3000, 13.7, 5.6, 1.1, 1.6, 10.6, "low", 8.2],
+  ["Grayson Allen", "PHO", ["SG", "SF"], 5000, 10.9, 4.0, 0.9, 1.6, 8.8, "low", 6.5],
+  ["Ronald Holland II", "DET", ["PF"], 3100, 11.7, 3.6, 0.0, 1.9, 7.9, "low", 5.5],
+  ["Jordan Clarkson", "NY", ["SG", "SF"], 3300, 10.6, 4.7, 0.0, 1.7, 7.5, "low", 6.4],
+  ["Mouhamed Gueye", "ATL", ["PF", "C"], 3400, 9.6, 2.2, 0.6, 1.9, 6.9, "low", 4.8],
+  ["Gabe Vincent", "ATL", ["PG"], 3100, 11.7, 2.6, 1.3, 0.9, 6.9, "low", 4.9],
+  ["Khaman Maluach", "PHO", ["C"], 3800, 7.4, 2.3, 0.4, 2.5, 6.6, "low", 5.1],
+  ["Spencer Jones", "DEN", ["PF"], 3200, 9.5, 2.7, 0.5, 1.3, 6.0, "low", 4.5],
+  ["Jonas Valanciunas", "DEN", ["C"], 3000, 4.3, 2.0, 0.2, 1.9, 4.8, "HIGH", 4.1],
+  ["Kenrich Williams", "OKC", ["PF", "C"], 3000, 5.8, 1.7, 0.6, 1.4, 4.4, "low", 3.7],
+  ["Kyle Anderson", "MIN", ["PF", "C"], 3100, 4.9, 1.0, 1.0, 0.8, 4.3, "low", 2.8],
+  ["Jamal Cain", "ORL", ["SG", "SF"], 3100, 8.3, 2.6, 0.0, 1.0, 4.0, "low", 3.6],
+  ["Jared McCain", "OKC", ["PG", "SG"], 3000, 6.3, 3.1, 0.3, 0.0, 3.9, "low", 3.4],
+  ["Bones Hyland", "MIN", ["PG", "SG"], 3200, 3.4, 2.0, 0.5, 0.4, 3.8, "low", 2.8],
+  ["Corey Kispert", "ATL", ["SG", "SF"], 3100, 6.1, 2.6, 0.4, 0.0, 3.7, "low", 3.0],
+  ["Mike Conley", "MIN", ["PG"], 3000, 6.3, 1.0, 1.2, 0.0, 3.5, "low", 2.2],
+  ["Javonte Green", "DET", ["SF", "PF"], 3500, 4.2, 1.5, 0.0, 0.8, 3.4, "low", 2.3],
+  ["Jose Alvarado", "NY", ["PG"], 3100, 3.7, 1.9, 0.7, 0.0, 3.3, "low", 2.6],
+  ["Caris LeVert", "DET", ["SG", "SF"], 3300, 4.6, 1.3, 0.0, 0.7, 3.0, "low", 2.0],
+  ["Tony Bradley", "ATL", ["C"], 3100, 3.9, 1.2, 0.2, 0.9, 2.8, "low", 2.2],
+  ["Haywood Highsmith", "PHO", ["SF"], 3000, 3.6, 0.9, 0.3, 0.6, 2.6, "low", 1.9],
+  ["Landry Shamet", "NY", ["SG"], 3100, 6.7, 1.9, 0.0, 0.0, 2.4, "low", 1.9],
+  ["Ryan Dunn", "PHO", ["PF"], 3200, 3.3, 0.6, 0.2, 0.8, 2.3, "low", 1.5],
+  ["Zaccharie Risacher", "ATL", ["SG", "SF"], 3000, 1.7, 0.6, 0.0, 0.4, 1.3, "low", 1.1],
+  ["Julian Strawther", "DEN", ["SG", "SF"], 3200, 0.5, 0.4, 0.0, 0.1, 0.6, "low", 0.5],
+  ["Paul Reed", "DET", ["C"], 3700, 1.1, 0.0, 0.1, 0.0, 0.3, "low", 0.1],
+  ["Rasheer Fleming", "PHO", ["SF", "PF"], 3000, 1.3, 0.0, 0.0, 0.0, 0.1, "low", 0.0],
 ];
 
 // NBA DFS slots
@@ -1167,270 +1207,150 @@ function switchOptSport(sport) {
 // ── DATA ──────────────────────────────────────────────────────
 // Batters: Player,Salary,Position,Team,Opponent,Projection,Value,Hand,TeamTotal,IPVariance,StackVariance
 const MLB_BATTERS = [
-["Nick Kurtz",5300,"1B","ATH","TEX",8.946,1.69,"L",4.3,"High","High"],
-["Shea Langeliers",5400,"C","ATH","TEX",7.57,1.4,"R",4.3,"High","High"],
-["Tyler Soderstrom",4500,"OF","ATH","TEX",7.298,1.62,"L",4.3,"High","High"],
-["Lawrence Butler",3300,"OF","ATH","TEX",6.918,2.1,"R",4.3,"Moderate","High"],
-["Carlos Cortes",3100,"OF","ATH","TEX",6.641,2.14,"L",4.3,"Low","High"],
-["Jacob Wilson",3600,"SS","ATH","TEX",6.353,1.76,"R",4.3,"Moderate","High"],
-["Jeff McNeil",3200,"2B","ATH","TEX",6.184,1.93,"L",4.3,"Low","High"],
-["Zack Gelof",2700,"2B/OF","ATH","TEX",5.927,2.2,"R",4.3,"Moderate","High"],
-["Max Muncy",3600,"3B","ATH","TEX",5.537,1.54,"R",4.3,"Moderate","High"],
-["Ronald Acuna Jr.",5300,"OF","ATL","PHI",10.211,1.93,"R",5.3,"High","High"],
-["Matt Olson",4800,"1B","ATL","PHI",8.752,1.82,"L",5.3,"High","High"],
-["Drake Baldwin",5000,"C","ATL","PHI",8.524,1.7,"L",5.3,"High","High"],
-["Michael Harris II",3300,"OF","ATL","PHI",8.465,2.57,"L",5.3,"High","High"],
-["Austin Riley",4000,"3B","ATL","PHI",8.087,2.02,"R",5.3,"High","High"],
-["Ozzie Albies",4200,"2B","ATL","PHI",7.855,1.87,"S",5.3,"High","High"],
-["Mike Yastrzemski",3000,"OF","ATL","PHI",6.557,2.19,"L",5.3,"Low","High"],
-["Dominic Smith",3800,"1B/OF","ATL","PHI",6.261,1.65,"L",5.3,"Low","High"],
-["Mauricio Dubon",3400,"OF/SS","ATL","PHI",6.115,1.8,"R",5.3,"Low","High"],
-["Gunnar Henderson",5900,"SS","BAL","BOS",9.896,1.68,"L",4.6,"High","Neutral"],
-["Pete Alonso",4900,"1B","BAL","BOS",7.71,1.57,"R",4.6,"High","Neutral"],
-["Taylor Ward",4400,"OF","BAL","BOS",7.492,1.7,"R",4.6,"High","Neutral"],
-["Leody Taveras",3200,"OF","BAL","BOS",6.954,2.17,"S",4.6,"Low","Neutral"],
-["Dylan Beavers",3000,"OF","BAL","BOS",6.946,2.32,"L",4.6,"Low","Neutral"],
-["Adley Rutschman",3900,"C","BAL","BOS",6.927,1.78,"S",4.6,"Moderate","Neutral"],
-["Colton Cowser",2900,"OF","BAL","BOS",6.766,2.33,"L",4.6,"Moderate","Neutral"],
-["Jeremiah Jackson",3700,"2B","BAL","BOS",6.115,1.65,"R",4.6,"Moderate","Neutral"],
-["Coby Mayo",2400,"3B","BAL","BOS",5.344,2.23,"R",4.6,"Low","Neutral"],
-["Jarren Duran",4500,"OF","BOS","BAL",8.435,1.87,"L",4.5,"Moderate","High"],
-["Roman Anthony",4900,"OF","BOS","BAL",8.111,1.66,"L",4.5,"High","High"],
-["Ceddanne Rafaela",3000,"OF","BOS","BAL",7.831,2.61,"R",4.5,"Low","High"],
-["Wilyer Abreu",4400,"OF","BOS","BAL",7.592,1.73,"L",4.5,"High","High"],
-["Willson Contreras",4300,"1B","BOS","BAL",7.262,1.69,"R",4.5,"Moderate","High"],
-["Trevor Story",3900,"SS","BOS","BAL",7.177,1.84,"R",4.5,"Low","High"],
-["Caleb Durbin",2200,"3B","BOS","BAL",6.805,3.09,"R",4.5,"Low","High"],
-["Marcelo Mayer",2600,"2B","BOS","BAL",6.256,2.41,"L",4.5,"Moderate","High"],
-["Carlos Narvaez",2100,"C","BOS","BAL",5.513,2.63,"R",4.5,"Low","High"],
-["Nico Hoerner",4900,"2B","CHC","LAD",7.781,1.59,"R",4.4,"Low","High"],
-["Pete Crow-Armstrong",5000,"OF","CHC","LAD",7.699,1.54,"L",4.4,"High","High"],
-["Seiya Suzuki",4500,"OF","CHC","LAD",7.581,1.68,"R",4.4,"High","High"],
-["Michael Busch",3900,"1B","CHC","LAD",7.353,1.89,"R",4.4,"High","High"],
-["Ian Happ",4200,"OF","CHC","LAD",7.246,1.73,"S",4.4,"Moderate","High"],
-["Alex Bregman",4200,"3B","CHC","LAD",7.212,1.72,"R",4.4,"Low","High"],
-["Moises Ballesteros",3800,"C","CHC","LAD",6.204,1.63,"L",4.4,"Low","High"],
-["Dansby Swanson",3700,"SS","CHC","LAD",6.102,1.65,"R",4.4,"Low","High"],
-["Miguel Amaya",3200,"C","CHC","LAD",5.651,1.77,"L",4.4,"Low","High"],
-["Jose Ramirez",6300,"3B","CLE","TOR",9.853,1.56,"S",4.5,"Moderate","Low"],
-["Steven Kwan",3700,"OF","CLE","TOR",8.398,2.27,"L",4.5,"Low","Low"],
-["Kyle Manzardo",3000,"1B","CLE","TOR",7.577,2.53,"L",4.5,"High","Low"],
-["Chase DeLauter",4200,"OF","CLE","TOR",7.29,1.74,"L",4.5,"High","Low"],
-["George Valera",2600,"OF","CLE","TOR",6.78,2.61,"L",4.5,"Low","Low"],
-["Angel Martinez",4000,"OF","CLE","TOR",6.518,1.63,"S",4.5,"High","Low"],
-["Bo Naylor",2600,"C","CLE","TOR",6.244,2.4,"L",4.5,"Low","Low"],
-["Daniel Schneemann",2800,"3B/OF","CLE","TOR",6.127,2.19,"L",4.5,"Low","Low"],
-["Brayan Rocchio",2800,"SS","CLE","TOR",5.808,2.07,"R",4.5,"Low","Low"],
-["Hunter Goodman",4400,"C","COL","NYM",6.455,1.47,"R",3.4,"High","Low"],
-["Mickey Moniak",3900,"OF","COL","NYM",6.455,1.66,"L",3.4,"High","Low"],
-["Ezequiel Tovar",4000,"SS","COL","NYM",6.273,1.57,"R",3.4,"Low","Low"],
-["Jake McCarthy",2700,"OF","COL","NYM",6.034,2.23,"L",3.4,"Low","Low"],
-["Troy Johnston",3800,"1B/OF","COL","NYM",5.928,1.56,"L",3.4,"Low","Low"],
-["Edouard Julien",3500,"2B","COL","NYM",5.676,1.62,"L",3.4,"High","Low"],
-["TJ Rumfield",3400,"1B","COL","NYM",5.3,1.56,"R",3.4,"Low","Low"],
-["Jordan Beck",3200,"OF","COL","NYM",5.245,1.64,"R",3.4,"Low","Low"],
-["Kyle Karros",2900,"3B","COL","NYM",4.964,1.71,"R",3.4,"Low","Low"],
-["Munetaka Murakami",5400,"1B","CWS","WSH",9.39,1.74,"L",5.2,"High","High"],
-["Andrew Benintendi",3100,"OF","CWS","WSH",8.765,2.83,"L",5.2,"Low","High"],
-["Colson Montgomery",4800,"SS","CWS","WSH",8.219,1.71,"L",5.2,"High","High"],
-["Miguel Vargas",4300,"3B","CWS","WSH",7.632,1.77,"R",5.2,"Moderate","High"],
-["Everson Pereira",3400,"OF","CWS","WSH",7.631,2.24,"R",5.2,"Moderate","High"],
-["Chase Meidroth",3300,"2B","CWS","WSH",7.279,2.21,"R",5.2,"Low","High"],
-["Sam Antonacci",2900,"OF","CWS","WSH",7.124,2.46,"L",5.2,"Low","High"],
-["Edgar Quero",2800,"C","CWS","WSH",6.892,2.46,"S",5.2,"Low","High"],
-["Tristan Peters",2200,"OF","CWS","WSH",6.139,2.79,"L",5.2,"Low","High"],
-["Yordan Alvarez",6400,"OF","HOU","NYY",8.873,1.39,"L",4.1,"High","Neutral"],
-["Jose Altuve",5000,"2B","HOU","NYY",7.111,1.42,"R",4.1,"High","Neutral"],
-["Carlos Correa",4400,"3B/SS","HOU","NYY",7.101,1.61,"R",4.1,"Low","Neutral"],
-["Christian Walker",4500,"1B","HOU","NYY",6.615,1.47,"R",4.1,"Low","Neutral"],
-["Isaac Paredes",4100,"2B/3B","HOU","NYY",6.195,1.51,"R",4.1,"High","Neutral"],
-["Yainer Diaz",3700,"C","HOU","NYY",5.98,1.62,"R",4.1,"Low","Neutral"],
-["Daniel Johnson",2000,"OF","HOU","NYY",5.895,2.95,"L",4.1,"Low","Neutral"],
-["Cam Smith",3500,"OF","HOU","NYY",5.876,1.68,"R",4.1,"High","Neutral"],
-["Dustin Harris",2500,"OF","HOU","NYY",5.552,2.22,"L",4.1,"Low","Neutral"],
-["Bobby Witt Jr.",5800,"SS","KC","LAA",10.328,1.78,"R",4.4,"High","High"],
-["Maikel Garcia",4800,"3B","KC","LAA",8.017,1.67,"R",4.4,"Low","High"],
-["Vinnie Pasquantino",4100,"1B","KC","LAA",7.917,1.93,"L",4.4,"Low","High"],
-["Lane Thomas",2000,"OF","KC","LAA",7.48,3.74,"R",4.4,"Low","High"],
-["Salvador Perez",3400,"C","KC","LAA",7.139,2.1,"R",4.4,"Low","High"],
-["Starling Marte",2500,"OF","KC","LAA",6.721,2.69,"R",4.4,"Low","High"],
-["Isaac Collins",2100,"OF","KC","LAA",6.336,3.02,"S",4.4,"Low","High"],
-["Nick Loftin",2600,"2B/OF","KC","LAA",5.313,2.04,"R",4.4,"Low","High"],
-["Elias Diaz",2200,"C","KC","LAA",5.066,2.3,"R",4.4,"Low","High"],
-["Zach Neto",5300,"SS","LAA","KC",9.42,1.78,"R",4.5,"High","High"],
-["Mike Trout",5900,"OF","LAA","KC",8.414,1.43,"R",4.5,"High","High"],
-["Jo Adell",4300,"OF","LAA","KC",8.252,1.92,"R",4.5,"High","High"],
-["Jorge Soler",3500,"OF","LAA","KC",7.271,2.08,"R",4.5,"High","High"],
-["Logan O'Hoppe",3000,"C","LAA","KC",6.521,2.17,"R",4.5,"High","High"],
-["Oswald Peraza",3100,"2B/3B","LAA","KC",6.42,2.07,"R",4.5,"High","High"],
-["Nolan Schanuel",3200,"1B","LAA","KC",6.157,1.92,"L",4.5,"Moderate","High"],
-["Vaughn Grissom",2300,"2B","LAA","KC",5.977,2.6,"R",4.5,"Low","High"],
-["Bryce Teodosio",2200,"OF","LAA","KC",5.645,2.57,"R",4.5,"Low","High"],
-["Shohei Ohtani",6600,"1B/OF","LAD","CHC",11.883,1.8,"L",5.1,"High","High"],
-["Kyle Tucker",6100,"OF","LAD","CHC",9.447,1.55,"L",5.1,"Moderate","High"],
-["Freddie Freeman",5600,"1B","LAD","CHC",8.419,1.5,"L",5.1,"Moderate","High"],
-["Will Smith",4100,"C","LAD","CHC",7.362,1.8,"R",5.1,"Moderate","High"],
-["Teoscar Hernandez",4800,"OF","LAD","CHC",7.314,1.52,"R",5.1,"Moderate","High"],
-["Max Muncy",4600,"3B","LAD","CHC",7.298,1.59,"L",5.1,"High","High"],
-["Andy Pages",5100,"OF","LAD","CHC",6.75,1.32,"R",5.1,"Moderate","High"],
-["Hyeseong Kim",2800,"SS","LAD","CHC",6.093,2.18,"L",5.1,"Low","High"],
-["Alex Freeland",3300,"2B","LAD","CHC",5.43,1.65,"S",5.1,"Low","High"],
-["Jakob Marsee",4500,"OF","MIA","SF",7.985,1.77,"L",4.1,"High","High"],
-["Xavier Edwards",4500,"2B","MIA","SF",7.92,1.76,"S",4.1,"Low","High"],
-["Otto Lopez",4300,"SS","MIA","SF",7.26,1.69,"R",4.1,"Low","High"],
-["Kyle Stowers",4900,"OF","MIA","SF",7.166,1.46,"L",4.1,"High","High"],
-["Agustin Ramirez",4200,"C","MIA","SF",7.154,1.7,"R",4.1,"High","High"],
-["Owen Caissie",3200,"OF","MIA","SF",6.273,1.96,"L",4.1,"High","High"],
-["Connor Norby",2600,"1B","MIA","SF",5.968,2.3,"R",4.1,"Low","High"],
-["Graham Pauley",2300,"3B","MIA","SF",5.862,2.55,"L",4.1,"Low","High"],
-["Liam Hicks",4300,"C","MIA","SF",5.603,1.3,"L",4.1,"Low","High"],
-["Brice Turang",5600,"2B","MIL","PIT",7.448,1.33,"L",3.4,"Low","Low"],
-["William Contreras",4500,"C","MIL","PIT",6.85,1.52,"R",3.4,"Moderate","Low"],
-["David Hamilton",3500,"3B/SS","MIL","PIT",6.369,1.82,"L",3.4,"Low","Low"],
-["Garrett Mitchell",3700,"OF","MIL","PIT",6.286,1.7,"L",3.4,"Low","Low"],
-["Jake Bauers",4400,"1B","MIL","PIT",6.007,1.37,"L",3.4,"Low","Low"],
-["Gary Sanchez",3600,"C","MIL","PIT",5.564,1.55,"R",3.4,"High","Low"],
-["Sal Frelick",3300,"OF","MIL","PIT",5.369,1.63,"R",3.4,"Low","Low"],
-["Brandon Lockridge",2800,"OF","MIL","PIT",5.207,1.86,"R",3.4,"Low","Low"],
-["Joey Ortiz",2300,"SS","MIL","PIT",4.989,2.17,"R",3.4,"Low","Low"],
-["Byron Buxton",5200,"OF","MIN","TB",7.903,1.52,"R",3.7,"High","Low"],
-["Josh Bell",3700,"1B","MIN","TB",6.218,1.68,"S",3.7,"Low","Low"],
-["Matt Wallner",3100,"OF","MIN","TB",6.216,2.01,"L",3.7,"Low","Low"],
-["Luke Keaschall",4000,"2B","MIN","TB",6.195,1.55,"R",3.7,"Low","Low"],
-["Trevor Larnach",3200,"OF","MIN","TB",6.166,1.93,"R",3.7,"High","Low"],
-["Ryan Jeffers",4000,"C","MIN","TB",6.092,1.52,"R",3.7,"Moderate","Low"],
-["Kody Clemens",3300,"1B","MIN","TB",5.97,1.81,"L",3.7,"High","Low"],
-["Royce Lewis",3400,"3B","MIN","TB",5.874,1.73,"R",3.7,"High","Low"],
-["Brooks Lee",2500,"SS","MIN","TB",5.24,2.1,"S",3.7,"High","Low"],
-["Juan Soto",5800,"OF","NYM","COL",10.167,1.75,"L",4.5,"High","High"],
-["Luis Robert Jr.",4800,"OF","NYM","COL",7.989,1.66,"R",4.5,"High","High"],
-["Bo Bichette",3700,"3B","NYM","COL",7.518,2.03,"R",4.5,"High","High"],
-["Francisco Alvarez",3800,"C","NYM","COL",7.362,1.94,"R",4.5,"High","High"],
-["Mark Vientos",3300,"1B","NYM","COL",7.267,2.2,"R",4.5,"High","High"],
-["Brett Baty",3500,"OF","NYM","COL",6.78,1.94,"L",4.5,"Moderate","High"],
-["Ronny Mauricio",2000,"3B","NYM","COL",6.579,3.29,"S",4.5,"Low","High"],
-["Marcus Semien",2800,"2B","NYM","COL",6.316,2.26,"R",4.5,"Low","High"],
-["Carson Benge",3000,"OF","NYM","COL",5.629,1.88,"L",4.5,"Low","High"],
-["Aaron Judge",6500,"OF","NYY","HOU",10.852,1.67,"R",5.1,"High","High"],
-["Jazz Chisholm Jr.",3900,"2B","NYY","HOU",8.661,2.22,"L",5.1,"High","High"],
-["Ben Rice",5500,"1B","NYY","HOU",8.217,1.49,"L",5.1,"High","High"],
-["Cody Bellinger",4500,"OF","NYY","HOU",8.201,1.82,"L",5.1,"Moderate","High"],
-["Trent Grisham",3700,"OF","NYY","HOU",7.866,2.13,"L",5.1,"High","High"],
-["Giancarlo Stanton",4400,"OF","NYY","HOU",7.626,1.73,"R",5.1,"High","High"],
-["Jose Caballero",3000,"SS","NYY","HOU",7.467,2.49,"R",5.1,"Low","High"],
-["Austin Wells",2500,"C","NYY","HOU",6.894,2.76,"L",5.1,"Low","High"],
-["Ryan McMahon",2100,"3B","NYY","HOU",6.175,2.94,"L",5.1,"Low","High"],
-["Trea Turner",4700,"SS","PHI","ATL",9.033,1.92,"R",4.8,"High","Neutral"],
-["Bryce Harper",4700,"1B","PHI","ATL",9.025,1.92,"L",4.8,"High","Neutral"],
-["Kyle Schwarber",5700,"OF","PHI","ATL",8.876,1.56,"L",4.8,"High","Neutral"],
-["Adolis Garcia",3100,"OF","PHI","ATL",7.545,2.43,"R",4.8,"Low","Neutral"],
-["Bryson Stott",3100,"2B","PHI","ATL",7.444,2.4,"L",4.8,"Low","Neutral"],
-["Brandon Marsh",3500,"OF","PHI","ATL",7.389,2.11,"L",4.8,"Low","Neutral"],
-["Alec Bohm",3100,"3B","PHI","ATL",6.806,2.2,"R",4.8,"Low","Neutral"],
-["Justin Crawford",2700,"OF","PHI","ATL",6.753,2.5,"L",4.8,"Low","Neutral"],
-["Rafael Marchan",2400,"C","PHI","ATL",5.606,2.34,"S",4.8,"Low","Neutral"],
-["Oneil Cruz",6200,"OF","PIT","MIL",8.411,1.36,"L",3.8,"High","Low"],
-["Brandon Lowe",5700,"2B","PIT","MIL",7.163,1.26,"L",3.8,"High","Low"],
-["Marcell Ozuna",3200,"OF","PIT","MIL",6.961,2.18,"R",3.8,"High","Low"],
-["Bryan Reynolds",4700,"OF","PIT","MIL",6.838,1.45,"S",3.8,"Moderate","Low"],
-["Ryan O'Hearn",4900,"OF","PIT","MIL",6.172,1.26,"L",3.8,"Moderate","Low"],
-["Konnor Griffin",3300,"SS","PIT","MIL",5.862,1.78,"R",3.8,"High","Low"],
-["Spencer Horwitz",2800,"1B","PIT","MIL",5.85,2.09,"L",3.8,"Low","Low"],
-["Nick Gonzales",3500,"2B/3B","PIT","MIL",5.808,1.66,"R",3.8,"Low","Low"],
-["Henry Davis",2800,"C","PIT","MIL",4.611,1.65,"R",3.8,"High","Low"],
-["Julio Rodriguez",4200,"OF","SEA","STL",9.168,2.18,"R",4.4,"High","Low"],
-["Cal Raleigh",4900,"C","SEA","STL",8.414,1.72,"S",4.4,"High","Low"],
-["Josh Naylor",3500,"1B","SEA","STL",8.224,2.35,"L",4.4,"High","Low"],
-["Randy Arozarena",4300,"OF","SEA","STL",7.359,1.71,"R",4.4,"High","Low"],
-["Luke Raley",3300,"OF","SEA","STL",6.92,2.1,"L",4.4,"High","Low"],
-["J.P. Crawford",2700,"SS","SEA","STL",6.841,2.53,"L",4.4,"Low","Low"],
-["Dominic Canzone",3000,"OF","SEA","STL",6.326,2.11,"L",4.4,"Low","Low"],
-["Cole Young",2300,"2B","SEA","STL",6.028,2.62,"L",4.4,"Low","Low"],
-["Leo Rivas",2100,"3B/SS","SEA","STL",5.464,2.6,"L",4.4,"Low","Low"],
-["Willy Adames",4200,"SS","SF","MIA",7.537,1.79,"R",3.8,"High","Low"],
-["Rafael Devers",5200,"1B","SF","MIA",7.398,1.42,"L",3.8,"High","Low"],
-["Matt Chapman",4700,"3B","SF","MIA",7.123,1.52,"R",3.8,"High","Low"],
-["Luis Arraez",4300,"2B","SF","MIA",6.789,1.58,"L",3.8,"Low","Low"],
-["Heliot Ramos",3100,"OF","SF","MIA",6.221,2.01,"R",3.8,"Low","Low"],
-["Jung Hoo Lee",3500,"OF","SF","MIA",6.046,1.73,"R",3.8,"Low","Low"],
-["Casey Schmitt",3200,"1B","SF","MIA",5.705,1.78,"R",3.8,"Low","Low"],
-["Drew Gilbert",2500,"OF","SF","MIA",5.257,2.1,"L",3.8,"Low","Low"],
-["Patrick Bailey",2400,"C","SF","MIA",4.725,1.97,"S",3.8,"Low","Low"],
-["Ivan Herrera",4000,"C","STL","SEA",7.09,1.77,"S",3.7,"Low","Low"],
-["Alec Burleson",4600,"1B","STL","SEA",6.929,1.51,"L",3.7,"Low","Low"],
-["JJ Wetherholt",4600,"2B","STL","SEA",6.722,1.46,"L",3.7,"Low","Low"],
-["Nolan Gorman",3300,"3B","STL","SEA",6.3,1.91,"L",3.7,"High","Low"],
-["Masyn Winn",3200,"SS","STL","SEA",6.13,1.92,"R",3.7,"Low","Low"],
-["Jordan Walker",4400,"OF","STL","SEA",6.086,1.38,"R",3.7,"High","Low"],
-["Nathan Church",2800,"OF","STL","SEA",5.547,1.98,"L",3.7,"Moderate","Low"],
-["Victor Scott II",2600,"OF","STL","SEA",5.33,2.05,"R",3.7,"Low","Low"],
-["Pedro Pages",2500,"C","STL","SEA",4.761,1.9,"R",3.7,"Low","Low"],
-["Chandler Simpson",4300,"OF","TB","MIN",8.844,2.06,"L",3.9,"High","Neutral"],
-["Junior Caminero",5200,"3B","TB","MIN",8.331,1.6,"R",3.9,"High","Neutral"],
-["Yandy Diaz",5000,"1B/3B","TB","MIN",7.135,1.43,"R",3.9,"Moderate","Neutral"],
-["Cedric Mullins",3100,"OF","TB","MIN",6.805,2.2,"S",3.9,"Moer","Neutral"],
-["Jonathan Aranda",4000,"1B","TB","MIN",6.79,1.7,"R",3.9,"High","Neutral"],
-["Jake Fraley",3000,"OF","TB","MIN",6.785,2.26,"L",3.9,"Low","Neutral"],
-["Richie Palacios",3500,"2B","TB","MIN",5.935,1.7,"L",3.9,"Low","Neutral"],
-["Taylor Walls",2300,"SS","TB","MIN",5.439,2.36,"S",3.9,"Low","Neutral"],
-["Nick Fortes",2900,"C","TB","MIN",4.767,1.64,"R",3.9,"Low","Neutral"],
-["Corey Seager",5100,"SS","TEX","ATH",8.736,1.71,"L",4.8,"High","Neutral"],
-["Brandon Nimmo",5000,"OF","TEX","ATH",8.201,1.64,"L",4.8,"Moderate","Neutral"],
-["Joc Pederson",2700,"1B","TEX","ATH",7.898,2.93,"L",4.8,"High","Neutral"],
-["Jake Burger",4200,"1B","TEX","ATH",7.495,1.78,"R",4.8,"High","Neutral"],
-["Josh Jung",3200,"3B","TEX","ATH",7.191,2.25,"R",4.8,"Low","Neutral"],
-["Evan Carter",4000,"OF","TEX","ATH",7.181,1.8,"L",4.8,"Low","Neutral"],
-["Josh H. Smith",2700,"2B","TEX","ATH",6.352,2.35,"L",4.8,"Low","Neutral"],
-["Alejandro Osuna",2000,"OF","TEX","ATH",5.979,2.99,"L",4.8,"Low","Neutral"],
-["Danny Jansen",3000,"C","TEX","ATH",5.877,1.96,"R",4.8,"Low","Neutral"],
-["Vladimir Guerrero Jr.",5100,"1B","TOR","CLE",8.143,1.6,"R",4.0,"High","Low"],
-["Jesus Sanchez",3300,"OF","TOR","CLE",6.966,2.11,"L",4.0,"High","Low"],
-["Ernie Clement",3000,"2B/3B","TOR","CLE",6.884,2.29,"R",4.0,"Low","Low"],
-["Nathan Lukes",2600,"OF","TOR","CLE",6.783,2.61,"L",4.0,"Low","Low"],
-["Daulton Varsho",4100,"OF","TOR","CLE",6.539,1.59,"L",4.0,"High","Low"],
-["Andres Gimenez",3100,"SS","TOR","CLE",6.132,1.98,"L",4.0,"Low","Low"],
-["Kazuma Okamoto",3800,"3B","TOR","CLE",5.853,1.54,"R",4.0,"Moderate","Low"],
-["Eloy Jimenez",2700,"OF","TOR","CLE",5.786,2.14,"R",4.0,"High","Low"],
-["Tyler Heineman",2200,"C","TOR","CLE",4.431,2.01,"S",4.0,"Low","Low"],
-["James Wood",6000,"OF","WSH","CWS",10.108,1.68,"L",5.0,"High","High"],
-["CJ Abrams",5500,"SS","WSH","CWS",9.319,1.69,"L",5.0,"High","High"],
-["Luis Garcia Jr.",3100,"1B","WSH","CWS",9.2,2.97,"L",5.0,"Low","High"],
-["Daylen Lile",4300,"OF","WSH","CWS",8.171,1.9,"L",5.0,"Low","High"],
-["Jacob Young",3300,"OF","WSH","CWS",7.594,2.3,"R",5.0,"Low","High"],
-["Brady House",3000,"3B","WSH","CWS",7.504,2.5,"R",5.0,"Moderate","High"],
-["Nasim Nunez",3600,"2B","WSH","CWS",7.43,2.06,"S",5.0,"Low","High"],
-["Jose Tena",2600,"3B/SS","WSH","CWS",6.721,2.58,"R",5.0,"Low","High"],
-["Drew Millas",2700,"C","WSH","CWS",6.285,2.33,"R",5.0,"Low","High"],
+["Nick Kurtz",5600,"1B","ATH","TEX",8.503,1.52,"L",4.0,"High","Low"],
+["Andy Ibanez",2800,"2B/3B","ATH","TEX",5.611,2.0,"R",4.0,"Low","Low"],
+["Darell Hernaiz",2200,"2B/3B","ATH","TEX",5.247,2.38,"R",4.0,"Low","Low"],
+["Zack Gelof",2700,"2B/OF","ATH","TEX",6.076,2.25,"R",4.0,"Low","Low"],
+["Max Muncy",3700,"3B","ATH","TEX",5.796,1.57,"R",4.0,"Moderate","Low"],
+["Shea Langeliers",5700,"C","ATH","TEX",7.533,1.32,"R",4.0,"High","Low"],
+["Tyler Soderstrom",4700,"OF","ATH","TEX",6.957,1.48,"L",4.0,"High","Low"],
+["Colby Thomas",3000,"OF","ATH","TEX",5.631,1.88,"R",4.0,"Low","Low"],
+["Jacob Wilson",3600,"SS","ATH","TEX",6.916,1.92,"R",4.0,"Low","Low"],
+["Matt Olson",4600,"1B","ATL","PHI",7.828,1.7,"L",4.5,"Low","Low"],
+["Dominic Smith",3500,"1B/OF","ATL","PHI",5.606,1.6,"L",4.5,"Low","Low"],
+["Ozzie Albies",3900,"2B","ATL","PHI",7.214,1.85,"S",4.5,"Low","Low"],
+["Austin Riley",4100,"3B","ATL","PHI",6.9,1.68,"R",4.5,"Low","Low"],
+["Drake Baldwin",4900,"C","ATL","PHI",7.605,1.55,"L",4.5,"Low","Low"],
+["Ronald Acuna Jr.",5400,"OF","ATL","PHI",9.201,1.7,"R",4.5,"High","Low"],
+["Michael Harris II",3400,"OF","ATL","PHI",7.851,2.31,"L",4.5,"Low","Low"],
+["Mike Yastrzemski",3000,"OF","ATL","PHI",5.85,1.95,"L",4.5,"Low","Low"],
+["Mauricio Dubon",3300,"OF/SS","ATL","PHI",5.461,1.65,"R",4.5,"Low","Low"],
+["Michael Busch",3700,"1B","CHC","LAD",7.721,2.09,"R",4.6,"High","High"],
+["Nico Hoerner",5300,"2B","CHC","LAD",8.134,1.53,"R",4.6,"Low","High"],
+["Alex Bregman",4000,"3B","CHC","LAD",7.57,1.89,"R",4.6,"High","High"],
+["Moises Ballesteros",3600,"C","CHC","LAD",6.517,1.81,"L",4.6,"High","High"],
+["Miguel Amaya",3100,"C","CHC","LAD",5.947,1.92,"L",4.6,"Low","High"],
+["Pete Crow-Armstrong",5100,"OF","CHC","LAD",8.059,1.58,"L",4.6,"High","High"],
+["Seiya Suzuki",4100,"OF","CHC","LAD",7.952,1.94,"R",4.6,"High","High"],
+["Ian Happ",3900,"OF","CHC","LAD",7.599,1.95,"S",4.6,"Low","High"],
+["Dansby Swanson",3500,"SS","CHC","LAD",6.405,1.83,"R",4.6,"Low","High"],
+["Sal Stewart",5000,"1B","CIN","DET",7.802,1.56,"R",5.0,"High","Low"],
+["Nate Lowe",2400,"1B","CIN","DET",7.11,2.96,"L",5.0,"Low","Low"],
+["Matt McLain",3200,"2B","CIN","DET",8.02,2.51,"R",5.0,"Low","Low"],
+["Ke'Bryan Hayes",2000,"3B","CIN","DET",5.896,2.95,"R",5.0,"Low","Low"],
+["Tyler Stephenson",3000,"C","CIN","DET",6.701,2.23,"R",5.0,"Low","Low"],
+["TJ Friedl",3600,"OF","CIN","DET",8.259,2.29,"L",5.0,"Low","Low"],
+["Spencer Steer",2700,"OF","CIN","DET",7.705,2.85,"R",5.0,"Low","Low"],
+["Rece Hinds",2300,"OF","CIN","DET",7.033,3.06,"R",5.0,"Low","Low"],
+["Elly De La Cruz",6300,"SS","CIN","DET",10.525,1.67,"R",5.0,"High","Low"],
+["Spencer Torkelson",2900,"1B","DET","CIN",7.033,2.43,"R",5.2,"Low","Neutral"],
+["Gleyber Torres",3700,"2B","DET","CIN",7.679,2.08,"R",5.2,"Low","Neutral"],
+["Colt Keith",3800,"3B","DET","CIN",7.475,1.97,"R",5.2,"Low","Neutral"],
+["Kevin McGonigle",4700,"3B/SS","DET","CIN",8.675,1.85,"L",5.2,"Moderate","Neutral"],
+["Dillon Dingler",4500,"C","DET","CIN",7.082,1.57,"R",5.2,"High","Neutral"],
+["Riley Greene",4200,"OF","DET","CIN",8.902,2.12,"L",5.2,"High","Neutral"],
+["Kerry Carpenter",4000,"OF","DET","CIN",8.297,2.07,"L",5.2,"High","Neutral"],
+["Wenceel Perez",2400,"OF","DET","CIN",7.219,3.01,"S",5.2,"Low","Neutral"],
+["Javier Baez",2900,"OF/SS","DET","CIN",6.427,2.22,"R",5.2,"Low","Neutral"],
+["Christian Walker",4700,"1B","HOU","NYY",6.752,1.44,"R",4.1,"Low","Neutral"],
+["Jose Altuve",5100,"2B","HOU","NYY",7.113,1.39,"R",4.1,"Low","Neutral"],
+["Isaac Paredes",4300,"2B/3B","HOU","NYY",6.321,1.47,"R",4.1,"High","Neutral"],
+["Shay Whitcomb",2500,"3B/OF","HOU","NYY",5.031,2.01,"R",4.1,"Low","Neutral"],
+["Carlos Correa",4900,"3B/SS","HOU","NYY",7.246,1.48,"R",4.1,"Low","Neutral"],
+["Yainer Diaz",3700,"C","HOU","NYY",6.276,1.7,"R",4.1,"Low","Neutral"],
+["Yordan Alvarez",6400,"OF","HOU","NYY",7.655,1.2,"L",4.1,"High","Neutral"],
+["Cam Smith",3600,"OF","HOU","NYY",5.921,1.64,"R",4.1,"Low","Neutral"],
+["Brice Matthews",3400,"OF","HOU","NYY",5.735,1.69,"R",4.1,"Low","Neutral"],
+["Vinnie Pasquantino",4200,"1B","KC","LAA",7.865,1.87,"L",4.6,"Low","High"],
+["Michael Massey",2600,"2B/OF","KC","LAA",6.307,2.43,"R",4.6,"Low","High"],
+["Maikel Garcia",4800,"3B","KC","LAA",7.97,1.66,"R",4.6,"Low","High"],
+["Salvador Perez",3500,"C","KC","LAA",7.087,2.02,"R",4.6,"High","High"],
+["Carter Jensen",3900,"C","KC","LAA",6.697,1.72,"L",4.6,"High","High"],
+["Jac Caglianone",2800,"OF","KC","LAA",6.923,2.47,"L",4.6,"High","High"],
+["Isaac Collins",2300,"OF","KC","LAA",6.113,2.66,"S",4.6,"Low","High"],
+["Kyle Isbel",2600,"OF","KC","LAA",5.715,2.2,"L",4.6,"Low","High"],
+["Bobby Witt Jr.",5900,"SS","KC","LAA",10.271,1.74,"R",4.6,"High","High"],
+["Nolan Schanuel",3200,"1B","LAA","KC",5.698,1.78,"L",4.0,"Low","Low"],
+["Vaughn Grissom",2300,"2B","LAA","KC",5.523,2.4,"R",4.0,"Low","Low"],
+["Oswald Peraza",3500,"2B/3B","LAA","KC",5.96,1.7,"R",4.0,"Low","Low"],
+["Logan O'Hoppe",2900,"C","LAA","KC",6.012,2.07,"R",4.0,"Low","Low"],
+["Mike Trout",6000,"OF","LAA","KC",7.797,1.3,"R",4.0,"High","Low"],
+["Jo Adell",4400,"OF","LAA","KC",7.66,1.74,"R",4.0,"Moderate","Low"],
+["Jorge Soler",3400,"OF","LAA","KC",6.736,1.98,"R",4.0,"High","Low"],
+["Bryce Teodosio",2000,"OF","LAA","KC",5.228,2.61,"R",4.0,"Low","Low"],
+["Zach Neto",5500,"SS","LAA","KC",8.766,1.59,"R",4.0,"Moderate","Low"],
+["Freddie Freeman",5400,"1B","LAD","CHC",8.273,1.53,"L",5.0,"High","High"],
+["Shohei Ohtani",6600,"1B/OF","LAD","CHC",11.692,1.77,"L",5.0,"High","High"],
+["Alex Freeland",3100,"2B","LAD","CHC",5.342,1.72,"S",5.0,"Low","High"],
+["Max Muncy",4600,"3B","LAD","CHC",7.171,1.56,"L",5.0,"High","High"],
+["Will Smith",4400,"C","LAD","CHC",7.251,1.65,"R",5.0,"Moderate","High"],
+["Kyle Tucker",6100,"OF","LAD","CHC",9.293,1.52,"L",5.0,"High","High"],
+["Teoscar Hernandez",4900,"OF","LAD","CHC",7.207,1.47,"R",5.0,"High","High"],
+["Andy Pages",5000,"OF","LAD","CHC",6.65,1.33,"R",5.0,"High","High"],
+["Hyeseong Kim",2800,"SS","LAD","CHC",5.997,2.14,"L",5.0,"Low","High"],
+["Jake Bauers",3800,"1B","MIL","PIT",7.035,1.85,"L",4.3,"Low","Neutral"],
+["Tyler Black",2300,"1B","MIL","PIT",6.642,2.89,"L",4.3,"Low","Neutral"],
+["Luis Rengifo",2600,"1B/3B","MIL","PIT",7.696,2.96,"L",4.3,"Low","Neutral"],
+["Brice Turang",5200,"2B","MIL","PIT",8.629,1.66,"L",4.3,"Low","Neutral"],
+["David Hamilton",3000,"3B/SS","MIL","PIT",7.089,2.36,"L",4.3,"Low","Neutral"],
+["William Contreras",4300,"C","MIL","PIT",8.108,1.89,"R",4.3,"Moderate","Neutral"],
+["Garrett Mitchell",3500,"OF","MIL","PIT",7.122,2.03,"L",4.3,"Low","Neutral"],
+["Sal Frelick",3100,"OF","MIL","PIT",6.28,2.03,"R",4.3,"Low","Neutral"],
+["Brandon Lockridge",2500,"OF","MIL","PIT",5.645,2.26,"R",4.3,"Low","Neutral"],
+["Ben Rice",5500,"1B","NYY","HOU",7.885,1.43,"L",5.1,"High","High"],
+["Jazz Chisholm Jr.",4000,"2B","NYY","HOU",8.974,2.24,"L",5.1,"High","High"],
+["Amed Rosario",3600,"2B/3B","NYY","HOU",6.783,1.88,"R",5.1,"High","High"],
+["Ryan McMahon",2100,"3B","NYY","HOU",6.404,3.05,"L",5.1,"High","High"],
+["Austin Wells",2700,"C","NYY","HOU",6.947,2.57,"L",5.1,"High","High"],
+["Aaron Judge",6500,"OF","NYY","HOU",11.185,1.72,"R",5.1,"High","High"],
+["Cody Bellinger",4500,"OF","NYY","HOU",8.48,1.88,"L",5.1,"Moderate","High"],
+["Trent Grisham",3700,"OF","NYY","HOU",7.926,2.14,"L",5.1,"Low","High"],
+["Jose Caballero",3100,"SS","NYY","HOU",7.288,2.35,"R",5.1,"Low","High"],
+["Bryce Harper",4800,"1B","PHI","ATL",8.572,1.79,"L",4.4,"High","Neutral"],
+["Bryson Stott",3000,"2B","PHI","ATL",7.099,2.37,"L",4.4,"Low","Neutral"],
+["Alec Bohm",3100,"3B","PHI","ATL",6.437,2.08,"R",4.4,"Low","Neutral"],
+["Rafael Marchan",2300,"C","PHI","ATL",5.297,2.3,"S",4.4,"Low","Neutral"],
+["Kyle Schwarber",5800,"OF","PHI","ATL",8.422,1.45,"L",4.4,"High","Neutral"],
+["Adolis Garcia",2800,"OF","PHI","ATL",7.178,2.56,"R",4.4,"Low","Neutral"],
+["Brandon Marsh",3200,"OF","PHI","ATL",7.021,2.19,"L",4.4,"Low","Neutral"],
+["Justin Crawford",2700,"OF","PHI","ATL",6.421,2.38,"L",4.4,"Low","Neutral"],
+["Trea Turner",4600,"SS","PHI","ATL",8.6,1.87,"R",4.4,"High","Neutral"],
+["Spencer Horwitz",2700,"1B","PIT","MIL",5.912,2.19,"L",4.0,"Low","Low"],
+["Brandon Lowe",5400,"2B","PIT","MIL",7.226,1.34,"L",4.0,"High","Low"],
+["Nick Gonzales",3400,"2B/3B","PIT","MIL",5.858,1.72,"R",4.0,"Low","Low"],
+["Joey Bart",2700,"C","PIT","MIL",5.103,1.89,"R",4.0,"Low","Low"],
+["Oneil Cruz",6200,"OF","PIT","MIL",8.479,1.37,"L",4.0,"High","Low"],
+["Marcell Ozuna",3100,"OF","PIT","MIL",7.02,2.26,"R",4.0,"Low","Low"],
+["Bryan Reynolds",4600,"OF","PIT","MIL",6.896,1.5,"S",4.0,"Low","Low"],
+["Ryan O'Hearn",4800,"OF","PIT","MIL",6.23,1.3,"L",4.0,"Low","Low"],
+["Konnor Griffin",3200,"SS","PIT","MIL",5.919,1.85,"R",4.0,"Low","Low"],
+["Jake Burger",4000,"1B","TEX","ATH",7.769,1.94,"R",4.3,"Low","Neutral"],
+["Josh Jung",3200,"3B","TEX","ATH",7.368,2.3,"R",4.3,"Low","Neutral"],
+["Ezequiel Duran",2300,"3B/OF","TEX","ATH",5.471,2.38,"R",4.3,"Low","Neutral"],
+["Kyle Higashioka",2700,"C","TEX","ATH",6.821,2.53,"R",4.3,"Moderate","Neutral"],
+["Danny Jansen",2800,"C","TEX","ATH",5.927,2.12,"R",4.3,"Low","Neutral"],
+["Brandon Nimmo",5200,"OF","TEX","ATH",7.048,1.36,"L",4.3,"Moderate","Neutral"],
+["Andrew McCutchen",3700,"OF","TEX","ATH",6.431,1.74,"R",4.3,"Low","Neutral"],
+["Sam Haggerty",3000,"OF","TEX","ATH",6.032,2.01,"S",4.3,"Low","Neutral"],
+["Corey Seager",5200,"SS","TEX","ATH",7.64,1.47,"L",4.3,"High","Neutral"],
 ];
 
 // Pitchers: Player,Salary,Position,Team,Opponent,Projection,Value,Hand,IPVariance,PropMarket,Avg2026K,CareerBaseline,ProjK,OddsEV
 const MLB_PITCHERS = [
-["Freddy Peralta",8800,"SP","NYM","COL",19.471,2.21,"R","Moderate",7.5,5.6,6.4,6.16,-17.9],
-["Paul Skenes",10000,"SP","PIT","MIL",18.641,1.86,"R","Moderate",7.5,7.5,7.8,7.71,0.028],
-["Brandon Woodruff",9300,"SP","MIL","PIT",16.858,1.81,"R","Moderate",6.5,5.0,6.1,5.77,-11.2],
-["George Kirby",9500,"SP","SEA","STL",16.334,1.72,"R","Moderate",6.5,6.25,6.0,6.08,-6.5],
-["Gavin Williams",9800,"SP","CLE","TOR",15.115,1.54,"R","Moderate",5.5,5.0,5.3,5.21,-5.3],
-["Taj Bradley",9000,"SP","MIN","TB",14.863,1.65,"R","Moderate",6.5,6.0,5.7,5.79,-10.9],
-["Nathan Eovaldi",8500,"SP","TEX","ATH",14.853,1.75,"R","Moderate",5.5,5.25,4.8,4.94,-10.3],
-["Emmet Sheehan",8200,"SP","LAD","CHC",14.306,1.74,"R","Moderate",4.5,4.5,5.34,5.09,0.131],
-["Will Warren",8600,"SP","NYY","HOU",14.241,1.66,"R","Moderate",4.5,5.0,4.4,4.58,0.018],
-["Lance McCullers",6800,"SP","HOU","NYY",14.003,2.06,"R","Moderate",4.5,3.5,5.5,4.9,0.089],
-["Drew Rasmussen",8300,"SP","TB","MIN",13.774,1.66,"R","Moderate",5.5,5.0,3.34,3.84,-30.2],
-["Sandy Alcantara",9200,"SP","MIA","SF",13.004,1.41,"R","Moderate",5.5,4.5,5.3,5.06,-8.0],
-["Noah Cameron",7200,"SP","KC","LAA",12.936,1.8,"L","Moderate",4.5,5.5,4.8,5.01,0.113],
-["Yusei Kikuchi",6400,"SP","LAA","KC",12.892,2.01,"R","Moderate",5.5,6.0,5.2,5.44,-1.1],
-["Brayan Bello",6600,"SP","BOS","BAL",12.615,1.91,"R","Moderate",4.5,3.25,4.6,4.2,-6.7],
-["Grant Holmes",7700,"RP","ATL","PHI",12.504,1.62,"R","Moderate",3.5,4.0,4.2,4.14,0.183],
-["Luis Severino",6900,"SP","ATH","TEX",12.346,1.79,"R","Moderate",4.5,4.5,5.1,4.92,0.093],
-["Adrian Houser",6000,"SP","SF","MIA",11.759,1.96,"R","Moderate",3.5,2.75,4.0,3.63,0.036],
-["Michael Lorenzen",5500,"SP","COL","NYM",11.225,2.04,"R","Moderate",3.5,2.5,3.9,3.48,-0.6],
-["Andre Pallante",6300,"RP","STL","SEA",10.861,1.72,"R","Moderate",3.5,3.0,3.1,3.07,-12.3],
-["Brandon Young",7500,"SP","BAL","BOS",10.716,1.43,"R","Moderate",3.5,2.0,3.8,3.26,-6.9],
-["Jameson Taillon",7800,"SP","CHC","LAD",10.68,1.37,"R","Moderate",4.5,3.5,4.4,4.13,-8.2],
-["Max Scherzer",6700,"SP","TOR","CLE",10.662,1.59,"R","Moderate",5.5,5.0,7.2,6.54,0.189],
-["Andrew Painter",7300,"SP","PHI","ATL",10.56,1.45,"R","Moderate",5.5,6.67,5.9,6.13,0.115],
-["Erick Fedde",6500,"SP","CWS","WSH",9.976,1.53,"R","Moderate",4.5,3.75,3.5,3.58,-20.4],
-["Miles Mikolas",5700,"SP","WSH","CWS",9.699,1.7,"R","Moderate",3.5,2.5,4.1,3.62,0.034],
+["MacKenzie Gore",8600,"SP","TEX","ATH",17.613,2.05,"R","Moderate",6.5,7.0,6.17,6.42,-1.2],
+["Ryan Weathers",7700,"RP","NYY","HOU",14.553,1.89,"L","Moderate",4.5,7.2,4.52,5.32,0.182],
+["Jack Flaherty",7800,"SP","DET","CIN",14.179,1.82,"R","Moderate",5.5,3.33,5.92,5.14,-6.5],
+["Mike Burrows",6500,"SP","HOU","NYY",13.974,2.15,"R","Moderate",4.5,5.0,4.5,4.65,0.033],
+["Zack Wheeler",9000,"SP","PHI","ATL",13.748,1.53,"R","Moderate",7.5,7.0,7.15,7.11,-5.2],
+["Jeffrey Springs",8000,"RP","ATH","TEX",13.469,1.68,"L","Moderate",5.5,5.4,5.8,5.68,0.033],
+["Bryce Elder",8100,"SP","ATL","PHI",13.051,1.61,"R","Moderate",4.5,5.8,4.67,5.01,0.113],
+["Mitch Keller",7500,"SP","PIT","MIL",12.696,1.69,"R","Moderate",5.5,3.8,4.19,4.07,-26.0],
+["Brady Singer",6300,"SP","CIN","DET",11.94,1.9,"R","Moderate",4.5,3.2,5.02,4.47,-0.7],
+["Roki Sasaki",7000,"SP","LAD","CHC",11.827,1.69,"R","Moderate",7.5,4.25,8.5,7.23,-3.6],
+["Colin Rea",6800,"RP","CHC","LAD",10.788,1.59,"R","Moderate",4.5,4.0,3.97,3.98,-11.6],
+["Walbert Urena",6600,"RP","LAA","KC",10.521,1.59,"R","Moderate",3.5,3.0,4.0,3.7,0.057],
+["Cole Ragans",8500,"SP","KC","LAA",16.41,1.97,"L","Moderate",6.5,4.4,6.21,5.71,-12.1],
+["Jacob Misiorowski",9400,"SP","MIL","PIT",20.37,2.17,"R","Moderate",6.5,6.5,6.61,6.71,0.032],
 ];
 
 // ── STATE ──────────────────────────────────────────────────────
@@ -1541,7 +1461,7 @@ function mlbRenderBatters() {
       <td style="color:var(--white);font-weight:500">${p[5].toFixed(2)}</td>
       <td style="color:var(--gold-light)">${p[6].toFixed(2)}</td>
       <td style="color:var(--muted)">${p[7]}</td>
-      <td style="color:var(--muted)">${p[8] || '—'}</td>
+      <td><span class="${p[8] >= 5 ? 'tt-hot' : 'tt-neutral'}">${p[8] || '—'}</span></td>
       <td><span style="font-size:0.7rem;font-weight:600;color:${varColor(p[9])};background:${varBg(p[9])};padding:2px 8px;">${p[9]}</span></td>
       <td><span style="font-size:0.7rem;font-weight:600;color:${varColor(p[10])};background:${varBg(p[10])};padding:2px 8px;">${p[10]}</span></td>
     `;
@@ -1578,7 +1498,7 @@ function mlbRenderPitchers() {
       <td style="color:var(--gold-light)">${p[6].toFixed(2)}</td>
       <td style="color:var(--muted)">${p[7]}</td>
       <td><span style="font-size:0.7rem;font-weight:600;color:${varColor(p[8])};background:${varBg(p[8])};padding:2px 8px;">${p[8]}</span></td>
-      <td style="color:var(--muted)">${p[12].toFixed(1)}</td>
+      <td><span class="${p[12] >= 5 ? 'pk-high' : p[12] >= 4 ? 'pk-mid' : 'pk-low'}">${p[12].toFixed(1)}</span></td>
       <td style="color:${evColor};font-weight:500">${evStr}</td>
     `;
     tbody.appendChild(tr);
