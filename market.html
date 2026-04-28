@@ -534,6 +534,37 @@
     .shortopen-col { min-width: 0; }
   }
 
+
+  /* ── TICKER STRIP ── */
+  .ticker-strip { background:#0d1117; border-bottom:1px solid #232e3c; overflow:hidden; position:relative; }
+  .ticker-strip::before,.ticker-strip::after { content:''; position:absolute; top:0; bottom:0; width:48px; z-index:2; pointer-events:none; }
+  .ticker-strip::before { left:0; background:linear-gradient(to right,#0d1117,transparent); }
+  .ticker-strip::after  { right:0; background:linear-gradient(to left,#0d1117,transparent); }
+  .ticker-header { display:flex; align-items:center; gap:10px; padding:8px 48px 0; border-bottom:1px solid #1a2030; }
+  .ticker-label { font-size:0.6rem; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); padding:6px 0; white-space:nowrap; }
+  .ticker-divider { width:1px; height:14px; background:#232e3c; }
+  .ticker-count { font-size:0.6rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; }
+  .ticker-scroll-wrap { overflow:hidden; padding:7px 0; }
+  .ticker-inner { display:flex; white-space:nowrap; animation:tickerScroll 30s linear infinite; }
+  .ticker-inner:hover { animation-play-state:paused; }
+  @keyframes tickerScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  .ticker-item { display:inline-flex; align-items:center; gap:7px; padding:0 22px; border-right:1px solid #1a2030; font-size:0.72rem; }
+  .ticker-abbr { font-family:'DM Mono',monospace; font-weight:500; color:var(--gold); letter-spacing:0.08em; font-size:0.68rem; }
+  .ticker-bet { color:var(--muted); font-size:0.68rem; }
+  .ticker-ev  { font-family:'DM Mono',monospace; font-weight:500; font-size:0.68rem; }
+  .ticker-ev.pos { color:var(--green); }
+  .ticker-ev.neg { color:var(--red); }
+  .ticker-sep-dot { width:3px; height:3px; border-radius:50%; background:#2a2a2a; flex-shrink:0; }
+
+  /* ── PROB BAR ── */
+  .prob-row { padding:4px 20px 10px 24px; display:flex; flex-direction:column; gap:4px; }
+  .prob-labels { display:flex; justify-content:space-between; font-size:0.6rem; letter-spacing:0.06em; color:var(--muted); }
+  .prob-away-lbl { color:var(--gold); opacity:0.7; }
+  .prob-home-lbl { color:var(--blue); opacity:0.85; }
+  .prob-bar { height:3px; background:#1a2030; border-radius:2px; overflow:hidden; display:flex; }
+  .prob-fill-away { background:var(--gold); opacity:0.7; }
+  .prob-fill-home { background:var(--blue); opacity:0.8; }
+
 </style>
 </head>
 <body>
@@ -568,6 +599,19 @@
   <div class="live-badge"><div class="live-dot"></div>Live Lines</div>
   <h1 class="page-title">The Market.</h1>
   <p class="page-sub">The line before the world touches it. Where it <em>opened</em>, where it moved, and where we think the edge is.</p>
+</div>
+
+<!-- LIVE PICKS TICKER -->
+<div class="ticker-strip" id="tickerStrip">
+  <div class="ticker-header">
+    <div class="live-dot"></div>
+    <span class="ticker-label">Live Picks</span>
+    <div class="ticker-divider"></div>
+    <span class="ticker-count" id="tickerCount"></span>
+  </div>
+  <div class="ticker-scroll-wrap">
+    <div class="ticker-inner" id="tickerInner"></div>
+  </div>
 </div>
 
 <!-- SPORT TABS -->
@@ -643,135 +687,13 @@
 // ── NBA ─────────────────────────────────────────────────────────
 
 const NBA_GAMES = [
-  // ── GAME 1 ─────────────────────────────────────────────
-  {
-    day: 'LIVE',
-    away: 'Detroit Pistons', awayAbbr: 'DET',
-    home: 'Orlando Magic', homeAbbr: 'ORL',
-    time: 'LIVE',
-    spreadAway: '+3.5',  spreadAwayJuice: '-110',  spreadAwayMove: '',
-    spreadHome: '-3.5',  spreadHomeJuice: '-120',  spreadHomeMove: '',
-    spreadOpen: '',
-    mlAway: '+138',  mlHome: '-178',
-    total: '221.5',  totalOverJuice: '-114',  totalUnderJuice: '-114',
-    totalMove: '',  totalOpen: '',
-    edgeType: 'spread',  edgeLabel: 'ORL -3',  edgeEV: '+2.1',
-    edge2Type: '',   edge2Label: '',   edge2EV: '',
-    edgeNote: 'Home favorite in a controlled matchup. Spread and pace in play.'
-  },
-  // ── GAME 2 ─────────────────────────────────────────────
-  {
-    day: 'Tonight',
-    away: 'Oklahoma City Thunder', awayAbbr: 'OKC',
-    home: 'Phoenix Suns', homeAbbr: 'PHX',
-    time: '3:40 PM ET',
-    spreadAway: '-8.5',  spreadAwayJuice: '-112',  spreadAwayMove: '',
-    spreadHome: '+8.5',  spreadHomeJuice: '-108',  spreadHomeMove: '',
-    spreadOpen: '',
-    mlAway: '-420',  mlHome: '+320',
-    total: '212.5',  totalOverJuice: '-112',  totalUnderJuice: '-108',
-    totalMove: '',  totalOpen: '',
-    edgeType: 'spread',  edgeLabel: 'PHX +8',  edgeEV: '+2.6',
-    edge2Type: '',   edge2Label: '',   edge2EV: '',
-    edgeNote: 'Large spread — sharp value on the dog to cover late.'
-  },
-  // ── GAME 3 ─────────────────────────────────────────────
-  {
-    day: 'Tonight',
-    away: 'New York Knicks', awayAbbr: 'NYK',
-    home: 'Atlanta Hawks', homeAbbr: 'ATL',
-    time: '6:10 PM ET',
-    spreadAway: '-1.5',  spreadAwayJuice: '-115',  spreadAwayMove: '',
-    spreadHome: '+1.5',  spreadHomeJuice: '-105',  spreadHomeMove: '',
-    spreadOpen: '',
-    mlAway: '-134',  mlHome: '+114',
-    total: '214.5',  totalOverJuice: '-114',  totalUnderJuice: '-106',
-    totalMove: '',  totalOpen: '',
-    edgeType: 'total',  edgeLabel: 'Over 214.5',  edgeEV: '+2.0',
-    edge2Type: '',   edge2Label: '',   edge2EV: '',
-    edgeNote: 'Close matchup — lean on total based on pace and recent scoring trends.'
-  },
-  // ── GAME 4 ─────────────────────────────────────────────
-  {
-    day: 'Tonight',
-    away: 'Denver Nuggets', awayAbbr: 'DEN',
-    home: 'Minnesota Timberwolves', homeAbbr: 'MIN',
-    time: '8:40 PM ET',
-    spreadAway: '-1.5',  spreadAwayJuice: '-106',  spreadAwayMove: '',
-    spreadHome: '+1.5',  spreadHomeJuice: '-114',  spreadHomeMove: '',
-    spreadOpen: '',
-    mlAway: '-118',  mlHome: '+100',
-    total: '229.5',  totalOverJuice: '-110',  totalUnderJuice: '-110',
-    totalMove: '',  totalOpen: '',
-    edgeType: 'total',  edgeLabel: 'Over 229.5',  edgeEV: '+2.0',
-    edge2Type: '',   edge2Label: '',   edge2EV: '',
-    edgeNote: 'Close matchup — lean on total based on pace and recent scoring trends.'
-  },
-  // ── GAME 5 ─────────────────────────────────────────────
-  {
-    day: 'SUN',
-    away: 'Cleveland Cavaliers', awayAbbr: 'CLE',
-    home: 'Toronto Raptors', homeAbbr: 'TOR',
-    time: '1:10 PM ET',
-    spreadAway: '-3.5',  spreadAwayJuice: '-110',  spreadAwayMove: '',
-    spreadHome: '+3.5',  spreadHomeJuice: '-110',  spreadHomeMove: '',
-    spreadOpen: '',
-    mlAway: '-164',  mlHome: '+138',
-    total: '220.5',  totalOverJuice: '-110',  totalUnderJuice: '-110',
-    totalMove: '',  totalOpen: '',
-    edgeType: 'spread',  edgeLabel: 'CLE +3',  edgeEV: '+2.1',
-    edge2Type: '',   edge2Label: '',   edge2EV: '',
-    edgeNote: 'Home favorite in a controlled matchup. Spread and pace in play.'
-  },
-  // ── GAME 6 ─────────────────────────────────────────────
-  {
-    day: 'SUN',
-    away: 'San Antonio Spurs', awayAbbr: 'SAS',
-    home: 'Portland Trail Blazers', homeAbbr: 'POR',
-    time: '3:40 PM ET',
-    spreadAway: '-5.5',  spreadAwayJuice: '-108',  spreadAwayMove: '',
-    spreadHome: '+5.5',  spreadHomeJuice: '-112',  spreadHomeMove: '',
-    spreadOpen: '',
-    mlAway: '-210',  mlHome: '+176',
-    total: '218.5',  totalOverJuice: '-110',  totalUnderJuice: '-110',
-    totalMove: '',  totalOpen: '',
-    edgeType: 'spread',  edgeLabel: 'SAS +5',  edgeEV: '+2.1',
-    edge2Type: '',   edge2Label: '',   edge2EV: '',
-    edgeNote: 'Home favorite in a controlled matchup. Spread and pace in play.'
-  },
-  // ── GAME 7 ─────────────────────────────────────────────
-  {
-    day: 'SUN',
-    away: 'Boston Celtics', awayAbbr: 'BOS',
-    home: 'Philadelphia 76ers', homeAbbr: 'PHI',
-    time: '7:10 PM ET',
-    spreadAway: '-7.5',  spreadAwayJuice: '-110',  spreadAwayMove: '',
-    spreadHome: '+7.5',  spreadHomeJuice: '-110',  spreadHomeMove: '',
-    spreadOpen: '',
-    mlAway: '-300',  mlHome: '+245',
-    total: '213.5',  totalOverJuice: '-110',  totalUnderJuice: '-110',
-    totalMove: '',  totalOpen: '',
-    edgeType: 'spread',  edgeLabel: 'PHI +7',  edgeEV: '+2.6',
-    edge2Type: '',   edge2Label: '',   edge2EV: '',
-    edgeNote: 'Large spread — sharp value on the dog to cover late.'
-  },
-  // ── GAME 8 ─────────────────────────────────────────────
-  {
-    day: 'SUN',
-    away: 'Los Angeles Lakers', awayAbbr: 'LAL',
-    home: 'Houston Rockets', homeAbbr: 'HOU',
-    time: '8:40 PM ET',
-    spreadAway: '+5',  spreadAwayJuice: '-108',  spreadAwayMove: '',
-    spreadHome: '-5',  spreadHomeJuice: '-112',  spreadHomeMove: '',
-    spreadOpen: '',
-    mlAway: '+154',  mlHome: '-184',
-    total: '207.5',  totalOverJuice: '-110',  totalUnderJuice: '-110',
-    totalMove: '',  totalOpen: '',
-    edgeType: 'spread',  edgeLabel: 'HOU -5',  edgeEV: '+2.1',
-    edge2Type: '',   edge2Label: '',   edge2EV: '',
-    edgeNote: 'Home favorite in a controlled matchup. Spread and pace in play.'
-  },
-
+  {day:"Tonight", time:"7:10 PM ET", away:"Philadelphia 76ers", awayAbbr:"PHI", home:"Boston Celtics", homeAbbr:"BOS", spreadAway:"11.5", spreadAwayJuice:"-112", spreadAwayMove:"", spreadHome:"-11.5", spreadHomeJuice:"-108", spreadHomeMove:"", spreadOpen:"", mlAway:"380", mlHome:"-490", total:"213.5", totalOverJuice:"-106", totalUnderJuice:"-114", totalMove:"", totalOpen:"", edgeType:"spread", edgeLabel:"PHI +12", edgeEV:"+3.3", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Large spread — sharp value on the dog side."},
+  {day:"Tonight", time:"8:10 PM ET", away:"Atlanta Hawks", awayAbbr:"ATL", home:"New York Knicks", homeAbbr:"NY", spreadAway:"6.5", spreadAwayJuice:"-112", spreadAwayMove:"", spreadHome:"-6.5", spreadHomeJuice:"-108", spreadHomeMove:"", spreadOpen:"", mlAway:"215", mlHome:"-260", total:"213.5", totalOverJuice:"-114", totalUnderJuice:"-106", totalMove:"", totalOpen:"", edgeType:"spread", edgeLabel:"ATL +6", edgeEV:"+0.9", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sizable spread — public on the favorite, value on the dog."},
+  {day:"Tonight", time:"9:40 PM ET", away:"Portland Trail Blazers", awayAbbr:"POR", home:"San Antonio Spurs", homeAbbr:"SA", spreadAway:"12.5", spreadAwayJuice:"-115", spreadAwayMove:"", spreadHome:"-12.5", spreadHomeJuice:"-105", spreadHomeMove:"", spreadOpen:"", mlAway:"460", mlHome:"-620", total:"216.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"spread", edgeLabel:"POR +12", edgeEV:"+3.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Large spread — sharp value on the dog side."},
+  {day:"WED", time:"WED 7:10 PM ET", away:"Orlando Magic", awayAbbr:"ORL", home:"Detroit Pistons", homeAbbr:"DET", spreadAway:"-9.5", spreadAwayJuice:"-110", spreadAwayMove:"", spreadHome:"9.5", spreadHomeJuice:"-110", spreadHomeMove:"", spreadOpen:"", mlAway:"-390", mlHome:"310", total:"210.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"spread", edgeLabel:"ORL +10", edgeEV:"+1.3", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sizable spread — public on the favorite, value on the dog."},
+  {day:"WED", time:"WED 7:10 PM ET", away:"Toronto Raptors", awayAbbr:"TOR", home:"Cleveland Cavaliers", homeAbbr:"CLE", spreadAway:"8.5", spreadAwayJuice:"-108", spreadAwayMove:"", spreadHome:"-8.5", spreadHomeJuice:"-112", spreadHomeMove:"", spreadOpen:"", mlAway:"290", mlHome:"-360", total:"215.5", totalOverJuice:"-114", totalUnderJuice:"-106", totalMove:"", totalOpen:"", edgeType:"spread", edgeLabel:"TOR +8", edgeEV:"+1.2", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sizable spread — public on the favorite, value on the dog."},
+  {day:"WED", time:"WED 10:00 PM ET", away:"Houston Rockets", awayAbbr:"HOU", home:"Los Angeles Lakers", homeAbbr:"LAL", spreadAway:"-4.5", spreadAwayJuice:"-106", spreadAwayMove:"", spreadHome:"4.5", spreadHomeJuice:"-114", spreadHomeMove:"", spreadOpen:"", mlAway:"-178", mlHome:"150", total:"208.5", totalOverJuice:"-112", totalUnderJuice:"-108", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAL ML", edgeEV:"+2.2", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite — market pricing in efficiency edge."},
+  {day:"WED", time:"WED 10:40 PM ET", away:"Denver Nuggets", awayAbbr:"DEN", home:"Minnesota Timberwolves", homeAbbr:"MIN", spreadAway:"-5.5", spreadAwayJuice:"-114", spreadAwayMove:"", spreadHome:"5.5", spreadHomeJuice:"-106", spreadHomeMove:"", spreadOpen:"", mlAway:"-225", mlHome:"188", total:"224.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIN ML", edgeEV:"+2.2", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite — market pricing in efficiency edge."}
 ];
 
 // ── MLB ─────────────────────────────────────────────────────────
@@ -782,135 +704,21 @@ const NBA_GAMES = [
 //       total is the over/under (e.g. '8.5').
 
 const MLB_GAMES = [
-  // ── GAME 1 ─────────────────────────────────────────────
-  {
-    day: 'LIVE',
-    away: 'Boston Red Sox', awayAbbr: 'BOS',  awayPitcher: 'A. Monasterio (AB)',
-    home: 'Baltimore Orioles', homeAbbr: 'BAL',  homePitcher: 'A. Suarez',
-    time: 'LIVE',
-    spreadAway: '-6.5',  spreadAwayJuice: '-182',  spreadAwayMove: '',
-    spreadHome: '+6.5',  spreadHomeJuice: '+136',  spreadHomeMove: '',
-    spreadOpen: '',
-    mlAway: 'Locked',  mlHome: 'Locked',
-    total: '8.5',  totalOverJuice: '-138',  totalUnderJuice: '+104',
-    totalMove: '',  totalOpen: '',
-    edgeType: 'total',  edgeLabel: 'Under 8.5',  edgeEV: '+2.0',
-    edge2Type: '',   edge2Label: '',   edge2EV: '',
-    edgeNote: 'Baltimore Orioles at home with A. Suarez. Lean under — both starters expected to go deep.'
-  },
-  // ── GAME 2 ─────────────────────────────────────────────
-  {
-    day: 'Today',
-    away: 'Seattle Mariners', awayAbbr: 'SEA',  awayPitcher: 'B Woo',
-    home: 'St. Louis Cardinals', homeAbbr: 'STL',  homePitcher: 'M Liberatore',
-    time: '2:16 PM ET',
-    spreadAway: '-1.5',  spreadAwayJuice: '+116',  spreadAwayMove: '',
-    spreadHome: '+1.5',  spreadHomeJuice: '-140',  spreadHomeMove: '',
-    spreadOpen: '',
-    mlAway: '-152',  mlHome: '+128',
-    total: '7.5',  totalOverJuice: '-110',  totalUnderJuice: '-110',
-    totalMove: '',  totalOpen: '',
-    edgeType: 'total',  edgeLabel: 'Under 7.5',  edgeEV: '+2.8',
-    edge2Type: '',   edge2Label: '',   edge2EV: '',
-    edgeNote: 'Low total with quality arms — trust the pitching matchup.'
-  },
-  // ── GAME 3 ─────────────────────────────────────────────
-  {
-    day: 'Today',
-    away: 'Cleveland Guardians', awayAbbr: 'CLE',  awayPitcher: 'J Cantillo',
-    home: 'Toronto Blue Jays', homeAbbr: 'TOR',  homePitcher: 'K Gausman',
-    time: '3:08 PM ET',
-    spreadAway: '+1.5',  spreadAwayJuice: '-166',  spreadAwayMove: '',
-    spreadHome: '-1.5',  spreadHomeJuice: '+138',  spreadHomeMove: '',
-    spreadOpen: '',
-    mlAway: '+132',  mlHome: '-156',
-    total: '7',  totalOverJuice: '-110',  totalUnderJuice: '-110',
-    totalMove: '',  totalOpen: '',
-    edgeType: 'total',  edgeLabel: 'Under 7',  edgeEV: '+2.8',
-    edge2Type: '',   edge2Label: '',   edge2EV: '',
-    edgeNote: 'Low total with quality arms — trust the pitching matchup.'
-  },
-  // ── GAME 4 ─────────────────────────────────────────────
-  {
-    day: 'Today',
-    away: 'Miami Marlins', awayAbbr: 'MIA',  awayPitcher: 'E Perez',
-    home: 'San Francisco Giants', homeAbbr: 'SFG',  homePitcher: 'R Ray',
-    time: '4:06 PM ET',
-    spreadAway: '-1.5',  spreadAwayJuice: '+164',  spreadAwayMove: '',
-    spreadHome: '+1.5',  spreadHomeJuice: '-200',  spreadHomeMove: '',
-    spreadOpen: '',
-    mlAway: '-106',  mlHome: '-110',
-    total: '7.5',  totalOverJuice: '-105',  totalUnderJuice: '-115',
-    totalMove: '',  totalOpen: '',
-    edgeType: 'total',  edgeLabel: 'Under 7.5',  edgeEV: '+2.8',
-    edge2Type: '',   edge2Label: '',   edge2EV: '',
-    edgeNote: 'Low total with quality arms — trust the pitching matchup.'
-  },
-  // ── GAME 5 ─────────────────────────────────────────────
-  {
-    day: 'Today',
-    away: 'Washington Nationals', awayAbbr: 'WSH',  awayPitcher: 'J Irvin',
-    home: 'Chicago White Sox', homeAbbr: 'CWS',  homePitcher: 'N Schultz',
-    time: '4:11 PM ET',
-    spreadAway: '+1.5',  spreadAwayJuice: '-170',  spreadAwayMove: '',
-    spreadHome: '-1.5',  spreadHomeJuice: '+140',  spreadHomeMove: '',
-    spreadOpen: '',
-    mlAway: '+122',  mlHome: '-144',
-    total: '8.5',  totalOverJuice: '+100',  totalUnderJuice: '-122',
-    totalMove: '',  totalOpen: '',
-    edgeType: 'total',  edgeLabel: 'Under 8.5',  edgeEV: '+2.0',
-    edge2Type: '',   edge2Label: '',   edge2EV: '',
-    edgeNote: 'Chicago White Sox at home with N Schultz. Lean under — both starters expected to go deep.'
-  },
-  // ── GAME 6 ─────────────────────────────────────────────
-  {
-    day: 'Today',
-    away: 'Minnesota Twins', awayAbbr: 'MIN',  awayPitcher: 'B Ober',
-    home: 'Tampa Bay Rays', homeAbbr: 'TBR',  homePitcher: 'S McClanahan',
-    time: '4:11 PM ET',
-    spreadAway: '+1.5',  spreadAwayJuice: '-184',  spreadAwayMove: '',
-    spreadHome: '-1.5',  spreadHomeJuice: '+152',  spreadHomeMove: '',
-    spreadOpen: '',
-    mlAway: '+114',  mlHome: '-134',
-    total: '8.5',  totalOverJuice: '+100',  totalUnderJuice: '-122',
-    totalMove: '',  totalOpen: '',
-    edgeType: 'total',  edgeLabel: 'Under 8.5',  edgeEV: '+2.0',
-    edge2Type: '',   edge2Label: '',   edge2EV: '',
-    edgeNote: 'Tampa Bay Rays at home with S McClanahan. Lean under — both starters expected to go deep.'
-  },
-  // ── GAME 7 ─────────────────────────────────────────────
-  {
-    day: 'Today',
-    away: 'San Diego Padres', awayAbbr: 'SDP',  awayPitcher: 'G Marquez',
-    home: 'Arizona Diamondbacks', homeAbbr: 'ARI',  homePitcher: 'Z Gallen',
-    time: '6:06 PM ET',
-    spreadAway: '-1.5',  spreadAwayJuice: '+130',  spreadAwayMove: '',
-    spreadHome: '+1.5',  spreadHomeJuice: '-156',  spreadHomeMove: '',
-    spreadOpen: '',
-    mlAway: '-102',  mlHome: '-116',
-    total: '16',  totalOverJuice: '-105',  totalUnderJuice: '-115',
-    totalMove: '',  totalOpen: '',
-    edgeType: 'spread',  edgeLabel: 'SDP -1.5',  edgeEV: '+2.2',
-    edge2Type: '',   edge2Label: '',   edge2EV: '',
-    edgeNote: 'San Diego Padres favored on the road — run line at +130 with G Marquez starting.'
-  },
-  // ── GAME 8 ─────────────────────────────────────────────
-  {
-    day: 'Today',
-    away: 'Athletics', awayAbbr: 'ATH',  awayPitcher: 'J Springs',
-    home: 'Texas Rangers', homeAbbr: 'TEX',  homePitcher: 'M Gore',
-    time: '6:41 PM ET',
-    spreadAway: '+1.5',  spreadAwayJuice: '-184',  spreadAwayMove: '',
-    spreadHome: '-1.5',  spreadHomeJuice: '+152',  spreadHomeMove: '',
-    spreadOpen: '',
-    mlAway: '+116',  mlHome: '-136',
-    total: '8',  totalOverJuice: '-106',  totalUnderJuice: '-114',
-    totalMove: '',  totalOpen: '',
-    edgeType: 'total',  edgeLabel: 'Under 8',  edgeEV: '+2.0',
-    edge2Type: '',   edge2Label: '',   edge2EV: '',
-    edgeNote: 'Texas Rangers at home with M Gore. Lean under — both starters expected to go deep.'
-  },
-
+  {day:"Tonight", time:"6:11 PM ET", away:"Tampa Bay Rays", awayAbbr:"RAY", home:"Cleveland Guardians", homeAbbr:"GUA", awayPitcher:"N Martinez", homePitcher:"T Bibee", spreadAway:"1.5", spreadAwayJuice:"-188", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"155", spreadHomeMove:"", spreadOpen:"", mlAway:"112", mlHome:"-132", total:"7.5", totalOverJuice:"-112", totalUnderJuice:"-108", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"GUA ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite with pitching edge — ML value."},
+  {day:"Tonight", time:"6:36 PM ET", away:"Houston Astros", awayAbbr:"AST", home:"Baltimore Orioles", homeAbbr:"ORI", awayPitcher:"K Teng", homePitcher:"S Baz", spreadAway:"1.5", spreadAwayJuice:"-166", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"138", spreadHomeMove:"", spreadOpen:"", mlAway:"116", mlHome:"-136", total:"9.0", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ORI ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite with pitching edge — ML value."},
+  {day:"Tonight", time:"6:41 PM ET", away:"St. Louis Cardinals", awayAbbr:"CAR", home:"Pittsburgh Pirates", homeAbbr:"PIR", awayPitcher:"K Leahy", homePitcher:"B Ashcraft", spreadAway:"1.5", spreadAwayJuice:"-160", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"132", spreadHomeMove:"", spreadOpen:"", mlAway:"134", mlHome:"-158", total:"8.5", totalOverJuice:"100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PIR ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite with pitching edge — ML value."},
+  {day:"Tonight", time:"6:41 PM ET", away:"San Francisco Giants", awayAbbr:"GIA", home:"Philadelphia Phillies", homeAbbr:"PHI", awayPitcher:"T Mahle", homePitcher:"J Luzardo", spreadAway:"1.5", spreadAwayJuice:"-150", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"125", spreadHomeMove:"", spreadOpen:"", mlAway:"142", mlHome:"-168", total:"8.0", totalOverJuice:"-112", totalUnderJuice:"-108", totalMove:"", totalOpen:"", edgeType:"spread", edgeLabel:"GIA +1.5", edgeEV:"+1.9", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Heavy favorite — run line on the dog offers better value than the ML."},
+  {day:"Tonight", time:"6:41 PM ET", away:"Colorado Rockies", awayAbbr:"ROC", home:"Cincinnati Reds", homeAbbr:"RED", awayPitcher:"TBD", homePitcher:"C Burns", spreadAway:"1.5", spreadAwayJuice:"-128", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"106", spreadHomeMove:"", spreadOpen:"", mlAway:"166", mlHome:"-198", total:"8.5", totalOverJuice:"-124", totalUnderJuice:"102", totalMove:"", totalOpen:"", edgeType:"spread", edgeLabel:"ROC +1.5", edgeEV:"+2.0", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Heavy favorite — run line on the dog offers better value than the ML."},
+  {day:"Tonight", time:"7:08 PM ET", away:"Boston Red Sox", awayAbbr:"SOX", home:"Toronto Blue Jays", homeAbbr:"JAY", awayPitcher:"P Tolle", homePitcher:"T Yesavage", spreadAway:"-1.5", spreadAwayJuice:"168", spreadAwayMove:"", spreadHome:"1.5", spreadHomeJuice:"-205", spreadHomeMove:"", spreadOpen:"", mlAway:"-102", mlHome:"-116", total:"7.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"JAY ML", edgeEV:"+1.9", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Even matchup — slight home field edge."},
+  {day:"Tonight", time:"7:11 PM ET", away:"Washington Nationals", awayAbbr:"NAT", home:"New York Mets", homeAbbr:"MET", awayPitcher:"Z Littell", homePitcher:"C Holmes", spreadAway:"1.5", spreadAwayJuice:"-144", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"120", spreadHomeMove:"", spreadOpen:"", mlAway:"158", mlHome:"-188", total:"7.5", totalOverJuice:"-122", totalUnderJuice:"100", totalMove:"", totalOpen:"", edgeType:"spread", edgeLabel:"NAT +1.5", edgeEV:"+2.0", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Heavy favorite — run line on the dog offers better value than the ML."},
+  {day:"Tonight", time:"7:16 PM ET", away:"Detroit Tigers", awayAbbr:"TIG", home:"Atlanta Braves", homeAbbr:"BRA", awayPitcher:"C Mize", homePitcher:"M Perez", spreadAway:"1.5", spreadAwayJuice:"-205", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"168", spreadHomeMove:"", spreadOpen:"", mlAway:"106", mlHome:"-124", total:"8.5", totalOverJuice:"-122", totalUnderJuice:"100", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"BRA ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite with pitching edge — ML value."},
+  {day:"Tonight", time:"7:41 PM ET", away:"Los Angeles Angels", awayAbbr:"ANG", home:"Chicago White Sox", homeAbbr:"SOX", awayPitcher:"J Soriano", homePitcher:"D Martin", spreadAway:"-1.5", spreadAwayJuice:"132", spreadAwayMove:"", spreadHome:"1.5", spreadHomeJuice:"-160", spreadHomeMove:"", spreadOpen:"", mlAway:"-132", mlHome:"112", total:"7.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ANG ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite with pitching edge — ML value."},
+  {day:"Tonight", time:"7:41 PM ET", away:"Seattle Mariners", awayAbbr:"MAR", home:"Minnesota Twins", homeAbbr:"TWI", awayPitcher:"L Gilbert", homePitcher:"J Ryan", spreadAway:"-1.5", spreadAwayJuice:"142", spreadAwayMove:"", spreadHome:"1.5", spreadHomeJuice:"-172", spreadHomeMove:"", spreadOpen:"", mlAway:"-126", mlHome:"108", total:"7.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MAR ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite with pitching edge — ML value."},
+  {day:"Tonight", time:"7:41 PM ET", away:"Arizona Diamondbacks", awayAbbr:"DIA", home:"Milwaukee Brewers", homeAbbr:"BRE", awayPitcher:"M Kelly", homePitcher:"C Patrick", spreadAway:"-1.5", spreadAwayJuice:"164", spreadAwayMove:"", spreadHome:"1.5", spreadHomeJuice:"-200", spreadHomeMove:"", spreadOpen:"", mlAway:"102", mlHome:"-120", total:"8.0", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"BRE ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite with pitching edge — ML value."},
+  {day:"Tonight", time:"8:06 PM ET", away:"New York Yankees", awayAbbr:"YAN", home:"Texas Rangers", homeAbbr:"RAN", awayPitcher:"C Schlittler", homePitcher:"J deGrom", spreadAway:"-1.5", spreadAwayJuice:"136", spreadAwayMove:"", spreadHome:"1.5", spreadHomeJuice:"-164", spreadHomeMove:"", spreadOpen:"", mlAway:"-120", mlHome:"102", total:"7.5", totalOverJuice:"100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"YAN ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite with pitching edge — ML value."},
+  {day:"Tonight", time:"9:41 PM ET", away:"Chicago Cubs", awayAbbr:"CUB", home:"San Diego Padres", homeAbbr:"PAD", awayPitcher:"E Cabrera", homePitcher:"W Buehler", spreadAway:"-1.5", spreadAwayJuice:"134", spreadAwayMove:"", spreadHome:"1.5", spreadHomeJuice:"-162", spreadHomeMove:"", spreadOpen:"", mlAway:"-118", mlHome:"100", total:"8.5", totalOverJuice:"100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CUB ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite with pitching edge — ML value."},
+  {day:"Tonight", time:"9:41 PM ET", away:"Kansas City Royals", awayAbbr:"ROY", home:"Athletics", homeAbbr:"ATH", awayPitcher:"K Bubic", homePitcher:"A Civale", spreadAway:"-1.5", spreadAwayJuice:"138", spreadAwayMove:"", spreadHome:"1.5", spreadHomeJuice:"-166", spreadHomeMove:"", spreadOpen:"", mlAway:"-118", mlHome:"100", total:"9.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ROY ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite with pitching edge — ML value."},
+  {day:"Tonight", time:"10:11 PM ET", away:"Miami Marlins", awayAbbr:"MAR", home:"Los Angeles Dodgers", homeAbbr:"DOD", awayPitcher:"J Junk", homePitcher:"S Ohtani", spreadAway:"1.5", spreadAwayJuice:"112", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"-134", spreadHomeMove:"", spreadOpen:"", mlAway:"235", mlHome:"-290", total:"7.5", totalOverJuice:"-114", totalUnderJuice:"-106", totalMove:"", totalOpen:"", edgeType:"spread", edgeLabel:"MAR +1.5", edgeEV:"+2.0", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Heavy favorite — run line on the dog offers better value than the ML."}
 ];
 
 // ════════════════════════════════════════════════════════════════
@@ -991,6 +799,15 @@ function buildCard(g) {
   }
 
   const awayP = g.awayPitcher ? `<div class="team-pitcher">${g.awayPitcher}</div>` : '';
+
+  // Win probability from ML
+  const mlToProb = ml => { if (!ml||ml==='Locked'||isNaN(parseFloat(ml))) return null; const n=parseFloat(ml); return n<0?(-n/(-n+100)):(100/(n+100)); };
+  const pAway=mlToProb(g.mlAway), pHome=mlToProb(g.mlHome);
+  let probHtml='';
+  if (pAway!==null&&pHome!==null) {
+    const total=pAway+pHome, na=Math.round((pAway/total)*100), nh=100-na;
+    probHtml=`<div class="prob-row"><div class="prob-labels"><span class="prob-away-lbl">${g.awayAbbr} ${na}%</span><span class="prob-home-lbl">${nh}% ${g.homeAbbr}</span></div><div class="prob-bar"><div class="prob-fill-away" style="width:${na}%"></div><div class="prob-fill-home" style="width:${nh}%"></div></div></div>`;
+  }
   const homeP = g.homePitcher ? `<div class="team-pitcher">${g.homePitcher}</div>` : '';
 
   card.innerHTML = `
@@ -1006,6 +823,7 @@ function buildCard(g) {
           <div class="team-info"><span class="team-name">${g.home}</span>${homeP}</div>
         </div>
         <div class="game-time">${g.day ? g.day + ' · ' : ''}${g.time}</div>
+        ${probHtml}
       </div>
 
       <div class="odds-col">
@@ -1071,6 +889,21 @@ function toggleMobileMenu() {
 }
 
 // Init
+
+function renderTicker() {
+  const allGames = [...NBA_GAMES, ...MLB_GAMES];
+  const picks = allGames.filter(g => g.edgeType && g.edgeType !== 'fade' && g.edgeLabel);
+  document.getElementById('tickerCount').textContent = picks.length + ' pick' + (picks.length!==1?'s':'') + ' today';
+  const sport = g => g.awayPitcher !== undefined ? 'MLB' : 'NBA';
+  const items = picks.map(g => {
+    const n = parseFloat(g.edgeEV), ev = (n>=0?'+':'')+g.edgeEV+'%';
+    const cls = n>=0?'pos':'neg';
+    return `<div class="ticker-item"><span class="ticker-abbr">${sport(g)}</span><div class="ticker-sep-dot"></div><span class="ticker-bet">${g.edgeLabel}</span><span class="ticker-ev ${cls}">${ev} EV</span></div>`;
+  }).join('');
+  document.getElementById('tickerInner').innerHTML = items + items;
+}
+
+renderTicker();
 renderGames(NBA_GAMES, 'nbaContainer');
 renderGames(MLB_GAMES, 'mlbContainer');
 

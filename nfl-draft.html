@@ -156,7 +156,242 @@ footer{border-top:1px solid var(--border);padding:20px 24px;text-align:center}
     .filter-btn{font-size:.62rem;padding:4px 7px;}
     .scout-left{padding:14px 16px;}
     .scout-right{padding:14px 16px;}
-  }</style>
+  }
+/* ════════════════════════════════════════════════════════════════
+   2027 EARLY LOOK — EDITORIAL CARD SECTION
+   ════════════════════════════════════════════════════════════════ */
+.s27-section {
+  max-width:1100px; margin:60px auto 0; padding:0 24px 80px;
+}
+.s27-divider {
+  display:flex; align-items:center; gap:16px; margin-bottom:40px;
+}
+.s27-divider-line { flex:1; height:1px; background:var(--border); }
+.s27-divider-label {
+  font-size:0.62rem; font-weight:700; letter-spacing:0.22em; text-transform:uppercase;
+  color:var(--gold); white-space:nowrap;
+}
+.s27-header { margin-bottom:32px; }
+.s27-eyebrow {
+  font-size:0.62rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:10px; display:flex; align-items:center; gap:8px;
+}
+.s27-eyebrow::before { content:''; display:block; width:20px; height:1px; background:var(--muted); }
+.s27-title {
+  font-family:'Playfair Display',serif; font-size:clamp(1.6rem,3.5vw,2.4rem);
+  font-weight:900; color:var(--white); line-height:1.1; letter-spacing:-0.02em; margin-bottom:8px;
+}
+.s27-title span { color:var(--gold); }
+.s27-sub { font-size:0.85rem; color:var(--muted); max-width:520px; line-height:1.6; }
+.s27-disclaimer {
+  display:inline-flex; align-items:center; gap:6px; margin-top:14px;
+  padding:6px 12px; background:rgba(232,160,32,0.06); border:1px solid rgba(232,160,32,0.18);
+  border-radius:4px; font-size:0.65rem; color:var(--gold); letter-spacing:0.1em; text-transform:uppercase;
+}
+
+/* PICK GRID */
+.s27-grid {
+  display:grid; grid-template-columns:repeat(2,1fr); gap:1px;
+  background:var(--border); border:1px solid var(--border); border-radius:8px; overflow:hidden;
+}
+@media(max-width:720px){ .s27-grid { grid-template-columns:1fr; } }
+
+/* PICK CARD */
+.s27-card {
+  background:var(--surface); padding:0; position:relative; cursor:pointer;
+  transition:background 0.15s;
+}
+.s27-card:hover { background:var(--surface2); }
+.s27-card.expanded { background:var(--surface2); }
+.s27-card-inner { padding:20px 22px 18px; }
+
+.s27-team-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+  letter-spacing: 0.01em;
+}
+
+/* Pick number badge */
+.s27-pick-row {
+  display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;
+}
+.s27-pick-num {
+  font-family:'DM Mono',monospace; font-size:0.62rem; font-weight:500;
+  letter-spacing:0.12em; color:var(--muted); text-transform:uppercase;
+}
+.s27-pick-num span {
+  font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:900;
+  color:var(--gold); margin-right:4px; line-height:1;
+}
+.s27-team-badge {
+  font-size:0.6rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase;
+  padding:2px 8px; border-radius:3px; background:var(--surface3);
+  color:var(--text); border:1px solid var(--border2);
+}
+/* Prospect name + pos */
+.s27-prospect-row {
+  display:flex; align-items:baseline; gap:8px; margin-bottom:6px; flex-wrap:wrap;
+}
+.s27-name {
+  font-family:'Playfair Display',serif; font-size:1.15rem; font-weight:700;
+  color:var(--white); line-height:1.2;
+}
+.s27-pos-chip {
+  font-size:0.58rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
+  padding:2px 7px; border-radius:3px; flex-shrink:0; margin-top:2px;
+}
+.s27-meta {
+  font-size:0.72rem; color:var(--muted); margin-bottom:10px;
+}
+.s27-meta strong { color:var(--text); font-weight:500; }
+
+/* Teaser — always visible */
+.s27-teaser {
+  font-size:0.8rem; color:var(--muted); line-height:1.65;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+}
+.s27-card.expanded .s27-teaser { display:block; }
+
+/* Full writeup — shown on expand */
+.s27-writeup {
+  display:none; padding:16px 22px; border-top:1px solid var(--border);
+  font-size:0.82rem; color:var(--text); line-height:1.75;
+}
+.s27-card.expanded .s27-writeup { display:block; }
+.s27-writeup p { margin-bottom:10px; }
+.s27-writeup p:last-child { margin-bottom:0; }
+
+/* Expand toggle */
+.s27-expand {
+  display:flex; align-items:center; gap:4px; margin-top:10px;
+  font-size:0.62rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--gold); opacity:0.7;
+}
+.s27-expand-arrow { transition:transform 0.2s; }
+.s27-card.expanded .s27-expand-arrow { transform:rotate(180deg); }
+
+/* needs tag strip */
+.s27-tag-row { display:flex; gap:5px; flex-wrap:wrap; margin-top:8px; }
+.s27-tag {
+  font-size:0.58rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase;
+  padding:2px 7px; border-radius:3px; background:var(--surface3);
+  color:var(--muted); border:1px solid var(--border2);
+}
+
+
+/* YEAR TABS */
+.year-tab-bar {
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 0 24px; display: flex; align-items: center; gap: 0;
+  position: sticky; top: 57px; z-index: 95;
+}
+.year-tab {
+  padding: 14px 24px; font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;
+  color: var(--muted); background: none; border: none;
+  border-bottom: 2px solid transparent; transition: all 0.15s;
+  white-space: nowrap;
+}
+.year-tab:hover { color: var(--text); }
+.year-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+
+/* ── 2027 CARD ENHANCEMENTS ─────────────────────────────────── */
+
+/* 1 — Position accent bar */
+.s27-card { overflow: hidden; }
+.s27-card::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--s27-pos-color, var(--border2));
+  transition: opacity 0.2s;
+}
+
+/* 2 — Shimmer on pick number */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.s27-pick-num span {
+  background: linear-gradient(90deg,
+    var(--gold) 0%, var(--gold) 35%,
+    #fff8e8 50%,
+    var(--gold) 65%, var(--gold) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3.5s linear infinite;
+}
+
+/* 3 — Position-colored hover glow */
+.s27-card:hover {
+  background: var(--surface2);
+  box-shadow: inset 3px 0 16px -4px var(--s27-pos-color, transparent),
+              inset 0 0 40px -20px var(--s27-pos-color, transparent);
+}
+.s27-card.expanded {
+  box-shadow: inset 3px 0 16px -4px var(--s27-pos-color, transparent),
+              inset 0 0 40px -20px var(--s27-pos-color, transparent);
+}
+
+/* 4 — First tag pulse */
+@keyframes tagPulse {
+  0%   { box-shadow: 0 0 0 0 var(--s27-pos-color, transparent); opacity: 1; }
+  50%  { box-shadow: 0 0 0 3px transparent; opacity: 0.85; }
+  100% { box-shadow: 0 0 0 0 transparent; opacity: 1; }
+}
+.s27-tag-row .s27-tag:first-child {
+  animation: tagPulse 1.6s ease-out 0.4s 1;
+  color: var(--s27-pos-color, var(--muted));
+  border-color: var(--s27-pos-color, var(--border2));
+  background: var(--s27-pos-bg, var(--surface3));
+  opacity: 0.9;
+}
+
+/* 5 — Stagger entrance */
+@keyframes cardFadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.s27-card {
+  opacity: 0;
+  animation: cardFadeUp 0.38s ease forwards;
+}
+
+
+/* Conference badges */
+.s27-conf { font-size:0.5rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:1px 5px; border-radius:2px; border:1px solid; opacity:0.85; }
+.conf-sec { color:#e8a020; border-color:rgba(232,160,32,0.35); background:rgba(232,160,32,0.07); }
+.conf-b10 { color:#60a5fa; border-color:rgba(96,165,250,0.3);  background:rgba(96,165,250,0.07); }
+.conf-b12 { color:#f87171; border-color:rgba(248,113,113,0.3); background:rgba(248,113,113,0.07); }
+.conf-acc { color:#a78bfa; border-color:rgba(167,139,250,0.3); background:rgba(167,139,250,0.07); }
+.conf-ind { color:#4ade80; border-color:rgba(74,222,128,0.3);  background:rgba(74,222,128,0.07); }
+.conf-sun { color:#fb923c; border-color:rgba(251,146,60,0.3);  background:rgba(251,146,60,0.07); }
+
+/* Stat callout */
+.s27-stat-block { display:flex; flex-direction:column; align-items:flex-end; gap:1px; flex-shrink:0; }
+.s27-stat-num {
+  font-family:'Playfair Display',serif; font-size:1.55rem; font-weight:900; line-height:1;
+  color:var(--s27-pos-color,var(--gold)); opacity:0.92;
+}
+.s27-stat-lbl {
+  font-size:0.5rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--muted); text-align:right; max-width:80px; line-height:1.3;
+}
+
+/* School + conf row */
+.s27-school-row { display:flex; align-items:center; gap:6px; margin-bottom:10px; }
+.s27-school-name { font-size:0.72rem; font-weight:500; color:var(--text); }
+
+/* Pick row rework */
+.s27-pick-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:8px; }
+.s27-pick-left { display:flex; flex-direction:column; gap:4px; }
+
+</style>
 </head>
 <body>
 
@@ -185,6 +420,14 @@ footer{border-top:1px solid var(--border);padding:20px 24px;text-align:center}
   <a href="subscribe.html" onclick="toggleMobileMenu()">Subscribe</a>
 </div>
 
+
+<!-- YEAR TAB BAR -->
+<div class="year-tab-bar">
+  <button class="year-tab active" id="tab26" onclick="switchYear('2026')">2026 Big Board</button>
+  <button class="year-tab" id="tab27" onclick="switchYear('2027')">2027 Early Look</button>
+</div>
+
+<div id="view26">
 <section class="hero">
   <div class="hero-inner" style="display:flex;align-items:flex-start;justify-content:space-between;gap:40px;flex-wrap:wrap;">
   <div>
@@ -229,9 +472,35 @@ footer{border-top:1px solid var(--border);padding:20px 24px;text-align:center}
 </div>
 
 <main class="main" id="listRoot"></main>
+</div><!-- end view26 -->
 
-<footer><p class="footer-copy">© 2026 shortopen. All rights reserved.</p></footer>
 
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     2027 WAY-TOO-EARLY BIG BOARD
+     ════════════════════════════════════════════════════════════════ -->
+<div id="view27" style="display:none;">
+<div class="s27-section">
+  <div class="s27-divider">
+    <div class="s27-divider-line"></div>
+    <span class="s27-divider-label">Early Look · 2027</span>
+    <div class="s27-divider-line"></div>
+  </div>
+
+  <div class="s27-header">
+    <div class="s27-eyebrow">Way-Too-Early</div>
+    <h2 class="s27-title">2027 NFL Draft<br><span>Early Board</span></h2>
+    <p class="s27-sub">32 projected picks, 15 prospects written up. One full season away — these are the names to watch before the cycle starts.</p>
+    <div class="s27-disclaimer">⚠ Projections based on current team needs · Subject to change</div>
+  </div>
+
+  <div class="s27-grid" id="grid27"></div>
+</div>
+
+
+
+</div><!-- end view27 -->
 <script>
 const PROSPECTS = [
 
@@ -304,15 +573,15 @@ const PROSPECTS = [
   {rank:67,name:"Keyron Crawford",drafted:{pick:"3.67",team:"Las Vegas Raiders"},school:"Auburn",pos:"Edge",year:"SR",move:null,grade:5.6,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A edge rusher out of Auburn. Projects as a rotational pass rusher with a speed-rush baseline. Needs to develop counter moves and run-defense consistency. A Day 3 projection with a grade of 5.60.",attrs:[{n:"Pass Rush",v:75},{n:"Get-Off",v:73},{n:"Run Defense",v:70},{n:"Motor",v:76},{n:"Bend",v:71}]},
   {rank:68,name:"Chris Bell",drafted:{pick:"3.94",team:"Miami Dolphins"},school:"Louisville",pos:"WR",year:"SR",move:null,grade:5.58,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A wide receiver out of Louisville. Route runner with contested-catch ability. Speed and separation consistency will define his role in a pro offense. A Day 3 projection with a grade of 5.58.",attrs:[{n:"Route Running",v:74},{n:"Hands",v:73},{n:"Separation",v:71},{n:"YAC",v:72},{n:"Athleticism",v:74}]},
   {rank:69,name:"Daylen Everette",drafted:{pick:"3.85",team:"Pittsburgh Steelers"},school:"Georgia",pos:"CB",year:"SR",move:null,grade:5.56,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A cornerback out of Georgia. Athletic cornerback with press coverage tools. Technique and ball skills need to develop at the next level. A Day 3 projection with a grade of 5.56.",attrs:[{n:"Coverage",v:74},{n:"Ball Skills",v:71},{n:"Athleticism",v:75},{n:"Press",v:70},{n:"Tackling",v:72}]},
-  {rank:70,name:"Deion Burks",school:"Oklahoma",pos:"WR",year:"SR",move:null,grade:5.54,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A wide receiver out of Oklahoma. Route runner with contested-catch ability. Speed and separation consistency will define his role in a pro offense. A Day 3 projection with a grade of 5.54.",attrs:[{n:"Route Running",v:74},{n:"Hands",v:73},{n:"Separation",v:71},{n:"YAC",v:72},{n:"Athleticism",v:74}]},
+  {rank:70,name:"Deion Burks",drafted:{pick:"7.254",team:"Indianapolis Colts"},school:"Oklahoma",pos:"WR",year:"SR",move:null,grade:5.54,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A wide receiver out of Oklahoma. Route runner with contested-catch ability. Speed and separation consistency will define his role in a pro offense. A Day 3 projection with a grade of 5.54.",attrs:[{n:"Route Running",v:74},{n:"Hands",v:73},{n:"Separation",v:71},{n:"YAC",v:72},{n:"Athleticism",v:74}]},
   {rank:71,name:"Oscar Delp",drafted:{pick:"3.73",team:"New Orleans Saints"},school:"Georgia",pos:"TE",year:"SR",move:null,grade:5.52,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A tight end out of Georgia. Balanced tight end with receiving and blocking utility. Will need to earn trust in NFL blocking schemes early. A Day 3 projection with a grade of 5.52.",attrs:[{n:"Receiving",v:73},{n:"Blocking",v:72},{n:"Athleticism",v:74},{n:"Hands",v:71},{n:"RAC",v:70}]},
-  {rank:72,name:"Sam Hecht",school:"Kansas State",pos:"IOL",year:"SR",move:null,grade:5.5,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior offensive lineman out of Kansas State. Tenacious interior blocker with run-game utility. Pass protection awareness is the key development area. A Day 3 projection with a grade of 5.50.",attrs:[{n:"Run Blocking",v:77},{n:"Anchor",v:76},{n:"Pass Pro",v:71},{n:"Awareness",v:73},{n:"Finishing",v:74}]},
+  {rank:72,name:"Sam Hecht",drafted:{pick:"5.144",team:"Carolina Panthers"},school:"Kansas State",pos:"IOL",year:"SR",move:null,grade:5.5,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior offensive lineman out of Kansas State. Tenacious interior blocker with run-game utility. Pass protection awareness is the key development area. A Day 3 projection with a grade of 5.50.",attrs:[{n:"Run Blocking",v:77},{n:"Anchor",v:76},{n:"Pass Pro",v:71},{n:"Awareness",v:73},{n:"Finishing",v:74}]},
   {rank:73,name:"Tacario Davis",drafted:{pick:"3.72",team:"Cincinnati Bengals"},school:"Washington",pos:"CB",year:"SR",move:null,grade:5.49,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A cornerback out of Washington. Athletic cornerback with press coverage tools. Technique and ball skills need to develop at the next level. A priority free agent with a grade of 5.49.",attrs:[{n:"Coverage",v:74},{n:"Ball Skills",v:71},{n:"Athleticism",v:75},{n:"Press",v:70},{n:"Tackling",v:72}]},
   {rank:74,name:"Carson Beck",drafted:{pick:"3.65",team:"Arizona Cardinals"},school:"Miami",pos:"QB",year:"SR",move:null,grade:5.48,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A quarterback out of Miami. Developmental quarterback with arm talent and mobility. Reads and pocket discipline need seasoning at the NFL level. A priority free agent with a grade of 5.48.",attrs:[{n:"Accuracy",v:73},{n:"Arm Strength",v:70},{n:"Decision Making",v:71},{n:"Mobility",v:69},{n:"Mechanics",v:72}]},
   {rank:75,name:"Logan Jones",drafted:{pick:"2.57",team:"Chicago Bears"},school:"Iowa",pos:"IOL",year:"SR",move:null,grade:5.46,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior offensive lineman out of Iowa. Tenacious interior blocker with run-game utility. Pass protection awareness is the key development area. A priority free agent with a grade of 5.46.",attrs:[{n:"Run Blocking",v:77},{n:"Anchor",v:76},{n:"Pass Pro",v:71},{n:"Awareness",v:73},{n:"Finishing",v:74}]},
-  {rank:76,name:"Jalon Kilgore",school:"South Carolina",pos:"CB",year:"JR",move:null,grade:5.44,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A cornerback out of South Carolina. Athletic cornerback with press coverage tools. Technique and ball skills need to develop at the next level. A priority free agent with a grade of 5.44.",attrs:[{n:"Coverage",v:74},{n:"Ball Skills",v:71},{n:"Athleticism",v:75},{n:"Press",v:70},{n:"Tackling",v:72}]},
+  {rank:76,name:"Jalon Kilgore",drafted:{pick:"5.167",team:"Buffalo Bills"},school:"South Carolina",pos:"CB",year:"JR",move:null,grade:5.44,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A cornerback out of South Carolina. Athletic cornerback with press coverage tools. Technique and ball skills need to develop at the next level. A priority free agent with a grade of 5.44.",attrs:[{n:"Coverage",v:74},{n:"Ball Skills",v:71},{n:"Athleticism",v:75},{n:"Press",v:70},{n:"Tackling",v:72}]},
   {rank:77,name:"Jaishawn Barham",drafted:{pick:"3.92",team:"Dallas Cowboys"},school:"Michigan",pos:"Edge",year:"SR",move:null,grade:5.42,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A edge rusher out of Michigan. Projects as a rotational pass rusher with a speed-rush baseline. Needs to develop counter moves and run-defense consistency. A priority free agent with a grade of 5.42.",attrs:[{n:"Pass Rush",v:75},{n:"Get-Off",v:73},{n:"Run Defense",v:70},{n:"Motor",v:76},{n:"Bend",v:71}]},
-  {rank:78,name:"Joshua Josephs",school:"Tennessee",pos:"Edge",year:"SR",move:null,grade:5.4,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A edge rusher out of Tennessee. Projects as a rotational pass rusher with a speed-rush baseline. Needs to develop counter moves and run-defense consistency. A priority free agent with a grade of 5.40.",attrs:[{n:"Pass Rush",v:75},{n:"Get-Off",v:73},{n:"Run Defense",v:70},{n:"Motor",v:76},{n:"Bend",v:71}]},
+  {rank:78,name:"Joshua Josephs",drafted:{pick:"5.147",team:"Washington Commanders"},school:"Tennessee",pos:"Edge",year:"SR",move:null,grade:5.4,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A edge rusher out of Tennessee. Projects as a rotational pass rusher with a speed-rush baseline. Needs to develop counter moves and run-defense consistency. A priority free agent with a grade of 5.40.",attrs:[{n:"Pass Rush",v:75},{n:"Get-Off",v:73},{n:"Run Defense",v:70},{n:"Motor",v:76},{n:"Bend",v:71}]},
   {rank:79,name:"Mike Washington Jr.",drafted:{pick:"4.122",team:"Las Vegas Raiders"},school:"Arkansas",pos:"RB",year:"SR",move:null,grade:5.38,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A running back out of Arkansas. Productive ball carrier with pass-catching potential. Blocking and pass protection will determine early role. A priority free agent with a grade of 5.38.",attrs:[{n:"Vision",v:74},{n:"Speed",v:73},{n:"Contact Balance",v:72},{n:"Receiving",v:70},{n:"Pass Pro",v:68}]},
   {rank:80,name:"Elijah Sarratt",drafted:{pick:"4.115",team:"Baltimore Ravens"},school:"Indiana",pos:"WR",year:"SR",move:null,grade:5.36,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A wide receiver out of Indiana. Route runner with contested-catch ability. Speed and separation consistency will define his role in a pro offense. A priority free agent with a grade of 5.36.",attrs:[{n:"Route Running",v:74},{n:"Hands",v:73},{n:"Separation",v:71},{n:"YAC",v:72},{n:"Athleticism",v:74}]},
   {rank:81,name:"Max Klare",drafted:{pick:"2.61",team:"Los Angeles Rams"},school:"Ohio State",pos:"TE",year:"R-JR",move:null,grade:5.34,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A tight end out of Ohio State. Balanced tight end with receiving and blocking utility. Will need to earn trust in NFL blocking schemes early. A priority free agent with a grade of 5.34.",attrs:[{n:"Receiving",v:73},{n:"Blocking",v:72},{n:"Athleticism",v:74},{n:"Hands",v:71},{n:"RAC",v:70}]},
@@ -332,58 +601,58 @@ const PROSPECTS = [
   {rank:95,name:"Jalen Farmer",drafted:{pick:"4.113",team:"Indianapolis Colts"},school:"Kentucky",pos:"IOL",year:"R-JR",move:null,grade:5.06,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior offensive lineman out of Kentucky. Tenacious interior blocker with run-game utility. Pass protection awareness is the key development area. A priority free agent with a grade of 5.06.",attrs:[{n:"Run Blocking",v:77},{n:"Anchor",v:76},{n:"Pass Pro",v:71},{n:"Awareness",v:73},{n:"Finishing",v:74}]},
   {rank:96,name:"Austin Barber",drafted:{pick:"3.86",team:"Cleveland Browns"},school:"Florida",pos:"OT",year:"SR",move:null,grade:5.04,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A offensive tackle out of Florida. Athletic tackle with a solid base and developmental upside. Strength and hand placement are areas to refine. A priority free agent with a grade of 5.04.",attrs:[{n:"Pass Pro",v:73},{n:"Run Blocking",v:75},{n:"Footwork",v:72},{n:"Strength",v:74},{n:"Awareness",v:71}]},
   {rank:97,name:"Brenen Thompson",drafted:{pick:"4.105",team:"Los Angeles Chargers"},school:"Miss. State",pos:"WR",year:"SR",move:null,grade:5.02,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A wide receiver out of Miss. State. Route runner with contested-catch ability. Speed and separation consistency will define his role in a pro offense. A priority free agent with a grade of 5.02.",attrs:[{n:"Route Running",v:74},{n:"Hands",v:73},{n:"Separation",v:71},{n:"YAC",v:72},{n:"Athleticism",v:74}]},
-  {rank:98,name:"Keith Abney II",school:"Arizona State",pos:"CB",year:"JR",move:null,grade:5.0,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A cornerback out of Arizona State. Athletic cornerback with press coverage tools. Technique and ball skills need to develop at the next level. A priority free agent with a grade of 5.00.",attrs:[{n:"Coverage",v:74},{n:"Ball Skills",v:71},{n:"Athleticism",v:75},{n:"Press",v:70},{n:"Tackling",v:72}]},
+  {rank:98,name:"Keith Abney II",drafted:{pick:"5.157",team:"Miami Dolphins"},school:"Arizona State",pos:"CB",year:"JR",move:null,grade:5.0,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A cornerback out of Arizona State. Athletic cornerback with press coverage tools. Technique and ball skills need to develop at the next level. A priority free agent with a grade of 5.00.",attrs:[{n:"Coverage",v:74},{n:"Ball Skills",v:71},{n:"Athleticism",v:75},{n:"Press",v:70},{n:"Tackling",v:72}]},
   {rank:99,name:"Bryce Lance",drafted:{pick:"4.136",team:"New Orleans Saints"},school:"North Dakota St.",pos:"WR",year:"SR",move:null,grade:4.98,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A wide receiver out of North Dakota St.. Route runner with contested-catch ability. Speed and separation consistency will define his role in a pro offense. A priority free agent with a grade of 4.98.",attrs:[{n:"Route Running",v:74},{n:"Hands",v:73},{n:"Separation",v:71},{n:"YAC",v:72},{n:"Athleticism",v:74}]},
   {rank:100,name:"Devin Moore",drafted:{pick:"4.114",team:"Dallas Cowboys"},school:"Florida",pos:"CB",year:"SR",move:null,grade:4.96,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A cornerback out of Florida. Athletic cornerback with press coverage tools. Technique and ball skills need to develop at the next level. A priority free agent with a grade of 4.96.",attrs:[{n:"Coverage",v:74},{n:"Ball Skills",v:71},{n:"Athleticism",v:75},{n:"Press",v:70},{n:"Tackling",v:72}]},
-  {rank:101,name:"Garrett Nussmeier",school:"LSU",pos:"QB",year:"SR",move:null,grade:4.94,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A quarterback out of LSU. Developmental quarterback with arm talent and mobility. Reads and pocket discipline need seasoning at the NFL level. A priority free agent with a grade of 4.94.",attrs:[{n:"Accuracy",v:73},{n:"Arm Strength",v:70},{n:"Decision Making",v:71},{n:"Mobility",v:69},{n:"Mechanics",v:72}]},
+  {rank:101,name:"Garrett Nussmeier",drafted:{pick:"7.249",team:"Kansas City Chiefs"},school:"LSU",pos:"QB",year:"SR",move:null,grade:4.94,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A quarterback out of LSU. Developmental quarterback with arm talent and mobility. Reads and pocket discipline need seasoning at the NFL level. A priority free agent with a grade of 4.94.",attrs:[{n:"Accuracy",v:73},{n:"Arm Strength",v:70},{n:"Decision Making",v:71},{n:"Mobility",v:69},{n:"Mechanics",v:72}]},
   {rank:102,name:"Bryce Boettcher",drafted:{pick:"4.135",team:"Indianapolis Colts"},school:"Oregon",pos:"LB",year:"SR",move:null,grade:4.92,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A linebacker out of Oregon. Active, high-motor linebacker with instincts against the run. Coverage ability will determine his NFL role. A priority free agent with a grade of 4.92.",attrs:[{n:"Run Defense",v:77},{n:"Coverage",v:70},{n:"Instincts",v:74},{n:"Tackling",v:76},{n:"Motor",v:75}]},
   {rank:103,name:"Josiah Trotter",drafted:{pick:"2.46",team:"Tampa Bay Buccaneers"},school:"Missouri",pos:"LB",year:"R-SO",move:null,grade:4.9,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A linebacker out of Missouri. Active, high-motor linebacker with instincts against the run. Coverage ability will determine his NFL role. A priority free agent with a grade of 4.90.",attrs:[{n:"Run Defense",v:77},{n:"Coverage",v:70},{n:"Instincts",v:74},{n:"Tackling",v:76},{n:"Motor",v:75}]},
   {rank:104,name:"Malik Muhammad",drafted:{pick:"4.124",team:"Chicago Bears"},school:"Texas",pos:"CB",year:"JR",move:null,grade:4.88,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A cornerback out of Texas. Athletic cornerback with press coverage tools. Technique and ball skills need to develop at the next level. A priority free agent with a grade of 4.88.",attrs:[{n:"Coverage",v:74},{n:"Ball Skills",v:71},{n:"Athleticism",v:75},{n:"Press",v:70},{n:"Tackling",v:72}]},
   {rank:105,name:"Gracen Halton",drafted:{pick:"4.107",team:"San Francisco 49ers"},school:"Oklahoma",pos:"DT",year:"SR",move:null,grade:4.86,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior defensive lineman out of Oklahoma. Shows flashes as a run defender with developing pass-rush ability. Needs to refine hand technique and improve consistency. A priority free agent with a grade of 4.86.",attrs:[{n:"Run Defense",v:78},{n:"Pass Rush",v:72},{n:"Motor",v:75},{n:"Strength",v:76},{n:"Consistency",v:68}]},
-  {rank:106,name:"Harold Perkins Jr.",school:"LSU",pos:"LB",year:"R-JR",move:null,grade:4.84,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A linebacker out of LSU. Active, high-motor linebacker with instincts against the run. Coverage ability will determine his NFL role. A priority free agent with a grade of 4.84.",attrs:[{n:"Run Defense",v:77},{n:"Coverage",v:70},{n:"Instincts",v:74},{n:"Tackling",v:76},{n:"Motor",v:75}]},
+  {rank:106,name:"Harold Perkins Jr.",drafted:{pick:"6.215",team:"Atlanta Falcons"},school:"LSU",pos:"LB",year:"R-JR",move:null,grade:4.84,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A linebacker out of LSU. Active, high-motor linebacker with instincts against the run. Coverage ability will determine his NFL role. A priority free agent with a grade of 4.84.",attrs:[{n:"Run Defense",v:77},{n:"Coverage",v:70},{n:"Instincts",v:74},{n:"Tackling",v:76},{n:"Motor",v:75}]},
   {rank:107,name:"Dani Dennis-Sutton",drafted:{pick:"4.12",team:"Green Bay Packers"},school:"Penn State",pos:"Edge",year:"SR",move:null,grade:4.82,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A edge rusher out of Penn State. Projects as a rotational pass rusher with a speed-rush baseline. Needs to develop counter moves and run-defense consistency. A priority free agent with a grade of 4.82.",attrs:[{n:"Pass Rush",v:75},{n:"Get-Off",v:73},{n:"Run Defense",v:70},{n:"Motor",v:76},{n:"Bend",v:71}]},
-  {rank:108,name:"Max Llewellyn",school:"Iowa",pos:"Edge",year:"SR",move:null,grade:4.8,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A edge rusher out of Iowa. Projects as a rotational pass rusher with a speed-rush baseline. Needs to develop counter moves and run-defense consistency. A priority free agent with a grade of 4.80.",attrs:[{n:"Pass Rush",v:75},{n:"Get-Off",v:73},{n:"Run Defense",v:70},{n:"Motor",v:76},{n:"Bend",v:71}]},
+  {rank:108,name:"Max Llewellyn",drafted:{pick:"7.238",team:"Miami Dolphins"},school:"Iowa",pos:"Edge",year:"SR",move:null,grade:4.8,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A edge rusher out of Iowa. Projects as a rotational pass rusher with a speed-rush baseline. Needs to develop counter moves and run-defense consistency. A priority free agent with a grade of 4.80.",attrs:[{n:"Pass Rush",v:75},{n:"Get-Off",v:73},{n:"Run Defense",v:70},{n:"Motor",v:76},{n:"Bend",v:71}]},
   {rank:109,name:"Domonique Orange",drafted:{pick:"3.82",team:"Minnesota Vikings"},school:"Iowa State",pos:"DT",year:"SR",move:null,grade:4.78,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior defensive lineman out of Iowa State. Shows flashes as a run defender with developing pass-rush ability. Needs to refine hand technique and improve consistency. A priority free agent with a grade of 4.78.",attrs:[{n:"Run Defense",v:78},{n:"Pass Rush",v:72},{n:"Motor",v:75},{n:"Strength",v:76},{n:"Consistency",v:68}]},
-  {rank:110,name:"Cyrus Allen",school:"Cincinnati",pos:"WR",year:"SR",move:null,grade:4.76,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A wide receiver out of Cincinnati. Route runner with contested-catch ability. Speed and separation consistency will define his role in a pro offense. A priority free agent with a grade of 4.76.",attrs:[{n:"Route Running",v:74},{n:"Hands",v:73},{n:"Separation",v:71},{n:"YAC",v:72},{n:"Athleticism",v:74}]},
-  {rank:111,name:"Dametrious Crownover",school:"Texas A&M",pos:"OT",year:"SR",move:null,grade:4.74,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A offensive tackle out of Texas A&M. Athletic tackle with a solid base and developmental upside. Strength and hand placement are areas to refine. A priority free agent with a grade of 4.74.",attrs:[{n:"Pass Pro",v:73},{n:"Run Blocking",v:75},{n:"Footwork",v:72},{n:"Strength",v:74},{n:"Awareness",v:71}]},
-  {rank:112,name:"Kendrick Law",school:"Kentucky",pos:"WR",year:"SR",move:null,grade:4.72,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A wide receiver out of Kentucky. Route runner with contested-catch ability. Speed and separation consistency will define his role in a pro offense. A priority free agent with a grade of 4.72.",attrs:[{n:"Route Running",v:74},{n:"Hands",v:73},{n:"Separation",v:71},{n:"YAC",v:72},{n:"Athleticism",v:74}]},
-  {rank:113,name:"Zane Durant",school:"Penn State",pos:"DT",year:"SR",move:null,grade:4.7,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior defensive lineman out of Penn State. Shows flashes as a run defender with developing pass-rush ability. Needs to refine hand technique and improve consistency. A priority free agent with a grade of 4.70.",attrs:[{n:"Run Defense",v:78},{n:"Pass Rush",v:72},{n:"Motor",v:75},{n:"Strength",v:76},{n:"Consistency",v:68}]},
+  {rank:110,name:"Cyrus Allen",drafted:{pick:"5.176",team:"Kansas City Chiefs"},school:"Cincinnati",pos:"WR",year:"SR",move:null,grade:4.76,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A wide receiver out of Cincinnati. Route runner with contested-catch ability. Speed and separation consistency will define his role in a pro offense. A priority free agent with a grade of 4.76.",attrs:[{n:"Route Running",v:74},{n:"Hands",v:73},{n:"Separation",v:71},{n:"YAC",v:72},{n:"Athleticism",v:74}]},
+  {rank:111,name:"Dametrious Crownover",drafted:{pick:"7.196",team:"New England Patriots"},school:"Texas A&M",pos:"OT",year:"SR",move:null,grade:4.74,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A offensive tackle out of Texas A&M. Athletic tackle with a solid base and developmental upside. Strength and hand placement are areas to refine. A priority free agent with a grade of 4.74.",attrs:[{n:"Pass Pro",v:73},{n:"Run Blocking",v:75},{n:"Footwork",v:72},{n:"Strength",v:74},{n:"Awareness",v:71}]},
+  {rank:112,name:"Kendrick Law",drafted:{pick:"5.168",team:"Detroit Lions"},school:"Kentucky",pos:"WR",year:"SR",move:null,grade:4.72,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A wide receiver out of Kentucky. Route runner with contested-catch ability. Speed and separation consistency will define his role in a pro offense. A priority free agent with a grade of 4.72.",attrs:[{n:"Route Running",v:74},{n:"Hands",v:73},{n:"Separation",v:71},{n:"YAC",v:72},{n:"Athleticism",v:74}]},
+  {rank:113,name:"Zane Durant",drafted:{pick:"5.181",team:"Buffalo Bills"},school:"Penn State",pos:"DT",year:"SR",move:null,grade:4.7,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior defensive lineman out of Penn State. Shows flashes as a run defender with developing pass-rush ability. Needs to refine hand technique and improve consistency. A priority free agent with a grade of 4.70.",attrs:[{n:"Run Defense",v:78},{n:"Pass Rush",v:72},{n:"Motor",v:75},{n:"Strength",v:76},{n:"Consistency",v:68}]},
   {rank:114,name:"Romello Height",drafted:{pick:"3.70",team:"San Francisco 49ers"},school:"Texas Tech",pos:"Edge",year:"SR",move:null,grade:4.68,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A edge rusher out of Texas Tech. Projects as a rotational pass rusher with a speed-rush baseline. Needs to develop counter moves and run-defense consistency. A priority free agent with a grade of 4.68.",attrs:[{n:"Pass Rush",v:75},{n:"Get-Off",v:73},{n:"Run Defense",v:70},{n:"Motor",v:76},{n:"Bend",v:71}]},
-  {rank:115,name:"Justin Jefferson",school:"Alabama",pos:"LB",year:"SR",move:null,grade:4.66,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A linebacker out of Alabama. Active, high-motor linebacker with instincts against the run. Coverage ability will determine his NFL role. A priority free agent with a grade of 4.66.",attrs:[{n:"Run Defense",v:77},{n:"Coverage",v:70},{n:"Instincts",v:74},{n:"Tackling",v:76},{n:"Motor",v:75}]},
+  {rank:115,name:"Justin Jefferson",drafted:{pick:"5.149",team:"Cleveland Browns"},school:"Alabama",pos:"LB",year:"SR",move:null,grade:4.66,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A linebacker out of Alabama. Active, high-motor linebacker with instincts against the run. Coverage ability will determine his NFL role. A priority free agent with a grade of 4.66.",attrs:[{n:"Run Defense",v:77},{n:"Coverage",v:70},{n:"Instincts",v:74},{n:"Tackling",v:76},{n:"Motor",v:75}]},
   {rank:116,name:"Kage Casey",drafted:{pick:"4.111",team:"Denver Broncos"},school:"Boise State",pos:"OT",year:"R-JR",move:null,grade:4.64,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A offensive tackle out of Boise State. Athletic tackle with a solid base and developmental upside. Strength and hand placement are areas to refine. A priority free agent with a grade of 4.64.",attrs:[{n:"Pass Pro",v:73},{n:"Run Blocking",v:75},{n:"Footwork",v:72},{n:"Strength",v:74},{n:"Awareness",v:71}]},
-  {rank:117,name:"Nicholas Singleton",school:"Penn State",pos:"RB",year:"SR",move:null,grade:4.62,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A running back out of Penn State. Productive ball carrier with pass-catching potential. Blocking and pass protection will determine early role. A priority free agent with a grade of 4.62.",attrs:[{n:"Vision",v:74},{n:"Speed",v:73},{n:"Contact Balance",v:72},{n:"Receiving",v:70},{n:"Pass Pro",v:68}]},
-  {rank:118,name:"Michael Trigg",school:"Baylor",pos:"TE",year:"SR",move:null,grade:4.6,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A tight end out of Baylor. Balanced tight end with receiving and blocking utility. Will need to earn trust in NFL blocking schemes early. A priority free agent with a grade of 4.60.",attrs:[{n:"Receiving",v:73},{n:"Blocking",v:72},{n:"Athleticism",v:74},{n:"Hands",v:71},{n:"RAC",v:70}]},
-  {rank:119,name:"Lorenzo Styles Jr.",school:"Ohio State",pos:"S",year:"SR",move:null,grade:4.58,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A safety out of Ohio State. Versatile safety prospect with range in the deep half. Tackling reliability and zone instincts need refinement. A priority free agent with a grade of 4.58.",attrs:[{n:"Range",v:74},{n:"Coverage",v:72},{n:"Tackling",v:75},{n:"Instincts",v:73},{n:"Athleticism",v:73}]},
+  {rank:117,name:"Nicholas Singleton",drafted:{pick:"5.165",team:"Tennessee Titans"},school:"Penn State",pos:"RB",year:"SR",move:null,grade:4.62,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A running back out of Penn State. Productive ball carrier with pass-catching potential. Blocking and pass protection will determine early role. A priority free agent with a grade of 4.62.",attrs:[{n:"Vision",v:74},{n:"Speed",v:73},{n:"Contact Balance",v:72},{n:"Receiving",v:70},{n:"Pass Pro",v:68}]},
+  {rank:118,name:"Michael Trigg",drafted:{pick:"UDFA",team:"Dallas Cowboys"},school:"Baylor",pos:"TE",year:"SR",move:null,grade:4.6,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A tight end out of Baylor. Balanced tight end with receiving and blocking utility. Will need to earn trust in NFL blocking schemes early. A priority free agent with a grade of 4.60.",attrs:[{n:"Receiving",v:73},{n:"Blocking",v:72},{n:"Athleticism",v:74},{n:"Hands",v:71},{n:"RAC",v:70}]},
+  {rank:119,name:"Lorenzo Styles Jr.",drafted:{pick:"5.172",team:"New Orleans Saints"},school:"Ohio State",pos:"S",year:"SR",move:null,grade:4.58,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A safety out of Ohio State. Versatile safety prospect with range in the deep half. Tackling reliability and zone instincts need refinement. A priority free agent with a grade of 4.58.",attrs:[{n:"Range",v:74},{n:"Coverage",v:72},{n:"Tackling",v:75},{n:"Instincts",v:73},{n:"Athleticism",v:73}]},
   {rank:120,name:"Connor Lew",drafted:{pick:"4.128",team:"Cincinnati Bengals"},school:"Auburn",pos:"IOL",year:"JR",move:null,grade:4.56,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior offensive lineman out of Auburn. Tenacious interior blocker with run-game utility. Pass protection awareness is the key development area. A priority free agent with a grade of 4.56.",attrs:[{n:"Run Blocking",v:77},{n:"Anchor",v:76},{n:"Pass Pro",v:71},{n:"Awareness",v:73},{n:"Finishing",v:74}]},
   {rank:121,name:"Febechi Nwaiwu",drafted:{pick:"4.106",team:"Houston Texans"},school:"Oklahoma",pos:"IOL",year:"SR",move:null,grade:4.54,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior offensive lineman out of Oklahoma. Tenacious interior blocker with run-game utility. Pass protection awareness is the key development area. A priority free agent with a grade of 4.54.",attrs:[{n:"Run Blocking",v:77},{n:"Anchor",v:76},{n:"Pass Pro",v:71},{n:"Awareness",v:73},{n:"Finishing",v:74}]},
-  {rank:122,name:"Cole Payton",school:"North Dakota St.",pos:"QB",year:"SR",move:null,grade:4.52,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A quarterback out of North Dakota St.. Developmental quarterback with arm talent and mobility. Reads and pocket discipline need seasoning at the NFL level. A priority free agent with a grade of 4.52.",attrs:[{n:"Accuracy",v:73},{n:"Arm Strength",v:70},{n:"Decision Making",v:71},{n:"Mobility",v:69},{n:"Mechanics",v:72}]},
-  {rank:123,name:"Emmett Johnson",school:"Nebraska",pos:"RB",year:"R-JR",move:null,grade:4.5,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A running back out of Nebraska. Productive ball carrier with pass-catching potential. Blocking and pass protection will determine early role. A priority free agent with a grade of 4.50.",attrs:[{n:"Vision",v:74},{n:"Speed",v:73},{n:"Contact Balance",v:72},{n:"Receiving",v:70},{n:"Pass Pro",v:68}]},
-  {rank:124,name:"Josh Cameron",school:"Baylor",pos:"WR",year:"SR",move:null,grade:4.48,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A wide receiver out of Baylor. Route runner with contested-catch ability. Speed and separation consistency will define his role in a pro offense. A priority free agent with a grade of 4.48.",attrs:[{n:"Route Running",v:74},{n:"Hands",v:73},{n:"Separation",v:71},{n:"YAC",v:72},{n:"Athleticism",v:74}]},
+  {rank:122,name:"Cole Payton",drafted:{pick:"5.178",team:"Philadelphia Eagles"},school:"North Dakota St.",pos:"QB",year:"SR",move:null,grade:4.52,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A quarterback out of North Dakota St.. Developmental quarterback with arm talent and mobility. Reads and pocket discipline need seasoning at the NFL level. A priority free agent with a grade of 4.52.",attrs:[{n:"Accuracy",v:73},{n:"Arm Strength",v:70},{n:"Decision Making",v:71},{n:"Mobility",v:69},{n:"Mechanics",v:72}]},
+  {rank:123,name:"Emmett Johnson",drafted:{pick:"5.161",team:"Kansas City Chiefs"},school:"Nebraska",pos:"RB",year:"R-JR",move:null,grade:4.5,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A running back out of Nebraska. Productive ball carrier with pass-catching potential. Blocking and pass protection will determine early role. A priority free agent with a grade of 4.50.",attrs:[{n:"Vision",v:74},{n:"Speed",v:73},{n:"Contact Balance",v:72},{n:"Receiving",v:70},{n:"Pass Pro",v:68}]},
+  {rank:124,name:"Josh Cameron",drafted:{pick:"6.191",team:"Jacksonville Jaguars"},school:"Baylor",pos:"WR",year:"SR",move:null,grade:4.48,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A wide receiver out of Baylor. Route runner with contested-catch ability. Speed and separation consistency will define his role in a pro offense. A priority free agent with a grade of 4.48.",attrs:[{n:"Route Running",v:74},{n:"Hands",v:73},{n:"Separation",v:71},{n:"YAC",v:72},{n:"Athleticism",v:74}]},
   {rank:125,name:"Eli Raridon",drafted:{pick:"3.95",team:"New England Patriots"},school:"Notre Dame",pos:"TE",year:"SR",move:null,grade:4.46,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A tight end out of Notre Dame. Balanced tight end with receiving and blocking utility. Will need to earn trust in NFL blocking schemes early. A priority free agent with a grade of 4.46.",attrs:[{n:"Receiving",v:73},{n:"Blocking",v:72},{n:"Athleticism",v:74},{n:"Hands",v:71},{n:"RAC",v:70}]},
   {rank:126,name:"Caleb Douglas",drafted:{pick:"3.75",team:"Miami Dolphins"},school:"Texas Tech",pos:"WR",year:"SR",move:null,grade:4.44,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A wide receiver out of Texas Tech. Route runner with contested-catch ability. Speed and separation consistency will define his role in a pro offense. A priority free agent with a grade of 4.44.",attrs:[{n:"Route Running",v:74},{n:"Hands",v:73},{n:"Separation",v:71},{n:"YAC",v:72},{n:"Athleticism",v:74}]},
   {rank:127,name:"Jake Slaughter",drafted:{pick:"2.63",team:"Los Angeles Chargers"},school:"Florida",pos:"IOL",year:"SR",move:null,grade:4.42,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior offensive lineman out of Florida. Tenacious interior blocker with run-game utility. Pass protection awareness is the key development area. A priority free agent with a grade of 4.42.",attrs:[{n:"Run Blocking",v:77},{n:"Anchor",v:76},{n:"Pass Pro",v:71},{n:"Awareness",v:73},{n:"Finishing",v:74}]},
   {rank:128,name:"Jalen Huskey",drafted:{pick:"3.100",team:"Jacksonville Jaguars"},school:"Maryland",pos:"S",year:"SR",move:null,grade:4.4,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A safety out of Maryland. Versatile safety prospect with range in the deep half. Tackling reliability and zone instincts need refinement. A priority free agent with a grade of 4.40.",attrs:[{n:"Range",v:74},{n:"Coverage",v:72},{n:"Tackling",v:75},{n:"Instincts",v:73},{n:"Athleticism",v:73}]},
   {rank:129,name:"Skyler Bell",drafted:{pick:"4.125",team:"Buffalo Bills"},school:"Connecticut",pos:"WR",year:"SR",move:null,grade:4.38,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A wide receiver out of Connecticut. Route runner with contested-catch ability. Speed and separation consistency will define his role in a pro offense. A priority free agent with a grade of 4.38.",attrs:[{n:"Route Running",v:74},{n:"Hands",v:73},{n:"Separation",v:71},{n:"YAC",v:72},{n:"Athleticism",v:74}]},
-  {rank:130,name:"Bishop Fitzgerald",school:"USC",pos:"S",year:"SR",move:null,grade:4.36,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A safety out of USC. Versatile safety prospect with range in the deep half. Tackling reliability and zone instincts need refinement. A priority free agent with a grade of 4.36.",attrs:[{n:"Range",v:74},{n:"Coverage",v:72},{n:"Tackling",v:75},{n:"Instincts",v:73},{n:"Athleticism",v:73}]},
-  {rank:131,name:"Kamari Ramsey",school:"USC",pos:"S",year:"R-JR",move:null,grade:4.34,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A safety out of USC. Versatile safety prospect with range in the deep half. Tackling reliability and zone instincts need refinement. A priority free agent with a grade of 4.34.",attrs:[{n:"Range",v:74},{n:"Coverage",v:72},{n:"Tackling",v:75},{n:"Instincts",v:73},{n:"Athleticism",v:73}]},
-  {rank:132,name:"Rayshaun Benny",school:"Michigan",pos:"DT",year:"SR",move:null,grade:4.32,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior defensive lineman out of Michigan. Shows flashes as a run defender with developing pass-rush ability. Needs to refine hand technique and improve consistency. A priority free agent with a grade of 4.32.",attrs:[{n:"Run Defense",v:78},{n:"Pass Rush",v:72},{n:"Motor",v:75},{n:"Strength",v:76},{n:"Consistency",v:68}]},
+  {rank:130,name:"Bishop Fitzgerald",drafted:{pick:"UDFA",team:"Undrafted"},school:"USC",pos:"S",year:"SR",move:null,grade:4.36,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A safety out of USC. Versatile safety prospect with range in the deep half. Tackling reliability and zone instincts need refinement. A priority free agent with a grade of 4.36.",attrs:[{n:"Range",v:74},{n:"Coverage",v:72},{n:"Tackling",v:75},{n:"Instincts",v:73},{n:"Athleticism",v:73}]},
+  {rank:131,name:"Kamari Ramsey",drafted:{pick:"5.141",team:"Los Angeles Rams"},school:"USC",pos:"S",year:"R-JR",move:null,grade:4.34,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A safety out of USC. Versatile safety prospect with range in the deep half. Tackling reliability and zone instincts need refinement. A priority free agent with a grade of 4.34.",attrs:[{n:"Range",v:74},{n:"Coverage",v:72},{n:"Tackling",v:75},{n:"Instincts",v:73},{n:"Athleticism",v:73}]},
+  {rank:132,name:"Rayshaun Benny",drafted:{pick:"7.250",team:"Baltimore Ravens"},school:"Michigan",pos:"DT",year:"SR",move:null,grade:4.32,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior defensive lineman out of Michigan. Shows flashes as a run defender with developing pass-rush ability. Needs to refine hand technique and improve consistency. A priority free agent with a grade of 4.32.",attrs:[{n:"Run Defense",v:78},{n:"Pass Rush",v:72},{n:"Motor",v:75},{n:"Strength",v:76},{n:"Consistency",v:68}]},
   {rank:133,name:"Trey Zuhn III",drafted:{pick:"3.91",team:"Las Vegas Raiders"},school:"Texas A&M",pos:"IOL",year:"SR",move:null,grade:4.3,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior offensive lineman out of Texas A&M. Tenacious interior blocker with run-game utility. Pass protection awareness is the key development area. A priority free agent with a grade of 4.30.",attrs:[{n:"Run Blocking",v:77},{n:"Anchor",v:76},{n:"Pass Pro",v:71},{n:"Awareness",v:73},{n:"Finishing",v:74}]},
   {rank:134,name:"Wade Woodaz",drafted:{pick:"4.123",team:"Houston Texans"},school:"Clemson",pos:"LB",year:"SR",move:null,grade:4.28,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A linebacker out of Clemson. Active, high-motor linebacker with instincts against the run. Coverage ability will determine his NFL role. A priority free agent with a grade of 4.28.",attrs:[{n:"Run Defense",v:77},{n:"Coverage",v:70},{n:"Instincts",v:74},{n:"Tackling",v:76},{n:"Motor",v:75}]},
   {rank:135,name:"Nate Boerkircher",drafted:{pick:"2.56",team:"Jacksonville Jaguars"},school:"Texas A&M",pos:"TE",year:"SR",move:null,grade:4.26,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A tight end out of Texas A&M. Balanced tight end with receiving and blocking utility. Will need to earn trust in NFL blocking schemes early. A priority free agent with a grade of 4.26.",attrs:[{n:"Receiving",v:73},{n:"Blocking",v:72},{n:"Athleticism",v:74},{n:"Hands",v:71},{n:"RAC",v:70}]},
-  {rank:136,name:"VJ Payne",school:"Kansas State",pos:"S",year:"SR",move:null,grade:4.24,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A safety out of Kansas State. Versatile safety prospect with range in the deep half. Tackling reliability and zone instincts need refinement. A priority free agent with a grade of 4.24.",attrs:[{n:"Range",v:74},{n:"Coverage",v:72},{n:"Tackling",v:75},{n:"Instincts",v:73},{n:"Athleticism",v:73}]},
-  {rank:137,name:"Beau Stephens",school:"Iowa",pos:"IOL",year:"SR",move:null,grade:4.22,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior offensive lineman out of Iowa. Tenacious interior blocker with run-game utility. Pass protection awareness is the key development area. A priority free agent with a grade of 4.22.",attrs:[{n:"Run Blocking",v:77},{n:"Anchor",v:76},{n:"Pass Pro",v:71},{n:"Awareness",v:73},{n:"Finishing",v:74}]},
-  {rank:138,name:"Chandler Rivers",school:"Duke",pos:"CB",year:"SR",move:null,grade:4.2,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A cornerback out of Duke. Athletic cornerback with press coverage tools. Technique and ball skills need to develop at the next level. A priority free agent with a grade of 4.20.",attrs:[{n:"Coverage",v:74},{n:"Ball Skills",v:71},{n:"Athleticism",v:75},{n:"Press",v:70},{n:"Tackling",v:72}]},
+  {rank:136,name:"VJ Payne",drafted:{pick:"7.228",team:"New York Jets"},school:"Kansas State",pos:"S",year:"SR",move:null,grade:4.24,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A safety out of Kansas State. Versatile safety prospect with range in the deep half. Tackling reliability and zone instincts need refinement. A priority free agent with a grade of 4.24.",attrs:[{n:"Range",v:74},{n:"Coverage",v:72},{n:"Tackling",v:75},{n:"Instincts",v:73},{n:"Athleticism",v:73}]},
+  {rank:137,name:"Beau Stephens",drafted:{pick:"5.148",team:"Seattle Seahawks"},school:"Iowa",pos:"IOL",year:"SR",move:null,grade:4.22,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior offensive lineman out of Iowa. Tenacious interior blocker with run-game utility. Pass protection awareness is the key development area. A priority free agent with a grade of 4.22.",attrs:[{n:"Run Blocking",v:77},{n:"Anchor",v:76},{n:"Pass Pro",v:71},{n:"Awareness",v:73},{n:"Finishing",v:74}]},
+  {rank:138,name:"Chandler Rivers",drafted:{pick:"5.162",team:"Baltimore Ravens"},school:"Duke",pos:"CB",year:"SR",move:null,grade:4.2,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A cornerback out of Duke. Athletic cornerback with press coverage tools. Technique and ball skills need to develop at the next level. A priority free agent with a grade of 4.20.",attrs:[{n:"Coverage",v:74},{n:"Ball Skills",v:71},{n:"Athleticism",v:75},{n:"Press",v:70},{n:"Tackling",v:72}]},
   {rank:139,name:"Jadon Canady",drafted:{pick:"4.109",team:"Kansas City Chiefs"},school:"Oregon",pos:"CB",year:"SR",move:null,grade:4.18,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A cornerback out of Oregon. Athletic cornerback with press coverage tools. Technique and ball skills need to develop at the next level. A priority free agent with a grade of 4.18.",attrs:[{n:"Coverage",v:74},{n:"Ball Skills",v:71},{n:"Athleticism",v:75},{n:"Press",v:70},{n:"Tackling",v:72}]},
-  {rank:140,name:"Charles Demmings",school:"SFA State",pos:"CB",year:"SR",move:null,grade:4.16,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A cornerback out of SFA State. Athletic cornerback with press coverage tools. Technique and ball skills need to develop at the next level. A priority free agent with a grade of 4.16.",attrs:[{n:"Coverage",v:74},{n:"Ball Skills",v:71},{n:"Athleticism",v:75},{n:"Press",v:70},{n:"Tackling",v:72}]},
-  {rank:141,name:"Taylen Green",school:"Arkansas",pos:"QB",year:"SR",move:null,grade:4.14,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A quarterback out of Arkansas. Developmental quarterback with arm talent and mobility. Reads and pocket discipline need seasoning at the NFL level. A priority free agent with a grade of 4.14.",attrs:[{n:"Accuracy",v:73},{n:"Arm Strength",v:70},{n:"Decision Making",v:71},{n:"Mobility",v:69},{n:"Mechanics",v:72}]},
+  {rank:140,name:"Charles Demmings",drafted:{pick:"5.163",team:"Miami Dolphins"},school:"SFA State",pos:"CB",year:"SR",move:null,grade:4.16,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A cornerback out of SFA State. Athletic cornerback with press coverage tools. Technique and ball skills need to develop at the next level. A priority free agent with a grade of 4.16.",attrs:[{n:"Coverage",v:74},{n:"Ball Skills",v:71},{n:"Athleticism",v:75},{n:"Press",v:70},{n:"Tackling",v:72}]},
+  {rank:141,name:"Taylen Green",drafted:{pick:"6.182",team:"Cleveland Browns"},school:"Arkansas",pos:"QB",year:"SR",move:null,grade:4.14,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A quarterback out of Arkansas. Developmental quarterback with arm talent and mobility. Reads and pocket discipline need seasoning at the NFL level. A priority free agent with a grade of 4.14.",attrs:[{n:"Accuracy",v:73},{n:"Arm Strength",v:70},{n:"Decision Making",v:71},{n:"Mobility",v:69},{n:"Mechanics",v:72}]},
   {rank:142,name:"Will Kacmarek",drafted:{pick:"3.87",team:"Miami Dolphins"},school:"Ohio State",pos:"TE",year:"SR",move:null,grade:4.12,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A tight end out of Ohio State. Balanced tight end with receiving and blocking utility. Will need to earn trust in NFL blocking schemes early. A priority free agent with a grade of 4.12.",attrs:[{n:"Receiving",v:73},{n:"Blocking",v:72},{n:"Athleticism",v:74},{n:"Hands",v:71},{n:"RAC",v:70}]},
   {rank:143,name:"Kaleb Elarms-Orr",drafted:{pick:"4.126",team:"Buffalo Bills"},school:"TCU",pos:"LB",year:"SR",move:null,grade:4.1,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A linebacker out of TCU. Active, high-motor linebacker with instincts against the run. Coverage ability will determine his NFL role. A priority free agent with a grade of 4.10.",attrs:[{n:"Run Defense",v:77},{n:"Coverage",v:70},{n:"Instincts",v:74},{n:"Tackling",v:76},{n:"Motor",v:75}]},
-  {rank:144,name:"Brian Parker II",school:"Duke",pos:"IOL",year:"R-JR",move:null,grade:4.08,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior offensive lineman out of Duke. Tenacious interior blocker with run-game utility. Pass protection awareness is the key development area. A priority free agent with a grade of 4.08.",attrs:[{n:"Run Blocking",v:77},{n:"Anchor",v:76},{n:"Pass Pro",v:71},{n:"Awareness",v:73},{n:"Finishing",v:74}]},
-  {rank:145,name:"Justin Joly",school:"N.C. State",pos:"TE",year:"SR",move:null,grade:4.06,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A tight end out of N.C. State. Balanced tight end with receiving and blocking utility. Will need to earn trust in NFL blocking schemes early. A priority free agent with a grade of 4.06.",attrs:[{n:"Receiving",v:73},{n:"Blocking",v:72},{n:"Athleticism",v:74},{n:"Hands",v:71},{n:"RAC",v:70}]},
+  {rank:144,name:"Brian Parker II",drafted:{pick:"6.189",team:"Cincinnati Bengals"},school:"Duke",pos:"IOL",year:"R-JR",move:null,grade:4.08,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior offensive lineman out of Duke. Tenacious interior blocker with run-game utility. Pass protection awareness is the key development area. A priority free agent with a grade of 4.08.",attrs:[{n:"Run Blocking",v:77},{n:"Anchor",v:76},{n:"Pass Pro",v:71},{n:"Awareness",v:73},{n:"Finishing",v:74}]},
+  {rank:145,name:"Justin Joly",drafted:{pick:"5.152",team:"Cleveland Browns"},school:"N.C. State",pos:"TE",year:"SR",move:null,grade:4.06,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A tight end out of N.C. State. Balanced tight end with receiving and blocking utility. Will need to earn trust in NFL blocking schemes early. A priority free agent with a grade of 4.06.",attrs:[{n:"Receiving",v:73},{n:"Blocking",v:72},{n:"Athleticism",v:74},{n:"Hands",v:71},{n:"RAC",v:70}]},
   {rank:146,name:"Ja'Kobi Lane",drafted:{pick:"3.80",team:"Baltimore Ravens"},school:"USC",pos:"WR",year:"JR",move:null,grade:4.04,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A wide receiver out of USC. Route runner with contested-catch ability. Speed and separation consistency will define his role in a pro offense. A priority free agent with a grade of 4.04.",attrs:[{n:"Route Running",v:74},{n:"Hands",v:73},{n:"Separation",v:71},{n:"YAC",v:72},{n:"Athleticism",v:74}]},
-  {rank:147,name:"Parker Brailsford",school:"Alabama",pos:"IOL",year:"R-JR",move:null,grade:4.02,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior offensive lineman out of Alabama. Tenacious interior blocker with run-game utility. Pass protection awareness is the key development area. A priority free agent with a grade of 4.02.",attrs:[{n:"Run Blocking",v:77},{n:"Anchor",v:76},{n:"Pass Pro",v:71},{n:"Awareness",v:73},{n:"Finishing",v:74}]},
-  {rank:148,name:"Jordan van den Berg",school:"Georgia Tech",pos:"DT",year:"SR",move:null,grade:4.0,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior defensive lineman out of Georgia Tech. Shows flashes as a run defender with developing pass-rush ability. Needs to refine hand technique and improve consistency. A priority free agent with a grade of 4.00.",attrs:[{n:"Run Defense",v:78},{n:"Pass Rush",v:72},{n:"Motor",v:75},{n:"Strength",v:76},{n:"Consistency",v:68}]},
-  {rank:149,name:"Michael Heldman",school:"Central Michigan",pos:"Edge",year:"SR",move:null,grade:3.98,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A edge rusher out of Central Michigan. Projects as a rotational pass rusher with a speed-rush baseline. Needs to develop counter moves and run-defense consistency. A priority free agent with a grade of 3.98.",attrs:[{n:"Pass Rush",v:75},{n:"Get-Off",v:73},{n:"Run Defense",v:70},{n:"Motor",v:76},{n:"Bend",v:71}]},
+  {rank:147,name:"Parker Brailsford",drafted:{pick:"5.146",team:"Cleveland Browns"},school:"Alabama",pos:"IOL",year:"R-JR",move:null,grade:4.02,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior offensive lineman out of Alabama. Tenacious interior blocker with run-game utility. Pass protection awareness is the key development area. A priority free agent with a grade of 4.02.",attrs:[{n:"Run Blocking",v:77},{n:"Anchor",v:76},{n:"Pass Pro",v:71},{n:"Awareness",v:73},{n:"Finishing",v:74}]},
+  {rank:148,name:"Jordan van den Berg",drafted:{pick:"6.213",team:"Chicago Bears"},school:"Georgia Tech",pos:"DT",year:"SR",move:null,grade:4.0,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior defensive lineman out of Georgia Tech. Shows flashes as a run defender with developing pass-rush ability. Needs to refine hand technique and improve consistency. A priority free agent with a grade of 4.00.",attrs:[{n:"Run Defense",v:78},{n:"Pass Rush",v:72},{n:"Motor",v:75},{n:"Strength",v:76},{n:"Consistency",v:68}]},
+  {rank:149,name:"Michael Heldman",drafted:{pick:"UDFA",team:"Undrafted"},school:"Central Michigan",pos:"Edge",year:"SR",move:null,grade:3.98,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A edge rusher out of Central Michigan. Projects as a rotational pass rusher with a speed-rush baseline. Needs to develop counter moves and run-defense consistency. A priority free agent with a grade of 3.98.",attrs:[{n:"Pass Rush",v:75},{n:"Get-Off",v:73},{n:"Run Defense",v:70},{n:"Motor",v:76},{n:"Bend",v:71}]},
   {rank:150,name:"Albert Regis",drafted:{pick:"3.81",team:"Jacksonville Jaguars"},school:"Texas A&M",pos:"DT",year:"SR",move:null,grade:3.96,ht:"",wt:"",age:"",comp:null,tags:[],scout:"A interior defensive lineman out of Texas A&M. Shows flashes as a run defender with developing pass-rush ability. Needs to refine hand technique and improve consistency. A priority free agent with a grade of 3.96.",attrs:[{n:"Run Defense",v:78},{n:"Pass Rush",v:72},{n:"Motor",v:75},{n:"Strength",v:76},{n:"Consistency",v:68}]}
 ];
 
@@ -494,8 +763,419 @@ function toggle(row){
 }
 
 const r1=PROSPECTS.filter(p=>p.grade>=6.5).length;
-document.getElementById('r1count').textContent=r1;
+const r1El=document.getElementById('r1count');
+if(r1El) r1El.textContent=r1;
 filterPool();
+
+// ── YEAR TAB SWITCHING ───────────────────────────────────────────
+function switchYear(year) {
+  const v26 = document.getElementById('view26');
+  const v27 = document.getElementById('view27');
+  const t26 = document.getElementById('tab26');
+  const t27 = document.getElementById('tab27');
+  if (year === '2026') {
+    v26.style.display = '';
+    v27.style.display = 'none';
+    t26.classList.add('active');
+    t27.classList.remove('active');
+  } else {
+    v26.style.display = 'none';
+    v27.style.display = '';
+    t26.classList.remove('active');
+    t27.classList.add('active');
+    render27();
+  }
+}
+
+// ── 2027 PROSPECT DATA ────────────────────────────────────────────
+const PICKS_27 = [
+  {
+    pick:1, team:"Arizona Cardinals", need:"QB",
+    name:"Dante Moore", school:"Oregon", pos:"QB",
+    tags:["Playmaking QB","Explosive Arm","Kyler Reset"],
+    teaser:"Arizona resets the franchise with a playmaking quarterback who brings creativity, vertical juice, and a chance to build a more exciting offense than the Kyler Murray era.",
+    writeup:"Arizona resets the franchise with Dante Moore, a playmaking quarterback who brings the kind of creativity, arm talent, and explosive-play ability the Cardinals once built around Kyler Murray. Moore’s upside comes from his ability to attack vertically and create outside structure, giving Arizona a chance to rebuild its offense around a more dynamic passing identity. The weakness is still decision-making, because his aggressiveness can drift into turnover-worthy football. If he sharpens that part of his game, Moore has the ceiling to become the most exciting quarterback in this class.",
+    stat:["30","Big-Time Throws"],
+    conf:["Big Ten","b10"]
+  },
+  {
+    pick:2, team:"Miami Dolphins", need:"QB",
+    name:"Julian Sayin", school:"Ohio State", pos:"QB",
+    tags:["Pocket Passer","Top-3 QB Lock","Elite Rhythm"],
+    teaser:"If Sayin repeats last year’s performance, he should be a lock to be one of the first three quarterbacks off the board.",
+    writeup:"Miami goes quarterback here with Julian Sayin, betting on polish, accuracy, and high-level pocket command. If Sayin can repeat last year’s performance, he should be a lock to be one of the first three quarterbacks off the board. His strength is that he plays with rhythm and control, which fits an offense that needs timing and efficiency. The concern is whether he has enough off-script playmaking to carry a franchise when the structure breaks down, but his floor as a passer is extremely appealing.",
+    stat:["91+","FBS QB Grade"],
+    conf:["Big Ten","b10"]
+  },
+  {
+    pick:3, team:"New York Jets", need:"QB",
+    name:"Arch Manning", school:"Texas", pos:"QB",
+    tags:["New York Story","Manning Legacy","Ideal Landing Spot"],
+    teaser:"A Manning comes to New York — not for the Giants, but for the Jets — with Kenyon Sadiq, Garrett Wilson, Omar Cooper, bookend tackles, and a rising defense around him.",
+    writeup:"Arch Manning to the Jets would instantly become the biggest story of the draft. A Manning brought glory to the Giants, but this Manning would have a chance to do it for the crosstown rival Jets. The landing spot is ideal: Kenyon Sadiq at tight end, Garrett Wilson and Omar Cooper as the 1–2 punch outside, strong bookend tackles, a good offensive line, and a defense that should keep improving. Manning still has to prove he can dominate a full season, but the infrastructure around him would be one of the best quarterback situations in football.",
+    stat:["6'4\"","219 lbs · Speed"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:4, team:"Cleveland Browns", need:"QB",
+    name:"Sam Leavitt", school:"Arizona State", pos:"QB",
+    tags:["Jaxson Dart Plus","Health Swing","Lane Kiffin Upside"],
+    teaser:"If healthy, Leavitt could become a better version of Jaxson Dart — tough, mobile, aggressive, and positioned for eye-popping numbers.",
+    writeup:"This pick hinges on health, but if Sam Leavitt is right, the upside is massive. When healthy, he profiles like a better version of Jaxson Dart: tough, mobile, aggressive, and capable of creating big plays with both his arm and legs. Lane Kiffin taking that same prototype to a bigger stage should only help his development and visibility. If Leavitt stays healthy, the numbers could be eye-popping, and Cleveland may finally get the quarterback spark it has been chasing.",
+    stat:["Dual","Threat Upside"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:5, team:"Tennessee Titans", need:"WR",
+    name:"Jeremiah Smith", school:"Ohio State", pos:"WR",
+    tags:["Alpha WR","Cam Ward Weapon","Generational Profile"],
+    teaser:"Tennessee gives Cam Ward a true alpha receiver, pairing Jeremiah Smith with Carnell Tate to form a dangerous long-term receiver duo.",
+    writeup:"Tennessee gives Cam Ward a true alpha receiver in Jeremiah Smith. Smith has rare size, athleticism, body control, and touchdown production, making him the type of receiver who can immediately become the focal point of an NFL passing game. Pairing him with Carnell Tate would give Tennessee a legitimate long-term receiver duo and make Ward’s life much easier. Robert Saleh would be rejoiced to know that what was once one of his biggest weaknesses as a head coach — offensive firepower — could become one of his greatest strengths, even if he never touches the offense again.",
+    stat:["27","College TDs"],
+    conf:["Big Ten","b10"]
+  },
+  {
+    pick:6, team:"Las Vegas Raiders", need:"WR",
+    name:"Cam Coleman", school:"Texas", pos:"WR",
+    tags:["Big WR1","Catch Radius","Outside Weapon"],
+    teaser:"Las Vegas adds a big-bodied WR1 candidate with the size and vertical ability to become the featured target in a young offense.",
+    writeup:"Las Vegas adds Cam Coleman as a big-bodied WR1 candidate for its young quarterback. Coleman has the size, catch radius, and vertical ability to win outside and dominate contested situations. His weakness is whether he can separate consistently enough against NFL corners instead of relying only on physical traits. Still, the Raiders need a true featured receiver, and Coleman gives them the kind of high-upside target who can anchor a passing attack.",
+    stat:["#5","2024 Recruit Class"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:7, team:"New Orleans Saints", need:"CB",
+    name:"Leonard Moore", school:"Notre Dame", pos:"CB",
+    tags:["Elite CB Prospect","Shutdown Traits","Defense Changer"],
+    teaser:"Moore may be the best cornerback prospect of this generation if his development continues, and his game should do wonders for the Saints defense.",
+    writeup:"The Saints land Leonard Moore, who has a real case to be viewed as the best cornerback prospect of this generation if his development continues. Moore’s game should do wonders for that defense because he brings length, instincts, ball production, and true shutdown potential. His greatest strength is how comfortable he looks challenging receivers without needing constant safety help. The only question is whether he can maintain that elite level against NFL-caliber route runners every week, but the upside is special.",
+    stat:["91.8","PFF Grade"],
+    conf:["Ind.","ind"]
+  },
+  {
+    pick:8, team:"Pittsburgh Steelers", need:"QB",
+    name:"Brendan Sorsby", school:"Texas Tech", pos:"QB",
+    tags:["Composed QB","Pressure Manager","Steelers Fit"],
+    teaser:"Sorsby gives Pittsburgh a steady quarterback option with toughness, decision-making, and comfort under pressure.",
+    writeup:"Pittsburgh takes Brendan Sorsby as a steady, composed quarterback option. His biggest selling points are toughness, decision-making, and the ability to manage pressure without completely falling apart. He may not have the same flashy ceiling as Moore, Manning, or Leavitt, but he fits the Steelers’ preference for structure and competitiveness. If his arm talent continues to develop, Sorsby could rise as one of the safer quarterback bets in the class.",
+    stat:["114","Pressures · 7 Sacks"],
+    conf:["Big 12","b12"]
+  },
+  {
+    pick:9, team:"Carolina Panthers", need:"Edge",
+    name:"Dylan Stewart", school:"South Carolina", pos:"ED",
+    tags:["Explosive Edge","Derrick Brown Help","Pressure Creator"],
+    teaser:"Carolina adds pass-rush juice to help Derrick Brown inside and let Jaycee Horn and Mike Jackson do the rest on the back end.",
+    writeup:"Carolina adds Dylan Stewart to bring real juice to its pass rush. Stewart’s first-step explosion and bend would immediately help create more pressure off the edge, which should also aid Derrick Brown inside. If Stewart forces quarterbacks to speed up, Jaycee Horn and Mike Jackson can do the rest on the back end. The concern is consistency, because he needs to prove he can dominate for a full season, but the athletic upside is exactly what Carolina needs.",
+    stat:["88","SEC Pressures · 2 Yrs"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:10, team:"Atlanta Falcons", need:"QB",
+    name:"LaNorris Sellers", school:"South Carolina", pos:"QB",
+    tags:["Dual Threat","Big Arm","Ceiling Swing"],
+    teaser:"Atlanta swings on rare size, power, arm strength, and rushing ability, betting that Sellers can change the entire personality of the offense.",
+    writeup:"Atlanta takes the big swing on LaNorris Sellers, one of the most physically gifted quarterbacks in the class. Sellers has rare size, power, arm strength, and open-field running ability, with the tools to stress defenses as both a passer and runner. The weakness is consistency, because his accuracy, processing, and week-to-week passing rhythm still need refinement. For Atlanta, this is a bet on ceiling: if Sellers develops, the Falcons could finally have the kind of quarterback who changes the entire personality of the offense.",
+    stat:["Dual","Threat QB"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:11, team:"New York Jets (via Colts)", need:"WR",
+    name:"Ryan Williams", school:"Alabama", pos:"WR",
+    tags:["Bounce-Back Bet","Electric Freshman","Jets Dream"],
+    teaser:"The Jets bet on a bounce-back season from Williams after an electric freshman year and a quieter sophomore campaign.",
+    writeup:"The Jets add Ryan Williams, betting on a bounce-back season after an electric freshman year and a quieter sophomore campaign. His explosiveness, acceleration, and ability to turn short touches into huge gains would give Arch Manning another nightmare matchup weapon. This pick also depends on the Colts slipping because of uncertainty around Daniel Jones and Jonathan Taylor’s injury history. From a Jets fan perspective, this is the dream: another first-round weapon falling right into their lap.",
+    stat:["19","Years Old"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:12, team:"Washington Commanders", need:"WR",
+    name:"Ryan Wingo", school:"Texas", pos:"WR",
+    tags:["Jayden Daniels Weapon","Vertical Threat","Tunsil Protection"],
+    teaser:"With Laremy Tunsil protecting Jayden Daniels, Washington now needs to get its franchise quarterback more weapons.",
+    writeup:"Washington gives Jayden Daniels another weapon in Ryan Wingo. With Laremy Tunsil protecting Daniels’ blind side, the next step is surrounding him with enough firepower to maximize the passing game. Wingo brings size, vertical ability, and explosive traits that can stress defenses outside the numbers. He still needs refinement as a route runner, but the upside makes sense for a Commanders team trying to build around its franchise quarterback.",
+    stat:["6'2\"","Vertical WR"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:13, team:"Minnesota Vikings", need:"CB",
+    name:"Ellis Robinson IV", school:"Georgia", pos:"CB",
+    tags:["Top CB Pedigree","Shutdown Upside","SEC Tested"],
+    teaser:"Minnesota lands a high-upside corner with the movement skills, length, and confidence to become a true CB1.",
+    writeup:"Minnesota takes Ellis Robinson IV, a high-upside corner with elite recruiting pedigree and strong early coverage flashes. Robinson has the movement skills, length, and confidence to grow into a true CB1. The concern is experience, because he still needs a larger sample against top-tier receivers. For the Vikings, he gives the secondary a young cornerstone with legitimate shutdown potential.",
+    stat:["16","Rec on 38 Targets"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:14, team:"Tampa Bay Buccaneers", need:"Edge",
+    name:"Colin Simmons", school:"Texas", pos:"ED",
+    tags:["Explosive Edge","Pass-Rush Juice","First-Step Threat"],
+    teaser:"Tampa Bay grabs one of the most explosive edge rushers in the class to inject real pressure into its defense.",
+    writeup:"Tampa Bay grabs Colin Simmons, one of the most explosive edge rushers in the class. His first step, bend, and pressure production make him a natural fit for a defense that needs more pass-rush juice. The concern is size and whether he can consistently hold up against power in the run game. Still, Simmons gives the Buccaneers the kind of disruptive edge threat who can change drives.",
+    stat:["59","SEC Pressures"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:15, team:"New York Giants", need:"OT",
+    name:"Trevor Goosby", school:"Texas", pos:"OT",
+    tags:["Andrew Thomas Insurance","Trenches Pick","High-Upside Tackle"],
+    teaser:"With Andrew Thomas’ injury concerns, the Giants add another high-upside tackle because you can never have enough premium protection.",
+    writeup:"The Giants take Trevor Goosby, giving themselves insurance and upside at tackle. Andrew Thomas has had injury concerns and has struggled to stay fully healthy, and even when available, the argument here is that he has been good rather than truly elite. Goosby gives New York another high-upside tackle with the athletic profile to become a long-term building block. Harbaugh-style team building starts in the trenches, and even outside that philosophy, you can never have enough talented tackles.",
+    stat:["80+","PFF Both Phases"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:16, team:"Chicago Bears", need:"DI",
+    name:"David Stone", school:"Oklahoma", pos:"DT",
+    tags:["Interior Power","Run Defense Anchor","Trench Upgrade"],
+    teaser:"Chicago adds a massive interior presence to strengthen the middle of the defense and build more physicality up front.",
+    writeup:"The Bears add David Stone to give their defense more power and disruption in the middle. Stone is not a flashy sack artist yet, but he has the frame and strength to reset the line of scrimmage. His biggest weakness is pass-rush production, because he must prove he can affect quarterbacks more consistently. For Chicago, this is a trenches pick that gives the defense a sturdier interior foundation.",
+    stat:["300+","lbs · Run Anchor"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:17, team:"Cincinnati Bengals", need:"OT",
+    name:"Cayden Green", school:"Missouri", pos:"OT",
+    tags:["Tackle/Guard Flex","Pass Protection","Burrow Protection"],
+    teaser:"Cincinnati keeps investing in protection with a versatile blocker who has experience at tackle and guard.",
+    writeup:"Cayden Green gives Cincinnati a versatile offensive lineman with experience at multiple spots. His pass-protection profile is appealing, especially for a Bengals team that always has to prioritize keeping its quarterback upright. The weakness is whether he sticks at tackle long term or eventually moves inside. Either way, Cincinnati gets a physical, SEC-tested blocker with starter upside.",
+    stat:["7","Pressures Allowed"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:18, team:"Jacksonville Jaguars", need:"OT",
+    name:"Carter Smith", school:"Indiana", pos:"OT",
+    tags:["High Floor","Big Ten Standout","Pass Protector"],
+    teaser:"Jacksonville adds one of the most proven tackles in the class to keep building around its quarterback.",
+    writeup:"Carter Smith is one of the most proven offensive tackles in the class. He has experience, production, and the kind of pass-protection background that makes him attractive late in the top 20. The concern is age and ceiling compared with younger tackle prospects. Jacksonville needs to keep investing in protection, and Smith gives them a high-floor offensive lineman.",
+    stat:["Big Ten","OL of the Year"],
+    conf:["Big Ten","b10"]
+  },
+  {
+    pick:19, team:"New York Jets (via Cowboys)", need:"RB",
+    name:"Kewan Lacy", school:"Ole Miss", pos:"RB",
+    tags:["Home-Run Threat","Breece Hall Insurance","Explosive RB"],
+    teaser:"The Jets add an electric home-run threat who can pair with Breece Hall or become part of a new 1–2 punch with Braelon Allen.",
+    writeup:"The Jets use their third first-round pick on Kewan Lacy, an electric home-run threat at running back. Lacy has the burst and open-field ability to flip field position in one touch, making him a dangerous complement to Breece Hall. If the Jets cannot work out a long-term contract with Hall, Lacy could become the future lead back while forming a powerful 1–2 punch with Braelon Allen. The only hesitation is positional value, but with three first-rounders, the Jets can afford to chase explosive offensive firepower.",
+    stat:["Home","Run Threat"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:20, team:"Houston Texans", need:"LB",
+    name:"Rasheem Biles", school:"Texas", pos:"LB",
+    tags:["Coverage LB","Multi-Role Defender","Blitz Upside"],
+    teaser:"Houston adds a flexible linebacker who can cover, blitz, and move around the formation.",
+    writeup:"Rasheem Biles is one of the most versatile defensive prospects in the class. He can play in space, rush the passer, and align in multiple roles, which makes him valuable in modern defensive schemes. The weakness is that teams will need to define his best full-time NFL role. Houston gets a flexible linebacker who can cover, blitz, and become a chess piece for the defense.",
+    stat:["12","Career Sacks"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:21, team:"Denver Broncos", need:"TE",
+    name:"Trey'Dez Green", school:"LSU", pos:"TE",
+    tags:["Mismatch TE","Basketball Background","Red-Zone Weapon"],
+    teaser:"Denver takes the upside swing on a big, athletic tight end who could become a matchup problem.",
+    writeup:"Trey’Dez Green is a fascinating projection because of his size, athletic profile, and red-zone ability. He is still developing as a complete tight end, but the receiving upside is obvious. The weakness is limited production and refinement, so he may need patience early. Denver takes the upside swing on a mismatch weapon who could become a major part of the passing game.",
+    stat:["7","TDs Last Season"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:22, team:"Green Bay Packers", need:"S",
+    name:"KJ Bolden", school:"Georgia", pos:"S",
+    tags:["Top Safety","Kirby Smart System","Complete DB"],
+    teaser:"Green Bay gets a complete safety prospect with two years of quality play in Georgia’s defense.",
+    writeup:"KJ Bolden gives Green Bay one of the cleanest defensive back prospects in the class. He has already played high-level football in Kirby Smart’s defense and brings the versatility to impact the run game and coverage. His strength is that he does almost everything well, even if he may not carry the same superstar hype as recent elite safety prospects. For the Packers, Bolden gives the defense a stabilizing back-end presence with long-term starter potential.",
+    stat:["91.3","Run-Defense Grade"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:23, team:"Philadelphia Eagles", need:"Edge",
+    name:"A.J. Holmes Jr.", school:"Texas Tech", pos:"ED",
+    tags:["Run Defender","Eagles Trench Pick","Developmental Rusher"],
+    teaser:"Philadelphia stays true to its identity by adding another defensive line piece with toughness and edge upside.",
+    writeup:"A.J. Holmes Jr. fits the Eagles’ long-standing obsession with defensive line depth. He is strong against the run and brings enough pass-rush upside to develop into a complete edge defender. The concern is whether his production holds when he is no longer surrounded by as much defensive line talent. Philadelphia bets on traits, toughness, and long-term trench value.",
+    stat:["53+","Pressures · D-Line Leader"],
+    conf:["Big 12","b12"]
+  },
+  {
+    pick:24, team:"Kansas City Chiefs", need:"Edge",
+    name:"Matayo Uiagalelei", school:"Oregon", pos:"ED",
+    tags:["Long Edge","Chiefs Luxury","Pressure Production"],
+    teaser:"Kansas City adds a long, powerful edge defender with pressure production and premium-position upside.",
+    writeup:"Matayo Uiagalelei gives Kansas City a long, powerful edge defender with legitimate pressure production. His frame and athleticism make him an easy projection into an NFL defensive front. The weakness is that he still needs to become a more consistent finisher. For the Chiefs, this is a luxury pick with major upside at a premium position.",
+    stat:["52","Pressures Last Season"],
+    conf:["Big Ten","b10"]
+  },
+  {
+    pick:25, team:"Detroit Lions", need:"CB",
+    name:"Kelley Jones", school:"Mississippi State", pos:"CB",
+    tags:["6'4\" Corner","Long Perimeter CB","Physical Fit"],
+    teaser:"Detroit gets a rare 6-foot-4 corner with length, discipline, and catch-point instincts.",
+    writeup:"Kelley Jones is a massive corner prospect with rare length and disciplined coverage traits. His size makes him difficult to throw around, and his instincts at the catch point are impressive. The weakness is whether he can mirror quicker NFL receivers underneath. Detroit loves physical defensive backs, and Jones fits that identity perfectly.",
+    stat:["11","Rec on 375 Coverage Snaps"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:26, team:"San Francisco 49ers", need:"S",
+    name:"Ty Benefield", school:"LSU", pos:"S",
+    tags:["Versatile Safety","Experienced DB","Tackling Fix"],
+    teaser:"San Francisco adds a versatile safety who can align across the defense if the tackling improves.",
+    writeup:"Ty Benefield gives San Francisco a versatile safety who can align all over the defense. His experience and movement skills make him a strong fit for a defense that values interchangeable defensive backs. The weakness is tackling consistency, which has to improve for him to stay on the field in the NFL. The 49ers bet on versatility, range, and defensive flexibility.",
+    stat:["2169","Career Snaps"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:27, team:"New England Patriots", need:"OT",
+    name:"Jordan Seaton", school:"LSU", pos:"OT",
+    tags:["High-Upside Tackle","Pass Protector","Line Stability"],
+    teaser:"New England adds a high-upside tackle with the size and pass-protection traits to stabilize the line.",
+    writeup:"Jordan Seaton has the size and pass-blocking traits to become a first-round tackle. When healthy, he has shown the ability to protect high-profile quarterbacks and handle difficult assignments. The concern is durability and past penalty issues, though he appears to be improving technically. New England needs long-term offensive line stability, and Seaton gives them a high-upside answer.",
+    stat:["7","Pressures · 328 Snaps"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:28, team:"Los Angeles Chargers", need:"IOL",
+    name:"Iapani Laloulu", school:"Oregon", pos:"IOL",
+    tags:["Interior Versatility","Four-Year Starter","Reliable Protector"],
+    teaser:"The Chargers strengthen the interior with a steady, experienced blocker who has played all three inside spots.",
+    writeup:"Iapani Laloulu is a steady, experienced interior offensive lineman with starts across multiple spots. His pass-protection consistency stands out, and his versatility makes him valuable immediately. The weakness is that interior linemen need to be special to justify first-round value. For the Chargers, protecting the quarterback and strengthening the run game makes this a sensible investment.",
+    stat:["1","Career Sack Allowed"],
+    conf:["Big Ten","b10"]
+  },
+  {
+    pick:29, team:"Baltimore Ravens", need:"DI",
+    name:"A'Mauri Washington", school:"Oregon", pos:"DT",
+    tags:["Interior Flex","Ravens Front","Power Defender"],
+    teaser:"Baltimore adds a versatile interior defender who can play multiple alignments in a physical front.",
+    writeup:"A’Mauri Washington gives Baltimore a powerful, versatile defensive lineman who can play multiple interior alignments. His ability to move around the front fits the Ravens’ defensive style. The concern is missed tackles and finishing consistency, which must improve. Baltimore has always valued defensive line depth, and Washington fits their physical blueprint.",
+    stat:["1-Tech","or 3-Tech"],
+    conf:["Big Ten","b10"]
+  },
+  {
+    pick:30, team:"Seattle Seahawks", need:"DI",
+    name:"Will Echoles", school:"Ole Miss", pos:"DT",
+    tags:["Interior Disruptor","OL Convert","Power 4 Producer"],
+    teaser:"Seattle reinforces the defensive line with a powerful interior disruptor who is still ascending.",
+    writeup:"Will Echoles is an ascending interior defender with excellent disruption numbers. His background as a former offensive lineman shows up in his strength and understanding of leverage. The weakness is that he is still developing as a defensive technician. Seattle needs defensive line reinforcements, and Echoles gives them a productive, powerful interior presence.",
+    stat:["#1","P4 Interior DL Pressures"],
+    conf:["SEC","sec"]
+  },
+  {
+    pick:31, team:"Buffalo Bills", need:"Edge",
+    name:"Damon Wilson II", school:"Miami", pos:"ED",
+    tags:["Speed Edge","Pressure Producer","Run-D Question"],
+    teaser:"Buffalo adds another speed rusher with proven pressure production and pass-down upside.",
+    writeup:"Damon Wilson II gives Buffalo another pass-rushing weapon with proven pressure production. His first-step quickness and ability to bend around the edge make him a natural fit in obvious passing situations. The concern is run defense, where he still has to become more reliable. Buffalo keeps chasing defensive front depth, and Wilson gives them speed off the edge.",
+    stat:["54","Pressures · 8 Sacks"],
+    conf:["ACC","acc"]
+  },
+  {
+    pick:32, team:"Los Angeles Rams", need:"WR",
+    name:"Mario Craver", school:"Texas A&M", pos:"WR",
+    tags:["Dynamic Weapon","Luxury Pick","YAC Threat"],
+    teaser:"The Rams add another explosive weapon to a championship-caliber roster.",
+    writeup:"Mario Craver is a dynamic receiving prospect who could become dangerous in the right offensive system. His speed, quickness, and ability after the catch make him a natural fit for a creative Rams passing attack. The weakness is whether he can become a complete receiver rather than just an explosive weapon. If Los Angeles is picking last, this is a luxury selection that adds another playmaker to a championship-caliber roster.",
+    stat:["ROY","Candidate Projection"],
+    conf:["SEC","sec"]
+  }
+];
+
+function posColor27(pos) {
+  const map = {QB:'--pos-QB',WR:'--pos-WR',RB:'--pos-RB',TE:'--pos-TE',
+    OT:'--pos-OT',IOL:'--pos-IOL',ED:'--pos-Edge',LB:'--pos-LB',
+    CB:'--pos-CB',S:'--pos-S',DT:'--pos-DT',DI:'--pos-DT'};
+  return map[pos] || '--muted';
+}
+function posBg27(pos) {
+  const map = {
+    QB: 'rgba(34,197,94,.14)',
+    WR: 'rgba(56,189,248,.14)',
+    RB: 'rgba(52,211,153,.15)',
+    TE: 'rgba(146,64,14,.18)',
+    OT: 'rgba(34,211,238,.14)',
+    IOL:'rgba(34,211,238,.14)',
+    ED: 'rgba(248,113,113,.15)',
+    LB: 'rgba(251,146,60,.15)',
+    CB: 'rgba(249,115,22,.15)',
+    S:  'rgba(232,121,249,.15)',
+    DT: 'rgba(232,160,32,.14)',
+    DI: 'rgba(232,160,32,.14)'
+  };
+  return map[pos] || 'rgba(90,104,128,.15)';
+}
+
+// pos hex colors for CSS vars
+const POS_HEX = {
+  QB: '#22c55e',    // green
+  WR: '#38bdf8',    // bright blue
+  RB: '#34d399',    // keep teal
+  TE: '#92400e',    // brown (amber-900)
+  OT: '#22d3ee',    // same as IOL (cyan)
+  IOL:'#22d3ee',    // cyan
+  ED: '#f87171',    // keep red
+  LB: '#fb923c',    // keep orange
+  CB: '#f97316',    // orange
+  S:  '#e879f9',    // pink
+  DT: '#e8a020',    // gold
+  DI: '#e8a020'     // gold
+};
+function render27() {
+  const grid = document.getElementById('grid27');
+  grid.innerHTML = PICKS_27.map((p, i) => {
+    const posVar = posColor27(p.pos);
+    const posBgVal = posBg27(p.pos);
+    const posHex = POS_HEX[p.pos] || '#5a6880';
+    const posBgHex = posBgVal;
+    const delay = (i * 30) + 'ms';
+    const tags = p.tags.map(t => `<span class="s27-tag">${t}</span>`).join('');
+    const hasWriteup = p.writeup && p.writeup.length > 0;
+    const expandBtn = hasWriteup
+      ? `<div class="s27-expand">Full Read <span class="s27-expand-arrow">▾</span></div>`
+      : `<div class="s27-expand" style="opacity:0.3;">Preview Only</div>`;
+    const writeupHtml = hasWriteup
+      ? `<div class="s27-writeup"><p>${p.writeup}</p></div>` : '';
+    const statNum = p.stat ? p.stat[0] : '';
+    const statLbl = p.stat ? p.stat[1] : '';
+    const confName = p.conf ? p.conf[0] : '';
+    const confCls  = p.conf ? p.conf[1] : '';
+    const confHtml = confName ? `<span class="s27-conf conf-${confCls}">${confName}</span>` : '';
+    return `<div class="s27-card" onclick="toggle27(this,${!!hasWriteup})"
+      style="--s27-pos-color:${posHex};--s27-pos-bg:${posBgHex};animation-delay:${delay};">
+      <div class="s27-card-inner">
+        <div class="s27-pick-top">
+          <div class="s27-pick-left">
+            <div class="s27-pick-num"><span>#${p.pick}</span></div>
+            <div class="s27-team-name" style="margin-bottom:0;">${p.team}</div>
+            <div class="s27-team-badge" style="border-color:${posHex}55;color:${posHex};background:${posBgHex};margin-top:4px;width:fit-content;">${p.need}</div>
+          </div>
+          <div class="s27-stat-block">
+            <div class="s27-stat-num">${statNum}</div>
+            <div class="s27-stat-lbl">${statLbl}</div>
+          </div>
+        </div>
+        <div class="s27-prospect-row">
+          <div class="s27-name">${p.name}</div>
+          <div class="s27-pos-chip" style="background:${posBgVal};color:var(${posVar});">${p.pos}</div>
+        </div>
+        <div class="s27-school-row">
+          <span class="s27-school-name">${p.school}</span>
+          ${confHtml}
+        </div>
+        <div class="s27-tag-row">${tags}</div>
+        <div class="s27-teaser" style="margin-top:8px;">${p.teaser}</div>
+        ${expandBtn}
+      </div>
+      ${writeupHtml}
+    </div>`;
+  }).join('');
+}
+
+function toggle27(el, hasWriteup) {
+  if (!hasWriteup) return;
+  const card = el.closest('.s27-card') || el;
+  card.classList.toggle('expanded');
+}
+
+render27();
 </script>
 </body>
 </html>
