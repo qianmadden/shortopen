@@ -790,7 +790,7 @@
               <th onclick="mlbSortPitchers(3)" style="cursor:pointer">Salary ↕</th>
               <th onclick="mlbSortPitchers(4)" style="cursor:pointer">Proj ↕</th>
               <th style="min-width:72px">Form (L5)</th>
-              <th onclick="mlbSortPitchers(6)" style="color:var(--gold);cursor:pointer">Mkt K's ↕</th>
+              <th onclick="mlbSortPitchers(6)" style="color:var(--gold);cursor:pointer">Vegas Prop ↕</th>
               <th onclick="mlbSortPitchers(7)" style="color:var(--gold);cursor:pointer">Proj K's ↕</th>
               <th onclick="mlbSortPitchers(8)" style="cursor:pointer">K% ↕</th>
               <th onclick="mlbSortPitchers(9)" style="cursor:pointer">Odds EV% ↕</th>
@@ -858,238 +858,276 @@
 <!-- ── OWNERSHIP PROJECTION PANEL ── -->
 <style>
 /* Ownership table — light charcoal surface, dark player names, white matchup text */
+/* ══════════════════════════════════════════════
+   OWNERSHIP MODEL — DraftKings-inspired compact
+   ══════════════════════════════════════════════ */
 #mlbOwnershipPanel {
   background: transparent;
-  padding: 20px 0 0;
-  margin-top: 8px;
+  padding: 10px 0 0;
   font-family: 'DM Sans', sans-serif;
 }
-#mlbOwnershipPanel .own-topbar {
+/* ── header strip ── */
+#mlbOwnershipPanel .own-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 8px;
+  margin-bottom: 10px;
 }
-#mlbOwnershipPanel .own-desc {
-  font-size: 0.78rem;
-  color: var(--muted);
-  line-height: 1.65;
-  max-width: 600px;
+#mlbOwnershipPanel .own-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
+#mlbOwnershipPanel .own-badge {
+  background: #1a3a5c;
+  color: #6ab3f5;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+#mlbOwnershipPanel .own-player-count {
+  background: #1a3a5c;
+  color: #6ab3f5;
+  font-size: 0.65rem;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+/* tier pills inline with header */
+#mlbOwnershipPanel .own-tier-pills {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+#mlbOwnershipPanel .own-tier-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 4px;
+  padding: 2px 8px 2px 5px;
+  font-size: 0.62rem;
+}
+#mlbOwnershipPanel .own-tier-pill .pt-dot { width:6px;height:6px;border-radius:50%;flex-shrink:0; }
+#mlbOwnershipPanel .own-tier-pill .pt-lbl { color:#6b7280; }
+#mlbOwnershipPanel .own-tier-pill .pt-num { font-weight:700;margin-left:2px; }
+/* controls */
 #mlbOwnershipPanel .own-controls {
   display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
+  gap: 5px;
   align-items: center;
 }
 #mlbOwnershipPanel select,
 #mlbOwnershipPanel input {
-  background: #2e2e2e;
-  border: 1px solid #3a3a3a;
-  color: #e8e6e2;
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 4px;
+  color: #d1d5db;
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.73rem;
-  padding: 6px 10px;
+  font-size: 0.70rem;
+  padding: 4px 8px;
   cursor: pointer;
   outline: none;
 }
-#mlbOwnershipPanel input::placeholder { color: #666; }
-/* stat cards */
+#mlbOwnershipPanel input { width: 110px; }
+#mlbOwnershipPanel input::placeholder { color: #4b5563; }
+/* ── 4 stat summary cards ── */
 #mlbOwnershipPanel .own-stat-row {
   display: grid;
   grid-template-columns: repeat(4,1fr);
   gap: 6px;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 #mlbOwnershipPanel .own-stat-card {
-  background: #282828;
-  border: 1px solid #333;
-  padding: 10px 14px;
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 6px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 #mlbOwnershipPanel .own-stat-card .lbl {
-  font-size: 0.62rem;
-  letter-spacing: 0.14em;
+  font-size: 0.58rem;
+  letter-spacing: 0.10em;
   text-transform: uppercase;
-  color: #888;
-  margin-bottom: 4px;
+  color: #6b7280;
 }
 #mlbOwnershipPanel .own-stat-card .num {
-  font-size: 1.4rem;
-  font-weight: 500;
+  font-size: 1.25rem;
+  font-weight: 700;
   line-height: 1;
+  font-family: 'DM Mono','Courier New',monospace;
 }
-/* legend */
-#mlbOwnershipPanel .own-legend {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
-  align-items: center;
-}
-#mlbOwnershipPanel .own-legend span {
-  font-size: 0.70rem;
-  color: #888;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-#mlbOwnershipPanel .own-legend .ldot {
-  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-}
-#mlbOwnershipPanel .own-legend .sig-note {
-  margin-left: auto;
-  font-size: 0.66rem;
-  color: #555;
-}
-/* table wrapper — light charcoal */
+/* legend hidden (replaced by pills) */
+#mlbOwnershipPanel .own-legend { display: none; }
+/* ── table ── */
 #mlbOwnershipPanel .own-table-wrap {
   overflow-x: auto;
-  border: 1px solid #333;
+  border: 1px solid #1f2937;
+  border-radius: 6px;
+  background: #0d1117;
 }
 #mlbOwnershipPanel table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.80rem;
+  font-size: 0.78rem;
 }
-/* header row — slightly darker charcoal strip */
 #mlbOwnershipPanel thead th {
-  font-size: 0.67rem;
-  font-weight: 500;
-  letter-spacing: 0.10em;
+  font-size: 0.61rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #888;
-  padding: 10px 16px;
-  border-bottom: 1px solid #333;
+  color: #6b7280;
+  padding: 6px 10px;
+  border-bottom: 1px solid #1f2937;
   text-align: left;
   cursor: pointer;
   white-space: nowrap;
-  background: #1e1e1e;
+  background: #0d1117;
   user-select: none;
 }
-#mlbOwnershipPanel thead th:hover { color: #ccc; }
-#mlbOwnershipPanel thead th.own-sorted { color: var(--gold); }
-/* data rows — lighter charcoal so names are visible */
-#mlbOwnershipPanel tbody tr { background: #2c2c2c; }
-#mlbOwnershipPanel tbody tr:nth-child(even) { background: #292929; }
-#mlbOwnershipPanel tbody tr:hover td { background: #353535 !important; }
+#mlbOwnershipPanel thead th:hover { color: #9ca3af; }
+#mlbOwnershipPanel thead th.own-sorted { color: #60a5fa; }
+#mlbOwnershipPanel tbody tr { background: #111827; }
+#mlbOwnershipPanel tbody tr:nth-child(even) { background: #0f172a; }
+#mlbOwnershipPanel tbody tr:hover td { background: #1e2a3a !important; }
 #mlbOwnershipPanel tbody td {
-  padding: 10px 16px;
-  border-bottom: 1px solid #323232;
+  padding: 5px 10px;
+  border-bottom: 1px solid #1a2233;
   vertical-align: middle;
   white-space: nowrap;
 }
 #mlbOwnershipPanel tbody tr:last-child td { border-bottom: none; }
-/* player name — bright so it pops off charcoal */
+/* player name */
 #mlbOwnershipPanel .own-player-name {
-  font-size: 0.84rem;
-  font-weight: 400;
-  color: #f0ece4;
-  line-height: 1.3;
+  font-size: 0.80rem;
+  font-weight: 500;
+  color: #f3f4f6;
+  line-height: 1.15;
 }
-/* matchup — white, slightly muted */
 #mlbOwnershipPanel .own-matchup {
-  font-size: 0.62rem;
-  color: #aaa;
-  margin-top: 2px;
+  font-size: 0.57rem;
+  color: #4b5563;
+  margin-top: 1px;
 }
 /* pos pill */
 #mlbOwnershipPanel .own-pos {
-  font-size: 0.64rem;
-  font-weight: 500;
-  padding: 3px 8px;
-  background: #383838;
-  color: #d4cfc8;
-  border: 1px solid #444;
+  font-size: 0.60rem;
+  font-weight: 600;
+  padding: 1px 5px;
+  background: #1e2a3a;
+  color: #60a5fa;
+  border: 1px solid #2d3f55;
+  border-radius: 3px;
   display: inline-block;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
 }
 /* numbers */
 #mlbOwnershipPanel .own-salary {
-  font-family: 'DM Mono', 'Courier New', monospace;
-  font-size: 0.76rem;
-  color: #888;
+  font-family: 'DM Mono','Courier New',monospace;
+  font-size: 0.72rem;
+  color: #9ca3af;
 }
 #mlbOwnershipPanel .own-proj-num {
-  font-family: 'DM Mono', 'Courier New', monospace;
-  font-size: 0.82rem;
-  color: #d4cfc8;
-  font-weight: 500;
+  font-family: 'DM Mono','Courier New',monospace;
+  font-size: 0.78rem;
+  color: #e5e7eb;
+  font-weight: 600;
 }
 #mlbOwnershipPanel .own-val-num {
-  font-family: 'DM Mono', 'Courier New', monospace;
-  font-size: 0.78rem;
-  color: #888;
+  font-family: 'DM Mono','Courier New',monospace;
+  font-size: 0.72rem;
+  color: #6b7280;
 }
-/* tier chip */
-#mlbOwnershipPanel .own-tier {
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  padding: 3px 10px;
-  display: inline-block;
-  white-space: nowrap;
-}
-/* bar cell */
+/* bar + pct */
 #mlbOwnershipPanel .own-bar-cell {
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-width: 160px;
+  gap: 7px;
+  min-width: 150px;
 }
 #mlbOwnershipPanel .own-bar-track {
   flex: 1;
-  height: 4px;
-  background: #3a3a3a;
-  min-width: 60px;
-  max-width: 120px;
+  height: 3px;
+  background: #1f2937;
+  border-radius: 2px;
+  min-width: 70px;
 }
-#mlbOwnershipPanel .own-bar-fill { height: 100%; transition: width 0.2s; }
+#mlbOwnershipPanel .own-bar-fill { height:100%; border-radius:2px; transition:width 0.2s; }
 #mlbOwnershipPanel .own-pct {
-  font-family: 'DM Mono', 'Courier New', monospace;
-  font-size: 0.80rem;
-  font-weight: 500;
-  min-width: 44px;
+  font-family: 'DM Mono','Courier New',monospace;
+  font-size: 0.76rem;
+  font-weight: 700;
+  min-width: 40px;
+  text-align: right;
+}
+/* tier chip */
+#mlbOwnershipPanel .own-tier {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: 3px;
+  display: inline-block;
+  white-space: nowrap;
+  text-transform: uppercase;
 }
 /* signal dots */
-#mlbOwnershipPanel .own-sigs { display: flex; gap: 5px; align-items: center; }
-#mlbOwnershipPanel .own-sig-dot { width: 8px; height: 8px; border-radius: 50%; }
+#mlbOwnershipPanel .own-sigs { display:flex;gap:4px;align-items:center; }
+#mlbOwnershipPanel .own-sig-dot { width:6px;height:6px;border-radius:50%; }
 /* pager */
 #mlbOwnershipPanel .own-pager {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 9px 16px;
-  font-size: 0.72rem;
-  color: #666;
-  border-top: 1px solid #333;
-  background: #1e1e1e;
+  padding: 6px 10px;
+  font-size: 0.68rem;
+  color: #4b5563;
+  border-top: 1px solid #1f2937;
+  background: #0d1117;
+  border-radius: 0 0 6px 6px;
 }
 #mlbOwnershipPanel .own-pg-btn {
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.72rem;
-  padding: 4px 13px;
-  background: transparent;
-  border: 1px solid #3a3a3a;
-  color: #888;
+  font-size: 0.68rem;
+  padding: 3px 10px;
+  background: #1e2a3a;
+  border: 1px solid #2d3f55;
+  border-radius: 4px;
+  color: #6b7280;
   cursor: pointer;
   margin-left: 4px;
-  transition: color 0.15s, border-color 0.15s;
+  transition: all 0.15s;
 }
-#mlbOwnershipPanel .own-pg-btn:hover { color: var(--gold); border-color: var(--gold); }
+#mlbOwnershipPanel .own-pg-btn:hover { color: #60a5fa; border-color: #60a5fa; background: #1a3a5c; }
 #mlbOwnershipPanel .own-pg-btn:disabled { opacity: 0.3; cursor: default; }
 </style>
 
 <div id="mlbOwnershipPanel" style="display:none;">
-  <div class="own-topbar">
-    <div>
-      <div style="font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:#c8922a;margin-bottom:5px;font-weight:500;">Ownership Projection Model</div>
-      <p class="own-desc">A gauge of projected field ownership based on roster constraints, projection tier, value, HR%, and salary leverage. Ownership is never 100% accurate — use it to decide when to run with the chalk or go contrarian. Two pitchers can look similar on paper but draw very different ownership based on matchup narrative.</p>
+  <!-- header: badge + player count + tier pills + controls -->
+  <div class="own-header">
+    <div class="own-header-left">
+      <span class="own-badge">GPP Ownership%</span>
+      <span class="own-player-count" id="ownPlayerCount">— players</span>
+      <div class="own-tier-pills">
+        <div class="own-tier-pill"><span class="pt-dot" style="background:#ef4444;"></span><span class="pt-lbl">Chalk</span><span class="pt-num" id="ownCountChalk" style="color:#ef4444;">—</span></div>
+        <div class="own-tier-pill"><span class="pt-dot" style="background:#f59e0b;"></span><span class="pt-lbl">High</span><span class="pt-num" id="ownCountHigh" style="color:#f59e0b;">—</span></div>
+        <div class="own-tier-pill"><span class="pt-dot" style="background:#3b82f6;"></span><span class="pt-lbl">Neutral</span><span class="pt-num" id="ownCountMid" style="color:#3b82f6;">—</span></div>
+        <div class="own-tier-pill"><span class="pt-dot" style="background:#8b5cf6;"></span><span class="pt-lbl">Contrarian</span><span class="pt-num" id="ownCountLow" style="color:#8b5cf6;">—</span></div>
+      </div>
     </div>
     <div class="own-controls">
       <select id="ownPosFilter" onchange="ownRender()">
-        <option value="ALL">All Positions</option><option value="SP">SP</option><option value="RP">RP</option><option value="C">C</option><option value="1B">1B</option><option value="2B">2B</option><option value="3B">3B</option><option value="SS">SS</option><option value="OF">OF</option>
+        <option value="ALL">All Pos</option><option value="SP">SP</option><option value="RP">RP</option><option value="C">C</option><option value="1B">1B</option><option value="2B">2B</option><option value="3B">3B</option><option value="SS">SS</option><option value="OF">OF</option>
       </select>
       <select id="ownTierFilter" onchange="ownRender()">
         <option value="ALL">All Tiers</option>
@@ -1098,39 +1136,37 @@
         <option value="neutral">Neutral (5–20%)</option>
         <option value="contrarian">Contrarian (&lt;5%)</option>
       </select>
-      <input id="ownSearch" oninput="ownRender()" placeholder="Search player…" style="width:150px;"/>
+      <input id="ownSearch" oninput="ownRender()" placeholder="Search player..."/>
     </div>
   </div>
 
-  <!-- legend -->
-  <div class="own-legend">
-    <span><span class="ldot" style="background:#c0392b;"></span>Chalk 30%+</span>
-    <span><span class="ldot" style="background:#c8922a;"></span>High 20–30%</span>
-    <span><span class="ldot" style="background:#4a8fc4;"></span>Neutral 5–20%</span>
-    <span><span class="ldot" style="background:#7c5cbf;"></span>Contrarian &lt;5%</span>
-    <span class="sig-note">Signals: proj floor · value ≥2.0x · HR% / ace upside · salary leverage</span>
+  <!-- stat summary cards -->
+  <div class="own-stat-row">
+    <div class="own-stat-card"><div class="lbl">Avg projected own</div><div class="num" id="ownAvgOwn" style="color:#e5e7eb;">—</div></div>
+    <div class="own-stat-card"><div class="lbl">Highest projection</div><div class="num" id="ownHighProj" style="color:#e5e7eb;">—</div></div>
+    <div class="own-stat-card"><div class="lbl">Elite plays (&gt;15%)</div><div class="num" id="ownElitePlays" style="color:#3b82f6;">—</div></div>
+    <div class="own-stat-card"><div class="lbl">Value plays (&gt;2.5x)</div><div class="num" id="ownValuePlays" style="color:#10b981;">—</div></div>
   </div>
 
-  <!-- stat cards -->
-  <div class="own-stat-row">
-    <div class="own-stat-card"><div class="lbl">Chalk 30%+</div><div class="num" id="ownCountChalk" style="color:#e05c4a;">—</div></div>
-    <div class="own-stat-card"><div class="lbl">High 20–30%</div><div class="num" id="ownCountHigh" style="color:#c8922a;">—</div></div>
-    <div class="own-stat-card"><div class="lbl">Neutral 5–20%</div><div class="num" id="ownCountMid" style="color:#4a8fc4;">—</div></div>
-    <div class="own-stat-card"><div class="lbl">Contrarian &lt;5%</div><div class="num" id="ownCountLow" style="color:#9b7fd4;">—</div></div>
+  <!-- hidden compat IDs for old JS -->
+  <div style="display:none;">
+    <span id="ownCountChalk2"></span><span id="ownCountHigh2"></span>
+    <span id="ownCountMid2"></span><span id="ownCountLow2"></span>
   </div>
+  <div class="own-legend"></div>
 
   <!-- table -->
   <div class="own-table-wrap">
     <table id="ownTable">
       <thead><tr>
-        <th style="width:130px;" onclick="ownSort('name')">Player <span id="ownH-name"></span></th>
-        <th style="width:70px;" onclick="ownSort('pos')">Pos <span id="ownH-pos"></span></th>
-        <th style="width:75px;" onclick="ownSort('salary')">Salary <span id="ownH-salary"></span></th>
-        <th style="width:60px;" onclick="ownSort('proj')">Proj <span id="ownH-proj"></span></th>
-        <th style="width:60px;" onclick="ownSort('value')">Val <span id="ownH-value"></span></th>
+        <th style="width:140px;" onclick="ownSort('name')">Player <span id="ownH-name"></span></th>
+        <th style="width:55px;" onclick="ownSort('pos')">Pos <span id="ownH-pos"></span></th>
+        <th style="width:68px;" onclick="ownSort('salary')">Salary <span id="ownH-salary"></span></th>
+        <th style="width:52px;" onclick="ownSort('proj')">Proj <span id="ownH-proj"></span></th>
+        <th style="width:52px;" onclick="ownSort('value')">Value <span id="ownH-value"></span></th>
         <th onclick="ownSort('own')" class="own-sorted">Proj Own% ↓ <span id="ownH-own"></span></th>
-        <th style="width:100px;">Tier</th>
-        <th style="width:80px;">Sigs</th>
+        <th style="width:85px;">Tier</th>
+        <th style="width:65px;">Signals</th>
       </tr></thead>
       <tbody id="ownBody"></tbody>
     </table>
@@ -1164,26 +1200,47 @@
 // ── RAW DATA from NBA_optimizer.csv ─────────────────────────────
 // [Name, Team, Positions[], Salary, Minutes, Pts, Ast, Reb, FTScore, Variance]
 let POOL = [
-  ["Jayson Tatum","BOS",["PF"],16500,0,0,0,0,50.4,"HIGH",40.1,null],
-  ["Joel Embiid","PHI",["C"],15600,0,0,0,0,46.2,"HIGH",38.7,null],
-  ["Tyrese Maxey","PHI",["PG"],15000,0,0,0,0,42.5,"HIGH",34.2,null],
-  ["Jaylen Brown","BOS",["SG", "SF"],15300,0,0,0,0,42.0,"HIGH",35.9,null],
-  ["Paul George","PHI",["SF", "PF"],13200,0,0,0,0,31.4,"moderate",24.2,null],
-  ["VJ Edgecombe","PHI",["PG", "SG"],12300,0,0,0,0,25.5,"moderate",19.7,null],
-  ["Payton Pritchard","BOS",["PG", "SG"],11700,0,0,0,0,24.5,"moderate",20.4,null],
-  ["Derrick White","BOS",["PG"],10500,0,0,0,0,24.3,"moderate",17.8,null],
-  ["Neemias Queta","BOS",["C"],8400,0,0,0,0,21.2,"moderate",15.8,null],
-  ["Kelly Oubre Jr.","PHI",["SG", "SF"],11100,0,0,0,0,19.9,"low",15.5,null],
-  ["Nikola Vucevic","BOS",["C"],6600,0,0,0,0,14.0,"low",11.6,null],
-  ["Quentin Grimes","PHI",["PG", "SG"],7200,0,0,0,0,13.6,"low",10.6,null],
-  ["Sam Hauser","BOS",["SF", "PF"],6300,0,0,0,0,12.7,"low",10.4,null],
-  ["Baylor Scheierman","BOS",["SG", "SF"],3300,0,0,0,0,7.9,"low",5.6,null],
-  ["Jordan Walsh","BOS",["PF"],5100,0,0,0,0,7.0,"low",5.3,null],
-  ["Andre Drummond","PHI",["C"],4200,0,0,0,0,6.2,"low",4.7,null],
-  ["Justin Edwards","PHI",["SF", "PF"],1800,0,0,0,0,5.0,"low",3.7,null],
-  ["Luka Garza","BOS",["C"],2700,0,0,0,0,4.3,"low",3.7,null],
-  ["Adem Bona","PHI",["C"],1500,0,0,0,0,0.7,"low",0.5,null],
-  ["Dominick Barlow","PHI",["PF", "C"],2400,0,0,0,0,0.4,"low",0.2,null]
+  ["Victor Wembanyama","SA",["C"],10800,0,0,0,0,55.9,"HIGH",42.4,null],
+  ["Joel Embiid","PHI",["C"],8800,0,0,0,0,47.7,"HIGH",40.6,null],
+  ["Karl-Anthony Towns","NY",["PF", "C"],8600,0,0,0,0,45.2,"HIGH",35.1,null],
+  ["Tyrese Maxey","PHI",["PG"],8500,0,0,0,0,43.4,"HIGH",35.4,null],
+  ["Jalen Brunson","NY",["PG"],8100,0,0,0,0,42.6,"HIGH",36.6,null],
+  ["Anthony Edwards","MIN",["SG"],8700,0,0,0,0,38.8,"moderate",31.8,null],
+  ["Stephon Castle","SA",["SG"],7000,0,0,0,0,35.9,"moderate",29.1,null],
+  ["Julius Randle","MIN",["PF"],7700,0,0,0,0,35.0,"moderate",30.5,null],
+  ["De'Aaron Fox","SA",["PG"],6900,0,0,0,0,34.3,"moderate",27.2,null],
+  ["OG Anunoby","NY",["PF"],6800,0,0,0,0,31.9,"moderate",25.0,null],
+  ["Ayo Dosunmu","MIN",["PG", "SG"],6700,0,0,0,0,31.1,"moderate",25.2,null],
+  ["Josh Hart","NY",["SG", "SF"],6000,0,0,0,0,29.9,"moderate",23.8,null],
+  ["Rudy Gobert","MIN",["C"],6500,0,0,0,0,29.7,"moderate",20.7,null],
+  ["Paul George","PHI",["SF", "PF"],6600,0,0,0,0,29.7,"moderate",23.1,null],
+  ["Jaden McDaniels","MIN",["SF"],7200,0,0,0,0,29.4,"moderate",23.9,null],
+  ["VJ Edgecombe","PHI",["PG", "SG"],6300,0,0,0,0,26.5,"moderate",20.8,null],
+  ["Naz Reid","MIN",["PF", "C"],5500,0,0,0,0,25.4,"moderate",19.7,null],
+  ["Devin Vassell","SA",["SF"],5200,0,0,0,0,25.1,"moderate",19.0,null],
+  ["Kelly Oubre Jr.","PHI",["SG", "SF"],4900,0,0,0,0,21.0,"moderate",16.0,null],
+  ["Dylan Harper","SA",["PG", "SG"],4700,0,0,0,0,19.4,"low",14.9,null],
+  ["Julian Champagnie","SA",["SF", "PF"],4400,0,0,0,0,19.3,"low",14.2,null],
+  ["Mikal Bridges","NY",["SF"],4800,0,0,0,0,18.1,"low",14.9,null],
+  ["Mitchell Robinson","NY",["C"],3700,0,0,0,0,17.4,"low",12.1,null],
+  ["Keldon Johnson","SA",["SG", "SF"],3900,0,0,0,0,16.3,"low",12.6,null],
+  ["Quentin Grimes","PHI",["PG", "SG"],4000,0,0,0,0,14.5,"low",11.0,null],
+  ["Miles McBride","NY",["PG", "SG"],3600,0,0,0,0,13.6,"low",9.8,null],
+  ["Luke Kornet","SA",["C"],3800,0,0,0,0,11.9,"low",9.5,null],
+  ["Jordan Clarkson","NY",["SG", "SF"],3400,0,0,0,0,11.3,"low",9.6,null],
+  ["Mike Conley","MIN",["PG"],4100,0,0,0,0,11.0,"low",7.4,null],
+  ["Bones Hyland","MIN",["PG", "SG"],4500,0,0,0,0,10.4,"low",7.8,null],
+  ["Jose Alvarado","NY",["PG"],3200,0,0,0,0,8.1,"low",6.1,null],
+  ["Terrence Shannon","MIN",["SG", "SF"],4600,0,0,0,0,7.6,"low",6.5,null],
+  ["Andre Drummond","PHI",["C"],4300,0,0,0,0,7.3,"low",5.7,null],
+  ["Justin Edwards","PHI",["SF", "PF"],3300,0,0,0,0,5.8,"low",4.1,null],
+  ["Harrison Barnes","SA",["PF"],3100,0,0,0,0,5.6,"low",4.7,null],
+  ["Carter Bryant","SA",["SF"],3000,0,0,0,0,4.7,"low",3.5,null],
+  ["Kyle Anderson","MIN",["PF", "C"],3200,0,0,0,0,3.9,"low",2.8,null],
+  ["Landry Shamet","NY",["SG"],3100,0,0,0,0,1.4,"low",1.1,null],
+  ["Jaylen Clark","MIN",["SF"],3300,0,0,0,0,0.7,"low",0.5,null],
+  ["Adem Bona","PHI",["C"],3500,0,0,0,0,0.7,"low",0.4,null],
+  ["Dominick Barlow","PHI",["PF", "C"],3400,0,0,0,0,0.3,"low",0.0,null]
 ];
 
 // NBA DFS slots
@@ -1267,10 +1324,9 @@ function nbaMatchup(team) {
 
 // ── NBA GAME TOTALS ─────────────────────────────────────────────
 const NBA_GAME_TOTALS = {
-  PHI:205.5, BOS:205.5,
-  ORL:202.5, DET:202.5,
-  TOR:210.5, CLE:210.5,
-  MIN:216.5, SA:216.5,
+  PHI:213.5, NYK:213.5,
+  MIN:218.5, SA:218.5,
+  CLE:214.5, DET:214.5,
   LAL:213.5, OKC:213.5
 };
 function nbaGameTotal(team) {
@@ -1577,130 +1633,170 @@ function switchOptSport(sport) {
 // ── DATA ──────────────────────────────────────────────────────
 // Batters: Player,Salary,Position,Team,Opponent,Projection,Value,Hand,TeamTotal,IPVariance,StackVariance
 const MLB_BATTERS = [
-  ["Ronald Acuna Jr.",6000,"OF","ATL","COL",11.59,1.93,"",6.3,"","",22.5,24.4],
-  ["Shohei Ohtani",6500,"1B/OF","LAD","STL",11.554,1.78,"",4.6,"","",20.3,28.7],
-  ["Matt Olson",5700,"1B","ATL","COL",9.999,1.75,"",6.3,"","",24.5,23.1],
-  ["Michael Harris II",4100,"OF","ATL","COL",9.968,2.43,"",6.3,"","",18.0,19.8],
-  ["Drake Baldwin",5900,"C","ATL","COL",9.733,1.65,"",6.3,"","",22.3,21.5],
-  ["Ozzie Albies",5000,"2B","ATL","COL",9.095,1.82,"",6.3,"","",18.1,16.4],
-  ["Bobby Witt Jr.",6600,"SS","KC","SEA",9.001,1.36,"",3.9,"","",17.5,18.9],
-  ["Julio Rodriguez",4400,"OF","SEA","KC",8.954,2.04,"",4.3,"","",17.3,24.0],
-  ["Kyle Tucker",5600,"OF","LAD","STL",8.879,1.59,"",4.6,"","",12.5,17.2],
-  ["Juan Soto",6100,"OF","NYM","LAA",8.873,1.45,"",4.5,"","",19.6,22.3],
-  ["Austin Riley",4800,"3B","ATL","COL",8.841,1.84,"",6.3,"","",20.1,22.8],
-  ["Fernando Tatis Jr.",5200,"2B/OF","SD","CWS",8.665,1.67,"",4.1,"","",19.6,22.7],
-  ["Zach Neto",5500,"SS","LAA","NYM",8.53,1.55,"",4.0,"","",13.7,23.5],
-  ["Cal Raleigh",5400,"C","SEA","KC",8.202,1.52,"",4.3,"","",23.1,31.2],
-  ["Corey Seager",4900,"SS","TEX","DET",8.125,1.66,"",4.2,"","",19.3,18.4],
-  ["Brenton Doyle",3500,"OF","COL","ATL",8.098,2.3,"",4.3,"","",11.1,33.1],
-  ["Riley Greene",4400,"OF","DET","TEX",8.055,1.83,"",4.5,"","",15.0,26.8],
-  ["Josh Naylor",3800,"1B","SEA","KC",8.04,2.12,"",4.3,"","",15.1,14.8],
-  ["Jackson Merrill",4900,"OF","SD","CWS",8.027,1.64,"",4.1,"","",14.6,19.1],
-  ["Mike Yastrzemski",3600,"OF","ATL","COL",7.964,2.21,"",6.3,"","",16.3,25.2],
-  ["Mark Vientos",3100,"1B","NYM","LAA",7.94,2.56,"",4.5,"","",17.6,29.8],
-  ["Freddie Freeman",5300,"1B","LAD","STL",7.88,1.49,"",4.6,"","",7.5,15.2],
-  ["Kevin McGonigle",5100,"3B/SS","DET","TEX",7.842,1.54,"",4.5,"","",10.0,19.4],
-  ["Bo Bichette",4100,"3B","NYM","LAA",7.736,1.89,"",4.5,"","",14.1,18.4],
-  ["Hunter Goodman",5000,"C","COL","ATL",7.732,1.55,"",4.3,"","",15.1,32.4],
-  ["Francisco Alvarez",3600,"C","NYM","LAA",7.648,2.12,"",4.5,"","",18.4,25.0],
-  ["Evan Carter",3400,"OF","TEX","DET",7.566,2.23,"",4.2,"","",13.5,24.1],
-  ["Manny Machado",4400,"3B","SD","CWS",7.546,1.71,"",4.1,"","",17.3,19.1],
-  ["Jordan Beck",3200,"OF","COL","ATL",7.493,2.34,"",4.3,"","",8.5,30.1],
-  ["Ivan Herrera",3900,"C","STL","LAD",7.467,1.91,"",4.0,"","",9.2,21.8],
-  ["Kerry Carpenter",3900,"OF","DET","TEX",7.446,1.91,"",4.5,"","",17.2,27.6],
-  ["Mike Trout",6200,"OF","LAA","NYM",7.383,1.19,"",4.0,"","",18.6,26.5],
-  ["Max Muncy",4700,"3B","LAD","STL",7.359,1.57,"",4.6,"","",12.6,27.4],
-  ["Mauricio Dubon",3800,"OF/SS","ATL","COL",7.357,1.94,"",6.3,"","",8.3,14.2],
-  ["Maikel Garcia",4500,"3B","KC","SEA",7.308,1.62,"",3.9,"","",5.8,17.5],
-  ["Alec Burleson",4500,"1B","STL","LAD",7.294,1.62,"",4.0,"","",12.3,14.6],
-  ["Eli White",2800,"OF","ATL","COL",7.289,2.6,"",6.3,"","",10.9,28.1],
-  ["Ramon Laureano",4300,"OF","SD","CWS",7.264,1.69,"",4.1,"","",15.2,26.1],
-  ["Randy Arozarena",4200,"OF","SEA","KC",7.182,1.71,"",4.3,"","",11.9,24.5],
-  ["Josh Jung",3500,"3B","TEX","DET",7.158,2.05,"",4.2,"","",14.8,27.2],
-  ["Vinnie Pasquantino",4600,"1B","KC","SEA",7.129,1.55,"",3.9,"","",16.4,12.4],
-  ["JJ Wetherholt",4900,"2B","STL","LAD",7.064,1.44,"",4.0,"","",8.8,18.2],
-  ["Joc Pederson",2500,"OF","TEX","DET",7.009,2.8,"",4.2,"","",15.0,25.4],
-  ["Munetaka Murakami",5800,"1B","CWS","SD",7.006,1.21,"",3.3,"","",18.6,30.5],
-  ["Marcus Semien",3400,"2B","NYM","LAA",6.936,2.04,"",4.5,"","",13.6,15.1],
-  ["Gleyber Torres",4000,"2B","DET","TEX",6.933,1.73,"",4.5,"","",9.4,21.5],
-  ["Teoscar Hernandez",4600,"OF","LAD","STL",6.88,1.5,"",4.6,"","",9.9,31.3],
-  ["Jake Burger",3400,"1B","TEX","DET",6.835,2.01,"",4.2,"","",18.6,27.9],
-  ["Josh Lowe",3000,"OF","LAA","NYM",6.828,2.28,"",4.0,"","",10.1,25.5],
-  ["Jo Adell",4500,"OF","LAA","NYM",6.799,1.51,"",4.0,"","",15.8,32.4],
-  ["Ezequiel Tovar",4400,"SS","COL","ATL",6.766,1.54,"",4.3,"","",8.8,27.5],
-  ["Xander Bogaerts",4200,"SS","SD","CWS",6.758,1.61,"",4.1,"","",10.6,17.9],
-  ["Colt Keith",3600,"3B","DET","TEX",6.757,1.88,"",4.5,"","",8.8,21.3],
-  ["Tyler Freeman",4000,"OF","COL","ATL",6.725,1.68,"",4.3,"","",4.1,19.8],
-  ["Luke Raley",3500,"OF","SEA","KC",6.72,1.92,"",4.3,"","",13.4,31.1],
-  ["J.P. Crawford",3200,"SS","SEA","KC",6.666,2.08,"",4.3,"","",7.2,20.1],
-  ["Tyrone Taylor",2500,"OF","NYM","LAA",6.636,2.65,"",4.5,"","",11.7,22.5],
-  ["Nolan Gorman",3000,"3B","STL","LAD",6.627,2.21,"",4.0,"","",17.4,33.1],
-  ["Willi Castro",4600,"2B/3B","COL","ATL",6.592,1.43,"",4.3,"","",6.6,23.5],
-  ["Jac Caglianone",3400,"OF","KC","SEA",6.538,1.92,"",3.9,"","",17.2,20.4],
-  ["Andrew Benintendi",3300,"OF","CWS","SD",6.519,1.98,"",3.3,"","",9.1,17.4],
-  ["Masyn Winn",3300,"SS","STL","LAD",6.443,1.95,"",4.0,"","",7.6,19.3],
-  ["Andy Pages",5000,"OF","LAD","STL",6.436,1.29,"",4.6,"","",8.6,26.1],
-  ["Salvador Perez",3700,"C","KC","SEA",6.415,1.73,"",3.9,"","",18.2,18.5],
-  ["Nolan Schanuel",3300,"1B","LAA","NYM",6.403,1.94,"",4.0,"","",6.7,14.8],
-  ["Eric Wagaman",2000,"1B","NYM","LAA",6.398,3.2,"",4.5,"","",8.6,23.1],
-  ["Jordan Walker",5100,"OF","STL","LAD",6.395,1.25,"",4.0,"","",10.6,24.5],
-  ["Wenceel Perez",2000,"OF","DET","TEX",6.395,3.2,"",4.5,"","",9.1,20.1],
-  ["Dillon Dingler",4500,"C","DET","TEX",6.361,1.41,"",4.5,"","",8.2,29.2],
-  ["Jorge Soler",3700,"OF","LAA","NYM",6.354,1.72,"",4.0,"","",14.8,24.5],
-  ["Josh H. Smith",2200,"2B","TEX","DET",6.343,2.88,"",4.2,"","",7.4,19.9],
-  ["Ronny Mauricio",2200,"3B/SS","NYM","LAA",6.26,2.85,"",4.5,"","",10.5,26.4],
-  ["Spencer Torkelson",3200,"1B","DET","TEX",6.206,1.94,"",4.5,"","",11.3,24.8],
-  ["Yoan Moncada",3400,"3B","LAA","NYM",6.197,1.82,"",4.0,"","",9.9,25.2],
-  ["Colson Montgomery",4800,"SS","CWS","SD",6.123,1.28,"",3.3,"","",15.5,28.4],
-  ["Dominic Canzone",3200,"OF","SEA","KC",6.078,1.9,"",4.3,"","",14.3,26.5],
-  ["Carter Jensen",4100,"C","KC","SEA",6.076,1.48,"",3.9,"","",12.7,22.1],
-  ["Dalton Rushing",4000,"C","LAD","STL",5.994,1.5,"",4.6,"","",8.5,23.4],
-  ["Miguel Andujar",3200,"3B/OF","SD","CWS",5.894,1.84,"",4.1,"","",6.4,16.8],
-  ["Gavin Sheets",3600,"1B","SD","CWS",5.892,1.64,"",4.1,"","",12.7,19.8],
-  ["Alejandro Osuna",2100,"OF","TEX","DET",5.851,2.79,"",4.2,"","",7.9,21.2],
-  ["Kyle Karros",2900,"3B","COL","ATL",5.835,2.01,"",4.3,"","",5.4,22.5],
-  ["Nathan Church",2900,"OF","STL","LAD",5.829,2.01,"",4.0,"","",6.3,18.4],
-  ["Hyeseong Kim",3000,"SS","LAD","STL",5.823,1.94,"",4.6,"","",4.7,14.2],
-  ["Isaac Collins",2500,"OF","KC","SEA",5.811,2.32,"",3.9,"","",8.2,21.8],
-  ["Cole Young",3100,"2B","SEA","KC",5.784,1.87,"",4.3,"","",10.0,16.5],
-  ["Chase Meidroth",3600,"2B","CWS","SD",5.729,1.59,"",3.3,"","",2.6,15.4],
-  ["Miguel Vargas",4900,"3B","CWS","SD",5.716,1.17,"",3.3,"","",9.2,22.1],
-  ["Victor Scott II",2000,"OF","STL","LAD",5.583,2.79,"",4.0,"","",4.4,18.9],
-  ["Sam Antonacci",2800,"OF","CWS","SD",5.576,1.99,"",3.3,"","",3.9,19.2],
-  ["Danny Jansen",2700,"C","TEX","DET",5.538,2.05,"",4.2,"","",14.2,19.8],
-  ["Jake Cronenworth",2700,"2B","SD","CWS",5.534,2.05,"",4.1,"","",8.9,17.2],
-  ["Jarred Kelenic",2000,"OF","CWS","SD",5.432,2.72,"",3.3,"","",9.9,28.1],
-  ["Michael Massey",2900,"2B","KC","SEA",5.424,1.87,"",3.9,"","",12.1,16.5],
-  ["Travis d'Arnaud",2500,"C","LAA","NYM",5.419,2.17,"",4.0,"","",12.7,20.5],
-  ["Freddy Fermin",2500,"C","SD","CWS",5.388,2.16,"",4.1,"","",7.8,17.2],
-  ["TJ Rumfield",3700,"1B","COL","ATL",5.386,1.46,"",4.3,"","",7.3,21.4],
-  ["Kyle Isbel",2500,"OF","KC","SEA",5.272,2.11,"",3.9,"","",6.2,19.8],
-  ["Ezequiel Duran",2400,"2B/OF","TEX","DET",5.247,2.19,"",4.2,"","",5.7,25.2],
-  ["Leo Rivas",2000,"3B","SEA","KC",5.236,2.62,"",4.3,"","",4.1,20.1],
-  ["Austin Slater",2400,"OF","NYM","LAA",5.236,2.18,"",4.5,"","",9.4,22.5],
-  ["Alex Freeland",2500,"2B","LAD","STL",5.195,2.08,"",4.6,"","",6.6,19.8],
-  ["Edgar Quero",2600,"C","CWS","SD",5.134,1.97,"",3.3,"","",2.7,15.4],
-  ["Brett Sullivan",2800,"C","COL","ATL",5.098,1.82,"",4.3,"","",5.6,21.2],
-  ["Pedro Pages",2300,"C","STL","LAD",5.026,2.19,"",4.0,"","",9.2,23.1],
-  ["Jace Jung",2100,"3B","DET","TEX",4.954,2.36,"",4.5,"","",7.6,24.5],
-  ["Adam Frazier",3000,"2B","LAA","NYM",4.715,1.57,"",4.0,"","",4.2,14.2],
-  ["Tristan Peters",2300,"OF","CWS","SD",4.613,2.01,"",3.3,"","",6.2,19.8]
+  ["Shohei Ohtani",6400,"1B/OF","LAD","HOU",12.833,2.01,"",5.4,"","",31.2,21.8],
+  ["Aaron Judge",6500,"OF","NYY","BAL",10.946,1.68,"",5.1,"","",35.5,28.6],
+  ["Elly De La Cruz",6200,"SS","CIN","CHC",10.62,1.71,"",5.1,"","",16.2,28.7],
+  ["Bobby Witt Jr.",6100,"SS","KC","CLE",10.387,1.7,"",4.7,"","",14.2,22.1],
+  ["Nico Hoerner",4800,"2B","CHC","CIN",10.359,2.16,"",6.8,"","",6.2,11.4],
+  ["Seiya Suzuki",4900,"OF","CHC","CIN",10.22,2.09,"",6.8,"","",19.5,24.1],
+  ["Pete Crow-Armstrong",4700,"OF","CHC","CIN",10.13,2.16,"",6.8,"","",20.4,30.6],
+  ["Jose Ramirez",5900,"3B","CLE","KC",10.087,1.7,"",4.6,"","",15.5,12.3],
+  ["Alex Bregman",3900,"3B","HOU","LAD",9.867,2.53,"",5.4,"","",17.7,14.2],
+  ["Ian Happ",4400,"OF","CHC","CIN",9.78,2.22,"",6.8,"","",17.3,30.4],
+  ["Kyle Tucker",5400,"OF","HOU","LAD",9.744,1.8,"",5.4,"","",19.4,15.8],
+  ["Moises Ballesteros",3700,"C","CHC","CIN",9.317,2.52,"",6.8,"","",13.0,18.4],
+  ["Michael Busch",3400,"1B","CHC","CIN",9.141,2.69,"",6.8,"","",19.1,31.2],
+  ["Fernando Tatis Jr.",4900,"2B/OF","SD","SF",9.114,1.86,"",4.5,"","",13.8,21.5],
+  ["Jazz Chisholm Jr.",4200,"2B","NYY","BAL",8.944,2.13,"",5.1,"","",24.1,25.3],
+  ["Zach Neto",5500,"SS","LAA","CWS",8.929,1.62,"",4.2,"","",14.9,28.5],
+  ["Freddie Freeman",5100,"1B","LAD","HOU",8.816,1.73,"",5.4,"","",12.4,14.1],
+  ["Gunnar Henderson",5400,"SS","BAL","NYY",8.802,1.63,"",3.8,"","",19.3,31.3],
+  ["Brice Turang",5600,"2B","MIL","STL",8.628,1.54,"",4.5,"","",4.1,16.9],
+  ["Julio Rodriguez",4600,"OF","SEA","ATL",8.61,1.87,"",4.0,"","",15.9,27.2],
+  ["Steven Kwan",3700,"OF","CLE","KC",8.61,2.33,"",4.6,"","",4.7,9.1],
+  ["Dansby Swanson",3700,"SS","CHC","CIN",8.609,2.33,"",6.8,"","",15.5,25.9],
+  ["Jackson Merrill",4600,"OF","SD","SF",8.448,1.84,"",4.5,"","",9.6,17.8],
+  ["TJ Friedl",3500,"OF","CIN","CHC",8.358,2.39,"",5.1,"","",12.8,16.4],
+  ["Ben Rice",6000,"1B","NYY","BAL",8.305,1.38,"",5.1,"","",25.2,23.5],
+  ["Cody Bellinger",4900,"OF","CHC","CIN",8.281,1.69,"",6.8,"","",21.1,15.7],
+  ["Garrett Mitchell",3700,"OF","MIL","STL",8.238,2.23,"",4.5,"","",8.1,33.2],
+  ["Yordan Alvarez",6300,"OF","HOU","LAD",8.234,1.31,"",5.4,"","",18.2,17.2],
+  ["William Contreras",4500,"C","MIL","STL",8.157,1.81,"",4.5,"","",8.9,20.1],
+  ["Maikel Garcia",4300,"3B","KC","CLE",8.055,1.87,"",4.7,"","",4.0,18.8],
+  ["JJ Bleday",3600,"OF","OAK","CIN",8.042,2.23,"",5.1,"","",14.1,19.5],
+  ["Vinnie Pasquantino",4100,"1B","KC","CLE",7.96,1.94,"",4.7,"","",13.1,12.4],
+  ["Trent Grisham",3700,"OF","NYY","BAL",7.923,2.14,"",5.1,"","",20.2,27.6],
+  ["Manny Machado",4200,"3B","SD","SF",7.92,1.89,"",4.5,"","",12.4,19.8],
+  ["Luis Rengifo",2600,"3B","LAA","CWS",7.902,3.04,"",4.2,"","",7.1,16.1],
+  ["Sal Stewart",5700,"1B","CIN","CHC",7.874,1.38,"",5.1,"","",14.1,19.2],
+  ["Teoscar Hernandez",4300,"OF","LAD","HOU",7.869,1.83,"",5.4,"","",17.5,29.1],
+  ["Cal Raleigh",5100,"C","SEA","ATL",7.858,1.54,"",4.0,"","",22.1,28.2],
+  ["Kyle Manzardo",2700,"1B","CLE","KC",7.777,2.88,"",4.6,"","",15.2,22.4],
+  ["Will Smith",3800,"C","LAD","HOU",7.775,2.05,"",5.4,"","",12.1,18.3],
+  ["Mike Trout",6000,"OF","LAA","CWS",7.764,1.29,"",4.2,"","",21.4,27.4],
+  ["Ivan Herrera",4100,"C","STL","MIL",7.729,1.89,"",4.2,"","",8.0,20.6],
+  ["Josh Naylor",3600,"1B","CLE","KC",7.723,2.15,"",4.6,"","",15.2,14.8],
+  ["Jasson Dominguez",3300,"OF","NYY","BAL",7.692,2.33,"",5.1,"","",18.7,26.1],
+  ["Michael Harris II",3600,"OF","ATL","SEA",7.686,2.13,"",3.6,"","",14.8,21.2],
+  ["Ramon Laureano",4100,"OF","SD","SF",7.65,1.87,"",4.5,"","",10.2,27.5],
+  ["Spencer Steer",3300,"1B/OF","CIN","CHC",7.602,2.3,"",5.1,"","",12.1,20.4],
+  ["Max Muncy",4400,"3B","LAD","HOU",7.56,1.72,"",5.4,"","",19.4,26.1],
+  ["Alec Burleson",4500,"1B","STL","MIL",7.547,1.68,"",4.2,"","",10.9,13.5],
+  ["Chase DeLauter",4200,"OF","CLE","KC",7.481,1.78,"",4.6,"","",9.8,21.8],
+  ["Munetaka Murakami**",5800,"1B","CWS","LAA",7.474,1.29,"",3.6,"","",15.4,33.1],
+  ["Nate Lowe",3100,"1B","TEX","CIN",7.426,2.4,"",5.1,"","",13.9,22.5],
+  ["Andy Pages",4800,"OF","LAD","HOU",7.41,1.54,"",5.4,"","",14.2,26.4],
+  ["David Hamilton",3200,"3B/SS","BOS","STL",7.394,2.31,"",4.2,"","",5.4,24.7],
+  ["JJ Wetherholt",5000,"2B","STL","MIL",7.302,1.46,"",4.2,"","",7.0,15.2],
+  ["Jac Caglianone",3300,"OF","KC","CLE",7.258,2.2,"",4.7,"","",14.3,22.8],
+  ["Miguel Amaya",3100,"C","CHC","CIN",7.206,2.32,"",6.8,"","",12.0,23.1],
+  ["Rafael Devers",3900,"1B","SF","SD",7.189,1.84,"",3.7,"","",12.7,31.9],
+  ["Salvador Perez",3600,"C","KC","CLE",7.171,1.99,"",4.7,"","",15.3,18.7],
+  ["Jose Caballero",3600,"SS","TB","BAL",7.149,1.99,"",5.1,"","",6.3,26.8],
+  ["Josh Lowe",2700,"OF","TB","CWS",7.148,2.65,"",4.2,"","",11.2,28.4],
+  ["Jo Adell",4200,"OF","LAA","CWS",7.137,1.7,"",4.2,"","",17.0,33.1],
+  ["Will Benson",2500,"OF","CIN","CHC",7.131,2.85,"",5.1,"","",14.6,35.7],
+  ["Xander Bogaerts",4000,"SS","SD","SF",7.104,1.78,"",4.5,"","",6.4,16.5],
+  ["Jake Bauers",4400,"1B","MIL","STL",7.042,1.6,"",4.5,"","",9.9,34.2],
+  ["Matt Olson",5000,"1B","ATL","SEA",6.949,1.39,"",3.6,"","",19.4,25.2],
+  ["Matt Chapman",4000,"3B","SF","SD",6.928,1.73,"",3.7,"","",11.7,24.1],
+  ["Randy Arozarena",4100,"OF","SEA","ATL",6.91,1.69,"",4.0,"","",10.5,26.3],
+  ["Nolan Gorman",3300,"3B","STL","MIL",6.854,2.08,"",4.2,"","",14.0,36.2],
+  ["Matt McLain",3400,"2B","CIN","CHC",6.834,2.01,"",5.1,"","",12.6,26.4],
+  ["Austin Wells",2600,"C","NYY","BAL",6.816,2.62,"",5.1,"","",19.4,20.1],
+  ["Pete Alonso",4700,"1B","NYM","NYY",6.807,1.45,"",3.8,"","",19.6,22.5],
+  ["Carter Jensen",4000,"C","KC","CLE",6.774,1.69,"",4.7,"","",10.9,21.3],
+  ["Drake Baldwin",5200,"C","ATL","SEA",6.744,1.3,"",3.6,"","",16.8,20.5],
+  ["Tyler Stephenson",2900,"C","CIN","CHC",6.727,2.32,"",5.1,"","",10.8,25.4],
+  ["Nolan Schanuel",3200,"1B","LAA","CWS",6.725,2.1,"",4.2,"","",7.3,14.6],
+  ["Willy Adames",3400,"SS","SF","SD",6.714,1.97,"",3.7,"","",12.9,30.8],
+  ["Jorge Soler",3700,"OF","LAA","CWS",6.684,1.81,"",4.2,"","",16.6,33.3],
+  ["Masyn Winn",3500,"SS","STL","MIL",6.661,1.9,"",4.2,"","",6.6,18.7],
+  ["Jung Hoo Lee",3300,"OF","SF","SD",6.622,2.01,"",3.7,"","",3.7,9.5],
+  ["Taylor Ward",4400,"OF","LAA","NYY",6.618,1.5,"",3.8,"","",16.5,22.1],
+  ["Jordan Walker",5300,"OF","STL","MIL",6.609,1.25,"",4.2,"","",8.8,32.7],
+  ["Luis Arraez",3800,"2B","SD","SF",6.599,1.74,"",3.7,"","",2.5,5.4],
+  ["Carlos Correa",4100,"SS","MIN","LAD",6.588,1.61,"",3.8,"","",10.6,21.4],
+  ["Sal Frelick",3100,"OF","MIL","STL",6.543,2.11,"",4.5,"","",2.6,15.2],
+  ["Colson Montgomery",4600,"SS","CWS","LAA",6.538,1.42,"",3.6,"","",13.4,30.6],
+  ["Yoan Moncada",2900,"3B","CWS","CWS",6.52,2.25,"",4.2,"","",11.6,29.8],
+  ["Tyler Black",2800,"1B","MIL","STL",6.507,2.32,"",4.5,"","",5.5,20.8],
+  ["Sam Antonacci",3000,"OF","CWS","LAA",6.493,2.16,"",3.6,"","",3.2,17.5],
+  ["Daniel Schneemann",3400,"3B/OF","CLE","KC",6.451,1.9,"",4.6,"","",9.2,25.2],
+  ["Luke Raley",3400,"OF","SEA","ATL",6.45,1.9,"",4.0,"","",13.6,31.5],
+  ["Ozzie Albies",4300,"2B","ATL","SEA",6.437,1.5,"",3.6,"","",13.7,16.1],
+  ["Bo Naylor",2500,"C","CLE","KC",6.411,2.56,"",4.6,"","",12.1,30.5],
+  ["J.P. Crawford",3300,"SS","SEA","ATL",6.393,1.94,"",4.0,"","",6.6,19.8],
+  ["Isaac Collins",2500,"OF","KC","CLE",6.368,2.55,"",4.7,"","",6.5,24.2],
+  ["Jose Altuve",4600,"2B","HOU","LAD",6.353,1.38,"",3.8,"","",10.4,14.5],
+  ["Miguel Andujar",3200,"3B/OF","SD","SF",6.307,1.97,"",4.5,"","",4.6,15.1],
+  ["Austin Riley",4100,"3B","ATL","SEA",6.301,1.54,"",3.6,"","",16.0,23.5],
+  ["Ryan McMahon",2300,"3B","COL","BAL",6.289,2.73,"",5.1,"","",17.0,28.1],
+  ["Chase Meidroth",3600,"2B","CWS","LAA",6.236,1.73,"",3.6,"","",2.2,14.8],
+  ["Blake Perkins",2700,"OF","MIL","STL",6.227,2.31,"",4.5,"","",3.8,25.2],
+  ["Andrew Benintendi",3300,"OF","CWS","LAA",6.216,1.88,"",3.6,"","",7.4,17.3],
+  ["Gavin Sheets",3300,"1B","CWS","SF",6.209,1.88,"",4.5,"","",8.6,19.2],
+  ["Samuel Basallo",3900,"C","BAL","NYY",6.15,1.58,"",3.8,"","",16.8,23.1],
+  ["Miguel Rojas",2700,"2B/SS","LAD","HOU",6.149,2.28,"",5.4,"","",6.4,13.5],
+  ["Christian Walker",4300,"1B","ARI","LAD",6.149,1.43,"",3.8,"","",13.5,25.1],
+  ["Adley Rutschman",4400,"C","BAL","NYY",6.112,1.39,"",3.8,"","",11.4,16.2],
+  ["Miguel Vargas",4700,"3B","CWS","LAA",6.095,1.3,"",3.6,"","",7.9,22.4],
+  ["Leody Taveras",3500,"OF","TEX","NYY",6.051,1.73,"",3.8,"","",8.8,24.1],
+  ["Heliot Ramos",3200,"OF","SF","SD",6.047,1.89,"",3.7,"","",8.9,28.3],
+  ["Dylan Beavers",3300,"OF","BAL","NYY",6.03,1.83,"",3.8,"","",10.9,25.1],
+  ["Travis Bazzana",3300,"2B","CLE","KC",6.027,1.83,"",4.6,"","",6.3,18.2],
+  ["Nathan Church",3100,"OF","STL","MIL",6.025,1.94,"",4.2,"","",5.3,14.8],
+  ["Isaac Paredes",3800,"3B","CHC","LAD",6.008,1.58,"",3.8,"","",11.6,17.2],
+  ["Michael Massey",2800,"2B","KC","CLE",5.987,2.14,"",4.7,"","",9.7,16.1],
+  ["Brayan Rocchio",2900,"SS","CLE","KC",5.956,2.05,"",4.6,"","",3.9,17.8],
+  ["Jake Cronenworth",2400,"2B","SD","SF",5.94,2.47,"",4.5,"","",6.7,16.8],
+  ["Yainer Diaz",3200,"C","HOU","LAD",5.937,1.86,"",3.8,"","",10.9,14.2],
+  ["Santiago Espinal",2200,"2B/3B","CIN","HOU",5.861,2.66,"",5.4,"","",4.2,15.3],
+  ["Dominic Canzone",3100,"OF","SEA","ATL",5.828,1.88,"",4.0,"","",13.4,28.1],
+  ["Kyle Isbel",2400,"OF","KC","CLE",5.784,2.41,"",4.7,"","",4.7,19.8],
+  ["Victor Scott II",2100,"OF","STL","MIL",5.759,2.74,"",4.2,"","",3.8,24.5],
+  ["Luis Campusano",2800,"C","SD","SF",5.74,2.05,"",4.5,"","",7.1,19.3],
+  ["Travis d'Arnaud",2200,"C","LAA","CWS",5.707,2.59,"",4.2,"","",12.8,22.5],
+  ["Edgar Quero",2400,"C","CWS","LAA",5.664,2.36,"",3.6,"","",2.4,18.1],
+  ["Jorge Mateo",2600,"SS","ATL","SEA",5.651,2.17,"",3.6,"","",8.6,24.1],
+  ["Bryce Eldridge",2300,"1B","SF","SD",5.634,2.45,"",3.7,"","",8.1,26.4],
+  ["Jarred Kelenic",2000,"OF","ATL","LAA",5.633,2.82,"",3.6,"","",8.9,29.5],
+  ["Petey Halpin",2000,"OF","CLE","KC",5.564,2.78,"",4.6,"","",5.8,19.1],
+  ["Dustin Harris",2200,"OF","TEX","LAD",5.552,2.52,"",3.8,"","",6.9,24.8],
+  ["Cole Young",3200,"2B","SEA","ATL",5.544,1.73,"",4.0,"","",9.8,17.2],
+  ["Mike Yastrzemski",2900,"OF","SF","SEA",5.434,1.87,"",3.6,"","",12.7,25.3],
+  ["Pedro Pages",2700,"C","STL","MIL",5.21,1.93,"",4.2,"","",8.5,26.4],
+  ["Dominic Smith",3500,"1B/OF","ATL","SEA",5.19,1.48,"",3.6,"","",7.9,22.1],
+  ["Jeremiah Jackson",3900,"2B","BAL","NYY",5.146,1.32,"",3.8,"","",10.5,29.2],
+  ["Daniel Johnson",2000,"OF","CWS","LAD",5.131,2.57,"",3.8,"","",8.6,27.8],
+  ["Drew Gilbert",2700,"OF","NYM","SD",5.109,1.89,"",3.7,"","",6.6,24.1],
+  ["Cam Smith",3000,"OF","CHC","LAD",5.104,1.7,"",3.8,"","",4.3,22.5],
+  ["Mauricio Dubon",3100,"OF/SS","HOU","SEA",5.053,1.63,"",3.6,"","",6.1,14.1],
+  ["Leo Rivas",2100,"3B","SEA","ATL",5.03,2.4,"",4.0,"","",4.3,23.1],
+  ["Adam Frazier",3100,"2B","LAA","CWS",4.955,1.6,"",4.2,"","",4.4,15.2],
+  ["Coby Mayo",2500,"1B/3B","BAL","NYY",4.942,1.98,"",3.8,"","",11.6,30.5],
+  ["Tristan Peters",2600,"OF","TB","LAA",4.936,1.9,"",3.6,"","",5.6,19.4],
+  ["Patrick Bailey",2500,"C","SF","SD",4.59,1.84,"",3.7,"","",3.9,24.5]
 ];
 
 // Pitchers: Player,Salary,Position,Team,Opponent,Projection,Value,Hand,IPVariance,PropMarket,Avg2026K,CareerBaseline,ProjK,OddsEV
 const MLB_PITCHERS = [
-  ["Nolan McLean",10500,"SP","NYM","LAA",22.45,1.8,"",8.6,0,8.22,34.2,11.4],
-  ["Seth Lugo",9500,"RP","KC","SEA",18.12,1.8,"",5.9,0,5.65,24.8,2.1],
-  ["Chris Sale",9200,"SP","ATL","COL",20.88,1.8,"",8.2,0,7.84,29.5,8.6],
-  ["Michael King",8500,"RP","SD","CWS",17.65,1.8,"",6.4,0,6.12,27.1,5.4],
-  ["Emerson Hancock",8200,"SP","SEA","KC",14.92,1.8,"",5.1,0,4.88,19.4,-4.2],
-  ["Reid Detmers",7800,"SP","LAA","NYM",15.34,1.8,"",6.2,0,5.92,24.1,1.8],
-  ["Keider Montero",7400,"SP","DET","TEX",13.11,1.8,"",5.3,0,5.04,21.5,-2.5],
-  ["Roki Sasaki",7100,"SP","LAD","STL",16.85,1.8,"",7.8,0,7.45,32.8,14.2],
-  ["Kumar Rocker",6800,"SP","TEX","DET",12.55,1.8,"",5.8,0,5.48,25.4,6.3],
-  ["Michael McGreevy",6200,"SP","STL","LAD",10.94,1.8,"",4.1,0,3.91,18.2,-12.1],
-  ["Sean Burke",5800,"SP","CWS","SD",9.78,1.8,"",4.4,0,4.15,20.1,-8.5],
-  ["Chase Dollander",5400,"SP","COL","ATL",9.12,1.8,"",4.9,0,4.62,23.6,3.1]
+  ["Jose Soriano",9600,"SP","LAA","CWS",19.17,1.8,"",5.5,0,5.5,25.0,6.42],
+  ["Cam Schlittler",10000,"SP","NYY","BAL",18.55,1.8,"",6.5,0,6.5,28.4,6.85],
+  ["Logan Gilbert",9000,"SP","SEA","ATL",18.1,1.8,"",6.5,0,6.5,26.1,5.92],
+  ["Yoshinobu Yamamoto",9300,"SP","LAD","HOU",17.45,1.8,"",5.5,0,5.5,28.2,6.15],
+  ["Edward Cabrera",7700,"SP","CHC","CIN",14.45,1.8,"",5.5,0,5.5,27.6,5.75],
+  ["Davis Martin",7800,"SP","CWS","LAA",13.93,1.8,"",5.5,0,5.5,22.9,6.04],
+  ["Shane Baz",7500,"SP","BAL","NYY",13.66,1.8,"",4.5,0,4.5,24.5,4.88],
+  ["JR Ritchie",8500,"SP","ATL","SEA",13.08,1.8,"",4.5,0,4.5,23.1,4.62],
+  ["Michael Wacha",8300,"SP","KC","CLE",12.28,1.8,"",4.5,0,4.5,21.4,4.91],
+  ["Chad Patrick",7200,"SP","MIL","STL",12.12,1.8,"",3.5,0,3.5,22.5,3.22],
+  ["Randy Vasquez",8000,"SP","SD","SF",11.96,1.8,"",4.5,0,4.5,19.8,3.84],
+  ["Tanner Bibee",8200,"SP","CLE","KC",11.52,1.8,"",4.5,0,4.5,24.2,4.59],
+  ["Kyle Leahy",6300,"RP","STL","MIL",10.93,1.8,"",5.5,0,5.5,24.1,4.88],
+  ["Trevor McDonald",4000,"RP","SF","SD",10.47,1.8,"",3.5,0,3.5,18.5,3.65],
+  ["Ryan Weiss",5500,"RP","HOU","LAD",10.02,1.8,"",3.5,0,3.5,19.8,3.42],
+  ["Chase Petty",6800,"SP","CIN","CHC",7.85,1.8,"",2.5,0,2.5,11.8,3.12]
 ];
 
 // ── STATE ──────────────────────────────────────────────────────
@@ -2176,10 +2272,25 @@ function ownRender() {
   });
 
   const all = ownCalcAll();
+  // tier pills
   document.getElementById('ownCountChalk').textContent = data.filter(p=>p.own>=30).length;
   document.getElementById('ownCountHigh').textContent  = data.filter(p=>p.own>=20&&p.own<30).length;
   document.getElementById('ownCountMid').textContent   = data.filter(p=>p.own>=5&&p.own<20).length;
   document.getElementById('ownCountLow').textContent   = data.filter(p=>p.own<5).length;
+
+  // player count badge
+  const pcEl = document.getElementById('ownPlayerCount');
+  if (pcEl) pcEl.textContent = all.length + ' players';
+
+  // DK stat cards
+  const avgEl = document.getElementById('ownAvgOwn');
+  if (avgEl && data.length) avgEl.textContent = (data.reduce((s,p)=>s+p.own,0)/data.length).toFixed(1)+'%';
+  const hpEl = document.getElementById('ownHighProj');
+  if (hpEl && data.length) hpEl.textContent = Math.max(...data.map(p=>p.proj)).toFixed(1);
+  const epEl = document.getElementById('ownElitePlays');
+  if (epEl) epEl.textContent = data.filter(p=>p.own>15).length;
+  const vpEl = document.getElementById('ownValuePlays');
+  if (vpEl) vpEl.textContent = data.filter(p=>p.value>2.5).length;
 
   const start = ownPage * OWN_PAGE;
   const slice = data.slice(start, start+OWN_PAGE);
@@ -2192,7 +2303,7 @@ function ownRender() {
     const barW = Math.round(Math.min(100,(p.own/35)*100));
     const vsLabel = p.raw[4] ? `vs ${p.raw[4]}` : '';
     const sigHTML = sigs.map(s =>
-      `<span class="own-sig-dot" style="background:${s?'#c8922a':'#dddbd5'};"></span>`
+      `<span class="own-sig-dot" style="background:${s?'#3b82f6':'#1f2937'};"></span>`
     ).join('');
 
     const tr = document.createElement('tr');
