@@ -4,109 +4,116 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>shortopen — Analysis</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script>window.tailwind={config:{}};</script>
+<script src="https://cdn.tailwindcss.com?plugins="></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --bg: #0a0a0a; --surface: #111111; --surface2: #181818;
-    --border: #222222; --border2: #2a2a2a;
-    --gold: #c8922a; --gold-light: #e4a83a;
-    --white: #f0ece4; --muted: #6b6560; --text: #d4cfc8;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.7; overflow-x: hidden; }
-  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 999; opacity: 0.4; }
-
+:root{--bg:#05070b;--gold:#f4b942;--green:#3fc17a;--red:#ef4444;--blue:#57a7ff;--muted:#738296;--text:#e8edf5;}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 8% 12%,rgba(244,185,66,.1),transparent 32%),radial-gradient(circle at 92% 88%,rgba(59,130,246,.12),transparent 35%),radial-gradient(circle at 50% 50%,rgba(34,197,94,.04),transparent 60%),var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden}
+.glass{background:rgba(255,255,255,.03);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.07)}
+.nav-link{position:relative;font-size:.82rem;text-transform:uppercase;letter-spacing:.22em;color:#6f8199;transition:.25s ease;text-decoration:none}
+.nav-link:hover{color:white}.nav-link.active{color:var(--gold)}
+.nav-link.active::after{content:'';position:absolute;left:0;bottom:-22px;width:100%;height:2px;background:var(--gold)}
+.market-card{transition:.25s ease;position:relative;overflow:hidden}
+.market-card:hover{border-color:rgba(244,185,66,.28)!important;transform:translateY(-2px)}
+.market-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at top right,rgba(244,185,66,.08),transparent 40%);opacity:0;transition:.35s ease;pointer-events:none}
+.market-card:hover::before{opacity:1}
+.live-dot{width:8px;height:8px;border-radius:9999px;background:var(--green);animation:pulse 1.6s infinite;flex-shrink:0}
+@keyframes pulse{0%{transform:scale(.9);opacity:.5}50%{transform:scale(1);opacity:1}100%{transform:scale(.9);opacity:.5}}
+.ticker-anim{animation:ticker 32s linear infinite}
+@keyframes ticker{from{transform:translateX(0%)}to{transform:translateX(-50%)}}
+.hero-glow{position:absolute;width:520px;height:520px;border-radius:9999px;background:rgba(244,185,66,.08);filter:blur(120px);top:-220px;right:-120px;pointer-events:none}
+.filter-panel{display:none}.filter-panel.active{display:block}
+.article-card .card-full{display:none}.article-card.open .card-full{display:block}
+.article-card.open .expand-arrow{transform:rotate(180deg)}
+.expand-arrow{display:inline-block;transition:transform .25s;font-size:.75rem}
+.trend-card{background:rgba(13,20,36,.85);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08);border-radius:18px;overflow:hidden;transition:all .2s;position:relative}
+.trend-card:hover{border-color:rgba(244,185,66,.3);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.4),0 0 0 1px rgba(244,185,66,.1)}
+.tc-hidden{display:none}.tc-top{display:flex;align-items:stretch}
+.tc-signal-bar{width:3px;flex-shrink:0;border-radius:0 2px 2px 0}
+.tc-sig-bullish{background:#22c55e}.tc-sig-bearish{background:#ef4444}.tc-sig-caution{background:#eab308}
+.tc-head{flex:1;padding:16px 18px 12px}
+.tc-sport-tag{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4a5a7a;margin-bottom:4px}
+.tc-pill{display:inline-block;font-size:.58rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-bottom:5px}
+.tc-pill-bullish{background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.4);letter-spacing:.08em}
+.tc-pill-bearish{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.4);letter-spacing:.08em}
+.tc-pill-caution{background:rgba(234,179,8,.15);color:#eab308;border:1px solid rgba(234,179,8,.4);letter-spacing:.08em}
+.tc-player{font-size:1.05rem;font-weight:900;color:#f0ece4;margin-bottom:5px;letter-spacing:-.01em;line-height:1.2}
+.tc-note{font-size:.78rem;color:#8a9ab8;line-height:1.6;margin-top:2px}
+.tc-stats{padding:12px 18px 16px;border-top:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;gap:8px;background:rgba(0,0,0,.15)}
+.tc-stat-row{display:flex;align-items:center;gap:8px}
+.tc-stat-label{font-size:.6rem;color:#4a5a7a;flex:1;letter-spacing:.04em;text-transform:uppercase}
+.tc-bar-wrap{width:72px;height:5px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden}
+.tc-bar{height:100%;border-radius:99px;transition:width .3s}
+.bar-up{background:#22c55e}.bar-dn{background:#ef4444}.bar-flat{background:#eab308}
+.tc-stat-val{font-size:.72rem;font-weight:600;min-width:60px;text-align:right}
+.tv-up{color:#22c55e}.tv-dn{color:#ef4444}.tv-flat{color:#eab308}.tv-neu{color:#4a5a7a}.tc-arrow{font-size:.6rem}
+.full-body h3{font-size:1rem;font-weight:800;color:#fff;margin:22px 0 10px;padding-left:12px;border-left:3px solid var(--gold)}
+.full-body h3:first-child{margin-top:0}
+.full-body p{font-size:.9rem;color:var(--text);line-height:1.85;margin-bottom:14px}
+.full-body strong{color:#fff;font-weight:700}
+.full-body .callout{border-left:2px solid var(--gold);padding:14px 18px;background:rgba(244,185,66,.06);margin:18px 0;font-size:.88rem;color:var(--text);line-height:1.75;border-radius:0 8px 8px 0}
+.full-body .rule-list{list-style:none;margin:14px 0 18px;padding:0;display:flex;flex-direction:column;gap:7px}
+.full-body .rule-list li{display:flex;gap:12px;font-size:.88rem;color:var(--text);padding:8px 12px;border:1px solid rgba(255,255,255,.05);border-radius:8px;background:rgba(255,255,255,.02);line-height:1.6}
+.full-body .rule-list li::before{content:'✦';color:var(--gold);font-size:.7rem;margin-top:3px;flex-shrink:0}
+.feat-body p{font-size:.88rem;color:var(--text);line-height:1.8;margin-bottom:1rem}
+.feat-body h3{font-size:.95rem;font-weight:800;color:#fff;margin:1.4rem 0 .5rem;padding-left:10px;border-left:2px solid var(--gold)}
+.feat-body em{font-style:italic}
+.tension-side{font-size:.62rem;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:4px;white-space:nowrap;flex-shrink:0}
+.tension-side.coach{background:rgba(234,179,8,.1);color:#eab308;border:.5px solid rgba(234,179,8,.3)}
+.tension-side.gm{background:rgba(34,197,94,.1);color:#22c55e;border:.5px solid rgba(34,197,94,.3)}
+.dd-filter{border:1px solid rgba(255,255,255,.08);color:#738296;font-size:.7rem;font-weight:600;letter-spacing:.08em;padding:6px 14px;border-radius:8px;cursor:pointer;transition:all .15s;text-transform:uppercase;background:rgba(255,255,255,.03);font-family:'Inter',sans-serif}
+.dd-filter:hover{border-color:rgba(244,185,66,.28);color:var(--gold)}
+.dd-filter.active{background:rgba(244,185,66,.1);border-color:var(--gold);color:var(--gold)}
+.bullish-btn.active{background:rgba(34,197,94,.1);border-color:#22c55e;color:#22c55e}
+.bearish-btn.active{background:rgba(239,68,68,.1);border-color:#ef4444;color:#ef4444}
+.caution-btn.active{background:rgba(234,179,8,.1);border-color:#eab308;color:#eab308}
+.tab-btn{position:relative;font-size:.8rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#738296;cursor:pointer;background:transparent;border:none;padding:14px 0;font-family:'Inter',sans-serif;transition:color .2s}
+.tab-btn:hover{color:#fff}.tab-btn.active{color:var(--gold)}
+.tab-btn.active::after{content:'';position:absolute;left:0;bottom:0;width:100%;height:2px;background:var(--gold);border-radius:1px}
+.fan-step-num{width:24px;height:24px;border-radius:50%;background:rgba(244,185,66,.12);border:1px solid rgba(244,185,66,.3);color:var(--gold);font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.fan-step-text{font-size:.82rem;color:var(--text);line-height:1.55}
+.fan-step-text a{color:var(--gold);text-decoration:none}
+.sport-block-label{font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);padding:22px 0 10px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:18px;margin-top:28px;display:flex;align-items:center;gap:10px}
+.sport-block-label::before{content:'';display:block;width:16px;height:1px;background:var(--gold)}
+.sport-block-label:first-child{padding-top:0;margin-top:0}
   /* NAV */
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 20px 48px; background: rgba(10,10,10,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
-  .nav-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.25rem; color: var(--white); letter-spacing: 0.04em; text-decoration: none; }
-  .nav-logo span { color: var(--gold); }
-  .nav-links { display: flex; gap: 36px; list-style: none; }
-  .nav-links a { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
-  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
-
-  /* HEADER */
-  .page-header { padding: 140px 48px 56px; max-width: 1100px; margin: 0 auto; }
-  .page-eyebrow { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; opacity: 0; animation: fadeUp 0.7s ease 0.1s forwards; }
-  .page-eyebrow::after { content: ''; display: block; width: 40px; height: 1px; background: var(--gold); opacity: 0.4; }
-  .page-title { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(38px, 6vw, 80px); color: var(--white); line-height: 1.02; letter-spacing: -0.02em; margin-bottom: 20px; opacity: 0; animation: fadeUp 0.8s ease 0.25s forwards; }
-  .page-title em { font-style: italic; color: var(--gold); }
-  .page-sub { font-size: 1rem; color: var(--muted); max-width: 560px; line-height: 1.8; opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards; }
-
-  /* FILTER TABS */
-  .filter-bar { max-width: 1100px; margin: 0 auto; padding: 0 48px 48px; display: flex; gap: 2px; border-bottom: 1px solid var(--border2); opacity: 0; animation: fadeUp 0.7s ease 0.5s forwards; }
-  .filter-tab { padding: 12px 26px; font-family: 'DM Sans', sans-serif; font-size: 0.76rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); background: transparent; border: none; border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; transition: color 0.2s, border-color 0.2s; }
-  .filter-tab:hover { color: var(--white); }
-  .filter-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
-
-  /* CONTENT */
-  .content-wrap { max-width: 1100px; margin: 0 auto; padding: 56px 48px 100px; }
-  .sport-section { display: none; }
-  .sport-section.active { display: block; }
-
-  .sport-section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid var(--border2); }
-  .sport-section-title { font-family: 'Playfair Display', serif; font-size: clamp(24px, 3vw, 36px); font-weight: 900; color: var(--white); letter-spacing: -0.02em; }
-  .sport-section-title em { font-style: italic; color: var(--gold); }
-  .sport-section-count { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
-
-  /* GRID */
-  .articles-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-bottom: 2px; }
-
-  /* CARDS */
-  .article-card { background: var(--surface); border: 1px solid var(--border); overflow: hidden; transition: border-color 0.2s; cursor: pointer; }
-  .article-card:hover { border-color: var(--gold); }
-  .article-card.open { border-color: var(--gold); }
-  .card-top { padding: 32px 32px 28px; }
-  .card-tag { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-  .card-tag::after { content: ''; display: block; height: 1px; width: 24px; background: var(--gold); opacity: 0.4; }
-  .card-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--white); line-height: 1.3; margin-bottom: 12px; letter-spacing: -0.01em; }
-  .card-intro { font-size: 0.88rem; color: var(--muted); line-height: 1.75; margin-bottom: 20px; }
-  .card-expand-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); background: transparent; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; padding: 0; transition: gap 0.2s; }
-  .card-expand-btn:hover { gap: 12px; }
-  .expand-arrow { font-size: 0.7rem; transition: transform 0.25s; }
-  .article-card.open .expand-arrow { transform: rotate(180deg); }
-
-  /* FULL READ */
-  .card-full { display: none; border-top: 1px solid var(--border2); padding: 32px 32px 36px; background: var(--surface2); }
-  .article-card.open .card-full { display: block; }
-  .full-read-label { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
-  .full-read-label::after { content: ''; flex: 1; height: 1px; background: var(--border2); }
-  .full-body h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--white); margin: 24px 0 10px; letter-spacing: -0.01em; }
-  .full-body h3:first-child { margin-top: 0; }
-  .full-body p { font-size: 0.92rem; color: var(--text); line-height: 1.88; margin-bottom: 16px; }
-  .full-body strong { color: var(--white); font-weight: 500; }
-  .full-body .callout { border-left: 2px solid var(--gold); padding: 14px 20px; background: rgba(200,146,42,0.06); margin: 20px 0; font-size: 0.9rem; color: var(--text); line-height: 1.75; }
-  .full-body .rule-list { list-style: none; margin: 16px 0 20px; }
-  .full-body .rule-list li { display: flex; gap: 12px; font-size: 0.9rem; color: var(--text); padding: 8px 0; border-bottom: 1px solid var(--border); line-height: 1.6; }
-  .full-body .rule-list li:last-child { border-bottom: none; }
-  .full-body .rule-list li::before { content: '✦'; color: var(--gold); font-size: 0.7rem; margin-top: 3px; flex-shrink: 0; }
-
-  /* UNIVERSAL */
-  .universal-section { margin-top: 56px; padding-top: 56px; border-top: 1px solid var(--border2); }
-  .universal-header { margin-bottom: 32px; }
-  .universal-eyebrow { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
-  .universal-title { font-family: 'Playfair Display', serif; font-size: clamp(22px, 2.8vw, 32px); font-weight: 900; color: var(--white); letter-spacing: -0.02em; }
-  .universal-title em { font-style: italic; color: var(--gold); }
-
-  /* FOOTER */
-  footer { border-top: 1px solid var(--border); padding: 40px 48px; display: flex; justify-content: space-between; align-items: center; }
-  .footer-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1rem; color: var(--white); }
-  .footer-logo span { color: var(--gold); }
-  .footer-copy { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; }
-
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(0.65); } }
-
-  @media (max-width: 900px) {
-    nav { padding: 18px 24px; } .nav-links { display: none; }
-    .page-header { padding: 110px 24px 40px; }
-    .filter-bar { padding: 0 24px 40px; overflow-x: auto; }
-    .content-wrap { padding: 40px 24px 80px; }
-    .articles-grid { grid-template-columns: 1fr; }
-    footer { padding: 30px 24px; flex-direction: column; gap: 12px; text-align: center; }
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 48px;
+    background: rgba(5,7,11,0.97);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    height: 62px;
   }
-
-  /* HAMBURGER MENU */
+  .nav-logo {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: #f0ece4;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: #f4b942; }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    color: #4d6070;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: #f4b942; }
   .hamburger {
     display: none;
     flex-direction: column;
@@ -117,166 +124,52 @@
     border: none;
     z-index: 200;
   }
-  .hamburger span {
-    display: block;
-    width: 24px;
-    height: 2px;
-    background: var(--white);
-    transition: all 0.25s ease;
-  }
+  .hamburger span { display: block; width: 22px; height: 2px; background: #f0ece4; transition: all 0.25s; }
   .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .hamburger.open span:nth-child(2) { opacity: 0; }
   .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
   .mobile-menu {
     display: none;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(10,10,10,0.98);
-    backdrop-filter: blur(16px);
+    background: rgba(5,7,11,0.98);
+    backdrop-filter: blur(20px);
     z-index: 150;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0;
   }
   .mobile-menu.open { display: flex; }
   .mobile-menu a {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.8rem, 8vw, 2.4rem);
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1.6rem, 7vw, 2.2rem);
     font-weight: 900;
-    color: var(--white);
+    color: #f0ece4;
     text-decoration: none;
-    letter-spacing: -0.02em;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
     width: 80%;
     text-align: center;
     transition: color 0.2s;
   }
-  .mobile-menu a:last-child { border-bottom: none; }
-  .mobile-menu a:hover, .mobile-menu a.active { color: var(--gold); }
+  .mobile-menu a:hover, .mobile-menu a.active { color: #f4b942; }
   .mobile-menu-close {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    background: transparent;
-    border: none;
-    color: var(--muted);
-    font-size: 1.4rem;
-    cursor: pointer;
-    padding: 8px;
+    position: absolute; top: 24px; right: 24px;
+    background: transparent; border: none; color: #4d6070;
+    font-size: 1.4rem; cursor: pointer; padding: 8px;
   }
-  @media (max-width: 900px) {
-    .hamburger { display: flex; }
+  @media (max-width: 640px) {
+    nav { padding: 14px 20px; }
     .nav-links { display: none !important; }
+    .hamburger { display: flex; }
   }
-
-
-  /* ── DEEP DIVE ─────────────────────────────────────────── */
-  .dd-section-label{font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
-  .dd-section-label::before{content:'';display:block;width:20px;height:1px;background:var(--gold);}
-  .dd-header{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:24px;flex-wrap:wrap;}
-  .dd-header-left{flex:1;}
-  .dd-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:var(--white);margin-bottom:6px;letter-spacing:-.01em;}
-  .dd-sub{font-size:.82rem;color:var(--muted);max-width:480px;line-height:1.6;}
-  .dd-filters{display:flex;gap:6px;flex-wrap:wrap;padding-top:4px;}
-  .dd-filter{background:var(--surface);border:1px solid var(--border2);color:var(--muted);font-size:.7rem;font-weight:600;letter-spacing:.06em;padding:5px 14px;border-radius:2px;cursor:pointer;transition:all .15s;text-transform:uppercase;}
-  .dd-filter.active{background:rgba(200,146,42,.1);border-color:var(--gold);color:var(--gold);}
-  .bullish-btn.active{background:rgba(34,197,94,.1);border-color:#22c55e;color:#22c55e;}
-  .bearish-btn.active{background:rgba(239,68,68,.1);border-color:#ef4444;color:#ef4444;}
-  .caution-btn.active{background:rgba(234,179,8,.1);border-color:#eab308;color:#eab308;}
-
-  /* Trend cards — exact colors from approved widget */
-  .dd-trend-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px;margin-bottom:8px;}
-  .trend-card{background:#1a1f2e;border:.5px solid #2a3347;border-radius:8px;overflow:hidden;transition:border-color .15s,transform .15s;}
-  .trend-card:hover{border-color:#3a4a67;transform:translateY(-1px);}
-  .tc-hidden{display:none;}
-  .tc-top{display:flex;align-items:stretch;}
-  .tc-signal-bar{width:4px;flex-shrink:0;}
-  .tc-sig-bullish{background:#22c55e;}.tc-sig-bearish{background:#ef4444;}.tc-sig-caution{background:#eab308;}
-  .tc-head{flex:1;padding:14px 16px 10px;}
-  .tc-sport-tag{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4a5a7a;margin-bottom:4px;}
-  .tc-pill{display:inline-block;font-size:.58rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-bottom:5px;}
-  .tc-pill-bullish{background:rgba(34,197,94,.12);color:#22c55e;border:.5px solid rgba(34,197,94,.35);}
-  .tc-pill-bearish{background:rgba(239,68,68,.12);color:#ef4444;border:.5px solid rgba(239,68,68,.35);}
-  .tc-pill-caution{background:rgba(234,179,8,.12);color:#eab308;border:.5px solid rgba(234,179,8,.35);}
-  .tc-player{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:900;color:#f0ece4;letter-spacing:-.01em;margin-bottom:4px;}
-  .tc-note{font-size:.75rem;color:#8090a8;line-height:1.55;}
-  .tc-stats{padding:10px 16px 14px;border-top:.5px solid #2a3347;display:flex;flex-direction:column;gap:7px;}
-  .tc-stat-row{display:flex;align-items:center;gap:8px;}
-  .tc-stat-label{font-size:.6rem;color:#4a5a7a;flex:1;letter-spacing:.04em;text-transform:uppercase;}
-  .tc-bar-wrap{width:72px;height:4px;background:#1e2438;border-radius:2px;overflow:hidden;}
-  .tc-bar{height:100%;border-radius:2px;}
-  .bar-up{background:#22c55e;}.bar-dn{background:#ef4444;}.bar-flat{background:#eab308;}
-  .tc-stat-val{font-size:.72rem;font-weight:600;min-width:60px;text-align:right;}
-  .tv-up{color:#22c55e;}.tv-dn{color:#ef4444;}.tv-flat{color:#eab308;}.tv-neu{color:#4a5a7a;}
-  .tc-arrow{font-size:.6rem;margin-left:1px;}
-
-  /* Featured article — off-gray, not blue */
-  .featured-article{border:1px solid var(--border2);border-radius:4px;overflow:hidden;margin-bottom:32px;}
-  .feat-label{display:flex;align-items:center;gap:10px;padding:13px 24px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);}
-  .feat-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;}
-  .feat-inner{display:flex;}
-  .feat-left{flex:1;padding:30px 34px;border-right:1px solid var(--border);background:var(--surface);}
-  .feat-right{width:252px;flex-shrink:0;padding:26px 22px;display:flex;flex-direction:column;gap:14px;background:var(--surface2);}
-  .feat-sport-tag{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
-  .feat-title{font-family:'Playfair Display',serif;font-size:1.45rem;font-weight:900;color:var(--white);line-height:1.25;letter-spacing:-.02em;margin-bottom:8px;}
-  .feat-byline{font-size:.72rem;color:var(--muted);margin-bottom:22px;}
-  .feat-body p{font-size:.87rem;color:var(--text);line-height:1.78;margin-bottom:1rem;}
-  .feat-body h3{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--white);margin:1.5rem 0 .55rem;letter-spacing:-.01em;border-left:2px solid var(--gold);padding-left:10px;}
-  .feat-body em{font-style:italic;}
-  .feat-sidebar-block{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:13px 15px;}
-  .feat-sidebar-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
-  .feat-sidebar-text{font-size:.78rem;color:var(--text);line-height:1.6;}
-  .feat-tension-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px;}
-  .tension-side{font-size:.62rem;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:2px;white-space:nowrap;flex-shrink:0;}
-  .tension-side.coach{background:rgba(234,179,8,.1);color:#eab308;border:.5px solid rgba(234,179,8,.3);}
-  .tension-side.gm{background:rgba(34,197,94,.1);color:#22c55e;border:.5px solid rgba(34,197,94,.3);}
-  .tension-label{font-size:.76rem;color:var(--text);line-height:1.5;}
-
-  /* Fan CTA bar */
-  .fan-cta-bar{padding:14px 20px;border:1px solid var(--border);border-radius:3px;background:var(--surface2);font-size:.78rem;color:var(--muted);display:flex;align-items:center;gap:10px;margin-top:24px;}
-  .fan-cta-dot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0;}
-  .fan-cta-bar a{color:var(--gold);text-decoration:none;}
-  .fan-cta-bar a:hover{text-decoration:underline;}
-
-  /* All Sports block labels */
-  .sport-block-label{font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);padding:22px 0 10px;border-bottom:1px solid var(--border2);margin-bottom:18px;margin-top:12px;}
-  .sport-block-label:first-child{padding-top:0;margin-top:0;}
-
-  @media(max-width:768px){.dd-trend-grid{grid-template-columns:1fr;}.dd-filters{gap:4px;}.dd-filter{font-size:.65rem;padding:4px 10px;}.feat-inner{flex-direction:column;}.feat-left{padding:20px 18px;border-right:none;border-bottom:1px solid var(--border);}.feat-right{width:100%;padding:18px;}.feat-title{font-size:1.15rem;}.dd-header{flex-direction:column;}}
-
-
-  @media(max-width:480px){
-    .content-wrap { padding: 28px 16px 60px; }
-    .filter-bar { padding: 0 16px 32px; gap: 0; }
-    .filter-tab { padding: 10px 16px; font-size: 0.7rem; }
-    .tc-stat-val { min-width: 48px; font-size: .68rem; }
-    .tc-bar-wrap { width: 50px; }
-    .feat-title { font-size: 1rem; }
-    .feat-left { padding: 16px 14px; }
-    .dd-title { font-size: 1.2rem; }
-  }
-
-  /* ── FAN TAKE SEGMENT ───────────────────────────────────── */
-  .fan-segment{margin-top:24px;border:1px solid var(--border2);border-radius:4px;overflow:hidden;}
-  .fan-seg-header{display:flex;align-items:center;gap:10px;padding:13px 24px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
-  .fan-seg-dot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0;}
-  .fan-seg-label{color:var(--text);}
-  .fan-seg-body{padding:24px 28px;background:var(--surface);}
-  .fan-seg-intro{font-size:.85rem;color:var(--text);line-height:1.65;margin-bottom:20px;}
-  .fan-seg-steps{display:flex;flex-direction:column;gap:12px;}
-  .fan-seg-step{display:flex;align-items:flex-start;gap:14px;}
-  .fan-step-num{width:24px;height:24px;border-radius:50%;background:rgba(200,146,42,0.12);border:1px solid rgba(200,146,42,0.3);color:var(--gold);font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
-  .fan-step-text{font-size:.82rem;color:var(--text);line-height:1.55;}
-  .fan-step-text a{color:var(--gold);text-decoration:none;}
-  .fan-step-text a:hover{text-decoration:underline;}
-
 </style>
 </head>
 <body>
 
+
+
+<!-- HERO -->
 <nav>
   <a href="index.html" class="nav-logo">short<span>open</span></a>
   <ul class="nav-links">
@@ -284,576 +177,274 @@
     <li><a href="market.html">Market</a></li>
     <li><a href="optimizer.html">Optimizer</a></li>
     <li><a href="hr-index.html">HR Index</a></li>
-    <li><a href="nfl-draft.html">NFL Draft</a></li>
+    <li><a href="nfl-draft-market.html">NFL Draft</a></li>
+    <li><a href="film-room.html">Film Room</a></li>
     <li><a href="about.html">About</a></li>
     <li><a href="subscribe.html">Subscribe</a></li>
   </ul>
-  <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+  <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
 </nav>
-
-<!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
   <a href="index.html" onclick="toggleMobileMenu()">Home</a>
-  <a href="analysis.html" onclick="toggleMobileMenu()">Analysis</a>
+  <a href="analysis.html" class="active" onclick="toggleMobileMenu()">Analysis</a>
   <a href="market.html" onclick="toggleMobileMenu()">Market</a>
   <a href="optimizer.html" onclick="toggleMobileMenu()">Optimizer</a>
   <a href="hr-index.html" onclick="toggleMobileMenu()">HR Index</a>
-  <a href="nfl-draft.html" onclick="toggleMobileMenu()">NFL Draft</a>
+  <a href="nfl-draft-market.html" onclick="toggleMobileMenu()">NFL Draft</a>
+  <a href="film-room.html" onclick="toggleMobileMenu()">Film Room</a>
   <a href="about.html" onclick="toggleMobileMenu()">About</a>
   <a href="subscribe.html" onclick="toggleMobileMenu()">Subscribe</a>
 </div>
 
-
-<div class="page-header">
-  <p class="page-eyebrow">Market Education</p>
-  <h1 class="page-title">Find the <em>edge.</em><br>Know the market.</h1>
-  <p class="page-sub">Sport-by-sport breakdowns on how to read markets, exploit inefficiencies, and build a process that compounds over time.</p>
-</div>
-
-<div class="filter-bar">
-  <button class="filter-tab active" onclick="switchSport('allsports',this)">All Sports</button>
-  <button class="filter-tab" onclick="switchSport('deepdive',this)">Deep Dive</button>
-</div>
-
-<div class="content-wrap">
-
-<!-- ALL SPORTS — only active when tab = allsports -->
-<div class="sport-section active" id="section-allsports">
-  <div class="sport-section-header">
-    <div class="sport-section-title">Market <em>Intro</em></div>
+<section class="relative overflow-hidden border-b border-white/5">
+  <div class="hero-glow"></div>
+  <div class="max-w-[1600px] mx-auto px-6 xl:px-10 py-20 relative z-10">
+    <div class="grid xl:grid-cols-[1.3fr_.7fr] gap-12 items-center">
+      <div>
+        <div class="inline-flex items-center gap-3 rounded-full border px-5 py-3 text-xs uppercase tracking-[.24em] mb-8" style="border-color:rgba(244,185,66,.2);background:rgba(244,185,66,.1);color:#fde68a">
+          <div class="live-dot"></div>Market Education
+        </div>
+        <h1 class="text-[3.5rem] md:text-[5.5rem] leading-[.9] font-black tracking-tight">
+          Find The Edge.
+          <span class="block" style="color:var(--gold)">Know The Market.</span>
+        </h1>
+        <p class="mt-8 max-w-2xl text-xl leading-9 text-zinc-400">Deep dives into public psychology, line movement, ownership leverage, draft narratives, market inefficiencies, and the hidden signals sportsbooks quietly react to.</p>
+        <div class="mt-12 grid md:grid-cols-3 gap-5">
+          <div class="glass rounded-[28px] p-6 market-card"><div class="text-xs uppercase tracking-[.22em] text-zinc-500">Articles</div><div class="mt-3 text-5xl font-black">128</div></div>
+          <div class="glass rounded-[28px] p-6 market-card"><div class="text-xs uppercase tracking-[.22em] text-zinc-500">Deep Dives</div><div class="mt-3 text-5xl font-black" style="color:var(--gold)">42</div></div>
+          <div class="glass rounded-[28px] p-6 market-card"><div class="text-xs uppercase tracking-[.22em] text-zinc-500">Trend Signals</div><div class="mt-3 text-5xl font-black text-emerald-400">LIVE</div></div>
+        </div>
+      </div>
+      <div class="glass rounded-[28px] p-5">
+        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+          <div><div class="text-xs uppercase tracking-[.22em] text-zinc-500">Core Principles</div><div class="mt-1 text-xl font-black">Market Thesis</div></div>
+          <div class="rounded-full px-4 py-2 text-xs uppercase tracking-[.2em]" style="background:rgba(244,185,66,.1);color:var(--gold)">shortopen</div>
+        </div>
+        <div class="mt-5 space-y-3">
+          <div class="rounded-[16px] border border-white/10 bg-black/20 p-4 market-card"><div class="text-xs uppercase tracking-[.18em] text-zinc-500">01</div><div class="mt-2 text-base font-black leading-tight">Markets overreact to narratives.</div></div>
+          <div class="rounded-[16px] border border-white/10 bg-black/20 p-4 market-card"><div class="text-xs uppercase tracking-[.18em] text-zinc-500">02</div><div class="mt-2 text-base font-black leading-tight">Public betting is emotional.</div></div>
+          <div class="rounded-[16px] border border-white/10 bg-black/20 p-4 market-card"><div class="text-xs uppercase tracking-[.18em] text-zinc-500">03</div><div class="mt-2 text-base font-black leading-tight">Process compounds. Luck doesn't.</div></div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="sport-articles-grid">
+</section>
+
+<!-- FEATURED BANNER -->
+<section class="max-w-[1600px] mx-auto px-6 xl:px-10 py-12">
+  <div class="glass rounded-[36px] overflow-hidden market-card">
+    <div class="grid xl:grid-cols-[1.2fr_.8fr]">
+      <div class="p-10 xl:p-14">
+        <div class="flex flex-wrap gap-3">
+          <div class="rounded-full border px-4 py-2 text-xs uppercase tracking-[.2em]" style="border-color:rgba(244,185,66,.2);background:rgba(244,185,66,.1);color:#fde68a">NBA</div>
+          <div class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[.2em] text-zinc-400">Market Psychology</div>
+        </div>
+        <h2 class="mt-8 text-[2.5rem] md:text-[3.5rem] leading-[.95] font-black">How Reverse Line Movement<br>Traps Recreational Bettors</h2>
+        <p class="mt-8 max-w-3xl text-lg leading-9 text-zinc-400">Why sportsbooks move numbers against public percentages and what those movements reveal about sharp positioning, market confidence, and hidden information entering the betting ecosystem.</p>
+        <div class="mt-10 flex flex-wrap gap-4">
+          <button style="background:var(--gold);color:#000;border:none" class="rounded-2xl px-6 py-4 font-black text-sm uppercase tracking-[.18em] cursor-pointer">Open Breakdown</button>
+          <button class="glass rounded-2xl px-6 py-4 text-sm font-semibold text-zinc-300 cursor-pointer border-0">Save Article</button>
+        </div>
+      </div>
+      <div class="border-l border-white/5 bg-black/20 p-10">
+        <div class="text-xs uppercase tracking-[.22em] text-zinc-500">Core Thesis</div>
+        <p class="mt-6 text-xl leading-10 text-zinc-300">When sportsbooks move lines against public percentages, they are often reacting to respected money entering the market — not casual betting volume.</p>
+        <div class="mt-10 space-y-4">
+          <div class="rounded-[20px] border border-white/10 bg-white/5 p-5"><div class="flex items-center justify-between"><div class="text-sm uppercase tracking-[.18em] text-zinc-500">Public Bets</div><div class="text-2xl font-black text-red-400">78%</div></div></div>
+          <div class="rounded-[20px] border border-white/10 bg-white/5 p-5"><div class="flex items-center justify-between"><div class="text-sm uppercase tracking-[.18em] text-zinc-500">Line Movement</div><div class="text-2xl font-black text-emerald-400">Reverse</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<div class="max-w-[1600px] mx-auto px-6 xl:px-10 pb-24">
+  <div class="flex gap-8 border-b border-white/5 mb-12">
+    <button class="tab-btn active" onclick="switchSport('allsports',this)">All Sports</button>
+    <button class="tab-btn" onclick="switchSport('deepdive',this)">Deep Dive</button>
+  </div>
+
+  <!-- ALL SPORTS -->
+  <div class="filter-panel active" id="section-allsports">
     <div class="sport-block-label">NBA</div>
-    <div class="article-card" onclick="toggleCard(this)">
-      <div class="card-top">
-        <div class="card-tag">NBA · Line Movement</div>
-        <div class="card-title">How to Read Line Movement and Follow Sharp Money</div>
-        <p class="card-intro">Not all line movement is created equal. Learning to distinguish sharp action from public money is one of the highest-leverage skills in NBA betting.</p>
-        <button class="card-expand-btn">Full Breakdown <span class="expand-arrow">▾</span></button>
-      </div>
-      <div class="card-full"><div class="full-read-label">Full Read</div><div class="full-body">
-        <h3>Why Lines Move</h3>
-        <p>An NBA line moves for two reasons: <strong>sharp money</strong> (professional bettors placing large, informed wagers) or <strong>public money</strong> (recreational bettors piling onto favorites, popular teams, and nationally televised games). The line reacts to both — but only one of them signals real information.</p>
-        <div class="callout">Rule of thumb: If a line moves <em>against</em> the public betting percentage, that's sharp action. If 70% of tickets are on the favorite and the line moves toward the underdog, books are responding to where the <em>money</em> is, not the <em>tickets</em>.</div>
-        <h3>Steam Moves vs. Slow Burn</h3>
-        <p>A <strong>steam move</strong> is a sudden, sharp line shift across multiple books within minutes — usually triggered by a syndicate hitting the same side simultaneously. A <strong>slow burn</strong> is gradual movement over hours as sharps layer in at different prices. Both are meaningful, but steam moves demand faster reaction.</p>
-        <h3>Reverse Line Movement</h3>
-        <p>One of the cleanest edges in NBA betting is <strong>reverse line movement</strong> — when the line moves opposite to where the majority of bets are placed. If 65% of bets are on the Lakers -4.5 but the line moves to -3.5, sharp money is on the other side. Following that signal consistently outperforms blindly tailing public consensus.</p>
-        <ul class="rule-list">
-          <li>Check opening lines at 3–4 books and note where each opened vs. where they currently sit.</li>
-          <li>Cross-reference line movement with public bet percentages on Bet Labs or Action Network.</li>
-          <li>If movement is opposite public flow, you have a potential sharp signal — weight it, don't blindly follow it.</li>
-          <li>Be more aggressive on reverse line movement in back-to-backs and low-profile matchups where public engagement is thin.</li>
-        </ul>
-      </div></div>
+    <div class="grid md:grid-cols-2 gap-4 mb-2" id="nba-grid">
+      <!-- NBA cards injected by JS -->
     </div>
-<div class="article-card" onclick="toggleCard(this)">
-      <div class="card-top">
-        <div class="card-tag">NBA · Player Props</div>
-        <div class="card-title">Player Props Strategy: Where the Real NBA Edge Lives</div>
-        <p class="card-intro">The NBA player props market is softer than the game lines. Books can't sharpen every prop on every player every night — and that's your opportunity.</p>
-        <button class="card-expand-btn">Full Breakdown <span class="expand-arrow">▾</span></button>
-      </div>
-      <div class="card-full"><div class="full-read-label">Full Read</div><div class="full-body">
-        <h3>Why Props Are Softer</h3>
-        <p>Sportsbooks dedicate the most resources to sharpening full-game spreads and totals. Player props — especially on secondary players, mid-tier matchups, and non-primetime games — get significantly less attention. That inefficiency compounds in same-game parlays, where books accept lower limits and do even less sharpening.</p>
-        <h3>Usage Rate Is the Foundation</h3>
-        <p><strong>Usage rate</strong> tells you what percentage of team possessions end with a given player. It's the single best predictor of a player's statistical floor. A player with 30% usage on a high-pace team is a fundamentally different bet than the same counting stats on an 18% usage player.</p>
-        <div class="callout">When a key player is out, usage doesn't disappear — it redistributes. Identifying who absorbs the most usage when a star sits is one of the most repeatable edges in the NBA props market.</div>
-        <h3>Back-to-Back Patterns</h3>
-        <p>Books are systematically slow to adjust prop lines on the second night of a back-to-back. Stars often play reduced minutes or see altered roles — but the line barely moves. This creates consistent opportunities on <strong>minutes props</strong> and <strong>assist totals</strong> for players who rely on high pace and ball movement.</p>
-        <ul class="rule-list">
-          <li>Prioritize props on players with high usage and clear roles over catch-all stat accumulators.</li>
-          <li>Check the injury report 1–2 hours before tip — late scratches are where the most mispriced lines live.</li>
-          <li>Track each player's last 10 games against similar defensive profiles, not just overall averages.</li>
-          <li>Avoid props on players with high variance roles where usage fluctuates game to game.</li>
-        </ul>
-      </div></div>
-    </div>
-<div class="article-card" onclick="toggleCard(this)">
-      <div class="card-top">
-        <div class="card-tag">NBA · DFS Strategy</div>
-        <div class="card-title">DFS vs. Sportsbook: Two Games With Completely Different Strategies</div>
-        <p class="card-intro">Playing DraftKings and betting props on the same player requires different thinking. Conflating the two strategies is one of the most common costly mistakes.</p>
-        <button class="card-expand-btn">Full Breakdown <span class="expand-arrow">▾</span></button>
-      </div>
-      <div class="card-full"><div class="full-read-label">Full Read</div><div class="full-body">
-        <h3>The Core Difference</h3>
-        <p>In DFS, you're competing against other players in a zero-sum contest. Your goal in large-field GPPs isn't to be right — it's to be <strong>distinctively right</strong>. A player everyone rostered who hits his projection wins you nothing. In sportsbook betting, you're competing against the house's line — and consistency over sample size beats variance-chasing every time.</p>
-        <div class="callout">The optimal DFS tournament lineup looks wrong before the games start. If your lineup feels safe and obvious, it probably won't win a large field. Differentiation is the strategy.</div>
-        <h3>DFS: Build for Ceiling</h3>
-        <p>In GPP tournaments, you want low-ownership players with high upside. A 42-point game from a player with 4% ownership wins you first place. <strong>Ownership percentage is as important as projection.</strong></p>
-        <h3>Sportsbook: Build for Edge</h3>
-        <p>Prop betting rewards process and sample size. A 54% win rate on well-researched props is a profitable long-term strategy. Don't let DFS ceiling-chasing bleed into your sportsbook approach — that's how recreational bettors lose money over time.</p>
-        <ul class="rule-list">
-          <li>DFS GPP: prioritize upside and low ownership over safe floor plays.</li>
-          <li>DFS cash games: flip it — target high-floor players with consistent usage.</li>
-          <li>Sportsbook props: prioritize edge over excitement. Single props beat parlays over sample.</li>
-          <li>Never let a DFS result change how you think about a sportsbook line on the same player.</li>
-        </ul>
-      </div></div>
-    </div>
-<div class="article-card" onclick="toggleCard(this)">
-      <div class="card-top">
-        <div class="card-tag">NBA · Instinct & Narrative</div>
-        <div class="card-title">Instinctive Picks: Do They Matter, or Is It Just Narrative Chasing?</div>
-        <p class="card-intro">Every sharp bettor has felt it — a pick that just feels right before the data fully confirms it. The question isn't whether instinct exists. It's whether you can tell the difference between real pattern recognition and story-driven chasing.</p>
-        <button class="card-expand-btn">Full Breakdown <span class="expand-arrow">▾</span></button>
-      </div>
-      <div class="card-full"><div class="full-read-label">Full Read</div><div class="full-body">
-        <h3>What Instinct Actually Is</h3>
-        <p>Genuine betting instinct is not a feeling — it's <strong>compressed pattern recognition</strong>. When you've watched enough games, tracked enough line movements, and logged enough bets, your brain starts identifying signals before your conscious process has caught up. The "gut feeling" that a team is a live dog tonight is often your subconscious processing dozens of data points you've absorbed over time. That's real. That's worth something.</p>
-        <h3>Where It Goes Wrong: Narrative Chasing</h3>
-        <p>Narrative chasing is the counterfeit version of instinct. It happens when you <strong>reverse-engineer a pick from a story</strong> rather than from the numbers. You saw the highlights. You heard the analyst. You read the tweet. Now you're constructing reasons to bet the side you were already emotionally drawn to. The market already priced the story in — you're paying for it, not exploiting it.</p>
-        <div class="callout">The easiest test: could you have arrived at this pick without the media narrative? If the answer is no — if the compelling angle only exists because ESPN talked about it — that's narrative chasing, not instinct.</div>
-        <h3>When to Trust the Feeling</h3>
-        <p>Instinct is most reliable in <strong>spot games</strong> — situations with specific contextual patterns that don't show up cleanly in box scores. A team playing with something to prove after a blowout loss. A superstar who's been unusually passive in recent games and is due for an aggressive performance. A road team with a clear motivational edge in a city that's been sleeping on them all season. These are the spots where pattern recognition built from watching — not just modeling — adds genuine value.</p>
-        <h3>The Discipline Filter</h3>
-        <p>The way to preserve instinct as a tool is to run it through a discipline filter before betting. Ask yourself: <strong>What is the line saying? Does the number support the feeling, or is the feeling asking me to fight a bad number?</strong> If your instinct points toward a team but the line has already moved 3 points in that direction, the market agrees with you and the value is gone. The instinct was right, but the bet is wrong.</p>
-        <ul class="rule-list">
-          <li>Log instinct-based bets separately and track their ROI over 50+ bets — the data will tell you if it's real edge or noise.</li>
-          <li>Only act on instinct when the line is still fair or in your favor — if the market already agrees, there's no value.</li>
-          <li>Kill the bet if you can't articulate a non-narrative reason for it in one clear sentence.</li>
-          <li>Treat narrative-heavy games (rivalry matchups, revenge games, nationally televised storylines) with extra skepticism — the story is already fully priced.</li>
-        </ul>
-      </div></div>
-    </div>
-
-  </div>
     <div class="sport-block-label">MLB</div>
-    <div class="article-card" onclick="toggleCard(this)">
-      <div class="card-top">
-        <div class="card-tag">MLB · Matchup Analysis</div>
-        <div class="card-title">Do Pitcher vs. Batter Matchups Actually Matter?</div>
-        <p class="card-intro">Head-to-head history between a pitcher and a batter gets cited constantly. But small sample sizes lie. Here's how to separate signal from noise in pitcher-batter data.</p>
-        <button class="card-expand-btn">Full Breakdown <span class="expand-arrow">▾</span></button>
-      </div>
-      <div class="card-full"><div class="full-read-label">Full Read</div><div class="full-body">
-        <h3>The Sample Size Problem</h3>
-        <p>A batter going 4-for-8 lifetime against a pitcher sounds meaningful. It isn't. <strong>You need a minimum of 50–60 plate appearances before head-to-head data becomes statistically meaningful.</strong> Most broadcasters and casual bettors cite matchups with 8, 12, or 15 PA — that's noise dressed up as information. The market knows this and largely ignores micro-sample matchup history.</p>
-        <h3>What Actually Matters: Stuff vs. Swing Tendencies</h3>
-        <p>Instead of career H2H history, look at <strong>how a pitcher's pitch mix interacts with a batter's swing tendencies</strong>. A batter who chases sliders out of the zone is genuinely vulnerable to a pitcher whose primary out-pitch is a slider with above-average movement. This is real information — it's about mechanics, not small-sample results. Statcast's pitch value data and Savant's matchup tools quantify this interaction.</p>
-        <div class="callout">The right question isn't "how has this batter done against this pitcher?" It's "how does this batter perform against this <em>type</em> of pitcher, with this <em>type</em> of arsenal?"</div>
-        <h3>Handedness and Platoon Advantage</h3>
-        <p>The one H2H factor that genuinely holds across large samples is handedness. <strong>Platoon splits</strong> — how batters perform against same-handed vs. opposite-handed pitchers — are real and consistent. A left-handed heavy lineup facing a dominant southpaw is a structural disadvantage, not a narrative one. This is where matchup analysis has genuine betting value.</p>
-        <h3>How to Apply It</h3>
-        <ul class="rule-list">
-          <li>Ignore H2H records with fewer than 40 PA — they're noise. Look at pitch-type performance instead.</li>
-          <li>Use Baseball Savant's matchup heat maps to understand batter vulnerability by pitch location and type.</li>
-          <li>Weight platoon splits — especially in late-game situations where managers will exploit them with pinch hitters.</li>
-          <li>Factor in recent form over career data — a batter who's been ice cold against breaking balls for 3 weeks is more relevant than a career .340 average.</li>
-        </ul>
-      </div></div>
-    </div>
-<div class="article-card" onclick="toggleCard(this)">
-      <div class="card-top">
-        <div class="card-tag">MLB · Swing Tendencies</div>
-        <div class="card-title">Do Teams That Swing Well on Certain Pitches Have a Lineup Edge?</div>
-        <p class="card-intro">Individual pitch-type performance gets attention. Team-level pitch-type tendencies — how an entire lineup handles a specific pitch — is an underexplored market edge.</p>
-        <button class="card-expand-btn">Full Breakdown <span class="expand-arrow">▾</span></button>
-      </div>
-      <div class="card-full"><div class="full-read-label">Full Read</div><div class="full-body">
-        <h3>The Team-Level Angle</h3>
-        <p>Most pitch-type analysis focuses on individual batters. But when you're betting a team total or a run line, you need to think in lineup terms. <strong>Some teams are constructed to feast on fastball-heavy pitchers.</strong> Others are built for contact and struggle against high spin-rate breaking balls. These team-level tendencies show up consistently enough to bet against.</p>
-        <h3>Reading the Statcast Data</h3>
-        <p>Statcast's pitch-type run values show how much value (in runs) each team generates or surrenders against specific pitch types. A team with a strongly positive fastball run value and a strongly negative slider run value is telling you something: <strong>stack them against fastball-heavy pitchers, fade them against slider-first arms.</strong> This data is publicly available and underused by recreational bettors.</p>
-        <div class="callout">When a pitcher's primary offering is the exact pitch type a lineup is built to punish, that's one of the cleaner lineup-based edges in MLB betting. It's structural, not anecdotal.</div>
-        <h3>Chasing Velocity vs. Chasing Movement</h3>
-        <p>Teams that excel against high-velocity pitchers tend to have short, compact swings with strong bat speed — they can match the heater. Teams built around patient, walk-heavy approaches tend to struggle against pitchers who live in the zone with plus movement, because they're waiting for a pitch they can drive and the pitcher never throws it. Identifying which category applies is the baseline for team-level pitch analysis.</p>
-        <h3>Practical Application</h3>
-        <ul class="rule-list">
-          <li>Pull the opposing pitcher's pitch mix percentage — what percentage of pitches are fastballs, breaking balls, offspeed?</li>
-          <li>Cross-reference with the lineup's run value against each pitch type on Baseball Savant.</li>
-          <li>Weight recent performance (last 30 days) over season-long averages — lineups evolve with injuries and roster moves.</li>
-          <li>Factor in game environment: cold weather and night games suppress bat speed, making breaking ball pitchers more effective.</li>
-        </ul>
-      </div></div>
-    </div>
-<div class="article-card" onclick="toggleCard(this)">
-      <div class="card-top">
-        <div class="card-tag">MLB · Analytics & Coaching</div>
-        <div class="card-title">Factoring Analytics With Coaching: Where the Two Systems Collide</div>
-        <p class="card-intro">The analytics era changed baseball. But not every manager runs a fully data-driven operation — and the gap between what the numbers say and what a manager actually does is often where betting value hides.</p>
-        <button class="card-expand-btn">Full Breakdown <span class="expand-arrow">▾</span></button>
-      </div>
-      <div class="card-full"><div class="full-read-label">Full Read</div><div class="full-body">
-        <h3>Two Philosophies, One Lineup Card</h3>
-        <p>Analytics-forward organizations — Tampa Bay, Cleveland, the Dodgers — make bullpen decisions, lineup constructions, and defensive shifts based heavily on data. Traditional managers still lean on feel, reputation, and veteran status. <strong>The betting implication: analytically managed teams are harder to exploit through conventional wisdom, while traditionally managed teams create predictable patterns you can fade.</strong></p>
-        <h3>Bullpen Usage as a Tell</h3>
-        <p>One of the clearest coaching vs. analytics divides shows up in bullpen management. Data-driven teams pull starters early and match relievers by platoon and spin rate. Traditional managers leave starters in too long when they're struggling and use closers only in the 9th. <strong>When a traditional manager's ace is at 90 pitches through 6 with a 2-run lead, the live-bet market often undervalues the opponent because the public trusts the reputation of the starter.</strong></p>
-        <div class="callout">The most exploitable coaching pattern in baseball: a manager who refuses to use his best reliever before the 9th inning, even when the game is on the line in the 7th. This is a systematic inefficiency that bettors and live markets consistently misprice.</div>
-        <h3>Lineup Construction Signals</h3>
-        <p>Analytics-driven teams platoon heavily and optimize lineup order for OBP and wOBA. Traditional teams bat their "best hitters" 3rd and 4th regardless of matchup. When a traditionally managed team faces a tough lefty and refuses to adjust the lineup, you have a structural disadvantage the line may not fully reflect — especially if the public is backing the team based on overall talent rather than today's specific matchup.</p>
-        <h3>How to Factor This In</h3>
-        <ul class="rule-list">
-          <li>Know which managers are analytics-first and which are reputation-first — this shapes every in-game decision.</li>
-          <li>Track how often a manager pulls starters before the 6th inning vs. leaving them in past 100 pitches — it's predictive of bullpen exposure.</li>
-          <li>In live betting, watch for traditional managers slow to pull a struggling starter — the line often lags the on-field reality.</li>
-          <li>Analytically managed teams are better at exploiting opponent weaknesses — factor this in when they face traditionally managed opponents.</li>
-        </ul>
-      </div></div>
-    </div>
-<div class="article-card" onclick="toggleCard(this)">
-      <div class="card-top">
-        <div class="card-tag">MLB · Lineup Correlation</div>
-        <div class="card-title">Correlation Within Lineups and Hitting Positions: The DFS and Totals Edge</div>
-        <p class="card-intro">Baseball lineups aren't nine independent bets — they're a correlated system. Understanding how players in the same lineup reinforce each other's value is fundamental to both DFS stacking and totals betting.</p>
-        <button class="card-expand-btn">Full Breakdown <span class="expand-arrow">▾</span></button>
-      </div>
-      <div class="card-full"><div class="full-read-label">Full Read</div><div class="full-body">
-        <h3>Why Correlation Matters</h3>
-        <p>If the leadoff hitter has a great game, the players behind him in the lineup benefit — more plate appearances in high-leverage situations, more runners on base, more RBI opportunities. <strong>In DFS, stacking players from the same lineup exploits this correlation.</strong> In totals betting, identifying lineups with high internal correlation (deep, dangerous top-to-bottom construction) versus hollow lineups (one or two stars with weak supporting cast) directly impacts how you should weight the over.</p>
-        <h3>The Stack Theory in DFS</h3>
-        <p>A 4-man stack from the same team in a GPP is high variance — if the team scores 8 runs, you're probably winning the tournament. If they score 2, you're eliminated. <strong>The key is identifying which teams have lineup correlation strong enough to justify the stack.</strong> Teams with high OBP at the top of the lineup, power in the 3-4 spots, and consistent contact hitters behind them create a run-scoring machine that compounds across innings.</p>
-        <div class="callout">The best DFS stacks come from lineups facing pitchers who tend to allow high contact rates and elevated OBP. When the whole lineup gets on base, the correlation pays off. Against swing-and-miss pitchers, stacks break down because the lineup doesn't sustain rallies.</div>
-        <h3>Batting Position Value</h3>
-        <p>Lineup position matters more than most bettors acknowledge. The #1 and #2 spots get the most plate appearances per game — approximately 4.8 and 4.7 respectively versus 3.8 for the 9th spot. <strong>For prop betting, a player moving from 6th to 2nd in the lineup is worth approximately 0.8–1.0 additional plate appearances</strong> — a significant boost to counting stat props like hits, runs, and RBIs.</p>
-        <h3>How to Use Correlation in Totals</h3>
-        <ul class="rule-list">
-          <li>Bet team totals over when a lineup has 4+ consecutive hitters with above-average OBP — sustained rallies are more likely.</li>
-          <li>Fade team totals when the lineup has a clear break in quality (stars at 3-4 surrounded by weak hitters) — big innings are harder to sustain.</li>
-          <li>In DFS, build stacks around the 1-2-3 hitters when the top of the order has high OBP — they drive plate appearances for everyone behind them.</li>
-          <li>Monitor lineup order changes day-of — a star player moving from 3rd to 5th in the order is a meaningful prop-value shift that books may not fully adjust.</li>
-        </ul>
-      </div></div>
-    </div>
-
+    <div class="grid md:grid-cols-2 gap-4 mb-2" id="mlb-grid"></div>
     <div class="sport-block-label">NFL</div>
-    <div class="article-card" onclick="toggleCard(this)">
-      <div class="card-top">
-        <div class="card-tag">NFL · Draft & Futures</div>
-        <div class="card-title">The NFL Draft as a Betting Market: How to Factor In What's Coming</div>
-        <p class="card-intro">The draft reshapes rosters, changes positional value, and creates futures market inefficiencies months before the season starts. Most bettors ignore it. That's the edge.</p>
-        <button class="card-expand-btn">Full Breakdown <span class="expand-arrow">▾</span></button>
-      </div>
-      <div class="card-full"><div class="full-read-label">Full Read</div><div class="full-body">
-        <h3>Draft Position as a Win Total Signal</h3>
-        <p>Teams drafting in the top 5 are there because they had terrible seasons — but the win total market doesn't always properly discount what a high pick means for the following year. <strong>A team adding a generational talent at quarterback or edge rusher via the top pick is a fundamentally different team the next season</strong>, and futures markets set in late spring often undervalue the improvement because the public anchors on last year's record.</p>
-        <h3>Tanking: How to Spot It and How to Bet It</h3>
-        <p>Teams that are intentionally tanking — quietly prioritizing draft position over wins — are one of the most valuable ATS (against the spread) fades in NFL betting. <strong>Signs of a tanking team:</strong> trading away veterans at the deadline for draft capital, starting rookie quarterbacks with no playoff path, resting healthy starters in December, and publicly framing the season around "development" rather than competition.</p>
-        <div class="callout">A team that trades its veteran quarterback in October and starts a rookie in a lost season is operationally a different franchise than the line suggests. Books set lines based on roster talent — they don't always fully price in organizational intent.</div>
-        <h3>Scheme Fit and Draft Capital</h3>
-        <p>Beyond individual talent, the draft reveals scheme priorities. A team spending its first two picks on offensive linemen is telling you something about how they plan to play — <strong>run-heavy, possession-oriented, game-control football</strong>. A team loading up on perimeter weapons is building for an air-raid offense. These scheme signals inform how you bet totals, first-half lines, and style-of-play props throughout the following season.</p>
-        <h3>Draft Day Futures Value</h3>
-        <ul class="rule-list">
-          <li>Bet division futures for teams adding top-5 picks at QB or edge — the market undervalues roster transformation speed.</li>
-          <li>Fade win totals for teams clearly in tank mode — organizational intent doesn't show up in the roster evaluation books use to set lines.</li>
-          <li>Track which teams traded away draft capital to win now — those teams are often overvalued in futures markets the following year.</li>
-          <li>Note scheme signals from the draft: OL-heavy drafts telegraph run-first identity; WR-heavy drafts telegraph pass volume — both have totals implications.</li>
-        </ul>
-      </div></div>
-    </div>
-<div class="article-card" onclick="toggleCard(this)">
-      <div class="card-top">
-        <div class="card-tag">NFL · Public Betting</div>
-        <div class="card-title">Fading the Public: When the Crowd Is Wrong and How to Know</div>
-        <p class="card-intro">Blindly fading the public doesn't work. Selectively fading it — in the right spots — is one of the most durable edges in NFL betting.</p>
-        <button class="card-expand-btn">Full Breakdown <span class="expand-arrow">▾</span></button>
-      </div>
-      <div class="card-full"><div class="full-read-label">Full Read</div><div class="full-body">
-        <h3>Why the Public Loses Systematically</h3>
-        <p>Recreational bettors bet on <strong>narratives, not numbers</strong>. They bet the team that won big last week, the quarterback everyone's talking about, the primetime home favorite. Books know this and price it in — which means public-heavy sides are often slightly overpriced, and fading them in the right spots has positive expected value over a large sample.</p>
-        <h3>The Three Conditions That Matter</h3>
-        <p>Fading the public is a conditional strategy, not a blanket one. The signal is strongest when all three align: <strong>65%+ of public bets on one side</strong>, the line has moved toward the public side (not away), and there's a situational reason the public might be wrong — schedule spot, rest disadvantage, or regression candidate.</p>
-        <div class="callout">Fading the public on Monday Night Football primetime favorites is historically one of the most consistent spots in NFL betting. The public piles in all week, the line inflates, and the value sits on the other side.</div>
-        <h3>Primetime Totals and the Over Bias</h3>
-        <p>Public bettors love overs — games feel more exciting when points are scored. This creates systematic overpricing on totals in high-profile games. <strong>Fading public totals</strong> (betting unders on heavily-bet-over games) shows long-term value, especially in primetime matchups involving popular offenses.</p>
-        <ul class="rule-list">
-          <li>When 65%+ of bets are on one side and the line moves the other way, that's reverse line movement — the sharpest fade signal.</li>
-          <li>Target primetime home favorites coming off emotional wins — the public inflates these lines predictably.</li>
-          <li>Fade public totals when two popular offenses play — the over gets hammered and the number swells past fair value.</li>
-          <li>Never fade the public when there's a legitimate talent gap — popularity doesn't make a dominant team wrong.</li>
-        </ul>
-      </div></div>
-    </div>
-<div class="article-card" onclick="toggleCard(this)">
-      <div class="card-top">
-        <div class="card-tag">NFL · Scheme & Game Control</div>
-        <div class="card-title">Game Control Football: Why Scheme Fit Matters More Than Arm Talent in 2026</div>
-        <p class="card-intro">The NFL has shifted. The era of air-it-out offenses winning championships is giving way to teams that control the clock, protect the ball, and win by making fewer mistakes than the other team. Bet accordingly.</p>
-        <button class="card-expand-btn">Full Breakdown <span class="expand-arrow">▾</span></button>
-      </div>
-      <div class="card-full"><div class="full-read-label">Full Read</div><div class="full-body">
-        <h3>The Shift Away From Volume Passing</h3>
-        <p>For years, the NFL rewarded high-volume passing attacks — chuck it 40 times a game, find the matchup, score fast. The league has recalibrated. <strong>Teams built around time-of-possession, run game efficiency, and third-down conversion rate are outperforming boom-or-bust passing offenses in playoff football.</strong> The betting market is slower to adjust than the actual game has been.</p>
-        <h3>What Game Control Looks Like</h3>
-        <p>Game control teams share identifiable traits: <strong>top-10 offensive line by run block win rate, quarterback with a sub-2.5% interception rate, tight end usage as a reliable third-down chain-mover, and a defense that forces punts rather than hunting for splash plays.</strong> These teams don't always cover as big favorites — but they cover at a significantly higher rate as small favorites or underdogs because they rarely blow leads or get blown out.</p>
-        <div class="callout">The most profitable NFL betting profile in recent seasons: a game-control team favored by 3–6 points at home in a divisional game. They win by a consistent margin, the public underrates them because they're not flashy, and the line stays reasonable.</div>
-        <h3>Scheme Fit at Quarterback</h3>
-        <p>A quarterback is only as good as his scheme fit. A mobile, improvisation-heavy quarterback in a west coast timing system is a mismatch — and it shows up in turnover rates, third-down conversion, and fourth-quarter performance. <strong>Before betting a team's spread, ask whether the quarterback's skill set matches what the offense is asking him to do.</strong> Mismatches create consistent underperformance that the public ignores because they're evaluating the quarterback's talent in isolation.</p>
-        <h3>Totals Implications</h3>
-        <ul class="rule-list">
-          <li>Bet unders when two game-control teams face each other — possessions are limited, scoring windows are narrow.</li>
-          <li>Fade overs when a boom-or-bust offense faces a defense built to force field goals — turnovers kill scoring drives and compress totals.</li>
-          <li>Look for game-control teams as small dogs — their consistency means they cover more often than their record suggests.</li>
-          <li>Track offensive line rankings weekly — the run game is the heartbeat of game-control football and injury to the OL changes everything.</li>
-        </ul>
-      </div></div>
-    </div>
-<div class="article-card" onclick="toggleCard(this)">
-      <div class="card-top">
-        <div class="card-tag">NFL · Efficiency Metrics</div>
-        <div class="card-title">Efficiency Over Boom and Bust: The Modern NFL Betting Framework</div>
-        <p class="card-intro">EPA per play. Success rate. Third-down conversion rate. The metrics that actually predict NFL outcomes have almost nothing to do with the stats that dominate the headlines.</p>
-        <button class="card-expand-btn">Full Breakdown <span class="expand-arrow">▾</span></button>
-      </div>
-      <div class="card-full"><div class="full-read-label">Full Read</div><div class="full-body">
-        <h3>Why Traditional Stats Mislead Bettors</h3>
-        <p>Total yards, passing yards per game, and points scored are the stats the public uses to evaluate teams. They're also among the least predictive stats for future performance. <strong>A team can rack up 450 yards, go 2-for-12 on third down, and lose by 14.</strong> The yardage tells the public one story — the efficiency metrics tell the real one.</p>
-        <h3>EPA Per Play: The Baseline Metric</h3>
-        <p><strong>Expected Points Added (EPA) per play</strong> measures how much each play improves or hurts a team's expected scoring outcome. Teams with positive offensive EPA and negative defensive EPA are structurally better than teams who score in chunks and give it back. Over a season, EPA per play is one of the strongest predictors of future win rate — and it's publicly available on nflfastR and similar tools.</p>
-        <div class="callout">A team ranked 8th in points scored but 22nd in offensive EPA per play is living on big plays and luck. A team ranked 14th in points but 6th in EPA is running a repeatable, efficient offense. Bet on efficiency, not output.</div>
-        <h3>Success Rate as a Companion Metric</h3>
-        <p><strong>Success rate</strong> — the percentage of plays that gain 40% of yards needed on first down, 60% on second, and 100% on third — is the best measure of how consistently an offense moves the chains. High success rate, low explosiveness is a game-control team. Low success rate, high explosiveness is boom-or-bust. <strong>Boom-or-bust teams are significantly more likely to underperform their projected win total.</strong></p>
-        <h3>Third-Down and Red Zone Efficiency</h3>
-        <p>Third-down conversion rate and red zone scoring rate are the two efficiency stats most directly tied to scoring outcomes. A team that converts 48% of third downs and scores touchdowns on 65% of red zone trips is an efficient machine. A team with big-play numbers but mediocre third-down and red zone rates is a bettor's nightmare — explosive in meaningless situations, inconsistent when it counts.</p>
-        <ul class="rule-list">
-          <li>Before betting a spread, check both teams' offensive and defensive EPA per play — favor the team with the efficiency advantage.</li>
-          <li>Fade boom-or-bust offenses as favorites — their ceiling is priced in but their floor causes covers to fail regularly.</li>
-          <li>Target game-control offenses in cold-weather, late-season games where explosive plays are harder to generate.</li>
-          <li>Use success rate to identify which teams will sustain drives — sustained drives kill opponent possessions and compress totals.</li>
-        </ul>
-      </div></div>
-    </div>
-
+    <div class="grid md:grid-cols-2 gap-4 mb-2" id="nfl-grid"></div>
     <div class="sport-block-label">Universal</div>
-    <div class="articles-grid" id="universal-cards-main"></div>
+    <div class="grid md:grid-cols-2 gap-4" id="universal-cards-main"></div>
+  </div>
+
+  <!-- DEEP DIVE -->
+  <div class="filter-panel" id="section-deepdive">
+    <div class="flex items-start justify-between gap-6 mb-8 flex-wrap">
+      <div>
+        <div class="text-xs uppercase tracking-[.22em] mb-2" style="color:var(--gold)">Player Trends &amp; Team Signals</div>
+        <h2 class="text-4xl font-black">Trend Watch</h2>
+        <p class="text-zinc-400 text-sm mt-2 max-w-lg">Stat-driven signals across MLB, NBA, and NFL Draft. Each card tracks directional movement worth acting on.</p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button class="dd-filter active" onclick="ddFilter('ALL',this)">All</button>
+        <button class="dd-filter" onclick="ddFilter('MLB',this)">MLB</button>
+        <button class="dd-filter" onclick="ddFilter('NBA',this)">NBA</button>
+        <button class="dd-filter" onclick="ddFilter('NFL Draft',this)">NFL Draft</button>
+        <button class="dd-filter bullish-btn" onclick="ddFilter('bullish',this)">● Bullish</button>
+        <button class="dd-filter bearish-btn" onclick="ddFilter('bearish',this)">● Bearish</button>
+        <button class="dd-filter caution-btn" onclick="ddFilter('caution',this)">● Caution</button>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-4 mb-14" id="ddGrid"></div>
+
+    <!-- FEATURED DEEP DIVE -->
+    <div class="text-xs uppercase tracking-[.22em] mb-6 flex items-center gap-3" style="color:var(--gold)"><span style="display:block;width:20px;height:1px;background:var(--gold)"></span>Featured Deep Dive</div>
+    <div class="glass rounded-[32px] overflow-hidden market-card mb-10">
+      <div class="flex items-center gap-3 px-8 py-5 border-b border-white/5 bg-black/20">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--gold)"></div>
+        <span class="text-xs uppercase tracking-[.18em] font-semibold" style="color:var(--gold)">Featured Deep Dive · This Week</span>
+      </div>
+      <div class="grid xl:grid-cols-[1.2fr_.8fr]">
+        <div class="p-8 xl:p-12">
+          <div class="text-xs uppercase tracking-[.2em] mb-4" style="color:var(--gold)">NFL Draft · Strategy</div>
+          <h2 class="text-[2rem] md:text-[2.8rem] leading-[.95] font-black mb-3">BPA vs. Team Need: Tanking, Firing, and the Fine Line</h2>
+          <p class="text-zinc-500 text-sm mb-8">By shortopen · April 2026</p>
+          <div class="feat-body">
+            <p>Every April, thirty-two organizations step to the podium facing the same impossible question: do you take the best player on your board, or the best player your roster needs? General managers and head coaches have wrestled with this for decades.</p>
+            <p>A team drafting at pick fifteen might have a generational wide receiver on the board. But their quarterback is getting sacked on forty percent of dropbacks. Their head coach is on the hot seat — he needs to win <em>now</em>. The general manager is thinking five years out. Both men are right.</p>
+            <p>This is the coach versus GM dynamic that plays out across every sport, but nowhere more visibly than the NFL Draft. Coaches optimize for schemes. GMs optimize for ceilings.</p>
+            <h3>The Phases That Change Everything</h3>
+            <p>A true rebuild means drafting the highest-graded player regardless of position. A contending team should weight need more heavily. The dangerous zone is the middle: teams that believe they are contenders but lack the depth to prove it.</p>
+            <h3>The Data Doesn't Lie</h3>
+            <p>Teams that consistently draft best player available outperform need-based drafters over any ten-year stretch. Needs change. Talent is durable. Scheme fit is fragile.</p>
+            <h3>The Verdict</h3>
+            <p>If BPA grades out more than half a round above the need player, they take the talent every time. Draft the talent. Build the system around it.</p>
+          </div>
+        </div>
+        <div class="border-l border-white/5 bg-black/20 p-8 flex flex-col gap-5">
+          <div class="rounded-[20px] border border-white/10 bg-white/3 p-5">
+            <div class="text-xs uppercase tracking-[.16em] font-semibold mb-3" style="color:var(--gold)">Key Takeaway</div>
+            <p class="text-sm text-zinc-300 leading-7">Teams that consistently draft BPA outperform need-based drafters over any ten-year window. Needs change. Talent doesn't.</p>
+          </div>
+          <div class="rounded-[20px] border border-white/10 bg-white/3 p-5">
+            <div class="text-xs uppercase tracking-[.16em] font-semibold mb-4" style="color:var(--gold)">The Core Tension</div>
+            <div class="flex items-center gap-3 mb-3"><span class="tension-side coach">Coach</span><span class="text-sm text-zinc-300">Drafts for fit &amp; immediate need</span></div>
+            <div class="flex items-center gap-3"><span class="tension-side gm">GM</span><span class="text-sm text-zinc-300">Drafts for ceiling &amp; long-term value</span></div>
+          </div>
+          <div class="rounded-[20px] border border-white/10 bg-white/3 p-5">
+            <div class="text-xs uppercase tracking-[.16em] font-semibold mb-3" style="color:var(--gold)">The Rule of Thumb</div>
+            <p class="text-sm text-zinc-300 leading-7">If BPA grades more than half a round above the need player — take the talent. Every time.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAN TAKE -->
+    <div class="glass rounded-[24px] overflow-hidden">
+      <div class="flex items-center gap-3 px-7 py-5 border-b border-white/5 bg-black/20">
+        <div style="width:8px;height:8px;border-radius:50%;background:#738296"></div>
+        <span class="text-xs uppercase tracking-[.18em] font-semibold text-zinc-400">Fan Take of the Week</span>
+      </div>
+      <div class="p-7">
+        <p class="text-zinc-400 text-sm leading-7 mb-6">Got a sharp take on a player trend, a betting market, or a team situation? We read every submission and feature the best one each week.</p>
+        <div class="flex flex-col gap-4">
+          <div class="flex items-start gap-4"><div class="fan-step-num">1</div><div class="fan-step-text">Subscribe at <a href="subscribe.html">shortopen.com/subscribe</a> to join the community</div></div>
+          <div class="flex items-start gap-4"><div class="fan-step-num">2</div><div class="fan-step-text">Send your take to <a href="mailto:qian@shortopen.com">qian@shortopen.com</a></div></div>
+          <div class="flex items-start gap-4"><div class="fan-step-num">3</div><div class="fan-step-text">Get featured right here in the Deep Dive next week</div></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- DEEP DIVE — only active when tab = deepdive -->
-<div class="sport-section" id="section-deepdive">
-
-  <div class="dd-section-label">Player Trends &amp; Team Signals</div>
-  <div class="dd-header">
-    <div class="dd-header-left">
-      <h2 class="dd-title">Trend Watch</h2>
-      <p class="dd-sub">Stat-driven signals across MLB, NBA, and NFL Draft. Each card tracks directional movement worth acting on.</p>
-    </div>
-    <div class="dd-filters">
-      <button class="dd-filter active" onclick="ddFilter('ALL',this)">All</button>
-      <button class="dd-filter" onclick="ddFilter('MLB',this)">MLB</button>
-      <button class="dd-filter" onclick="ddFilter('NBA',this)">NBA</button>
-      <button class="dd-filter" onclick="ddFilter('NFL Draft',this)">NFL Draft</button>
-      <button class="dd-filter bullish-btn" onclick="ddFilter('bullish',this)">&#9679; Bullish</button>
-      <button class="dd-filter bearish-btn" onclick="ddFilter('bearish',this)">&#9679; Bearish</button>
-      <button class="dd-filter caution-btn" onclick="ddFilter('caution',this)">&#9679; Caution</button>
-    </div>
-  </div>
-  <div class="dd-trend-grid" id="ddGrid"></div>
-
-  <!-- FEATURED ARTICLE -->
-  <div class="dd-section-label" style="margin-top:52px;">Featured Deep Dive</div>
-  <div class="featured-article">
-    <div class="feat-label"><span class="feat-dot"></span>Featured Deep Dive &middot; This Week</div>
-    <div class="feat-inner">
-      <div class="feat-left">
-        <div class="feat-sport-tag">NFL Draft &middot; Strategy</div>
-        <h2 class="feat-title">BPA vs. Team Need: Tanking, Firing, and the Fine Line</h2>
-        <p class="feat-byline">By shortopen &middot; April 2026</p>
-        <div class="feat-body">
-          <p>Every April, thirty-two organizations step to the podium facing the same impossible question: do you take the best player on your board, or the best player your roster needs? General managers and head coaches have wrestled with this for decades. The argument that breaks out in every war room is one that has no clean answer. That tension is what makes the draft fascinating.</p>
-          <p>A team drafting at pick fifteen might have a generational wide receiver on the board. But their quarterback is getting sacked on forty percent of dropbacks. Their head coach is on the hot seat — he needs to win <em>now</em>. The general manager is thinking five years out. Both men are right. Neither can fully see the other's point, because they're playing on different timescales.</p>
-          <p>This is the coach versus GM dynamic that plays out across every sport, but nowhere more visibly than the NFL Draft. Coaches optimize for schemes. GMs optimize for ceilings. And organizations cycle through phases — rebuilding, retooling, contending — that make this tension even harder to resolve.</p>
-          <h3>The Phases That Change Everything</h3>
-          <p>A true rebuild means drafting the highest-graded player regardless of position. You have no window to protect. Accumulated talent is the only asset that matters. A contending team should weight need more heavily — a first-round pick on a position of strength may never see meaningful snaps in year one. The dangerous zone is the middle: teams that believe they are contenders but lack the depth to prove it. These organizations frequently reach for need, burning draft capital while the smarter move would be to accumulate talent and address the need in free agency.</p>
-          <h3>The Data Doesn't Lie</h3>
-          <p>Multiple decades of draft data point to the same conclusion: teams that consistently draft best player available outperform need-based drafters over any ten-year stretch. Needs change. A cornerback drafted as a starter in year one might be redundant by a free agent signing in year two. Talent is durable. Scheme fit is fragile.</p>
-          <h3>The Verdict</h3>
-          <p>The teams that win the most have resolved this argument before they walk in. They've set thresholds. If BPA grades out more than half a round above the need player, they take the talent every time. If the gap is close, they take the need. Draft the talent. Build the system around it.</p>
-        </div>
-      </div>
-      <div class="feat-right">
-        <div class="feat-sidebar-block">
-          <div class="feat-sidebar-label">Key Takeaway</div>
-          <p class="feat-sidebar-text">Teams that consistently draft BPA outperform need-based drafters over any ten-year window. Needs change. Talent doesn't.</p>
-        </div>
-        <div class="feat-sidebar-block">
-          <div class="feat-sidebar-label">The Core Tension</div>
-          <div class="feat-tension-row"><span class="tension-side coach">Coach</span><span class="tension-label">Drafts for fit &amp; immediate need</span></div>
-          <div class="feat-tension-row"><span class="tension-side gm">GM</span><span class="tension-label">Drafts for ceiling &amp; long-term value</span></div>
-        </div>
-        <div class="feat-sidebar-block">
-          <div class="feat-sidebar-label">The Rule of Thumb</div>
-          <p class="feat-sidebar-text">If BPA grades more than half a round above the need player — take the talent. Every time.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FAN TAKE SEGMENT -->
-  <div class="fan-segment">
-    <div class="fan-seg-header">
-      <span class="fan-seg-dot"></span>
-      <span class="fan-seg-label">Fan Take of the Week</span>
-    </div>
-    <div class="fan-seg-body">
-      <p class="fan-seg-intro">Got a sharp take on a player trend, a betting market, or a team situation? We read every submission and feature the best one each week.</p>
-      <div class="fan-seg-steps">
-        <div class="fan-seg-step">
-          <span class="fan-step-num">1</span>
-          <span class="fan-step-text">Subscribe at <a href="subscribe.html">shortopen.com/subscribe</a> to join the community</span>
-        </div>
-        <div class="fan-seg-step">
-          <span class="fan-step-num">2</span>
-          <span class="fan-step-text">Send your take to <a href="mailto:qian@shortopen.com">qian@shortopen.com</a></span>
-        </div>
-        <div class="fan-seg-step">
-          <span class="fan-step-num">3</span>
-          <span class="fan-step-text">Get featured right here in the Deep Dive next week</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-</div><!-- end content-wrap -->
-
-<footer>
-  <div class="footer-logo">short<span>open</span></div>
-  <p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+<footer class="border-t border-white/5 px-6 xl:px-10 py-10 flex items-center justify-between max-w-[1600px] mx-auto">
+  <div class="text-xl font-black tracking-tight">short<span style="color:var(--gold)">open</span></div>
+  <p class="text-xs uppercase tracking-[.12em] text-zinc-600">© 2026 shortopen. Independent analysis. All rights reserved.</p>
 </footer>
 
 <script>
-const UNIVERSAL_ARTICLES = [
-  {
-    tag: "Universal · Bankroll",
-    title: "Bankroll Management: The Unsexy Skill That Separates Winners From Losers",
-    intro: "You can have a positive edge and still go broke. Bankroll management isn't about being conservative — it's about surviving long enough for your edge to show up.",
-    sections: [
-      { h: "The Kelly Criterion (Simplified)", p: "The Kelly Criterion tells you how much of your bankroll to bet based on your perceived edge. Full Kelly is aggressive — most professionals use <strong>half-Kelly or quarter-Kelly</strong> to reduce variance while preserving the mathematical advantage. The formula: bet size = (edge / odds). If you estimate a 55% chance on a -110 line, your edge is roughly 5% — Kelly says bet 4.5% of bankroll, half-Kelly says 2.25%." },
-      { h: "Flat Betting as a Baseline", p: "For bettors still tracking their edge, <strong>flat betting 1–2% of bankroll per play</strong> is the most practical approach. It removes emotion from sizing decisions and gives you a clean sample to evaluate whether your picks are actually profitable before scaling up.", callout: "Never bet more than 5% of bankroll on a single play — regardless of how confident you feel. Confidence and edge are not the same thing." },
-      { h: "The Losing Streak Problem", p: "A 10-game losing streak is statistically expected even for a bettor with a genuine 55% win rate. The bettors who blow up are the ones who chase losses by increasing bet size. <strong>The correct response to a losing streak is to review your process, not increase your bets.</strong>" },
-      { rules: ["Set a flat unit size (1–2% of bankroll) and stick to it regardless of streak.", "Track every single bet with line, odds, result, and reasoning. You can't improve what you don't measure.", "Never reload mid-month to chase losses. Treat each bankroll period as a closed sample.", "Separate your betting bankroll from your regular finances completely — mentally and practically."] }
-    ]
-  },
-  {
-    tag: "Universal · Opening Lines",
-    title: "Opening Line Value Across All Sports: The First Number Always Matters",
-    intro: "The principle is the same whether it's an NBA game or an NFL spread — the opening line is the most information-dense price the market will offer. Here's how to use it across every sport.",
-    sections: [
-      { h: "The Opening Line as a Baseline", p: "Every line you bet should be benchmarked against the open. If you're betting a side that's moved 2 points in your direction from the open, ask why. If you're getting a worse number than the open, you're paying for public narrative. <strong>Consistently getting closing line value (CLV) is the clearest signal that your process is generating real edge.</strong>" },
-      { h: "Sport-Specific Opening Windows", p: "NFL lines open Sunday night for the following week — the sharpest window is within the first 24–48 hours. NBA lines typically open 24 hours before tip — the sharpest window is within the first 2–3 hours. MLB lines open the morning of the game — props and totals need to be targeted before lineup cards drop.", callout: "The earlier you can get to a sharp number, the more you're betting like a professional. The closer to game time, the more public-influenced the price becomes." },
-      { rules: ["Log opening lines for every game you're considering — this builds your CLV tracking dataset.", "If you can't find value at or near the open, wait. A better number often presents itself when public money moves a line.", "Track your average CLV over 100+ bets. Positive CLV with a losing record usually means variance — not a broken process.", "Focus line shopping on books that post early: Circa, Westgate, and Pinnacle tend to open first and sharpest."] }
-    ]
-  },
-  {
-    tag: "Universal · Mindset",
-    title: "Process Over Results: The Mental Framework Every Sharp Bettor Needs",
-    intro: "Judging your betting decisions by outcomes is the fastest way to develop bad habits. The process is what you control. The results are what variance delivers.",
-    sections: [
-      { h: "Resulting vs. Process Thinking", p: "<strong>Resulting</strong> is judging a decision by its outcome rather than the quality of the decision. A bad bet that wins reinforces bad habits. A good bet that loses gets abandoned. Over time, resulting destroys edges — you end up doubling down on luck and abandoning sound process because of short-term variance." },
-      { h: "The Right Questions After a Loss", p: "After a losing bet, the only relevant question is: <strong>Was my reasoning sound given the information available at the time?</strong> If yes, the loss is variance — log it and move on. If no, understand specifically what went wrong and correct it.", callout: "The goal isn't to win every bet. The goal is to make decisions that, if repeated 1,000 times, produce a positive return. Judge yourself on that standard." },
-      { h: "Building a Betting Journal", p: "Every sharp bettor keeps records. Not just win/loss — full reasoning. What did you see in the line? What was your estimated probability? What was the closing line? Over time, this data tells you where your edge is real and where you're fooling yourself." },
-      { rules: ["Log every bet before it starts — line, odds, estimated probability, and your reasoning in 1–2 sentences.", "Review your last 50 bets monthly. Look for patterns in where you win and where you lose.", "Separate your analysis from your emotions. Take 24 hours before changing any part of your process after a bad run.", "Never discuss individual bet results on the same day. Give the variance time to settle before drawing conclusions."] }
-    ]
-  }
+// ── ARTICLE DATA ──
+const NBA_ARTICLES=[
+  {tag:"NBA · Line Movement",title:"How to Read Line Movement and Follow Sharp Money",intro:"Not all line movement is created equal. Learning to distinguish sharp action from public money is one of the highest-leverage skills in NBA betting.",body:`<h3>Why Lines Move</h3><p>An NBA line moves for two reasons: <strong>sharp money</strong> (professional bettors placing large, informed wagers) or <strong>public money</strong> (recreational bettors piling onto favorites). The line reacts to both — but only one signals real information.</p><div class="callout">Rule of thumb: If a line moves <em>against</em> the public betting percentage, that's sharp action. If 70% of tickets are on the favorite and the line moves toward the underdog, books are responding to where the <em>money</em> is, not the <em>tickets</em>.</div><h3>Steam Moves vs. Slow Burn</h3><p>A <strong>steam move</strong> is a sudden, sharp line shift across multiple books within minutes — usually triggered by a syndicate hitting the same side simultaneously. A <strong>slow burn</strong> is gradual movement over hours. Both are meaningful, but steam moves demand faster reaction.</p><h3>Reverse Line Movement</h3><p>One of the cleanest edges in NBA betting is <strong>reverse line movement</strong> — when the line moves opposite to where the majority of bets are placed. If 65% of bets are on the Lakers -4.5 but the line moves to -3.5, sharp money is on the other side.</p><ul class="rule-list"><li>Check opening lines at 3–4 books and note where each opened vs. where they currently sit.</li><li>Cross-reference line movement with public bet percentages on Bet Labs or Action Network.</li><li>If movement is opposite public flow, you have a potential sharp signal — weight it, don't blindly follow it.</li><li>Be more aggressive on reverse line movement in back-to-backs and low-profile matchups where public engagement is thin.</li></ul>`},
+  {tag:"NBA · Player Props",title:"Player Props Strategy: Where the Real NBA Edge Lives",intro:"The NBA player props market is softer than the game lines. Books can't sharpen every prop on every player every night — and that's your opportunity.",body:`<h3>Why Props Are Softer</h3><p>Sportsbooks dedicate the most resources to sharpening full-game spreads and totals. Player props — especially on secondary players and non-primetime games — get significantly less attention.</p><h3>Usage Rate Is the Foundation</h3><p><strong>Usage rate</strong> tells you what percentage of team possessions end with a given player. A player with 30% usage on a high-pace team is a fundamentally different bet than the same counting stats on an 18% usage player.</p><div class="callout">When a key player is out, usage doesn't disappear — it redistributes. Identifying who absorbs the most usage when a star sits is one of the most repeatable edges in the NBA props market.</div><h3>Back-to-Back Patterns</h3><p>Books are systematically slow to adjust prop lines on the second night of a back-to-back. Stars often play reduced minutes or see altered roles — but the line barely moves.</p><ul class="rule-list"><li>Prioritize props on players with high usage and clear roles over catch-all stat accumulators.</li><li>Check the injury report 1–2 hours before tip — late scratches are where the most mispriced lines live.</li><li>Track each player's last 10 games against similar defensive profiles, not just overall averages.</li><li>Avoid props on players with high variance roles where usage fluctuates game to game.</li></ul>`},
+  {tag:"NBA · DFS Strategy",title:"DFS vs. Sportsbook: Two Games With Completely Different Strategies",intro:"Playing DraftKings and betting props on the same player requires different thinking. Conflating the two strategies is one of the most common costly mistakes.",body:`<h3>The Core Difference</h3><p>In DFS, you're competing against other players in a zero-sum contest. Your goal in large-field GPPs isn't to be right — it's to be <strong>distinctively right</strong>.</p><div class="callout">The optimal DFS tournament lineup looks wrong before the games start. If your lineup feels safe and obvious, it probably won't win a large field. Differentiation is the strategy.</div><h3>DFS: Build for Ceiling</h3><p>In GPP tournaments, you want low-ownership players with high upside. A 42-point game from a player with 4% ownership wins you first place. <strong>Ownership percentage is as important as projection.</strong></p><h3>Sportsbook: Build for Edge</h3><p>Prop betting rewards process and sample size. A 54% win rate on well-researched props is a profitable long-term strategy. Don't let DFS ceiling-chasing bleed into your sportsbook approach.</p><ul class="rule-list"><li>DFS GPP: prioritize upside and low ownership over safe floor plays.</li><li>DFS cash games: flip it — target high-floor players with consistent usage.</li><li>Sportsbook props: prioritize edge over excitement. Single props beat parlays over sample.</li><li>Never let a DFS result change how you think about a sportsbook line on the same player.</li></ul>`},
+  {tag:"NBA · Instinct & Narrative",title:"Instinctive Picks: Do They Matter, or Is It Just Narrative Chasing?",intro:"Every sharp bettor has felt it — a pick that just feels right. The question is whether you can tell the difference between real pattern recognition and story-driven chasing.",body:`<h3>What Instinct Actually Is</h3><p>Genuine betting instinct is not a feeling — it's <strong>compressed pattern recognition</strong>. When you've watched enough games and tracked enough line movements, your brain starts identifying signals before your conscious process has caught up.</p><h3>Where It Goes Wrong: Narrative Chasing</h3><p>Narrative chasing happens when you <strong>reverse-engineer a pick from a story</strong> rather than from the numbers. The market already priced the story in — you're paying for it, not exploiting it.</p><div class="callout">The easiest test: could you have arrived at this pick without the media narrative? If the answer is no — that's narrative chasing, not instinct.</div><h3>The Discipline Filter</h3><p>Run instinct through a filter before betting. Ask yourself: <strong>Does the number support the feeling, or is the feeling asking me to fight a bad number?</strong></p><ul class="rule-list"><li>Log instinct-based bets separately and track their ROI over 50+ bets.</li><li>Only act on instinct when the line is still fair or in your favor.</li><li>Kill the bet if you can't articulate a non-narrative reason for it in one clear sentence.</li><li>Treat narrative-heavy games with extra skepticism — the story is already fully priced.</li></ul>`}
 ];
-
-const DD_CARDS = [
+const MLB_ARTICLES=[
+  {tag:"MLB · Matchup Analysis",title:"Do Pitcher vs. Batter Matchups Actually Matter?",intro:"Head-to-head history between a pitcher and a batter gets cited constantly. But small sample sizes lie. Here's how to separate signal from noise.",body:`<h3>The Sample Size Problem</h3><p>A batter going 4-for-8 lifetime against a pitcher sounds meaningful. It isn't. <strong>You need a minimum of 50–60 plate appearances before head-to-head data becomes statistically meaningful.</strong></p><h3>What Actually Matters: Stuff vs. Swing Tendencies</h3><p>Look at <strong>how a pitcher's pitch mix interacts with a batter's swing tendencies</strong>. A batter who chases sliders out of the zone is genuinely vulnerable to a pitcher whose primary out-pitch is a slider with above-average movement.</p><div class="callout">The right question isn't "how has this batter done against this pitcher?" It's "how does this batter perform against this <em>type</em> of pitcher, with this <em>type</em> of arsenal?"</div><h3>Handedness and Platoon Advantage</h3><p><strong>Platoon splits</strong> — how batters perform against same-handed vs. opposite-handed pitchers — are real and consistent across large samples.</p><ul class="rule-list"><li>Ignore H2H records with fewer than 40 PA — they're noise. Look at pitch-type performance instead.</li><li>Use Baseball Savant's matchup heat maps to understand batter vulnerability by pitch location and type.</li><li>Weight platoon splits — especially in late-game situations where managers will exploit them with pinch hitters.</li><li>Factor in recent form over career data.</li></ul>`},
+  {tag:"MLB · Swing Tendencies",title:"Do Teams That Swing Well on Certain Pitches Have a Lineup Edge?",intro:"Individual pitch-type performance gets attention. Team-level pitch-type tendencies is an underexplored market edge.",body:`<h3>The Team-Level Angle</h3><p><strong>Some teams are constructed to feast on fastball-heavy pitchers.</strong> Others are built for contact and struggle against high spin-rate breaking balls. These team-level tendencies show up consistently enough to bet against.</p><h3>Reading the Statcast Data</h3><p>Statcast's pitch-type run values show how much value (in runs) each team generates against specific pitch types. <strong>Stack them against fastball-heavy pitchers, fade them against slider-first arms.</strong></p><div class="callout">When a pitcher's primary offering is the exact pitch type a lineup is built to punish, that's one of the cleaner lineup-based edges in MLB betting. It's structural, not anecdotal.</div><ul class="rule-list"><li>Pull the opposing pitcher's pitch mix percentage — what percentage are fastballs, breaking balls, offspeed?</li><li>Cross-reference with the lineup's run value against each pitch type on Baseball Savant.</li><li>Weight recent performance (last 30 days) over season-long averages.</li><li>Factor in game environment: cold weather and night games suppress bat speed.</li></ul>`},
+  {tag:"MLB · Analytics & Coaching",title:"Factoring Analytics With Coaching: Where the Two Systems Collide",intro:"The gap between what the numbers say and what a manager actually does is often where betting value hides.",body:`<h3>Two Philosophies, One Lineup Card</h3><p>Analytics-forward organizations make bullpen decisions based heavily on data. Traditional managers lean on feel and reputation. <strong>The betting implication: analytically managed teams are harder to exploit through conventional wisdom, while traditionally managed teams create predictable patterns you can fade.</strong></p><h3>Bullpen Usage as a Tell</h3><p>Data-driven teams pull starters early and match relievers by platoon and spin rate. <strong>When a traditional manager's ace is at 90 pitches through 6 with a 2-run lead, the live-bet market often undervalues the opponent.</strong></p><div class="callout">The most exploitable coaching pattern in baseball: a manager who refuses to use his best reliever before the 9th inning, even when the game is on the line in the 7th. This is a systematic inefficiency that bettors and live markets consistently misprice.</div><ul class="rule-list"><li>Know which managers are analytics-first and which are reputation-first.</li><li>Track how often a manager pulls starters before the 6th inning vs. leaving them in past 100 pitches.</li><li>In live betting, watch for traditional managers slow to pull a struggling starter.</li><li>Analytically managed teams are better at exploiting opponent weaknesses.</li></ul>`},
+  {tag:"MLB · Lineup Correlation",title:"Correlation Within Lineups: The DFS and Totals Edge",intro:"Baseball lineups aren't nine independent bets — they're a correlated system. Understanding how players reinforce each other's value is fundamental.",body:`<h3>Why Correlation Matters</h3><p><strong>In DFS, stacking players from the same lineup exploits this correlation.</strong> In totals betting, identifying lineups with high internal correlation directly impacts how you should weight the over.</p><h3>The Stack Theory in DFS</h3><p>A 4-man stack from the same team in a GPP is high variance — if the team scores 8 runs, you're probably winning the tournament. <strong>The key is identifying which teams have lineup correlation strong enough to justify the stack.</strong></p><div class="callout">The best DFS stacks come from lineups facing pitchers who tend to allow high contact rates and elevated OBP. When the whole lineup gets on base, the correlation pays off.</div><ul class="rule-list"><li>Bet team totals over when a lineup has 4+ consecutive hitters with above-average OBP.</li><li>Fade team totals when the lineup has a clear break in quality.</li><li>In DFS, build stacks around the 1-2-3 hitters when the top of the order has high OBP.</li><li>Monitor lineup order changes day-of — a star moving from 3rd to 5th is a meaningful prop-value shift.</li></ul>`}
+];
+const NFL_ARTICLES=[
+  {tag:"NFL · Draft & Futures",title:"The NFL Draft as a Betting Market: How to Factor In What's Coming",intro:"The draft reshapes rosters, changes positional value, and creates futures market inefficiencies months before the season starts. Most bettors ignore it. That's the edge.",body:`<h3>Draft Position as a Win Total Signal</h3><p><strong>A team adding a generational talent at quarterback or edge rusher via the top pick is a fundamentally different team the next season</strong>, and futures markets set in late spring often undervalue the improvement.</p><h3>Tanking: How to Spot It and How to Bet It</h3><p>Teams that are intentionally tanking are one of the most valuable ATS fades in NFL betting. <strong>Signs of a tanking team:</strong> trading away veterans at the deadline for draft capital, starting rookie quarterbacks with no playoff path, resting healthy starters in December.</p><div class="callout">A team that trades its veteran quarterback in October and starts a rookie in a lost season is operationally a different franchise than the line suggests.</div><ul class="rule-list"><li>Bet division futures for teams adding top-5 picks at QB or edge.</li><li>Fade win totals for teams clearly in tank mode.</li><li>Track which teams traded away draft capital to win now.</li><li>Note scheme signals from the draft: OL-heavy drafts telegraph run-first identity.</li></ul>`},
+  {tag:"NFL · Public Betting",title:"Fading the Public: When the Crowd Is Wrong and How to Know",intro:"Blindly fading the public doesn't work. Selectively fading it — in the right spots — is one of the most durable edges in NFL betting.",body:`<h3>Why the Public Loses Systematically</h3><p>Recreational bettors bet on <strong>narratives, not numbers</strong>. They bet the team that won big last week, the quarterback everyone's talking about, the primetime home favorite.</p><h3>The Three Conditions That Matter</h3><p>The signal is strongest when all three align: <strong>65%+ of public bets on one side</strong>, the line has moved toward the public side, and there's a situational reason the public might be wrong.</p><div class="callout">Fading the public on Monday Night Football primetime favorites is historically one of the most consistent spots in NFL betting. The public piles in all week, the line inflates, and the value sits on the other side.</div><ul class="rule-list"><li>When 65%+ of bets are on one side and the line moves the other way, that's the sharpest fade signal.</li><li>Target primetime home favorites coming off emotional wins.</li><li>Fade public totals when two popular offenses play.</li><li>Never fade the public when there's a legitimate talent gap.</li></ul>`},
+  {tag:"NFL · Scheme & Game Control",title:"Game Control Football: Why Scheme Fit Matters More Than Arm Talent in 2026",intro:"The NFL has shifted. The era of air-it-out offenses giving way to teams that control the clock and win by making fewer mistakes. Bet accordingly.",body:`<h3>The Shift Away From Volume Passing</h3><p><strong>Teams built around time-of-possession, run game efficiency, and third-down conversion rate are outperforming boom-or-bust passing offenses in playoff football.</strong></p><h3>What Game Control Looks Like</h3><p>Game control teams share identifiable traits: top-10 offensive line by run block win rate, quarterback with a sub-2.5% interception rate, tight end usage as a reliable third-down chain-mover.</p><div class="callout">The most profitable NFL betting profile in recent seasons: a game-control team favored by 3–6 points at home in a divisional game.</div><ul class="rule-list"><li>Bet unders when two game-control teams face each other.</li><li>Fade overs when a boom-or-bust offense faces a defense built to force field goals.</li><li>Look for game-control teams as small dogs.</li><li>Track offensive line rankings weekly.</li></ul>`},
+  {tag:"NFL · Efficiency Metrics",title:"Efficiency Over Boom and Bust: The Modern NFL Betting Framework",intro:"EPA per play. Success rate. Third-down conversion rate. The metrics that actually predict NFL outcomes have almost nothing to do with the stats that dominate the headlines.",body:`<h3>Why Traditional Stats Mislead Bettors</h3><p>Total yards, passing yards per game, and points scored are the stats the public uses to evaluate teams. <strong>A team can rack up 450 yards, go 2-for-12 on third down, and lose by 14.</strong></p><h3>EPA Per Play: The Baseline Metric</h3><p><strong>Expected Points Added (EPA) per play</strong> measures how much each play improves or hurts a team's expected scoring outcome. Over a season, EPA per play is one of the strongest predictors of future win rate.</p><div class="callout">A team ranked 8th in points scored but 22nd in offensive EPA per play is living on big plays and luck. Bet on efficiency, not output.</div><ul class="rule-list"><li>Before betting a spread, check both teams' offensive and defensive EPA per play.</li><li>Fade boom-or-bust offenses as favorites.</li><li>Target game-control offenses in cold-weather, late-season games.</li><li>Use success rate to identify which teams will sustain drives.</li></ul>`}
+];
+const UNIVERSAL_ARTICLES=[
+  {tag:"Universal · Bankroll",title:"Bankroll Management: The Unsexy Skill That Separates Winners From Losers",intro:"You can have a positive edge and still go broke. Bankroll management isn't about being conservative — it's about surviving long enough for your edge to show up.",body:`<h3>The Kelly Criterion (Simplified)</h3><p>The Kelly Criterion tells you how much of your bankroll to bet based on your perceived edge. Most professionals use <strong>half-Kelly or quarter-Kelly</strong> to reduce variance while preserving the mathematical advantage.</p><h3>Flat Betting as a Baseline</h3><p>For bettors still tracking their edge, <strong>flat betting 1–2% of bankroll per play</strong> is the most practical approach.</p><div class="callout">Never bet more than 5% of bankroll on a single play — regardless of how confident you feel. Confidence and edge are not the same thing.</div><h3>The Losing Streak Problem</h3><p>A 10-game losing streak is statistically expected even for a bettor with a genuine 55% win rate. <strong>The correct response to a losing streak is to review your process, not increase your bets.</strong></p><ul class="rule-list"><li>Set a flat unit size (1–2% of bankroll) and stick to it regardless of streak.</li><li>Track every single bet with line, odds, result, and reasoning.</li><li>Never reload mid-month to chase losses.</li><li>Separate your betting bankroll from your regular finances completely.</li></ul>`},
+  {tag:"Universal · Opening Lines",title:"Opening Line Value Across All Sports: The First Number Always Matters",intro:"The opening line is the most information-dense price the market will offer. Here's how to use it across every sport.",body:`<h3>The Opening Line as a Baseline</h3><p>Every line you bet should be benchmarked against the open. <strong>Consistently getting closing line value (CLV) is the clearest signal that your process is generating real edge.</strong></p><h3>Sport-Specific Opening Windows</h3><p>NFL lines open Sunday night — the sharpest window is within the first 24–48 hours. NBA lines typically open 24 hours before tip. MLB lines open the morning of the game.</p><div class="callout">The earlier you can get to a sharp number, the more you're betting like a professional.</div><ul class="rule-list"><li>Log opening lines for every game you're considering.</li><li>If you can't find value at or near the open, wait.</li><li>Track your average CLV over 100+ bets.</li><li>Focus line shopping on books that post early: Circa, Westgate, and Pinnacle.</li></ul>`},
+  {tag:"Universal · Mindset",title:"Process Over Results: The Mental Framework Every Sharp Bettor Needs",intro:"Judging your betting decisions by outcomes is the fastest way to develop bad habits. The process is what you control.",body:`<h3>Resulting vs. Process Thinking</h3><p><strong>Resulting</strong> is judging a decision by its outcome rather than the quality of the decision. A bad bet that wins reinforces bad habits. Over time, resulting destroys edges.</p><h3>The Right Questions After a Loss</h3><p>After a losing bet, the only relevant question is: <strong>Was my reasoning sound given the information available at the time?</strong></p><div class="callout">The goal isn't to win every bet. The goal is to make decisions that, if repeated 1,000 times, produce a positive return. Judge yourself on that standard.</div><h3>Building a Betting Journal</h3><p>Every sharp bettor keeps records. Not just win/loss — full reasoning. Over time, this data tells you where your edge is real and where you're fooling yourself.</p><ul class="rule-list"><li>Log every bet before it starts — line, odds, estimated probability, and your reasoning.</li><li>Review your last 50 bets monthly. Look for patterns in where you win and where you lose.</li><li>Separate your analysis from your emotions.</li><li>Never discuss individual bet results on the same day. Give the variance time to settle.</li></ul>`}
+];
+const DD_CARDS=[
+  // existing cards
   {sport:'MLB',sub:'Starting Pitcher',signal:'bearish',player:'Garrett Crochet',note:'Velo down 2+ mph since early April. Whiff rate collapsing — ERA catching up to xERA.',stats:[{l:'4-Seam Velo Drop',v:'-2.3 mph',pct:82,dir:'dn'},{l:'Whiff Rate Δ',v:'-8.4 pts',pct:75,dir:'dn'},{l:'xERA vs ERA',v:'+1.44',pct:68,dir:'dn'}]},
-  {sport:'MLB',sub:'Starting Pitcher',signal:'bullish',player:'Jesús Luzardo',note:'Slider chase rate spiking. K/9 running 3 pts above prop lines over last 5 starts.',stats:[{l:'Slider Chase Rate',v:'41.2%',pct:78,dir:'up'},{l:'K/9 (Last 5 Starts)',v:'11.3',pct:85,dir:'up'},{l:'BB/9 (30D)',v:'2.1',pct:60,dir:'up'}]},
   {sport:'NBA',sub:'Center + Guard Combo',signal:'bullish',player:'Karl-Anthony Towns + Jalen Brunson',note:'On-court splits are historic. Market still treating KAT as a standalone bet.',stats:[{l:'On-Court Off. Rating',v:'+14.2',pct:90,dir:'up'},{l:'PNR Pts Per Poss.',v:'1.18',pct:82,dir:'up'},{l:'KAT FG% w/ JB',v:'+8.3',pct:70,dir:'up'}]},
   {sport:'NBA',sub:'Point Guard',signal:'caution',player:'Jalen Brunson',note:'Mileage concern into playoff push. Staff quietly managing minutes.',stats:[{l:'Minutes (Last 6 Gms)',v:'31.4',pct:55,dir:'dn'},{l:'Usage Rate (30D)',v:'-3.1 pts',pct:48,dir:'dn'},{l:'Listed Status',v:'Day-to-Day',pct:0,dir:'flat'}]},
-  {sport:'MLB',sub:'Designated Hitter',signal:'bullish',player:'Munetaka Murakami',note:'Exit velocity ranks elite. Adjustment period is over — production incoming.',stats:[{l:'Exit Velo Rank',v:'97th %ile',pct:97,dir:'up'},{l:'xSLG vs SLG',v:'+.071',pct:72,dir:'up'},{l:'Hard Hit% (30D)',v:'51.3%',pct:80,dir:'up'}]},
-  {sport:'MLB',sub:'Outfielder',signal:'bullish',player:'Nolan McLean',note:'Continued excellence is real and sustainable. xAVG matching AVG — not a fluke.',stats:[{l:'xBA vs AVG Gap',v:'+.003',pct:50,dir:'flat'},{l:'BB/K Ratio',v:'0.72',pct:65,dir:'up'},{l:'wRC+ (Season)',v:'138',pct:80,dir:'up'}]},
-  {sport:'MLB',sub:'Catcher',signal:'bullish',player:'Ben Rice',note:'One of the best catching campaigns in the AL. OBP and power both elite.',stats:[{l:'OBP (Season)',v:'.391',pct:85,dir:'up'},{l:'ISO (Season)',v:'.228',pct:78,dir:'up'},{l:'wRC+ Rank at C',v:'Top 3 AL',pct:90,dir:'up'}]},
   {sport:'NFL Draft',sub:'Edge Rush Debate',signal:'caution',player:'Arvell Reese vs. David Bailey',note:"Bailey gets the measurables buzz. Reese's tape is the more advanced athlete.",stats:[{l:'Reese DJ Rank',v:'#5 Overall',pct:60,dir:'flat'},{l:'Bailey DJ Rank',v:'#4 Overall',pct:65,dir:'flat'},{l:'Rush Polish',v:'Developing',pct:40,dir:'dn'}]},
-  {sport:'NFL Draft',sub:'#3 Overall Pick',signal:'bullish',player:'Sonny Styles',note:'Highest-ranked LB in years. Fred Warner comp. Defense-first teams get rare value here.',stats:[{l:'DJ Final Rank',v:'#3 Overall',pct:95,dir:'up'},{l:'Position Scarcity',v:'Rare LB Top 5',pct:85,dir:'up'},{l:'Jeremiah Comp',v:'Fred Warner',pct:80,dir:'up'}]},
+  // new deep dives
+  {sport:'MLB',sub:'Historic HR Rate',signal:'bullish',player:'Ben Rice + Aaron Judge',note:'Rice posting elite barrel rate alongside Judge. Yankees 1-2 punch generating historic HR probability through lineup positions 3-4.',stats:[{l:'Judge HR/Game %',v:'18.4%',pct:92,dir:'up'},{l:'Rice Barrel Rate',v:'15.9%',pct:80,dir:'up'},{l:'NYY HR vs LHP',v:'+34%',pct:85,dir:'up'}]},
+  {sport:'MLB',sub:'Starting Pitcher',signal:'bearish',player:'Kevin Gausman',note:'Strong start to the season masking real regression. Whiff rate and spin metrics trending down hard over last 4 starts — ERA is coming for him.',stats:[{l:'Splitter Whiff% Δ',v:'-9.2 pts',pct:78,dir:'dn'},{l:'xERA (Last 5)',v:'4.88',pct:72,dir:'dn'},{l:'Barrel Rate vs',v:'+6.1%',pct:65,dir:'dn'}]},
+  {sport:'MLB',sub:'Designated Hitter',signal:'bullish',player:'Munetaka Murakami',note:"This year's Cal Raleigh? Exit velocity elite, adjustment period is over. Market still sleeping on the power output.",stats:[{l:'Exit Velo Rank',v:'97th %ile',pct:97,dir:'up'},{l:'xSLG vs SLG',v:'+.071',pct:72,dir:'up'},{l:'Hard Hit% (30D)',v:'51.3%',pct:80,dir:'up'}]},
+  {sport:'NBA',sub:'Playoff X-Factor',signal:'bullish',player:'No OG, No Problem... Right?',note:"Knicks are finding ways without OG Anunoby. Depth is holding but the market hasn't fully priced the long-term risk if he misses extended time.",stats:[{l:'Knicks ATS w/o OG',v:'+67%',pct:67,dir:'up'},{l:'Brunson Usage',v:'+4.2%',pct:72,dir:'up'},{l:'Defensive Rating',v:'+3.1',pct:45,dir:'dn'}]},
+  {sport:'NFL Draft',sub:'Rookie QB',signal:'bullish',player:'Cade Klubnik',note:'Impressed in minicamp presser. Demeanor, football IQ, and command in front of the media suggest the transition ahead of schedule. Market will catch up.',stats:[{l:'Presser Grade',v:'A+',pct:95,dir:'up'},{l:'Minicamp Buzz',v:'Elite',pct:88,dir:'up'},{l:'Market Adj. Needed',v:'Yes',pct:70,dir:'up'}]},
+  {sport:'NFL Draft',sub:'Head Coach Signal',signal:'bullish',player:'Aaron Glenn — Jets',note:'Glenn inherits a roster with real pieces. Defensive identity is established. The Jets are being underestimated in a soft early schedule.',stats:[{l:'Defensive Scheme Fit',v:'Elite',pct:90,dir:'up'},{l:'Roster Talent',v:'Top 12',pct:75,dir:'up'},{l:'Market Win Total',v:'Underpriced',pct:68,dir:'up'}]},
+  {sport:'NFL Draft',sub:'2026 Team Value',signal:'bullish',player:'Giants — Sneaky Good',note:"BPAs falling to New York all offseason. Schoen is building quietly. Don't sleep on this roster heading into 2026.",stats:[{l:'BPA Draft Score',v:'A-',pct:85,dir:'up'},{l:'Roster Upgrade %',v:'+22%',pct:82,dir:'up'},{l:'Market O/U',v:'Undervalued',pct:72,dir:'up'}]},
 ];
 
-function buildUniversalCard(article) {
-  const card = document.createElement('div');
-  card.className = 'article-card';
-  card.onclick = () => toggleCard(card);
-  let fullBodyHTML = '';
-  article.sections.forEach(sec => {
-    if (sec.h) fullBodyHTML += `<h3>${sec.h}</h3>`;
-    if (sec.p) fullBodyHTML += `<p>${sec.p}</p>`;
-    if (sec.callout) fullBodyHTML += `<div class="callout">${sec.callout}</div>`;
-    if (sec.rules) { fullBodyHTML += '<ul class="rule-list">'; sec.rules.forEach(r => { fullBodyHTML += `<li>${r}</li>`; }); fullBodyHTML += '</ul>'; }
-  });
-  card.innerHTML = `
-    <div class="card-top">
-      <div class="card-tag">${article.tag}</div>
-      <div class="card-title">${article.title}</div>
-      <p class="card-intro">${article.intro}</p>
-      <button class="card-expand-btn">Full Breakdown <span class="expand-arrow">▾</span></button>
-    </div>
-    <div class="card-full">
-      <div class="full-read-label">Full Read</div>
-      <div class="full-body">${fullBodyHTML}</div>
-    </div>`;
-  return card;
+function buildArticleCard(a){
+  const d=document.createElement('div');
+  d.className='article-card glass rounded-[24px] overflow-hidden cursor-pointer';
+  d.onclick=()=>toggleCard(d);
+  d.innerHTML=`<div class="p-7"><div class="text-xs uppercase tracking-[.2em] mb-3" style="color:var(--gold)">${a.tag}</div><h3 class="text-2xl font-black mb-3 leading-tight">${a.title}</h3><p class="text-zinc-400 text-sm leading-7 mb-5">${a.intro}</p><button class="flex items-center gap-2 text-xs uppercase tracking-[.18em] font-semibold border-0 bg-transparent cursor-pointer" style="color:var(--gold)">Full Breakdown <span class="expand-arrow">▾</span></button></div><div class="card-full border-t border-white/5 bg-black/20 px-7 py-6"><div class="text-xs uppercase tracking-[.18em] text-zinc-500 mb-5 flex items-center gap-3">Full Read <span style="flex:1;height:1px;background:rgba(255,255,255,.06);display:block"></span></div><div class="full-body">${a.body}</div></div>`;
+  return d;
 }
 
-function switchSport(sport, btn) {
-  document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+function toggleCard(card){card.classList.toggle('open')}
+function switchSport(sport,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  document.querySelectorAll('.sport-section').forEach(s => s.classList.remove('active'));
-  const id = sport === 'allsports' ? 'section-allsports' : 'section-deepdive';
-  const el = document.getElementById(id);
-  if (el) el.classList.add('active');
+  document.querySelectorAll('.filter-panel').forEach(s=>s.classList.remove('active'));
+  document.getElementById(sport==='allsports'?'section-allsports':'section-deepdive').classList.add('active');
 }
-
-function ddFilter(type, btn) {
-  document.querySelectorAll('.dd-filter').forEach(b => b.classList.remove('active'));
+function ddFilter(type,btn){
+  document.querySelectorAll('.dd-filter').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  document.querySelectorAll('.trend-card').forEach(card => {
-    const match = type === 'ALL' || card.dataset.sport === type || card.dataset.signal === type;
-    card.classList.toggle('tc-hidden', !match);
+  document.querySelectorAll('.trend-card').forEach(card=>{
+    card.classList.toggle('tc-hidden',!(type==='ALL'||card.dataset.sport===type||card.dataset.signal===type));
   });
 }
-
-function arrowFor(dir) { return dir==='up'?'▲':dir==='dn'?'▼':'—'; }
-function barCls(dir)  { return dir==='up'?'bar-up':dir==='dn'?'bar-dn':'bar-flat'; }
-function valCls(dir)  { return dir==='up'?'tv-up':dir==='dn'?'tv-dn':dir==='flat'?'tv-flat':'tv-neu'; }
-
-function renderDD() {
-  const grid = document.getElementById('ddGrid');
-  if (!grid) return;
-  grid.innerHTML = DD_CARDS.map(c => {
-    const statsHTML = c.stats.map(s => `
-      <div class="tc-stat-row">
-        <span class="tc-stat-label">${s.l}</span>
-        <div class="tc-bar-wrap"><div class="tc-bar ${barCls(s.dir)}" style="width:${s.pct}%"></div></div>
-        <span class="tc-stat-val ${valCls(s.dir)}">${s.v} <span class="tc-arrow">${arrowFor(s.dir)}</span></span>
-      </div>`).join('');
-    return `<div class="trend-card" data-sport="${c.sport}" data-signal="${c.signal}">
-      <div class="tc-top">
-        <div class="tc-signal-bar tc-sig-${c.signal}"></div>
-        <div class="tc-head">
-          <div class="tc-sport-tag">${c.sport} · ${c.sub}</div>
-          <span class="tc-pill tc-pill-${c.signal}">${c.signal}</span>
-          <div class="tc-player">${c.player}</div>
-          <div class="tc-note">${c.note}</div>
-        </div>
-      </div>
-      <div class="tc-stats">${statsHTML}</div>
-    </div>`;
-  }).join('');
+function arrowFor(dir){return dir==='up'?'▲':dir==='dn'?'▼':'—'}
+function barCls(dir){return dir==='up'?'bar-up':dir==='dn'?'bar-dn':'bar-flat'}
+function valCls(dir){return dir==='up'?'tv-up':dir==='dn'?'tv-dn':dir==='flat'?'tv-flat':'tv-neu'}
+function renderDD(){
+  const grid=document.getElementById('ddGrid');if(!grid)return;
+  grid.innerHTML=DD_CARDS.map(c=>`<div class="trend-card" data-sport="${c.sport}" data-signal="${c.signal}"><div class="tc-top"><div class="tc-signal-bar tc-sig-${c.signal}"></div><div class="tc-head"><div class="tc-sport-tag">${c.sport} · ${c.sub}</div><span class="tc-pill tc-pill-${c.signal}">${c.signal}</span><div class="tc-player">${c.player}</div><div class="tc-note">${c.note}</div></div></div><div class="tc-stats">${c.stats.map(s=>`<div class="tc-stat-row"><span class="tc-stat-label">${s.l}</span><div class="tc-bar-wrap"><div class="tc-bar ${barCls(s.dir)}" style="width:${s.pct}%"></div></div><span class="tc-stat-val ${valCls(s.dir)}">${s.v} <span class="tc-arrow">${arrowFor(s.dir)}</span></span></div>`).join('')}</div></div>`).join('');
 }
-
-function toggleCard(card) {
-  const isOpen = card.classList.contains('open');
-  const grid = card.closest('.articles-grid');
-  if (grid) grid.querySelectorAll('.article-card').forEach(c => c.classList.remove('open'));
-  if (!isOpen) card.classList.add('open');
+function toggleMobileMenu(){
+  const m=document.getElementById('mobileMenu');
+  m.classList.toggle('hidden');m.classList.toggle('flex');
+  document.body.style.overflow=m.classList.contains('flex')?'hidden':'';
 }
-
-function toggleMobileMenu() {
-  const menu = document.getElementById('mobileMenu');
-  const btn  = document.getElementById('hamburgerBtn');
-  if (!menu||!btn) return;
-  menu.classList.toggle('open');
-  btn.classList.toggle('open');
-  document.body.style.overflow = menu.classList.contains('open')?'hidden':'';
-}
-
-const _uc = document.getElementById('universal-cards-main');
-if (_uc) UNIVERSAL_ARTICLES.forEach(a => _uc.appendChild(buildUniversalCard(a)));
+// Inject article cards
+NBA_ARTICLES.forEach(a=>document.getElementById('nba-grid').appendChild(buildArticleCard(a)));
+MLB_ARTICLES.forEach(a=>document.getElementById('mlb-grid').appendChild(buildArticleCard(a)));
+NFL_ARTICLES.forEach(a=>document.getElementById('nfl-grid').appendChild(buildArticleCard(a)));
+UNIVERSAL_ARTICLES.forEach(a=>document.getElementById('universal-cards-main').appendChild(buildArticleCard(a)));
 renderDD();
 </script>
 </body>

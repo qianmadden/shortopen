@@ -4,43 +4,41 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>shortopen — Subscribe</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script>window.tailwind={config:{}};</script>
+<script src="https://cdn.tailwindcss.com?plugins="></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --bg: #0a0a0a;
-    --surface: #111111;
-    --surface2: #181818;
-    --border: #222222;
-    --border2: #2a2a2a;
-    --gold: #c8922a;
-    --gold-light: #e4a83a;
-    --white: #f0ece4;
-    --muted: #6b6560;
-    --text: #d4cfc8;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 999;
-    opacity: 0.4;
-  }
-
+:root{--bg:#05070b;--gold:#f4b942;--green:#3fc17a;--red:#ef4444;--muted:#738296;--text:#e8edf5;}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top left,rgba(244,185,66,.06),transparent 28%),radial-gradient(circle at bottom right,rgba(59,130,246,.08),transparent 30%),var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden}
+.glass{background:rgba(255,255,255,.03);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.07)}
+.nav-link{position:relative;font-size:.82rem;text-transform:uppercase;letter-spacing:.22em;color:#6f8199;transition:.25s ease;text-decoration:none}
+.nav-link:hover{color:white}.nav-link.active{color:var(--gold)}
+.nav-link.active::after{content:'';position:absolute;left:0;bottom:-22px;width:100%;height:2px;background:var(--gold)}
+.market-card{transition:.25s ease;position:relative;overflow:hidden}
+.market-card:hover{border-color:rgba(244,185,66,.28)!important;transform:translateY(-2px)}
+.market-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at top right,rgba(244,185,66,.08),transparent 40%);opacity:0;transition:.35s ease;pointer-events:none}
+.market-card:hover::before{opacity:1}
+.ticker-anim{animation:ticker 32s linear infinite}
+@keyframes ticker{from{transform:translateX(0%)}to{transform:translateX(-50%)}}
+.hero-glow{position:absolute;width:520px;height:520px;border-radius:9999px;background:rgba(244,185,66,.08);filter:blur(120px);top:-220px;right:-120px;pointer-events:none}
+.live-dot{width:8px;height:8px;border-radius:9999px;background:var(--green);animation:pulse 1.6s infinite;flex-shrink:0}
+@keyframes pulse{0%{transform:scale(.9);opacity:.5}50%{transform:scale(1);opacity:1}100%{transform:scale(.9);opacity:.5}}
+.form-input,.form-select{width:100%;padding:14px 18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;color:#e8edf5;font-family:'Inter',sans-serif;font-size:.92rem;outline:none;transition:border-color .2s;-webkit-appearance:none}
+.form-input::placeholder{color:#738296}
+.form-input:focus,.form-select:focus{border-color:rgba(244,185,66,.4)}
+.form-select{cursor:pointer;color:#738296}
+.form-select.selected{color:#e8edf5}
+.form-select option{background:#0d1117;color:#e8edf5}
+.select-wrap{position:relative}
+.select-wrap::after{content:'▾';position:absolute;right:16px;top:50%;transform:translateY(-50%);color:#738296;font-size:.8rem;pointer-events:none}
+.faq-a{display:none;padding:0 0 16px;font-size:.88rem;color:#738296;line-height:1.8}
+.faq-item.open .faq-a{display:block}
+.faq-arrow{color:var(--gold);font-size:.8rem;transition:transform .2s;flex-shrink:0}
+.faq-item.open .faq-arrow{transform:rotate(180deg)}
+  /* NAV */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -48,257 +46,88 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 48px;
-    background: rgba(10,10,10,0.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
+    padding: 14px 48px;
+    background: rgba(5,7,11,0.97);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    height: 62px;
   }
-  .nav-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.25rem; color: var(--white); letter-spacing: 0.04em; text-decoration: none; }
-  .nav-logo span { color: var(--gold); }
+  .nav-logo {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: #f0ece4;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: #f4b942; }
   .nav-links { display: flex; gap: 36px; list-style: none; }
-  .nav-links a { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--gold); }
-  .nav-links a.active { color: var(--gold); }
-
-  .page-header {
-    padding: 140px 48px 64px;
-    max-width: 900px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .page-eyebrow {
+  .nav-links a {
     font-size: 0.72rem;
     font-weight: 500;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.20em;
     text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 20px;
-    opacity: 0;
-    animation: fadeUp 0.7s ease 0.1s forwards;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
+    color: #4d6070;
+    text-decoration: none;
+    transition: color 0.2s;
   }
-  .page-eyebrow::before, .page-eyebrow::after { content: ''; display: block; width: 40px; height: 1px; background: var(--gold); opacity: 0.4; }
-
-  .page-title {
-    font-family: 'Playfair Display', serif;
-    font-weight: 900;
-    font-size: clamp(36px, 5.5vw, 72px);
-    color: var(--white);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    margin-bottom: 20px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.25s forwards;
-  }
-  .page-title em { font-style: italic; color: var(--gold); }
-
-  .page-sub {
-    font-size: 1rem;
-    color: var(--muted);
-    max-width: 480px;
-    margin: 0 auto;
-    line-height: 1.8;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.4s forwards;
-  }
-
-  .free-badge-wrap {
-    max-width: 900px;
-    margin: 0 auto 56px;
-    padding: 0 48px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.5s forwards;
-    display: flex;
-    justify-content: center;
-  }
-
-  .free-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 32px;
-    border: 1px solid var(--border2);
-    background: var(--surface);
-    font-size: 0.76rem;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .free-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); animation: pulse 1.8s ease infinite; flex-shrink: 0; }
-  .free-badge strong { color: var(--gold); font-weight: 600; }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.3; transform: scale(0.65); }
-  }
-
-  .form-wrap {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 48px 40px;
-    opacity: 0;
-    animation: fadeUp 0.9s ease 0.6s forwards;
-  }
-
-  .form-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 56px 52px;
-  }
-
-  .form-card-eyebrow { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
-
-  .form-card-title { font-family: 'Playfair Display', serif; font-size: clamp(22px, 3vw, 34px); font-weight: 900; color: var(--white); letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 8px; }
-  .form-card-title em { font-style: italic; color: var(--gold); }
-
-  .form-card-sub { font-size: 0.9rem; color: var(--muted); margin-bottom: 40px; line-height: 1.7; }
-
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-
-  .form-field { display: flex; flex-direction: column; gap: 8px; }
-  .form-field.full { grid-column: 1 / -1; }
-
-  .form-label { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
-
-  .form-input, .form-select {
-    padding: 14px 18px;
-    background: var(--bg);
-    border: 1px solid var(--border2);
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 300;
-    outline: none;
-    transition: border-color 0.2s;
-    width: 100%;
-    appearance: none;
-    -webkit-appearance: none;
-  }
-  .form-input::placeholder { color: var(--muted); }
-  .form-input:focus, .form-select:focus { border-color: var(--gold); }
-
-  .select-wrap { position: relative; }
-  .select-wrap::after { content: '▾'; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.8rem; pointer-events: none; }
-
-  .form-select { cursor: pointer; color: var(--muted); }
-  .form-select.selected { color: var(--white); }
-  .form-select option { background: var(--surface2); color: var(--white); }
-
-  .form-submit {
-    margin-top: 24px;
-    width: 100%;
-    padding: 16px 32px;
-    background: var(--gold);
-    color: #0a0a0a;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    font-size: 0.85rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border: none;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.15s;
-  }
-  .form-submit:hover { background: var(--gold-light); transform: translateY(-1px); }
-
-  .form-note { margin-top: 14px; font-size: 0.74rem; color: #3a3a3a; letter-spacing: 0.06em; text-align: center; }
-
-  .form-success { display: none; text-align: center; padding: 40px 0; }
-  .success-mark { font-size: 2rem; margin-bottom: 16px; color: var(--gold); }
-  .success-title { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: var(--white); margin-bottom: 10px; letter-spacing: -0.02em; }
-  .success-sub { font-size: 0.92rem; color: var(--muted); line-height: 1.7; }
-
-  .coming-soon {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 48px 80px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.8s forwards;
-  }
-
-  .coming-soon-inner {
-    border: 1px solid var(--border2);
-    padding: 40px 48px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 40px;
-  }
-
-  .coming-soon-eyebrow { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-  .coming-soon-title { font-family: 'Playfair Display', serif; font-size: clamp(18px, 2.2vw, 26px); font-weight: 900; color: var(--white); letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 10px; }
-  .coming-soon-title em { font-style: italic; color: var(--gold); }
-  .coming-soon-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.75; max-width: 480px; }
-
-  .coming-soon-badge {
-    flex-shrink: 0;
-    display: flex;
+  .nav-links a:hover, .nav-links a.active { color: #f4b942; }
+  .hamburger {
+    display: none;
     flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    padding: 20px 28px;
-    border: 1px solid var(--border2);
-    background: var(--surface);
-    text-align: center;
-    min-width: 140px;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: transparent;
+    border: none;
+    z-index: 200;
   }
-  .coming-soon-badge-label { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
-  .coming-soon-badge-val { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--gold); letter-spacing: -0.01em; }
-
-  .faq { border-top: 1px solid var(--border); max-width: 900px; margin: 0 auto; padding: 72px 48px 100px; opacity: 0; animation: fadeUp 0.8s ease 1s forwards; }
-  .faq-eyebrow { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 40px; text-align: center; }
-  .faq-list { display: flex; flex-direction: column; gap: 2px; }
-  .faq-item { background: var(--surface); border: 1px solid var(--border); overflow: hidden; transition: border-color 0.2s; }
-  .faq-item:hover { border-color: var(--border2); }
-  .faq-q { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; font-family: 'DM Sans', sans-serif; font-size: 0.94rem; font-weight: 500; color: var(--white); background: transparent; border: none; cursor: pointer; text-align: left; gap: 16px; }
-  .faq-arrow { color: var(--gold); font-size: 0.8rem; transition: transform 0.2s; flex-shrink: 0; }
-  .faq-item.open .faq-arrow { transform: rotate(180deg); }
-  .faq-a { display: none; padding: 0 24px 20px; font-size: 0.88rem; color: var(--muted); line-height: 1.8; border-top: 1px solid var(--border); }
-  .faq-item.open .faq-a { display: block; }
-
-  footer { border-top: 1px solid var(--border); padding: 40px 48px; display: flex; justify-content: space-between; align-items: center; }
-  .footer-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1rem; color: var(--white); }
-  .footer-logo span { color: var(--gold); }
-  .footer-copy { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; }
-
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-
-  @media (max-width: 768px) {
-    nav { padding: 18px 24px; }
-    .page-header { padding: 110px 24px 48px; }
-    .free-badge-wrap { padding: 0 24px; }
-    .form-wrap { padding: 0 24px 32px; }
-    .form-card { padding: 36px 28px; }
-    .form-grid { grid-template-columns: 1fr; }
-    .coming-soon { padding: 0 24px 60px; }
-    .coming-soon-inner { flex-direction: column; gap: 24px; }
-    .coming-soon-badge { width: 100%; }
-    .faq { padding: 56px 24px 80px; }
-    footer { padding: 30px 24px; flex-direction: column; gap: 12px; text-align: center; }
-  }
-
-  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: transparent; border: none; z-index: 200; }
-  .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); transition: all 0.25s ease; }
+  .hamburger span { display: block; width: 22px; height: 2px; background: #f0ece4; transition: all 0.25s; }
   .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .hamburger.open span:nth-child(2) { opacity: 0; }
   .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-  .mobile-menu { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10,10,10,0.98); backdrop-filter: blur(16px); z-index: 150; flex-direction: column; align-items: center; justify-content: center; gap: 0; }
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(5,7,11,0.98);
+    backdrop-filter: blur(20px);
+    z-index: 150;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
   .mobile-menu.open { display: flex; }
-  .mobile-menu a { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 8vw, 2.4rem); font-weight: 900; color: var(--white); text-decoration: none; letter-spacing: -0.02em; padding: 16px 0; border-bottom: 1px solid var(--border); width: 80%; text-align: center; transition: color 0.2s; }
-  .mobile-menu a:last-child { border-bottom: none; }
-  .mobile-menu a:hover, .mobile-menu a.active { color: var(--gold); }
-  .mobile-menu-close { position: absolute; top: 24px; right: 24px; background: transparent; border: none; color: var(--muted); font-size: 1.4rem; cursor: pointer; padding: 8px; }
-  @media (max-width: 900px) { .hamburger { display: flex; } .nav-links { display: none !important; } }
+  .mobile-menu a {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1.6rem, 7vw, 2.2rem);
+    font-weight: 900;
+    color: #f0ece4;
+    text-decoration: none;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    width: 80%;
+    text-align: center;
+    transition: color 0.2s;
+  }
+  .mobile-menu a:hover, .mobile-menu a.active { color: #f4b942; }
+  .mobile-menu-close {
+    position: absolute; top: 24px; right: 24px;
+    background: transparent; border: none; color: #4d6070;
+    font-size: 1.4rem; cursor: pointer; padding: 8px;
+  }
+  @media (max-width: 640px) {
+    nav { padding: 14px 20px; }
+    .nav-links { display: none !important; }
+    .hamburger { display: flex; }
+  }
 </style>
 </head>
 <body>
 
+
+
+<!-- HERO -->
 <nav>
   <a href="index.html" class="nav-logo">short<span>open</span></a>
   <ul class="nav-links">
@@ -306,13 +135,13 @@
     <li><a href="market.html">Market</a></li>
     <li><a href="optimizer.html">Optimizer</a></li>
     <li><a href="hr-index.html">HR Index</a></li>
-    <li><a href="nfl-draft.html">NFL Draft</a></li>
+    <li><a href="nfl-draft-market.html">NFL Draft</a></li>
+    <li><a href="film-room.html">Film Room</a></li>
     <li><a href="about.html">About</a></li>
     <li><a href="subscribe.html" class="active">Subscribe</a></li>
   </ul>
-  <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+  <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
 </nav>
-
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
   <a href="index.html" onclick="toggleMobileMenu()">Home</a>
@@ -320,166 +149,182 @@
   <a href="market.html" onclick="toggleMobileMenu()">Market</a>
   <a href="optimizer.html" onclick="toggleMobileMenu()">Optimizer</a>
   <a href="hr-index.html" onclick="toggleMobileMenu()">HR Index</a>
-  <a href="nfl-draft.html" onclick="toggleMobileMenu()">NFL Draft</a>
+  <a href="nfl-draft-market.html" onclick="toggleMobileMenu()">NFL Draft</a>
+  <a href="film-room.html" onclick="toggleMobileMenu()">Film Room</a>
   <a href="about.html" onclick="toggleMobileMenu()">About</a>
-  <a href="subscribe.html" onclick="toggleMobileMenu()">Subscribe</a>
+  <a href="subscribe.html" class="active" onclick="toggleMobileMenu()">Subscribe</a>
 </div>
 
-<div class="page-header">
-  <p class="page-eyebrow">The Open Line</p>
-  <h1 class="page-title">Get in <em>early.</em></h1>
-  <p class="page-sub">Free access while we build. Weekly analysis drops, model updates, and market breakdowns — straight to your inbox.</p>
-</div>
-
-<div class="free-badge-wrap">
-  <div class="free-badge">
-    <div class="free-dot"></div>
-    Currently free — <strong>full access, no card required</strong>
-    <div class="free-dot"></div>
+<section class="relative overflow-hidden border-b border-white/5">
+  <div class="hero-glow"></div>
+  <div class="max-w-[1200px] mx-auto px-6 xl:px-10 py-20 relative z-10 text-center">
+    <div class="inline-flex items-center gap-3 rounded-full border px-5 py-3 text-xs uppercase tracking-[.24em] mb-8" style="border-color:rgba(244,185,66,.2);background:rgba(244,185,66,.1);color:#fde68a">
+      <div class="live-dot"></div>The Open Line
+    </div>
+    <h1 class="text-[3.5rem] md:text-[6rem] leading-[.9] font-black tracking-tight mb-6">
+      Get in <span style="color:var(--gold)">Early.</span>
+    </h1>
+    <p class="text-xl leading-9 text-zinc-400 max-w-2xl mx-auto mb-10">Free access while we build. Weekly analysis drops, model updates, and market breakdowns — straight to your inbox.</p>
+    <!-- Free badge -->
+    <div class="inline-flex items-center gap-4 glass rounded-full px-8 py-4 text-sm">
+      <div class="live-dot"></div>
+      <span class="text-zinc-400">Currently free —</span>
+      <span class="font-bold" style="color:var(--gold)">full access, no card required</span>
+      <div class="live-dot"></div>
+    </div>
   </div>
-</div>
+</section>
 
-<div class="form-wrap">
-  <div class="form-card">
-    <p class="form-card-eyebrow">Join the list</p>
-    <h2 class="form-card-title">Know the <em>open.</em></h2>
-    <p class="form-card-sub">Access is free right now as we fine-tune our projection models and optimizers ahead of MLB and NFL. Get in early, get the drops, and lock in your rate before paid tiers open.</p>
+<!-- FORM + ASIDE -->
+<section class="max-w-[1200px] mx-auto px-6 xl:px-10 py-14">
+  <div class="grid xl:grid-cols-[1fr_360px] gap-8 items-start">
 
-    <form id="subscribeForm" name="shortopen-subscribers" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleSubmit(event)">
-      <input type="hidden" name="form-name" value="shortopen-subscribers"/>
-      <p style="display:none"><input name="bot-field"/></p>
+    <!-- FORM CARD -->
+    <div class="glass rounded-[36px] overflow-hidden">
+      <div class="p-10 xl:p-12">
+        <div class="text-xs uppercase tracking-[.22em] mb-3" style="color:var(--gold)">Join the list</div>
+        <h2 class="text-[2.2rem] md:text-[3rem] leading-[.95] font-black mb-3">Know the <span style="color:var(--gold)">open.</span></h2>
+        <p class="text-zinc-400 text-base leading-8 mb-10 max-w-xl">Access is free right now as we fine-tune our projection models and optimizers ahead of MLB and NFL. Get in early, get the drops, and lock in your rate before paid tiers open.</p>
 
-      <div class="form-grid">
-        <div class="form-field">
-          <label class="form-label" for="fullName">Full Name</label>
-          <input class="form-input" type="text" id="fullName" name="full-name" placeholder="Your full name" required/>
+        <form id="subscribeForm" name="shortopen-subscribers" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleSubmit(event)">
+          <input type="hidden" name="form-name" value="shortopen-subscribers"/>
+          <p style="display:none"><input name="bot-field"/></p>
+          <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <div class="text-xs uppercase tracking-[.16em] text-zinc-500 mb-2">Full Name</div>
+              <input class="form-input" type="text" name="full-name" placeholder="Your full name" required/>
+            </div>
+            <div>
+              <div class="text-xs uppercase tracking-[.16em] text-zinc-500 mb-2">Email Address</div>
+              <input class="form-input" type="email" name="email" placeholder="your@email.com" required/>
+            </div>
+            <div class="md:col-span-2">
+              <div class="text-xs uppercase tracking-[.16em] text-zinc-500 mb-2">How did you hear about us?</div>
+              <div class="select-wrap">
+                <select class="form-select" name="referral" required onchange="this.classList.add('selected')">
+                  <option value="" disabled selected>Select one</option>
+                  <option value="twitter-x">Twitter / X</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="reddit">Reddit</option>
+                  <option value="tiktok">TikTok</option>
+                  <option value="friend-referral">Friend or referral</option>
+                  <option value="google">Google search</option>
+                  <option value="podcast">Podcast</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="w-full rounded-2xl py-4 font-black text-sm uppercase tracking-[.18em] mt-4 cursor-pointer border-0 transition-all" style="background:var(--gold);color:#000">Join Short Open — It's Free</button>
+          <p class="text-center text-xs text-zinc-700 mt-3 tracking-[.08em]">Free to start. Unsubscribe anytime.</p>
+        </form>
+
+        <div class="hidden text-center py-10" id="formSuccess">
+          <div class="text-4xl mb-4" style="color:var(--gold)">✦</div>
+          <div class="text-2xl font-black mb-3">You're in.</div>
+          <p class="text-zinc-400 text-sm leading-7">Welcome to Short Open. First drop hits your inbox soon.<br>Know the open before everyone else does.</p>
         </div>
-        <div class="form-field">
-          <label class="form-label" for="email">Email Address</label>
-          <input class="form-input" type="email" id="email" name="email" placeholder="your@email.com" required/>
-        </div>
-        <div class="form-field full">
-          <label class="form-label" for="referral">How did you hear about us?</label>
-          <div class="select-wrap">
-            <select class="form-select" id="referral" name="referral" required onchange="this.classList.add('selected')">
-              <option value="" disabled selected>Select one</option>
-              <option value="twitter-x">Twitter / X</option>
-              <option value="instagram">Instagram</option>
-              <option value="reddit">Reddit</option>
-              <option value="tiktok">TikTok</option>
-              <option value="friend-referral">Friend or referral</option>
-              <option value="google">Google search</option>
-              <option value="podcast">Podcast</option>
-              <option value="other">Other</option>
-            </select>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="space-y-4">
+      <!-- What's coming -->
+      <div class="glass rounded-[28px] p-7 market-card">
+        <div class="text-xs uppercase tracking-[.22em] text-zinc-500 mb-3">What's Coming</div>
+        <h3 class="text-2xl font-black mb-4">Paid tiers open for <span style="color:var(--gold)">NFL season.</span></h3>
+        <p class="text-sm text-zinc-400 leading-7 mb-6">Access is free right now because we're doing the work — fine-tuning projection models, sharpening the optimizers, and building out MLB mid-season and NFL pre-season coverage. Early subscribers lock in their rate first.</p>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="rounded-[16px] border border-white/10 bg-black/20 p-4 text-center">
+            <div class="text-xs uppercase tracking-[.14em] text-zinc-500 mb-2">Now</div>
+            <div class="text-2xl font-black text-emerald-400">Free</div>
+          </div>
+          <div class="rounded-[16px] border border-white/10 bg-black/20 p-4 text-center">
+            <div class="text-xs uppercase tracking-[.14em] text-zinc-500 mb-2">Paid Tiers</div>
+            <div class="text-xl font-black" style="color:var(--gold)">NFL '26</div>
           </div>
         </div>
       </div>
-
-      <button type="submit" class="form-submit">Join Short Open — It's Free</button>
-      <p class="form-note">Free to start. Unsubscribe anytime.</p>
-    </form>
-
-    <div class="form-success" id="formSuccess">
-      <div class="success-mark">✦</div>
-      <div class="success-title">You're in.</div>
-      <p class="success-sub">Welcome to Short Open. First drop hits your inbox soon.<br>Know the open before everyone else does.</p>
-    </div>
-  </div>
-</div>
-
-<div class="coming-soon">
-  <div class="coming-soon-inner">
-    <div class="coming-soon-left">
-      <p class="coming-soon-eyebrow">What's coming</p>
-      <h3 class="coming-soon-title">Paid tiers open for <em>NFL season.</em></h3>
-      <p class="coming-soon-desc">Access is free right now because we're doing the work — fine-tuning projection models, sharpening the optimizers, and building out MLB mid-season and NFL pre-season coverage. When paid tiers launch, early subscribers lock in their rate first. The window won't be open long.</p>
-    </div>
-    <div class="coming-soon-badge">
-      <span class="coming-soon-badge-label">Now</span>
-      <span class="coming-soon-badge-val">Free</span>
-      <span class="coming-soon-badge-label" style="margin-top:8px">Paid tiers</span>
-      <span class="coming-soon-badge-val" style="font-size:1rem;">NFL '26</span>
-    </div>
-  </div>
-</div>
-
-<div class="faq">
-  <p class="faq-eyebrow">Questions</p>
-  <div class="faq-list">
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        Is it really free?
-        <span class="faq-arrow">▾</span>
-      </button>
-      <div class="faq-a">Yes — fully free right now. We're using this window to fine-tune our projection models and optimizers as we expand into MLB and NFL. No credit card, no trial. You get everything currently available from day one.</div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        What will I actually receive?
-        <span class="faq-arrow">▾</span>
-      </button>
-      <div class="faq-a">Weekly drops covering NBA player props, line movement breakdowns, market analysis, and model updates. MLB coverage builds mid-season. NFL drops pre-season ahead of the paid launch. No filler — just the work.</div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        When do paid tiers launch?
-        <span class="faq-arrow">▾</span>
-      </button>
-      <div class="faq-a">Paid tiers are set to open for NFL season. MLB mid-season coverage comes online before that. Early subscribers are first to know, first to lock in their rate — before it goes public.</div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        Can I unsubscribe?
-        <span class="faq-arrow">▾</span>
-      </button>
-      <div class="faq-a">Any time. Every email includes an unsubscribe link — one click and you're out. No friction.</div>
+      <!-- What you get -->
+      <div class="glass rounded-[28px] p-7">
+        <div class="text-xs uppercase tracking-[.22em] text-zinc-500 mb-4">What You Get</div>
+        <div class="space-y-3">
+          <div class="flex items-start gap-3"><div class="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style="background:var(--gold)"></div><div class="text-sm text-zinc-300 leading-6">Weekly NBA player props and line movement breakdowns</div></div>
+          <div class="flex items-start gap-3"><div class="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style="background:var(--gold)"></div><div class="text-sm text-zinc-300 leading-6">MLB coverage building mid-season</div></div>
+          <div class="flex items-start gap-3"><div class="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style="background:var(--gold)"></div><div class="text-sm text-zinc-300 leading-6">NFL drops pre-season ahead of paid launch</div></div>
+          <div class="flex items-start gap-3"><div class="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0" style="background:var(--gold)"></div><div class="text-sm text-zinc-300 leading-6">Model updates and market analysis. No filler.</div></div>
+        </div>
+      </div>
     </div>
 
   </div>
-</div>
+</section>
 
-<footer>
-  <div class="footer-logo">short<span>open</span></div>
-  <p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+<!-- FAQ -->
+<section class="max-w-[1200px] mx-auto px-6 xl:px-10 pb-20">
+  <div class="text-xs uppercase tracking-[.22em] mb-8 text-center" style="color:var(--gold)">Questions</div>
+  <div class="space-y-2">
+
+    <div class="faq-item glass rounded-[20px] overflow-hidden">
+      <button class="faq-q w-full flex justify-between items-center px-7 py-5 bg-transparent border-0 cursor-pointer text-left gap-4" onclick="toggleFaq(this)">
+        <span class="text-base font-semibold text-white">Is it really free?</span>
+        <span class="faq-arrow">▾</span>
+      </button>
+      <div class="faq-a px-7">Yes — fully free right now. We're using this window to fine-tune our projection models and optimizers as we expand into MLB and NFL. No credit card, no trial. You get everything currently available from day one.</div>
+    </div>
+
+    <div class="faq-item glass rounded-[20px] overflow-hidden">
+      <button class="faq-q w-full flex justify-between items-center px-7 py-5 bg-transparent border-0 cursor-pointer text-left gap-4" onclick="toggleFaq(this)">
+        <span class="text-base font-semibold text-white">What will I actually receive?</span>
+        <span class="faq-arrow">▾</span>
+      </button>
+      <div class="faq-a px-7">Weekly drops covering NBA player props, line movement breakdowns, market analysis, and model updates. MLB coverage builds mid-season. NFL drops pre-season ahead of the paid launch. No filler — just the work.</div>
+    </div>
+
+    <div class="faq-item glass rounded-[20px] overflow-hidden">
+      <button class="faq-q w-full flex justify-between items-center px-7 py-5 bg-transparent border-0 cursor-pointer text-left gap-4" onclick="toggleFaq(this)">
+        <span class="text-base font-semibold text-white">When do paid tiers launch?</span>
+        <span class="faq-arrow">▾</span>
+      </button>
+      <div class="faq-a px-7">Paid tiers are set to open for NFL season. MLB mid-season coverage comes online before that. Early subscribers are first to know, first to lock in their rate — before it goes public.</div>
+    </div>
+
+    <div class="faq-item glass rounded-[20px] overflow-hidden">
+      <button class="faq-q w-full flex justify-between items-center px-7 py-5 bg-transparent border-0 cursor-pointer text-left gap-4" onclick="toggleFaq(this)">
+        <span class="text-base font-semibold text-white">Can I unsubscribe?</span>
+        <span class="faq-arrow">▾</span>
+      </button>
+      <div class="faq-a px-7">Any time. Every email includes an unsubscribe link — one click and you're out. No friction.</div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="border-t border-white/5 px-6 xl:px-10 py-10 flex items-center justify-between max-w-[1600px] mx-auto">
+  <div class="text-xl font-black tracking-tight">short<span style="color:var(--gold)">open</span></div>
+  <p class="text-xs uppercase tracking-[.12em] text-zinc-600">© 2026 shortopen. Independent analysis. All rights reserved.</p>
 </footer>
 
 <script>
-  function handleSubmit(e) {
-    e.preventDefault();
-    const form = document.getElementById('subscribeForm');
-    const success = document.getElementById('formSuccess');
-    fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(new FormData(form)).toString()
-    }).then(() => {
-      form.style.display = 'none';
-      success.style.display = 'block';
-    }).catch(() => {
-      form.style.display = 'none';
-      success.style.display = 'block';
-    });
-  }
-
-  function toggleFaq(btn) {
-    const item = btn.closest('.faq-item');
-    const wasOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!wasOpen) item.classList.add('open');
-  }
-
-  function toggleMobileMenu() {
-    const menu = document.getElementById('mobileMenu');
-    const btn = document.getElementById('hamburgerBtn');
-    menu.classList.toggle('open');
-    btn.classList.toggle('open');
-    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
-  }
+function handleSubmit(e){
+  e.preventDefault();
+  const form=document.getElementById('subscribeForm');
+  const success=document.getElementById('formSuccess');
+  fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(form)).toString()})
+    .then(()=>{form.style.display='none';success.classList.remove('hidden')})
+    .catch(()=>{form.style.display='none';success.classList.remove('hidden')});
+}
+function toggleFaq(btn){
+  const item=btn.closest('.faq-item');
+  const wasOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen) item.classList.add('open');
+}
+function toggleMobileMenu(){
+  const m=document.getElementById('mobileMenu');
+  m.classList.toggle('hidden');m.classList.toggle('flex');
+  document.body.style.overflow=m.classList.contains('flex')?'hidden':'';
+}
 </script>
 </body>
 </html>
