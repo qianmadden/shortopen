@@ -4,546 +4,65 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>shortopen — Sports Betting Analysis</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script>window.tailwind={config:{}};</script>
+<script src="https://cdn.tailwindcss.com?plugins="></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --bg: #0a0a0a;
-    --surface: #111111;
-    --surface2: #181818;
-    --border: #222222;
-    --gold: #c8922a;
-    --gold-light: #e4a83a;
-    --white: #f0ece4;
-    --muted: #6b6560;
-    --text: #d4cfc8;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-
-  /* Grain overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 999;
-    opacity: 0.4;
-  }
-
-  /* ── NAV ── */
+:root{--bg:#05070b;--gold:#f4b942;--green:#3fc17a;--red:#ef4444;--blue:#57a7ff;--muted:#738296;--text:#e8edf5;}
+*{box-sizing:border-box}
+body{padding-top:62px;margin:0;background:radial-gradient(circle at top left,rgba(244,185,66,.06),transparent 28%),radial-gradient(circle at bottom right,rgba(59,130,246,.08),transparent 30%),var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden}
+.glass{background:rgba(255,255,255,.03);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.07)}
+.nav-link{position:relative;font-size:.82rem;text-transform:uppercase;letter-spacing:.22em;color:#6f8199;transition:.25s ease;text-decoration:none}
+.nav-link:hover{color:white}
+.nav-link.active::after{content:'';position:absolute;left:0;bottom:-22px;width:100%;height:2px;background:var(--gold)}
+.market-card{transition:.25s ease;position:relative;overflow:hidden}
+.market-card:hover{border-color:rgba(244,185,66,.28)!important;transform:translateY(-2px)}
+.market-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at top right,rgba(244,185,66,.08),transparent 40%);opacity:0;transition:.35s ease;pointer-events:none}
+.market-card:hover::before{opacity:1}
+.ticker-anim{animation:ticker 28s linear infinite}
+@keyframes ticker{from{transform:translateX(0%)}to{transform:translateX(-50%)}}
+.hero-glow{position:absolute;width:600px;height:600px;border-radius:9999px;background:rgba(244,185,66,.07);filter:blur(130px);top:-280px;left:-100px;pointer-events:none}
+.hero-glow-r{position:absolute;width:400px;height:400px;border-radius:9999px;background:rgba(87,167,255,.05);filter:blur(100px);bottom:-100px;right:-80px;pointer-events:none}
+.live-dot{width:8px;height:8px;border-radius:9999px;background:var(--green);animation:pulse 1.6s infinite;flex-shrink:0}
+@keyframes pulse{0%{transform:scale(.9);opacity:.5}50%{transform:scale(1);opacity:1}100%{transform:scale(.9);opacity:.5}}
+.post-card-accent{position:absolute;left:0;top:0;bottom:0;width:3px;background:rgba(244,185,66,0);border-radius:2px 0 0 2px;transition:background .25s}
+.market-card:hover .post-card-accent{background:var(--gold)}
+  /* ── NAV (matches market.html exactly) ── */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
-    z-index: 100;
+    z-index: 200;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 48px;
-    background: rgba(10,10,10,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
+    padding: 14px 48px;
+    background: rgba(5,7,11,0.97);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    height: 62px;
   }
-
   .nav-logo {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 900;
     font-size: 1.25rem;
-    color: var(--white);
-    letter-spacing: 0.04em;
+    color: #f0ece4;
+    letter-spacing: -0.02em;
     text-decoration: none;
   }
-
-  .nav-logo span { color: var(--gold); }
-
-  .nav-links {
-    display: flex;
-    gap: 36px;
-    list-style: none;
-  }
-
+  .nav-logo span { color: #f4b942; }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
   .nav-links a {
     font-size: 0.78rem;
     font-weight: 500;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: #4d6070;
     text-decoration: none;
     transition: color 0.2s;
   }
-
-  .nav-links a:hover { color: var(--gold); }
-
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 120px 48px 80px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero::after {
-    content: '';
-    position: absolute;
-    bottom: -1px; left: 0; right: 0;
-    height: 120px;
-    background: linear-gradient(to bottom, transparent, var(--bg));
-    pointer-events: none;
-  }
-
-  /* Large background wordmark */
-  .hero-bg-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Playfair Display', serif;
-    font-weight: 900;
-    font-size: clamp(80px, 18vw, 220px);
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(200,146,42,0.07);
-    white-space: nowrap;
-    pointer-events: none;
-    user-select: none;
-    letter-spacing: -0.02em;
-  }
-
-  .hero-eyebrow {
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 24px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.2s forwards;
-  }
-
-  .hero-headline {
-    font-family: 'Playfair Display', serif;
-    font-weight: 900;
-    font-size: clamp(42px, 7vw, 96px);
-    color: var(--white);
-    line-height: 1.02;
-    letter-spacing: -0.02em;
-    max-width: 820px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.4s forwards;
-  }
-
-  .hero-headline em {
-    font-style: italic;
-    color: var(--gold);
-  }
-
-  .hero-sub {
-    margin-top: 28px;
-    max-width: 520px;
-    font-size: 1rem;
-    color: var(--muted);
-    line-height: 1.8;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.6s forwards;
-  }
-
-  .hero-cta {
-    margin-top: 44px;
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.8s forwards;
-  }
-
-  .btn-primary {
-    padding: 14px 32px;
-    background: var(--gold);
-    color: #0a0a0a;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background 0.2s, transform 0.15s;
-    display: inline-block;
-  }
-
-  .btn-primary:hover {
-    background: var(--gold-light);
-    transform: translateY(-1px);
-  }
-
-  .btn-ghost {
-    padding: 14px 32px;
-    background: transparent;
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    border: 1px solid var(--border);
-    cursor: pointer;
-    text-decoration: none;
-    transition: border-color 0.2s, color 0.2s;
-    display: inline-block;
-  }
-
-  .btn-ghost:hover {
-    border-color: var(--gold);
-    color: var(--gold);
-  }
-
-  /* ── TICKER ── */
-  .ticker-wrap {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    overflow: hidden;
-    padding: 12px 0;
-  }
-
-  .ticker {
-    display: flex;
-    gap: 0;
-    animation: ticker 28s linear infinite;
-    white-space: nowrap;
-  }
-
-  .ticker-item {
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding: 0 40px;
-    flex-shrink: 0;
-  }
-
-  .ticker-item span { color: var(--gold); margin-right: 8px; }
-
-  @keyframes ticker {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  /* ── SECTIONS ── */
-  section {
-    padding: 100px 48px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .section-label {
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .section-label::after {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 1px;
-    background: var(--gold);
-    opacity: 0.4;
-  }
-
-  .section-title {
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    font-size: clamp(28px, 4vw, 48px);
-    color: var(--white);
-    line-height: 1.15;
-    letter-spacing: -0.01em;
-    margin-bottom: 20px;
-  }
-
-  /* ── ABOUT ── */
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-    margin-top: 60px;
-  }
-
-  .about-text p {
-    color: var(--muted);
-    font-size: 0.97rem;
-    line-height: 1.9;
-    margin-bottom: 18px;
-  }
-
-  .about-text p strong {
-    color: var(--text);
-    font-weight: 500;
-  }
-
-  .about-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2px;
-  }
-
-  .stat-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 32px 28px;
-    transition: border-color 0.2s;
-  }
-
-  .stat-box:hover { border-color: var(--gold); }
-
-  .stat-num {
-    font-family: 'Playfair Display', serif;
-    font-weight: 900;
-    font-size: clamp(1.4rem, 5vw, 2.8rem);
-    color: var(--gold);
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-
-  .stat-label {
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  /* ── POSTS ── */
-  .posts-section {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    max-width: 100%;
-    padding: 100px 0;
-  }
-
-  .posts-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 48px;
-  }
-
-  .posts-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2px;
-    margin-top: 56px;
-  }
-
-  .post-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    padding: 36px 32px;
-    transition: border-color 0.2s, transform 0.2s;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .post-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px;
-    height: 0;
-    background: var(--gold);
-    transition: height 0.3s ease;
-  }
-
-  .post-card:hover { border-color: #333; transform: translateY(-3px); }
-  .post-card:hover::before { height: 100%; }
-
-  .post-tag {
-    font-size: 0.67rem;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 14px;
-  }
-
-  .post-title {
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    font-size: 1.15rem;
-    color: var(--white);
-    line-height: 1.35;
-    margin-bottom: 14px;
-  }
-
-  .post-excerpt {
-    font-size: 0.86rem;
-    color: var(--muted);
-    line-height: 1.75;
-    margin-bottom: 24px;
-  }
-
-  .post-meta {
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    color: #3d3d3d;
-    text-transform: uppercase;
-    border-top: 1px solid var(--border);
-    padding-top: 16px;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  /* ── SUBSCRIBE ── */
-  .subscribe-section {
-    text-align: center;
-    padding: 120px 48px;
-    position: relative;
-  }
-
-  .subscribe-section::before {
-    content: '';
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(200,146,42,0.04) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .subscribe-section .section-label { justify-content: center; }
-  .subscribe-section .section-label::after { display: none; }
-
-  .subscribe-body {
-    max-width: 520px;
-    margin: 0 auto 48px;
-    font-size: 0.97rem;
-    color: var(--muted);
-    line-height: 1.9;
-  }
-
-  .subscribe-form {
-    display: flex;
-    max-width: 480px;
-    margin: 0 auto;
-    gap: 0;
-  }
-
-  .subscribe-form input {
-    flex: 1;
-    padding: 16px 20px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-right: none;
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .subscribe-form input::placeholder { color: var(--muted); }
-  .subscribe-form input:focus { border-color: var(--gold); }
-
-  .subscribe-form button {
-    padding: 16px 28px;
-    background: var(--gold);
-    color: #0a0a0a;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    font-size: 0.82rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border: none;
-    cursor: pointer;
-    transition: background 0.2s;
-    white-space: nowrap;
-  }
-
-  .subscribe-form button:hover { background: var(--gold-light); }
-
-  .subscribe-note {
-    margin-top: 14px;
-    font-size: 0.74rem;
-    color: #3a3a3a;
-    letter-spacing: 0.06em;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 40px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 100%;
-  }
-
-  .footer-logo {
-    font-family: 'Playfair Display', serif;
-    font-weight: 900;
-    font-size: 1rem;
-    color: var(--white);
-  }
-
-  .footer-logo span { color: var(--gold); }
-
-  .footer-copy {
-    font-size: 0.75rem;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 900px) {
-    nav { padding: 18px 24px; }
-    .nav-links { display: none; }
-    .hero { padding: 100px 24px 60px; }
-    section { padding: 70px 24px; }
-    .about-grid { grid-template-columns: 1fr; gap: 48px; }
-    .posts-grid { grid-template-columns: 1fr; }
-    .posts-inner { padding: 0 24px; }
-    .subscribe-section { padding: 80px 24px; }
-    footer { padding: 30px 24px; flex-direction: column; gap: 12px; text-align: center; }
-    .subscribe-form { flex-direction: column; }
-    .subscribe-form input { border-right: 1px solid var(--border); border-bottom: none; }
-    .stat-box { padding: 20px 16px; }
-    .subscribe-form { max-width: 100%; }
-    .subscribe-form input { width: 100%; }
-    .subscribe-form button { width: 100%; padding: 14px; }
-  }
-
-  /* HAMBURGER MENU */
+  .nav-links a:hover, .nav-links a.active { color: #f4b942; }
   .hamburger {
     display: none;
     flex-direction: column;
@@ -552,68 +71,61 @@
     padding: 4px;
     background: transparent;
     border: none;
-    z-index: 200;
+    z-index: 300;
   }
-  .hamburger span {
-    display: block;
-    width: 24px;
-    height: 2px;
-    background: var(--white);
-    transition: all 0.25s ease;
-  }
+  .hamburger span { display: block; width: 22px; height: 2px; background: #f0ece4; transition: all 0.25s; }
   .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .hamburger.open span:nth-child(2) { opacity: 0; }
   .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
   .mobile-menu {
     display: none;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(10,10,10,0.98);
-    backdrop-filter: blur(16px);
-    z-index: 150;
+    background: rgba(5,7,11,0.98);
+    backdrop-filter: blur(20px);
+    z-index: 250;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0;
   }
   .mobile-menu.open { display: flex; }
   .mobile-menu a {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.8rem, 8vw, 2.4rem);
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1.6rem, 7vw, 2rem);
     font-weight: 900;
-    color: var(--white);
+    color: #f0ece4;
     text-decoration: none;
-    letter-spacing: -0.02em;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
     width: 80%;
     text-align: center;
     transition: color 0.2s;
   }
-  .mobile-menu a:last-child { border-bottom: none; }
-  .mobile-menu a:hover, .mobile-menu a.active { color: var(--gold); }
+  .mobile-menu a:hover, .mobile-menu a.active { color: #f4b942; }
   .mobile-menu-close {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    background: transparent;
-    border: none;
-    color: var(--muted);
-    font-size: 1.4rem;
-    cursor: pointer;
-    padding: 8px;
+    position: absolute; top: 24px; right: 24px;
+    background: transparent; border: none; color: #4d6070;
+    font-size: 1.4rem; cursor: pointer; padding: 8px;
   }
-  @media (max-width: 900px) {
-    .hamburger { display: flex; }
+  @media (max-width: 640px) {
+    nav { padding: 14px 20px; }
     .nav-links { display: none !important; }
+    .hamburger { display: flex; }
+  }
+  @media (max-width: 768px) {
+    /* Weekly stat card — shrink "Weekly" text so it doesn't overflow */
+    .grid.grid-cols-3 .text-3xl { font-size: 1.4rem !important; }
+    /* Subscribe form — stack input and button vertically */
+    form.flex { flex-direction: column !important; }
+    form.flex input { border-radius: 1rem !important; margin-bottom: 8px; }
+    form.flex button { border-radius: 1rem !important; }
+    /* Subscribe section right column padding */
+    .border-l { border-left: none !important; border-top: 1px solid rgba(255,255,255,.05); }
   }
 
 </style>
 </head>
 <body>
-
-<!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">short<span>open</span></a>
   <ul class="nav-links">
@@ -621,14 +133,13 @@
     <li><a href="market.html">Market</a></li>
     <li><a href="optimizer.html">Optimizer</a></li>
     <li><a href="hr-index.html">HR Index</a></li>
-    <li><a href="nfl-draft.html">NFL Draft</a></li>
+    <li><a href="nfl-draft-market.html">NFL Draft</a></li>
+    <li><a href="film-room.html">Film Room</a></li>
     <li><a href="about.html">About</a></li>
     <li><a href="subscribe.html">Subscribe</a></li>
   </ul>
-  <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+  <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
 </nav>
-
-<!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
   <a href="index.html" onclick="toggleMobileMenu()">Home</a>
@@ -636,178 +147,203 @@
   <a href="market.html" onclick="toggleMobileMenu()">Market</a>
   <a href="optimizer.html" onclick="toggleMobileMenu()">Optimizer</a>
   <a href="hr-index.html" onclick="toggleMobileMenu()">HR Index</a>
-  <a href="nfl-draft.html" onclick="toggleMobileMenu()">NFL Draft</a>
+  <a href="nfl-draft-market.html" onclick="toggleMobileMenu()">NFL Draft</a>
+  <a href="film-room.html" onclick="toggleMobileMenu()">Film Room</a>
   <a href="about.html" onclick="toggleMobileMenu()">About</a>
   <a href="subscribe.html" onclick="toggleMobileMenu()">Subscribe</a>
 </div>
 
 
+
+
+<!-- MOBILE MENU -->
 <!-- HERO -->
-<div class="hero">
-  <div class="hero-bg-text">SHORT OPEN</div>
-  <p class="hero-eyebrow">Independent Sports Betting Analysis</p>
-  <h1 class="hero-headline">The edge is in<br><em>the research.</em></h1>
-  <p class="hero-sub">Data-driven picks, player tendency breakdowns, and market analysis — know the open, beat the market.</p>
-  <div class="hero-cta">
-    <a href="optimizer.html" class="btn-primary">View Projections</a>
-    <a href="analysis.html" class="btn-ghost">Read Analysis</a>
-  </div>
-</div>
+<section class="relative overflow-hidden border-b border-white/5">
+  <div class="hero-glow"></div>
+  <div class="hero-glow-r"></div>
+  <div class="max-w-[1600px] mx-auto px-6 xl:px-10 py-24 relative z-10">
+    <div class="grid xl:grid-cols-[1.15fr_.85fr] gap-16 items-center">
 
-<!-- TICKER -->
-<div class="ticker-wrap">
-  <div class="ticker">
-    <span class="ticker-item"><span>NBA</span> Player Prop Models Updated Daily</span>
-    <span class="ticker-item"><span>NFL</span> Market Inefficiency Reports</span>
-    <span class="ticker-item"><span>MLB</span> Pitcher Tendency Breakdowns</span>
-    <span class="ticker-item"><span>Golf</span> Field &amp; Course Fit Analysis</span>
-    <span class="ticker-item"><span>NBA</span> DFS Lineup Optimization</span>
-    <span class="ticker-item"><span>NFL</span> Line Movement Breakdowns</span>
-    <span class="ticker-item"><span>MLB</span> Batter vs. Pitcher Splits</span>
-    <span class="ticker-item"><span>Golf</span> Tournament Outright Value Picks</span>
-    <span class="ticker-item"><span>NBA</span> Player Prop Models Updated Daily</span>
-    <span class="ticker-item"><span>NFL</span> Market Inefficiency Reports</span>
-    <span class="ticker-item"><span>MLB</span> Pitcher Tendency Breakdowns</span>
-    <span class="ticker-item"><span>Golf</span> Field &amp; Course Fit Analysis</span>
-  </div>
-</div>
+      <!-- LEFT -->
+      <div>
+        <div class="inline-flex items-center gap-3 rounded-full border px-5 py-3 text-xs uppercase tracking-[.24em] mb-8" style="border-color:rgba(244,185,66,.2);background:rgba(244,185,66,.1);color:#fde68a">
+          <div class="live-dot"></div>Independent Sports Betting Analysis
+        </div>
+        <h1 class="text-[3.8rem] md:text-[6.5rem] leading-[.88] font-black tracking-tight mb-6">
+          The edge is in<br><span style="color:var(--gold)">the research.</span>
+        </h1>
+        <p class="text-xl leading-9 text-zinc-400 max-w-xl mb-10">Data-driven picks, player tendency breakdowns, and market analysis — know the open, beat the market.</p>
+        <div class="flex flex-wrap gap-4">
+          <a href="optimizer.html" style="background:var(--gold);color:#000;text-decoration:none" class="rounded-2xl px-7 py-4 font-black text-sm uppercase tracking-[.18em] inline-block">View Projections</a>
+          <a href="analysis.html" class="glass rounded-2xl px-7 py-4 text-sm font-semibold text-zinc-300 inline-block" style="text-decoration:none">Read Analysis</a>
+        </div>
 
-<!-- ABOUT -->
-<section id="about">
-  <p class="section-label">Who We Are</p>
-  <h2 class="section-title">Built by a bettor.<br>Open to everyone.</h2>
-  <div class="about-grid">
-    <div class="about-text">
-      <p>Short Open started as a simple idea: <strong>to short is to bet against the consensus.</strong> To open is to know the market before everyone else does. <strong>Know the line first. Know it at its most honest.</strong></p>
-      <p><strong>Data is a book. Instinct tells the story.</strong> Every piece of analysis starts with the raw data — player tendencies, line movement, situational splits, and market behavior.</p>
-      <p>A million dollar bankroll can always use a second set of eyes. That's exactly what Short Open is — <strong>no experience required, no bankroll minimum.</strong></p>
+        <!-- STAT ROW -->
+        <div class="grid grid-cols-3 gap-4 mt-12 max-w-xl">
+          <div class="glass rounded-[24px] p-5 market-card text-center">
+            <div class="text-xs uppercase tracking-[.2em] text-zinc-500 mb-2">Leagues</div>
+            <div class="text-3xl font-black">3+</div>
+            <div class="text-xs text-zinc-500 mt-1">Covered</div>
+          </div>
+          <div class="glass rounded-[24px] p-5 market-card text-center">
+            <div class="text-xs uppercase tracking-[.2em] text-zinc-500 mb-2">Drops</div>
+            <div class="text-3xl font-black" style="color:var(--gold)">Weekly</div>
+            <div class="text-xs text-zinc-500 mt-1">Analysis</div>
+          </div>
+          <div class="glass rounded-[24px] p-5 market-card text-center">
+            <div class="text-xs uppercase tracking-[.2em] text-zinc-500 mb-2">Always</div>
+            <div class="text-3xl font-black text-emerald-400">100%</div>
+            <div class="text-xs text-zinc-500 mt-1">Independent</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT — Who We Are card -->
+      <div class="glass rounded-[36px] p-8">
+        <div class="flex items-center justify-between border-b border-white/10 pb-5 mb-7">
+          <div>
+            <div class="text-xs uppercase tracking-[.22em] text-zinc-500 mb-1">Who We Are</div>
+            <div class="text-2xl font-black">Built by a bettor.<br><span style="color:var(--gold)">Open to everyone.</span></div>
+          </div>
+          <div class="rounded-full px-4 py-2 text-xs uppercase tracking-[.2em]" style="background:rgba(244,185,66,.1);color:var(--gold)">shortopen</div>
+        </div>
+        <div class="space-y-4 text-sm leading-7 text-zinc-400 mb-7">
+          <p>Short Open started as a simple idea: <strong class="text-white">to short is to bet against the consensus.</strong> To open is to know the market before everyone else does. <strong class="text-white">Know the line first. Know it at its most honest.</strong></p>
+          <p><strong class="text-white">Data is a book. Instinct tells the story.</strong> Every piece of analysis starts with the raw data — player tendencies, line movement, situational splits, and market behavior.</p>
+          <p>A million dollar bankroll can always use a second set of eyes. That's exactly what Short Open is — <strong class="text-white">no experience required, no bankroll minimum.</strong></p>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="rounded-[16px] border border-white/10 bg-black/20 p-4">
+            <div class="text-xs uppercase tracking-[.14em] text-zinc-500 mb-1">Data First</div>
+            <div class="text-lg font-black">Always.</div>
+          </div>
+          <div class="rounded-[16px] border border-white/10 bg-black/20 p-4">
+            <div class="text-xs uppercase tracking-[.14em] text-zinc-500 mb-1">Access</div>
+            <div class="text-lg font-black text-emerald-400">Free Now</div>
+          </div>
+        </div>
+      </div>
+
     </div>
-    <div class="about-stats">
-      <div class="stat-box">
-        <div class="stat-num">3+</div>
-        <div class="stat-label">Leagues Covered</div>
+  </div>
+</section>
+
+<!-- RECENT POSTS -->
+<section class="max-w-[1600px] mx-auto px-6 xl:px-10 py-16">
+  <div class="flex items-end justify-between mb-10">
+    <div>
+      <div class="text-xs uppercase tracking-[.22em] mb-2" style="color:var(--gold)">The Latest</div>
+      <h2 class="text-4xl font-black">Recent Announcements</h2>
+    </div>
+    <a href="analysis.html" class="glass rounded-2xl px-5 py-2.5 text-sm font-semibold text-zinc-300" style="text-decoration:none">View All →</a>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-4">
+
+    <div class="glass rounded-[28px] overflow-hidden market-card relative">
+      <div class="post-card-accent"></div>
+      <div style="position:absolute;top:16px;right:16px;background:rgba(244,185,66,.15);border:1px solid rgba(244,185,66,.3);color:var(--gold);font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:4px 12px;border-radius:20px">Announcement</div>
+      <div class="p-7 pt-12">
+        <div class="text-xs uppercase tracking-[.18em] mb-3" style="color:var(--gold)">shortopen · Platform Update</div>
+        <h3 class="text-2xl font-black mb-4 leading-tight">NBA Projections Are Free Through the End of the Season</h3>
+        <p class="text-zinc-400 text-sm leading-7 mb-6">We're keeping full access to our NBA player projection tables open for the rest of the 2025–26 season — no subscription, no email wall. All 30 teams, every player, sortable by FPTS, FP/M, usage, and more. We're currently building out NFL and MLB projection models, both coming ahead of their respective seasons.</p>
+        <div class="flex items-center justify-between border-t border-white/5 pt-4 text-xs uppercase tracking-[.1em] text-zinc-600">
+          <span>March 2026</span><span>shortopen team</span>
+        </div>
       </div>
-      <div class="stat-box">
-        <div class="stat-num">Weekly</div>
-        <div class="stat-label">Analysis Drop</div>
+    </div>
+
+    <div class="glass rounded-[28px] overflow-hidden market-card relative">
+      <div class="post-card-accent"></div>
+      <div class="p-7">
+        <div class="text-xs uppercase tracking-[.18em] mb-3" style="color:var(--gold)">NBA · Player Props</div>
+        <h3 class="text-2xl font-black mb-4 leading-tight">NBA Playoffs — The Market Will Be Late. You Don't Have To Be.</h3>
+        <p class="text-zinc-400 text-sm leading-7 mb-6">With playoffs around the corner, players are being guarded differently than they were in January. The books are slow to adjust. Player prop breakdowns dropping soon.</p>
+        <div class="flex items-center justify-between border-t border-white/5 pt-4 text-xs uppercase tracking-[.1em] text-zinc-600">
+          <span>March 2026</span>
+        </div>
       </div>
-      <div class="stat-box">
-        <div class="stat-num">100%</div>
-        <div class="stat-label">Independent</div>
+    </div>
+
+    <div class="glass rounded-[28px] overflow-hidden market-card relative">
+      <div class="post-card-accent"></div>
+      <div class="p-7">
+        <div class="text-xs uppercase tracking-[.18em] mb-3" style="color:var(--gold)">NFL · Draft</div>
+        <h3 class="text-2xl font-black mb-4 leading-tight">NFL Draft Breakdown — Coming Soon</h3>
+        <p class="text-zinc-400 text-sm leading-7 mb-6">The 2026 draft class is loaded and the implications for every roster go far beyond day one. We're breaking down which teams stand to gain the most, which ones are filling holes versus building for the future, and what it all means for next season's betting markets.</p>
+        <div class="flex items-center justify-between border-t border-white/5 pt-4 text-xs uppercase tracking-[.1em] text-zinc-600">
+          <span>April 2026</span>
+        </div>
       </div>
-      <div class="stat-box">
-        <div class="stat-num">Data</div>
-        <div class="stat-label">First. Always.</div>
+    </div>
+
+    <div class="glass rounded-[28px] overflow-hidden market-card relative">
+      <div class="post-card-accent"></div>
+      <div class="p-7">
+        <div class="text-xs uppercase tracking-[.18em] mb-3" style="color:var(--gold)">PGA · Projections</div>
+        <h3 class="text-2xl font-black mb-4 leading-tight">PGA Projections — Coming 2027</h3>
+        <p class="text-zinc-400 text-sm leading-7 mb-6">We've recently started building out our PGA projection model — course fit analysis, strokes gained breakdowns, and field-by-field value plays. Full launch targeted for 2027.</p>
+        <div class="flex items-center justify-between border-t border-white/5 pt-4 text-xs uppercase tracking-[.1em] text-zinc-600">
+          <span>March 2026</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SUBSCRIBE CTA -->
+<section class="max-w-[1600px] mx-auto px-6 xl:px-10 pb-20">
+  <div class="glass rounded-[36px] overflow-hidden market-card">
+    <div class="grid xl:grid-cols-[1.2fr_.8fr]">
+      <div class="p-10 xl:p-14">
+        <div class="text-xs uppercase tracking-[.22em] mb-4" style="color:var(--gold)">Weekly Drop</div>
+        <h2 class="text-[2.5rem] md:text-[3.2rem] leading-[.95] font-black mb-6">The open line.<br><span style="color:var(--gold)">Straight to your inbox.</span></h2>
+        <p class="text-zinc-400 text-base leading-8 mb-8 max-w-lg">Weekly breakdowns, model updates, and market instincts. No spam. No recycled takes. It all starts at the open.</p>
+        <form class="flex gap-0 max-w-md" onsubmit="handleSubmit(event)">
+          <input type="email" placeholder="Your email address" required class="flex-1 px-5 py-4 bg-black/40 border border-white/10 text-white text-sm outline-none focus:border-yellow-400/40 transition-colors rounded-l-2xl" style="font-family:'Inter',sans-serif"/>
+          <button type="submit" class="px-6 py-4 font-black text-sm uppercase tracking-[.14em] rounded-r-2xl border-0 cursor-pointer transition-all" style="background:var(--gold);color:#000;font-family:'Inter',sans-serif" id="subBtn">Subscribe</button>
+        </form>
+        <p class="text-xs text-zinc-700 mt-3 tracking-[.08em] uppercase">Free to start. Unsubscribe anytime.</p>
+      </div>
+      <div class="border-l border-white/5 bg-black/20 p-10 flex flex-col justify-center gap-5">
+        <div class="rounded-[20px] border border-white/10 bg-white/5 p-5">
+          <div class="text-sm uppercase tracking-[.16em] text-zinc-500 mb-2">What you get</div>
+          <div class="text-xl font-black">Weekly analysis drops</div>
+        </div>
+        <div class="rounded-[20px] border border-white/10 bg-white/5 p-5">
+          <div class="text-sm uppercase tracking-[.16em] text-zinc-500 mb-2">Current access</div>
+          <div class="text-xl font-black text-emerald-400">100% Free</div>
+        </div>
+        <div class="rounded-[20px] border border-white/10 bg-white/5 p-5">
+          <div class="text-sm uppercase tracking-[.16em] text-zinc-500 mb-2">Paid tiers</div>
+          <div class="text-xl font-black" style="color:var(--gold)">NFL '26</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ANALYSIS POSTS -->
-<div class="posts-section" id="analysis">
-  <div class="posts-inner">
-    <p class="section-label">The Latest</p>
-    <h2 class="section-title">Recent Announcements</h2>
-    <div class="posts-grid">
-
-      <div class="post-card" style="border-color: #2a2a2a; position:relative; overflow:hidden;">
-        <div style="position:absolute;top:0;right:0;background:var(--gold);color:#0a0a0a;font-size:0.62rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:5px 12px;">Announcement</div>
-        <p class="post-tag" style="margin-top:8px;">shortopen · Platform Update</p>
-        <h3 class="post-title">NBA Projections Are Free Through the End of the Season</h3>
-        <p class="post-excerpt">We're keeping full access to our NBA player projection tables open for the rest of the 2025–26 season — no subscription, no email wall. All 30 teams, every player, sortable by FPTS, FP/M, usage, and more. We're currently building out NFL and MLB projection models, both coming ahead of their respective seasons. MLB will include pitcher-batter splits, park factors, and platoon data. NFL will cover line movement, target share, and snap count trends. Those will come with a subscription option — but NBA is yours, free, right now. Go use it.</p>
-        <div class="post-meta">
-          <span>March 2026</span>
-          <span>shortopen team</span>
-        </div>
-      </div>
-
-      <div class="post-card">
-        <p class="post-tag">NBA · Player Props</p>
-        <h3 class="post-title">NBA Playoffs — The Market Will Be Late. You Don't Have To Be.</h3>
-        <p class="post-excerpt">With playoffs around the corner, players are being guarded differently than they were in January. The books are slow to adjust. Player prop breakdowns dropping soon.</p>
-        <div class="post-meta">
-          <span>March 2026</span>
-        </div>
-      </div>
-
-      <div class="post-card">
-        <p class="post-tag">NFL · Draft</p>
-        <h3 class="post-title">NFL Draft Breakdown — Coming Soon</h3>
-        <p class="post-excerpt">The 2026 draft class is loaded and the implications for every roster go far beyond day one. We're breaking down which teams stand to gain the most, which ones are filling holes versus building for the future, and what it all means for next season's betting markets.</p>
-        <div class="post-meta">
-          <span>April 2026</span>
-        </div>
-      </div>
-
-      <div class="post-card">
-        <p class="post-tag">PGA · Projections</p>
-        <h3 class="post-title">PGA Projections — Coming 2027</h3>
-        <p class="post-excerpt">We've recently started building out our PGA projection model — course fit analysis, strokes gained breakdowns, and field-by-field value plays. Full launch targeted for 2027.</p>
-        <div class="post-meta">
-          <span>March 2026</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- SUBSCRIBE -->
-<div class="subscribe-section" id="subscribe">
-  <p class="section-label">Weekly Drop</p>
-  <h2 class="section-title" style="font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(28px,4vw,48px); color:var(--white); margin-bottom:20px;">The open line.<br>Straight to your inbox.</h2>
-  <p class="subscribe-body">Weekly breakdowns, model updates, and market instincts. No spam. No recycled takes. <em>It all starts at the open.</em></p>
-  <form class="subscribe-form" onsubmit="handleSubmit(event)">
-    <input type="email" placeholder="Your email address" required/>
-    <button type="submit">Subscribe</button>
-  </form>
-  <p class="subscribe-note">Free to start. Unsubscribe anytime.</p>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">short<span>open</span></div>
-  <p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+<footer class="border-t border-white/5 px-6 xl:px-10 py-10 flex items-center justify-between max-w-[1600px] mx-auto">
+  <div class="text-xl font-black tracking-tight">short<span style="color:var(--gold)">open</span></div>
+  <p class="text-xs uppercase tracking-[.12em] text-zinc-600">© 2026 shortopen. Independent analysis. All rights reserved.</p>
 </footer>
 
 <script>
-  function handleSubmit(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button');
-    const input = e.target.querySelector('input');
-    btn.textContent = 'You\'re In';
-    btn.style.background = '#2a6e3f';
-    btn.style.color = '#fff';
-    input.value = '';
-    input.placeholder = 'Welcome to Short Open.';
-    input.disabled = true;
-  }
-
-  // Subtle scroll fade-in for cards
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.post-card, .stat-box').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(el);
-  });
-
-function toggleMobileMenu() {
-  const menu = document.getElementById('mobileMenu');
-  const btn = document.getElementById('hamburgerBtn');
-  menu.classList.toggle('open');
-  btn.classList.toggle('open');
-  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+function handleSubmit(e){
+  e.preventDefault();
+  const btn=document.getElementById('subBtn');
+  const input=e.target.querySelector('input');
+  btn.textContent="You're In";
+  btn.style.background='#22c55e';
+  input.value='';
+  input.placeholder='Welcome to Short Open.';
+  input.disabled=true;
 }
-
+function toggleMobileMenu(){const m=document.getElementById("mobileMenu");const b=document.getElementById("hamburgerBtn");m.classList.toggle("open");if(b)b.classList.toggle("open");document.body.style.overflow=m.classList.contains("open")?"hidden":"";}
+// Scroll fade-in
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}})},{threshold:0.08});
+document.querySelectorAll('.glass').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(18px)';el.style.transition='opacity 0.55s ease,transform 0.55s ease';obs.observe(el)});
 </script>
 </body>
 </html>
