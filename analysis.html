@@ -122,7 +122,7 @@ body{margin:0;background:radial-gradient(circle at 8% 12%,rgba(244,185,66,.1),tr
     padding: 4px;
     background: transparent;
     border: none;
-    z-index: 200;
+    z-index: 300;
   }
   .hamburger span { display: block; width: 22px; height: 2px; background: #f0ece4; transition: all 0.25s; }
   .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -435,10 +435,12 @@ function renderDD(){
   const grid=document.getElementById('ddGrid');if(!grid)return;
   grid.innerHTML=DD_CARDS.map(c=>`<div class="trend-card" data-sport="${c.sport}" data-signal="${c.signal}"><div class="tc-top"><div class="tc-signal-bar tc-sig-${c.signal}"></div><div class="tc-head"><div class="tc-sport-tag">${c.sport} · ${c.sub}</div><span class="tc-pill tc-pill-${c.signal}">${c.signal}</span><div class="tc-player">${c.player}</div><div class="tc-note">${c.note}</div></div></div><div class="tc-stats">${c.stats.map(s=>`<div class="tc-stat-row"><span class="tc-stat-label">${s.l}</span><div class="tc-bar-wrap"><div class="tc-bar ${barCls(s.dir)}" style="width:${s.pct}%"></div></div><span class="tc-stat-val ${valCls(s.dir)}">${s.v} <span class="tc-arrow">${arrowFor(s.dir)}</span></span></div>`).join('')}</div></div>`).join('');
 }
-function toggleMobileMenu(){
-  const m=document.getElementById('mobileMenu');
-  m.classList.toggle('hidden');m.classList.toggle('flex');
-  document.body.style.overflow=m.classList.contains('flex')?'hidden':'';
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn  = document.getElementById('hamburgerBtn');
+  menu.classList.toggle('open');
+  btn.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
 }
 // Inject article cards
 NBA_ARTICLES.forEach(a=>document.getElementById('nba-grid').appendChild(buildArticleCard(a)));
