@@ -29,7 +29,7 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    background: var(--bg);
+    background: radial-gradient(circle at top left,rgba(244,185,66,.06),transparent 28%),radial-gradient(circle at bottom right,rgba(59,130,246,.08),transparent 32%),#05070b;
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
     font-weight: 300;
@@ -50,7 +50,7 @@
   /* NAV */
   nav {
     position: fixed;
-    top: 0; left: 0; right: 0;
+    top: 28px; left: 0; right: 0;
     z-index: 100;
     display: flex;
     align-items: center;
@@ -75,11 +75,11 @@
     font-weight: 500;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: #4d6070;
     text-decoration: none;
     transition: color 0.2s;
   }
-  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  .nav-links a:hover, .nav-links a.active { color: #f4b942; }
 
   .page-header {
     display: none;
@@ -141,7 +141,7 @@
     align-items: start;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 108px 48px 48px;
+    padding: 136px 48px 48px;
   }
   .hero-left {}
   .hero-stat-row {
@@ -335,253 +335,333 @@
   }
   .date-divider-line { flex: 1; height: 1px; background: var(--border); }
 
-  /* GAMES LIST */
+  /* ── GAMES TABLE ── */
   .games-list {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 48px 60px;
   }
 
-  /* GAME CARD */
-  .game-card {
-    background: rgba(13,17,23,0.9);
+  /* Shared column header */
+  .col-header-row {
+    display: grid;
+    grid-template-columns: 230px 100px 160px 160px 160px 1fr;
+    background: #080d13;
     border: 1px solid #1a2535;
-    margin-bottom: 2px;
+    border-bottom: 1px solid #253548;
+    margin-bottom: 0;
+  }
+  .col-hdr {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #3a5068;
+    padding: 8px 14px;
+    border-right: 1px solid #111d28;
+  }
+  .col-hdr:last-child { border-right: none; color: rgba(244,185,66,0.85); }
+
+  /* ── GAME CARD ── */
+  .game-card {
+    display: grid;
+    grid-template-columns: 230px 100px 160px 160px 160px 1fr;
+    align-items: stretch;
+    background: #0b1118;
+    border-bottom: 1px solid #111d28;
+    border-left: 3px solid #1a2535;
     position: relative;
     overflow: hidden;
-    animation: fadeUp 0.25s ease both;
+    animation: fadeIn 0.2s ease both;
+    transition: background 0.1s;
+    min-height: 100px;
   }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(5px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .game-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 2px;
-    background: var(--border2);
-    transition: background 0.2s;
-  }
-  .game-card:hover::before { background: var(--gold); }
-  .game-card.edge-strong::before { background: var(--green); box-shadow: 0 0 8px rgba(34,197,94,0.5); }
-  .game-card.edge-fade::before   { background: var(--red); }
+  .game-card:nth-child(odd)  { background: #0b1118; }
+  .game-card:nth-child(even) { background: #0d1420; }
+  .game-card:hover { background: #141f30; }
+  .game-card.edge-strong { border-left-color: #2ddf6e; box-shadow: inset 3px 0 12px rgba(34,197,94,0.08); }
+  .game-card.edge-fade   { border-left-color: #2a1515; }
 
-  .game-inner {
-    display: grid;
-    grid-template-columns: 260px 1fr 1fr 1fr 220px;
-    align-items: stretch;
-    min-height: 108px;
-  }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(3px)} to{opacity:1;transform:none} }
 
-  /* TEAMS COLUMN */
-  .teams-col {
-    padding: 16px 20px 16px 24px;
+  /* ── MATCHUP ── */
+  .t-matchup {
+    padding: 12px 14px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    border-right: 1px solid var(--border);
-    gap: 4px;
+    justify-content: center;
+    gap: 0;
+    border-right: 1px solid #111d28;
   }
-  .team-row {
+  .t-team-away, .t-team-home {
     display: flex;
-    align-items: baseline;
-    gap: 10px;
+    align-items: center;
+    gap: 9px;
+    padding: 4px 0;
   }
-  .team-abbr {
+  .t-team-home { border-top: 1px solid #111d28; margin-top: 4px; padding-top: 8px; }
+  .t-abbr {
     font-family: 'DM Mono', monospace;
     font-size: 0.72rem;
     font-weight: 500;
-    letter-spacing: 0.1em;
     color: var(--gold);
     min-width: 32px;
+    letter-spacing: 0.05em;
     flex-shrink: 0;
   }
-  .team-info { display: flex; flex-direction: column; }
-  .team-name { font-size: 0.88rem; font-weight: 400; color: var(--white); }
-  .team-name.away { color: var(--text); }
-  .team-pitcher {
-    font-size: 0.66rem;
-    color: var(--muted);
+  .t-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.76rem;
+    font-weight: 500;
+    color: #7a96b3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .t-name.home { color: #e2eef8; font-weight: 600; }
+  .t-pitcher {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.56rem;
+    color: #2a3f52;
     letter-spacing: 0.04em;
+    margin-left: 41px;
     margin-top: 1px;
   }
-  .at-symbol {
-    font-size: 0.6rem;
-    color: var(--muted);
-    opacity: 0.4;
-    padding: 2px 0;
-    align-self: center;
-  }
-  .game-time {
-    font-size: 0.66rem;
+  .t-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    color: #2a3f52;
     letter-spacing: 0.08em;
-    color: var(--muted);
-    margin-top: 4px;
+    margin-top: 6px;
   }
 
-  /* ODDS COLUMNS */
-  .odds-col {
-    border-right: 1px solid #232e3c;
+  /* ── WIN% PROB ── */
+  .t-prob {
+    border-right: 1px solid #111d28;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px 8px;
+    background: rgba(0,0,0,0.15);
+  }
+  .t-prob-teams {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem;
+    color: #3a5068;
+    letter-spacing: 0.06em;
+  }
+  .t-prob-away-lbl { color: rgba(244,185,66,0.5); }
+  .t-prob-home-lbl { color: rgba(96,165,250,0.5); }
+  .t-prob-bar {
+    width: 100%;
+    height: 6px;
+    background: #111d28;
+    border-radius: 3px;
+    overflow: hidden;
+    display: flex;
+  }
+  .t-prob-away { background: var(--gold); }
+  .t-prob-home { background: var(--blue); }
+  .t-prob-nums {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    font-family: 'DM Mono', monospace;
+  }
+  .t-prob-n {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .t-prob-n.away { color: rgba(244,185,66,0.92); }
+  .t-prob-n.home { color: rgba(96,165,250,0.92); }
+
+  /* ── ODDS COLUMN (spread / ml / total) ── */
+  .t-odds {
+    border-right: 1px solid #111d28;
     display: flex;
     flex-direction: column;
   }
-  .odds-col-header {
-    padding: 7px 16px;
-    font-size: 0.56rem;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    border-bottom: 1px solid #1a2535;
-    background: rgba(17,24,32,0.8);
-  }
-  .odds-cells { display: flex; flex-direction: column; flex: 1; }
-  .odds-cell {
+  .t-odds-row {
     flex: 1;
-    padding: 0 16px;
+    padding: 0 14px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #161f2e;
     gap: 8px;
-    min-height: 36px;
+    border-bottom: 1px solid #0d1720;
   }
-  .odds-cell:last-child { border-bottom: none; }
-  .odds-main {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--white);
-    letter-spacing: -0.01em;
-  }
-  .odds-juice {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--muted);
-  }
-  .odds-main.pos { color: #22c55e; }
-  .odds-main.neg { color: var(--text); }
-  .total-label {
-    font-size: 0.64rem;
-    color: var(--muted);
-    font-weight: 400;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-right: 3px;
-  }
-  .open-note {
-    padding: 3px 16px 6px;
-    font-size: 0.58rem;
-    color: var(--muted);
-    font-style: italic;
-    letter-spacing: 0.04em;
-  }
+  .t-odds-row:last-child { border-bottom: none; }
 
-  /* LINE MOVEMENT */
-  .move-badge {
-    font-size: 0.58rem;
-    font-weight: 600;
-    padding: 2px 5px;
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
-  .move-up { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.25); }
-  .move-dn { background: rgba(248,113,113,0.15); color: #f87171; border: 1px solid rgba(248,113,113,0.25); }
-
-  /* EDGE COLUMN */
-  .edge-col { display: flex; flex-direction: column; }
-  .edge-col-header {
-    padding: 7px 16px;
-    font-size: 0.56rem;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    border-bottom: 1px solid var(--border);
-    background: var(--surface2);
-    display: flex;
+  /* Chip-style odds buttons — inspired by Polymarket/Sleeper */
+  .t-odds-chip {
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    border: 1px solid;
+    white-space: nowrap;
+    min-width: 70px;
+    justify-content: center;
   }
-  .edge-col-header::before {
-    content: '';
-    display: inline-block;
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 6px rgba(34,197,94,0.6);
+  .t-odds-chip.neutral {
+    color: #ddeaf5;
+    background: #132030;
+    border-color: #243c54;
+  }
+  .t-odds-chip.fav {
+    color: #f0f6ff;
+    background: #10223a;
+    border-color: #244566;
+  }
+  .t-odds-chip.dog {
+    color: #2ddf6e;
+    background: rgba(34,197,94,0.13);
+    border-color: rgba(34,197,94,0.32);
+  }
+  .t-odds-chip.total-o {
+    color: #f4b942;
+    background: rgba(244,185,66,0.12);
+    border-color: rgba(244,185,66,0.28);
+  }
+  .t-odds-chip.total-u {
+    color: #8da0b3;
+    background: #0e1820;
+    border-color: #1a2a38;
+  }
+  .t-odds-juice {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    color: #3a5068;
     flex-shrink: 0;
   }
-  .edge-content {
-    flex: 1;
+  .t-move {
+    font-size: 0.6rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .t-move.up { color: #22c55e; }
+  .t-move.dn { color: #f87171; }
+
+  /* ── EDGE / SHORTOPEN CALL COLUMN ── */
+  .t-edge {
     padding: 12px 16px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 8px;
+    background: rgba(0,0,0,0.1);
   }
-  .edge-pick { display: flex; align-items: flex-start; gap: 9px; }
-  .edge-pick-pos {
-    font-size: 0.58rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
+  .t-edge-empty {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.56rem;
+    color: #1e2d3d;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    padding: 2px 6px;
-    margin-top: 1px;
+  }
+
+  /* The big call button — Polymarket-style colored pill */
+  .t-call-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 11px;
+    border-radius: 5px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    cursor: default;
+    border: 1px solid;
+    align-self: flex-start;
+    max-width: 100%;
+  }
+  .t-call-btn.ml {
+    background: rgba(34,197,94,0.16);
+    border-color: rgba(34,197,94,0.45);
+    color: #2ddf6e;
+  }
+  .t-call-btn.spread {
+    background: rgba(96,165,250,0.14);
+    border-color: rgba(96,165,250,0.42);
+    color: #7ab8fc;
+  }
+  .t-call-btn.total {
+    background: rgba(244,185,66,0.14);
+    border-color: rgba(244,185,66,0.42);
+    color: #f8c84a;
+  }
+  .t-call-btn.fade {
+    background: rgba(248,113,113,0.08);
+    border-color: rgba(248,113,113,0.25);
+    color: #f87171;
+  }
+  .t-call-type {
+    font-size: 0.46rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    opacity: 0.7;
     flex-shrink: 0;
   }
-  .edge-pick-pos.spread { background: var(--blue-dim);  color: var(--blue);  border: 1px solid rgba(58,110,168,0.3); }
-  .edge-pick-pos.total  { background: var(--gold-dim);  color: var(--gold);  border: 1px solid rgba(200,146,42,0.3); }
-  .edge-pick-pos.ml     { background: var(--green-dim); color: var(--green); border: 1px solid rgba(58,140,92,0.3); }
-  .edge-pick-pos.fade   { background: var(--red-dim);   color: var(--red);   border: 1px solid rgba(192,57,43,0.3); }
-  .edge-pick-info { flex: 1; }
-  .edge-pick-label {
-    font-size: 0.8rem;
+  .t-call-label {
+    font-size: 0.74rem;
+    letter-spacing: 0.01em;
+  }
+  .t-call-ev {
+    font-size: 0.6rem;
+    margin-left: auto;
+    flex-shrink: 0;
+    padding: 2px 6px;
+    border-radius: 3px;
     font-weight: 500;
-    color: var(--white);
-    line-height: 1.3;
-    font-family: 'Playfair Display', serif;
+    transition: background 0.15s;
   }
-  .ev-meter { display: flex; align-items: center; gap: 6px; margin-top: 3px; }
-  .ev-bar-bg {
-    flex: 1;
-    height: 2px;
-    background: var(--border2);
-    border-radius: 1px;
-    overflow: hidden;
-    max-width: 50px;
+  .t-call-ev.pos {
+    background: rgba(34,197,94,0.15);
+    color: #22c55e;
   }
-  .ev-bar-fill { height: 100%; border-radius: 1px; }
-  .ev-bar-fill.pos { background: var(--green); }
-  .ev-bar-fill.neg { background: var(--red); }
-  .ev-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.62rem;
-    font-weight: 500;
-    min-width: 38px;
+  .t-call-ev.neg {
+    background: rgba(248,113,113,0.15);
+    color: #f87171;
   }
-  .ev-label.pos-ev { color: var(--green); }
-  .ev-label.neg-ev { color: var(--red); }
-  .no-edge {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.68rem;
-    color: var(--border2);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-weight: 500;
+  .t-call-ev.spread-ev {
+    background: rgba(96,165,250,0.12);
+    color: #60a5fa;
   }
-  .edge-note {
-    font-size: 0.68rem;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-top: 4px;
+  .t-call-ev.total-ev {
+    background: rgba(244,185,66,0.12);
+    color: #f4b942;
+  }
+  @keyframes evFlash    { 0%{background:rgba(34,197,94,0.35)}  100%{background:rgba(34,197,94,0.15)} }
+  @keyframes evFlashSpread { 0%{background:rgba(96,165,250,0.32)}  100%{background:rgba(96,165,250,0.12)} }
+  @keyframes evFlashTotal  { 0%{background:rgba(244,185,66,0.32)}  100%{background:rgba(244,185,66,0.12)} }
+  .t-call-ev.flash-pos    { animation: evFlash 0.55s ease forwards; }
+  .t-call-ev.flash-spread { animation: evFlashSpread 0.55s ease forwards; }
+  .t-call-ev.flash-total  { animation: evFlashTotal 0.55s ease forwards; }
+
+  .t-edge-note {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.63rem;
+    color: #3a5068;
+    line-height: 1.5;
     font-style: italic;
-    border-top: 1px solid var(--border);
-    padding-top: 7px;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1200px) {
+    .game-card, .col-header-row { grid-template-columns: 200px 90px 140px 140px 140px 1fr; }
+  }
+  @media (max-width: 1000px) {
+    .game-card, .col-header-row { grid-template-columns: 180px 80px 120px 120px 120px 1fr; }
+    .t-call-label { font-size: 0.78rem; }
   }
 
   /* FOOTER */
@@ -626,7 +706,7 @@
   .mobile-menu.open { display: flex; }
   .mobile-menu a {
     font-family: 'Inter', sans-serif;
-    font-size: clamp(1.6rem, 7vw, 2rem);
+    font-size: clamp(1.6rem, 7vw, 2.2rem);
     font-weight: 900;
     color: #f0ece4;
     text-decoration: none;
@@ -643,23 +723,32 @@
     font-size: 1.4rem; cursor: pointer; padding: 8px;
   }
   @media (max-width: 1100px) {
-    .game-inner { grid-template-columns: 200px 1fr 1fr 1fr 200px; }
+    .game-card, .col-header-row { grid-template-columns: 180px 70px 110px 110px 110px 1fr; }
     .hero-grid { grid-template-columns: 1fr; }
     .consensus-card { margin-top: 32px; }
   }
   @media (max-width: 900px) {
     .hamburger { display: flex; }
     .nav-links { display: none !important; }
-    .game-inner { grid-template-columns: 1fr; }
-    .teams-col, .odds-col, .edge-col { border-right: none; border-bottom: 1px solid var(--border); }
-    .edge-col { border-bottom: none; }
-    .odds-col-header, .edge-col-header { display: none; }
-    .hero-grid    { padding: 100px 20px 0; gap: 28px; }
+    .col-header-row { display: none; }
+    .game-card {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      border-bottom: 2px solid #111d28;
+      margin-bottom: 4px;
+      min-height: unset;
+    }
+    .t-matchup { grid-column: 1 / -1; border-bottom: 1px solid #111d28; border-right: none; }
+    .t-prob    { border-right: 1px solid #111d28; }
+    .t-odds    { border-right: 1px solid #111d28; }
+    .t-odds:last-of-type { border-right: none; }
+    .t-edge    { grid-column: 1 / -1; border-top: 1px solid #111d28; }
+    .hero-grid    { padding: 128px 20px 0; gap: 28px; }
     .hero-stat-row { grid-template-columns: repeat(2,1fr); }
     .sport-tabs   { padding: 0 20px; }
     .legend-bar   { padding: 16px 20px; }
     .date-divider { padding: 20px 20px 8px; }
-    .games-list   { padding: 0 20px 48px; }
+    .games-list   { padding: 0 16px 48px; }
     footer        { padding: 28px 20px; flex-direction: column; gap: 12px; text-align: center; }
   }
   @media (max-width: 480px) {
@@ -705,13 +794,394 @@
   .prob-fill-away { background:var(--gold); opacity:0.85; }
   .prob-fill-home { background:var(--blue); opacity:0.8; }
 
+
+  /* ── STATUS BAR ── */
+  .status-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    height: 28px;
+    background: #020406;
+    border-bottom: 1px solid #1a2535;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow: hidden;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+  }
+  .sb-clock {
+    padding: 0 16px;
+    color: #f4b942;
+    font-weight: 500;
+    white-space: nowrap;
+    border-right: 1px solid #1a2535;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .sb-session {
+    padding: 0 14px;
+    color: #22c55e;
+    border-right: 1px solid #1a2535;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .sb-session-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 6px rgba(34,197,94,0.8);
+    animation: pulse 1.8s ease infinite;
+    flex-shrink: 0;
+  }
+  .sb-ticker-wrap {
+    flex: 1;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  .sb-ticker-wrap::before, .sb-ticker-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 32px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .sb-ticker-wrap::before { left: 0; background: linear-gradient(to right, #020406, transparent); }
+  .sb-ticker-wrap::after  { right: 0; background: linear-gradient(to left, #020406, transparent); }
+  .sb-ticker-inner {
+    display: flex;
+    white-space: nowrap;
+    animation: sbScroll 28s linear infinite;
+  }
+  @keyframes sbScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .sb-quote {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 20px;
+    border-right: 1px solid #1a2535;
+    color: #4d6070;
+  }
+  .sb-quote-sym { color: #9dafc2; font-weight: 500; }
+  .sb-quote-val { color: #f0ece4; }
+  .sb-quote-ev.pos { color: #22c55e; }
+  .sb-quote-ev.neg { color: #f87171; }
+  .sb-right {
+    padding: 0 14px;
+    border-left: 1px solid #1a2535;
+    color: #4d6070;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .sb-right span { color: #f4b942; }
+
+  /* ── TERMINAL GRID ENHANCEMENTS ── */
+  .game-card {
+    border-color: rgba(255,255,255,0.07) !important;
+  }
+  .game-card:nth-child(even) .game-inner {
+    background: rgba(255,255,255,0.012);
+  }
+  .odds-col-header, .edge-col-header {
+    background: #080d12 !important;
+    border-bottom-color: rgba(255,255,255,0.08) !important;
+    letter-spacing: 0.22em;
+  }
+  .odds-cell {
+    border-bottom-color: rgba(255,255,255,0.05) !important;
+  }
+  .odds-col {
+    border-right-color: rgba(255,255,255,0.07) !important;
+  }
+  .teams-col {
+    border-right-color: rgba(255,255,255,0.07) !important;
+  }
+
+  /* ── BLINKING EV QUOTE ── */
+  @keyframes evFlash {
+    0%   { background: rgba(34,197,94,0.22); }
+    40%  { background: transparent; }
+    100% { background: transparent; }
+  }
+  @keyframes evFlashNeg {
+    0%   { background: rgba(248,113,113,0.22); }
+    40%  { background: transparent; }
+    100% { background: transparent; }
+  }
+  .ev-quote {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 3px;
+    padding: 2px 7px;
+    border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    position: relative;
+    transition: background 0.15s;
+  }
+  .ev-quote.pos-ev {
+    color: #22c55e;
+    border: 1px solid rgba(34,197,94,0.25);
+    background: rgba(34,197,94,0.06);
+  }
+  .ev-quote.neg-ev {
+    color: #f87171;
+    border: 1px solid rgba(248,113,113,0.25);
+    background: rgba(248,113,113,0.06);
+  }
+  .ev-quote.flash-pos { animation: evFlash 0.5s ease forwards; }
+  .ev-quote.flash-neg { animation: evFlashNeg 0.5s ease forwards; }
+  .ev-quote-arrow {
+    font-size: 0.6rem;
+    opacity: 0.7;
+  }
+  /* scanline overlay */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 998;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+  }
+
+
+/* ═══════════════════════════════════════════════
+   SHORTOPEN MARKET QUANT REVAMP LAYER
+═══════════════════════════════════════════════ */
+
+.game-card{
+  position:relative !important;
+  border:1px solid rgba(255,255,255,.05) !important;
+  margin-bottom:8px !important;
+  border-radius:16px !important;
+  overflow:hidden !important;
+  backdrop-filter:blur(16px);
+  box-shadow:0 12px 28px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.02);
+}
+
+.game-card::before{
+  content:'';
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:2px;
+  background:linear-gradient(180deg, transparent, rgba(244,185,66,.65), transparent);
+  opacity:0;
+  transition:.22s ease;
+}
+
+.game-card:hover::before{
+  opacity:1;
+}
+
+.game-card:hover{
+  transform:translateY(-2px);
+  background:#121b28 !important;
+  box-shadow:0 18px 42px rgba(0,0,0,.34), 0 0 0 1px rgba(244,185,66,.08);
+}
+
+.t-odds{
+  position:relative;
+}
+
+.t-odds:nth-child(3){
+  background:linear-gradient(180deg, rgba(96,165,250,.05), transparent);
+}
+
+.t-odds:nth-child(4){
+  background:linear-gradient(180deg, rgba(34,197,94,.05), transparent);
+}
+
+.t-odds:nth-child(5){
+  background:linear-gradient(180deg, rgba(244,185,66,.05), transparent);
+}
+
+.t-odds:nth-child(3)::before,
+.t-odds:nth-child(4)::before,
+.t-odds:nth-child(5)::before{
+  position:absolute;
+  top:8px;
+  right:10px;
+  font-size:.46rem;
+  letter-spacing:.18em;
+  font-family:'DM Mono', monospace;
+  pointer-events:none;
+}
+
+.t-odds:nth-child(3)::before{
+  content:'SPREAD';
+  color:rgba(96,165,250,.26);
+}
+
+.t-odds:nth-child(4)::before{
+  content:'MONEYLINE';
+  color:rgba(34,197,94,.26);
+}
+
+.t-odds:nth-child(5)::before{
+  content:'TOTAL';
+  color:rgba(244,185,66,.28);
+}
+
+.t-odds-chip{
+  border-radius:8px !important;
+  min-width:78px !important;
+  justify-content:center !important;
+  transition:all .18s ease;
+  position:relative;
+  overflow:hidden;
+}
+
+.t-odds-chip::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, rgba(255,255,255,.08), transparent);
+  opacity:.35;
+  pointer-events:none;
+}
+
+.t-odds-chip:hover{
+  transform:translateY(-1px);
+}
+
+.t-odds-chip.fav{
+  color:#ecfdf3 !important;
+  background:linear-gradient(135deg, rgba(34,197,94,.24), rgba(34,197,94,.08)) !important;
+  border:1px solid rgba(34,197,94,.34) !important;
+  box-shadow:0 0 22px rgba(34,197,94,.10);
+}
+
+.t-odds-chip.dog{
+  color:#9ef0b8 !important;
+  background:linear-gradient(135deg, rgba(16,30,22,.95), rgba(34,197,94,.08)) !important;
+  border:1px solid rgba(34,197,94,.18) !important;
+}
+
+.t-odds-chip.neutral{
+  background:linear-gradient(135deg, #162233, #101927) !important;
+  border:1px solid rgba(96,165,250,.18) !important;
+  color:#e5edf6 !important;
+}
+
+.t-odds-chip.total-o{
+  background:linear-gradient(135deg, rgba(244,185,66,.22), rgba(244,185,66,.08)) !important;
+  border:1px solid rgba(244,185,66,.28) !important;
+  color:#ffd978 !important;
+}
+
+.t-odds-chip.total-u{
+  background:linear-gradient(135deg, #121b28, #0d141f) !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  color:#c4d0dc !important;
+}
+
+@keyframes marketPulse{
+  0%,100%{opacity:.55;}
+  50%{opacity:1;}
+}
+
+.t-move.up{
+  animation:marketPulse 1.5s infinite;
+  text-shadow:0 0 10px rgba(34,197,94,.6);
+}
+
+.t-move.dn{
+  animation:marketPulse 1.5s infinite;
+  text-shadow:0 0 10px rgba(248,113,113,.6);
+}
+
+.t-edge{
+  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.04)) !important;
+}
+
+.t-call-btn{
+  border-radius:10px !important;
+  padding:8px 12px !important;
+  box-shadow:0 0 20px rgba(0,0,0,.16);
+}
+
+.t-call-ev.pos{
+  background:linear-gradient(135deg, rgba(34,197,94,.25), rgba(34,197,94,.08)) !important;
+  border:1px solid rgba(34,197,94,.28);
+  box-shadow:0 0 18px rgba(34,197,94,.12);
+}
+
+.hero-stat-card{
+  background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)) !important;
+  border:1px solid rgba(255,255,255,.06) !important;
+}
+
+.col-header-row{
+  border-radius:14px 14px 0 0;
+  overflow:hidden;
+}
+
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at top left, rgba(244,185,66,.05), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(34,197,94,.05), transparent 40%);
+  z-index:0;
+}
+
 </style>
 </head>
 <body>
+
+<!-- SCANLINES -->
+<div class="scanlines"></div>
+
+<!-- STATUS BAR -->
+<div class="status-bar" id="statusBar">
+  <div class="sb-clock">
+    <span id="sbTime">--:--:-- ET</span>
+    <span style="color:#1a2535">|</span>
+    <span style="color:#4d6070">MON</span>
+  </div>
+  <div class="sb-session">
+    <div class="sb-session-dot"></div>
+    <span>MARKET OPEN</span>
+  </div>
+  <div class="sb-ticker-wrap">
+    <div class="sb-ticker-inner" id="sbTickerInner"></div>
+  </div>
+  <div class="sb-right">SHORTopen <span>MKT v2.1</span></div>
+</div>
+
 <!-- BG GLOWS -->
 <div style="position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden">
   <div style="position:absolute;top:-20%;left:-10%;width:500px;height:500px;border-radius:50%;background:rgba(232,160,32,0.07);filter:blur(80px)"></div>
-  <div style="position:absolute;bottom:-20%;right:-10%;width:500px;height:500px;border-radius:50%;background:rgba(34,197,94,0.05);filter:blur(80px)"></div>
+  <div style="position:absolute;bottom:-10%;right:-5%;width:600px;height:600px;border-radius:50%;background:rgba(34,197,94,0.07);filter:blur(90px)"></div>
+  <div style="position:absolute;top:40%;left:30%;width:700px;height:400px;border-radius:50%;background:rgba(34,197,94,0.04);filter:blur(120px)"></div>
 </div>
 
 <nav>
@@ -786,21 +1256,21 @@
     <div class="consensus-row">
       <div>
         <div class="consensus-row-meta">Sharp Side</div>
-        <div class="consensus-row-value">PHI +7.5</div>
+        <div class="consensus-row-value">SAS +6.5</div>
       </div>
       <div class="consensus-ev-badge">+EV</div>
     </div>
     <div class="consensus-row">
       <div>
         <div class="consensus-row-meta">Total Movement</div>
-        <div class="consensus-row-value">LAL/OKC O 213.5</div>
+        <div class="consensus-row-value">NYK/CLE O 216.5</div>
       </div>
       <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:1.5rem;color:#57a7ff">↑ Steam</div>
     </div>
     <div class="consensus-row">
       <div>
         <div class="consensus-row-meta">Reverse Line Movement</div>
-        <div class="consensus-row-value">DEN +4.5</div>
+        <div class="consensus-row-value">CLE +6.5</div>
       </div>
       <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:1.3rem;color:#a78bfa">Sharp</div>
     </div>
@@ -894,8 +1364,8 @@
 
 const NBA_GAMES = [
 
-  {day:"TODAY", time:"4:00 PM", away:"Detroit Pistons", awayAbbr:"DET", home:"Cleveland Cavaliers", homeAbbr:"CLE", spreadAway:"+108", spreadAwayJuice:"+108", spreadAwayMove:"", spreadHome:"-3.5", spreadHomeJuice:"-108", spreadHomeMove:"", spreadOpen:"", mlAway:"+112", mlHome:"-132", total:"209.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"spread", edgeLabel:"CLE -4.5", edgeEV:"+3.8", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sizable spread — public on the favorite, value on the dog."},
-  {day:"TODAY", time:"6:30 PM", away:"San Antonio Spurs", awayAbbr:"SAS", home:"Minnesota Timberwolves", homeAbbr:"MIN", spreadAway:"-4.5", spreadAwayJuice:"-110", spreadAwayMove:"", spreadHome:"+3.5", spreadHomeJuice:"+110", spreadHomeMove:"", spreadOpen:"", mlAway:"+112", mlHome:"-132", total:"218.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIN Cover", edgeEV:"+2.1", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite — market pricing in efficiency edge."}
+  {day:"TODAY", time:"8:40 PM ET", away:"San Antonio Spurs", awayAbbr:"SAS", home:"Oklahoma City Thunder", homeAbbr:"OKC", spreadAway:"+6.5", spreadAwayJuice:"-110", spreadAwayMove:"", spreadHome:"-6.5", spreadHomeJuice:"-110", spreadHomeMove:"", spreadOpen:"", mlAway:"+198", mlHome:"-240", total:"221.5", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"OKC ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Home favorite with strong recent form — ML value."},
+  {day:"TOMORROW", time:"9:10 PM ET", away:"Cleveland Cavaliers", awayAbbr:"CLE", home:"New York Knicks", homeAbbr:"NYK", spreadAway:"+6.5", spreadAwayJuice:"-106", spreadAwayMove:"", spreadHome:"-6.5", spreadHomeJuice:"-114", spreadHomeMove:"", spreadOpen:"", mlAway:"+215", mlHome:"-260", total:"216.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYK ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Knicks favored at home — ML value."}
 ];
 
 // ── MLB ─────────────────────────────────────────────────────────
@@ -905,20 +1375,16 @@ const NBA_GAMES = [
 //       mlAway/mlHome are straight moneylines.
 //       total is the over/under (e.g. '8.5').
 
+// ── MLB ─────────────────────────────────────────────────────────
 const MLB_GAMES = [
-  {day:"TODAY", time:"6:46 PM ET", away:"Toronto Blue Jays", awayAbbr:"TOR", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: Trey Yesavage", homePitcher:"P: Ty Madden", spreadAway:"-1.5", spreadAwayJuice:"+146", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-176", spreadHomeMove:"", spreadOpen:"", mlAway:"-120", mlHome:"+102", total:"8", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TOR ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Slight road favorite with pitching edge — ML value."},
-  {day:"TODAY", time:"6:46 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Washington Nationals", homeAbbr:"WSH", awayPitcher:"P: Shane Baz", homePitcher:"P: Zack Littell", spreadAway:"-1.5", spreadAwayJuice:"+114", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-137", spreadHomeMove:"", spreadOpen:"", mlAway:"-144", mlHome:"+122", total:"9", totalOverJuice:"-122", totalUnderJuice:"+100", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"BAL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite with pitching edge — ML value."},
-  {day:"TODAY", time:"7:11 PM ET", away:"Cincinnati Reds", awayAbbr:"CIN", home:"Cleveland Guardians", homeAbbr:"CLE", awayPitcher:"P: Andrew Abbott", homePitcher:"P: Tanner Bibee", spreadAway:"+1.5", spreadAwayJuice:"-194", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+160", spreadHomeMove:"", spreadOpen:"", mlAway:"+114", mlHome:"-134", total:"8", totalOverJuice:"-104", totalUnderJuice:"-118", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CLE ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Home favorite with solid pitching — ML value."},
-  {day:"TODAY", time:"7:11 PM ET", away:"Miami Marlins", awayAbbr:"MIA", home:"Tampa Bay Rays", homeAbbr:"TB", awayPitcher:"P: Janson Junk", homePitcher:"P: Jesse Scholtens", spreadAway:"-1.5", spreadAwayJuice:"+168", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-205", spreadHomeMove:"", spreadOpen:"", mlAway:"-104", mlHome:"-112", total:"8", totalOverJuice:"-102", totalUnderJuice:"-120", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TB ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Pick'em — lean to the slight home favorite."},
-  {day:"TODAY", time:"7:16 PM ET", away:"Boston Red Sox", awayAbbr:"BOS", home:"Atlanta Braves", homeAbbr:"ATL", awayPitcher:"P: ConnellyEarly", homePitcher:"P: Spencer Strider", spreadAway:"+1.5", spreadAwayJuice:"-164", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+136", spreadHomeMove:"", spreadOpen:"", mlAway:"+128", mlHome:"-152", total:"8.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ATL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite with elite pitching edge — ML value."},
-  {day:"TODAY", time:"7:16 PM ET", away:"New York Yankees", awayAbbr:"NYY", home:"New York Mets", homeAbbr:"NYM", awayPitcher:"P: Cam Schlittler", homePitcher:"P: Clay Holmes", spreadAway:"-1.5", spreadAwayJuice:"+122", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-146", spreadHomeMove:"", spreadOpen:"", mlAway:"-146", mlHome:"+124", total:"7.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate road favorite in subway series — ML value."},
-  {day:"TODAY", time:"7:41 PM ET", away:"Chicago Cubs", awayAbbr:"CHC", home:"Chicago White Sox", homeAbbr:"CWS", awayPitcher:"P: Edward Cabrera", homePitcher:"P: Shane Burke", spreadAway:"-1.5", spreadAwayJuice:"+108", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-130", spreadHomeMove:"", spreadOpen:"", mlAway:"-146", mlHome:"+124", total:"8", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CHC ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate cross-town favorite — ML value."},
-  {day:"TODAY", time:"8:11 PM ET", away:"Texas Rangers", awayAbbr:"TEX", home:"Houston Astros", homeAbbr:"HOU", awayPitcher:"P: Jack Leiter", homePitcher:"P: Spencer Arrighetti", spreadAway:"-1.5", spreadAwayJuice:"+150", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-182", spreadHomeMove:"", spreadOpen:"", mlAway:"-108", mlHome:"-108", total:"8.5", totalOverJuice:"-120", totalUnderJuice:"-102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TEX ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"True pick'em — leaning slightly to Rangers."},
-  {day:"TODAY", time:"8:16 PM ET", away:"Kansas City Royals", awayAbbr:"KC", home:"St. Louis Cardinals", homeAbbr:"STL", awayPitcher:"P: Michael Wacha", homePitcher:"P: Dustin May", spreadAway:"-1.5", spreadAwayJuice:"+160", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-194", spreadHomeMove:"", spreadOpen:"", mlAway:"-106", mlHome:"-110", total:"9", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"KC ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Pick'em — lean to the road favorite."},
-  {day:"TODAY", time:"8:41 PM ET", away:"Arizona Diamondbacks", awayAbbr:"AZ", home:"Colorado Rockies", homeAbbr:"COL", awayPitcher:"P: Merrill Kelly", homePitcher:"P: Kyle Freeland", spreadAway:"-1.5", spreadAwayJuice:"+116", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-140", spreadHomeMove:"", spreadOpen:"", mlAway:"-126", mlHome:"+108", total:"12", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"AZ ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Coors Field high total — leaning Diamondbacks."},
-  {day:"TODAY", time:"9:39 PM ET", away:"Los Angeles Dodgers", awayAbbr:"LAD", home:"Los Angeles Angels", homeAbbr:"LAA", awayPitcher:"P: Blake Snell", homePitcher:"P: Jack Kochanowicz", spreadAway:"-1.5", spreadAwayJuice:"-130", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"+108", spreadHomeMove:"", spreadOpen:"", mlAway:"-220", mlHome:"+184", total:"9", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAD ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Heavy favorite with major pitching edge — ML value."},
-  {day:"TODAY", time:"9:41 PM ET", away:"San Francisco Giants", awayAbbr:"SF", home:"Athletics", homeAbbr:"OAK", awayPitcher:"P: Tyler Mahle", homePitcher:"P: Aaron Civale", spreadAway:"+1.5", spreadAwayJuice:"-170", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+140", spreadHomeMove:"", spreadOpen:"", mlAway:"+116", mlHome:"-136", total:"9.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"OAK ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite with pitching edge — ML value."},
-  {day:"TODAY", time:"10:11 PM ET", away:"San Diego Padres", awayAbbr:"SD", home:"Seattle Mariners", homeAbbr:"SEA", awayPitcher:"P: Randy Vasquez", homePitcher:"P: Emerson Hancock", spreadAway:"+1.5", spreadAwayJuice:"-176", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+120", mlHome:"-142", total:"8", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"SEA ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite with pitching edge — ML value."}
+  {day:"TODAY", time:"6:41 PM ET", away:"Cleveland Guardians", awayAbbr:"CLE", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: Cecconi", homePitcher:"P: Valdez", spreadAway:"+1.5", spreadAwayJuice:"-162", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+134", spreadHomeMove:"", spreadOpen:"", mlAway:"+130", mlHome:"-154", total:"8", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"DET ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Home favorite with pitching edge — ML value."},
+  {day:"TODAY", time:"6:41 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Tampa Bay Rays", homeAbbr:"TB", awayPitcher:"P: Rogers", homePitcher:"P: McClanahan", spreadAway:"+1.5", spreadAwayJuice:"-182", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+150", spreadHomeMove:"", spreadOpen:"", mlAway:"+120", mlHome:"-142", total:"7.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TB ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"McClanahan provides significant pitching edge."},
+  {day:"TODAY", time:"6:41 PM ET", away:"Atlanta Braves", awayAbbr:"ATL", home:"Miami Marlins", homeAbbr:"MIA", awayPitcher:"P: Ritchie", homePitcher:"P: Meyer", spreadAway:"-1.5", spreadAwayJuice:"+155", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-188", spreadHomeMove:"", spreadOpen:"", mlAway:"-102", mlHome:"-116", total:"8.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIA ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Near pick'em with slight edge to home side."},
+  {day:"TODAY", time:"6:41 PM ET", away:"Cincinnati Reds", awayAbbr:"CIN", home:"Philadelphia Phillies", homeAbbr:"PHI", awayPitcher:"P: Lodolo", homePitcher:"P: Painter", spreadAway:"+1.5", spreadAwayJuice:"-188", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+155", spreadHomeMove:"", spreadOpen:"", mlAway:"+108", mlHome:"-126", total:"10", totalOverJuice:"-106", totalUnderJuice:"-114", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PHI ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite at home — ML value."},
+  {day:"TODAY", time:"6:46 PM ET", away:"New York Mets", awayAbbr:"NYM", home:"Washington Nationals", homeAbbr:"WSH", awayPitcher:"P: Scott", homePitcher:"P: Irvin", spreadAway:"-1.5", spreadAwayJuice:"+126", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-152", spreadHomeMove:"", spreadOpen:"", mlAway:"-126", mlHome:"+108", total:"10", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYM ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Mets road favorites with offensive edge."},
+  {day:"TODAY", time:"7:06 PM ET", away:"Toronto Blue Jays", awayAbbr:"TOR", home:"New York Yankees", homeAbbr:"NYY", awayPitcher:"P: Corbin", homePitcher:"P: Weathers", spreadAway:"+1.5", spreadAwayJuice:"-132", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+110", spreadHomeMove:"", spreadOpen:"", mlAway:"+150", mlHome:"-178", total:"9", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Strong home favorites with pitching advantage."},
+  {day:"TODAY", time:"7:11 PM ET", away:"Boston Red Sox", awayAbbr:"BOS", home:"Kansas City Royals", homeAbbr:"KC", awayPitcher:"P: Gray", homePitcher:"P: Lugo", spreadAway:"-1.5", spreadAwayJuice:"+146", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-178", spreadHomeMove:"", spreadOpen:"", mlAway:"-112", mlHome:"-104", total:"9", totalOverJuice:"-122", totalUnderJuice:"+100", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"BOS ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Slight road favorite — ML value."},
+  {day:"TODAY", time:"7:41 PM ET", away:"Milwaukee Brewers", awayAbbr:"MIL", home:"Chicago Cubs", homeAbbr:"CHC", awayPitcher:"P: Sproat", homePitcher:"P: Imanaga", spreadAway:"+1.5", spreadAwayJuice:"-142", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+118", spreadHomeMove:"", spreadOpen:"", mlAway:"+136", mlHome:"-162", total:"10.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CHC ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Imanaga provides reliable edge at Wrigley."}
 ];
 
 // ════════════════════════════════════════════════════════════════
@@ -943,7 +1409,7 @@ function renderGames(games, containerId) {
     dayMap[d].push(g);
   });
 
-  days.forEach(day => {
+  days.forEach((day, di) => {
     const div = document.createElement('div');
     div.className = 'date-divider';
     div.innerHTML = `<span class="date-divider-label">${day}</span><div class="date-divider-line"></div>`;
@@ -951,6 +1417,20 @@ function renderGames(games, containerId) {
 
     const list = document.createElement('div');
     list.className = 'games-list';
+
+    // Column header row
+    const hdr = document.createElement('div');
+    hdr.className = 'col-header-row';
+    hdr.innerHTML = `
+      <div class="col-hdr">MATCHUP</div>
+      <div class="col-hdr">WIN%</div>
+      <div class="col-hdr">SPREAD / RL</div>
+      <div class="col-hdr">MONEYLINE</div>
+      <div class="col-hdr">TOTAL O/U</div>
+      <div class="col-hdr">◆ shortopen CALL</div>
+    `;
+    list.appendChild(hdr);
+
     dayMap[day].forEach((g, i) => {
       const card = buildCard(g);
       card.style.animationDelay = (i * 0.04) + 's';
@@ -962,120 +1442,104 @@ function renderGames(games, containerId) {
 
 function buildCard(g) {
   const card = document.createElement('div');
-  const edgeClass = (!g.edgeType || g.edgeType === 'fade') ? 'edge-fade' :
-    (g.edgeType === 'spread' || g.edgeType === 'ml') ? 'edge-strong' : '';
-  card.className = 'game-card ' + edgeClass;
+  const isEdge = g.edgeType && g.edgeType !== 'fade' && g.edgeLabel;
+  card.className = 'game-card ' + (isEdge ? 'edge-strong' : 'edge-fade');
 
-  const moveBadge = m => {
-    if (m === 'up') return `<span class="move-badge move-up">↑</span>`;
-    if (m === 'dn') return `<span class="move-badge move-dn">↓</span>`;
-    return '';
+  // ── Win probability from ML ──
+  const mlToProb = ml => {
+    if (!ml || isNaN(parseFloat(ml))) return null;
+    const n = parseFloat(ml);
+    return n < 0 ? (-n / (-n + 100)) : (100 / (n + 100));
   };
+  const pA = mlToProb(g.mlAway), pH = mlToProb(g.mlHome);
+  let probHtml = '<div class="t-prob-n away" style="font-size:0.65rem;color:#2a3f52">N/A</div>';
+  if (pA !== null && pH !== null) {
+    const tot = pA + pH, na = Math.round((pA / tot) * 100), nh = 100 - na;
+    probHtml = `
+      <div class="t-prob-teams"><span class="t-prob-away-lbl">${g.awayAbbr}</span><span class="t-prob-home-lbl">${g.homeAbbr}</span></div>
+      <div class="t-prob-bar"><div class="t-prob-away" style="width:${na}%"></div><div class="t-prob-home" style="width:${nh}%"></div></div>
+      <div class="t-prob-nums"><span class="t-prob-n away">${na}%</span><span class="t-prob-n home">${nh}%</span></div>`;
+  }
 
-  const buildPick = (type, label, ev) => {
-    if (!type || !label) return '';
-    const n = parseFloat(ev), sign = n >= 0 ? '+' : '';
-    const bar = Math.min(Math.abs(n) * 10, 100);
-    return `<div class="edge-pick">
-      <span class="edge-pick-pos ${type}">${type.toUpperCase()}</span>
-      <div class="edge-pick-info">
-        <div class="edge-pick-label">${label}</div>
-        <div class="ev-meter">
-          <div class="ev-bar-bg"><div class="ev-bar-fill ${n>=0?'pos':'neg'}" style="width:${bar}%"></div></div>
-          <span class="ev-label ${n>=0?'pos-ev':'neg-ev'}">EV ${sign}${ev}%</span>
-        </div>
-      </div>
-    </div>`;
-  };
+  // ── Move arrow ──
+  const mv = m => m === 'up' ? `<span class="t-move up">▲</span>` : m === 'dn' ? `<span class="t-move dn">▼</span>` : '';
 
+  // ── Chip class for ML ──
+  const mlChip = ml => !ml ? 'neutral' : ml.startsWith('+') ? 'dog' : 'fav';
+
+  // ── Edge call button ──
+  const uid = 'ev_' + Math.random().toString(36).slice(2,7);
   let edgeHtml;
-  if (!g.edgeType) {
-    edgeHtml = `<div class="no-edge">No call</div>`;
+  if (!isEdge) {
+    edgeHtml = `<div class="t-edge-empty">— NO CALL —</div>`;
   } else {
-    const p1 = buildPick(g.edgeType, g.edgeLabel, g.edgeEV);
-    const p2 = buildPick(g.edge2Type, g.edge2Label, g.edge2EV);
-    const note = g.edgeNote ? `<div class="edge-note">${g.edgeNote}</div>` : '';
-    edgeHtml = p1 + (p1 && p2 ? '<div style="height:6px"></div>' : '') + p2 + note;
+    const n = parseFloat(g.edgeEV), sign = n >= 0 ? '+' : '';
+    // EV pill color matches call type
+    const evCls = g.edgeType === 'spread' ? 'spread-ev' : g.edgeType === 'total' ? 'total-ev' : n >= 0 ? 'pos' : 'neg';
+    const noteHtml = g.edgeNote ? `<div class="t-edge-note">${g.edgeNote}</div>` : '';
+    edgeHtml = `
+      <div class="t-call-btn ${g.edgeType}">
+        <span class="t-call-type">${g.edgeType}</span>
+        <span class="t-call-label">${g.edgeLabel}</span>
+        <span class="t-call-ev ${evCls}" id="${uid}" data-ev="${n}" data-type="${g.edgeType}">${sign}${g.edgeEV}%</span>
+      </div>
+      ${noteHtml}`;
   }
 
-  const awayP = g.awayPitcher ? `<div class="team-pitcher">${g.awayPitcher}</div>` : '';
-
-  // Win probability from ML
-  const mlToProb = ml => { if (!ml||ml==='Locked'||isNaN(parseFloat(ml))) return null; const n=parseFloat(ml); return n<0?(-n/(-n+100)):(100/(n+100)); };
-  const pAway=mlToProb(g.mlAway), pHome=mlToProb(g.mlHome);
-  let probHtml='';
-  if (pAway!==null&&pHome!==null) {
-    const total=pAway+pHome, na=Math.round((pAway/total)*100), nh=100-na;
-    probHtml=`<div class="prob-row"><div class="prob-labels"><span class="prob-away-lbl">${g.awayAbbr} ${na}%</span><span class="prob-home-lbl">${nh}% ${g.homeAbbr}</span></div><div class="prob-bar"><div class="prob-fill-away" style="width:${na}%"></div><div class="prob-fill-home" style="width:${nh}%"></div></div></div>`;
-  }
-  const homeP = g.homePitcher ? `<div class="team-pitcher">${g.homePitcher}</div>` : '';
+  const awayP = g.awayPitcher ? `<div class="t-pitcher">${g.awayPitcher}</div>` : '';
+  const homeP = g.homePitcher ? `<div class="t-pitcher">${g.homePitcher}</div>` : '';
 
   card.innerHTML = `
-    <div class="game-inner">
-      <div class="teams-col">
-        <div class="team-row">
-          <span class="team-abbr">${g.awayAbbr}</span>
-          <div class="team-info"><span class="team-name away">${g.away}</span>${awayP}</div>
-        </div>
-        <div class="at-symbol">@</div>
-        <div class="team-row">
-          <span class="team-abbr">${g.homeAbbr}</span>
-          <div class="team-info"><span class="team-name">${g.home}</span>${homeP}</div>
-        </div>
-        <div class="game-time">${g.day ? g.day + ' · ' : ''}${g.time}</div>
-        ${probHtml}
+    <div class="t-matchup">
+      <div class="t-team-away">
+        <span class="t-abbr">${g.awayAbbr}</span>
+        <span class="t-name">${g.away}</span>
       </div>
+      ${awayP}
+      <div class="t-team-home">
+        <span class="t-abbr">${g.homeAbbr}</span>
+        <span class="t-name home">${g.home}</span>
+      </div>
+      ${homeP}
+      <div class="t-time">${g.time}</div>
+    </div>
 
-      <div class="odds-col">
-        <div class="odds-col-header">Spread</div>
-        <div class="odds-cells">
-          <div class="odds-cell">
-            <span class="odds-main">${g.spreadAway}</span>
-            <span class="odds-juice">${g.spreadAwayJuice}</span>
-            ${moveBadge(g.spreadAwayMove)}
-          </div>
-          <div class="odds-cell">
-            <span class="odds-main">${g.spreadHome}</span>
-            <span class="odds-juice">${g.spreadHomeJuice}</span>
-            ${moveBadge(g.spreadHomeMove)}
-          </div>
-        </div>
-        ${g.spreadOpen ? `<div class="open-note">${g.spreadOpen}</div>` : ''}
-      </div>
+    <div class="t-prob">${probHtml}</div>
 
-      <div class="odds-col">
-        <div class="odds-col-header">Money</div>
-        <div class="odds-cells">
-          <div class="odds-cell">
-            <span class="odds-main ${g.mlAway && g.mlAway.startsWith('+') ? 'pos' : ''}">${g.mlAway}</span>
-          </div>
-          <div class="odds-cell">
-            <span class="odds-main ${g.mlHome && g.mlHome.startsWith('+') ? 'pos' : 'neg'}">${g.mlHome}</span>
-          </div>
-        </div>
+    <div class="t-odds">
+      <div class="t-odds-row">
+        <span class="t-odds-chip neutral">${g.spreadAway || '—'} <span style="font-size:0.6rem;opacity:0.5">${g.spreadAwayJuice || ''}</span></span>
+        ${mv(g.spreadAwayMove)}
       </div>
+      <div class="t-odds-row">
+        <span class="t-odds-chip neutral">${g.spreadHome || '—'} <span style="font-size:0.6rem;opacity:0.5">${g.spreadHomeJuice || ''}</span></span>
+        ${mv(g.spreadHomeMove)}
+      </div>
+    </div>
 
-      <div class="odds-col">
-        <div class="odds-col-header">Total</div>
-        <div class="odds-cells">
-          <div class="odds-cell">
-            <span class="odds-main"><span class="total-label">O</span>${g.total}</span>
-            <span class="odds-juice">${g.totalOverJuice}</span>
-            ${moveBadge(g.totalMove)}
-          </div>
-          <div class="odds-cell">
-            <span class="odds-main"><span class="total-label">U</span>${g.total}</span>
-            <span class="odds-juice">${g.totalUnderJuice}</span>
-          </div>
-        </div>
-        ${g.totalOpen ? `<div class="open-note">${g.totalOpen}</div>` : ''}
+    <div class="t-odds">
+      <div class="t-odds-row">
+        <span class="t-odds-chip ${mlChip(g.mlAway)}">${g.mlAway || '—'}</span>
       </div>
+      <div class="t-odds-row">
+        <span class="t-odds-chip ${mlChip(g.mlHome)}">${g.mlHome || '—'}</span>
+      </div>
+    </div>
 
-      <div class="edge-col">
-        <div class="edge-col-header">shortopen</div>
-        <div class="edge-content">${edgeHtml}</div>
+    <div class="t-odds">
+      <div class="t-odds-row">
+        <span class="t-odds-chip total-o">O ${g.total || '—'}</span>
+        <span class="t-odds-juice">${g.totalOverJuice || ''}</span>
+        ${mv(g.totalMove)}
       </div>
-    </div>`;
+      <div class="t-odds-row">
+        <span class="t-odds-chip total-u">U ${g.total || '—'}</span>
+        <span class="t-odds-juice">${g.totalUnderJuice || ''}</span>
+      </div>
+    </div>
+
+    <div class="t-edge">${edgeHtml}</div>
+  `;
 
   return card;
 }
@@ -1124,6 +1588,63 @@ function renderTicker() {
 renderTicker();
 renderGames(NBA_GAMES, 'nbaContainer');
 renderGames(MLB_GAMES, 'mlbContainer');
+
+
+// ── STATUS BAR CLOCK ──
+function updateClock() {
+  const now = new Date();
+  const et = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+  const h = String(et.getHours()).padStart(2,'0');
+  const m = String(et.getMinutes()).padStart(2,'0');
+  const s = String(et.getSeconds()).padStart(2,'0');
+  const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  document.getElementById('sbTime').textContent = h + ':' + m + ':' + s + ' ET';
+  document.querySelector('.sb-right').previousElementSibling && null;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ── STATUS BAR MINI TICKER ──
+function buildSbTicker() {
+  const allGames = [...(typeof NBA_GAMES !== 'undefined' ? NBA_GAMES : []), ...(typeof MLB_GAMES !== 'undefined' ? MLB_GAMES : [])];
+  const picks = allGames.filter(g => g.edgeType && g.edgeLabel && g.edgeEV);
+  const items = picks.map(g => {
+    const n = parseFloat(g.edgeEV);
+    const evCls = n >= 0 ? 'pos' : 'neg';
+    const sign = n >= 0 ? '+' : '';
+    const sport = g.awayPitcher !== undefined ? 'MLB' : 'NBA';
+    return `<div class="sb-quote"><span class="sb-quote-sym">${sport}</span><span class="sb-quote-val">${g.edgeLabel}</span><span class="sb-quote-ev ${evCls}">${sign}${g.edgeEV}% EV</span></div>`;
+  }).join('');
+  const el = document.getElementById('sbTickerInner');
+  if (el) el.innerHTML = items + items;
+}
+buildSbTicker();
+
+// ── EV BLINK ENGINE ──
+// Periodically flash the highest-EV pick, then random others
+function flashRandomEv() {
+  const quotes = document.querySelectorAll('.t-call-ev');
+  if (!quotes.length) return;
+  let best = null, bestVal = -Infinity;
+  quotes.forEach(q => {
+    const v = parseFloat(q.dataset.ev || '0');
+    if (v > bestVal) { bestVal = v; best = q; }
+  });
+  const targets = [best];
+  const others = Array.from(quotes).filter(q => q !== best);
+  if (others.length) targets.push(others[Math.floor(Math.random() * others.length)]);
+  targets.forEach(q => {
+    if (!q) return;
+    const t = q.dataset.type || 'ml';
+    const cls = t === 'spread' ? 'flash-spread' : t === 'total' ? 'flash-total' : 'flash-pos';
+    q.classList.remove('flash-pos','flash-spread','flash-total');
+    void q.offsetWidth;
+    q.classList.add(cls);
+    setTimeout(() => q.classList.remove(cls), 700);
+  });
+}
+setInterval(flashRandomEv, 2200);
+setTimeout(flashRandomEv, 800);
 
 </script>
 </body>
