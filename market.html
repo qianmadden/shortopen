@@ -1153,6 +1153,387 @@ body::after{
   z-index:0;
 }
 
+
+  /* ── PROP PARLAYS SECTION ── */
+
+  /* Section divider header */
+  .prop-section-header {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 36px 48px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .prop-section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #3a5068;
+  }
+  .prop-section-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: #f1f5fb;
+  }
+  .prop-section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, rgba(87,167,255,0.35), transparent);
+    margin-left: 4px;
+  }
+  .prop-section-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #bb8cff;
+    border: 1px solid rgba(139,92,246,0.28);
+    background: linear-gradient(135deg, rgba(139,92,246,0.18), rgba(139,92,246,0.08));
+    padding: 5px 10px;
+    border-radius: 8px;
+    cursor: default;
+  }
+  .prop-section-live {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .prop-live-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 10px rgba(34,197,94,0.8);
+    animation: pulse 1.5s infinite;
+  }
+  .prop-live-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #6d86a0;
+  }
+
+  /* Terminal card wrapper */
+  .prop-list {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 48px 52px;
+  }
+  .prop-terminal {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.07);
+    background:
+      radial-gradient(circle at top left, rgba(87,167,255,0.08), transparent 30%),
+      radial-gradient(circle at bottom right, rgba(139,92,246,0.08), transparent 30%),
+      linear-gradient(180deg, rgba(10,14,22,0.98), rgba(6,9,15,0.98));
+    box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+  }
+
+  /* Column headers */
+  .prop-col-header-row {
+    display: grid;
+    grid-template-columns: 2.3fr 0.9fr 1fr 1fr 1fr 1fr;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  }
+  .prop-col-hdr {
+    padding: 8px 14px;
+    border-right: 1px solid rgba(255,255,255,0.05);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #53657a;
+  }
+  .prop-col-hdr:first-child { color: #8da0b3; }
+  .prop-col-hdr:last-child { border-right: none; color: rgba(187,140,255,0.8); }
+
+  /* Individual leg row */
+  .prop-leg-row {
+    display: grid;
+    grid-template-columns: 2.3fr 0.9fr 1fr 1fr 1fr 1fr;
+    transition: background 0.18s ease;
+    border-left: none;
+  }
+  .prop-leg-row > .prop-cell {
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    border-right: 1px solid rgba(255,255,255,0.04);
+  }
+  .prop-leg-row:hover > .prop-cell {
+    background: linear-gradient(90deg, rgba(87,167,255,0.04), rgba(139,92,246,0.03));
+  }
+  .prop-leg-row > .prop-cell:last-child { border-right: none; }
+
+  /* Parlay summary row */
+  .prop-parlay-row {
+    display: grid;
+    grid-template-columns: 2.3fr 0.9fr 1fr 1fr 1fr 1fr;
+    border-left: none;
+  }
+  .prop-parlay-row > .prop-cell {
+    border-right: 1px solid rgba(255,255,255,0.04);
+    background: linear-gradient(180deg, rgba(87,0,255,0.04), transparent);
+  }
+  .prop-parlay-row > .prop-cell:last-child { border-right: none; }
+
+  /* Shared cell */
+  .prop-cell {
+    padding: 13px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    position: relative;
+  }
+
+  /* Player cell */
+  .prop-player-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at left, rgba(87,167,255,0.10), transparent 50%);
+    pointer-events: none;
+  }
+  .prop-player-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: #f4f7fb;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .prop-player-team {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.54rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7f8da1;
+    margin-bottom: 3px;
+  }
+  .prop-stat-label {
+    display: inline-flex;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(168,85,247,0.18), rgba(168,85,247,0.08));
+    border: 1px solid rgba(168,85,247,0.22);
+    color: #c996ff;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 700;
+    align-self: flex-start;
+  }
+
+  /* True prob */
+  .prop-hitpct {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: #f4f7fb;
+    line-height: 1;
+  }
+  .prop-hitpct.parlay { color: #c996ff; font-size: 1.2rem; }
+  .prop-hitpct-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.48rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #53657a;
+    margin-top: 2px;
+  }
+
+  /* Odds chip */
+  .prop-odds-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 58px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, rgba(87,167,255,0.14), rgba(87,167,255,0.05));
+    border: 1px solid rgba(87,167,255,0.24);
+    color: #dbeafe;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 800;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    align-self: flex-start;
+  }
+  .prop-odds-chip.parlay {
+    background: linear-gradient(135deg, rgba(168,85,247,0.16), rgba(168,85,247,0.06));
+    border-color: rgba(168,85,247,0.26);
+    color: #d7b8ff;
+  }
+
+  /* Implied */
+  .prop-implied {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: #a8b5c7;
+    line-height: 1;
+  }
+  .prop-implied.parlay { color: #c996ff; font-size: 1.2rem; }
+  .prop-implied-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.48rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #53657a;
+    margin-top: 2px;
+  }
+
+  /* Edge */
+  .prop-edge-val {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1.4;
+    color: #ff7d74;
+  }
+  .prop-edge-val.parlay { color: #c996ff; }
+  .prop-edge-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.48rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #53657a;
+    margin-top: 2px;
+  }
+
+  /* EV button */
+  .prop-ev-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 1px solid;
+    align-self: flex-start;
+  }
+  .prop-ev-btn.pos { background: linear-gradient(135deg, rgba(34,197,94,0.14), rgba(34,197,94,0.05)); border-color: rgba(34,197,94,0.28); }
+  .prop-ev-btn.neg { background: linear-gradient(135deg, rgba(239,68,68,0.14), rgba(239,68,68,0.05)); border-color: rgba(239,68,68,0.22); }
+  .prop-ev-btn.neutral { background: linear-gradient(135deg, rgba(139,92,246,0.14), rgba(139,92,246,0.05)); border-color: rgba(139,92,246,0.22); }
+  .prop-ev-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.46rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .prop-ev-btn.pos  .prop-ev-type { color: #22c55e; }
+  .prop-ev-btn.neg  .prop-ev-type { color: #f87171; }
+  .prop-ev-btn.neutral .prop-ev-type { color: #a855f7; }
+  .prop-ev-value {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+  .prop-ev-btn.pos  .prop-ev-value { color: #2ddf6e; }
+  .prop-ev-btn.neg  .prop-ev-value { color: #ff8e86; }
+  .prop-ev-btn.neutral .prop-ev-value { color: #bb8cff; }
+
+  /* Summary left cell */
+  .prop-parlay-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 900;
+    color: #e6d3ff;
+    letter-spacing: -0.02em;
+    margin-bottom: 3px;
+  }
+  .prop-parlay-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.56rem;
+    color: #7d8ca0;
+  }
+  .prop-edge-note {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6rem;
+    color: #6f8196;
+    font-style: italic;
+    line-height: 1.45;
+    margin-top: 4px;
+    max-width: 280px;
+  }
+
+  @media (max-width: 1200px) {
+    .prop-col-header-row, .prop-leg-row, .prop-parlay-row {
+      grid-template-columns: 2fr 0.9fr 1fr 1fr 1fr 1fr;
+    }
+  }
+  @media (max-width: 900px) {
+    .prop-terminal { border-radius: 12px; }
+    .prop-col-header-row { display: none; }
+    .prop-leg-row, .prop-parlay-row { grid-template-columns: 1fr 1fr; }
+    .prop-leg-row > .prop-cell:first-child { grid-column: 1 / -1; }
+    .prop-parlay-row > .prop-cell:first-child { grid-column: 1 / -1; }
+    .prop-list { padding: 0 16px 36px; }
+    .prop-section-header { padding: 24px 16px 12px; }
+  }
+  .series-ctx {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #2a3f52;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+  .series-pips {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-right: 14px;
+  }
+  .series-pip {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 1px solid #1a2d3e;
+    background: #0a1018;
+    flex-shrink: 0;
+  }
+  .series-pip.win-away { background: var(--gold); border-color: rgba(244,185,66,0.5); box-shadow: 0 0 5px rgba(244,185,66,0.3); }
+  .series-pip.win-home { background: var(--blue); border-color: rgba(96,165,250,0.5); box-shadow: 0 0 5px rgba(96,165,250,0.3); }
+  .series-leader {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 500;
+    color: #c8d8e8;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+  .series-leader strong {
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .series-divider {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, #1a2535 0%, transparent 80%);
+    margin-left: 14px;
+  }
+  /* Game card needs to allow the extra row */
+  .game-card.has-series {
+    grid-template-rows: 1fr 28px;
+    align-items: start;
+  }
+  .game-card.has-series .t-matchup,
+  .game-card.has-series .t-prob,
+  .game-card.has-series .t-odds,
+  .game-card.has-series .t-edge {
+    align-self: stretch;
+  }
+
 </style>
 </head>
 <body>
@@ -1363,9 +1744,27 @@ body::after{
 // ── NBA ─────────────────────────────────────────────────────────
 
 const NBA_GAMES = [
+  {day:"TODAY", time:"8:10 PM ET", away:"Cleveland Cavaliers", awayAbbr:"CLE", home:"New York Knicks", homeAbbr:"NYK", spreadAway:"+6.5", spreadAwayJuice:"-105", spreadAwayMove:"", spreadHome:"-6.5", spreadHomeJuice:"-115", spreadHomeMove:"", spreadOpen:"", mlAway:"+210", mlHome:"-255", total:"217.5", totalOverJuice:"-112", totalUnderJuice:"-108", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYK ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Knicks stable home favorites in efficient market pricing."},
+  {day:"TOMORROW", time:"8:40 PM ET", away:"San Antonio Spurs", awayAbbr:"SAS", home:"Oklahoma City Thunder", homeAbbr:"OKC", spreadAway:"+6.5", spreadAwayJuice:"-108", spreadAwayMove:"", spreadHome:"-6.5", spreadHomeJuice:"-112", spreadHomeMove:"", spreadOpen:"", mlAway:"+194", mlHome:"-235", total:"215.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"OKC ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate home edge for the favorite, total ticking down.", series:{awayWins:1, homeWins:0, leader:"SAS", games:1, context:"First Round"}}
+];
 
-  {day:"TODAY", time:"8:40 PM ET", away:"San Antonio Spurs", awayAbbr:"SAS", home:"Oklahoma City Thunder", homeAbbr:"OKC", spreadAway:"+6.5", spreadAwayJuice:"-110", spreadAwayMove:"", spreadHome:"-6.5", spreadHomeJuice:"-110", spreadHomeMove:"", spreadOpen:"", mlAway:"+198", mlHome:"-240", total:"221.5", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"OKC ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Home favorite with strong recent form — ML value."},
-  {day:"TOMORROW", time:"9:10 PM ET", away:"Cleveland Cavaliers", awayAbbr:"CLE", home:"New York Knicks", homeAbbr:"NYK", spreadAway:"+6.5", spreadAwayJuice:"-106", spreadAwayMove:"", spreadHome:"-6.5", spreadHomeJuice:"-114", spreadHomeMove:"", spreadOpen:"", mlAway:"+215", mlHome:"-260", total:"216.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYK ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Knicks favored at home — ML value."}
+const PROP_PARLAYS = [
+  {
+    day: "TODAY",
+    time: "8:10 PM ET",
+    type: "Player Props",
+    market: "3+ Made Threes Parlay",
+    // Each leg: player, team, stat, odds (market price), hitRate (true probability of hitting)
+    // EV per leg = (hitRate * (oddsToDecimal - 1)) - (1 - hitRate) … then as %
+    legs: [
+      { player: "OG Anunoby",       team: "NYK", stat: "3+ Made Threes", odds: "-118", hitRate: 0.48 },
+      { player: "Max Strus",         team: "CLE", stat: "3+ Made Threes", odds: "-105", hitRate: 0.44 },
+      { player: "Jalen Brunson",     team: "NYK", stat: "3+ Made Threes", odds: "-130", hitRate: 0.38 },
+      { player: "Donovan Mitchell",  team: "CLE", stat: "3+ Made Threes", odds: "-112", hitRate: 0.41 }
+    ],
+    betsPlaced: 1347,
+    edgeNote: "High-volume public parlay targeting primary perimeter shooters in the Knicks-Cavaliers matchup."
+  }
 ];
 
 // ── MLB ─────────────────────────────────────────────────────────
@@ -1377,14 +1776,14 @@ const NBA_GAMES = [
 
 // ── MLB ─────────────────────────────────────────────────────────
 const MLB_GAMES = [
-  {day:"TODAY", time:"6:41 PM ET", away:"Cleveland Guardians", awayAbbr:"CLE", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: Cecconi", homePitcher:"P: Valdez", spreadAway:"+1.5", spreadAwayJuice:"-162", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+134", spreadHomeMove:"", spreadOpen:"", mlAway:"+130", mlHome:"-154", total:"8", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"DET ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Home favorite with pitching edge — ML value."},
-  {day:"TODAY", time:"6:41 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Tampa Bay Rays", homeAbbr:"TB", awayPitcher:"P: Rogers", homePitcher:"P: McClanahan", spreadAway:"+1.5", spreadAwayJuice:"-182", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+150", spreadHomeMove:"", spreadOpen:"", mlAway:"+120", mlHome:"-142", total:"7.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TB ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"McClanahan provides significant pitching edge."},
-  {day:"TODAY", time:"6:41 PM ET", away:"Atlanta Braves", awayAbbr:"ATL", home:"Miami Marlins", homeAbbr:"MIA", awayPitcher:"P: Ritchie", homePitcher:"P: Meyer", spreadAway:"-1.5", spreadAwayJuice:"+155", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-188", spreadHomeMove:"", spreadOpen:"", mlAway:"-102", mlHome:"-116", total:"8.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIA ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Near pick'em with slight edge to home side."},
-  {day:"TODAY", time:"6:41 PM ET", away:"Cincinnati Reds", awayAbbr:"CIN", home:"Philadelphia Phillies", homeAbbr:"PHI", awayPitcher:"P: Lodolo", homePitcher:"P: Painter", spreadAway:"+1.5", spreadAwayJuice:"-188", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+155", spreadHomeMove:"", spreadOpen:"", mlAway:"+108", mlHome:"-126", total:"10", totalOverJuice:"-106", totalUnderJuice:"-114", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PHI ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate favorite at home — ML value."},
-  {day:"TODAY", time:"6:46 PM ET", away:"New York Mets", awayAbbr:"NYM", home:"Washington Nationals", homeAbbr:"WSH", awayPitcher:"P: Scott", homePitcher:"P: Irvin", spreadAway:"-1.5", spreadAwayJuice:"+126", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-152", spreadHomeMove:"", spreadOpen:"", mlAway:"-126", mlHome:"+108", total:"10", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYM ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Mets road favorites with offensive edge."},
-  {day:"TODAY", time:"7:06 PM ET", away:"Toronto Blue Jays", awayAbbr:"TOR", home:"New York Yankees", homeAbbr:"NYY", awayPitcher:"P: Corbin", homePitcher:"P: Weathers", spreadAway:"+1.5", spreadAwayJuice:"-132", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+110", spreadHomeMove:"", spreadOpen:"", mlAway:"+150", mlHome:"-178", total:"9", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Strong home favorites with pitching advantage."},
-  {day:"TODAY", time:"7:11 PM ET", away:"Boston Red Sox", awayAbbr:"BOS", home:"Kansas City Royals", homeAbbr:"KC", awayPitcher:"P: Gray", homePitcher:"P: Lugo", spreadAway:"-1.5", spreadAwayJuice:"+146", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-178", spreadHomeMove:"", spreadOpen:"", mlAway:"-112", mlHome:"-104", total:"9", totalOverJuice:"-122", totalUnderJuice:"+100", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"BOS ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Slight road favorite — ML value."},
-  {day:"TODAY", time:"7:41 PM ET", away:"Milwaukee Brewers", awayAbbr:"MIL", home:"Chicago Cubs", homeAbbr:"CHC", awayPitcher:"P: Sproat", homePitcher:"P: Imanaga", spreadAway:"+1.5", spreadAwayJuice:"-142", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+118", spreadHomeMove:"", spreadOpen:"", mlAway:"+136", mlHome:"-162", total:"10.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CHC ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Imanaga provides reliable edge at Wrigley."}
+  {day:"TODAY", time:"4:11 PM ET", away:"Atlanta Braves", awayAbbr:"ATL", home:"Miami Marlins", homeAbbr:"MIA", awayPitcher:"P: M Perez", homePitcher:"P: B Garrett", spreadAway:"-1.5", spreadAwayJuice:"+116", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-140", spreadHomeMove:"", spreadOpen:"", mlAway:"-142", mlHome:"+120", total:"8", totalOverJuice:"-112", totalUnderJuice:"-108", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ATL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Braves road chalk with standard offense backing."},
+  {day:"TODAY", time:"6:41 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Tampa Bay Rays", homeAbbr:"TB", awayPitcher:"P: K Bradish", homePitcher:"P: G Jax", spreadAway:"-1.5", spreadAwayJuice:"+155", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-188", spreadHomeMove:"", spreadOpen:"", mlAway:"-106", mlHome:"-110", total:"7.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TB ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Tight pick'em board with a low total context."},
+  {day:"TODAY", time:"6:41 PM ET", away:"Cincinnati Reds", awayAbbr:"CIN", home:"Philadelphia Phillies", homeAbbr:"PHI", awayPitcher:"P: C Burns", homePitcher:"P: J Luzardo", spreadAway:"+1.5", spreadAwayJuice:"-172", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+142", spreadHomeMove:"", spreadOpen:"", mlAway:"+124", mlHome:"-146", total:"8.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PHI ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Phillies clear home favorite setup behind Luzardo."},
+  {day:"TODAY", time:"6:41 PM ET", away:"Cleveland Guardians", awayAbbr:"CLE", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: P Messick", homePitcher:"P: K Montero", spreadAway:"-1.5", spreadAwayJuice:"+105", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-126", spreadAwayMove:"", spreadOpen:"", mlAway:"-158", mlHome:"+134", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CLE ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Road runline juice shows strong moneyline confidence."},
+  {day:"TODAY", time:"6:46 PM ET", away:"New York Mets", awayAbbr:"NYM", home:"Washington Nationals", homeAbbr:"WSH", awayPitcher:"P: N McLean", homePitcher:"P: F Griffin", spreadAway:"-1.5", spreadAwayJuice:"+118", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-142", spreadHomeMove:"", spreadOpen:"", mlAway:"-142", mlHome:"+120", total:"9", totalOverJuice:"-104", totalUnderJuice:"-118", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYM ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Mets expected target away on direct price value."},
+  {day:"TODAY", time:"7:06 PM ET", away:"Toronto Blue Jays", awayAbbr:"TOR", home:"New York Yankees", homeAbbr:"NYY", awayPitcher:"P: D Cease", homePitcher:"P: W Warren", spreadAway:"+1.5", spreadAwayJuice:"-178", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+116", mlHome:"-136", total:"8.5", totalOverJuice:"-124", totalUnderJuice:"+102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Yankees steady home chalk with high total leverage."},
+  {day:"TODAY", time:"7:41 PM ET", away:"Milwaukee Brewers", awayAbbr:"MIL", home:"Chicago Cubs", homeAbbr:"CHC", awayPitcher:"P: J Misiorowski", homePitcher:"P: B Brown", spreadAway:"-1.5", spreadAwayJuice:"+146", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-176", spreadHomeMove:"", spreadOpen:"", mlAway:"-116", mlHome:"-102", total:"7.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Slight road edge in a low-scoring projected environment."},
+  {day:"TODAY", time:"7:41 PM ET", away:"Houston Astros", awayAbbr:"HOU", home:"Minnesota Twins", homeAbbr:"MIN", awayPitcher:"P: L McCullers", homePitcher:"P: Z Matthews", spreadAway:"+1.5", spreadAwayJuice:"-188", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+155", spreadHomeMove:"", spreadOpen:"", mlAway:"+116", mlHome:"-134", total:"8.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIN ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Twins reliable home support layout showing ML edge."}
 ];
 
 // ════════════════════════════════════════════════════════════════
@@ -1541,6 +1940,33 @@ function buildCard(g) {
     <div class="t-edge">${edgeHtml}</div>
   `;
 
+  // ── Series banner (playoffs / best-of series) ──
+  if (g.series) {
+    card.classList.add('has-series');
+    const s = g.series;
+    const totalGames = 7;
+    const pips = Array.from({length: totalGames}, (_, i) => {
+      let cls = 'series-pip';
+      // away wins fill from left, home wins fill from right
+      if (i < s.awayWins) cls += ' win-away';
+      else if (i >= totalGames - s.homeWins) cls += ' win-home';
+      return `<div class="${cls}"></div>`;
+    }).join('');
+
+    const leadsText = s.awayWins === s.homeWins
+      ? `Series tied ${s.awayWins}–${s.homeWins}`
+      : `<strong>${s.leader}</strong> lead${s.awayWins !== s.homeWins ? 's' : ''} ${Math.max(s.awayWins,s.homeWins)}–${Math.min(s.awayWins,s.homeWins)}`;
+
+    const banner = document.createElement('div');
+    banner.className = 'series-banner';
+    banner.innerHTML = `
+      <span class="series-ctx">${s.context || 'Playoffs'}</span>
+      <div class="series-pips">${pips}</div>
+      <span class="series-leader">${leadsText}</span>
+      <div class="series-divider"></div>`;
+    card.appendChild(banner);
+  }
+
   return card;
 }
 
@@ -1586,8 +2012,6 @@ function renderTicker() {
 }
 
 renderTicker();
-renderGames(NBA_GAMES, 'nbaContainer');
-renderGames(MLB_GAMES, 'mlbContainer');
 
 
 // ── STATUS BAR CLOCK ──
@@ -1646,6 +2070,162 @@ function flashRandomEv() {
 setInterval(flashRandomEv, 2200);
 setTimeout(flashRandomEv, 800);
 
+
+// ── PROP PARLAYS RENDERER ──
+
+function oddsToDecimal(american) {
+  const n = parseFloat(american);
+  return n > 0 ? (n / 100) + 1 : (100 / Math.abs(n)) + 1;
+}
+function oddsToImplied(american) {
+  const n = parseFloat(american);
+  return n < 0 ? Math.abs(n) / (Math.abs(n) + 100) : 100 / (n + 100);
+}
+function calcEV(hitRate, american) {
+  const dec = oddsToDecimal(american);
+  return ((hitRate * (dec - 1)) - (1 - hitRate)) * 100;
+}
+function evClass(ev) { return ev > 0 ? 'pos' : ev < -2 ? 'neg' : 'neutral'; }
+
+function buildPropRows(parlay, terminal) {
+
+  // ── Per-leg rows ──
+  parlay.legs.forEach((leg, i) => {
+    const implied  = oddsToImplied(leg.odds) * 100;
+    const ev       = calcEV(leg.hitRate, leg.odds);
+    const evSign   = ev >= 0 ? '+' : '';
+    const evCls    = evClass(ev);
+
+    const row = document.createElement('div');
+    row.className = 'prop-leg-row';
+    row.innerHTML = `
+      <div class="prop-cell" style="position:relative;overflow:hidden;">
+        <div class="prop-player-glow"></div>
+        <div class="prop-player-name">${leg.player}</div>
+        <div class="prop-player-team">${leg.team} · L${i+1}</div>
+        <div class="prop-stat-label">${leg.stat}</div>
+      </div>
+      <div class="prop-cell">
+        <div class="prop-hitpct">${(leg.hitRate*100).toFixed(0)}%</div>
+        <div class="prop-hitpct-label">True Prob</div>
+      </div>
+      <div class="prop-cell">
+        <div class="prop-odds-chip">${leg.odds}</div>
+      </div>
+      <div class="prop-cell">
+        <div class="prop-implied">${implied.toFixed(1)}%</div>
+        <div class="prop-implied-label">Implied</div>
+      </div>
+      <div class="prop-cell">
+        <div class="prop-edge-val">${(leg.hitRate*100).toFixed(0)}% vs ${implied.toFixed(1)}%</div>
+        <div class="prop-edge-label">Edge</div>
+      </div>
+      <div class="prop-cell">
+        <div class="prop-ev-btn ${evCls}">
+          <span class="prop-ev-type">EV</span>
+          <span class="prop-ev-value">${evSign}${ev.toFixed(1)}%</span>
+        </div>
+      </div>`;
+    terminal.appendChild(row);
+  });
+
+  // ── Parlay summary row ──
+  const jointProb  = parlay.legs.reduce((acc, l) => acc * l.hitRate, 1.0);
+  const parlayDec  = parlay.legs.reduce((acc, l) => acc * oddsToDecimal(l.odds), 1.0);
+  const parlayAmer = parlayDec >= 2
+    ? '+' + Math.round((parlayDec - 1) * 100)
+    : '-' + Math.round(100 / (parlayDec - 1));
+  const parlayImplied = (1 / parlayDec) * 100;
+  const parlayEV   = calcEV(jointProb, parlayAmer);
+  const parlayEVSign = parlayEV >= 0 ? '+' : '';
+  const parlayEVCls  = evClass(parlayEV);
+
+  const summary = document.createElement('div');
+  summary.className = 'prop-parlay-row';
+  summary.innerHTML = `
+    <div class="prop-cell">
+      <div class="prop-parlay-label">4-LEG PARLAY</div>
+      <div class="prop-parlay-sub">${parlay.betsPlaced.toLocaleString()} bets placed</div>
+      <div class="prop-edge-note">${parlay.edgeNote}</div>
+    </div>
+    <div class="prop-cell">
+      <div class="prop-hitpct parlay">${(jointProb*100).toFixed(1)}%</div>
+      <div class="prop-hitpct-label">Joint Prob</div>
+    </div>
+    <div class="prop-cell">
+      <div class="prop-odds-chip parlay">${parlayAmer}</div>
+    </div>
+    <div class="prop-cell">
+      <div class="prop-implied parlay">${parlayImplied.toFixed(1)}%</div>
+      <div class="prop-implied-label">Implied</div>
+    </div>
+    <div class="prop-cell">
+      <div class="prop-edge-val parlay">${(jointProb*100).toFixed(1)}% vs ${parlayImplied.toFixed(1)}%</div>
+      <div class="prop-edge-label">Edge</div>
+    </div>
+    <div class="prop-cell">
+      <div class="prop-ev-btn ${parlayEVCls}">
+        <span class="prop-ev-type">PARLAY EV</span>
+        <span class="prop-ev-value">${parlayEVSign}${parlayEV.toFixed(1)}%</span>
+      </div>
+    </div>`;
+  terminal.appendChild(summary);
+}
+
+function renderPropParlays(parlays, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container || !parlays || !parlays.length) return;
+
+  const days = [], dayMap = {};
+  parlays.forEach(p => {
+    const d = p.day || 'TODAY';
+    if (!dayMap[d]) { dayMap[d] = []; days.push(d); }
+    dayMap[d].push(p);
+  });
+
+  days.forEach(day => {
+    // Section divider — matches date-divider style
+    const sectionHdr = document.createElement('div');
+    sectionHdr.className = 'prop-section-header';
+    sectionHdr.innerHTML = `
+      <div class="prop-section-live"><div class="prop-live-dot"></div><span class="prop-live-text">${day}</span></div>
+      <span class="prop-section-title">Player Prop Parlays</span>
+      <div class="prop-section-line"></div>
+      <button class="prop-section-badge">◆ PROPS EV</button>`;
+    container.appendChild(sectionHdr);
+
+    dayMap[day].forEach(parlay => {
+      const listWrap = document.createElement('div');
+      listWrap.className = 'prop-list';
+
+      // Terminal card wrapper
+      const terminal = document.createElement('div');
+      terminal.className = 'prop-terminal';
+
+      // Column header
+      const colHdr = document.createElement('div');
+      colHdr.className = 'prop-col-header-row';
+      colHdr.innerHTML = `
+        <div class="prop-col-hdr">${parlay.market}</div>
+        <div class="prop-col-hdr">True Prob</div>
+        <div class="prop-col-hdr">Odds</div>
+        <div class="prop-col-hdr">Implied</div>
+        <div class="prop-col-hdr">Edge</div>
+        <div class="prop-col-hdr">◆ EV%</div>`;
+      terminal.appendChild(colHdr);
+
+      buildPropRows(parlay, terminal);
+      listWrap.appendChild(terminal);
+      container.appendChild(listWrap);
+    });
+  });
+}
+
+
+// ── INIT ──
+renderGames(NBA_GAMES, 'nbaContainer');
+renderPropParlays(PROP_PARLAYS, 'nbaContainer');
+renderGames(MLB_GAMES, 'mlbContainer');
 </script>
 </body>
 </html>
