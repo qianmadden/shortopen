@@ -1524,7 +1524,7 @@ body::after{
   }
   /* Game card needs to allow the extra row */
   .game-card.has-series {
-    grid-template-rows: 1fr 28px;
+    grid-template-rows: minmax(100px, auto) 28px;
     align-items: start;
   }
   .game-card.has-series .t-matchup,
@@ -1744,26 +1744,66 @@ body::after{
 // ── NBA ─────────────────────────────────────────────────────────
 
 const NBA_GAMES = [
-  {day:"TODAY", time:"8:10 PM ET", away:"Cleveland Cavaliers", awayAbbr:"CLE", home:"New York Knicks", homeAbbr:"NYK", spreadAway:"+6.5", spreadAwayJuice:"-105", spreadAwayMove:"", spreadHome:"-6.5", spreadHomeJuice:"-115", spreadHomeMove:"", spreadOpen:"", mlAway:"+210", mlHome:"-255", total:"217.5", totalOverJuice:"-112", totalUnderJuice:"-108", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYK ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Knicks stable home favorites in efficient market pricing."},
-  {day:"TOMORROW", time:"8:40 PM ET", away:"San Antonio Spurs", awayAbbr:"SAS", home:"Oklahoma City Thunder", homeAbbr:"OKC", spreadAway:"+6.5", spreadAwayJuice:"-108", spreadAwayMove:"", spreadHome:"-6.5", spreadHomeJuice:"-112", spreadHomeMove:"", spreadOpen:"", mlAway:"+194", mlHome:"-235", total:"215.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"OKC ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Moderate home edge for the favorite, total ticking down.", series:{awayWins:1, homeWins:0, leader:"SAS", games:1, context:"First Round"}}
+  {day:"TODAY", time:"8:10 PM ET", away:"Cleveland Cavaliers", awayAbbr:"CLE", home:"New York Knicks", homeAbbr:"NYK",
+   spreadAway:"+6.5", spreadAwayJuice:"-114", spreadAwayMove:"", spreadHome:"-6.5", spreadHomeJuice:"-106", spreadHomeMove:"", spreadOpen:"",
+   mlAway:"+188", mlHome:"-225", total:"215.5", totalOverJuice:"-112", totalUnderJuice:"-108", totalMove:"", totalOpen:"",
+   edgeType:"ml", edgeLabel:"NYK ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"",
+   edgeNote:"Knicks stable home favorites. CLE +6.5 public side — sharp money staying with NYK.",
+   series:{awayWins:0, homeWins:1, leader:"NYK", games:1, context:"Second Round"}},
+  {day:"TODAY", time:"8:40 PM ET", away:"San Antonio Spurs", awayAbbr:"SAS", home:"Oklahoma City Thunder", homeAbbr:"OKC",
+   spreadAway:"+6.5", spreadAwayJuice:"-104", spreadAwayMove:"", spreadHome:"-6.5", spreadHomeJuice:"-118", spreadHomeMove:"", spreadOpen:"",
+   mlAway:"+210", mlHome:"-255", total:"216.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"",
+   edgeType:"ml", edgeLabel:"OKC ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"",
+   edgeNote:"OKC bounce-back spot at home. SGA was 7-of-23 in G1 — regression incoming.",
+   series:{awayWins:1, homeWins:0, leader:"SAS", games:1, context:"West Finals"}}
 ];
 
 const PROP_PARLAYS = [
   {
     day: "TODAY",
-    time: "8:10 PM ET",
-    type: "Player Props",
-    market: "3+ Made Threes Parlay",
-    // Each leg: player, team, stat, odds (market price), hitRate (true probability of hitting)
-    // EV per leg = (hitRate * (oddsToDecimal - 1)) - (1 - hitRate) … then as %
+    time: "8:30 PM ET",
+    type: "Points Prop",
+    market: "WCF Game 2 — Points Props",
     legs: [
-      { player: "OG Anunoby",       team: "NYK", stat: "3+ Made Threes", odds: "-118", hitRate: 0.48 },
-      { player: "Max Strus",         team: "CLE", stat: "3+ Made Threes", odds: "-105", hitRate: 0.44 },
-      { player: "Jalen Brunson",     team: "NYK", stat: "3+ Made Threes", odds: "-130", hitRate: 0.38 },
-      { player: "Donovan Mitchell",  team: "CLE", stat: "3+ Made Threes", odds: "-112", hitRate: 0.41 }
+      { player: "Stephon Castle",          team: "SAS", stat: "15+ Points",  odds: "-130", hitRate: 0.52 },
+      { player: "Dylan Harper",            team: "SAS", stat: "15+ Points",  odds: "+105", hitRate: 0.44 },
+      { player: "Jalen Williams",          team: "OKC", stat: "20+ Points",  odds: "-110", hitRate: 0.48 },
+      { player: "Victor Wembanyama",       team: "SAS", stat: "25+ Points",  odds: "-115", hitRate: 0.51 },
+      { player: "Shai Gilgeous-Alexander", team: "OKC", stat: "30+ Points",  odds: "-120", hitRate: 0.46 }
     ],
-    betsPlaced: 1347,
-    edgeNote: "High-volume public parlay targeting primary perimeter shooters in the Knicks-Cavaliers matchup."
+    betsPlaced: 3104,
+    edgeNote: "WCF Game 2 bounce-back spot for OKC at home. Harper had 24pts & 11reb in G1 debut. SGA 7-of-23 G1 — regression expected."
+  },
+  {
+    day: "TODAY",
+    time: "8:30 PM ET",
+    type: "PRA Prop",
+    market: "SGA 49+ Points + Rebounds + Assists",
+    legs: [
+      { player: "Shai Gilgeous-Alexander", team: "OKC", stat: "49+ PRA",    odds: "-115", hitRate: 0.50 }
+    ],
+    betsPlaced: 1872,
+    edgeNote: "SGA averaging 47.8 PRA in playoffs. Home bounce-back game after poor G1 shooting — usage rate projects upward."
+  }
+];
+
+const MLB_PROP_PARLAYS = [
+  {
+    day: "TODAY",
+    time: "Various",
+    type: "MLB Props",
+    market: "MLB Market Parlays",
+    legs: [
+      { player: "Aaron Judge",    team: "NYY", stat: "0.5+ Home Runs",       odds: "+130", hitRate: 0.36 },
+      { player: "Nick Kurtz",     team: "ATH", stat: "1.5+ Total Bases",      odds: "-115", hitRate: 0.58 },
+      { player: "Chris Sale",     team: "ATL", stat: "U 1.5 Earned Runs",     odds: "-118", hitRate: 0.54 },
+      { player: "Cam Schlittler", team: "NYY", stat: "5.5+ Strikeouts",       odds: "-125", hitRate: 0.52 },
+      { player: "Shohei Ohtani",  team: "LAD", stat: "6.5+ Strikeouts",       odds: "-130", hitRate: 0.54 },
+      { player: "Corbin Carroll", team: "ARI", stat: "1.5+ Total Bases",      odds: "-138", hitRate: 0.57 },
+      { player: "ATH/LAA",        team: "ATH", stat: "U 1 Run 1st Inning",    odds: "-155", hitRate: 0.62 }
+    ],
+    betsPlaced: 1543,
+    edgeNote: "Multi-game MLB prop parlay spanning tonight's slate. Sale vs Junk in a 7-total game is the anchor leg. Judge HR value at +130 with NYY hosting TOR."
   }
 ];
 
@@ -1776,14 +1816,54 @@ const PROP_PARLAYS = [
 
 // ── MLB ─────────────────────────────────────────────────────────
 const MLB_GAMES = [
-  {day:"TODAY", time:"4:11 PM ET", away:"Atlanta Braves", awayAbbr:"ATL", home:"Miami Marlins", homeAbbr:"MIA", awayPitcher:"P: M Perez", homePitcher:"P: B Garrett", spreadAway:"-1.5", spreadAwayJuice:"+116", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-140", spreadHomeMove:"", spreadOpen:"", mlAway:"-142", mlHome:"+120", total:"8", totalOverJuice:"-112", totalUnderJuice:"-108", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ATL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Braves road chalk with standard offense backing."},
-  {day:"TODAY", time:"6:41 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Tampa Bay Rays", homeAbbr:"TB", awayPitcher:"P: K Bradish", homePitcher:"P: G Jax", spreadAway:"-1.5", spreadAwayJuice:"+155", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-188", spreadHomeMove:"", spreadOpen:"", mlAway:"-106", mlHome:"-110", total:"7.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TB ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Tight pick'em board with a low total context."},
-  {day:"TODAY", time:"6:41 PM ET", away:"Cincinnati Reds", awayAbbr:"CIN", home:"Philadelphia Phillies", homeAbbr:"PHI", awayPitcher:"P: C Burns", homePitcher:"P: J Luzardo", spreadAway:"+1.5", spreadAwayJuice:"-172", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+142", spreadHomeMove:"", spreadOpen:"", mlAway:"+124", mlHome:"-146", total:"8.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PHI ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Phillies clear home favorite setup behind Luzardo."},
-  {day:"TODAY", time:"6:41 PM ET", away:"Cleveland Guardians", awayAbbr:"CLE", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: P Messick", homePitcher:"P: K Montero", spreadAway:"-1.5", spreadAwayJuice:"+105", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-126", spreadAwayMove:"", spreadOpen:"", mlAway:"-158", mlHome:"+134", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CLE ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Road runline juice shows strong moneyline confidence."},
-  {day:"TODAY", time:"6:46 PM ET", away:"New York Mets", awayAbbr:"NYM", home:"Washington Nationals", homeAbbr:"WSH", awayPitcher:"P: N McLean", homePitcher:"P: F Griffin", spreadAway:"-1.5", spreadAwayJuice:"+118", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-142", spreadHomeMove:"", spreadOpen:"", mlAway:"-142", mlHome:"+120", total:"9", totalOverJuice:"-104", totalUnderJuice:"-118", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYM ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Mets expected target away on direct price value."},
-  {day:"TODAY", time:"7:06 PM ET", away:"Toronto Blue Jays", awayAbbr:"TOR", home:"New York Yankees", homeAbbr:"NYY", awayPitcher:"P: D Cease", homePitcher:"P: W Warren", spreadAway:"+1.5", spreadAwayJuice:"-178", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+116", mlHome:"-136", total:"8.5", totalOverJuice:"-124", totalUnderJuice:"+102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Yankees steady home chalk with high total leverage."},
-  {day:"TODAY", time:"7:41 PM ET", away:"Milwaukee Brewers", awayAbbr:"MIL", home:"Chicago Cubs", homeAbbr:"CHC", awayPitcher:"P: J Misiorowski", homePitcher:"P: B Brown", spreadAway:"-1.5", spreadAwayJuice:"+146", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-176", spreadHomeMove:"", spreadOpen:"", mlAway:"-116", mlHome:"-102", total:"7.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Slight road edge in a low-scoring projected environment."},
-  {day:"TODAY", time:"7:41 PM ET", away:"Houston Astros", awayAbbr:"HOU", home:"Minnesota Twins", homeAbbr:"MIN", awayPitcher:"P: L McCullers", homePitcher:"P: Z Matthews", spreadAway:"+1.5", spreadAwayJuice:"-188", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+155", spreadHomeMove:"", spreadOpen:"", mlAway:"+116", mlHome:"-134", total:"8.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIN ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Twins reliable home support layout showing ML edge."}
+  {day:"TODAY", time:"1:06 PM ET", away:"Cincinnati Reds", awayAbbr:"CIN", home:"Philadelphia Phillies", homeAbbr:"PHI",
+   awayPitcher:"P: A Abbott", homePitcher:"P: A Nola",
+   spreadAway:"+1.5", spreadAwayJuice:"-156", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+130", spreadHomeMove:"", spreadOpen:"",
+   mlAway:"+128", mlHome:"-152", total:"9.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"",
+   edgeType:"ml", edgeLabel:"PHI ML", edgeEV:"+1.8", edge2Type:"", edge2Label:"", edge2EV:"",
+   edgeNote:"Nola at home against Abbott — Phillies firm chalk in a high-total matchup."},
+  {day:"TODAY", time:"1:11 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Tampa Bay Rays", homeAbbr:"TB",
+   awayPitcher:"P: S Baz", homePitcher:"P: S Matz",
+   spreadAway:"-1.5", spreadAwayJuice:"+164", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-200", spreadHomeMove:"", spreadOpen:"",
+   mlAway:"+100", mlHome:"-118", total:"8.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"",
+   edgeType:"spread", edgeLabel:"BAL -1.5", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"",
+   edgeNote:"Baz road start, Matz at home. Rays modest chalk — BAL RL value at +164."},
+  {day:"TODAY", time:"1:41 PM ET", away:"Houston Astros", awayAbbr:"HOU", home:"Minnesota Twins", homeAbbr:"MIN",
+   awayPitcher:"P: M Burrows", homePitcher:"P: J Ryan",
+   spreadAway:"+1.5", spreadAwayJuice:"-172", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+142", spreadHomeMove:"", spreadOpen:"",
+   mlAway:"+124", mlHome:"-146", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"",
+   edgeType:"ml", edgeLabel:"MIN ML", edgeEV:"+1.4", edge2Type:"", edge2Label:"", edge2EV:"",
+   edgeNote:"J Ryan at home vs Burrows. Twins modest home chalk — low total suggests pitching edge."},
+  {day:"TODAY", time:"3:11 PM ET", away:"Texas Rangers", awayAbbr:"TEX", home:"Colorado Rockies", homeAbbr:"COL",
+   awayPitcher:"P: J Leiter", homePitcher:"P: K Freeland",
+   spreadAway:"-1.5", spreadAwayJuice:"+125", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-146", spreadHomeMove:"", spreadOpen:"",
+   mlAway:"-124", mlHome:"+106", total:"10.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"",
+   edgeType:"total", edgeLabel:"OVER 10.5", edgeEV:"+1.3", edge2Type:"", edge2Label:"", edge2EV:"",
+   edgeNote:"Coors Field + Freeland giving up runs. OVER value with +100 juice on a Coors total."},
+  {day:"TODAY", time:"3:41 PM ET", away:"San Francisco Giants", awayAbbr:"SF", home:"Arizona Diamondbacks", homeAbbr:"ARI",
+   awayPitcher:"P: T Mahle", homePitcher:"P: M Kelly",
+   spreadAway:"+1.5", spreadAwayJuice:"-182", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+150", spreadHomeMove:"", spreadOpen:"",
+   mlAway:"+112", mlHome:"-132", total:"8.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"",
+   edgeType:"ml", edgeLabel:"ARI ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"",
+   edgeNote:"Kelly at home vs Mahle. ARI modest chalk with bullpen depth advantage."},
+  {day:"TODAY", time:"4:11 PM ET", away:"Chicago White Sox", awayAbbr:"CWS", home:"Seattle Mariners", homeAbbr:"SEA",
+   awayPitcher:"P: S Burke", homePitcher:"P: E Hancock",
+   spreadAway:"+1.5", spreadAwayJuice:"-170", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+140", spreadHomeMove:"", spreadOpen:"",
+   mlAway:"+126", mlHome:"-148", total:"7.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"",
+   edgeType:"ml", edgeLabel:"SEA ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"",
+   edgeNote:"Hancock at home, low total. Mariners chalk with pitching advantage."},
+  {day:"TODAY", time:"6:41 PM ET", away:"Cleveland Guardians", awayAbbr:"CLE", home:"Detroit Tigers", homeAbbr:"DET",
+   awayPitcher:"P: T Bibee", homePitcher:"P: D Anderson",
+   spreadAway:"-1.5", spreadAwayJuice:"+142", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-176", spreadHomeMove:"", spreadOpen:"",
+   mlAway:"-122", mlHome:"+104", total:"7.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"",
+   edgeType:"spread", edgeLabel:"CLE -1.5", edgeEV:"+2.1", edge2Type:"", edge2Label:"", edge2EV:"",
+   edgeNote:"Bibee road start, +142 juice on CLE -1.5 is legitimate value against Anderson."},
+  {day:"TODAY", time:"6:41 PM ET", away:"Atlanta Braves", awayAbbr:"ATL", home:"Miami Marlins", homeAbbr:"MIA",
+   awayPitcher:"P: C Sale", homePitcher:"P: J Junk",
+   spreadAway:"-1.5", spreadAwayJuice:"-110", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-110", spreadHomeMove:"", spreadOpen:"",
+   mlAway:"-196", mlHome:"+164", total:"7", totalOverJuice:"-120", totalUnderJuice:"-102", totalMove:"", totalOpen:"",
+   edgeType:"ml", edgeLabel:"ATL ML", edgeEV:"+2.2", edge2Type:"", edge2Label:"", edge2EV:"",
+   edgeNote:"Sale vs Junk — Braves heavy chalk. Low total signals Sale dominance expected."}
 ];
 
 // ════════════════════════════════════════════════════════════════
@@ -1981,34 +2061,23 @@ function toggleMobileMenu() {
 // Init
 
 function renderTicker() {
-  const allGames = [
-  {day:"Today",time:"1:06 PM ET",sport:"MLB",away:"NY Yankees",awayAbbr:"NYY",home:"BAL Orioles",homeAbbr:"BAL",awayPitcher:"Fried",homePitcher:"Bradish",spreadAway:"",spreadHome:"Orioles -1.5",spreadHomeJuice:"",spreadAwayJuice:"",mlAway:"",mlHome:"",total:"8.5",totalOverJuice:"-110",totalUnderJuice:"-110",edgeType:"ml",edgeLabel:"BAL ML",edgeEV:"+1.8",edge2Type:"",edge2Label:"",edge2EV:"",edgeNote:"Orioles favored at home — Bradish vs Fried a strong pitching matchup."},
-  {day:"Today",time:"1:11 PM ET",sport:"MLB",away:"LA Angels",awayAbbr:"LAA",home:"CLE Guardians",homeAbbr:"CLE",awayPitcher:"Detmers",homePitcher:"Messick",spreadAway:"",spreadHome:"Guardians -1.5",spreadHomeJuice:"",spreadAwayJuice:"",mlAway:"",mlHome:"",total:"7",totalOverJuice:"-110",totalUnderJuice:"-110",edgeType:"total",edgeLabel:"UNDER 7",edgeEV:"+1.5",edge2Type:"",edge2Label:"",edge2EV:"",edgeNote:"Low total — two solid arms. Under has value in a tight pitching matchup."},
-  {day:"Today",time:"6:41 PM ET",sport:"MLB",away:"WA Nationals",awayAbbr:"WSH",home:"CIN Reds",homeAbbr:"CIN",awayPitcher:"Irvin",homePitcher:"Lodolo",spreadAway:"",spreadHome:"Reds -1.5",spreadHomeJuice:"",spreadAwayJuice:"",mlAway:"",mlHome:"",total:"9.5",totalOverJuice:"-110",totalUnderJuice:"-110",edgeType:"ml",edgeLabel:"CIN ML",edgeEV:"+1.6",edge2Type:"",edge2Label:"",edge2EV:"",edgeNote:"Reds favored at home — high total signals run-heavy environment."},
-  {day:"Today",time:"6:41 PM ET",sport:"MLB",away:"CO Rockies",awayAbbr:"COL",home:"PIT Pirates",homeAbbr:"PIT",awayPitcher:"Quintana",homePitcher:"Keller",spreadAway:"",spreadHome:"Pirates -1.5",spreadHomeJuice:"",spreadAwayJuice:"",mlAway:"",mlHome:"",total:"8.5",totalOverJuice:"-110",totalUnderJuice:"-110",edgeType:"ml",edgeLabel:"PIT ML",edgeEV:"+1.6",edge2Type:"",edge2Label:"",edge2EV:"",edgeNote:"Pirates strong at home. Keller vs aging Quintana — lean PIT."},
-  {day:"Today",time:"6:46 PM ET",sport:"MLB",away:"PH Phillies",awayAbbr:"PHI",home:"BOS Red Sox",homeAbbr:"BOS",awayPitcher:"Painter",homePitcher:"Gray",spreadAway:"",spreadHome:"Red Sox -1.5",spreadHomeJuice:"",spreadAwayJuice:"",mlAway:"",mlHome:"",total:"9",totalOverJuice:"-110",totalUnderJuice:"-110",edgeType:"spread",edgeLabel:"BOS -1.5",edgeEV:"+1.9",edge2Type:"",edge2Label:"",edge2EV:"",edgeNote:"Red Sox home favorites — Gray vs Painter has pitching edge."},
-  {day:"Today",time:"7:08 PM ET",sport:"MLB",away:"TB Rays",awayAbbr:"TB",home:"TOR Blue Jays",homeAbbr:"TOR",awayPitcher:"Jax",homePitcher:"Cease",spreadAway:"",spreadHome:"Blue Jays -1.5",spreadHomeJuice:"",spreadAwayJuice:"",mlAway:"",mlHome:"",total:"7.5",totalOverJuice:"-110",totalUnderJuice:"-110",edgeType:"spread",edgeLabel:"TOR -1.5",edgeEV:"+2.1",edge2Type:"",edge2Label:"",edge2EV:"",edgeNote:"Cease is dominant — low total, sharp value on Blue Jays to cover."},
-  {day:"Today",time:"7:11 PM ET",sport:"MLB",away:"DET Tigers",awayAbbr:"DET",home:"NY Mets",homeAbbr:"NYM",awayPitcher:"Valdez",homePitcher:"Scott",spreadAway:"",spreadHome:"Tigers -1.5",spreadHomeJuice:"",spreadAwayJuice:"",mlAway:"",mlHome:"",total:"8",totalOverJuice:"-110",totalUnderJuice:"-110",edgeType:"ml",edgeLabel:"DET ML",edgeEV:"+1.4",edge2Type:"",edge2Label:"",edge2EV:"",edgeNote:"Pick'em game — lean Tigers with Valdez on the mound."},
-  {day:"Today",time:"7:16 PM ET",sport:"MLB",away:"CHI Cubs",awayAbbr:"CHC",home:"ATL Braves",homeAbbr:"ATL",awayPitcher:"Imanaga",homePitcher:"Ritchie",spreadAway:"",spreadHome:"Cubs -1.5",spreadHomeJuice:"",spreadAwayJuice:"",mlAway:"",mlHome:"",total:"8.5",totalOverJuice:"-110",totalUnderJuice:"-110",edgeType:"ml",edgeLabel:"ATL ML",edgeEV:"+3.2",edge2Type:"",edge2Label:"",edge2EV:"",edgeNote:"Braves +118 is value — Ritchie can keep this close, public heavy on Cubs."},
-  {day:"Today",time:"7:41 PM ET",sport:"MLB",away:"KC Royals",awayAbbr:"KC",home:"CHI White Sox",homeAbbr:"CWS",awayPitcher:"Lugo",homePitcher:"Schultz",spreadAway:"",spreadHome:"Royals -1.5",spreadHomeJuice:"",spreadAwayJuice:"",mlAway:"",mlHome:"",total:"8",totalOverJuice:"-110",totalUnderJuice:"-110",edgeType:"spread",edgeLabel:"KC -1.5",edgeEV:"+1.7",edge2Type:"",edge2Label:"",edge2EV:"",edgeNote:"KC road favorites — Lugo dominant, CWS offense struggles."},
-  {day:"Today",time:"7:41 PM ET",sport:"MLB",away:"SD Padres",awayAbbr:"SD",home:"MIL Brewers",homeAbbr:"MIL",awayPitcher:"King",homePitcher:"Misiorowski",spreadAway:"",spreadHome:"Brewers -1.5",spreadHomeJuice:"",spreadAwayJuice:"",mlAway:"",mlHome:"",total:"7",totalOverJuice:"-110",totalUnderJuice:"-110",edgeType:"spread",edgeLabel:"MIL -1.5",edgeEV:"+2.3",edge2Type:"",edge2Label:"",edge2EV:"",edgeNote:"Misiorowski leads a low-total game. Brewers at home with a stud arm."},
-  {day:"Today",time:"7:41 PM ET",sport:"MLB",away:"MIA Marlins",awayAbbr:"MIA",home:"MN Twins",homeAbbr:"MIN",awayPitcher:"Meyer",homePitcher:"Woods Richardson",spreadAway:"",spreadHome:"Marlins -1.5",spreadHomeJuice:"",spreadAwayJuice:"",mlAway:"",mlHome:"",total:"8.5",totalOverJuice:"-110",totalUnderJuice:"-110",edgeType:"ml",edgeLabel:"MIN ML",edgeEV:"+2.8",edge2Type:"",edge2Label:"",edge2EV:"",edgeNote:"Twins +106 is clear value — Marlins favored by more than warranted."},
-  {day:"Today",time:"8:06 PM ET",sport:"MLB",away:"AZ Diamondbacks",awayAbbr:"ARI",home:"TX Rangers",homeAbbr:"TEX",awayPitcher:"Nelson",homePitcher:"Rocker",spreadAway:"",spreadHome:"D-backs -1.5",spreadHomeJuice:"",spreadAwayJuice:"",mlAway:"",mlHome:"",total:"8.5",totalOverJuice:"-110",totalUnderJuice:"-110",edgeType:"ml",edgeLabel:"ARI ML",edgeEV:"+1.3",edge2Type:"",edge2Label:"",edge2EV:"",edgeNote:"Pick'em — lean D-backs, they are the stronger offensive club."},
-  {day:"Today",time:"8:11 PM ET",sport:"MLB",away:"SEA Mariners",awayAbbr:"SEA",home:"HOU Astros",homeAbbr:"HOU",awayPitcher:"B. Miller",homePitcher:"McCullers",spreadAway:"",spreadHome:"Mariners -1.5",spreadHomeJuice:"",spreadAwayJuice:"",mlAway:"",mlHome:"",total:"9",totalOverJuice:"-110",totalUnderJuice:"-110",edgeType:"ml",edgeLabel:"HOU ML",edgeEV:"+2.6",edge2Type:"",edge2Label:"",edge2EV:"",edgeNote:"Astros +106 at home — McCullers vs Miller, lean the value side."},
-  {day:"Today",time:"9:41 PM ET",sport:"MLB",away:"ST Cardinals",awayAbbr:"STL",home:"OAK Athletics",homeAbbr:"ATH",awayPitcher:"Liberatore",homePitcher:"Ginn",spreadAway:"",spreadHome:"Athletics -1.5",spreadHomeJuice:"",spreadAwayJuice:"",mlAway:"",mlHome:"",total:"10",totalOverJuice:"-110",totalUnderJuice:"-110",edgeType:"total",edgeLabel:"OVER 10",edgeEV:"+1.5",edge2Type:"",edge2Label:"",edge2EV:"",edgeNote:"High total — both offenses capable. Over has value in Oakland."},
-  {day:"Today",time:"10:11 PM ET",sport:"MLB",away:"SF Giants",awayAbbr:"SF",home:"LA Dodgers",homeAbbr:"LAD",awayPitcher:"Ray",homePitcher:"Ohtani",spreadAway:"",spreadHome:"Dodgers -1.5",spreadHomeJuice:"",spreadAwayJuice:"",mlAway:"",mlHome:"",total:"7.5",totalOverJuice:"-110",totalUnderJuice:"-110",edgeType:"spread",edgeLabel:"LAD -1.5",edgeEV:"+2.4",edge2Type:"",edge2Label:"",edge2EV:"",edgeNote:"Ohtani on the mound — Dodgers cover at home. Low total, sharp play."},
-  {day:"Today",time:"8:10 PM ET",sport:"NBA",away:"CLE Cavaliers",awayAbbr:"CLE",home:"DET Pistons",homeAbbr:"DET",spreadAway:"",spreadHome:"Pistons -3.5",spreadHomeJuice:"",spreadAwayJuice:"",mlAway:"",mlHome:"",total:"212.5",totalOverJuice:"-110",totalUnderJuice:"-110",edgeType:"spread",edgeLabel:"CLE +3.5",edgeEV:"+1.9",edge2Type:"",edge2Label:"",edge2EV:"",edgeNote:"Pistons slight home favorites. Cavs +3.5 is value — competitive game expected."},
-  {day:"Today",time:"10:00 PM ET",sport:"NBA",away:"SA Spurs",awayAbbr:"SA",home:"MN Timberwolves",homeAbbr:"MIN",spreadAway:"",spreadHome:"T-Wolves -4.5",spreadHomeJuice:"",spreadAwayJuice:"",mlAway:"",mlHome:"",total:"218.5",totalOverJuice:"-110",totalUnderJuice:"-110",edgeType:"ml",edgeLabel:"MIN ML",edgeEV:"+1.6",edge2Type:"",edge2Label:"",edge2EV:"",edgeNote:"T-Wolves favored at home against Spurs — lean the favorite on ML value."}
-];
-  const picks = allGames.filter(g => g.edgeType && g.edgeType !== 'fade' && g.edgeLabel);
-  document.getElementById('tickerCount').textContent = picks.length + ' pick' + (picks.length!==1?'s':'') + ' today';
-  const sport = g => g.awayPitcher !== undefined ? 'MLB' : 'NBA';
+  const allGames = [...(typeof NBA_GAMES !== 'undefined' ? NBA_GAMES : []),
+                   ...(typeof MLB_GAMES !== 'undefined' ? MLB_GAMES : [])];
+  const picks = allGames.filter(g => g.edgeType && g.edgeLabel && g.edgeEV);
   const items = picks.map(g => {
-    const n = parseFloat(g.edgeEV), ev = (n>=0?'+':'')+g.edgeEV+'%';
-    const cls = n>=0?'pos':'neg';
-    return `<div class="ticker-item"><span class="ticker-abbr">${sport(g)}</span><div class="ticker-sep-dot"></div><span class="ticker-bet">${g.edgeLabel}</span><span class="ticker-ev ${cls}">${ev} EV</span></div>`;
-  }).join('');
-  document.getElementById('tickerInner').innerHTML = items + items;
+    const n = parseFloat(g.edgeEV);
+    const sign = n >= 0 ? '+' : '';
+    const evColor = n >= 0 ? '#22c55e' : '#f87171';
+    const sport = g.awayPitcher !== undefined ? 'MLB' : 'NBA';
+    return `<span class="ticker-item">
+      <span class="ticker-sport">${sport}</span>
+      <span class="ticker-matchup">${g.awayAbbr} @ ${g.homeAbbr}</span>
+      <span class="ticker-edge">${g.edgeLabel}</span>
+      <span class="ticker-ev" style="color:${evColor}">${sign}${g.edgeEV}%</span>
+    </span>`;
+  }).join('<span class="ticker-sep">·</span>');
+  const el = document.getElementById('tickerInner');
+  if (el) el.innerHTML = items + '<span class="ticker-sep">·</span>' + items;
 }
 
 renderTicker();
@@ -2226,6 +2295,7 @@ function renderPropParlays(parlays, containerId) {
 renderGames(NBA_GAMES, 'nbaContainer');
 renderPropParlays(PROP_PARLAYS, 'nbaContainer');
 renderGames(MLB_GAMES, 'mlbContainer');
+renderPropParlays(MLB_PROP_PARLAYS, 'mlbContainer');
 </script>
 </body>
 </html>
