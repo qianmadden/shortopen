@@ -731,18 +731,18 @@
     .hamburger { display: flex; }
     .nav-links { display: none !important; }
     .col-header-row { display: none; }
-    .game-card {
+    .game-card:not(.has-series) {
       grid-template-columns: 1fr 1fr 1fr;
       grid-template-rows: auto auto;
       border-bottom: 2px solid #111d28;
       margin-bottom: 4px;
       min-height: unset;
     }
-    .t-matchup { grid-column: 1 / -1; border-bottom: 1px solid #111d28; border-right: none; }
-    .t-prob    { border-right: 1px solid #111d28; }
-    .t-odds    { border-right: 1px solid #111d28; }
-    .t-odds:last-of-type { border-right: none; }
-    .t-edge    { grid-column: 1 / -1; border-top: 1px solid #111d28; }
+    .game-card:not(.has-series) .t-matchup { grid-column: 1 / -1; border-bottom: 1px solid #111d28; border-right: none; }
+    .game-card:not(.has-series) .t-prob    { border-right: 1px solid #111d28; }
+    .game-card:not(.has-series) .t-odds    { border-right: 1px solid #111d28; }
+    .game-card:not(.has-series) .t-odds:last-of-type { border-right: none; }
+    .game-card:not(.has-series) .t-edge    { grid-column: 1 / -1; border-top: 1px solid #111d28; }
     .hero-grid    { padding: 128px 20px 0; gap: 28px; }
     .hero-stat-row { grid-template-columns: repeat(2,1fr); }
     .sport-tabs   { padding: 0 20px; }
@@ -1502,7 +1502,7 @@ body::after{
     background: #0a1018;
     flex-shrink: 0;
   }
-  .series-pip.win-away { background: var(--gold); border-color: rgba(244,185,66,0.5); box-shadow: 0 0 5px rgba(244,185,66,0.3); }
+  .series-pip.win-away { background: #8da0b3; border-color: rgba(141,160,179,0.5); box-shadow: 0 0 4px rgba(141,160,179,0.25); }
   .series-pip.win-home { background: var(--blue); border-color: rgba(96,165,250,0.5); box-shadow: 0 0 5px rgba(96,165,250,0.3); }
   .series-leader {
     font-family: 'DM Mono', monospace;
@@ -1523,15 +1523,85 @@ body::after{
     margin-left: 14px;
   }
   /* Game card needs to allow the extra row */
+  /* ── SERIES BANNER ── */
   .game-card.has-series {
-    grid-template-rows: minmax(100px, auto) 28px;
-    align-items: start;
+    display: block;
+    min-height: 100px;
   }
-  .game-card.has-series .t-matchup,
-  .game-card.has-series .t-prob,
-  .game-card.has-series .t-odds,
-  .game-card.has-series .t-edge {
-    align-self: stretch;
+  .game-card-inner {
+    display: grid;
+    grid-template-columns: 230px 100px 160px 160px 160px 1fr;
+    align-items: stretch;
+    min-height: 100px;
+  }
+  .series-banner {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: #080d12;
+    border-top: 1px solid #0e1720;
+    padding: 0 14px;
+    height: 28px;
+    width: 100%;
+    overflow: hidden;
+  }
+  .series-ctx {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #2a3f52;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+  .series-pips {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-right: 14px;
+  }
+  .series-pip {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    border: 1px solid #1a2d3e;
+    background: #0a1018;
+    flex-shrink: 0;
+  }
+  .series-pip.win-away { background: #8da0b3; border-color: rgba(141,160,179,0.5); box-shadow: 0 0 4px rgba(141,160,179,0.25); }
+  .series-pip.win-home { background: var(--blue); border-color: rgba(96,165,250,0.5); box-shadow: 0 0 5px rgba(96,165,250,0.3); }
+  .series-leader {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 500;
+    color: #c8d8e8;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+  .series-leader strong { color: var(--gold); font-weight: 700; }
+  .series-divider {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, #1a2535, transparent);
+    margin-left: 14px;
+  }
+  @media (max-width: 1200px) {
+    .game-card-inner { grid-template-columns: 200px 90px 140px 140px 140px 1fr; }
+  }
+  @media (max-width: 1000px) {
+    .game-card-inner { grid-template-columns: 180px 80px 120px 120px 120px 1fr; }
+  }
+  @media (max-width: 900px) {
+    .game-card.has-series { display: block; }
+    .game-card-inner {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      min-height: unset;
+    }
+    .game-card-inner .t-matchup { grid-column: 1 / -1; border-bottom: 1px solid #111d28; border-right: none; }
+    .game-card-inner .t-prob    { border-right: 1px solid #111d28; }
+    .game-card-inner .t-odds    { border-right: 1px solid #111d28; }
+    .game-card-inner .t-odds:last-of-type { border-right: none; }
+    .game-card-inner .t-edge   { grid-column: 1 / -1; border-top: 1px solid #111d28; }
   }
 
 </style>
@@ -1795,7 +1865,7 @@ const MLB_PROP_PARLAYS = [
     market: "MLB Market Parlays",
     legs: [
       { player: "Aaron Judge",    team: "NYY", stat: "0.5+ Home Runs",       odds: "+130", hitRate: 0.36 },
-      { player: "Nick Kurtz",     team: "ATH", stat: "1.5+ Total Bases",      odds: "-115", hitRate: 0.58 },
+      { player: "Nick Kurtz",     team: "ATH", stat: "1.5+ Total Bases",      odds: "-145", hitRate: 0.58 },
       { player: "Chris Sale",     team: "ATL", stat: "U 1.5 Earned Runs",     odds: "-118", hitRate: 0.54 },
       { player: "Cam Schlittler", team: "NYY", stat: "5.5+ Strikeouts",       odds: "-125", hitRate: 0.52 },
       { player: "Shohei Ohtani",  team: "LAD", stat: "6.5+ Strikeouts",       odds: "-130", hitRate: 0.54 },
@@ -2020,22 +2090,31 @@ function buildCard(g) {
     <div class="t-edge">${edgeHtml}</div>
   `;
 
-  // ── Series banner (playoffs / best-of series) ──
+  // ── Series banner ──
   if (g.series) {
     card.classList.add('has-series');
     const s = g.series;
+
+    // Wrap existing innerHTML in .game-card-inner
+    const inner = document.createElement('div');
+    inner.className = 'game-card-inner';
+    inner.innerHTML = card.innerHTML;
+    card.innerHTML = '';
+    card.appendChild(inner);
+
+    // Build pips
     const totalGames = 7;
     const pips = Array.from({length: totalGames}, (_, i) => {
       let cls = 'series-pip';
-      // away wins fill from left, home wins fill from right
+      // All filled pips go left-to-right: away wins first, then home wins
       if (i < s.awayWins) cls += ' win-away';
-      else if (i >= totalGames - s.homeWins) cls += ' win-home';
+      else if (i < s.awayWins + s.homeWins) cls += ' win-home';
       return `<div class="${cls}"></div>`;
     }).join('');
 
     const leadsText = s.awayWins === s.homeWins
       ? `Series tied ${s.awayWins}–${s.homeWins}`
-      : `<strong>${s.leader}</strong> lead${s.awayWins !== s.homeWins ? 's' : ''} ${Math.max(s.awayWins,s.homeWins)}–${Math.min(s.awayWins,s.homeWins)}`;
+      : `<strong>${s.leader}</strong> leads ${Math.max(s.awayWins,s.homeWins)}–${Math.min(s.awayWins,s.homeWins)}`;
 
     const banner = document.createElement('div');
     banner.className = 'series-banner';
