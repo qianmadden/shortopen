@@ -1721,262 +1721,368 @@ body::after{
 
 
   /* ══════════════════════════════════════
-     LONGSHOT CARD — self-contained widget
+     Q'S ROULETTE — WHEEL CARD v3
   ══════════════════════════════════════ */
   .ls-wrap {
     max-width: 1400px;
-    margin: 0 auto 52px;
+    margin: 0 auto 48px;
     padding: 0 48px;
   }
   .ls-label-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
   }
   .ls-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: #f4b942;
-    box-shadow: 0 0 8px rgba(244,185,66,.9);
-    animation: lsPulse 2s ease-in-out infinite;
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,.9);
+    animation: lsPulse 2s ease-in-out infinite; flex-shrink: 0;
   }
   @keyframes lsPulse {
-    0%,100% { opacity:1; box-shadow:0 0 6px rgba(244,185,66,.7); }
-    50%      { opacity:.5; box-shadow:0 0 14px rgba(244,185,66,1); }
+    0%,100% { box-shadow: 0 0 5px rgba(34,197,94,.5); }
+    50%      { box-shadow: 0 0 14px rgba(34,197,94,1); }
+  }
+
+  /* ── Q'S ROULETTE GOLD FOIL + NEON FLICKER ── */
+  @keyframes foilShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes neonFlicker {
+    0%,19%,21%,23%,25%,54%,56%,100% {
+      opacity: 1;
+      text-shadow:
+        0 0 4px rgba(255,220,80,.9),
+        0 0 10px rgba(255,200,40,.7),
+        0 0 20px rgba(244,185,66,.5),
+        0 0 40px rgba(244,185,66,.3);
+    }
+    20%,24%,55% {
+      opacity: .85;
+      text-shadow:
+        0 0 2px rgba(255,220,80,.4),
+        0 0 6px rgba(244,185,66,.2);
+    }
+  }
+  @keyframes neonFlickerBadge {
+    0%,18%,22%,60%,62%,100% {
+      opacity: 1;
+      box-shadow:
+        0 0 6px rgba(244,185,66,.35),
+        0 0 14px rgba(244,185,66,.15),
+        inset 0 0 6px rgba(244,185,66,.08);
+      border-color: rgba(244,185,66,.55);
+    }
+    19%,21%,61% {
+      opacity: .8;
+      box-shadow: none;
+      border-color: rgba(244,185,66,.2);
+    }
+  }
+
+  .ls-q-text {
+    background: linear-gradient(
+      90deg,
+      #fffde0 0%,
+      #f4b942 18%,
+      #ffe066 30%,
+      #d4a820 42%,
+      #fffde0 55%,
+      #c8920a 68%,
+      #f4b942 80%,
+      #fffde0 100%
+    );
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation:
+      foilShift 4s ease-in-out infinite,
+      neonFlicker 7s step-end infinite;
+    display: inline-block;
+  }
+  /* ── Q'S ROULETTE CASINO PLACARD BANNER ── */
+  .ls-q-banner {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    position: relative;
+  }
+
+  /* Marquee light strip — top and bottom */
+  .ls-marquee-strip {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 14px;
+    background: #0a1a0e;
+    width: 100%;
+    justify-content: center;
+  }
+  .ls-marquee-strip.bottom { border-top: 1px solid rgba(244,185,66,.15); }
+  .ls-marquee-strip.top    { border-bottom: 1px solid rgba(244,185,66,.15); }
+  .ls-bulb {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #b8860b;
+    border: 1px solid rgba(244,185,66,.3);
+    flex-shrink: 0;
+    animation: bulbChase 1.2s linear infinite;
+  }
+  .ls-bulb:nth-child(1)  { animation-delay: 0s; }
+  .ls-bulb:nth-child(2)  { animation-delay: .1s; }
+  .ls-bulb:nth-child(3)  { animation-delay: .2s; }
+  .ls-bulb:nth-child(4)  { animation-delay: .3s; }
+  .ls-bulb:nth-child(5)  { animation-delay: .4s; }
+  .ls-bulb:nth-child(6)  { animation-delay: .5s; }
+  .ls-bulb:nth-child(7)  { animation-delay: .6s; }
+  .ls-bulb:nth-child(8)  { animation-delay: .7s; }
+  .ls-bulb:nth-child(9)  { animation-delay: .8s; }
+  .ls-bulb:nth-child(10) { animation-delay: .9s; }
+  .ls-bulb:nth-child(11) { animation-delay: 1.0s; }
+  .ls-bulb:nth-child(12) { animation-delay: 1.1s; }
+  @keyframes bulbChase {
+    0%,90%,100% { background:#b8860b; box-shadow:none; }
+    45%          { background:#ffe066; box-shadow:0 0 6px rgba(255,220,80,.9), 0 0 12px rgba(255,200,40,.5); }
+  }
+
+  /* Main placard body */
+  .ls-placard {
+    position: relative;
+    background: linear-gradient(180deg, #0d2818 0%, #0a1f12 50%, #0d2818 100%);
+    border-left:  3px solid rgba(244,185,66,.5);
+    border-right: 3px solid rgba(244,185,66,.5);
+    padding: 8px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* Corner ornaments — four gold L-marks */
+  .ls-placard::before, .ls-placard::after {
+    content: '';
+    position: absolute;
+    width: 10px; height: 10px;
+    border-color: rgba(244,185,66,.6);
+    border-style: solid;
+  }
+  .ls-placard::before { top: 3px; left: 8px;  border-width: 1px 0 0 1px; }
+  .ls-placard::after  { bottom: 3px; right: 8px; border-width: 0 1px 1px 0; }
+
+  /* Outer frame border */
+  .ls-q-banner {
+    border: 1px solid rgba(244,185,66,.28);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,.5),
+      0 0 16px rgba(244,185,66,.08),
+      inset 0 0 20px rgba(0,0,0,.3);
+  }
+
+  .ls-badge.ls-q-badge {
+
+    border-color: rgba(244,185,66,.38) !important;
+    background: rgba(244,185,66,.06) !important;
+    animation: neonFlickerBadge 7s step-end infinite;
+    animation-delay: 2s;
   }
   .ls-label {
-    font-family:'DM Mono',monospace;
-    font-size:.58rem;
-    letter-spacing:.22em;
-    text-transform:uppercase;
-    color:#7a6218;
+    font-family:'DM Mono',monospace; font-size:.58rem;
+    letter-spacing:.22em; text-transform:uppercase; color:#1a5c30;
   }
-  .ls-divider {
-    flex:1; height:1px;
-    background:linear-gradient(to right, rgba(244,185,66,.3), transparent);
-  }
+  .ls-divider { flex:1; height:1px; background:linear-gradient(to right,rgba(34,197,94,.25),transparent); }
   .ls-badge {
-    font-family:'DM Mono',monospace;
-    font-size:.54rem;
-    letter-spacing:.14em;
-    color:#f4b942;
-    border:1px solid rgba(244,185,66,.3);
-    background:rgba(244,185,66,.07);
-    padding:4px 10px;
-    border-radius:4px;
+    font-family:'DM Mono',monospace; font-size:.54rem; letter-spacing:.14em;
+    color:#22c55e; border:1px solid rgba(34,197,94,.28); background:rgba(34,197,94,.07);
+    padding:4px 10px; border-radius:3px;
   }
 
-  /* The card itself — simple div, no overflow:hidden anywhere */
+  /* ── CARD SHELL ── */
   .ls-card {
-    position: relative;
+    display: grid;
+    grid-template-columns: 240px 1fr auto;
+    align-items: stretch;
     border-radius: 14px;
-    border: 1px solid rgba(244,185,66,.3);
+    overflow: hidden;
+    border: 1px solid rgba(34,197,94,.2);
     background:
-      radial-gradient(ellipse at 15% 0%,  rgba(244,185,66,.13), transparent 50%),
-      radial-gradient(ellipse at 85% 100%, rgba(200,140,30,.15), transparent 50%),
-      linear-gradient(160deg, #171208 0%, #0e0b03 60%, #181306 100%);
-    padding: 28px 32px 22px;
-    /* THE FLOAT — on the card itself, no clipping parent above it */
-    animation: lsFloat 5s ease-in-out infinite;
-    will-change: transform;
-    /* subtle inset line top */
-    box-shadow:
-      inset 0 1px 0 rgba(255,210,60,.16),
-      0 0 40px rgba(244,185,66,.07),
-      0 28px 56px rgba(0,0,0,.5);
-  }
-  @keyframes lsFloat {
-    0%,100% { transform: translateY(0px);  box-shadow: inset 0 1px 0 rgba(255,210,60,.16), 0 0 30px rgba(244,185,66,.07), 0 28px 56px rgba(0,0,0,.50); }
-    50%      { transform: translateY(-11px); box-shadow: inset 0 1px 0 rgba(255,210,60,.22), 0 0 55px rgba(244,185,66,.16), 0 46px 72px rgba(0,0,0,.38); }
+      repeating-linear-gradient(45deg,  transparent,transparent 3px,rgba(0,0,0,.07) 3px,rgba(0,0,0,.07) 4px),
+      repeating-linear-gradient(-45deg, transparent,transparent 3px,rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 4px),
+      radial-gradient(ellipse at 30% 50%,rgba(34,197,94,.1),transparent 55%),
+      linear-gradient(160deg,#0e2e18,#0a1f12 50%,#0d2616);
+    box-shadow: 0 0 0 3px rgba(10,31,18,.9), 0 0 0 4px rgba(34,197,94,.1), 0 28px 56px rgba(0,0,0,.6);
   }
 
-  /* Corner marks */
-  .ls-card::before, .ls-card::after {
+  /* ── LEFT: WHEEL PANEL ── */
+  .ls-wheel-panel {
+    position: relative;
+    width: 240px; height: 240px;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle at 50% 50%, rgba(0,0,0,.35), rgba(0,0,0,.6));
+    border-right: 1px solid rgba(34,197,94,.12);
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  /* Outer ambient glow that pulses */
+  .ls-wheel-panel::before {
     content:'';
-    position:absolute;
-    width:20px; height:20px;
-    border-color:rgba(244,185,66,.35);
-    border-style:solid;
-  }
-  .ls-card::before { top:10px; left:10px;  border-width:2px 0 0 2px; border-radius:3px 0 0 0; }
-  .ls-card::after  { bottom:10px; right:10px; border-width:0 2px 2px 0; border-radius:0 0 3px 0; }
-
-  /* Perforated right edge stub */
-  .ls-stub {
-    position:absolute;
-    top:0; right:0; bottom:0;
-    width:88px;
-    border-left:1px dashed rgba(244,185,66,.2);
-    border-radius: 0 14px 14px 0;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:4px;
-    padding:16px 0;
-  }
-  .ls-stub-hole {
-    width:10px; height:10px;
+    position:absolute; inset:-20px;
     border-radius:50%;
-    background:#05070b;
-    border:1px solid rgba(244,185,66,.15);
-    position:absolute;
+    background: radial-gradient(circle,rgba(34,197,94,.18) 0%,transparent 65%);
+    animation: glowBreath 3s ease-in-out infinite;
   }
-  .ls-stub-hole.top { top:-5px; right:41px; }
-  .ls-stub-hole.bot { bottom:-5px; right:41px; }
+  @keyframes glowBreath {
+    0%,100% { opacity:.5; transform:scale(.9); }
+    50%      { opacity:1;  transform:scale(1.05); }
+  }
 
-  /* Inner layout */
-  .ls-body {
-    display:grid;
-    grid-template-columns: 1fr 88px;
-    gap:0;
-    align-items:start;
+  /* Wooden rail */
+  .ls-wheel-rail {
+    position:absolute; inset:8px; border-radius:50%;
+    background: conic-gradient(
+      #6b3c18 0deg,#8a5020 20deg,#5a3010 45deg,#7a4820 70deg,
+      #6b3c18 90deg,#8a5020 115deg,#5a3010 140deg,#7a4820 165deg,
+      #6b3c18 180deg,#8a5020 205deg,#5a3010 230deg,#7a4820 255deg,
+      #6b3c18 270deg,#8a5020 295deg,#5a3010 320deg,#7a4820 345deg,#6b3c18 360deg
+    );
+    box-shadow: 0 0 0 2px rgba(120,80,30,.5), 0 4px 20px rgba(0,0,0,.7), inset 0 2px 8px rgba(255,200,80,.1);
   }
-  .ls-main { padding-right:20px; }
-  .ls-kicker {
-    font-family:'DM Mono',monospace;
-    font-size:.5rem;
-    letter-spacing:.24em;
-    color:#6b5010;
-    text-transform:uppercase;
-    margin-bottom:6px;
+
+  /* Spinning track wrapper */
+  .ls-wheel-track {
+    position:absolute; inset:16px; border-radius:50%;
+    animation: wheelSpin 6s linear infinite;
+    will-change:transform;
+  }
+  @keyframes wheelSpin {
+    from { transform:rotate(0deg); }
+    to   { transform:rotate(360deg); }
+  }
+
+  /* Green inset felt */
+
+
+  /* Pulsing center logo */
+
+
+  /* Gold hub */
+  .ls-wheel-hub {
+    position:absolute; width:18px; height:18px; border-radius:50%;
+    background:radial-gradient(circle at 32% 28%,#fffde0,#c8a830 40%,#6a4010);
+    box-shadow:0 3px 10px rgba(0,0,0,.8),0 0 0 1.5px rgba(255,220,80,.5),inset 0 1px 2px rgba(255,255,200,.4);
+    z-index:8;
+  }
+
+  /* Ball — orbits OPPOSITE to wheel */
+  .ls-wheel-ball {
+    position:absolute; width:9px; height:9px; border-radius:50%;
+    background:radial-gradient(circle at 30% 25%,#fffef0,#d8d8c8);
+    box-shadow:0 2px 8px rgba(0,0,0,.8),0 0 10px rgba(255,255,240,.4);
+    top:14px; left:50%; margin-left:-4.5px;
+    z-index:7;
+    transform-origin:4.5px 106px;
+    animation:ballOrbit 2.4s linear infinite;
+  }
+  @keyframes ballOrbit {
+    from { transform:rotate(0deg); }
+    to   { transform:rotate(-360deg); }
+  }
+
+  /* Divider line between sectors — sparkle dots */
+  .ls-spoke {
+    position:absolute; z-index:2;
+    width:1px; background:rgba(255,255,255,.06);
+    top:0; bottom:50%; left:50%;
+    transform-origin:bottom center;
+  }
+
+  /* ── MIDDLE: INFO PANEL ── */
+  .ls-info {
+    padding:20px 20px 20px 22px;
+    display:flex; flex-direction:column; justify-content:center;
   }
   .ls-headline {
     font-family:'Inter',sans-serif;
-    font-size:1.15rem;
-    font-weight:900;
-    color:#e8c24a;
-    letter-spacing:-.02em;
-    margin-bottom:8px;
-    line-height:1.2;
+    font-size:.92rem; font-weight:900;
+    color:#c8f0d4; letter-spacing:-.02em; margin-bottom:5px;
   }
   .ls-thesis {
-    font-size:.78rem;
-    color:#6b5a28;
-    line-height:1.65;
-    margin-bottom:16px;
-    font-style:italic;
-    max-width:540px;
+    font-size:.72rem; color:#2d6b3e; line-height:1.6; margin-bottom:13px;
   }
-  .ls-legs {
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-  }
+  .ls-legs { display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
   .ls-leg {
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:8px 12px;
-    background:rgba(244,185,66,.04);
-    border:1px solid rgba(244,185,66,.12);
-    border-radius:6px;
+    display:flex; align-items:center; gap:9px;
+    padding:7px 11px;
+    background:rgba(0,0,0,.22);
+    border:1px solid rgba(34,197,94,.08); border-radius:5px;
   }
-  .ls-leg-n {
-    font-family:'DM Mono',monospace;
-    font-size:.52rem;
-    color:rgba(244,185,66,.4);
-    flex-shrink:0;
+  .ls-leg-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+  .ls-leg-dot.c0 { background:#ef4444; box-shadow:0 0 6px rgba(239,68,68,.6); }
+  .ls-leg-dot.c1 { background:#222; border:1px solid rgba(255,255,255,.18); }
+  .ls-leg-dot.c2 { background:#22c55e; box-shadow:0 0 6px rgba(34,197,94,.5); }
+  .ls-leg-dot.c3 { background:#f4b942; box-shadow:0 0 6px rgba(244,185,66,.5); }
+  .ls-leg-n { font-family:'DM Mono',monospace; font-size:.48rem; color:rgba(34,197,94,.25); flex-shrink:0; }
+  .ls-leg-name { font-size:.78rem; font-weight:600; color:#5aaa70; }
+  .ls-footer-row {
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:10px; border-top:1px solid rgba(34,197,94,.07);
   }
-  .ls-leg-name {
-    font-size:.8rem;
-    font-weight:600;
-    color:#c8a030;
-  }
+  .ls-warn { font-family:'DM Mono',monospace; font-size:.48rem; letter-spacing:.06em; color:#1a5c30; }
+  .ls-metrics { display:flex; gap:12px; }
+  .ls-metric { text-align:center; }
+  .ls-metric-lbl { font-family:'DM Mono',monospace; font-size:.38rem; letter-spacing:.12em; color:#163d22; text-transform:uppercase; margin-bottom:2px; }
+  .ls-metric-val { font-family:'DM Mono',monospace; font-size:.72rem; font-weight:700; color:#2d6b3e; }
+  .ls-metric-val.red    { color:#ef4444; }
+  .ls-metric-val.green  { color:#22c55e; }
+  .ls-metric-val.accent { color:#86efac; }
 
-  /* Stub odds column */
-  .ls-odds-col {
-    width:88px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:4px;
-    text-align:center;
-    padding-top:4px;
+  /* ── RIGHT: ODDS PANEL ── */
+  .ls-odds-panel {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:24px 22px;
+    background:rgba(0,0,0,.25);
+    border-left:1px solid rgba(34,197,94,.1);
+    min-width:110px;
+    gap:6px;
   }
   .ls-odds-lbl {
     font-family:'DM Mono',monospace;
-    font-size:.46rem;
-    letter-spacing:.16em;
-    color:#5a4410;
-    text-transform:uppercase;
+    font-size:.44rem; letter-spacing:.2em;
+    color:#1a5c30; text-transform:uppercase;
   }
   .ls-odds-val {
     font-family:'Inter',sans-serif;
-    font-size:1.8rem;
-    font-weight:900;
-    color:#ef4444;
-    line-height:1;
-    letter-spacing:-.03em;
-    animation: lsOddsGlow 3s ease-in-out infinite;
-    animation-delay: 2.5s;
+    font-size:2rem; font-weight:900;
+    color:#ef4444; line-height:1; letter-spacing:-.03em;
+    text-align:center;
+    animation:oddsFlare 3s ease-in-out infinite;
   }
-  @keyframes lsOddsGlow {
-    0%,100% { text-shadow: 0 0 8px rgba(239,68,68,.2); }
-    50%      { text-shadow: 0 0 28px rgba(239,68,68,.6), 0 0 52px rgba(239,68,68,.2); }
+  @keyframes oddsFlare {
+    0%,100% { text-shadow:0 0 8px rgba(239,68,68,.2); }
+    50%      { text-shadow:0 0 24px rgba(239,68,68,.7),0 0 48px rgba(239,68,68,.2); }
   }
   .ls-return {
     font-family:'DM Mono',monospace;
-    font-size:.56rem;
-    color:#5a4410;
-    letter-spacing:.04em;
+    font-size:.5rem; color:#1a5c30; letter-spacing:.04em; text-align:center;
   }
   .ls-ev {
     font-family:'DM Mono',monospace;
-    font-size:.6rem;
-    color:#4ade80;
-    letter-spacing:.04em;
-    margin-top:6px;
+    font-size:.58rem; color:#22c55e; letter-spacing:.04em;
+    padding:3px 9px;
+    border:1px solid rgba(34,197,94,.22); border-radius:3px;
+    background:rgba(34,197,94,.07); margin-top:4px;
   }
-
-  /* Footer row */
-  .ls-footer {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-top:14px;
-    padding-top:12px;
-    border-top:1px dashed rgba(244,185,66,.15);
-  }
-  .ls-warn {
-    font-family:'DM Mono',monospace;
-    font-size:.56rem;
-    letter-spacing:.06em;
-    color:#5a4410;
-  }
-  .ls-metrics {
-    display:flex;
-    gap:18px;
-  }
-  .ls-metric {
-    text-align:center;
-  }
-  .ls-metric-lbl {
-    font-family:'DM Mono',monospace;
-    font-size:.44rem;
-    letter-spacing:.14em;
-    color:#4a3a0e;
-    text-transform:uppercase;
-    margin-bottom:2px;
-  }
-  .ls-metric-val {
-    font-family:'Inter',sans-serif;
-    font-size:.82rem;
-    font-weight:800;
-    color:#9a7820;
-  }
-  .ls-metric-val.red   { color:#ef4444; }
-  .ls-metric-val.green { color:#4ade80; }
 
   @media(max-width:900px){
     .ls-wrap { padding:0 16px; }
-    .ls-card { animation:none; }
-    .ls-stub { display:none; }
-    .ls-body { grid-template-columns:1fr; }
-    .ls-odds-col { flex-direction:row; align-items:center; gap:12px; padding:12px 0 0; }
-    .ls-metrics { flex-wrap:wrap; gap:10px; }
+    .ls-card { grid-template-columns:1fr; }
+    .ls-wheel-panel { width:100%; height:220px; border-right:none; border-bottom:1px solid rgba(34,197,94,.12); }
+    .ls-odds-panel { flex-direction:row; flex-wrap:wrap; border-left:none; border-top:1px solid rgba(34,197,94,.1); padding:14px 16px; min-width:unset; gap:10px; justify-content:flex-start; }
+    .ls-metrics { flex-wrap:wrap; gap:8px; }
   }
 
 </style>
@@ -2190,7 +2296,7 @@ body::after{
 
 const NBA_GAMES = [
   {
-    day:"FRIDAY",
+    day:"TOMORROW",
     time:"8:30 PM ET",
     home:"San Antonio Spurs",
     homeAbbr:"SAS",
@@ -2218,7 +2324,7 @@ const NBA_GAMES = [
 
 const PROP_PARLAYS = [
   {
-    day: "Friday",
+    day: "Wednesday",
     time: "8:30 PM ET",
     type: "Points Prop",
     market: "20+ Points — SAS/NYK Game 1",
@@ -2232,7 +2338,7 @@ const PROP_PARLAYS = [
     edgeNote: "Castle and Towns add intrigue to the entire prop card."
   },
   {
-    day: "Friday",
+    day: "Wednesday",
     time: "8:30 PM ET",
     type: "Multi-Stat",
     market: "SAS/NYK Prop Package",
@@ -2254,18 +2360,18 @@ const MLB_PROP_PARLAYS = [
     type: "MLB Props",
     market: "MLB Market Parlays",
     legs: [
-      { player: "JT Ginn",        team: "ATH", stat: "4.5+ Strikeouts",    odds: "+110", hitRate: 0.41 },
-      { player: "Nick Kurtz",     team: "ATH", stat: "1.5+ Total Bases",    odds: "-130", hitRate: 0.49 },
-      { player: "Chris Sale",     team: "ATL", stat: "5.5+ Strikeouts",    odds: "-118", hitRate: 0.52 },
-      { player: "CLE/NYY",        team: "CLE/NYY", stat: "U 1 Run 1st Inning", odds: "-108", hitRate: 0.58 },
-      { player: "Seth Lugo",      team: "KCR", stat: "18.5+ Batters Faced",    odds: "-110", hitRate: 0.50 },
-      { player: "Shota Imanaga",  team: "CHC", stat: "4.5+ Strikeouts",    odds: "-110", hitRate: 0.41 },
-      { player: "Carlos Rodon",   team: "NYY", stat: "5.5+ Strikeouts",  odds: "+118", hitRate: 0.48 },
-      { player: "Ryne Nelson",    team: "ARI", stat: "2+ Earned Runs",   odds: "-108", hitRate: 0.54 },
-      { player: "Rafael Devers",  team: "SFG", stat: "Over 0.5 Homeruns",  odds: "+115", hitRate: 0.45 }
+      { player: "Parker Messick",   team: "CLE", stat: "4.5+ Strikeouts",    odds: "+110", hitRate: 0.41 },
+      { player: "Trey Yesavage",       team: "TOR", stat: "4.5+ Strikeouts",    odds: "+130", hitRate: 0.39 },
+      { player: "Ryan Weathers",   team: "NYY", stat: "5.5+ Strikeouts",    odds: "-118", hitRate: 0.52 },
+      { player: "SD/NYM",        team: "SD/PHI", stat: "U 1 Run 1st Inning", odds: "-108", hitRate: 0.58 },
+      { player: "Ben Rice",      team: "NYY", stat: "1.5+ Total Bases",    odds: "-110", hitRate: 0.50 },
+      { player: "Mitch Keller",  team: "PIT", stat: "3.5+ Strikeouts",    odds: "+110", hitRate: 0.41 },
+      { player: "Michael King",   team: "SDP", stat: "5.5+ Strikeouts",  odds: "-108", hitRate: 0.48 },
+      { player: "Jake Burger", team: "TEX", stat: "0.5+ Strikeouts",   odds: "-108", hitRate: 0.54 },
+      { player: "Juan Soto",team: "NYM", stat: "Over 0.5 Homeruns",  odds: "+115", hitRate: 0.45 }
     ],
     betsPlaced: 1421,
-    edgeNote: "Seth Lugo, Carlos Rodon, and JT Ginn are a good +EV stack for the odds"
+    edgeNote: "Ben Rice should see opportunities with Sonny Gray's K% coming down to 20% Messick and Yesavage are good +EV bets"
   }
 ];
 
@@ -2278,14 +2384,34 @@ const MLB_PROP_PARLAYS = [
 
 // ── MLB ─────────────────────────────────────────────────────────
 const MLB_GAMES = [
-  {day:"TODAY", time:"1:06 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Boston Red Sox", homeAbbr:"BOS", awayPitcher:"P: T Rogers", homePitcher:"P: TBD", spreadAway:"-1.5", spreadAwayJuice:"+146", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-176", spreadHomeMove:"", spreadOpen:"", mlAway:"-108", mlHome:"-108", total:"10", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"BAL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Dead-heat pick'em pricing structure with Boston presenting a TBD pitching layout on a flat 10 total."},
-  {day:"TODAY", time:"1:36 PM ET", away:"Cleveland Guardians", awayAbbr:"CLE", home:"New York Yankees", homeAbbr:"NYY", awayPitcher:"P: S Cecconi", homePitcher:"P: C Rodon", spreadAway:"+1.5", spreadAwayJuice:"-152", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+126", spreadHomeMove:"", spreadOpen:"", mlAway:"+136", mlHome:"-162", total:"8.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Rodon establishes the Yankees as solid home chalk behind an 8.5 total leaning slightly over."},
-  {day:"TODAY", time:"1:36 PM ET", away:"San Francisco Giants", awayAbbr:"SF", home:"Milwaukee Brewers", homeAbbr:"MIL", awayPitcher:"P: A Houser", homePitcher:"P: C Crow", spreadAway:"+1.5", spreadAwayJuice:"-162", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+134", spreadHomeMove:"", spreadOpen:"", mlAway:"+134", mlHome:"-158", total:"9.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Brewers secure comfortable home favorite backing on a 9.5 board where the under draws steady action."},
-  {day:"TODAY", time:"2:11 PM ET", away:"Toronto Blue Jays", awayAbbr:"TOR", home:"Atlanta Braves", homeAbbr:"ATL", awayPitcher:"P: TBD", homePitcher:"P: C Sale", spreadAway:"+1.5", spreadAwayJuice:"-142", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+118", spreadHomeMove:"", spreadOpen:"", mlAway:"+158", mlHome:"-188", total:"7.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ATL ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sale anchors the Braves as distinct home preferences against a TBD Toronto layout on a tight 7.5 total."},
-  {day:"TODAY", time:"7:16 PM ET", away:"Kansas City Royals", awayAbbr:"KC", home:"Minnesota Twins", homeAbbr:"MIN", awayPitcher:"P: S Lugo", homePitcher:"P: A Morris", spreadAway:"-1.5", spreadAwayJuice:"+146", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-178", spreadHomeMove:"", spreadOpen:"", mlAway:"-112", mlHome:"-104", total:"9", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"KC ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Lugo pins the Royals as micro-road favorites on a flat 9 board where market money shades under."},
-  {day:"TODAY", time:"7:41 PM ET", away:"Athletics", awayAbbr:"OAK", home:"Chicago Cubs", homeAbbr:"CHC", awayPitcher:"P: TBD", homePitcher:"P: S Imanaga", spreadAway:"+1.5", spreadAwayJuice:"-178", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+110", mlHome:"-130", total:"11", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CHC ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Imanaga sets the Cubs as clear home targets facing a TBD road layout on a heavily elevated 11 total template."},
-  {day:"TODAY", time:"8:06 PM ET", away:"Pittsburgh Pirates", awayAbbr:"PIT", home:"Houston Astros", homeAbbr:"HOU", awayPitcher:"P: J Jones", homePitcher:"P: K Teng", spreadAway:"-1.5", spreadAwayJuice:"+150", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-182", spreadHomeMove:"", spreadOpen:"", mlAway:"-108", mlHome:"-108", total:"8.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PIT ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Even pick'em pricing lines with Jones and the Pirates catching a minimal edge over Teng."},
-  {day:"TODAY", time:"8:11 PM ET", away:"Los Angeles Dodgers", awayAbbr:"LAD", home:"Arizona Diamondbacks", homeAbbr:"AZ", awayPitcher:"P: J Wrobleski", homePitcher:"P: R Nelson", spreadAway:"-1.5", spreadAwayJuice:"+105", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-126", spreadHomeMove:"", spreadOpen:"", mlAway:"-146", mlHome:"+124", total:"9.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAD ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Dodgers maintain a definitive road choice layout over Nelson behind a flat 9.5 setting."}
+  {day:"TODAY", time:"6:41 PM ET", away:"Seattle Mariners", awayAbbr:"SEA", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: B Woo", homePitcher:"P: F Valdez", spreadAway:"+1.5", spreadAwayJuice:"+106", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+142", spreadHomeMove:"", spreadOpen:"", mlAway:"+106", mlHome:"-124", total:"7.5", totalOverJuice:"-118", totalUnderJuice:"-104", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"DET ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Valdez installs the Tigers as a slight home preference in a lower-scoring 7.5 total frame."},
+  {day:"TODAY", time:"6:41 PM ET", away:"Chicago White Sox", awayAbbr:"CWS", home:"Philadelphia Phillies", homeAbbr:"PHI", awayPitcher:"P: A Kay", homePitcher:"P: J Luzardo", spreadAway:"+1.5", spreadAwayJuice:"-134", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+112", spreadHomeMove:"", spreadOpen:"", mlAway:"+154", mlHome:"-184", total:"8.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PHI ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Luzardo sets the Phillies as solid home chalk against Kay with a completely flat 8.5 total line."},
+  {day:"TODAY", time:"7:06 PM ET", away:"Boston Red Sox", awayAbbr:"BOS", home:"New York Yankees", homeAbbr:"NYY", awayPitcher:"P: S Gray", homePitcher:"P: R Weathers", spreadAway:"+1.5", spreadAwayJuice:"-178", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+122", mlHome:"-144", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Yankees secure moderate market backing in the Bronx behind balanced, flat juice on a flat 8 line."},
+  {day:"TODAY", time:"7:08 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Toronto Blue Jays", homeAbbr:"TOR", awayPitcher:"P: B Young", homePitcher:"P: T Yesavage", spreadAway:"+1.5", spreadAwayJuice:"-166", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+138", spreadHomeMove:"", spreadOpen:"", mlAway:"+128", mlHome:"-152", total:"8.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TOR ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Yesavage opens the Blue Jays as distinct home selections with under money absorbing heavy juice."},
+  {day:"TODAY", time:"7:11 PM ET", away:"Tampa Bay Rays", awayAbbr:"TB", home:"Miami Marlins", homeAbbr:"MIA", awayPitcher:"P: D Rasmussen", homePitcher:"P: R Gusto", spreadAway:"-1.5", spreadAwayJuice:"+122", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-146", spreadHomeMove:"", spreadOpen:"", mlAway:"-138", mlHome:"+118", total:"7.5", totalOverJuice:"-120", totalUnderJuice:"-102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TB ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Rasmussen guides the Rays as clear short road targets while over money applies line pressure."},
+  {day:"TODAY", time:"7:16 PM ET", away:"Pittsburgh Pirates", awayAbbr:"PIT", home:"Atlanta Braves", homeAbbr:"ATL", awayPitcher:"P: M Keller", homePitcher:"P: M Perez", spreadAway:"+1.5", spreadAwayJuice:"-170", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+140", spreadHomeMove:"", spreadOpen:"", mlAway:"+120", mlHome:"-142", total:"8.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ATL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Perez positions the Braves as standard home favorites with line shading leaning under the 8.5."},
+  {day:"TODAY", time:"8:11 PM ET", away:"Athletics", awayAbbr:"OAK", home:"Houston Astros", homeAbbr:"HOU", awayPitcher:"P: J Perkins", homePitcher:"P: P Lambert", spreadAway:"-1.5", spreadAwayJuice:"+146", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-176", spreadHomeMove:"", spreadOpen:"", mlAway:"-110", mlHome:"-106", total:"9", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"OAK ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Razor-thin line dynamics establish the A's as micro-road favorites on a flat 9 board."},
+  {day:"TODAY", time:"8:16 PM ET", away:"Cincinnati Reds", awayAbbr:"CIN", home:"St. Louis Cardinals", homeAbbr:"STL", awayPitcher:"P: B Singer", homePitcher:"P: K Leahy", spreadAway:"+1.5", spreadAwayJuice:"-176", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+120", mlHome:"-142", total:"9", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"STL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Cardinals lay moderate home chalk over Singer with fairly balanced line juice across a flat 9 total."},
+  {day:"TODAY", time:"8:16 PM ET", away:"Kansas City Royals", awayAbbr:"KC", home:"Minnesota Twins", homeAbbr:"MIN", awayPitcher:"P: M Wacha", homePitcher:"P: Z Matthews", spreadAway:"-1.5", spreadAwayJuice:"+168", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-205", spreadHomeMove:"", spreadOpen:"", mlAway:"+100", mlHome:"-118", total:"8.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIN ML", edgeEV:"", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Twins check in as slim home favorites at Target Field against Wacha on a standard flat total line."},
+  {day:"TODAY", time:"8:16 PM ET", away:"Cleveland Guardians", awayAbbr:"CLE", home:"Texas Rangers", homeAbbr:"TEX", awayPitcher:"P: P Messick", homePitcher:"P: K Rocker", spreadAway:"-1.5", spreadAwayJuice:"+140", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-170", spreadHomeMove:"", spreadOpen:"", mlAway:"-126", mlHome:"+108", total:"7.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CLE ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Messick sets the Guardians as definite road choices behind a tight 7.5 under-shaded backdrop."},
+  {day:"TODAY", time:"8:41 PM ET", away:"Milwaukee Brewers", awayAbbr:"MIL", home:"Colorado Rockies", homeAbbr:"COL", awayPitcher:"P: B Sproat", homePitcher:"P: R Feltner", spreadAway:"-1.5", spreadAwayJuice:"-104", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-115", spreadHomeMove:"", spreadOpen:"", mlAway:"-154", mlHome:"+130", total:"12", totalOverJuice:"-102", totalUnderJuice:"-120", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sproat commands heavy road premium status at Coors Field on an highly elevated flat 12 board."},
+  {day:"TODAY", time:"9:41 PM ET", away:"Washington Nationals", awayAbbr:"WSH", home:"Arizona Diamondbacks", homeAbbr:"AZ", awayPitcher:"P: F Griffin", homePitcher:"P: M Kelly", spreadAway:"+1.5", spreadAwayJuice:"-188", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+155", spreadHomeMove:"", spreadOpen:"", mlAway:"+116", mlHome:"-134", total:"9", totalOverJuice:"-104", totalUnderJuice:"-118", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"AZ ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Kelly positions the D-backs as solid home priorities while the under 9 carries premium juice."},
+  {day:"TODAY", time:"9:41 PM ET", away:"New York Mets", awayAbbr:"NYM", home:"San Diego Padres", homeAbbr:"SD", awayPitcher:"P: C Scott", homePitcher:"P: M King", spreadAway:"+1.5", spreadAwayJuice:"-205", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+168", spreadHomeMove:"", spreadOpen:"", mlAway:"+108", mlHome:"-126", total:"7.5", totalOverJuice:"+104", totalUnderJuice:"-128", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"SD ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"King installs San Diego as standard home choices inside a lower-scoring blueprint heavily leaning under."},
+  {day:"TODAY", time:"10:11 PM ET", away:"Los Angeles Angels", awayAbbr:"LAA", home:"Los Angeles Dodgers", homeAbbr:"LAD", awayPitcher:"P: R Detmers", homePitcher:"P: R Sasaki", spreadAway:"+1.5", spreadAwayJuice:"-134", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+112", spreadHomeMove:"", spreadOpen:"", mlAway:"+164", mlHome:"-196", total:"8.5", totalOverJuice:"+102", totalUnderJuice:"-124", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAD ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sasaki anchors the Dodgers as heavy home preferences over Detmers with defensive line weight on the under."},
+  {day:"TOMORROW", time:"1:11 PM ET", away:"Seattle Mariners", awayAbbr:"SEA", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: TBD", homePitcher:"P: TBD", spreadAway:"-1.5", spreadAwayJuice:"+125", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-150", spreadHomeMove:"", spreadOpen:"", mlAway:"-136", mlHome:"+116", total:"8.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"SEA ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Saturday early slot hands standard road favor to Seattle over matching double TBD designations."},
+  {day:"TOMORROW", time:"2:11 PM ET", away:"Kansas City Royals", awayAbbr:"KC", home:"Minnesota Twins", homeAbbr:"MIN", awayPitcher:"P: TBD", homePitcher:"P: TBD", spreadAway:"+1.5", spreadAwayJuice:"-184", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+152", spreadHomeMove:"", spreadOpen:"", mlAway:"+124", mlHome:"-146", total:"8.5", totalOverJuice:"-104", totalUnderJuice:"-118", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIN ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Twins carry distinct structural market favor at home on double TBD pitching splits."},
+  {day:"TOMORROW", time:"2:16 PM ET", away:"Cincinnati Reds", awayAbbr:"CIN", home:"St. Louis Cardinals", homeAbbr:"STL", awayPitcher:"P: TBD", homePitcher:"P: TBD", spreadAway:"+1.5", spreadAwayJuice:"-196", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+162", spreadHomeMove:"", spreadOpen:"", mlAway:"+108", mlHome:"-126", total:"9.5", totalOverJuice:"-106", totalUnderJuice:"-114", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"STL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Cardinals establish baseline clear home traction with subtle premium juice leaning under."},
+  {day:"TOMORROW", time:"2:21 PM ET", away:"San Francisco Giants", awayAbbr:"SF", home:"Chicago Cubs", homeAbbr:"CHC", awayPitcher:"P: TBD", homePitcher:"P: TBD", spreadAway:"+1.5", spreadAwayJuice:"-184", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+152", spreadHomeMove:"", spreadOpen:"", mlAway:"+116", mlHome:"-136", total:"8.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CHC ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Cubs secure secure home choice value for Saturday's line profile with early under weight."},
+  {day:"TOMORROW", time:"3:08 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Toronto Blue Jays", homeAbbr:"TOR", awayPitcher:"P: TBD", homePitcher:"P: TBD", spreadAway:"-1.5", spreadAwayJuice:"+155", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-188", spreadHomeMove:"", spreadOpen:"", mlAway:"-108", mlHome:"-108", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"BAL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Perfect moneyline pick'em board layout for Saturday afternoon on double TBD designations."},
+  {day:"TOMORROW", time:"4:06 PM ET", away:"Chicago White Sox", awayAbbr:"CWS", home:"Philadelphia Phillies", homeAbbr:"PHI", awayPitcher:"P: TBD", homePitcher:"P: TBD", spreadAway:"+1.5", spreadAwayJuice:"-184", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+152", spreadHomeMove:"", spreadOpen:"", mlAway:"+110", mlHome:"-130", total:"9.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PHI ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Phillies draw short home favorite designation on an over-shaded 9.5 board look."},
+  {day:"TOMORROW", time:"4:11 PM ET", away:"Pittsburgh Pirates", awayAbbr:"PIT", home:"Atlanta Braves", homeAbbr:"ATL", awayPitcher:"P: TBD", homePitcher:"P: TBD", spreadAway:"-1.5", spreadAwayJuice:"+160", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-194", spreadHomeMove:"", spreadOpen:"", mlAway:"-102", mlHome:"-116", total:"8.5", totalOverJuice:"-106", totalUnderJuice:"-114", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ATL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Braves settle as tight home options on Saturday with money slightly preferring the under."},
+  {day:"TOMORROW", time:"4:11 PM ET", away:"Washington Nationals", awayAbbr:"WSH", home:"Arizona Diamondbacks", homeAbbr:"AZ", awayPitcher:"P: TBD", homePitcher:"P: TBD", spreadAway:"+1.5", spreadAwayJuice:"-156", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+130", spreadHomeMove:"", spreadOpen:"", mlAway:"+136", mlHome:"-162", total:"9", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"AZ ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Diamondbacks command comfortable favorite status at home behind an over-shaded flat 9."},
+  {day:"TOMORROW", time:"4:11 PM ET", away:"Athletics", awayAbbr:"OAK", home:"Houston Astros", homeAbbr:"HOU", awayPitcher:"P: TBD", homePitcher:"P: TBD", spreadAway:"-1.5", spreadAwayJuice:"+146", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-176", spreadHomeMove:"", spreadOpen:"", mlAway:"-108", mlHome:"-108", total:"9", totalOverJuice:"-122", totalUnderJuice:"+100", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"OAK ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Dead heat pick'em price layout where total money strongly drives over line pressure."},
+  {day:"TOMORROW", time:"7:36 PM ET", away:"Boston Red Sox", awayAbbr:"BOS", home:"New York Yankees", homeAbbr:"NYY", awayPitcher:"P: TBD", homePitcher:"P: TBD", spreadAway:"+1.5", spreadAwayJuice:"-182", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+150", spreadHomeMove:"", spreadOpen:"", mlAway:"+116", mlHome:"-136", total:"8.5", totalOverJuice:"-106", totalUnderJuice:"-114", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Yankees lock into clear home favorite pricing for Saturday night's classic matchup profile."},
+  {day:"TOMORROW", time:"7:36 PM ET", away:"Cleveland Guardians", awayAbbr:"CLE", home:"Texas Rangers", homeAbbr:"TEX", awayPitcher:"P: TBD", homePitcher:"P: TBD", spreadAway:"-1.5", spreadAwayJuice:"+168", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-205", spreadHomeMove:"", spreadOpen:"", mlAway:"-104", mlHome:"-112", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TEX ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Rangers claim razor-thin baseline home preference over Cleveland on a balanced flat 8."},
+  {day:"TOMORROW", time:"9:11 PM ET", away:"Milwaukee Brewers", awayAbbr:"MIL", home:"Colorado Rockies", homeAbbr:"COL", awayPitcher:"P: TBD", homePitcher:"P: TBD", spreadAway:"-1.5", spreadAwayJuice:"-146", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"+122", spreadHomeMove:"", spreadOpen:"", mlAway:"-245", mlHome:"+200", total:"10.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIL ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Brewers present massive premium layout depth as substantial road chalk at Coors Field."},
+  {day:"TOMORROW", time:"10:11 PM ET", away:"Los Angeles Angels", awayAbbr:"LAA", home:"Los Angeles Dodgers", homeAbbr:"LAD", awayPitcher:"P: TBD", homePitcher:"P: TBD", spreadAway:"+1.5", spreadAwayJuice:"+125", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"-150", spreadHomeMove:"", spreadOpen:"", mlAway:"+270", mlHome:"-335", total:"8.5", totalOverJuice:"-122", totalUnderJuice:"+100", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAD ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Extreme heavy pocket premium layout on the Dodgers home line with an over-shaded total."},
+  {day:"TOMORROW", time:"10:11 PM ET", away:"New York Mets", awayAbbr:"NYM", home:"San Diego Padres", homeAbbr:"SD", awayPitcher:"P: TBD", homePitcher:"P: TBD", spreadAway:"-1.5", spreadAwayJuice:"+136", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-164", spreadHomeMove:"", spreadOpen:"", mlAway:"-126", mlHome:"+108", total:"7.5", totalOverJuice:"-114", totalUnderJuice:"-106", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYM ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Mets claim moderate road favorite traction over San Diego behind a tight 7.5 line template."}
 ];
 
 // ════════════════════════════════════════════════════════════════
@@ -2783,99 +2909,248 @@ function renderFutures(nbaContainerId, mlbContainerId) {
   });
 }
 
-// ── LONGSHOT CARDS ──
+// ── Q'S ROULETTE CARDS ──
 const NBA_LONGSHOTS = [
   {
-    label:'CONTRARIAN SIGNAL', badge:'LONGSHOT',
-    kicker:'HIGH RISK POSITION',
-    headline:'Lottery Ticket',
-    thesis:'OKC heavy chalk in Game 3. A Wemby masterclass at home in San Antonio flips the script — contrarian ticket targets the bounce-back narrative with series momentum.',
+    label:"LONGSHOT SIGNAL", badge:"Q's ROULETTE",
+    kicker:"EXTREME RISK · HIGH VARIANCE",
+    headline:"Q's Roulette",
+    thesis:"Three low-probability legs with positive correlation. If one hits they likely all hit — or none do. Built for the contrarian who wants max upside on a small stake.",
     legs:[
-      {n:'01', name:'Spurs +10'},
-      {n:'02', name:'Under 216.5'},
-      {n:'03', name:'Wembanyama 30+ Pts'}
+      {n:"01", name:"Josh Hart 20+ Pts"},
+      {n:"02", name:"NYK +10"},
+      {n:"03", name:"Victor Wembanyama 40+ Pts"}
     ],
-    odds:'+3200', ret:'$10 → $330', ev:'+8.3%',
+    odds:"+2200", ret:"$10 to $330", ev:"+8.3%",
     metrics:[
-      {lbl:'PUBLIC EXP', val:'87%', cls:'red'},
-      {lbl:'HIT RATE',   val:'2.9%', cls:''},
-      {lbl:'FAIR ODDS',  val:'+3400', cls:''},
-      {lbl:'EDGE',       val:'+6%', cls:'green'}
+      {lbl:"PUBLIC EXP", val:"87%",   cls:"red"},
+      {lbl:"HIT RATE",   val:"2.9%",  cls:""},
+      {lbl:"FAIR ODDS",  val:"+3400", cls:"accent"},
+      {lbl:"EDGE",       val:"+6%",   cls:"green"}
     ],
-    warn:'⚠ High Risk — Series Momentum Dependent'
+    warn:"Longshot — Low Probability Outcome"
   }
 ];
 const MLB_LONGSHOTS = [
   {
-    label:'CONTRARIAN SIGNAL', badge:'LONGSHOT',
-    kicker:'HIGH RISK POSITION',
-    headline:'Lottery Ticket',
-    thesis:'Market participants are overwhelmingly concentrated on one side. This ticket assumes the market narrative fails early, creating positive correlation across all four legs.',
+    label:"LONGSHOT SIGNAL", badge:"Q's ROULETTE",
+    kicker:"EXTREME RISK · HIGH VARIANCE",
+    headline:"Q's Roulette",
+    thesis:"Four correlated legs on one side of the market. Market overwhelmingly disagrees — this ticket pays if the public narrative collapses in the first five innings.",
     legs:[
-      {n:'01', name:'Royals Moneyline'},
-      {n:'02', name:'Under 7.5 Runs'},
-      {n:'03', name:'Bobby Witt Jr. HR'},
-      {n:'04', name:'Royals Lead After 5'}
+      {n:"01", name:"Sonny Gray 7+ K's"},
+      {n:"02", name:"Jazz Chisholm Jr HR"},
+      {n:"03", name:"Spencer Jones HR"},
+      {n:"04", name:"Red Sox Lead After 5"}
     ],
-    odds:'+7800', ret:'$10 → $790', ev:'+14.7%',
+    odds:"+7800", ret:"$10 to $790", ev:"+14.7%",
     metrics:[
-      {lbl:'PUBLIC EXP', val:'91%', cls:'red'},
-      {lbl:'HIT RATE',   val:'1.8%', cls:''},
-      {lbl:'FAIR ODDS',  val:'+5400', cls:''},
-      {lbl:'EDGE',       val:'+44%', cls:'green'}
+      {lbl:"PUBLIC EXP", val:"91%",   cls:"red"},
+      {lbl:"HIT RATE",   val:"1.8%",  cls:""},
+      {lbl:"FAIR ODDS",  val:"+5400", cls:"accent"},
+      {lbl:"EDGE",       val:"+44%",  cls:"green"}
     ],
-    warn:'⚠ Extremely Low Probability Outcome'
+    warn:"Longshot — Low Probability Outcome"
   }
 ];
 
 function renderLongshots(shots, containerId) {
-  const container = document.getElementById(containerId);
+  var container = document.getElementById(containerId);
   if (!container || !shots.length) return;
-  shots.forEach(s => {
-    const legsHtml = s.legs.map(l =>
-      `<div class="ls-leg"><span class="ls-leg-n">${l.n}</span><span class="ls-leg-name">${l.name}</span></div>`
-    ).join('');
-    const metricsHtml = s.metrics.map(m =>
-      `<div class="ls-metric"><div class="ls-metric-lbl">${m.lbl}</div><div class="ls-metric-val ${m.cls}">${m.val}</div></div>`
-    ).join('');
+  var dotCols = ['c0','c1','c2','c3'];
 
-    const labelRow = document.createElement('div');
+  shots.forEach(function(s) {
+    var metricsHtml = s.metrics.map(function(m) {
+      return '<div class="ls-metric"><div class="ls-metric-lbl">'+m.lbl+'</div>'
+           + '<div class="ls-metric-val '+m.cls+'">'+m.val+'</div></div>';
+    }).join('');
+    var legsHtml = s.legs.map(function(l,i) {
+      return '<div class="ls-leg">'
+        +'<div class="ls-leg-dot '+dotCols[i%4]+'"></div>'
+        +'<span class="ls-leg-n">'+l.n+'</span>'
+        +'<span class="ls-leg-name">'+l.name+'</span>'
+        +'</div>';
+    }).join('');
+
+    // ── ROULETTE WHEEL ──
+    // Real European roulette pocket sequence
+    var nums = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
+    var redSet = {1:1,3:1,5:1,7:1,9:1,12:1,14:1,16:1,18:1,19:1,21:1,23:1,25:1,27:1,30:1,32:1,34:1,36:1};
+    var N = nums.length;
+    var cx=100, cy=100;
+
+    // Radii (matching photo proportions)
+    var rWood1=99, rWood2=90;   // wooden outer rail
+    var rTrack1=90, rTrack2=72; // number pocket ring
+    var rFret=72, rFretH=68;    // green channel / fret area
+    var rCone=60, rConeInner=18;// green cone area
+    var rBowl=18;               // center bowl
+
+    var paths = '';
+
+    // 1. Outer wooden rail — conic segments for grain effect
+    for(var i=0;i<18;i++){
+      var a0=i*(2*Math.PI/18)-Math.PI/2, a1=(i+1)*(2*Math.PI/18)-Math.PI/2;
+      var lum = (i%2===0)?'#8a5020':'#6b3c18';
+      paths += '<path d="M'+(cx+rWood1*Math.cos(a0)).toFixed(2)+' '+(cy+rWood1*Math.sin(a0)).toFixed(2)
+        +' A'+rWood1+' '+rWood1+' 0 0 1 '+(cx+rWood1*Math.cos(a1)).toFixed(2)+' '+(cy+rWood1*Math.sin(a1)).toFixed(2)
+        +' L'+(cx+rWood2*Math.cos(a1)).toFixed(2)+' '+(cy+rWood2*Math.sin(a1)).toFixed(2)
+        +' A'+rWood2+' '+rWood2+' 0 0 0 '+(cx+rWood2*Math.cos(a0)).toFixed(2)+' '+(cy+rWood2*Math.sin(a0)).toFixed(2)
+        +' Z" fill="'+lum+'"/>';
+    }
+    // Wood border rings
+    paths += '<circle cx="100" cy="100" r="'+rWood1+'" fill="none" stroke="rgba(200,130,40,.6)" stroke-width="0.8"/>';
+    paths += '<circle cx="100" cy="100" r="'+rWood2+'" fill="none" stroke="rgba(0,0,0,.5)" stroke-width="0.8"/>';
+
+    // Diamond fret markers on outer wood (8 of them)
+    for(var i=0;i<8;i++){
+      var fa=(i/8)*2*Math.PI-Math.PI/2;
+      var fx=cx+(rWood2+3)*Math.cos(fa), fy=cy+(rWood2+3)*Math.sin(fa);
+      paths += '<rect x="'+(fx-2)+'" y="'+(fy-2)+'" width="4" height="4" rx="0.5"'
+        +' fill="rgba(180,150,50,.9)" stroke="rgba(255,220,80,.4)" stroke-width="0.5"'
+        +' transform="rotate(45 '+fx+' '+fy+')"/>';
+    }
+
+    // 2. Number pockets
+    for(var i=0;i<N;i++){
+      var a0=(i/N)*2*Math.PI-Math.PI/2;
+      var a1=((i+1)/N)*2*Math.PI-Math.PI/2;
+      var x1=cx+rTrack1*Math.cos(a0), y1=cy+rTrack1*Math.sin(a0);
+      var x2=cx+rTrack1*Math.cos(a1), y2=cy+rTrack1*Math.sin(a1);
+      var x3=cx+rTrack2*Math.cos(a1), y3=cy+rTrack2*Math.sin(a1);
+      var x4=cx+rTrack2*Math.cos(a0), y4=cy+rTrack2*Math.sin(a0);
+      var fill = nums[i]===0 ? '#15803d' : redSet[nums[i]] ? '#c41c1c' : '#1a1a1a';
+      // pocket
+      paths += '<path d="M'+x1.toFixed(2)+' '+y1.toFixed(2)
+        +' A'+rTrack1+' '+rTrack1+' 0 0 1 '+x2.toFixed(2)+' '+y2.toFixed(2)
+        +' L'+x3.toFixed(2)+' '+y3.toFixed(2)
+        +' A'+rTrack2+' '+rTrack2+' 0 0 0 '+x4.toFixed(2)+' '+y4.toFixed(2)
+        +' Z" fill="'+fill+'" stroke="rgba(0,0,0,.7)" stroke-width="0.4"/>';
+      // number text — rotated upward for readability
+      var midA=(a0+a1)/2;
+      var tr=81;
+      var tx=cx+tr*Math.cos(midA), ty=cy+tr*Math.sin(midA);
+      var rot=(midA*180/Math.PI)+90;
+      paths += '<text x="'+tx.toFixed(2)+'" y="'+ty.toFixed(2)+'"'
+        +' text-anchor="middle" dominant-baseline="central"'
+        +' font-size="5.2" font-weight="800" fill="white" font-family="Arial,sans-serif"'
+        +' transform="rotate('+rot.toFixed(1)+' '+tx.toFixed(2)+' '+ty.toFixed(2)+')">'
+        +nums[i]+'</text>';
+      // spoke dividers — thin gold lines
+      paths += '<line x1="'+(cx+rTrack2*Math.cos(a0)).toFixed(2)+'" y1="'+(cy+rTrack2*Math.sin(a0)).toFixed(2)
+        +'" x2="'+(cx+rTrack1*Math.cos(a0)).toFixed(2)+'" y2="'+(cy+rTrack1*Math.sin(a0)).toFixed(2)
+        +'" stroke="rgba(0,0,0,.6)" stroke-width="0.4"/>';
+    }
+    // Pocket border rings
+    paths += '<circle cx="100" cy="100" r="'+rTrack1+'" fill="none" stroke="rgba(0,0,0,.6)" stroke-width="0.5"/>';
+    paths += '<circle cx="100" cy="100" r="'+rTrack2+'" fill="none" stroke="rgba(0,0,0,.5)" stroke-width="0.5"/>';
+
+    // 3. Green fret channel (between numbers and cone)
+    paths += '<circle cx="100" cy="100" r="'+rFret+'" fill="#166534"/>';
+
+    // Fret triangles pointing inward (the little bumps you see in photo)
+    for(var i=0;i<N;i++){
+      var fa=((i+0.5)/N)*2*Math.PI-Math.PI/2;
+      var bx=cx+(rFret)*Math.cos(fa), by=cy+(rFret)*Math.sin(fa);
+      var tip_r=rFret-5;
+      var tx2=cx+tip_r*Math.cos(fa), ty2=cy+tip_r*Math.sin(fa);
+      var perp=fa+Math.PI/2;
+      var wx=3;
+      paths += '<polygon points="'
+        +(bx+wx*Math.cos(perp)).toFixed(2)+','+(by+wx*Math.sin(perp)).toFixed(2)+' '
+        +(bx-wx*Math.cos(perp)).toFixed(2)+','+(by-wx*Math.sin(perp)).toFixed(2)+' '
+        +tx2.toFixed(2)+','+ty2.toFixed(2)
+        +'" fill="#0d4a22" stroke="rgba(0,0,0,.4)" stroke-width="0.3"/>';
+    }
+
+    // 4. Dark inner bowl (reflective)
+    paths += '<circle cx="100" cy="100" r="'+rCone+'" fill="url(#bowlGrad)"/>';
+
+    // 5. Radial green spokes on the cone
+    for(var i=0;i<8;i++){
+      var sa=(i/8)*2*Math.PI;
+      paths += '<line x1="'+cx+'" y1="'+cy
+        +'" x2="'+(cx+rCone*Math.cos(sa)).toFixed(2)+'" y2="'+(cy+rCone*Math.sin(sa)).toFixed(2)+'"'
+        +' stroke="rgba(30,100,50,.5)" stroke-width="1"/>';
+    }
+
+    // Defs for gradients
+    var defs = '<defs>'
+      +'<radialGradient id="bowlGrad" cx="40%" cy="35%">'
+      +'<stop offset="0%" stop-color="#2a2a3a"/>'
+      +'<stop offset="40%" stop-color="#111118"/>'
+      +'<stop offset="100%" stop-color="#050508"/>'
+      +'</radialGradient>'
+      +'<radialGradient id="hubGrad" cx="35%" cy="30%">'
+      +'<stop offset="0%" stop-color="#ffffcc"/>'
+      +'<stop offset="30%" stop-color="#d4a820"/>'
+      +'<stop offset="100%" stop-color="#6a4010"/>'
+      +'</radialGradient>'
+      // Blue shimmer on bowl (like the photo)
+      +'<radialGradient id="shimmer" cx="65%" cy="60%">'
+      +'<stop offset="0%" stop-color="rgba(80,180,255,.35)"/>'
+      +'<stop offset="100%" stop-color="rgba(80,180,255,0)"/>'
+      +'</radialGradient>'
+      +'</defs>';
+
+    // Blue shimmer overlay (like photo)
+    paths += '<circle cx="100" cy="100" r="'+rCone+'" fill="url(#shimmer)"/>';
+
+    // 6. Hub assembly — chrome post
+    paths += '<circle cx="100" cy="100" r="12" fill="url(#hubGrad)" stroke="rgba(255,240,140,.3)" stroke-width="0.8"/>';
+    paths += '<circle cx="100" cy="100" r="7" fill="radial-gradient" />';
+    paths += '<circle cx="100" cy="100" r="5" fill="rgba(255,255,255,.15)"/>';
+    // Hub highlight
+    paths += '<ellipse cx="97" cy="97" rx="3" ry="2" fill="rgba(255,255,255,.35)" transform="rotate(-20 97 97)"/>';
+
+    var wheelSvg = '<svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">'
+      + defs + paths + '</svg>';
+
+    var labelRow = document.createElement('div');
     labelRow.className = 'ls-label-row';
-    labelRow.innerHTML = `<div class="ls-dot"></div><span class="ls-label">${s.label}</span><div class="ls-divider"></div><span class="ls-badge">${s.badge}</span>`;
+    labelRow.innerHTML = '<div class="ls-dot"></div>'
+      +'<span class="ls-label">'+s.label+'</span>'
+      +'<div class="ls-divider"></div>'
+      +'<div class="ls-q-banner">'
+      +'<div class="ls-marquee-strip top"><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div></div>'
+      +'<div class="ls-placard"><span class="ls-q-text">'+s.badge+'</span></div>'
+      +'<div class="ls-marquee-strip bottom"><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div><div class="ls-bulb"></div></div>'
+      +'</div>';
 
-    const card = document.createElement('div');
+    var headlineHtml = '<span class="ls-q-text">'+s.headline+'</span>';
+    var card = document.createElement('div');
     card.className = 'ls-card';
-    card.innerHTML = `
-      <div class="ls-stub">
-        <div class="ls-stub-hole top"></div>
-        <div class="ls-stub-hole bot"></div>
-      </div>
-      <div class="ls-body">
-        <div class="ls-main">
-          <div class="ls-kicker">${s.kicker}</div>
-          <div class="ls-headline">${s.headline}</div>
-          <p class="ls-thesis">${s.thesis}</p>
-          <div class="ls-legs">${legsHtml}</div>
-        </div>
-        <div class="ls-odds-col">
-          <div class="ls-odds-lbl">MARKET PRICE</div>
-          <div class="ls-odds-val">${s.odds}</div>
-          <div class="ls-return">${s.ret}</div>
-          <div class="ls-ev">${s.ev} EV</div>
-        </div>
-      </div>
-      <div class="ls-footer">
-        <span class="ls-warn">${s.warn}</span>
-        <div class="ls-metrics">${metricsHtml}</div>
-      </div>`;
+    card.innerHTML =
+      '<div class="ls-wheel-panel">'
+      +  '<div class="ls-wheel-rail"></div>'
+      +  '<div class="ls-wheel-track">'+wheelSvg+'</div>'
+      +  '<div class="ls-wheel-hub"></div>'
+      +  '<div class="ls-wheel-ball"></div>'
+      +'</div>'
+      +'<div class="ls-info">'
+      +  '<div class="ls-headline">'+headlineHtml+'</div>'
+      +  '<p class="ls-thesis">'+s.thesis+'</p>'
+      +  '<div class="ls-legs">'+legsHtml+'</div>'
+      +  '<div class="ls-footer-row">'
+      +    '<span class="ls-warn">\u26a0 '+s.warn+'</span>'
+      +    '<div class="ls-metrics">'+metricsHtml+'</div>'
+      +  '</div>'
+      +'</div>'
+      +'<div class="ls-odds-panel">'
+      +  '<div class="ls-odds-lbl">Payout</div>'
+      +  '<div class="ls-odds-val">'+s.odds+'</div>'
+      +  '<div class="ls-return">'+s.ret+'</div>'
+      +  '<div class="ls-ev">'+s.ev+' EV</div>'
+      +'</div>';
 
-    const wrap = document.createElement('div');
+    var wrap = document.createElement('div');
     wrap.className = 'ls-wrap';
     wrap.appendChild(labelRow);
     wrap.appendChild(card);
     container.appendChild(wrap);
   });
 }
+
 
 
 
@@ -2887,6 +3162,8 @@ renderPropParlays(MLB_PROP_PARLAYS, 'mlbContainer');
 renderFutures('nbaContainer', 'mlbContainer');
 renderLongshots(NBA_LONGSHOTS, 'nbaContainer');
 renderLongshots(MLB_LONGSHOTS, 'mlbContainer');
+
 </script>
+
 </body>
 </html>
