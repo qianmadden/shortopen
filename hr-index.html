@@ -11,11 +11,52 @@ function toggleMobileMenu(){
   m.classList.toggle('open'); if(b) b.classList.toggle('open');
   document.body.style.overflow=m.classList.contains('open')?'hidden':'';
 }
+
+function animateCounters() {
+  var els = document.querySelectorAll('.sbv-num[data-val]');
+  for (var i = 0; i < els.length; i++) {
+    (function(el, delay) {
+      var target = parseFloat(el.getAttribute('data-val'));
+      var fmt    = el.getAttribute('data-fmt') || '';
+      var dec    = parseInt(el.getAttribute('data-dec') || '0');
+      var clr    = el.getAttribute('data-color') || '';
+      if (clr) el.style.color = clr;
+      setTimeout(function() {
+        var start = Date.now(), dur = 460;
+        var timer = setInterval(function() {
+          var p = Math.min((Date.now() - start) / dur, 1);
+          var e = 1 - Math.pow(1 - p, 3);
+          el.textContent = (target * e).toFixed(dec) + fmt;
+          if (p >= 1) clearInterval(timer);
+        }, 14);
+      }, delay);
+    })(els[i], i * 60);
+  }
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  var el  = document.getElementById('live-text');
+  var cur = document.querySelector('.hr-cursor');
+  if (!el) return;
+  var text = 'HR Index · The Power Floor · Live Model Active';
+  var i = 0;
+  function type() {
+    if (i < text.length) {
+      el.textContent += text[i++];
+      setTimeout(type, 30);
+    } else if (cur) {
+      setTimeout(function(){ cur.style.display='none'; }, 900);
+    }
+  }
+  setTimeout(type, 500);
+});
+
 </script>
 <script src="https://cdn.tailwindcss.com?plugins="></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{--bg:#05070b;--bg2:#0d1117;--bg3:#111820;--border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.1);--gold:#f4b942;--green:#22c55e;--red:#ef4444;--blue:#57a7ff;--muted:#738296;--text:#e8edf5;--gl:#5DCAA5;--gd:rgba(29,158,117,.12);}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -587,6 +628,309 @@ padding:12px 14px;
 
 }
 
+
+/* ════════════════════════════════════════════════════════════
+   POWER BOARD — casino skin (matches market.html DNA)
+   navy base · brass frame · marquee bulbs · gold foil · chips
+   ════════════════════════════════════════════════════════════ */
+@keyframes foilShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+@keyframes bulbChase { 0%,90%,100%{background:#5a4310;box-shadow:inset 0 0 2px rgba(0,0,0,.7)} 45%{background:#ffe066;box-shadow:0 0 6px rgba(255,220,80,.9),0 0 12px rgba(255,200,40,.5)} }
+@keyframes ledFill { from{transform:scaleX(0)} to{transform:scaleX(1)} }
+
+.foil, .sub-header h1, .hr-live span, .pcn {
+  background:linear-gradient(90deg,#fffde0,#f4b942 22%,#ffe066 38%,#c8920a 62%,#fffde0 100%);
+  background-size:220% auto;
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; color:transparent;
+  animation:foilShift 5s ease-in-out infinite;
+}
+
+/* ── Sub-header → marquee signage ── */
+.sub-header { background:rgba(7,11,18,.96); border-bottom:1px solid rgba(244,185,66,.20); }
+.sub-header h1 { font-family:'Playfair Display',serif; font-weight:900; font-size:1.18rem; letter-spacing:.01em; }
+.badge, .badge-yr {
+  font-family:'DM Mono',monospace; font-weight:700; color:#ffe39a;
+  background:radial-gradient(circle at 50% -30%, rgba(244,185,66,.24), rgba(0,0,0,.4));
+  border:1px solid rgba(244,185,66,.42);
+  box-shadow:inset 0 1px 0 rgba(255,220,120,.22), 0 1px 3px rgba(0,0,0,.5);
+}
+.search { border:1px solid rgba(244,185,66,.18); }
+.search:focus { border-color:rgba(244,185,66,.5); }
+
+/* ── Live banner → casino placard ── */
+.hr-live {
+  position:relative;
+  background:linear-gradient(180deg,#0c1320,#0a0f18);
+  border:1px solid rgba(244,185,66,.28);
+  box-shadow:0 0 0 3px #0a0f18, 0 0 0 4px rgba(244,185,66,.30), 0 12px 30px rgba(0,0,0,.4);
+}
+.hr-live::before, .hr-live::after {
+  content:''; position:absolute; width:9px; height:9px;
+  border-color:rgba(244,185,66,.6); border-style:solid;
+}
+.hr-live::before { top:5px; left:8px; border-width:1px 0 0 1px; }
+.hr-live::after  { bottom:5px; right:8px; border-width:0 1px 1px 0; }
+.hr-dot { background:#ffe066; box-shadow:0 0 12px rgba(255,220,80,.95); }
+.hr-live span { font-family:'Playfair Display',serif; font-weight:900; font-size:.78rem; letter-spacing:.04em; }
+
+/* ── Sort buttons → brass chips ── */
+.fl { color:#8a7a4a; }
+.sb {
+  font-family:'DM Mono',monospace; font-weight:600;
+  background:linear-gradient(180deg,#11202f,#0c1825);
+  border:1px solid rgba(244,185,66,.2); color:#9fb1c6; border-radius:999px;
+}
+.sb:hover { border-color:rgba(244,185,66,.45); color:#ffe066; }
+.sb.active {
+  background:linear-gradient(180deg,#ffe27a 0%,#f4b942 55%,#d49a1c 100%);
+  border:1px solid #ffe9a8; color:#1a1206; font-weight:700;
+  box-shadow:inset 0 1px 0 rgba(255,255,220,.7), inset 0 -2px 3px rgba(120,80,10,.5), 0 2px 6px rgba(0,0,0,.5);
+}
+.cnt { color:#7e6c3c; }
+
+/* ── The board: brass-framed felt-navy table ── */
+.table-wrap {
+  position:relative;
+  border:1px solid rgba(244,185,66,.28);
+  border-radius:14px;
+  background:
+    repeating-linear-gradient(45deg, transparent 0 3px, rgba(0,0,0,.05) 3px 4px),
+    radial-gradient(ellipse at 50% -6%, rgba(244,185,66,.06), transparent 55%),
+    linear-gradient(180deg,#0d1420,#0a0f18);
+  box-shadow:
+    0 0 0 4px #0a0f18, 0 0 0 6px rgba(244,185,66,.34), 0 0 0 10px #060911,
+    0 28px 60px rgba(0,0,0,.6), inset 0 0 60px rgba(0,0,0,.4);
+}
+table { background:transparent; }
+
+/* ── Marquee bulb rail ── */
+.mq-rail {
+  display:flex; align-items:center; justify-content:space-between;
+  gap:6px; padding:6px 16px;
+  background:#0a0f18; border-bottom:1px solid rgba(244,185,66,.2);
+}
+.mq-bulb {
+  width:5px; height:5px; border-radius:50%;
+  background:#5a4310; box-shadow:inset 0 0 2px rgba(0,0,0,.7);
+  flex-shrink:0; animation:bulbChase 1.4s linear infinite;
+}
+
+/* ── Header bar ── */
+thead tr { background:linear-gradient(180deg,#132030,#0e1820); }
+th {
+  font-family:'DM Mono',monospace; color:#9a7f3e;
+  letter-spacing:.14em; border-bottom:1px solid rgba(244,185,66,.26);
+}
+th:first-child, th:last-child { color:#ffd36b; }
+th:hover { color:#ffe066; }
+
+/* ── Rows ── */
+tbody tr { border-bottom:1px solid rgba(244,185,66,.06); }
+tbody tr:hover { background:linear-gradient(90deg, rgba(244,185,66,.08), rgba(244,185,66,.012)); }
+tbody tr.sel {
+  background:linear-gradient(90deg, rgba(244,185,66,.13), rgba(244,185,66,.02));
+  box-shadow:inset 3px 0 0 #f4b942;
+}
+.pname { color:#fff7e6; font-weight:700; }
+.pteam { color:#9c8a52; }
+
+/* ── HR% → glowing odds number ── */
+.hrnum {
+  font-family:'Inter',sans-serif; font-weight:900 !important;
+  font-size:1.02rem; letter-spacing:-.01em;
+  text-shadow:0 0 8px currentColor;
+}
+
+/* ── Tier / variance pills → minted chips ── */
+.pill {
+  font-family:'DM Mono',monospace; font-weight:700;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14), 0 1px 2px rgba(0,0,0,.45);
+}
+
+/* ── Stat meters → segmented LED meters ── */
+.mb { gap:8px; }
+.mb > span {
+  font-family:'DM Mono',monospace; font-weight:700;
+  color:#e9eef6; font-size:12px; min-width:30px;
+}
+.mbg {
+  position:relative; height:10px; width:64px; border-radius:3px;
+  background:rgba(0,0,0,.5);
+  box-shadow:inset 0 0 0 1px rgba(244,185,66,.12), inset 0 1px 3px rgba(0,0,0,.7);
+  overflow:hidden;
+}
+.mbf {
+  height:10px; border-radius:2px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3), 0 0 6px rgba(255,255,255,.08);
+  transform-origin:left center; animation:ledFill .5s ease both;
+}
+.mbg::after {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:repeating-linear-gradient(90deg, transparent 0 5px, rgba(5,8,12,.7) 5px 7px);
+}
+
+/* ── Side panel → green-felt payout ticket ── */
+.side {
+  background:linear-gradient(180deg, rgba(11,33,20,.92), rgba(7,22,13,.96));
+  border-left:1px solid rgba(244,185,66,.2);
+}
+.sl { color:#caa24e; font-family:'DM Mono',monospace; }
+.slbl { color:#9fb39c; }
+.sv { color:#fff2d8; font-family:'DM Mono',monospace; }
+input[type=range] { accent-color:#f4b942; }
+.divider { border-top:1px solid rgba(244,185,66,.18); }
+
+.pc {
+  position:relative;
+  border:1px solid rgba(244,185,66,.3); border-radius:14px;
+  background:
+    repeating-linear-gradient(45deg, transparent 0 3px, rgba(0,0,0,.05) 3px 4px),
+    radial-gradient(ellipse at 50% -15%, rgba(244,185,66,.10), transparent 55%),
+    linear-gradient(160deg,#0e2e18,#0a1f12 55%,#0d2616);
+  box-shadow:0 0 0 3px rgba(10,31,18,.9), 0 0 0 4px rgba(244,185,66,.28), 0 18px 40px rgba(0,0,0,.55);
+}
+.pc::before, .pc::after {
+  content:''; position:absolute; width:9px; height:9px;
+  border-color:rgba(244,185,66,.6); border-style:solid;
+}
+.pc::before { top:6px; left:8px; border-width:1px 0 0 1px; }
+.pc::after  { bottom:6px; right:8px; border-width:0 1px 1px 0; }
+.pcn { font-family:'Playfair Display',serif; font-weight:900; font-size:18px; }
+.pct2 { color:#9fb39c; font-family:'DM Mono',monospace; }
+.pc-big {
+  font-family:'Inter',sans-serif; font-weight:900;
+  text-shadow:0 0 20px currentColor;
+}
+.pc-lbl { color:#b6c6c0; }
+.mw { background:rgba(0,0,0,.4); box-shadow:inset 0 0 0 1px rgba(244,185,66,.12); }
+
+/* breakdown chip tiles */
+.sb2 {
+  background:radial-gradient(circle at 50% -30%, rgba(244,185,66,.10), rgba(0,0,0,.25));
+  border:1px solid rgba(244,185,66,.2); border-radius:9px;
+}
+.sbl { color:#9fb39c; }
+
+/* PA chip row */
+.pad-lbl { color:#9fb39c; }
+.pdot { font-family:'DM Mono',monospace; }
+
+/* formula slip */
+.fb { background:rgba(0,0,0,.42); border:1px solid rgba(244,185,66,.2); }
+.ft { color:#caa24e; }
+.fl2 code { color:#ffe39a; background:rgba(244,185,66,.12); }
+
+
+th.th-active { color: #ffd36b !important; }
+.th-caret { margin-left:4px; font-size:9px; opacity:.75; }
+
+/* ── Cascading PA chain ── */
+@keyframes nodeLight {
+  0%   { background:rgba(0,0,0,.4); border-color:rgba(244,185,66,.15); color:#5a4310; box-shadow:none; transform:scale(0.8); opacity:0; }
+  60%  { transform:scale(1.12); opacity:1; }
+  100% { background:var(--nd-bg); border-color:var(--nd-bc); color:var(--nd-col); box-shadow:var(--nd-shadow); transform:scale(1); opacity:1; }
+}
+@keyframes nodeLabel {
+  from { opacity:0; transform:translateY(4px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes segFill {
+  from { background:rgba(244,185,66,.08); transform:scaleX(0); }
+  to   { background:rgba(244,185,66,.5); transform:scaleX(1); }
+}
+.pad-chain { margin-top:8px; padding:2px 0 6px; }
+.pad-row   { display:flex; align-items:center; }
+.pad-node-wrap { display:flex; flex-direction:column; align-items:center; gap:5px; flex-shrink:0; }
+.pad-circle {
+  width:40px; height:40px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'DM Mono',monospace; font-size:9px; font-weight:700;
+  background:rgba(0,0,0,.4); border:1px solid rgba(244,185,66,.15);
+  color:#5a4310; box-shadow:none;
+  animation:nodeLight .45s cubic-bezier(.34,1.56,.64,1) both;
+}
+.pad-node-lbl {
+  font-family:'DM Mono',monospace; font-size:8px; letter-spacing:.1em;
+  text-transform:uppercase; color:#7e6c3c;
+  opacity:0; animation:nodeLabel .3s ease both;
+}
+.pad-seg {
+  flex:1; height:2px; border-radius:1px;
+  background:rgba(244,185,66,.08); transform-origin:left center;
+  animation:segFill .3s ease both;
+}
+
+/* ── Typewriter cursor ── */
+@keyframes cursorBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+.hr-cursor {
+  font-style:normal; font-family:'DM Mono',monospace; font-size:.66rem;
+  color:rgba(244,185,66,.75); animation:cursorBlink .65s step-end infinite;
+  margin-left:1px; line-height:1;
+}
+/* LIVE neon chip */
+.hr-live-chip {
+  margin-left:auto; font-family:'DM Mono',monospace;
+  font-size:0.48rem; font-weight:700; letter-spacing:.18em;
+  color:#5effb0; background:rgba(70,255,160,.08);
+  border:1px solid rgba(70,255,160,.38); border-radius:5px;
+  padding:3px 9px;
+}
+/* ── Stat card slide-in + accent ── */
+@keyframes cardSlideIn {
+  from { opacity:0; transform:translateY(6px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.sb2 {
+  animation:cardSlideIn .35s ease both;
+  border-top:2px solid rgba(244,185,66,.28) !important;
+  position:relative; overflow:hidden;
+}
+.sb2::before {
+  content:''; position:absolute; inset:0 0 0 0;
+  background:linear-gradient(180deg,rgba(255,255,255,.03),transparent);
+  pointer-events:none;
+}
+/* ── Tier-color left rails on board rows ── */
+
+#tbody tr.sel.tier-elite td,
+#tbody tr.sel.tier-above td,
+#tbody tr.sel.tier-avg   td,
+#tbody tr.sel.tier-below td { background:linear-gradient(90deg,rgba(244,185,66,.13),rgba(244,185,66,.02)) !important; }
+
+/* live-text: override foil — plain gold, clearly visible */
+#live-text {
+  font-family:'DM Mono',monospace !important;
+  font-size:.66rem !important; font-weight:700 !important;
+  letter-spacing:.18em !important; text-transform:uppercase;
+  -webkit-text-fill-color:#f4b942 !important;
+  color:#f4b942 !important;
+  background:none !important;
+  -webkit-background-clip:unset !important;
+  background-clip:unset !important;
+  animation:none !important;
+}
+
+
+  0%      { opacity:0; }
+  8%      { opacity:1; }
+  35%     { transform:translateX(250%); opacity:0; }
+}
+
+
+
+
+/* ── Tier: breathing glow bar via ::before (bypasses border-collapse) ── */
+@keyframes glowE { 0%,100%{opacity:.35;box-shadow:none} 50%{opacity:1;box-shadow:0 0 10px 2px rgba(34,197,94,.35)} }
+@keyframes glowA { 0%,100%{opacity:.3;box-shadow:none}  50%{opacity:1;box-shadow:0 0 8px 2px rgba(244,185,66,.3)}  }
+@keyframes glowM { 0%,100%{opacity:.25;box-shadow:none} 50%{opacity:.9;box-shadow:0 0 7px 1px rgba(240,125,48,.25)} }
+@keyframes glowB { 0%,100%{opacity:.2;box-shadow:none}  50%{opacity:.8;box-shadow:0 0 6px 1px rgba(239,68,68,.2)}   }
+#tbody tr td:first-child { position:relative; }
+#tbody tr.tier-elite td:first-child::before { content:''; position:absolute; left:0; top:8%; width:3px; height:84%; border-radius:2px; background:#22c55e; animation:glowE 3s   ease-in-out infinite; animation-delay:calc(var(--ri,0)*-.45s); }
+#tbody tr.tier-above td:first-child::before { content:''; position:absolute; left:0; top:8%; width:3px; height:84%; border-radius:2px; background:#f4b942; animation:glowA 4.5s ease-in-out infinite; animation-delay:calc(var(--ri,0)*-.45s); }
+#tbody tr.tier-avg   td:first-child::before { content:''; position:absolute; left:0; top:8%; width:3px; height:84%; border-radius:2px; background:#f07d30; animation:glowM 6s   ease-in-out infinite; animation-delay:calc(var(--ri,0)*-.45s); }
+#tbody tr.tier-below td:first-child::before { content:''; position:absolute; left:0; top:8%; width:3px; height:84%; border-radius:2px; background:#ef4444; animation:glowB 8s   ease-in-out infinite; animation-delay:calc(var(--ri,0)*-.45s); }
+#tbody tr.tier-elite { background:linear-gradient(90deg,rgba(34,197,94,.05) 0%,transparent 16%); }
+#tbody tr.tier-above { background:linear-gradient(90deg,rgba(244,185,66,.04) 0%,transparent 16%); }
 </style>
 </head>
 <body>
@@ -625,7 +969,7 @@ padding:12px 14px;
 
 <!-- SUB HEADER -->
 <div class="sub-header">
-  <h1>MLB Hitter Stats</h1>
+  <h1>MLB Power/Whiff Per PA</h1>
   <span class="badge-yr">2025–2026 Sample</span>
   <span class="badge" id="cnt-badge">221 players</span>
   <div style="margin-left:auto">
@@ -639,7 +983,8 @@ padding:12px 14px;
 
 <div class="hr-live">
 <div class="hr-dot"></div>
-<span>LIVE HOME RUN MODEL TERMINAL · MARKET DATA ACTIVE</span>
+<span id="live-text"></span><i class="hr-cursor">|</i>
+<b class="hr-live-chip">LIVE</b>
 </div>
 
     <div class="filter-bar">
@@ -650,23 +995,26 @@ padding:12px 14px;
       <button class="sb" id="btn-hh" onclick="setSort('hh')">Hard Hit%</button>
       <button class="sb" id="btn-k" onclick="setSort('k')">K%↑</button>
       <button class="sb" id="btn-bb" onclick="setSort('bb')">BB%</button>
+      <button class="sb" id="btn-whiff" onclick="setSort('whiff')">Whiff%</button>
+      <button class="sb" id="btn-swing" onclick="setSort('swing')">Swing%</button>
+      <button class="sb" id="btn-variance" onclick="setSort('variance')">Variance</button>
       <button class="sb" id="btn-name" onclick="setSort('name')">Name</button>
       <span class="cnt" id="rcnt"></span>
     </div>
     <div class="table-wrap">
+      <div class="mq-rail" id="hrBulbs"></div>
       <table>
         <thead><tr>
-          <th style="width:200px">Player</th>
-          <th>HR%/Game</th>
-          <th>Variance</th>
-          <th>xwOBA</th>
-          <th>Barrel%</th>
-          <th>Hard Hit%</th>
-          <th>K%</th>
-          <th>BB%</th>
-          <th>Whiff%</th>
-          <th>Swing%</th>
-          <th>Sample PA</th>
+          <th data-key="name" data-label="Player" onclick="setSort('name')" style="width:200px">Player</th>
+          <th data-key="hr" data-label="HR%/Game" onclick="setSort('hr')">HR%/Game</th>
+          <th data-key="variance" data-label="Variance" onclick="setSort('variance')">Variance</th>
+          <th data-key="xwoba" data-label="xwOBA" onclick="setSort('xwoba')">xwOBA</th>
+          <th data-key="barrel" data-label="Barrel%" onclick="setSort('barrel')">Barrel%</th>
+          <th data-key="hh" data-label="Hard Hit%" onclick="setSort('hh')">Hard Hit%</th>
+          <th data-key="k" data-label="K%" onclick="setSort('k')">K%</th>
+          <th data-key="bb" data-label="BB%" onclick="setSort('bb')">BB%</th>
+          <th data-key="whiff" data-label="Whiff%" onclick="setSort('whiff')">Whiff%</th>
+          <th data-key="swing" data-label="Swing%" onclick="setSort('swing')">Swing%</th>
         </tr></thead>
         <tbody id="tbody"></tbody>
       </table>
@@ -697,231 +1045,230 @@ padding:12px 14px;
 
 <script>
 var PLAYERS=[
-{name:"Aaron Judge",team:"New York Yankees",pa:757,k:24.07,bb:17.48,xwoba:0.46,barrel:28.1,hh:74.8,whiff:34.0,swing:43.69},
-{name:"Addison Barger",team:"Toronto Blue Jays",pa:502,k:24.1,bb:7.2,xwoba:0.33,barrel:11.4,hh:51.0,whiff:26.1,swing:49.2},
-{name:"Adolis García",team:"Texas Rangers",pa:620,k:25.02,bb:5.3,xwoba:0.31,barrel:11.76,hh:47.35,whiff:30.35,swing:51.36},
-{name:"Agustín Ramírez",team:"Miami Marlins",pa:659,k:23.56,bb:6.72,xwoba:0.33,barrel:10.45,hh:45.62,whiff:26.13,swing:49.69},
-{name:"Alec Bohm",team:"Philadelphia Phillies",pa:573,k:16.43,bb:5.97,xwoba:0.32,barrel:5.45,hh:46.0,whiff:15.35,swing:47.19},
-{name:"Alec Burleson",team:"St. Louis Cardinals",pa:626,k:13.92,bb:7.96,xwoba:0.35,barrel:9.76,hh:44.0,whiff:17.96,swing:49.2},
-{name:"Alejandro Kirk",team:"Toronto Blue Jays",pa:506,k:11.7,bb:9.5,xwoba:0.36,barrel:10.1,hh:50.8,whiff:18.5,swing:47.2},
-{name:"Alek Thomas",team:"Arizona Diamondbacks",pa:158,k:25.9,bb:3.4,xwoba:0.27,barrel:5.0,hh:45.0,whiff:29.7,swing:56.3},
-{name:"Alex Bregman",team:"Chicago Cubs",pa:384,k:17.6,bb:10.7,xwoba:0.3,barrel:6.6,hh:47.5,whiff:16.5,swing:36.5},
-{name:"Andrew McCutchen",team:"Texas Rangers",pa:551,k:21.4,bb:12.2,xwoba:0.33,barrel:8.3,hh:42.5,whiff:26.2,swing:45.6},
-{name:"Andrés Giménez",team:"Cleveland Guardians",pa:167,k:13.4,bb:6.0,xwoba:0.3,barrel:5.6,hh:29.6,whiff:17.5,swing:56.1},
-{name:"Andy Pages",team:"Los Angeles Dodgers",pa:695,k:21.99,bb:4.7,xwoba:0.32,barrel:8.6,hh:39.36,whiff:21.81,swing:52.65},
-{name:"Angel Martínez",team:"Cleveland Guardians",pa:189,k:11.9,bb:5.1,xwoba:0.35,barrel:6.4,hh:42.6,whiff:13.3,swing:51.1},
-{name:"Anthony Volpe",team:"New York Yankees",pa:596,k:27.2,bb:7.2,xwoba:0.3,barrel:10.5,hh:41.9,whiff:25.1,swing:45.9},
-{name:"Austin Riley",team:"Atlanta Braves",pa:379,k:17.7,bb:11.4,xwoba:0.33,barrel:8.9,hh:42.9,whiff:32.1,swing:46.3},
-{name:"Austin Wells",team:"New York Yankees",pa:257,k:22.1,bb:17.5,xwoba:0.34,barrel:8.6,hh:51.4,whiff:28.2,swing:46.8},
-{name:"Ben Rice",team:"New York Yankees",pa:596,k:19.83,bb:10.71,xwoba:0.4,barrel:15.98,hh:57.05,whiff:21.8,swing:42.62},
-{name:"Bo Bichette",team:"New York Mets",pa:713,k:15.72,bb:6.34,xwoba:0.35,barrel:7.16,hh:47.83,whiff:19.4,swing:53.28},
-{name:"Bobby Witt Jr.",team:"Kansas City Royals",pa:765,k:18.17,bb:7.68,xwoba:0.36,barrel:12.36,hh:49.03,whiff:24.01,swing:50.8},
-{name:"Brady House",team:"Washington Nationals",pa:169,k:29.0,bb:7.2,xwoba:0.3,barrel:9.1,hh:38.6,whiff:28.7,swing:51.1},
-{name:"Brandon Lowe",team:"Pittsburgh Pirates",pa:625,k:26.2,bb:7.87,xwoba:0.34,barrel:12.7,hh:73.0,whiff:33.9,swing:54.38},
-{name:"Brandon Marsh",team:"Philadelphia Phillies",pa:266,k:22.7,bb:4.5,xwoba:0.34,barrel:6.3,hh:45.8,whiff:22.0,swing:51.9},
-{name:"Brandon Nimmo",team:"Texas Rangers",pa:732,k:21.57,bb:7.82,xwoba:0.32,barrel:8.83,hh:48.89,whiff:23.68,swing:47.53},
-{name:"Brayan Rocchio",team:"Cleveland Guardians",pa:169,k:11.6,bb:13.0,xwoba:0.34,barrel:4.0,hh:32.0,whiff:20.7,swing:46.9},
-{name:"Brendan Donovan",team:"Seattle Mariners",pa:580,k:13.62,bb:8.66,xwoba:0.34,barrel:8.37,hh:39.68,whiff:14.81,swing:43.3},
-{name:"Brent Rooker",team:"Oakland Athletics",pa:699,k:22.2,bb:9.3,xwoba:0.35,barrel:13.7,hh:44.8,whiff:30.8,swing:50.0},
-{name:"Brenton Doyle",team:"Colorado Rockies",pa:538,k:25.7,bb:5.6,xwoba:0.3,barrel:10.8,hh:44.6,whiff:29.7,swing:50.4},
-{name:"Brett Baty",team:"New York Mets",pa:161,k:32.8,bb:0.0,xwoba:0.22,barrel:7.3,hh:34.1,whiff:28.9,swing:52.5},
-{name:"Brice Turang",team:"Milwaukee Brewers",pa:729,k:22.67,bb:10.83,xwoba:0.34,barrel:8.05,hh:47.65,whiff:20.66,swing:43.5},
-{name:"Brooks Lee",team:"Minnesota Twins",pa:584,k:17.68,bb:5.67,xwoba:0.28,barrel:5.69,hh:38.15,whiff:23.73,swing:50.25},
-{name:"Bryan Reynolds",team:"Pittsburgh Pirates",pa:734,k:26.34,bb:9.39,xwoba:0.34,barrel:10.15,hh:46.32,whiff:29.45,swing:48.71},
-{name:"Bryce Harper",team:"Philadelphia Phillies",pa:656,k:20.16,bb:12.23,xwoba:0.38,barrel:12.77,hh:46.84,whiff:30.38,swing:53.84},
-{name:"Bryson Stott",team:"Philadelphia Phillies",pa:619,k:16.36,bb:9.33,xwoba:0.31,barrel:5.26,hh:31.45,whiff:17.07,swing:40.6},
-{name:"Byron Buxton",team:"Minnesota Twins",pa:617,k:27.23,bb:7.49,xwoba:0.35,barrel:17.44,hh:53.22,whiff:31.42,swing:51.8},
-{name:"CJ Abrams",team:"Washington Nationals",pa:707,k:19.11,bb:6.2,xwoba:0.32,barrel:8.2,hh:63.5,whiff:24.85,swing:50.35},
-{name:"Cal Raleigh",team:"Seattle Mariners",pa:788,k:27.44,bb:13.48,xwoba:0.36,barrel:18.59,hh:47.12,whiff:31.81,swing:51.69},
-{name:"Caleb Durbin",team:"Milwaukee Brewers",pa:568,k:10.4,bb:6.14,xwoba:0.31,barrel:3.56,hh:26.57,whiff:13.36,swing:44.25},
-{name:"Cam Smith",team:"Houston Astros",pa:76,k:22.4,bb:10.5,xwoba:0.41,barrel:20.0,hh:54.0,whiff:28.6,swing:47.8},
-{name:"Carlos Correa",team:"Minnesota Twins",pa:653,k:18.63,bb:8.11,xwoba:0.34,barrel:7.1,hh:45.52,whiff:22.41,swing:46.45},
-{name:"Carson Benge",team:"Texas Rangers",pa:159,k:25.4,bb:10.2,xwoba:0.28,barrel:5.3,hh:39.5,whiff:25.0,swing:49.0},
-{name:"Ceddanne Rafaela",team:"Boston Red Sox",pa:644,k:19.69,bb:4.84,xwoba:0.31,barrel:9.05,hh:38.59,whiff:27.07,swing:57.85},
-{name:"Cedric Mullins",team:"Tampa Bay Rays",pa:260,k:21.7,bb:3.3,xwoba:0.21,barrel:2.3,hh:31.8,whiff:20.2,swing:51.9},
-{name:"Chandler Simpson",team:"Tampa Bay Rays",pa:169,k:5.8,bb:4.3,xwoba:0.3,barrel:0.0,hh:12.9,whiff:8.8,swing:47.9},
-{name:"Chase DeLauter",team:"Cleveland Guardians",pa:167,k:16.4,bb:11.9,xwoba:0.41,barrel:16.7,hh:50.0,whiff:17.1,swing:39.6},
-{name:"Chase Meidroth",team:"Chicago White Sox",pa:574,k:15.19,bb:9.22,xwoba:0.3,barrel:1.94,hh:36.83,whiff:13.79,swing:38.34},
-{name:"Christian Walker",team:"Arizona Diamondbacks",pa:716,k:26.3,bb:6.88,xwoba:0.32,barrel:13.05,hh:46.13,whiff:30.32,swing:51.81},
-{name:"Christian Yelich",team:"Milwaukee Brewers",pa:644,k:25.9,bb:9.9,xwoba:0.33,barrel:10.3,hh:46.4,whiff:29.2,swing:45.7},
-{name:"Cody Bellinger",team:"New York Yankees",pa:730,k:13.68,bb:9.19,xwoba:0.33,barrel:7.49,hh:37.81,whiff:18.58,swing:47.87},
-{name:"Cole Young",team:"Pittsburgh Pirates",pa:74,k:25.7,bb:10.8,xwoba:0.29,barrel:6.5,hh:26.1,whiff:25.7,swing:46.3},
-{name:"Colson Montgomery",team:"Chicago White Sox",pa:171,k:33.8,bb:7.0,xwoba:0.26,barrel:10.3,hh:28.2,whiff:37.7,swing:51.3},
-{name:"Colt Keith",team:"Detroit Tigers",pa:161,k:24.6,bb:4.9,xwoba:0.34,barrel:9.3,hh:55.8,whiff:24.8,swing:43.9},
-{name:"Connor Norby",team:"Miami Marlins",pa:166,k:22.7,bb:9.1,xwoba:0.31,barrel:9.8,hh:34.1,whiff:29.1,swing:47.4},
-{name:"Corbin Carroll",team:"Arizona Diamondbacks",pa:313,k:23.96,bb:10.63,xwoba:0.37,barrel:14.19,hh:49.23,whiff:25.55,swing:48.5},
-{name:"Corey Seager",team:"Texas Rangers",pa:678,k:25.6,bb:15.4,xwoba:0.34,barrel:17.4,hh:45.7,whiff:35.5,swing:49.5},
-{name:"Dansby Swanson",team:"Chicago Cubs",pa:720,k:25.93,bb:8.49,xwoba:0.35,barrel:11.97,hh:48.53,whiff:30.53,swing:49.27},
-{name:"Daniel Susac",team:"San Francisco Giants",pa:70,k:16.6,bb:8.49,xwoba:0.35,barrel:19.97,hh:47.47,whiff:28.22,swing:41.41},
-{name:"Daulton Varsho",team:"Toronto Blue Jays",pa:167,k:11.9,bb:10.4,xwoba:0.33,barrel:5.8,hh:34.6,whiff:17.3,swing:52.9},
-{name:"Daylen Lile",team:"Washington Nationals",pa:82,k:14.6,bb:4.9,xwoba:0.33,barrel:3.0,hh:40.0,whiff:21.8,swing:57.2},
-{name:"Dillon Dingler",team:"Detroit Tigers",pa:157,k:17.5,bb:5.3,xwoba:0.43,barrel:15.8,hh:57.9,whiff:23.5,swing:50.0},
-{name:"Drake Baldwin",team:"Atlanta Braves",pa:186,k:17.4,bb:7.0,xwoba:0.4,barrel:15.9,hh:42.9,whiff:19.5,swing:49.6},
-{name:"Elly De La Cruz",team:"Cincinnati Reds",pa:279,k:26.32,bb:9.77,xwoba:0.33,barrel:12.5,hh:76.0,whiff:31.72,swing:45.21},
-{name:"Eric Wagaman",team:"Minnesota Twins",pa:514,k:19.5,bb:6.2,xwoba:0.32,barrel:6.8,hh:46.5,whiff:24.2,swing:45.2},
-{name:"Ernie Clement",team:"Toronto Blue Jays",pa:659,k:9.88,bb:4.26,xwoba:0.29,barrel:2.14,hh:26.14,whiff:14.5,swing:54.42},
-{name:"Eugenio Suárez",team:"Arizona Diamondbacks",pa:728,k:29.78,bb:7.28,xwoba:0.32,barrel:14.04,hh:45.45,whiff:33.33,swing:50.05},
-{name:"Evan Carter",team:"Texas Rangers",pa:162,k:24.2,bb:17.7,xwoba:0.37,barrel:11.1,hh:47.2,whiff:22.8,swing:37.3},
-{name:"Ezequiel Tovar",team:"Colorado Rockies",pa:173,k:28.8,bb:4.1,xwoba:0.34,barrel:8.3,hh:45.8,whiff:30.1,swing:62.0},
-{name:"Fernando Tatis Jr.",team:"San Diego Padres",pa:769,k:19.15,bb:12.64,xwoba:0.37,barrel:11.16,hh:53.96,whiff:27.14,swing:46.3},
-{name:"Francisco Alvarez",team:"New York Mets",pa:159,k:18.6,bb:11.9,xwoba:0.46,barrel:21.6,hh:48.6,whiff:29.0,swing:43.7},
-{name:"Francisco Lindor",team:"New York Mets",pa:819,k:17.95,bb:9.18,xwoba:0.34,barrel:8.75,hh:43.93,whiff:21.25,swing:47.39},
-{name:"Freddie Freeman",team:"Los Angeles Dodgers",pa:707,k:19.51,bb:9.23,xwoba:0.36,barrel:10.99,hh:46.54,whiff:26.18,swing:52.1},
-{name:"Gavin Lux",team:"Tampa Bay Rays",pa:503,k:22.7,bb:11.1,xwoba:0.3,barrel:3.6,hh:36.9,whiff:21.6,swing:42.7},
-{name:"Gavin Sheets",team:"San Diego Padres",pa:545,k:19.6,bb:8.1,xwoba:0.34,barrel:9.5,hh:46.5,whiff:23.0,swing:44.7},
-{name:"George Springer",team:"Toronto Blue Jays",pa:648,k:19.25,bb:11.91,xwoba:0.39,barrel:15.52,hh:47.11,whiff:25.92,swing:46.66},
-{name:"Geraldo Perdomo",team:"Arizona Diamondbacks",pa:797,k:11.27,bb:13.22,xwoba:0.35,barrel:5.77,hh:31.44,whiff:11.76,swing:39.67},
-{name:"Giancarlo Stanton",team:"New York Yankees",pa:68,k:30.9,bb:8.8,xwoba:0.32,barrel:14.6,hh:36.6,whiff:39.0,swing:44.7},
-{name:"Gleyber Torres",team:"Detroit Tigers",pa:705,k:16.33,bb:13.73,xwoba:0.36,barrel:7.95,hh:37.31,whiff:19.65,swing:40.8},
-{name:"Gunnar Henderson",team:"Baltimore Orioles",pa:737,k:21.81,bb:9.48,xwoba:0.34,barrel:8.8,hh:76.6,whiff:25.31,swing:47.39},
-{name:"Heliot Ramos",team:"San Francisco Giants",pa:761,k:23.89,bb:7.11,xwoba:0.31,barrel:8.47,hh:46.76,whiff:25.79,swing:48.07},
-{name:"Hunter Goodman",team:"Colorado Rockies",pa:649,k:27.93,bb:5.85,xwoba:0.32,barrel:12.37,hh:46.92,whiff:33.01,swing:54.71},
-{name:"Ian Happ",team:"Chicago Cubs",pa:738,k:24.01,bb:12.86,xwoba:0.35,barrel:11.12,hh:44.72,whiff:25.82,swing:43.73},
-{name:"Isaac Paredes",team:"Houston Astros",pa:259,k:18.6,bb:8.5,xwoba:0.29,barrel:0.0,hh:25.6,whiff:20.8,swing:46.3},
-{name:"Iván Herrera",team:"St. Louis Cardinals",pa:83,k:12.0,bb:21.7,xwoba:0.39,barrel:5.7,hh:49.1,whiff:15.0,swing:39.7},
-{name:"J.P. Crawford",team:"Seattle Mariners",pa:654,k:18.7,bb:11.3,xwoba:0.33,barrel:4.8,hh:34.7,whiff:20.4,swing:45.1},
-{name:"J.T. Realmuto",team:"Philadelphia Phillies",pa:550,k:23.5,bb:6.4,xwoba:0.32,barrel:8.8,hh:45.5,whiff:24.3,swing:48.6},
-{name:"JJ Wetherholt",team:"St. Louis Cardinals",pa:182,k:17.1,bb:14.6,xwoba:0.35,barrel:7.4,hh:38.9,whiff:23.6,swing:43.4},
-{name:"Jac Caglianone",team:"Kansas City Royals",pa:158,k:29.3,bb:8.6,xwoba:0.34,barrel:14.7,hh:52.9,whiff:27.8,swing:42.4},
-{name:"Jackson Chourio",team:"Milwaukee Brewers",pa:589,k:20.5,bb:5.1,xwoba:0.31,barrel:9.7,hh:42.3,whiff:26.0,swing:53.4},
-{name:"Jackson Holliday",team:"Baltimore Orioles",pa:649,k:21.6,bb:8.6,xwoba:0.31,barrel:7.8,hh:40.8,whiff:24.5,swing:47.1},
-{name:"Jackson Merrill",team:"San Diego Padres",pa:276,k:15.8,bb:7.9,xwoba:0.35,barrel:12.1,hh:50.0,whiff:26.2,swing:56.8},
-{name:"Jacob Wilson",team:"Oakland Athletics",pa:595,k:8.27,bb:4.74,xwoba:0.3,barrel:1.93,hh:26.08,whiff:10.22,swing:51.1},
-{name:"Jake Bauers",team:"Milwaukee Brewers",pa:259,k:20.3,bb:10.2,xwoba:0.37,barrel:14.6,hh:56.1,whiff:27.1,swing:49.8},
-{name:"Jake Burger",team:"Texas Rangers",pa:174,k:31.1,bb:2.7,xwoba:0.33,barrel:14.6,hh:54.2,whiff:34.8,swing:52.7},
-{name:"Jake Cronenworth",team:"San Diego Padres",pa:580,k:20.71,bb:13.28,xwoba:0.32,barrel:6.01,hh:38.45,whiff:19.34,swing:43.17},
-{name:"Jakob Marsee",team:"Miami Marlins",pa:186,k:24.4,bb:12.8,xwoba:0.26,barrel:1.9,hh:37.7,whiff:13.5,swing:38.8},
-{name:"James Wood",team:"Washington Nationals",pa:776,k:32.11,bb:12.73,xwoba:0.37,barrel:21.6,hh:80.1,whiff:33.21,swing:39.94},
-{name:"Jarren Duran",team:"Boston Red Sox",pa:763,k:24.66,bb:8.64,xwoba:0.32,barrel:9.92,hh:46.33,whiff:30.37,swing:47.38},
-{name:"Jazz Chisholm Jr.",team:"New York Yankees",pa:601,k:28.31,bb:10.29,xwoba:0.33,barrel:13.8,hh:42.05,whiff:32.06,swing:46.88},
-{name:"Jeff McNeil",team:"Oakland Athletics",pa:360,k:16.7,bb:10.0,xwoba:0.33,barrel:0.0,hh:34.1,whiff:22.4,swing:53.7},
-{name:"Jeremy Peña",team:"Houston Astros",pa:543,k:17.1,bb:6.4,xwoba:0.33,barrel:8.2,hh:42.9,whiff:27.1,swing:51.0},
-{name:"Jesús Sánchez",team:"Toronto Blue Jays",pa:157,k:19.3,bb:5.3,xwoba:0.36,barrel:7.3,hh:43.9,whiff:25.2,swing:54.0},
-{name:"Jo Adell",team:"Los Angeles Angels",pa:654,k:25.27,bb:5.23,xwoba:0.36,barrel:15.75,hh:49.9,whiff:28.07,swing:53.1},
-{name:"Joey Loperfido",team:"Houston Astros",pa:159,k:28.8,bb:10.2,xwoba:0.28,barrel:5.6,hh:44.4,whiff:34.2,swing:48.3},
-{name:"Joey Ortiz",team:"Milwaukee Brewers",pa:506,k:14.6,bb:5.3,xwoba:0.28,barrel:3.0,hh:32.8,whiff:16.0,swing:46.8},
-{name:"Jonathan Aranda",team:"Tampa Bay Rays",pa:179,k:21.5,bb:12.7,xwoba:0.36,barrel:9.6,hh:48.1,whiff:20.3,swing:46.8},
-{name:"Jonathan India",team:"Kansas City Royals",pa:567,k:18.7,bb:9.5,xwoba:0.32,barrel:5.8,hh:36.8,whiff:19.9,swing:40.3},
-{name:"Jordan Beck",team:"Colorado Rockies",pa:588,k:29.6,bb:7.3,xwoba:0.3,barrel:9.6,hh:38.5,whiff:31.2,swing:47.4},
-{name:"Jordan Walker",team:"St. Louis Cardinals",pa:75,k:28.0,bb:8.0,xwoba:0.45,barrel:22.9,hh:60.4,whiff:31.2,swing:49.5},
-{name:"Jorge Polanco",team:"New York Mets",pa:585,k:15.85,bb:8.02,xwoba:0.34,barrel:9.68,hh:44.5,whiff:22.96,swing:46.36},
-{name:"Jorge Soler",team:"Los Angeles Angels",pa:79,k:32.9,bb:12.7,xwoba:0.34,barrel:14.6,hh:41.5,whiff:36.6,swing:45.5},
-{name:"Jose Altuve",team:"Houston Astros",pa:733,k:16.81,bb:9.27,xwoba:0.31,barrel:6.36,hh:31.72,whiff:20.74,swing:49.2},
-{name:"Josh Bell",team:"Minnesota Twins",pa:608,k:17.26,bb:11.02,xwoba:0.36,barrel:12.1,hh:47.23,whiff:24.13,swing:46.58},
-{name:"Josh Jung",team:"Texas Rangers",pa:568,k:24.79,bb:5.65,xwoba:0.31,barrel:7.38,hh:47.03,whiff:24.8,swing:50.77},
-{name:"Josh Naylor",team:"Seattle Mariners",pa:683,k:14.16,bb:7.87,xwoba:0.33,barrel:6.72,hh:41.24,whiff:22.2,swing:54.36},
-{name:"Josh Smith",team:"Texas Rangers",pa:622,k:17.71,bb:9.84,xwoba:0.31,barrel:4.97,hh:31.24,whiff:20.38,swing:45.72},
-{name:"José Caballero",team:"New York Yankees",pa:263,k:27.0,bb:4.8,xwoba:0.25,barrel:4.8,hh:28.6,whiff:31.5,swing:48.1},
-{name:"José Ramírez",team:"Cleveland Guardians",pa:756,k:11.25,bb:10.04,xwoba:0.35,barrel:7.47,hh:37.19,whiff:15.1,swing:46.77},
-{name:"Juan Soto",team:"New York Mets",pa:715,k:19.2,bb:17.8,xwoba:0.43,barrel:18.1,hh:55.3,whiff:22.4,swing:35.5},
-{name:"Julio Rodríguez",team:"Seattle Mariners",pa:793,k:21.81,bb:6.81,xwoba:0.34,barrel:9.59,hh:47.08,whiff:28.88,swing:54.93},
-{name:"Jung Hoo Lee",team:"San Francisco Giants",pa:686,k:11.8,bb:7.71,xwoba:0.32,barrel:3.52,hh:32.96,whiff:13.29,swing:44.35},
-{name:"Junior Caminero",team:"Tampa Bay Rays",pa:730,k:19.14,bb:7.28,xwoba:0.35,barrel:13.58,hh:49.99,whiff:25.01,swing:49.55},
-{name:"Justin Crawford",team:"Philadelphia Phillies",pa:58,k:22.4,bb:6.9,xwoba:0.27,barrel:2.5,hh:32.5,whiff:23.8,swing:51.0},
-{name:"Kazuma Okamoto",team:"Toronto Blue Jays",pa:168,k:23.8,bb:10.3,xwoba:0.29,barrel:7.9,hh:42.1,whiff:36.9,swing:43.8},
-{name:"Ke'Bryan Hayes",team:"Cincinnati Reds",pa:570,k:19.5,bb:6.3,xwoba:0.28,barrel:4.5,hh:42.5,whiff:19.9,swing:44.1},
-{name:"Kerry Carpenter",team:"Detroit Tigers",pa:260,k:26.7,bb:11.7,xwoba:0.29,barrel:13.3,hh:53.3,whiff:38.8,swing:43.1},
-{name:"Ketel Marte",team:"Arizona Diamondbacks",pa:633,k:15.78,bb:11.05,xwoba:0.39,barrel:12.99,hh:47.13,whiff:23.07,swing:45.84},
-{name:"Kevin McGonigle",team:"Detroit Tigers",pa:176,k:13.2,bb:15.8,xwoba:0.41,barrel:9.3,hh:37.0,whiff:12.9,swing:41.2},
-{name:"Kyle Karros",team:"Colorado Rockies",pa:157,k:24.6,bb:15.8,xwoba:0.34,barrel:5.9,hh:38.2,whiff:31.2,swing:39.1},
-{name:"Kyle Manzardo",team:"Cleveland Guardians",pa:531,k:25.4,bb:9.0,xwoba:0.32,barrel:11.8,hh:43.8,whiff:27.7,swing:48.4},
-{name:"Kyle Schwarber",team:"Philadelphia Phillies",pa:803,k:28.13,bb:15.06,xwoba:0.4,barrel:24.6,hh:72.5,whiff:33.12,swing:41.41},
-{name:"Kyle Tucker",team:"Los Angeles Dodgers",pa:677,k:15.48,bb:14.65,xwoba:0.36,barrel:10.22,hh:40.49,whiff:20.71,swing:46.03},
-{name:"Lars Nootbaar",team:"St. Louis Cardinals",pa:583,k:20.4,bb:11.0,xwoba:0.32,barrel:10.2,hh:50.0,whiff:20.9,swing:39.4},
-{name:"Lawrence Butler",team:"Oakland Athletics",pa:690,k:28.39,bb:9.3,xwoba:0.3,barrel:8.86,hh:44.89,whiff:32.8,swing:46.71},
-{name:"Lenyn Sosa",team:"Chicago White Sox",pa:544,k:23.3,bb:3.3,xwoba:0.33,barrel:10.4,hh:43.8,whiff:23.5,swing:51.0},
-{name:"Liam Hicks",team:"Miami Marlins",pa:162,k:8.1,bb:4.8,xwoba:0.36,barrel:7.7,hh:38.5,whiff:6.5,swing:40.9},
-{name:"Logan O'Hoppe",team:"Los Angeles Angels",pa:166,k:18.2,bb:12.1,xwoba:0.3,barrel:9.1,hh:40.9,whiff:26.5,swing:45.2},
-{name:"Lourdes Gurriel Jr.",team:"Arizona Diamondbacks",pa:546,k:13.9,bb:5.7,xwoba:0.32,barrel:7.2,hh:38.3,whiff:20.2,swing:52.3},
-{name:"Luis Arraez",team:"San Diego Padres",pa:746,k:3.34,bb:5.19,xwoba:0.3,barrel:1.0,hh:16.96,whiff:5.67,swing:48.99},
-{name:"Luis García Jr.",team:"Washington Nationals",pa:586,k:15.72,bb:5.09,xwoba:0.34,barrel:8.92,hh:45.71,whiff:21.04,swing:53.82},
-{name:"Luis Rengifo",team:"Los Angeles Angels",pa:541,k:19.2,bb:6.1,xwoba:0.3,barrel:5.0,hh:32.7,whiff:21.9,swing:51.6},
-{name:"Luis Robert Jr.",team:"New York Mets",pa:270,k:23.9,bb:17.1,xwoba:0.35,barrel:10.8,hh:45.9,whiff:26.4,swing:42.5},
-{name:"Luisangel Acuña",team:"Chicago White Sox",pa:98,k:12.1,bb:3.4,xwoba:0.24,barrel:2.1,hh:37.5,whiff:23.1,swing:50.7},
-{name:"Luke Keaschall",team:"Minnesota Twins",pa:179,k:13.9,bb:7.6,xwoba:0.28,barrel:3.2,hh:24.2,whiff:13.0,swing:41.9},
-{name:"Luke Raley",team:"Seattle Mariners",pa:264,k:35.9,bb:4.7,xwoba:0.45,barrel:22.2,hh:55.6,whiff:50.4,swing:54.4},
-{name:"Maikel Garcia",team:"Kansas City Royals",pa:745,k:12.88,bb:9.38,xwoba:0.34,barrel:6.27,hh:45.7,whiff:15.05,swing:39.9},
-{name:"Manny Machado",team:"San Diego Padres",pa:750,k:19.18,bb:9.45,xwoba:0.36,barrel:12.33,hh:49.91,whiff:26.28,swing:49.17},
-{name:"Marcell Ozuna",team:"Pittsburgh Pirates",pa:592,k:24.3,bb:15.9,xwoba:0.35,barrel:11.4,hh:44.6,whiff:25.8,swing:39.4},
-{name:"Marcus Semien",team:"New York Mets",pa:608,k:17.75,bb:9.08,xwoba:0.31,barrel:6.58,hh:35.33,whiff:22.84,swing:49.27},
-{name:"Masyn Winn",team:"St. Louis Cardinals",pa:596,k:18.96,bb:7.19,xwoba:0.29,barrel:4.59,hh:33.58,whiff:19.8,swing:44.69},
-{name:"Matt Chapman",team:"San Francisco Giants",pa:610,k:23.83,bb:12.49,xwoba:0.34,barrel:9.11,hh:46.06,whiff:24.37,swing:42.67},
-{name:"Matt McLain",team:"Cincinnati Reds",pa:656,k:28.01,bb:10.34,xwoba:0.3,barrel:7.8,hh:39.39,whiff:27.74,swing:42.98},
-{name:"Matt Olson",team:"Atlanta Braves",pa:808,k:24.75,bb:12.4,xwoba:0.36,barrel:15.06,hh:52.85,whiff:26.17,swing:45.16},
-{name:"Matt Wallner",team:"Minnesota Twins",pa:276,k:34.1,bb:7.9,xwoba:0.28,barrel:8.3,hh:47.2,whiff:45.1,swing:51.4},
-{name:"Mauricio Dubón",team:"Atlanta Braves",pa:70,k:15.7,bb:5.7,xwoba:0.33,barrel:7.3,hh:36.4,whiff:19.0,swing:48.6},
-{name:"Max Muncy (OF)",team:"Los Angeles Dodgers",pa:371,k:28.0,bb:4.2,xwoba:0.33,barrel:12.8,hh:69.2,whiff:35.7,swing:51.1},
-{name:"Max Muncy",team:"Oakland Athletics",pa:167,k:27.3,bb:11.9,xwoba:0.37,barrel:16.7,hh:55.6,whiff:31.6,swing:48.4},
-{name:"Michael Busch",team:"Chicago Cubs",pa:663,k:23.09,bb:9.84,xwoba:0.36,barrel:15.72,hh:45.36,whiff:25.09,swing:46.32},
-{name:"Michael Harris II",team:"Atlanta Braves",pa:706,k:20.29,bb:2.69,xwoba:0.32,barrel:9.63,hh:43.91,whiff:24.83,swing:56.87},
-{name:"Miguel Vargas",team:"Chicago White Sox",pa:640,k:17.83,bb:10.28,xwoba:0.32,barrel:9.26,hh:40.69,whiff:20.17,swing:45.6},
-{name:"Mike Trout",team:"Los Angeles Angels",pa:640,k:30.61,bb:15.9,xwoba:0.37,barrel:21.9,hh:83.5,whiff:28.51,swing:38.76},
-{name:"Mike Yastrzemski",team:"Kansas City Royals",pa:626,k:20.01,bb:12.78,xwoba:0.32,barrel:7.84,hh:42.37,whiff:19.75,swing:42.02},
-{name:"Mookie Betts",team:"Los Angeles Dodgers",pa:663,k:10.3,bb:9.2,xwoba:0.33,barrel:5.5,hh:35.8,whiff:15.3,swing:41.2},
-{name:"Munetaka Murakami",team:"Chicago White Sox",pa:174,k:31.1,bb:10.23,xwoba:0.38,barrel:30.6,hh:58.8,whiff:38.6,swing:37.0},
-{name:"Nasim Nuñez",team:"Miami Marlins",pa:159,k:20.3,bb:8.5,xwoba:0.27,barrel:0.0,hh:19.5,whiff:26.2,swing:50.6},
-{name:"Nathaniel Lowe",team:"Washington Nationals",pa:609,k:26.1,bb:10.2,xwoba:0.3,barrel:7.0,hh:41.5,whiff:24.7,swing:44.6},
-{name:"Nick Castellanos",team:"Philadelphia Phillies",pa:589,k:22.6,bb:5.4,xwoba:0.3,barrel:7.6,hh:34.5,whiff:29.9,swing:58.8},
-{name:"Nick Gonzales",team:"Pittsburgh Pirates",pa:157,k:19.3,bb:7.0,xwoba:0.3,barrel:2.4,hh:40.5,whiff:25.2,swing:56.7},
-{name:"Nick Kurtz",team:"Oakland Athletics",pa:276,k:39.5,bb:22.4,xwoba:0.35,barrel:13.8,hh:58.6,whiff:43.4,swing:38.4},
-{name:"Nico Hoerner",team:"Chicago Cubs",pa:732,k:7.96,bb:6.54,xwoba:0.33,barrel:2.22,hh:29.74,whiff:11.11,swing:48.02},
-{name:"Nolan Arenado",team:"St. Louis Cardinals",pa:565,k:24.6,bb:1.5,xwoba:0.23,barrel:4.2,hh:22.9,whiff:29.3,swing:45.5},
-{name:"Nolan Gorman",team:"St. Louis Cardinals",pa:262,k:30.6,bb:11.3,xwoba:0.26,barrel:5.6,hh:38.9,whiff:34.4,swing:46.9},
-{name:"Nolan Schanuel",team:"Los Angeles Angels",pa:638,k:12.7,bb:10.53,xwoba:0.33,barrel:4.19,hh:29.57,whiff:15.58,swing:44.4},
-{name:"Oneil Cruz",team:"Pittsburgh Pirates",pa:623,k:31.95,bb:11.43,xwoba:0.33,barrel:18.12,hh:57.41,whiff:34.77,swing:41.92},
-{name:"Otto Lopez",team:"Miami Marlins",pa:669,k:14.19,bb:7.32,xwoba:0.33,barrel:7.73,hh:40.12,whiff:19.16,swing:46.32},
-{name:"Owen Caissie",team:"Miami Marlins",pa:57,k:42.1,bb:7.0,xwoba:0.33,barrel:21.4,hh:50.0,whiff:34.0,swing:40.1},
-{name:"Ozzie Albies",team:"Atlanta Braves",pa:747,k:14.34,bb:8.0,xwoba:0.3,barrel:4.73,hh:30.74,whiff:21.15,swing:54.14},
-{name:"Paul Goldschmidt",team:"New York Yankees",pa:534,k:16.7,bb:6.7,xwoba:0.33,barrel:17.9,hh:43.7,whiff:20.5,swing:47.8},
-{name:"Pete Alonso",team:"New York Mets",pa:788,k:25.18,bb:10.39,xwoba:0.38,barrel:17.68,hh:54.52,whiff:26.08,swing:45.7},
-{name:"Pete Crow-Armstrong",team:"Chicago Cubs",pa:724,k:24.63,bb:4.44,xwoba:0.31,barrel:12.04,hh:41.86,whiff:28.64,swing:60.05},
-{name:"Rafael Devers",team:"San Francisco Giants",pa:804,k:26.46,bb:14.59,xwoba:0.36,barrel:15.46,hh:55.44,whiff:31.24,swing:47.6},
-{name:"Ramón Laureano",team:"San Diego Padres",pa:371,k:21.1,bb:7.0,xwoba:0.42,barrel:18.0,hh:50.0,whiff:26.4,swing:54.2},
-{name:"Randy Arozarena",team:"Seattle Mariners",pa:790,k:25.78,bb:9.47,xwoba:0.33,barrel:11.08,hh:49.78,whiff:29.42,swing:43.93},
-{name:"Riley Greene",team:"Detroit Tigers",pa:730,k:30.01,bb:7.51,xwoba:0.34,barrel:16.63,hh:46.18,whiff:30.83,swing:51.56},
-{name:"Roman Anthony",team:"Boston Red Sox",pa:176,k:26.3,bb:13.2,xwoba:0.36,barrel:11.1,hh:46.7,whiff:29.9,swing:37.7},
-{name:"Ronald Acuña Jr.",team:"Atlanta Braves",pa:85,k:20.0,bb:11.8,xwoba:0.4,barrel:15.8,hh:45.6,whiff:28.2,swing:47.5},
-{name:"Ryan McMahon",team:"Colorado Rockies",pa:586,k:32.3,bb:11.9,xwoba:0.32,barrel:12.1,hh:50.5,whiff:35.2,swing:45.4},
-{name:"Ryan O'Hearn",team:"Baltimore Orioles",pa:619,k:19.52,bb:11.02,xwoba:0.35,barrel:7.82,hh:42.84,whiff:22.73,swing:46.33},
-{name:"Sal Frelick",team:"Milwaukee Brewers",pa:661,k:13.95,bb:8.46,xwoba:0.3,barrel:3.02,hh:27.16,whiff:13.16,swing:43.84},
-{name:"Sal Stewart",team:"Cincinnati Reds",pa:176,k:17.1,bb:17.1,xwoba:0.45,barrel:24.0,hh:52.0,whiff:25.8,swing:49.3},
-{name:"Salvador Perez",team:"Kansas City Royals",pa:713,k:19.36,bb:4.52,xwoba:0.35,barrel:14.43,hh:45.91,whiff:26.71,swing:57.29},
-{name:"Seiya Suzuki",team:"Chicago Cubs",pa:651,k:25.2,bb:10.9,xwoba:0.35,barrel:16.6,hh:48.7,whiff:23.9,swing:40.6},
-{name:"Shea Langeliers",team:"Oakland Athletics",pa:597,k:21.11,bb:6.89,xwoba:0.33,barrel:11.4,hh:68.6,whiff:25.29,swing:52.46},
-{name:"Shohei Ohtani",team:"Los Angeles Dodgers",pa:809,k:25.45,bb:15.21,xwoba:0.42,barrel:23.5,hh:76.9,whiff:32.91,swing:45.06},
-{name:"Spencer Steer",team:"Cincinnati Reds",pa:630,k:23.32,bb:8.59,xwoba:0.29,barrel:8.53,hh:33.05,whiff:25.0,swing:48.02},
-{name:"Spencer Torkelson",team:"Detroit Tigers",pa:714,k:26.02,bb:11.91,xwoba:0.34,barrel:13.07,hh:45.28,whiff:26.95,swing:43.78},
-{name:"Steven Kwan",team:"Cleveland Guardians",pa:773,k:8.83,bb:7.99,xwoba:0.31,barrel:1.87,hh:17.95,whiff:8.44,swing:41.39},
-{name:"TJ Friedl",team:"Cincinnati Reds",pa:760,k:17.51,bb:11.95,xwoba:0.29,barrel:2.43,hh:30.87,whiff:18.24,swing:39.43},
-{name:"TJ Rumfield",team:"Colorado Rockies",pa:67,k:19.4,bb:9.0,xwoba:0.34,barrel:8.3,hh:41.7,whiff:25.2,swing:51.8},
-{name:"Taylor Ward",team:"Baltimore Orioles",pa:748,k:25.67,bb:11.36,xwoba:0.33,barrel:12.14,hh:41.23,whiff:23.57,swing:37.07},
-{name:"Teoscar Hernández",team:"Los Angeles Dodgers",pa:609,k:25.09,bb:4.96,xwoba:0.33,barrel:11.86,hh:45.47,whiff:32.02,swing:50.16},
-{name:"Trea Turner",team:"Philadelphia Phillies",pa:717,k:17.25,bb:6.67,xwoba:0.32,barrel:5.56,hh:40.63,whiff:25.07,swing:51.32},
-{name:"Trent Grisham",team:"New York Yankees",pa:649,k:23.13,bb:14.62,xwoba:0.37,barrel:13.96,hh:47.77,whiff:22.42,swing:38.37},
-{name:"Trevor Larnach",team:"Minnesota Twins",pa:567,k:21.5,bb:9.3,xwoba:0.32,barrel:7.2,hh:45.7,whiff:29.8,swing:44.5},
-{name:"Trevor Story",team:"Boston Red Sox",pa:735,k:27.2,bb:4.72,xwoba:0.31,barrel:9.33,hh:46.63,whiff:29.1,swing:54.47},
-{name:"Tyler Soderstrom",team:"Oakland Athletics",pa:700,k:22.58,bb:9.28,xwoba:0.34,barrel:11.27,hh:49.27,whiff:25.5,swing:48.68},
-{name:"Victor Caratini",team:"Houston Astros",pa:67,k:11.9,bb:10.4,xwoba:0.41,barrel:6.3,hh:37.5,whiff:17.3,swing:40.2},
-{name:"Vinnie Pasquantino",team:"Kansas City Royals",pa:759,k:16.35,bb:7.52,xwoba:0.33,barrel:10.3,hh:43.15,whiff:18.25,swing:47.98},
-{name:"Vladimir Guerrero Jr.",team:"Toronto Blue Jays",pa:754,k:13.38,bb:12.32,xwoba:0.39,barrel:12.46,hh:50.44,whiff:21.17,swing:42.57},
-{name:"Will Smith",team:"Los Angeles Dodgers",pa:364,k:15.6,bb:12.5,xwoba:0.37,barrel:10.9,hh:34.8,whiff:13.9,swing:39.4},
-{name:"Willi Castro",team:"Colorado Rockies",pa:161,k:39.3,bb:6.6,xwoba:0.27,barrel:9.4,hh:37.5,whiff:36.2,swing:52.2},
-{name:"William Contreras",team:"Milwaukee Brewers",pa:728,k:17.71,bb:12.87,xwoba:0.33,barrel:6.17,hh:48.26,whiff:23.62,swing:46.17},
-{name:"Willson Contreras",team:"Boston Red Sox",pa:635,k:25.34,bb:8.65,xwoba:0.36,barrel:14.12,hh:48.22,whiff:29.99,swing:47.71},
-{name:"Willy Adames",team:"San Francisco Giants",pa:761,k:26.16,bb:11.21,xwoba:0.33,barrel:12.54,hh:42.52,whiff:28.35,swing:46.52},
-{name:"Wilyer Abreu",team:"Boston Red Sox",pa:171,k:21.1,bb:7.0,xwoba:0.36,barrel:13.7,hh:51.0,whiff:18.5,swing:47.1},
-{name:"Wyatt Langford",team:"Texas Rangers",pa:635,k:26.03,bb:11.95,xwoba:0.34,barrel:13.27,hh:47.29,whiff:26.36,swing:43.11},
-{name:"Xander Bogaerts",team:"San Diego Padres",pa:625,k:15.97,bb:8.64,xwoba:0.33,barrel:7.05,hh:39.21,whiff:20.88,swing:42.31},
-{name:"Xavier Edwards",team:"Miami Marlins",pa:699,k:13.87,bb:8.14,xwoba:0.3,barrel:1.07,hh:30.95,whiff:12.51,swing:48.08},
-{name:"Yainer Diaz",team:"Houston Astros",pa:626,k:16.5,bb:3.65,xwoba:0.32,barrel:8.89,hh:40.78,whiff:23.47,swing:59.42},
-{name:"Yandy Díaz",team:"Tampa Bay Rays",pa:728,k:13.71,bb:8.97,xwoba:0.36,barrel:8.16,hh:52.33,whiff:17.51,swing:44.3},
-{name:"Yordan Alvarez",team:"Houston Astros",pa:84,k:10.7,bb:20.2,xwoba:0.55,barrel:21.8,hh:57.7,whiff:19.4,swing:39.7},
-{name:"Yoán Moncada",team:"Los Angeles Angels",pa:366,k:36.4,bb:16.7,xwoba:0.27,barrel:6.9,hh:37.9,whiff:28.6,swing:35.6},
-{name:"Zach McKinstry",team:"Detroit Tigers",pa:511,k:21.7,bb:9.0,xwoba:0.3,barrel:6.1,hh:30.5,whiff:22.8,swing:46.7},
-{name:"Zach Neto",team:"Los Angeles Angels",pa:644,k:27.03,bb:7.34,xwoba:0.34,barrel:13.72,hh:45.4,whiff:29.59,swing:48.31}
+{name:"Aaron Judge",team:"New York Yankees",pa:940,k:24.71,bb:17.69,xwoba:0.448,barrel:23.94,hh:57.95,whiff:33.93,swing:43.48,hr:33.9},
+{name:"Addison Barger",team:"Toronto Blue Jays",pa:502,k:24.1,bb:7.2,xwoba:0.331,barrel:11.4,hh:51,whiff:26.1,swing:49.2,hr:null},
+{name:"Adolis García",team:"Texas Rangers",pa:787,k:26.44,bb:6.08,xwoba:0.303,barrel:10.84,hh:47.19,whiff:31.34,swing:49.88,hr:null},
+{name:"Agustín Ramírez",team:"Miami Marlins",pa:585,k:19.3,bb:6.2,xwoba:0.332,barrel:11,hh:47,whiff:25.5,swing:49.9,hr:null},
+{name:"Alec Bohm",team:"Philadelphia Phillies",pa:741,k:15.53,bb:6.12,xwoba:0.313,barrel:5.24,hh:45.15,whiff:15.37,swing:46.73,hr:null},
+{name:"Alec Burleson",team:"St. Louis Cardinals",pa:807,k:14.89,bb:7.65,xwoba:0.356,barrel:9.6,hh:44.52,whiff:19.1,swing:49.46,hr:null},
+{name:"Alejandro Kirk",team:"Toronto Blue Jays",pa:506,k:11.7,bb:9.5,xwoba:0.359,barrel:10.1,hh:50.8,whiff:18.5,swing:47.2,hr:null},
+{name:"Alek Thomas",team:"Arizona Diamondbacks",pa:158,k:25.9,bb:3.4,xwoba:0.27,barrel:5.0,hh:45.0,whiff:29.7,swing:56.3,hr:null},
+{name:"Alex Bregman",team:"Chicago Cubs",pa:288,k:16.7,bb:9.7,xwoba:0.316,barrel:5.3,hh:38.9,whiff:18.2,swing:40.3,hr:null},
+{name:"Andrew McCutchen",team:"Texas Rangers",pa:551,k:21.4,bb:12.2,xwoba:0.333,barrel:8.4,hh:42.5,whiff:26.2,swing:45.6,hr:null},
+{name:"Andrés Giménez",team:"Cleveland Guardians",pa:218,k:18.3,bb:3.7,xwoba:0.256,barrel:3.7,hh:24.2,whiff:24.3,swing:56.8,hr:null},
+{name:"Andy Pages",team:"Los Angeles Dodgers",pa:889,k:20.8,bb:5.14,xwoba:0.325,barrel:8.79,hh:39.94,whiff:21.95,swing:52.21,hr:null},
+{name:"Angel Martínez",team:"Cleveland Guardians",pa:214,k:21.5,bb:2.8,xwoba:0.294,barrel:7.6,hh:34.4,whiff:19,swing:55.1,hr:null},
+{name:"Anthony Volpe",team:"New York Yankees",pa:596,k:25.2,bb:7.2,xwoba:0.301,barrel:10.5,hh:41.9,whiff:25.1,swing:45.9,hr:null},
+{name:"Austin Riley",team:"Atlanta Braves",pa:261,k:28.4,bb:8,xwoba:0.308,barrel:10.6,hh:44.7,whiff:31.9,swing:47.5,hr:null},
+{name:"Austin Wells",team:"New York Yankees",pa:257,k:22.1,bb:17.5,xwoba:0.34,barrel:8.6,hh:51.4,whiff:28.2,swing:46.8,hr:null},
+{name:"Ben Rice",team:"New York Yankees",pa:776,k:20.39,bb:10.54,xwoba:0.395,barrel:15.88,hh:54.58,whiff:22.44,swing:42.73,hr:null},
+{name:"Bo Bichette",team:"New York Mets",pa:903,k:15.17,bb:6.55,xwoba:0.347,barrel:7.69,hh:47.92,whiff:17.85,swing:52.95,hr:null},
+{name:"Bobby Witt Jr.",team:"Kansas City Royals",pa:972,k:18.11,bb:8.1,xwoba:0.373,barrel:12.82,hh:49.73,whiff:24.31,swing:50.22,hr:null},
+{name:"Brady House",team:"Washington Nationals",pa:169,k:29.0,bb:7.2,xwoba:0.3,barrel:9.1,hh:38.6,whiff:28.7,swing:51.1,hr:null},
+{name:"Brandon Lowe",team:"Pittsburgh Pirates",pa:809,k:26.17,bb:8.17,xwoba:0.344,barrel:12.97,hh:46.22,whiff:33.78,swing:53.16,hr:null},
+{name:"Brandon Marsh",team:"Philadelphia Phillies",pa:219,k:23.3,bb:4.6,xwoba:0.337,barrel:7.1,hh:45.9,whiff:22.4,swing:53,hr:null},
+{name:"Brandon Nimmo",team:"Texas Rangers",pa:918,k:21.54,bb:7.87,xwoba:0.337,barrel:9.79,hh:50.23,whiff:23.68,swing:47.58,hr:null},
+{name:"Brayan Rocchio",team:"Cleveland Guardians",pa:231,k:12.6,bb:8.7,xwoba:0.309,barrel:2.9,hh:32.2,whiff:23.6,swing:48.4,hr:null},
+{name:"Brendan Donovan",team:"Seattle Mariners",pa:515,k:13,bb:8.2,xwoba:0.346,barrel:8.8,hh:40.9,whiff:13.4,swing:43.8,hr:null},
+{name:"Brent Rooker",team:"Oakland Athletics",pa:699,k:22.2,bb:9.3,xwoba:0.351,barrel:13.7,hh:44.8,whiff:30.8,swing:50,hr:null},
+{name:"Brenton Doyle",team:"Colorado Rockies",pa:538,k:25.7,bb:5.6,xwoba:0.3,barrel:10.9,hh:44.6,whiff:29.7,swing:50.4,hr:null},
+{name:"Brett Baty",team:"New York Mets",pa:211,k:28.4,bb:8.5,xwoba:0.302,barrel:7.6,hh:37.4,whiff:28.2,swing:46,hr:null},
+{name:"Brice Turang",team:"Milwaukee Brewers",pa:920,k:23.08,bb:12.16,xwoba:0.346,barrel:7.97,hh:47.31,whiff:20.94,swing:43.22,hr:null},
+{name:"Brooks Lee",team:"Minnesota Twins",pa:765,k:17.69,bb:6.02,xwoba:0.285,barrel:5.74,hh:36.14,whiff:23.32,swing:50.52,hr:null},
+{name:"Bryan Reynolds",team:"Pittsburgh Pirates",pa:930,k:24.99,bb:10.96,xwoba:0.346,barrel:9.57,hh:45.26,whiff:28.9,swing:47.88,hr:null},
+{name:"Bryce Harper",team:"Philadelphia Phillies",pa:840,k:20.16,bb:12.87,xwoba:0.382,barrel:12.76,hh:46.32,whiff:29.99,swing:53.3,hr:null},
+{name:"Bryson Stott",team:"Philadelphia Phillies",pa:772,k:16.35,bb:8.53,xwoba:0.311,barrel:5.87,hh:32.63,whiff:16.84,swing:41.17,hr:null},
+{name:"Byron Buxton",team:"Minnesota Twins",pa:790,k:26.83,bb:7.51,xwoba:0.345,barrel:17.73,hh:51.54,whiff:31.27,swing:52.3,hr:30},
+{name:"CJ Abrams",team:"Washington Nationals",pa:906,k:19.76,bb:7.27,xwoba:0.327,barrel:8.68,hh:40.19,whiff:25.6,swing:50.36,hr:null},
+{name:"Cal Raleigh",team:"Seattle Mariners",pa:705,k:26.7,bb:13.8,xwoba:0.371,barrel:19.5,hh:49.6,whiff:31.5,swing:51.7,hr:null},
+{name:"Caleb Durbin",team:"Milwaukee Brewers",pa:703,k:11.1,bb:5.82,xwoba:0.3,barrel:3.44,hh:27.91,whiff:13.59,swing:44.72,hr:null},
+{name:"Cam Smith",team:"Houston Astros",pa:243,k:27.2,bb:9.9,xwoba:0.335,barrel:12.9,hh:43.2,whiff:31.4,swing:45.9,hr:null},
+{name:"Carlos Correa",team:"Minnesota Twins",pa:584,k:19.3,bb:7.7,xwoba:0.338,barrel:6.9,hh:45.9,whiff:22.3,swing:46.4,hr:null},
+{name:"Carson Benge",team:"Texas Rangers",pa:234,k:21.8,bb:7.3,xwoba:0.343,barrel:9.8,hh:44.8,whiff:21.7,swing:44.9,hr:null},
+{name:"Ceddanne Rafaela",team:"Boston Red Sox",pa:816,k:20.07,bb:5.16,xwoba:0.303,barrel:8.55,hh:38.05,whiff:26.15,swing:56.68,hr:null},
+{name:"Cedric Mullins",team:"Tampa Bay Rays",pa:207,k:17.4,bb:8.2,xwoba:0.255,barrel:2.7,hh:29.9,whiff:19.8,swing:48.8,hr:null},
+{name:"Chandler Simpson",team:"Tampa Bay Rays",pa:249,k:10.8,bb:4.8,xwoba:0.254,barrel:0,hh:15.3,whiff:10.9,swing:46.7,hr:null},
+{name:"Chase DeLauter",team:"Cleveland Guardians",pa:246,k:12.2,bb:10.6,xwoba:0.346,barrel:6.4,hh:40.2,whiff:16.2,swing:42,hr:null},
+{name:"Chase Meidroth",team:"Chicago White Sox",pa:766,k:17.26,bb:9.27,xwoba:0.298,barrel:3.03,hh:36.34,whiff:15.21,swing:39.25,hr:null},
+{name:"Christian Walker",team:"Arizona Diamondbacks",pa:905,k:25.68,bb:6.89,xwoba:0.317,barrel:12.78,hh:45.81,whiff:30.27,swing:51.41,hr:null},
+{name:"Christian Yelich",team:"Milwaukee Brewers",pa:644,k:25.9,bb:9.9,xwoba:0.33,barrel:10.3,hh:46.4,whiff:29.2,swing:45.7,hr:null},
+{name:"Cody Bellinger",team:"New York Yankees",pa:923,k:13.41,bb:10.41,xwoba:0.339,barrel:7.73,hh:38.42,whiff:17.84,swing:46.85,hr:null},
+{name:"Cole Young",team:"Pittsburgh Pirates",pa:253,k:20.2,bb:7.9,xwoba:0.329,barrel:5.6,hh:36.2,whiff:22.9,swing:47.5,hr:null},
+{name:"Colson Montgomery",team:"Chicago White Sox",pa:260,k:30.4,bb:8.5,xwoba:0.326,barrel:14,hh:44.7,whiff:37.8,swing:52.5,hr:null},
+{name:"Colt Keith",team:"Detroit Tigers",pa:161,k:24.6,bb:4.9,xwoba:0.34,barrel:9.3,hh:55.8,whiff:24.8,swing:43.9,hr:null},
+{name:"Connor Norby",team:"Miami Marlins",pa:203,k:28.1,bb:10.3,xwoba:0.292,barrel:8.5,hh:35.6,whiff:30.4,swing:49,hr:null},
+{name:"Corbin Carroll",team:"Arizona Diamondbacks",pa:898,k:23.26,bb:10.77,xwoba:0.369,barrel:13.93,hh:50.27,whiff:25.77,swing:47.79,hr:null},
+{name:"Corey Seager",team:"Texas Rangers",pa:678,k:25.6,bb:15.4,xwoba:0.34,barrel:17.4,hh:45.7,whiff:35.5,swing:49.5,hr:null},
+{name:"Dansby Swanson",team:"Chicago Cubs",pa:885,k:25.27,bb:8.71,xwoba:0.331,barrel:10.48,hh:46.01,whiff:30.5,swing:48.78,hr:null},
+{name:"Daniel Susac",team:"San Francisco Giants",pa:70,k:16.6,bb:8.49,xwoba:0.35,barrel:19.97,hh:47.47,whiff:28.22,swing:41.41,hr:17.8},
+{name:"Daulton Varsho",team:"Toronto Blue Jays",pa:236,k:19.1,bb:9.3,xwoba:0.304,barrel:6,hh:38.3,whiff:20.5,swing:52.5,hr:null},
+{name:"Daylen Lile",team:"Washington Nationals",pa:279,k:17.6,bb:7.2,xwoba:0.324,barrel:7.7,hh:37,whiff:23.6,swing:55.1,hr:null},
+{name:"Dillon Dingler",team:"Detroit Tigers",pa:235,k:19.6,bb:8.5,xwoba:0.406,barrel:13.7,hh:50.6,whiff:21.2,swing:47.4,hr:null},
+{name:"Drake Baldwin",team:"Atlanta Braves",pa:216,k:20.4,bb:11.1,xwoba:0.418,barrel:18.6,hh:53.8,whiff:23.1,swing:50.4,hr:null},
+{name:"Elly De La Cruz",team:"Cincinnati Reds",pa:956,k:26.89,bb:9.33,xwoba:0.333,barrel:11.56,hh:46.54,whiff:31,swing:44.46,hr:null},
+{name:"Eric Wagaman",team:"Minnesota Twins",pa:514,k:19.5,bb:6.2,xwoba:0.315,barrel:6.8,hh:46.5,whiff:24.2,swing:45.2,hr:null},
+{name:"Ernie Clement",team:"Toronto Blue Jays",pa:841,k:10.01,bb:4.18,xwoba:0.287,barrel:2.49,hh:25.91,whiff:14.62,swing:54.79,hr:null},
+{name:"Eugenio Suárez",team:"Arizona Diamondbacks",pa:657,k:29.8,bb:7,xwoba:0.32,barrel:14.3,hh:47.6,whiff:33.3,swing:50.4,hr:null},
+{name:"Evan Carter",team:"Texas Rangers",pa:210,k:23.3,bb:12.9,xwoba:0.295,barrel:7.6,hh:38.9,whiff:26.1,swing:40.5,hr:null},
+{name:"Ezequiel Tovar",team:"Colorado Rockies",pa:231,k:26.8,bb:6.1,xwoba:0.3,barrel:8.5,hh:36.6,whiff:30,swing:61.1,hr:null},
+{name:"Fernando Tatis Jr.",team:"San Diego Padres",pa:952,k:19.55,bb:11.89,xwoba:0.363,barrel:10.75,hh:51.77,whiff:27.66,swing:46.56,hr:null},
+{name:"Francisco Alvarez",team:"New York Mets",pa:159,k:18.6,bb:11.9,xwoba:0.46,barrel:21.6,hh:48.6,whiff:29.0,swing:43.7,hr:24.8},
+{name:"Francisco Lindor",team:"New York Mets",pa:732,k:17.9,bb:8.9,xwoba:0.345,barrel:8.9,hh:44.4,whiff:20.8,swing:47.7,hr:null},
+{name:"Freddie Freeman",team:"Los Angeles Dodgers",pa:894,k:19.35,bb:10.2,xwoba:0.357,barrel:10.76,hh:46.03,whiff:25.93,swing:50.97,hr:null},
+{name:"Gavin Lux",team:"Tampa Bay Rays",pa:503,k:22.7,bb:11.1,xwoba:0.299,barrel:3.6,hh:36.9,whiff:21.6,swing:42.7,hr:null},
+{name:"Gavin Sheets",team:"San Diego Padres",pa:746,k:20.35,bb:8.99,xwoba:0.339,barrel:9.49,hh:46.1,whiff:22.68,swing:44.22,hr:null},
+{name:"George Springer",team:"Toronto Blue Jays",pa:586,k:18.9,bb:11.8,xwoba:0.404,barrel:16.2,hh:47.6,whiff:26.1,swing:46.2,hr:null},
+{name:"Geraldo Perdomo",team:"Arizona Diamondbacks",pa:971,k:11.73,bb:13.1,xwoba:0.348,barrel:5.42,hh:31.72,whiff:11.61,swing:39.65,hr:null},
+{name:"Giancarlo Stanton",team:"New York Yankees",pa:68,k:30.9,bb:8.8,xwoba:0.32,barrel:14.6,hh:36.6,whiff:39.0,swing:44.7,hr:null},
+{name:"Gleyber Torres",team:"Detroit Tigers",pa:628,k:16.1,bb:13.5,xwoba:0.363,barrel:8.2,hh:39,whiff:19.5,swing:40.8,hr:null},
+{name:"Gunnar Henderson",team:"Baltimore Orioles",pa:941,k:22.51,bb:8.61,xwoba:0.329,barrel:8.82,hh:47.6,whiff:25.07,swing:48.19,hr:null},
+{name:"Heliot Ramos",team:"San Francisco Giants",pa:695,k:22.7,bb:7.5,xwoba:0.32,barrel:8.8,hh:47.4,whiff:25.3,swing:47.8,hr:null},
+{name:"Hunter Goodman",team:"Colorado Rockies",pa:823,k:28.46,bb:6.32,xwoba:0.323,barrel:13.58,hh:46.87,whiff:32.5,swing:54.85,hr:null},
+{name:"Ian Happ",team:"Chicago Cubs",pa:929,k:25.43,bb:13.33,xwoba:0.352,barrel:12.09,hh:45.09,whiff:27.06,swing:43.64,hr:null},
+{name:"Isaac Paredes",team:"Houston Astros",pa:243,k:16.5,bb:9.5,xwoba:0.319,barrel:6.9,hh:30.1,whiff:17,swing:44.1,hr:null},
+{name:"Iván Herrera",team:"St. Louis Cardinals",pa:277,k:17,bb:12.6,xwoba:0.363,barrel:7.2,hh:42.6,whiff:20.6,swing:43.4,hr:null},
+{name:"J.P. Crawford",team:"Seattle Mariners",pa:887,k:18.75,bb:12.17,xwoba:0.337,barrel:6.08,hh:35.23,whiff:19.59,swing:43.16,hr:null},
+{name:"J.T. Realmuto",team:"Philadelphia Phillies",pa:550,k:23.5,bb:6.4,xwoba:0.316,barrel:8.8,hh:45.5,whiff:24.3,swing:48.6,hr:null},
+{name:"JJ Wetherholt",team:"St. Louis Cardinals",pa:266,k:16.9,bb:10.9,xwoba:0.359,barrel:7.8,hh:48.4,whiff:22.5,swing:44,hr:null},
+{name:"Jac Caglianone",team:"Kansas City Royals",pa:217,k:29.5,bb:8.8,xwoba:0.348,barrel:15.3,hh:59.5,whiff:32,swing:47.7,hr:null},
+{name:"Jackson Chourio",team:"Milwaukee Brewers",pa:589,k:20.5,bb:5.1,xwoba:0.307,barrel:9.7,hh:42.3,whiff:26,swing:53.4,hr:null},
+{name:"Jackson Holliday",team:"Baltimore Orioles",pa:649,k:21.6,bb:8.6,xwoba:0.314,barrel:7.8,hh:40.8,whiff:24.5,swing:47.1,hr:null},
+{name:"Jackson Merrill",team:"San Diego Padres",pa:245,k:25.3,bb:8.6,xwoba:0.321,barrel:10,hh:46,whiff:28.6,swing:54.5,hr:null},
+{name:"Jacob Wilson",team:"Oakland Athletics",pa:523,k:7.5,bb:5.2,xwoba:0.304,barrel:2.2,hh:24.7,whiff:9.6,swing:49.9,hr:null},
+{name:"Jake Bauers",team:"Milwaukee Brewers",pa:216,k:22.7,bb:10.6,xwoba:0.359,barrel:13.5,hh:54.2,whiff:25.1,swing:42.5,hr:null},
+{name:"Jake Burger",team:"Texas Rangers",pa:248,k:27,bb:6.9,xwoba:0.304,barrel:9.2,hh:48.5,whiff:35.6,swing:51,hr:null},
+{name:"Jake Cronenworth",team:"San Diego Padres",pa:515,k:20.8,bb:13.4,xwoba:0.319,barrel:6.2,hh:39,whiff:18.8,swing:42.7,hr:null},
+{name:"Jakob Marsee",team:"Miami Marlins",pa:262,k:22.9,bb:13.4,xwoba:0.3,barrel:3.8,hh:35,whiff:19.1,swing:39.5,hr:null},
+{name:"James Wood",team:"Washington Nationals",pa:988,k:31.4,bb:13.84,xwoba:0.382,barrel:19.09,hh:57.15,whiff:32.54,swing:39.59,hr:27.7},
+{name:"Jarren Duran",team:"Boston Red Sox",pa:951,k:25.45,bb:8.2,xwoba:0.32,barrel:10.29,hh:45.24,whiff:30.8,swing:47.25,hr:null},
+{name:"Jazz Chisholm Jr.",team:"New York Yankees",pa:775,k:28.03,bb:10.43,xwoba:0.327,barrel:12.39,hh:41.76,whiff:31.82,swing:46.12,hr:null},
+{name:"Jeff McNeil",team:"Oakland Athletics",pa:216,k:13.9,bb:7.9,xwoba:0.312,barrel:1.2,hh:31.3,whiff:16.8,swing:55.1,hr:null},
+{name:"Jeremy Peña",team:"Houston Astros",pa:543,k:17.1,bb:6.4,xwoba:0.334,barrel:8.2,hh:42.9,whiff:27.1,swing:51,hr:null},
+{name:"Jesús Sánchez",team:"Toronto Blue Jays",pa:157,k:19.3,bb:5.3,xwoba:0.36,barrel:7.3,hh:43.9,whiff:25.2,swing:54.0,hr:null},
+{name:"Jo Adell",team:"Los Angeles Angels",pa:837,k:25.49,bb:4.82,xwoba:0.354,barrel:14.56,hh:48.74,whiff:27.65,swing:53.58,hr:null},
+{name:"Joey Loperfido",team:"Houston Astros",pa:159,k:28.8,bb:10.2,xwoba:0.28,barrel:5.6,hh:44.4,whiff:34.2,swing:48.3,hr:null},
+{name:"Joey Ortiz",team:"Milwaukee Brewers",pa:506,k:14.6,bb:5.3,xwoba:0.275,barrel:3,hh:32.8,whiff:16,swing:46.8,hr:null},
+{name:"Jonathan Aranda",team:"Tampa Bay Rays",pa:262,k:23.7,bb:14.9,xwoba:0.386,barrel:12.7,hh:46.8,whiff:21.6,swing:43.2,hr:null},
+{name:"Jonathan India",team:"Kansas City Royals",pa:567,k:18.7,bb:9.5,xwoba:0.315,barrel:5.8,hh:36.8,whiff:19.9,swing:40.3,hr:null},
+{name:"Jordan Beck",team:"Colorado Rockies",pa:588,k:29.6,bb:7.3,xwoba:0.301,barrel:9.6,hh:38.5,whiff:31.2,swing:47.4,hr:null},
+{name:"Jordan Walker",team:"St. Louis Cardinals",pa:256,k:25.8,bb:8.2,xwoba:0.37,barrel:13.8,hh:51.5,whiff:31.9,swing:51.9,hr:null},
+{name:"Jorge Polanco",team:"New York Mets",pa:524,k:15.6,bb:8,xwoba:0.343,barrel:10.3,hh:45.8,whiff:23.3,swing:46.3,hr:null},
+{name:"Jorge Soler",team:"Los Angeles Angels",pa:243,k:31.3,bb:9.1,xwoba:0.306,barrel:11.3,hh:41.1,whiff:35.1,swing:47.1,hr:null},
+{name:"Jose Altuve",team:"Houston Astros",pa:654,k:16.7,bb:8.4,xwoba:0.3,barrel:6.2,hh:30.9,whiff:20.7,swing:50,hr:null},
+{name:"Josh Bell",team:"Minnesota Twins",pa:779,k:18.74,bb:9.63,xwoba:0.341,barrel:11.28,hh:45.71,whiff:24.61,swing:48.26,hr:null},
+{name:"Josh Jung",team:"Texas Rangers",pa:755,k:22.1,bb:5.85,xwoba:0.32,barrel:7.36,hh:45.86,whiff:22.91,swing:50.1,hr:null},
+{name:"Josh Naylor",team:"Seattle Mariners",pa:860,k:13.58,bb:7.99,xwoba:0.333,barrel:6.34,hh:40.65,whiff:21.56,swing:53.66,hr:null},
+{name:"Josh Smith",team:"Texas Rangers",pa:563,k:17.8,bb:9.8,xwoba:0.31,barrel:5,hh:31.1,whiff:19.6,swing:45.5,hr:null},
+{name:"José Caballero",team:"New York Yankees",pa:263,k:27.0,bb:4.8,xwoba:0.25,barrel:4.8,hh:28.6,whiff:31.5,swing:48.1,hr:null},
+{name:"José Ramírez",team:"Cleveland Guardians",pa:957,k:11.71,bb:10.96,xwoba:0.349,barrel:6.94,hh:39.34,whiff:15.32,swing:46.74,hr:null},
+{name:"Juan Soto",team:"New York Mets",pa:912,k:18.23,bb:16.59,xwoba:0.424,barrel:17.92,hh:53.94,whiff:22.16,swing:36.64,hr:null},
+{name:"Julio Rodríguez",team:"Seattle Mariners",pa:991,k:21.4,bb:6.46,xwoba:0.343,barrel:9.71,hh:46.78,whiff:27.97,swing:54.92,hr:null},
+{name:"Jung Hoo Lee",team:"San Francisco Giants",pa:844,k:11.26,bb:6.74,xwoba:0.324,barrel:3.4,hh:31.46,whiff:13.32,swing:45.29,hr:null},
+{name:"Junior Caminero",team:"Tampa Bay Rays",pa:918,k:17.83,bb:8.61,xwoba:0.356,barrel:13.51,hh:50.76,whiff:23.46,swing:47.6,hr:null},
+{name:"Justin Crawford",team:"Philadelphia Phillies",pa:58,k:22.4,bb:6.9,xwoba:0.27,barrel:2.5,hh:32.5,whiff:23.8,swing:51.0,hr:null},
+{name:"Kazuma Okamoto",team:"Toronto Blue Jays",pa:255,k:32.2,bb:9.8,xwoba:0.33,barrel:15.2,hh:52.4,whiff:33.9,swing:44.7,hr:25.2},
+{name:"Ke'Bryan Hayes",team:"Cincinnati Reds",pa:570,k:19.5,bb:6.3,xwoba:0.282,barrel:4.6,hh:42.5,whiff:19.9,swing:44.1,hr:null},
+{name:"Kerry Carpenter",team:"Detroit Tigers",pa:260,k:26.7,bb:11.7,xwoba:0.29,barrel:13.3,hh:53.3,whiff:38.8,swing:43.1,hr:null},
+{name:"Ketel Marte",team:"Arizona Diamondbacks",pa:815,k:15.06,bb:10.29,xwoba:0.387,barrel:12.9,hh:46.43,whiff:22.15,swing:46.44,hr:null},
+{name:"Kevin McGonigle",team:"Detroit Tigers",pa:268,k:13.1,bb:13.4,xwoba:0.368,barrel:8.7,hh:37.9,whiff:13.9,swing:41.7,hr:null},
+{name:"Kyle Karros",team:"Colorado Rockies",pa:205,k:23.9,bb:12.7,xwoba:0.325,barrel:6.3,hh:41.1,whiff:24.9,swing:42.1,hr:null},
+{name:"Kyle Manzardo",team:"Cleveland Guardians",pa:531,k:25.4,bb:9,xwoba:0.322,barrel:11.8,hh:43.8,whiff:27.7,swing:48.4,hr:null},
+{name:"Kyle Schwarber",team:"Philadelphia Phillies",pa:993,k:28.99,bb:14.6,xwoba:0.396,barrel:21.29,hh:57.3,whiff:33.26,swing:42.26,hr:null},
+{name:"Kyle Tucker",team:"Los Angeles Dodgers",pa:857,k:15.94,bb:13.9,xwoba:0.359,barrel:9.22,hh:40.07,whiff:21.14,swing:46.57,hr:null},
+{name:"Lars Nootbaar",team:"St. Louis Cardinals",pa:583,k:20.4,bb:11,xwoba:0.317,barrel:10.2,hh:50,whiff:20.9,swing:39.4,hr:null},
+{name:"Lawrence Butler",team:"Oakland Athletics",pa:630,k:28.4,bb:9.4,xwoba:0.304,barrel:9.2,hh:44.4,whiff:32.9,swing:47,hr:null},
+{name:"Lenyn Sosa",team:"Chicago White Sox",pa:544,k:23.3,bb:3.3,xwoba:0.326,barrel:10.4,hh:43.8,whiff:23.5,swing:51,hr:null},
+{name:"Liam Hicks",team:"Miami Marlins",pa:234,k:9.4,bb:10.3,xwoba:0.323,barrel:4.9,hh:32.6,whiff:10.8,swing:42.3,hr:null},
+{name:"Logan O'Hoppe",team:"Los Angeles Angels",pa:166,k:18.2,bb:12.1,xwoba:0.3,barrel:9.1,hh:40.9,whiff:26.5,swing:45.2,hr:null},
+{name:"Lourdes Gurriel Jr.",team:"Arizona Diamondbacks",pa:546,k:13.9,bb:5.7,xwoba:0.315,barrel:7.2,hh:38.3,whiff:20.2,swing:52.3,hr:null},
+{name:"Luis Arraez",team:"San Diego Padres",pa:943,k:3.38,bb:5.17,xwoba:0.305,barrel:0.9,hh:18.01,whiff:6.27,swing:50,hr:null},
+{name:"Luis García Jr.",team:"Washington Nationals",pa:729,k:15.67,bb:4.77,xwoba:0.337,barrel:8.55,hh:46.38,whiff:20.78,swing:54.43,hr:null},
+{name:"Luis Rengifo",team:"Los Angeles Angels",pa:541,k:19.2,bb:6.1,xwoba:0.302,barrel:5,hh:32.7,whiff:21.9,swing:51.6,hr:null},
+{name:"Luis Robert Jr.",team:"New York Mets",pa:270,k:23.9,bb:17.1,xwoba:0.35,barrel:10.8,hh:45.9,whiff:26.4,swing:42.5,hr:null},
+{name:"Luisangel Acuña",team:"Chicago White Sox",pa:98,k:12.1,bb:3.4,xwoba:0.24,barrel:2.1,hh:37.5,whiff:23.1,swing:50.7,hr:null},
+{name:"Luke Keaschall",team:"Minnesota Twins",pa:244,k:15.6,bb:8.6,xwoba:0.283,barrel:2.8,hh:27.6,whiff:15.6,swing:41.8,hr:null},
+{name:"Luke Raley",team:"Seattle Mariners",pa:264,k:35.9,bb:4.7,xwoba:0.45,barrel:22.2,hh:55.6,whiff:50.4,swing:54.4,hr:null},
+{name:"Maikel Garcia",team:"Kansas City Royals",pa:914,k:13.01,bb:9.08,xwoba:0.331,barrel:5.22,hh:43.88,whiff:14.78,swing:39.64,hr:null},
+{name:"Manny Machado",team:"San Diego Padres",pa:927,k:20.37,bb:8.83,xwoba:0.344,barrel:11.72,hh:49.62,whiff:25.89,swing:49.54,hr:null},
+{name:"Marcell Ozuna",team:"Pittsburgh Pirates",pa:791,k:25.26,bb:14.29,xwoba:0.344,barrel:10.72,hh:43.27,whiff:26.83,swing:39.98,hr:null},
+{name:"Marcus Semien",team:"New York Mets",pa:782,k:18.29,bb:8.48,xwoba:0.318,barrel:7.31,hh:34.94,whiff:22.38,swing:49.57,hr:null},
+{name:"Masyn Winn",team:"St. Louis Cardinals",pa:771,k:19.73,bb:7.12,xwoba:0.29,barrel:4.31,hh:33.57,whiff:20.81,swing:44.15,hr:null},
+{name:"Matt Chapman",team:"San Francisco Giants",pa:800,k:23.04,bb:12.01,xwoba:0.319,barrel:8.48,hh:43.43,whiff:24.57,swing:43.06,hr:null},
+{name:"Matt McLain",team:"Cincinnati Reds",pa:808,k:27.44,bb:10.01,xwoba:0.294,barrel:7.51,hh:39.5,whiff:27.53,swing:43.06,hr:null},
+{name:"Matt Olson",team:"Atlanta Braves",pa:1006,k:23.85,bb:11.84,xwoba:0.364,barrel:14.4,hh:53.19,whiff:25.84,swing:45.41,hr:null},
+{name:"Matt Wallner",team:"Minnesota Twins",pa:276,k:34.1,bb:7.9,xwoba:0.28,barrel:8.3,hh:47.2,whiff:45.1,swing:51.4,hr:null},
+{name:"Mauricio Dubón",team:"Atlanta Braves",pa:238,k:15.5,bb:6.7,xwoba:0.314,barrel:6,hh:29.5,whiff:17.9,swing:51.1,hr:null},
+{name:"Max Muncy",team:"Los Angeles Dodgers",pa:371,k:28.0,bb:4.2,xwoba:0.33,barrel:12.8,hh:69.2,whiff:35.7,swing:51.1,hr:null},
+{name:"Max Muncy",team:"Oakland Athletics",pa:217,k:25.8,bb:12,xwoba:0.384,barrel:17.2,hh:49.3,whiff:28.3,swing:44.3,hr:null},
+{name:"Michael Busch",team:"Chicago Cubs",pa:869,k:23.24,bb:11.32,xwoba:0.368,barrel:15.28,hh:45.77,whiff:25.45,swing:45.24,hr:null},
+{name:"Michael Harris II",team:"Atlanta Braves",pa:875,k:19.68,bb:3.09,xwoba:0.334,barrel:10.6,hh:45.91,whiff:24.93,swing:56.57,hr:null},
+{name:"Miguel Vargas",team:"Chicago White Sox",pa:841,k:17.5,bb:11.61,xwoba:0.345,barrel:11.11,hh:42.57,whiff:20.63,swing:45.42,hr:null},
+{name:"Mike Trout",team:"Los Angeles Angels",pa:840,k:29.26,bb:17.46,xwoba:0.38,barrel:17.79,hh:49.87,whiff:27.23,swing:38.33,hr:null},
+{name:"Mike Yastrzemski",team:"Kansas City Royals",pa:558,k:19.4,bb:12.9,xwoba:0.329,barrel:8.5,hh:42.6,whiff:19,swing:41.8,hr:null},
+{name:"Mookie Betts",team:"Los Angeles Dodgers",pa:663,k:10.3,bb:9.2,xwoba:0.33,barrel:5.5,hh:35.8,whiff:15.3,swing:41.2,hr:null},
+{name:"Munetaka Murakami",team:"Chicago White Sox",pa:246,k:32.5,bb:17.9,xwoba:0.38,barrel:20.7,hh:58.7,whiff:41.8,swing:41.5,hr:30.8},
+{name:"Nasim Nuñez",team:"Miami Marlins",pa:207,k:21.3,bb:10.6,xwoba:0.272,barrel:0,hh:20,whiff:23,swing:47.5,hr:null},
+{name:"Nathaniel Lowe",team:"Washington Nationals",pa:609,k:26.1,bb:10.2,xwoba:0.303,barrel:7,hh:41.5,whiff:24.7,swing:44.6,hr:null},
+{name:"Nick Castellanos",team:"Philadelphia Phillies",pa:589,k:22.6,bb:5.4,xwoba:0.302,barrel:7.6,hh:34.5,whiff:29.9,swing:58.8,hr:null},
+{name:"Nick Gonzales",team:"Pittsburgh Pirates",pa:234,k:17.1,bb:6.4,xwoba:0.343,barrel:3.4,hh:40.3,whiff:23.3,swing:53.7,hr:null},
+{name:"Nick Kurtz",team:"Oakland Athletics",pa:281,k:28.8,bb:21,xwoba:0.398,barrel:18,hh:57.6,whiff:34.9,swing:40.4,hr:31.3},
+{name:"Nico Hoerner",team:"Chicago Cubs",pa:937,k:7.38,bb:7.26,xwoba:0.326,barrel:2.06,hh:29.62,whiff:10.95,swing:46.96,hr:null},
+{name:"Nolan Arenado",team:"St. Louis Cardinals",pa:218,k:19.7,bb:8.7,xwoba:0.326,barrel:7.3,hh:31.1,whiff:23.4,swing:45,hr:null},
+{name:"Nolan Gorman",team:"St. Louis Cardinals",pa:219,k:32,bb:10.5,xwoba:0.282,barrel:9.5,hh:43.7,whiff:37.8,swing:50.2,hr:null},
+{name:"Nolan Schanuel",team:"Los Angeles Angels",pa:772,k:13.49,bb:9.37,xwoba:0.323,barrel:4.12,hh:29.78,whiff:16.02,swing:45.63,hr:null},
+{name:"Oneil Cruz",team:"Pittsburgh Pirates",pa:823,k:32.95,bb:11.09,xwoba:0.335,barrel:17.56,hh:57.48,whiff:35.29,swing:42.41,hr:24.9},
+{name:"Otto Lopez",team:"Miami Marlins",pa:860,k:14.54,bb:6.29,xwoba:0.332,barrel:7.29,hh:40.06,whiff:19.43,swing:46.89,hr:null},
+{name:"Owen Caissie",team:"Miami Marlins",pa:57,k:42.1,bb:7.0,xwoba:0.33,barrel:21.4,hh:50.0,whiff:34.0,swing:40.1,hr:null},
+{name:"Ozzie Albies",team:"Atlanta Braves",pa:942,k:13.37,bb:8.02,xwoba:0.302,barrel:4.84,hh:29.88,whiff:20.77,swing:54.25,hr:null},
+{name:"Paul Goldschmidt",team:"New York Yankees",pa:534,k:18.7,bb:6.7,xwoba:0.329,barrel:8,hh:43.7,whiff:20.5,swing:47.8,hr:null},
+{name:"Pete Alonso",team:"New York Mets",pa:985,k:22.8,bb:9.13,xwoba:0.38,barrel:16.97,hh:54.76,whiff:26.08,swing:45.82,hr:28.8},
+{name:"Pete Crow-Armstrong",team:"Chicago Cubs",pa:914,k:24.44,bb:5.7,xwoba:0.33,barrel:12.57,hh:44.05,whiff:28.67,swing:57.82,hr:null},
+{name:"Rafael Devers",team:"San Francisco Giants",pa:1000,k:27.47,bb:12.93,xwoba:0.345,barrel:14.24,hh:54.12,whiff:31.46,swing:48.26,hr:null},
+{name:"Ramón Laureano",team:"San Diego Padres",pa:206,k:31.6,bb:9.7,xwoba:0.312,barrel:14.3,hh:41.2,whiff:31.1,swing:50.5,hr:null},
+{name:"Randy Arozarena",team:"Seattle Mariners",pa:982,k:25.73,bb:9.06,xwoba:0.331,barrel:10.33,hh:48.32,whiff:29.09,swing:45.14,hr:null},
+{name:"Riley Greene",team:"Detroit Tigers",pa:922,k:29.83,bb:8.56,xwoba:0.342,barrel:15.62,hh:46.98,whiff:30.58,swing:50.46,hr:null},
+{name:"Roman Anthony",team:"Boston Red Sox",pa:176,k:26.3,bb:13.2,xwoba:0.36,barrel:11.1,hh:46.7,whiff:29.9,swing:37.7,hr:null},
+{name:"Ronald Acuña Jr.",team:"Atlanta Braves",pa:225,k:21.3,bb:15.6,xwoba:0.384,barrel:13.7,hh:43.2,whiff:29.1,swing:45.3,hr:null},
+{name:"Ryan McMahon",team:"Colorado Rockies",pa:586,k:32.3,bb:11.9,xwoba:0.322,barrel:12.1,hh:50.5,whiff:35.2,swing:45.4,hr:null},
+{name:"Ryan O'Hearn",team:"Baltimore Orioles",pa:742,k:19.92,bb:10.54,xwoba:0.345,barrel:7.52,hh:42.85,whiff:22.98,swing:46.11,hr:null},
+{name:"Sal Frelick",team:"Milwaukee Brewers",pa:814,k:12.69,bb:8.22,xwoba:0.295,barrel:2.88,hh:27.59,whiff:12.18,swing:43.53,hr:null},
+{name:"Sal Stewart",team:"Cincinnati Reds",pa:269,k:20.4,bb:12.6,xwoba:0.365,barrel:15.1,hh:40.2,whiff:26.9,swing:48.4,hr:null},
+{name:"Salvador Perez",team:"Kansas City Royals",pa:897,k:19.39,bb:4.49,xwoba:0.338,barrel:12.97,hh:44.79,whiff:26.64,swing:57.34,hr:null},
+{name:"Seiya Suzuki",team:"Chicago Cubs",pa:860,k:25.35,bb:10.92,xwoba:0.346,barrel:14.83,hh:47.05,whiff:24.58,swing:40.84,hr:24.7},
+{name:"Shea Langeliers",team:"Oakland Athletics",pa:781,k:19.2,bb:7.3,xwoba:0.348,barrel:12.72,hh:45.16,whiff:25.2,swing:52.07,hr:null},
+{name:"Shohei Ohtani",team:"Los Angeles Dodgers",pa:1001,k:24.85,bb:15.08,xwoba:0.421,barrel:21.26,hh:57.14,whiff:31.98,swing:44.7,hr:31.8},
+{name:"Spencer Steer",team:"Cincinnati Reds",pa:807,k:21.93,bb:9.18,xwoba:0.318,barrel:9.44,hh:35.21,whiff:24.47,swing:46.9,hr:null},
+{name:"Spencer Torkelson",team:"Detroit Tigers",pa:893,k:27.53,bb:11.21,xwoba:0.331,barrel:13.69,hh:44.91,whiff:27.56,swing:43.86,hr:null},
+{name:"Steven Kwan",team:"Cleveland Guardians",pa:941,k:9.17,bb:9.43,xwoba:0.306,barrel:1.53,hh:16.64,whiff:8.49,swing:40.16,hr:null},
+{name:"TJ Friedl",team:"Cincinnati Reds",pa:685,k:16.8,bb:11.8,xwoba:0.3,barrel:2.7,hh:32.1,whiff:17.5,swing:39.2,hr:null},
+{name:"TJ Rumfield",team:"Colorado Rockies",pa:241,k:15.4,bb:9.1,xwoba:0.335,barrel:7.3,hh:36,whiff:19.2,swing:50.7,hr:null},
+{name:"Taylor Ward",team:"Baltimore Orioles",pa:953,k:24.67,bb:13.64,xwoba:0.338,barrel:10.93,hh:41.79,whiff:22.19,swing:35.77,hr:null},
+{name:"Teoscar Hernández",team:"Los Angeles Dodgers",pa:750,k:25.18,bb:6.02,xwoba:0.327,barrel:11.36,hh:45.88,whiff:31.14,swing:48.93,hr:null},
+{name:"Trea Turner",team:"Philadelphia Phillies",pa:912,k:18.17,bb:6.67,xwoba:0.311,barrel:5.74,hh:41.41,whiff:25.25,swing:51.52,hr:null},
+{name:"Trent Grisham",team:"New York Yankees",pa:822,k:21.55,bb:14.33,xwoba:0.364,barrel:13.58,hh:45.58,whiff:20.91,swing:37.82,hr:null},
+{name:"Trevor Larnach",team:"Minnesota Twins",pa:567,k:21.5,bb:9.3,xwoba:0.318,barrel:7.2,hh:45.7,whiff:29.8,swing:44.5,hr:null},
+{name:"Trevor Story",team:"Boston Red Sox",pa:654,k:26.9,bb:5,xwoba:0.311,barrel:9.9,hh:47,whiff:29.3,swing:54.4,hr:null},
+{name:"Tyler Soderstrom",team:"Oakland Athletics",pa:878,k:21.41,bb:9.55,xwoba:0.338,barrel:11.4,hh:48.15,whiff:24.45,swing:48.49,hr:null},
+{name:"Victor Caratini",team:"Houston Astros",pa:67,k:11.9,bb:10.4,xwoba:0.41,barrel:6.3,hh:37.5,whiff:17.3,swing:40.2,hr:null},
+{name:"Vinnie Pasquantino",team:"Kansas City Royals",pa:944,k:16.31,bb:8.39,xwoba:0.329,barrel:9.94,hh:42.26,whiff:17.73,swing:47.36,hr:null},
+{name:"Vladimir Guerrero Jr.",team:"Toronto Blue Jays",pa:942,k:12.6,bb:11.87,xwoba:0.377,barrel:10.59,hh:49.11,whiff:20.83,swing:44.01,hr:null},
+{name:"Will Smith",team:"Los Angeles Dodgers",pa:201,k:16.9,bb:11.4,xwoba:0.386,barrel:13.4,hh:39.4,whiff:16.4,swing:41.3,hr:null},
+{name:"Willi Castro",team:"Colorado Rockies",pa:201,k:27.9,bb:9,xwoba:0.292,barrel:5.6,hh:46,whiff:30.2,swing:53.2,hr:null},
+{name:"William Contreras",team:"Milwaukee Brewers",pa:911,k:16.79,bb:11.59,xwoba:0.328,barrel:6.46,hh:46.78,whiff:22.93,swing:46.78,hr:null},
+{name:"Willson Contreras",team:"Boston Red Sox",pa:812,k:25.11,bb:8.47,xwoba:0.371,barrel:14.33,hh:47.5,whiff:29.27,swing:48.25,hr:null},
+{name:"Willy Adames",team:"San Francisco Giants",pa:956,k:26.27,bb:10.06,xwoba:0.321,barrel:11.7,hh:42.72,whiff:28.64,swing:47.21,hr:null},
+{name:"Wilyer Abreu",team:"Boston Red Sox",pa:264,k:18.9,bb:9.1,xwoba:0.35,barrel:11.1,hh:43.2,whiff:22,swing:48.5,hr:null},
+{name:"Wyatt Langford",team:"Texas Rangers",pa:573,k:26.4,bb:12.9,xwoba:0.346,barrel:14,hh:48.4,whiff:26.3,swing:43,hr:null},
+{name:"Xander Bogaerts",team:"San Diego Padres",pa:792,k:17.39,bb:8.85,xwoba:0.324,barrel:6.75,hh:38.17,whiff:21.75,swing:42.66,hr:null},
+{name:"Xavier Edwards",team:"Miami Marlins",pa:891,k:13.47,bb:9.18,xwoba:0.312,barrel:2.48,hh:30.32,whiff:12.66,swing:46.31,hr:null},
+{name:"Yainer Diaz",team:"Houston Astros",pa:567,k:16.8,bb:3.5,xwoba:0.326,barrel:9.6,hh:42.2,whiff:23.4,swing:59.5,hr:null},
+{name:"Yandy Díaz",team:"Tampa Bay Rays",pa:900,k:13.77,bb:8.8,xwoba:0.359,barrel:8.52,hh:50.76,whiff:16.71,swing:45.15,hr:null},
+{name:"Yordan Alvarez",team:"Houston Astros",pa:280,k:17.1,bb:15,xwoba:0.492,barrel:18.6,hh:54.1,whiff:19.9,swing:42.4,hr:null},
+{name:"Yoán Moncada",team:"Los Angeles Angels",pa:366,k:36.4,bb:16.7,xwoba:0.27,barrel:6.9,hh:37.9,whiff:28.6,swing:35.6,hr:null},
+{name:"Zach McKinstry",team:"Detroit Tigers",pa:511,k:21.7,bb:9,xwoba:0.305,barrel:6.1,hh:30.5,whiff:22.8,swing:46.7,hr:null},
+{name:"Zach Neto",team:"Los Angeles Angels",pa:832,k:27.77,bb:8.07,xwoba:0.337,barrel:12.96,hh:43.23,whiff:29.27,swing:48.73,hr:null}
 ];
-var MANUAL_HR={"Nick Kurtz":31.5,"Nolan Gorman":25.2,"Giancarlo Stanton":24.7,"Kerry Carpenter":24.1,"Roman Anthony":22.3,"Matt Chapman":21.9};
-function hrCalc(p,pa,cv){var ip=Math.max(0,1-(p.k+p.bb)/100);var cq=(p.barrel*0.65+p.hh*0.35)/100;if(MANUAL_HR[p.name]!==undefined){var targetPct=MANUAL_HR[p.name]/100;var hrpa=1-Math.pow(1-targetPct,1/pa);var hrg=1-Math.pow(1-hrpa,pa);return{ip:ip,cq:cq,hrpa:hrpa,hrg:hrg};}var hrpa=ip*cq*cv;var hrg=1-Math.pow(1-hrpa,pa);return{ip:ip,cq:cq,hrpa:hrpa,hrg:hrg};}
+function hrCalc(p,pa,cv){var ip=Math.max(0,1-(p.k+p.bb)/100);var cq=(p.barrel*0.65+p.hh*0.35)/100;if(p.hr!==null&&p.hr!==undefined){var targetPct=p.hr/100;var hrpa=1-Math.pow(1-targetPct,1/pa);var hrg=1-Math.pow(1-hrpa,pa);return{ip:ip,cq:cq,hrpa:hrpa,hrg:hrg};}var hrpa=ip*cq*cv;var hrg=1-Math.pow(1-hrpa,pa);return{ip:ip,cq:cq,hrpa:hrpa,hrg:hrg};}
 function getCV(){return parseFloat(document.getElementById('cv-sl').value)||0.38;}
 function getPA(){return parseInt(document.getElementById('pa-sl').value)||4;}
 function tier(pct){if(pct>=28)return['Elite','p-elite'];if(pct>=20)return['Above avg','p-above'];if(pct>=12)return['Average','p-avg'];return['Below avg','p-below'];}
@@ -929,14 +1276,16 @@ function variance(p){var manualHigh=["Aaron Judge","Yordan Alvarez","CJ Abrams",
 function bcolor(pct){if(pct>=28)return'#22c55e';if(pct>=20)return'#f4b942';if(pct>=12)return'#f07d30';return'#ef4444';}
 function mbar(val,max,col){var pct=Math.min(val/max*100,100).toFixed(1);return'<div class="mb"><span>'+val.toFixed(1)+'</span><div class="mbg"><div class="mbf" style="width:'+pct+'%;background:'+col+'"></div></div></div>';}
 var sortKey='hr',sortAsc=false,selIdx=null;
-function setSort(k){if(sortKey===k){sortAsc=!sortAsc;}else{sortKey=k;sortAsc=(k==='name');}document.querySelectorAll('.sb').forEach(function(b){b.classList.remove('active');});var btn=document.getElementById('btn-'+k);if(btn)btn.classList.add('active');render();}
-function getFiltered(){var q=document.getElementById('search').value.toLowerCase();var cv=getCV(),pa=getPA();var result=[];for(var i=0;i<PLAYERS.length;i++){var p=PLAYERS[i];if(q&&!p.name.toLowerCase().includes(q)&&!p.team.toLowerCase().includes(q))continue;var c=hrCalc(p,pa,cv);result.push({name:p.name,team:p.team,pa:p.pa,k:p.k,bb:p.bb,xwoba:p.xwoba,barrel:p.barrel,hh:p.hh,whiff:p.whiff,swing:p.swing,_i:i,ip:c.ip,cq:c.cq,hrpa:c.hrpa,hrg:c.hrg});}result.sort(function(a,b){if(sortKey==='name')return sortAsc?a.name.localeCompare(b.name):b.name.localeCompare(a.name);var va=(sortKey==='hr')?a.hrg:a[sortKey];var vb=(sortKey==='hr')?b.hrg:b[sortKey];return sortAsc?va-vb:vb-va;});return result;}
-function render(){var rows=getFiltered();document.getElementById('cnt-badge').textContent=rows.length+' players';document.getElementById('rcnt').textContent=rows.length+' shown';var html='';for(var i=0;i<rows.length;i++){var p=rows[i];var pct=p.hrg*100;var t=tier(pct);var v=variance(p);var col=bcolor(pct);html+='<tr onclick="selectP('+p._i+')" class="'+(selIdx===p._i?'sel':'')+'"><td><div class="pname">'+p.name+'</div><div class="pteam">'+p.team+'</div></td><td><span style="font-weight:700;color:'+col+'">'+pct.toFixed(1)+'%</span><span class="pill '+t[1]+'">'+t[0]+'</span></td><td><span class="pill '+v[1]+'">'+v[0]+'</span></td><td>'+p.xwoba.toFixed(3)+'</td><td>'+mbar(p.barrel,35,'#22c55e')+'</td><td>'+mbar(p.hh,90,'#57a7ff')+'</td><td>'+mbar(p.k,45,'#ef4444')+'</td><td>'+mbar(p.bb,25,'#f4b942')+'</td><td>'+p.whiff.toFixed(1)+'</td><td>'+p.swing.toFixed(1)+'</td><td style="color:var(--muted);font-size:12px">'+p.pa+'</td></tr>';}document.getElementById('tbody').innerHTML=html;}
+function updateHeaders(){document.querySelectorAll('th[data-key]').forEach(function(th){var lbl=th.getAttribute('data-label');if(th.getAttribute('data-key')===sortKey){th.classList.add('th-active');th.innerHTML=lbl+'<span class="th-caret">'+(sortAsc?'▲':'▼')+'</span>';}else{th.classList.remove('th-active');th.innerHTML=lbl;}});}
+function setSort(k){if(sortKey===k){sortAsc=!sortAsc;}else{sortKey=k;sortAsc=(k==='name');}document.querySelectorAll('.sb').forEach(function(b){b.classList.remove('active');});var btn=document.getElementById('btn-'+k);if(btn)btn.classList.add('active');updateHeaders();render();}
+function getFiltered(){var q=document.getElementById('search').value.toLowerCase();var cv=getCV(),pa=getPA();var result=[];for(var i=0;i<PLAYERS.length;i++){var p=PLAYERS[i];if(q&&!p.name.toLowerCase().includes(q)&&!p.team.toLowerCase().includes(q))continue;var c=hrCalc(p,pa,cv);var vr=variance(p);var vrank=vr[0]==='High'?3:vr[0]==='Low'?1:2;result.push({name:p.name,team:p.team,pa:p.pa,k:p.k,bb:p.bb,xwoba:p.xwoba,barrel:p.barrel,hh:p.hh,whiff:p.whiff,swing:p.swing,varRank:vrank,_i:i,ip:c.ip,cq:c.cq,hrpa:c.hrpa,hrg:c.hrg});}result.sort(function(a,b){if(sortKey==='name')return sortAsc?a.name.localeCompare(b.name):b.name.localeCompare(a.name);var va=(sortKey==='hr')?a.hrg:(sortKey==='variance'?a.varRank:a[sortKey]);var vb=(sortKey==='hr')?b.hrg:(sortKey==='variance'?b.varRank:b[sortKey]);return sortAsc?va-vb:vb-va;});return result;}
+function render(){var rows=getFiltered();document.getElementById('cnt-badge').textContent=rows.length+' players';document.getElementById('rcnt').textContent=rows.length+' shown';var html='';for(var i=0;i<rows.length;i++){var p=rows[i];var pct=p.hrg*100;var t=tier(pct);var v=variance(p);var col=bcolor(pct);var tc=pct>=28?'tier-elite':pct>=20?'tier-above':pct>=12?'tier-avg':'tier-below';html+='<tr style="--ri:'+i+'" onclick="selectP('+p._i+')" class="'+(selIdx===p._i?'sel ':'')+tc+'"><td><div class="pname">'+p.name+'</div><div class="pteam">'+p.team+'</div></td><td><span class="hrnum" style="font-weight:700;color:'+col+'">'+pct.toFixed(1)+'%</span><span class="pill '+t[1]+'">'+t[0]+'</span></td><td><span class="pill '+v[1]+'">'+v[0]+'</span></td><td>'+p.xwoba.toFixed(3)+'</td><td>'+mbar(p.barrel,35,'#22c55e')+'</td><td>'+mbar(p.hh,90,'#57a7ff')+'</td><td>'+mbar(p.k,45,'#ef4444')+'</td><td>'+mbar(p.bb,25,'#f4b942')+'</td><td>'+p.whiff.toFixed(1)+'</td><td>'+p.swing.toFixed(1)+'</td></tr>';}document.getElementById('tbody').innerHTML=html;}
 function selectP(idx){selIdx=idx;render();updateSide();}
 function updateAll(){render();updateSide();}
-function updateSide(){if(selIdx===null)return;var p=PLAYERS[selIdx];var cv=getCV(),pa=getPA();var c=hrCalc(p,pa,cv);var pct=c.hrg*100;var col=bcolor(pct);var t=tier(pct);var v=variance(p);var mw=Math.min(pct/50*100,100).toFixed(1);var dots='';for(var i=0;i<pa;i++){var cum=(1-Math.pow(1-c.hrpa,i+1))*100;var inten=Math.min(cum/35,1);var g=Math.round(30+inten*120);var r=Math.round(15+inten*20);dots+='<div class="pdot" style="background:rgba('+r+','+(g+30)+','+(r+10)+',.3);color:'+(inten>.4?'#5DCAA5':'var(--muted)')+';border-color:'+(inten>.3?'rgba(29,158,117,.4)':'var(--border)')+';font-size:9px">PA'+(i+1)+'</div>';}document.getElementById('side-content').innerHTML='<div class="pc"><div class="pcn">'+p.name+'</div><div class="pct2">'+p.team+' · '+p.pa+' PA sample</div><div class="pc-big" style="color:'+col+'">'+pct.toFixed(1)+'%</div><div class="pc-lbl">HR probability per game  <span class="pill '+t[1]+'">'+t[0]+'</span> <span class="pill '+v[1]+'">Variance: '+v[0]+'</span></div><div class="mw"><div class="mbar" style="width:'+mw+'%;background:linear-gradient(90deg,'+col+','+col+'88)"></div></div><div class="mlbls"><span>0%</span><span>25%</span><span>50%</span></div><div class="pad-lbl" style="margin-top:11px">Cumulative across '+pa+' plate appearances</div><div class="pad">'+dots+'</div></div><div class="sg"><div class="sb2"><div class="sbl">In-play rate</div><div class="sbv">'+(c.ip*100).toFixed(1)+'%</div></div><div class="sb2"><div class="sbl">Contact quality</div><div class="sbv">'+(c.cq*100).toFixed(1)+'%</div></div><div class="sb2"><div class="sbl">HR chance/PA</div><div class="sbv">'+(c.hrpa*100).toFixed(2)+'%</div></div><div class="sb2"><div class="sbl">Barrel %</div><div class="sbv" style="color:#22c55e">'+p.barrel+'%</div></div><div class="sb2"><div class="sbl">Hard Hit %</div><div class="sbv" style="color:#57a7ff">'+p.hh+'%</div></div><div class="sb2"><div class="sbl">xwOBA</div><div class="sbv">'+p.xwoba.toFixed(3)+'</div></div></div><div class="fb"><div class="ft">Formula — 2yr PA-weighted avg</div><div class="fl2"><code>in_play</code> = 1−('+p.k+'+'+p.bb+')/100 = <strong style="color:var(--text)">'+(c.ip*100).toFixed(1)+'%</strong></div><div class="fl2"><code>contact_quality</code> = ('+p.barrel+'×0.65+'+p.hh+'×0.35)/100 = <strong style="color:var(--text)">'+(c.cq*100).toFixed(1)+'%</strong></div><div class="fl2"><code>hr_per_pa</code> = '+(c.ip*100).toFixed(1)+'%×'+(c.cq*100).toFixed(1)+'%×'+cv.toFixed(2)+' = <strong style="color:var(--text)">'+(c.hrpa*100).toFixed(2)+'%</strong></div><div class="fl2"><code>hr_per_game</code> = 1−(1−'+(c.hrpa*100).toFixed(2)+'%)^'+pa+' = <strong style="color:'+col+'">'+pct.toFixed(1)+'%</strong></div></div>';}
-render();
+function updateSide(){if(selIdx===null)return;var p=PLAYERS[selIdx];var cv=getCV(),pa=getPA();var c=hrCalc(p,pa,cv);var pct=c.hrg*100;var col=bcolor(pct);var t=tier(pct);var v=variance(p);var mw=Math.min(pct/50*100,100).toFixed(1);var chain='<div class="pad-row">';for(var i=0;i<pa;i++){var cum=(1-Math.pow(1-c.hrpa,i+1))*100;var inten=Math.min(cum/35,1);var ndBg='rgba(255,'+Math.round(188+inten*42)+','+Math.round(74+inten*30)+','+(0.12+inten*0.5).toFixed(2)+')';var ndBc='rgba(244,185,66,'+(0.2+inten*0.5).toFixed(2)+')';var ndCol=inten>.4?'#ffe7a6':'#7e6c3c';var ndShadow=inten>.45?'0 0 12px rgba(255,210,90,'+(inten*0.55).toFixed(2)+')':'none';var nd=(i*0.5).toFixed(2);if(i>0){var cd=((i*0.5)-0.25).toFixed(2);chain+='<div class="pad-seg" style="animation-delay:'+cd+'s"></div>';}chain+='<div class="pad-node-wrap">';chain+='<div class="pad-circle" style="--nd-bg:'+ndBg+';--nd-bc:'+ndBc+';--nd-col:'+ndCol+';--nd-shadow:'+ndShadow+';animation-delay:'+nd+'s">'+cum.toFixed(0)+'%</div>';chain+='<div class="pad-node-lbl" style="animation-delay:'+nd+'s">PA'+(i+1)+'</div>';chain+='</div>';}chain+='</div>';document.getElementById('side-content').innerHTML='<div class="pc"><div class="pcn">'+p.name+'</div><div class="pct2">'+p.team+' · '+p.pa+' PA sample</div><div class="pc-big" style="color:'+col+'">'+pct.toFixed(1)+'%</div><div class="pc-lbl">HR probability per game  <span class="pill '+t[1]+'">'+t[0]+'</span> <span class="pill '+v[1]+'">Variance: '+v[0]+'</span></div><div class="mw"><div class="mbar" style="width:'+mw+'%;background:linear-gradient(90deg,'+col+','+col+'88)"></div></div><div class="mlbls"><span>0%</span><span>25%</span><span>50%</span></div><div class="pad-lbl" style="margin-top:11px">Cumulative across '+pa+' plate appearances</div><div class="pad-chain">'+chain+'</div></div><div class="sg"><div class="sb2" style="animation-delay:.00s;border-top-color:rgba(244,185,66,.45)"><div class="sbl">In-play rate</div><div class="sbv"><span class="sbv-num" data-val="'+(c.ip*100).toFixed(1)+'" data-fmt="%" data-dec="1">0%</span></div></div><div class="sb2" style="animation-delay:.07s;border-top-color:rgba(244,185,66,.3)"><div class="sbl">Contact quality</div><div class="sbv"><span class="sbv-num" data-val="'+(c.cq*100).toFixed(1)+'" data-fmt="%" data-dec="1">0%</span></div></div><div class="sb2" style="animation-delay:.14s;border-top-color:rgba(200,100,50,.5)"><div class="sbl">HR chance/PA</div><div class="sbv"><span class="sbv-num" data-val="'+(c.hrpa*100).toFixed(2)+'" data-fmt="%" data-dec="2" data-color="'+col+'">0%</span></div></div><div class="sb2" style="animation-delay:.21s;border-top-color:rgba(34,197,94,.5)"><div class="sbl">Barrel %</div><div class="sbv"><span class="sbv-num" data-val="'+p.barrel+'" data-fmt="%" data-dec="1" data-color="#22c55e">0%</span></div></div><div class="sb2" style="animation-delay:.28s;border-top-color:rgba(96,165,250,.5)"><div class="sbl">Hard Hit %</div><div class="sbv"><span class="sbv-num" data-val="'+p.hh+'" data-fmt="%" data-dec="1" data-color="#57a7ff">0%</span></div></div><div class="sb2" style="animation-delay:.35s;border-top-color:rgba(244,185,66,.25)"><div class="sbl">xwOBA</div><div class="sbv"><span class="sbv-num" data-val="'+p.xwoba.toFixed(3)+'" data-fmt="" data-dec="3">0.000</span></div></div></div><div class="fb"><div class="ft">Formula — 2yr PA-weighted avg</div><div class="fl2"><code>in_play</code> = 1−('+p.k+'+'+p.bb+')/100 = <strong style="color:var(--text)">'+(c.ip*100).toFixed(1)+'%</strong></div><div class="fl2"><code>contact_quality</code> = ('+p.barrel+'×0.65+'+p.hh+'×0.35)/100 = <strong style="color:var(--text)">'+(c.cq*100).toFixed(1)+'%</strong></div><div class="fl2"><code>hr_per_pa</code> = '+(c.ip*100).toFixed(1)+'%×'+(c.cq*100).toFixed(1)+'%×'+cv.toFixed(2)+' = <strong style="color:var(--text)">'+(c.hrpa*100).toFixed(2)+'%</strong></div><div class="fl2"><code>hr_per_game</code> = 1−(1−'+(c.hrpa*100).toFixed(2)+'%)^'+pa+' = <strong style="color:'+col+'">'+pct.toFixed(1)+'%</strong></div></div>';animateCounters();}
+render();updateHeaders();
 var yIdx=0;for(var i=0;i<PLAYERS.length;i++){if(PLAYERS[i].name==='Yordan Alvarez'){yIdx=i;break;}}selectP(yIdx);
+(function(){var r=document.getElementById('hrBulbs');if(!r)return;var h='';for(var i=0;i<40;i++){h+='<span class="mq-bulb" style="animation-delay:'+((i%14)*0.1).toFixed(1)+'s"></span>';}r.innerHTML=h;})();
 function toggleHRMenu_OLD(){const m=document.getElementById('hrMobileMenu');m.classList.toggle('hidden');m.classList.toggle('flex');document.body.style.overflow=m.classList.contains('flex')?'hidden':'';}
 </script>
 </body>

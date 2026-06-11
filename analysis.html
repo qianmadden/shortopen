@@ -30,6 +30,18 @@ body{margin:0;background:radial-gradient(circle at 8% 12%,rgba(244,185,66,.1),tr
 .article-card .card-full{display:none}.article-card.open .card-full{display:block}
 .article-card.open .expand-arrow{transform:rotate(180deg)}
 .expand-arrow{display:inline-block;transition:transform .25s;font-size:.75rem}
+/* sport-coded article cards — ported from nfl-draft-market accent system */
+.article-card{transition:transform .25s ease,border-color .25s ease}
+.article-card .sport-accent{height:3px;width:100%}
+.article-card:hover{transform:translateY(-2px)}
+.article-card.sport-nba:hover{border-color:rgba(96,165,250,.4)!important}
+.article-card.sport-mlb:hover{border-color:rgba(52,211,153,.4)!important}
+.article-card.sport-nfl:hover{border-color:rgba(251,146,60,.4)!important}
+.article-card.sport-uni:hover{border-color:rgba(244,185,66,.4)!important}
+.sport-block-label.lbl-nba{color:#60a5fa}.sport-block-label.lbl-nba::before{background:#60a5fa}
+.sport-block-label.lbl-mlb{color:#34d399}.sport-block-label.lbl-mlb::before{background:#34d399}
+.sport-block-label.lbl-nfl{color:#fb923c}.sport-block-label.lbl-nfl::before{background:#fb923c}
+.sport-block-label.lbl-uni{color:#f4b942}.sport-block-label.lbl-uni::before{background:#f4b942}
 .trend-card{background:rgba(13,20,36,.85);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08);border-radius:18px;overflow:hidden;transition:all .2s;position:relative}
 .trend-card:hover{border-color:rgba(244,185,66,.3);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.4),0 0 0 1px rgba(244,185,66,.1)}
 .tc-hidden{display:none}.tc-top{display:flex;align-items:stretch}
@@ -268,15 +280,15 @@ body{margin:0;background:radial-gradient(circle at 8% 12%,rgba(244,185,66,.1),tr
 
   <!-- ALL SPORTS -->
   <div class="filter-panel active" id="section-allsports">
-    <div class="sport-block-label">NBA</div>
+    <div class="sport-block-label lbl-nba">NBA</div>
     <div class="grid md:grid-cols-2 gap-4 mb-2" id="nba-grid">
       <!-- NBA cards injected by JS -->
     </div>
-    <div class="sport-block-label">MLB</div>
+    <div class="sport-block-label lbl-mlb">MLB</div>
     <div class="grid md:grid-cols-2 gap-4 mb-2" id="mlb-grid"></div>
-    <div class="sport-block-label">NFL</div>
+    <div class="sport-block-label lbl-nfl">NFL</div>
     <div class="grid md:grid-cols-2 gap-4 mb-2" id="nfl-grid"></div>
-    <div class="sport-block-label">Universal</div>
+    <div class="sport-block-label lbl-uni">Universal</div>
     <div class="grid md:grid-cols-2 gap-4" id="universal-cards-main"></div>
   </div>
 
@@ -406,11 +418,21 @@ const DD_CARDS=[
   {sport:'NFL Draft',sub:'2026 Team Value',signal:'bullish',player:'Giants — Sneaky Good',note:"BPAs falling to New York all offseason. Schoen is building quietly. Don't sleep on this roster heading into 2026.",stats:[{l:'BPA Draft Score',v:'A-',pct:85,dir:'up'},{l:'Roster Upgrade %',v:'+22%',pct:82,dir:'up'},{l:'Market O/U',v:'Undervalued',pct:72,dir:'up'}]},
 ];
 
+// sport → color map (mirrors the nfl-draft-market accent palette)
+const SPORT_COLORS={
+  NBA:{key:'nba',hex:'#60a5fa',rgb:'96,165,250'},
+  MLB:{key:'mlb',hex:'#34d399',rgb:'52,211,153'},
+  NFL:{key:'nfl',hex:'#fb923c',rgb:'251,146,60'},
+  Universal:{key:'uni',hex:'#f4b942',rgb:'244,185,66'}
+};
+function sportFor(tag){return SPORT_COLORS[(tag.split('·')[0]||'').trim()]||SPORT_COLORS.Universal;}
 function buildArticleCard(a){
+  const c=sportFor(a.tag);
   const d=document.createElement('div');
-  d.className='article-card glass rounded-[24px] overflow-hidden cursor-pointer';
+  d.className=`article-card glass rounded-[24px] overflow-hidden cursor-pointer sport-${c.key}`;
+  d.style.background=`linear-gradient(160deg,rgba(${c.rgb},.05),rgba(255,255,255,.02))`;
   d.onclick=()=>toggleCard(d);
-  d.innerHTML=`<div class="p-7"><div class="text-xs uppercase tracking-[.2em] mb-3" style="color:var(--gold)">${a.tag}</div><h3 class="text-2xl font-black mb-3 leading-tight">${a.title}</h3><p class="text-zinc-400 text-sm leading-7 mb-5">${a.intro}</p><button class="flex items-center gap-2 text-xs uppercase tracking-[.18em] font-semibold border-0 bg-transparent cursor-pointer" style="color:var(--gold)">Full Breakdown <span class="expand-arrow">▾</span></button></div><div class="card-full border-t border-white/5 bg-black/20 px-7 py-6"><div class="text-xs uppercase tracking-[.18em] text-zinc-500 mb-5 flex items-center gap-3">Full Read <span style="flex:1;height:1px;background:rgba(255,255,255,.06);display:block"></span></div><div class="full-body">${a.body}</div></div>`;
+  d.innerHTML=`<div class="sport-accent" style="background:linear-gradient(90deg,${c.hex},rgba(${c.rgb},.35) 70%,transparent)"></div><div class="p-7"><div class="text-xs uppercase tracking-[.2em] mb-3" style="color:${c.hex}">${a.tag}</div><h3 class="text-2xl font-black mb-3 leading-tight">${a.title}</h3><p class="text-zinc-400 text-sm leading-7 mb-5">${a.intro}</p><button class="flex items-center gap-2 text-xs uppercase tracking-[.18em] font-semibold border-0 bg-transparent cursor-pointer" style="color:${c.hex}">Full Breakdown <span class="expand-arrow">▾</span></button></div><div class="card-full border-t border-white/5 bg-black/20 px-7 py-6"><div class="text-xs uppercase tracking-[.18em] text-zinc-500 mb-5 flex items-center gap-3">Full Read <span style="flex:1;height:1px;background:rgba(255,255,255,.06);display:block"></span></div><div class="full-body">${a.body}</div></div>`;
   return d;
 }
 
