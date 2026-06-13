@@ -43,6 +43,39 @@
   .mobile-menu a:hover, .mobile-menu a.active { color:#f4b942; }
   .mobile-menu-close { position:absolute; top:24px; right:24px; background:transparent; border:none; color:#4d6070; font-size:1.4rem; cursor:pointer; padding:8px; }
   @media(max-width:640px) { nav { padding:14px 20px; } .nav-links { display:none !important; } .hamburger { display:flex; } }
+  /* ── ROTY glass cards ── */
+  @keyframes rotySheen{0%{left:-60%}55%,100%{left:130%}}
+  .roty-glass-card{
+    position:relative;overflow:hidden;border-radius:16px;border:1px solid;padding:16px;
+    backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);
+    transition:transform .2s ease,box-shadow .2s ease;
+  }
+  .roty-glass-card::before{
+    content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+    background:linear-gradient(130deg,rgba(255,255,255,.1) 0%,rgba(255,255,255,.02) 40%,transparent 70%);
+  }
+  .roty-glass-card::after{
+    content:'';position:absolute;top:0;left:-60%;width:45%;height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);
+    animation:rotySheen 3.5s ease-in-out infinite;
+  }
+  .roty-glass-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+  .roty-stat-cell{position:relative;z-index:1;border-radius:10px;background:rgba(255,255,255,.06);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.08);padding:8px 10px}
+  .roty-stat-lbl{font-size:.5rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4a5a7a}
+  .roty-stat-val{font-size:.9rem;font-weight:900;color:#f0ece4;margin-top:3px;font-family:'DM Mono',monospace}
+  /* ── ROTY glossy board strip ── */
+  .roty-strip{position:sticky;top:62px;z-index:90;background:linear-gradient(180deg,rgba(14,20,30,.99),rgba(8,12,18,.99));backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.1);box-shadow:0 4px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07);height:46px;display:flex;align-items:center;padding:0 48px;gap:0;overflow:hidden;position:relative}
+  .roty-strip-bg{position:absolute;inset:0;background:linear-gradient(90deg,rgba(244,185,66,.05),transparent 25%,transparent 75%,rgba(34,197,94,.04));pointer-events:none}
+  .roty-strip-lbl{font-size:.48rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#f4b942;margin-right:20px;white-space:nowrap;text-shadow:0 0 12px rgba(244,185,66,.5);flex-shrink:0}
+  .roty-item{display:flex;align-items:center;gap:8px;padding:0 16px;border-right:1px solid rgba(255,255,255,.07);white-space:nowrap;flex-shrink:0}
+  .roty-rank{font-size:.5rem;font-weight:900;width:14px;flex-shrink:0;font-family:'DM Mono',monospace}
+  .roty-name{font-size:.66rem;font-weight:700;color:#d4dce8;letter-spacing:-.01em}
+  .roty-pos{font-size:.46rem;font-weight:700;color:#3a4a5a;background:rgba(255,255,255,.05);border-radius:3px;padding:1px 5px;font-family:'DM Mono',monospace}
+  .roty-divider{width:1px;height:14px;background:rgba(255,255,255,.08);flex-shrink:0}
+  .roty-odds{font-size:.74rem;font-weight:900;font-family:'DM Mono',monospace}
+  .roty-mv{font-size:.54rem;font-weight:800;padding:2px 5px;border-radius:3px;font-family:'DM Mono',monospace}
+  .roty-mv.up{color:#22c55e;background:rgba(34,197,94,.12)}.roty-mv.dn{color:#ef4444;background:rgba(239,68,68,.12)}
+  @media(max-width:640px){.roty-strip{padding:0 16px}.roty-item:nth-child(n+4){display:none!important}}
 </style>
 </head>
 <body class="min-h-screen text-white">
@@ -70,6 +103,11 @@
 </nav>
 
 <!-- MOBILE MENU -->
+<div class="roty-strip" id="rotyStrip">
+  <div class="roty-strip-bg"></div>
+  <span class="roty-strip-lbl">ROTY Board</span>
+  <div id="rotyItems" style="display:flex;align-items:center;overflow:hidden;gap:0"></div>
+</div>
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-menu-close" onclick="toggleMobileMenu()">&#x2715;</button>
   <a href="index.html" onclick="toggleMobileMenu()">Home</a>
@@ -121,11 +159,19 @@
           NFL Draft<br><span class="block text-yellow-400">Market Intelligence</span>
         </h2>
         <p class="mt-6 max-w-2xl text-lg leading-8 text-zinc-400">Market Intelligence was created to keep track of OTAs coach speak and rookie performance so you can try to beat the market. Props update through the season, so will ROTY odds — everything starts after the draft with intel from OTAs and minicamp.</p>
+        <div class="mt-6 inline-flex items-center gap-4 glass rounded-2xl px-5 py-3 cursor-pointer card-hover" onclick="document.getElementById('nav-mock').click()" style="border-color:rgba(244,185,66,.2)">
+          <div style="width:8px;height:8px;border-radius:50%;background:#f4b942;animation:pulse 2s infinite"></div>
+          <div>
+            <div style="font-size:.55rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#f4b942">Mock Draft Simulator</div>
+            <div style="font-size:.72rem;color:#6b8097;margin-top:1px">Pick your team · 32 picks · AI auto-draft</div>
+          </div>
+          <span style="color:#f4b942">→</span>
+        </div>
         <div class="mt-10 grid gap-4 grid-cols-2 md:grid-cols-4">
-          <div class="glass rounded-3xl p-6"><div class="text-sm uppercase tracking-[0.2em] text-zinc-500">Tracked</div><div class="mt-2 text-4xl font-black">250</div><div class="mt-1 text-sm text-zinc-400">Prospects</div></div>
-          <div class="glass rounded-3xl p-6"><div class="text-sm uppercase tracking-[0.2em] text-zinc-500">Updated</div><div class="mt-2 text-4xl font-black text-emerald-400">Live</div><div class="mt-1 text-sm text-zinc-400">Market Data</div></div>
-          <div class="glass rounded-3xl p-6"><div class="text-sm uppercase tracking-[0.2em] text-zinc-500">Teams</div><div class="mt-2 text-4xl font-black">32</div><div class="mt-1 text-sm text-zinc-400">Tracked &amp; Followed</div></div>
-          <div class="glass rounded-3xl p-6"><div class="text-sm uppercase tracking-[0.2em] text-zinc-500">ROTY Consensus</div><div class="mt-2 text-4xl font-black text-yellow-400">78%</div><div class="mt-1 text-sm text-zinc-400">Mendoza</div></div>
+          <div class="roty-glass-card" style="background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(0,0,0,.6));border-color:rgba(255,255,255,.1)"><div style="font-size:.5rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#4a5a7a;position:relative;z-index:1">Tracked</div><div style="font-size:2.2rem;font-weight:900;margin-top:6px;position:relative;z-index:1">250</div><div style="font-size:.72rem;color:#6b8097;margin-top:2px;position:relative;z-index:1">Prospects</div></div>
+          <div class="roty-glass-card" style="background:linear-gradient(145deg,rgba(34,197,94,.1),rgba(255,255,255,.03) 40%,rgba(0,0,0,.6));border-color:rgba(34,197,94,.25)"><div style="font-size:.5rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#22c55e;position:relative;z-index:1">Updated</div><div style="font-size:2.2rem;font-weight:900;color:#22c55e;margin-top:6px;text-shadow:0 0 16px rgba(34,197,94,.4);position:relative;z-index:1">Live</div><div style="font-size:.72rem;color:#6b8097;margin-top:2px;position:relative;z-index:1">Market Data</div></div>
+          <div class="roty-glass-card" style="background:linear-gradient(145deg,rgba(87,167,255,.08),rgba(255,255,255,.03) 40%,rgba(0,0,0,.6));border-color:rgba(87,167,255,.18)"><div style="font-size:.5rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#57a7ff;position:relative;z-index:1">Teams</div><div style="font-size:2.2rem;font-weight:900;margin-top:6px;position:relative;z-index:1">32</div><div style="font-size:.72rem;color:#6b8097;margin-top:2px;position:relative;z-index:1">Tracked &amp; Followed</div></div>
+          <div class="roty-glass-card" style="background:linear-gradient(145deg,rgba(244,185,66,.1),rgba(255,255,255,.03) 40%,rgba(0,0,0,.6));border-color:rgba(244,185,66,.25)"><div style="font-size:.5rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#f4b942;position:relative;z-index:1">ROTY Consensus</div><div style="font-size:2.2rem;font-weight:900;color:#f4b942;margin-top:6px;text-shadow:0 0 16px rgba(244,185,66,.4);position:relative;z-index:1">78%</div><div style="font-size:.72rem;color:#6b8097;margin-top:2px;position:relative;z-index:1">Mendoza</div></div>
         </div>
       </div>
       <!-- RIGHT: LIVE ROTY BOARD -->
@@ -139,27 +185,23 @@
           </div>
           <div class="mt-4 space-y-3" style="position:relative">
             <!-- Mendoza -->
-            <div class="card-hover rounded-xl border border-white/10 bg-black/30 p-4" style="background:linear-gradient(160deg,rgba(244,185,66,.06),rgba(0,0,0,.3))">
+            <div class="roty-glass-card" style="background:linear-gradient(145deg,rgba(244,185,66,.1),rgba(255,255,255,.04) 40%,rgba(0,0,0,.6));border-color:rgba(244,185,66,.25)">
               <div class="flex items-start justify-between">
                 <div><div class="text-xs uppercase tracking-[0.2em] text-zinc-500">Indiana</div><div class="mt-1 text-lg font-black leading-tight">Fernando Mendoza</div><div class="mt-1.5 inline-flex rounded-full border border-yellow-400/20 bg-yellow-400/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-[0.15em] text-yellow-300">QB</div></div>
                 <div class="text-right"><div class="text-xs uppercase tracking-[0.2em] text-zinc-500">Movement</div><div class="mt-1 text-lg font-black text-emerald-400">+12%</div></div>
               </div>
               <div class="mt-3 grid grid-cols-3 gap-2 text-sm">
-                <div class="rounded-lg bg-white/5 p-2.5"><div class="text-zinc-500 text-xs">Grade</div><div class="mt-1 text-base font-bold">6.73</div></div>
-                <div class="rounded-lg bg-white/5 p-2.5"><div class="text-zinc-500 text-xs">Odds</div><div class="mt-1 text-base font-bold text-yellow-400">-180</div></div>
-                <div class="rounded-lg bg-white/5 p-2.5"><div class="text-zinc-500 text-xs">Team</div><div class="mt-1 text-sm font-bold">Raiders</div></div>
+                <div class="roty-stat-cell"><div class="roty-stat-lbl">Grade</div><div class="roty-stat-val">6.73</div></div><div class="roty-stat-cell"><div class="roty-stat-lbl">Odds</div><div class="roty-stat-val" style="color:#f4b942">-180</div></div><div class="roty-stat-cell"><div class="roty-stat-lbl">Team</div><div class="roty-stat-val">Raiders</div></div>
               </div>
             </div>
             <!-- Bailey -->
-            <div class="card-hover rounded-xl border border-white/10 bg-black/30 p-4">
+            <div class="roty-glass-card" style="background:linear-gradient(145deg,rgba(248,113,113,.08),rgba(255,255,255,.03) 40%,rgba(0,0,0,.6));border-color:rgba(248,113,113,.2)">
               <div class="flex items-start justify-between">
                 <div><div class="text-xs uppercase tracking-[0.2em] text-zinc-500">Texas Tech</div><div class="mt-1 text-lg font-black leading-tight">David Bailey</div><div class="mt-1.5 inline-flex rounded-full border border-yellow-400/20 bg-yellow-400/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-[0.15em] text-yellow-300">EDGE</div></div>
                 <div class="text-right"><div class="text-xs uppercase tracking-[0.2em] text-zinc-500">Movement</div><div class="mt-1 text-lg font-black text-emerald-400">+7%</div></div>
               </div>
               <div class="mt-3 grid grid-cols-3 gap-2 text-sm">
-                <div class="rounded-lg bg-white/5 p-2.5"><div class="text-zinc-500 text-xs">Grade</div><div class="mt-1 text-base font-bold">6.78</div></div>
-                <div class="rounded-lg bg-white/5 p-2.5"><div class="text-zinc-500 text-xs">Odds</div><div class="mt-1 text-base font-bold text-emerald-400">+220</div></div>
-                <div class="rounded-lg bg-white/5 p-2.5"><div class="text-zinc-500 text-xs">Team</div><div class="mt-1 text-sm font-bold">Jets</div></div>
+                <div class="roty-stat-cell"><div class="roty-stat-lbl">Grade</div><div class="roty-stat-val">6.78</div></div><div class="roty-stat-cell"><div class="roty-stat-lbl">Odds</div><div class="roty-stat-val" style="color:#22c55e">+220</div></div><div class="roty-stat-cell"><div class="roty-stat-lbl">Team</div><div class="roty-stat-val">Jets</div></div>
               </div>
             </div>
             <!-- Tate -->
@@ -194,6 +236,19 @@
           <button id="nav-betting" onclick="showSection('betting',this)" class="flex w-full items-center justify-between rounded-xl border border-transparent bg-white/5 px-4 py-3 text-left text-sm font-medium text-zinc-300 transition hover:bg-yellow-400/10 hover:text-white">Betting Intel <span class="text-zinc-500">&#x2192;</span></button>
           <button id="nav-film" onclick="showSection('film',this)" class="flex w-full items-center justify-between rounded-xl border border-transparent bg-white/5 px-4 py-3 text-left text-sm font-medium text-zinc-300 transition hover:bg-yellow-400/10 hover:text-white">Film Room <span class="ml-1 text-[10px] text-zinc-600">(Soon)</span> <span class="text-zinc-500">&#x2192;</span></button>
           <button id="nav-mock" onclick="showSection('mock',this)" class="flex w-full items-center justify-between rounded-xl border border-transparent bg-white/5 px-4 py-3 text-left text-sm font-medium text-zinc-300 transition hover:bg-yellow-400/10 hover:text-white">Mock Simulator <span class="text-zinc-500">&#x2192;</span></button>
+          <!-- Mock teaser card in sidebar -->
+          <div onclick="document.getElementById('nav-mock').click()" style="cursor:pointer;margin-top:8px;border-radius:16px;overflow:hidden;border:1px solid rgba(244,185,66,.2);background:linear-gradient(135deg,rgba(244,185,66,.08),rgba(34,197,94,.04));padding:14px;transition:all .2s" onmouseover="this.style.borderColor='rgba(244,185,66,.45)'" onmouseout="this.style.borderColor='rgba(244,185,66,.2)'">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+              <div style="width:7px;height:7px;border-radius:50%;background:#f4b942;animation:pulse 2s infinite;flex-shrink:0"></div>
+              <span style="font-size:.55rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#f4b942">Mock Draft Simulator</span>
+            </div>
+            <div style="font-size:.65rem;color:#6b8097;line-height:1.5;margin-bottom:10px">Pick your franchise · 32 picks · AI auto-drafts every other team by BPA + need</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <span style="font-size:.5rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:10px;background:rgba(244,185,66,.12);border:1px solid rgba(244,185,66,.25);color:#f4b942">32 Teams</span>
+              <span style="font-size:.5rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:10px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:#22c55e">AI Draft</span>
+              <span style="font-size:.5rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:10px;background:rgba(87,167,255,.1);border:1px solid rgba(87,167,255,.2);color:#57a7ff">BPA Model</span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="glass rounded-[2rem] p-5" id="filterPanel" style="display:none">
@@ -230,7 +285,7 @@
       </div>
       <!-- BETTING INTEL -->
       <div id="section-betting" class="section-panel">
-        <div class="glass mb-6 rounded-[2rem] p-5"><div class="text-xs uppercase tracking-[0.25em] text-zinc-500">2026 Rookies · Live Market</div><div class="mt-1 text-3xl font-black">Betting Intel</div><p class="mt-2 text-sm text-zinc-400 max-w-xl">Live ROTY odds and market movement. Props update through the season.</p></div>
+        <div class="glass mb-6 rounded-[2rem] p-5"><div style="display:flex;gap:8px"><span class="text-xs uppercase tracking-[0.25em]" style="color:#22c55e">2026 Rookies</span><span class="text-xs uppercase tracking-[0.25em]" style="color:#f4b942">· Live Market</span></div><div class="mt-1 text-3xl font-black">Betting Intel</div><p class="mt-2 text-sm text-zinc-400 max-w-xl">Live ROTY odds and market movement. Props update through the season.</p></div>
         <div id="bettingTicker" class="space-y-3"></div>
       </div>
       <!-- FILM ROOM (internal nav — links to standalone page) -->
@@ -346,6 +401,106 @@ function toggleMobileMenu() {
 // ── POS COLORS ──
 const PC={QB:'text-purple-400',RB:'text-emerald-400',WR:'text-blue-400',TE:'text-yellow-400',OT:'text-indigo-400',Edge:'text-red-400',LB:'text-orange-400',CB:'text-pink-400',S:'text-green-400',DT:'text-slate-400'};
 const PBG={QB:'bg-purple-400/10 border-purple-400/20 text-purple-300',RB:'bg-emerald-400/10 border-emerald-400/20 text-emerald-300',WR:'bg-blue-400/10 border-blue-400/20 text-blue-300',TE:'bg-yellow-400/10 border-yellow-400/20 text-yellow-300',OT:'bg-indigo-400/10 border-indigo-400/20 text-indigo-300',Edge:'bg-red-400/10 border-red-400/20 text-red-300',LB:'bg-orange-400/10 border-orange-400/20 text-orange-300',CB:'bg-pink-400/10 border-pink-400/20 text-pink-300',S:'bg-green-400/10 border-green-400/20 text-green-300',DT:'bg-slate-400/10 border-slate-400/20 text-slate-300'};
+
+const SCHOOL_COLORS={
+  'Indiana':       {h:'#990000',a:'#FFFFFF',h2:'#7A0000'},
+  'Texas Tech':    {h:'#CC0000',a:'#000000',h2:'#A60000'},
+  'Ohio State':    {h:'#BB0000',a:'#666666',h2:'#990000'},
+  'Notre Dame':    {h:'#0C2340',a:'#C99700',h2:'#091A30'},
+  'LSU':           {h:'#461D7C',a:'#FDD023',h2:'#33145A'},
+  'Miami':         {h:'#005030',a:'#F47321',h2:'#003820'},
+  'Texas':         {h:'#BF5700',a:'#FFFFFF',h2:'#9A4400'},
+  'Texas Tech':    {h:'#CC0000',a:'#000000',h2:'#A60000'},
+  'Oregon':        {h:'#154733',a:'#FEE123',h2:'#0D2E22'},
+  'Alabama':       {h:'#9E1B32',a:'#FFFFFF',h2:'#7A1426'},
+  'Georgia':       {h:'#BA0C2F',a:'#000000',h2:'#8A0922'},
+  'South Carolina':{h:'#73000A',a:'#000000',h2:'#510007'},
+  'Michigan':      {h:'#00274C',a:'#FFCB05',h2:'#001A34'},
+  'Iowa':          {h:'#FFCD00',a:'#000000',h2:'#D4AA00'},
+  'Missouri':      {h:'#F1B82D',a:'#000000',h2:'#C9980F'},
+  'Mississippi':   {h:'#CE1126',a:'#14213D',h2:'#A30D1E'},
+};
+function schoolHelmet(school, grade, pos){
+  const c=SCHOOL_COLORS[school]||{h:'#1e2d40',a:'#f4b942',h2:'#111e2b'};
+  const gc=grade>=7.0?'#f4b942':grade>=6.8?'#22c55e':grade>=6.6?'#57a7ff':'#9dafc2';
+  const pc=c.h, ac=c.a, dk=c.h2;
+  const hl=lighten(pc,.45);
+  // Football player holding grade card - fills the box
+  return '<svg viewBox="0 0 110 140" xmlns="http://www.w3.org/2000/svg" style="width:100px;height:128px">'+
+  // === HELMET ===
+  // Back of helmet
+  '<ellipse cx="55" cy="28" rx="26" ry="24" fill="'+dk+'" opacity="0.7"/>'+
+  // Main helmet dome
+  '<path d="M 30,30 Q 28,10 55,6 Q 82,10 80,30 Q 80,48 55,52 Q 30,48 30,30 Z" fill="'+pc+'"/>'+
+  // Helmet shine
+  '<path d="M 36,20 Q 42,10 58,9 Q 70,9 76,16 Q 62,8 46,12 Q 36,16 36,22 Z" fill="rgba(255,255,255,0.35)"/>'+
+  // Face mask opening (dark visor area)
+  '<path d="M 34,36 Q 34,52 55,54 Q 76,52 76,36 L 76,44 Q 76,54 55,56 Q 34,54 34,44 Z" fill="rgba(0,0,0,0.5)"/>'+
+  // Facemask bars
+  '<path d="M 32,38 Q 55,42 78,38" fill="none" stroke="'+ac+'" stroke-width="2.2" stroke-linecap="round"/>'+
+  '<path d="M 34,44 Q 55,48 76,44" fill="none" stroke="'+ac+'" stroke-width="2.2" stroke-linecap="round"/>'+
+  '<line x1="46" y1="38" x2="46" y2="48" stroke="'+ac+'" stroke-width="2" stroke-linecap="round"/>'+
+  '<line x1="64" y1="38" x2="64" y2="48" stroke="'+ac+'" stroke-width="2" stroke-linecap="round"/>'+
+  // Center stripe
+  '<path d="M 51,6 Q 55,5 59,6 L 59,32 L 51,32 Z" fill="'+ac+'" opacity="0.7"/>'+
+  // === BODY / JERSEY ===
+  // Shoulder pads
+  '<path d="M 18,62 Q 20,54 32,52 Q 55,58 78,52 Q 90,54 92,62 Q 88,70 55,72 Q 22,70 18,62 Z" fill="'+pc+'"/>'+
+  // Shoulder pad highlights
+  '<path d="M 22,60 Q 36,55 55,58 Q 36,53 22,58 Z" fill="rgba(255,255,255,0.15)"/>'+
+  '<path d="M 88,60 Q 74,55 55,58 Q 74,53 88,58 Z" fill="rgba(255,255,255,0.15)"/>'+
+  // Jersey body
+  '<path d="M 32,70 Q 28,90 26,115 L 84,115 Q 82,90 78,70 Q 55,76 32,70 Z" fill="'+pc+'"/>'+
+  // Jersey number area (subtle)
+  '<path d="M 42,82 Q 55,85 68,82 Q 68,98 55,100 Q 42,98 42,82 Z" fill="rgba(255,255,255,0.06)"/>'+
+  // Jersey stripes on sleeves
+  '<path d="M 26,78 Q 18,76 16,82 Q 14,88 18,90 Q 22,92 26,90 Z" fill="'+ac+'" opacity="0.6"/>'+
+  '<path d="M 84,78 Q 92,76 94,82 Q 96,88 92,90 Q 88,92 84,90 Z" fill="'+ac+'" opacity="0.6"/>'+
+  // === LEFT ARM reaching up ===
+  '<path d="M 30,68 Q 20,62 12,56 Q 8,52 12,48 Q 16,44 20,48 L 26,58 Q 28,64 30,70 Z" fill="'+pc+'"/>'+
+  // Left glove
+  '<ellipse cx="13" cy="46" rx="6" ry="5" fill="'+dk+'"/>'+
+  // === RIGHT ARM holding grade card ===
+  '<path d="M 80,68 Q 90,62 98,56 Q 102,52 100,48 Q 98,44 94,46 L 88,58 Q 84,64 80,70 Z" fill="'+pc+'"/>'+
+  // Right glove
+  '<ellipse cx="99" cy="46" rx="6" ry="5" fill="'+dk+'"/>'+
+  // === GRADE CARD held by right hand ===
+  // Card body
+  '<rect x="82" y="14" width="28" height="36" rx="5" ry="5" fill="rgba(4,8,16,0.92)" stroke="'+gc+'" stroke-width="1.5"/>'+
+  // Card glass sheen
+  '<path d="M 83,15 Q 87,14 110,14 Q 87,13 83,17 Z" fill="rgba(255,255,255,0.15)"/>'+
+  // Grade value
+  '<text x="96" y="32" text-anchor="middle" font-family="DM Mono,Courier New,monospace" font-size="9" font-weight="900" fill="'+gc+'">'+grade.toFixed(2)+'</text>'+
+  '<text x="96" y="43" text-anchor="middle" font-family="DM Mono,Courier New,monospace" font-size="4.5" font-weight="700" fill="'+gc+'" opacity="0.7">GRADE</text>'+
+  // Card glow
+  '<rect x="82" y="14" width="28" height="36" rx="5" ry="5" fill="none" stroke="'+gc+'" stroke-width="3" opacity="0.12"/>'+
+  // === LEGS ===
+  '<path d="M 38,113 Q 36,124 34,135 L 46,135 Q 48,124 48,113 Z" fill="'+dk+'"/>'+
+  '<path d="M 72,113 Q 74,124 76,135 L 64,135 Q 62,124 62,113 Z" fill="'+dk+'"/>'+
+  // Pants stripe
+  '<path d="M 39,113 L 47,113 L 47,120 L 39,120 Z" fill="'+ac+'" opacity="0.5"/>'+
+  '<path d="M 63,113 L 71,113 L 71,120 L 63,120 Z" fill="'+ac+'" opacity="0.5"/>'+
+  // Cleats
+  '<ellipse cx="40" cy="136" rx="8" ry="4" fill="rgba(0,0,0,0.7)"/>'+
+  '<ellipse cx="70" cy="136" rx="8" ry="4" fill="rgba(0,0,0,0.7)"/>'+
+  '</svg>';
+}
+
+function lighten(hex,amt){
+  const n=parseInt(hex.slice(1),16);
+  const r=Math.min(255,((n>>16)&0xff)+Math.round(amt*200));
+  const g=Math.min(255,((n>>8)&0xff)+Math.round(amt*200));
+  const b=Math.min(255,(n&0xff)+Math.round(amt*200));
+  return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+}
+function darken(hex,amt){
+  const n=parseInt(hex.slice(1),16);
+  const r=Math.max(0,((n>>16)&0xff)-Math.round(amt*160));
+  const g=Math.max(0,((n>>8)&0xff)-Math.round(amt*160));
+  const b=Math.max(0,(n&0xff)-Math.round(amt*160));
+  return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+}
+
 function pbadge(p){return PBG[p]||'bg-white/10 border-white/10 text-zinc-300'}
 function pcolor(p){return PC[p]||'text-zinc-300'}
 function gradeColor(g){return g>=6.8?'text-yellow-300':g>=6.5?'text-yellow-400':'text-emerald-400'}
@@ -354,7 +509,6 @@ function gradeColor(g){return g>=6.8?'text-yellow-300':g>=6.5?'text-yellow-400':
 let currentSection='home';
 function showSection(id,btn){
   document.querySelectorAll('.section-panel').forEach(s=>s.classList.remove('visible'));
-  document.getElementById('section-'+id).classList.add('visible');
   document.querySelectorAll('aside button[id^="nav-"]').forEach(b=>{
     b.classList.remove('sb-active');
     b.querySelector('span:last-child').style.color='';
@@ -363,7 +517,11 @@ function showSection(id,btn){
   currentSection=id;
   const fp=document.getElementById('filterPanel');
   fp.style.display=(id==='home'||id==='betting')?'block':'none';
-  if(id==='betting') renderTicker();
+  setTimeout(()=>{
+    document.getElementById('section-'+id).classList.add('visible');
+    if(id==='betting') renderTicker();
+    if(id==='home') renderHome();
+  },30);
   if(id==='mock') initMockTeamGrid();
 }
 
@@ -412,12 +570,13 @@ function buildBigCard(p,i){
   const traits=p.traits.map(t=>`<div class="rounded-2xl border border-white/10 bg-black/30 p-4"><div class="text-xs uppercase tracking-[0.15em] text-zinc-500">Trait</div><div class="mt-2 text-base font-bold">${t}</div></div>`).join('');
   const attrs=p.attrs.map(a=>attrBar(a.v,a.n)).join('');
   const accentGrad=i===0?'background:linear-gradient(to right,rgba(232,160,32,0.6),rgba(248,113,113,0.4),rgba(34,197,94,0.4))':'background:'+(p.pos==='Edge'?'rgba(248,113,113,0.6)':p.pos==='WR'?'rgba(96,165,250,0.6)':p.pos==='RB'?'rgba(52,211,153,0.6)':p.pos==='LB'?'rgba(251,146,60,0.6)':p.pos==='CB'?'rgba(232,121,249,0.6)':p.pos==='S'?'rgba(74,222,128,0.6)':'rgba(167,139,250,0.6)');
-  return `<div class="glass card-hover overflow-hidden rounded-[2rem]" onclick="this.classList.toggle('expanded')">
+  const posCol={QB:'rgba(232,160,32,.06)',Edge:'rgba(248,113,113,.06)',EDGE:'rgba(248,113,113,.06)',WR:'rgba(96,165,250,.06)',RB:'rgba(52,211,153,.06)',LB:'rgba(251,146,60,.06)',CB:'rgba(232,121,249,.06)',S:'rgba(74,222,128,.06)',IOL:'rgba(167,139,250,.06)',DL:'rgba(148,163,184,.06)'};
+  const cardBg=posCol[p.pos]||'rgba(255,255,255,.02)';
+  return `<div class="glass card-hover overflow-hidden rounded-[2rem]" style="background:linear-gradient(160deg,${cardBg},rgba(0,0,0,.4))" onclick="this.classList.toggle('expanded')">
     <div style="${accentGrad};height:3px"></div>
     <div class="grid gap-6 p-6 xl:grid-cols-[120px_1fr_280px]">
-      <div class="flex flex-col items-center justify-center rounded-3xl border border-white/10 bg-black/30 p-4">
-        <div class="text-xs uppercase tracking-[0.2em] text-zinc-500">Grade</div>
-        <div class="mt-2 text-5xl font-black ${gc}">${p.grade.toFixed(2)}</div>
+      <div class="flex flex-col items-center justify-center rounded-3xl border border-white/10 bg-black/30 p-3" style="min-width:130px">
+        ${schoolHelmet(p.school, p.grade, p.pos)}
         <div class="mt-2 rounded-full border ${upBadge} px-3 py-1 text-xs uppercase tracking-[0.15em]">${p.up?'↑ UP':'—'}</div>
       </div>
       <div>
@@ -483,36 +642,83 @@ document.addEventListener('click', function(e){
 function renderHome(){
   const el=document.getElementById('homeCards');
   const data=filtered();
-  el.innerHTML=data.length?data.map((p,i)=>buildBigCard(p,i)).join(''):'<div class="glass rounded-[2rem] p-10 text-center text-zinc-500">No prospects match this filter.</div>';
+  const otaConf={'Fernando Mendoza':94,'David Bailey':88,'Carnell Tate':91,'Jeremiyah Love':79,'Arvell Reese':85,'Sonny Styles':87,'Mansoor Delane':92,'Rueben Bain Jr.':76,'Caleb Downs':89,'Omar Cooper Jr.':83};
+  const otaTrend={'Fernando Mendoza':'up','David Bailey':'up','Carnell Tate':'up','Jeremiyah Love':'flat','Arvell Reese':'up','Sonny Styles':'flat','Mansoor Delane':'up','Rueben Bain Jr.':'dn','Caleb Downs':'up','Omar Cooper Jr.':'up'};
+  const posColor={QB:'#e8a020',Edge:'#f87171',EDGE:'#f87171',WR:'#60a5fa',RB:'#34d399',LB:'#fb923c',CB:'#e879f9',S:'#4ade80',IOL:'#a78bfa',DL:'#94a3b8'};
+  const otaHtml=data.map(p=>{
+    const conf=otaConf[p.name]||75;
+    const trend=otaTrend[p.name]||'flat';
+    const c=posColor[p.pos]||'#f4b942';
+    const trendTxt=trend==='up'?'▲ Rising':trend==='dn'?'▼ Fading':'■ Steady';
+    const trendCol=trend==='up'?'#22c55e':trend==='dn'?'#ef4444':'#9dafc2';
+    return `<div class="ota-card">
+      <div class="ota-pos-bar" style="background:linear-gradient(90deg,${c}99,${c}22)"></div>
+      <div style="padding:16px 18px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div>
+            <div style="font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4a5a7a;margin-bottom:3px">${p.pos} · ${p.school}</div>
+            <div style="font-size:.88rem;font-weight:800;color:#f0ece4">${p.name}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:.55rem;font-weight:700;color:${trendCol};margin-bottom:3px">${trendTxt}</div>
+            <div style="font-size:.78rem;font-weight:800;color:${p.ot==='neg'?'#f4b942':'#22c55e'};font-family:'DM Mono',monospace">${p.odds}</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <div style="font-size:.5rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4a5a7a;width:58px;flex-shrink:0">OTA Conf.</div>
+          <div class="ota-conf-track"><div class="ota-conf-fill" style="width:${conf}%;background:${c};box-shadow:0 0 7px ${c}55"></div></div>
+          <div style="font-size:.74rem;font-weight:800;color:${c};font-family:'DM Mono',monospace;width:28px;text-align:right">${conf}</div>
+        </div>
+        <div style="font-size:.62rem;color:#5a6b7d;line-height:1.5">${p.teaser}</div>
+      </div>
+    </div>`;
+  }).join('');
+  el.innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:28px">${otaHtml}</div>
+    ${data.length?data.map((p,i)=>buildBigCard(p,i)).join(''):'<div class="glass rounded-[2rem] p-10 text-center text-zinc-500">No prospects match this filter.</div>'}
+  `;
 }
 
 function renderTicker(){
   const el=document.getElementById('bettingTicker');
   const data=filtered();
-  const moves=['+12%','+7%','-3%','+9%','+5%','-2%','+14%','-1%','+3%','+6%'];
-  el.innerHTML=data.map((p,i)=>{
-    const mov=moves[i%moves.length];
-    const movUp=mov.startsWith('+');
-    return `<div class="glass card-hover rounded-2xl p-4 grid grid-cols-[1fr_80px_100px_80px] gap-4 items-center">
-      <div>
-        <div class="text-xs uppercase tracking-[0.15em] text-zinc-500 mb-1">${p.school} · ${p.pos}</div>
-        <div class="text-lg font-black">${p.name}</div>
-        <div class="text-xs text-zinc-500 mt-1">Drafted: ${p.drafted}</div>
-      </div>
-      <div class="border-l border-white/10 pl-4">
-        <div class="text-xs uppercase tracking-[0.1em] text-zinc-500 mb-1">Grade</div>
-        <div class="text-xl font-black ${gradeColor(p.grade)}">${p.grade.toFixed(2)}</div>
-      </div>
-      <div class="border-l border-white/10 pl-4">
-        <div class="text-xs uppercase tracking-[0.1em] text-zinc-500 mb-1">ROTY Odds</div>
-        <div class="text-xl font-black ${p.ot==='pos'?'text-emerald-400':'text-yellow-400'}">${p.odds}</div>
-      </div>
-      <div class="border-l border-white/10 pl-4">
-        <div class="text-xs uppercase tracking-[0.1em] text-zinc-500 mb-1">Movement</div>
-        <div class="text-xl font-black ${movUp?'text-emerald-400':'text-red-400'}">${mov}</div>
-      </div>
-    </div>`;
-  }).join('');
+  const moves=[{v:'+12%',d:'up'},{v:'+7%',d:'up'},{v:'-3%',d:'dn'},{v:'+9%',d:'up'},{v:'+5%',d:'up'},{v:'-2%',d:'dn'},{v:'+14%',d:'up'},{v:'-1%',d:'dn'},{v:'+3%',d:'up'},{v:'+6%',d:'up'}];
+  const ctx=[{l:'OTAs',v:'Strong'},{l:'Minicamp',v:'A Grade'},{l:'Film',v:'Elite'},{l:'Buzz',v:'Rising'},{l:'OTAs',v:'Solid'},{l:'Minicamp',v:'B+ Grade'},{l:'Film',v:'Good'},{l:'Buzz',v:'Steady'},{l:'OTAs',v:'Flashed'},{l:'Minicamp',v:'B Grade'}];
+  el.innerHTML=`
+    <div class="glass mb-5 rounded-[2rem] p-5">
+      <div style="display:flex;gap:8px"><span class="text-xs uppercase tracking-[0.25em]" style="color:#22c55e">2026 Rookies</span><span class="text-xs uppercase tracking-[0.25em]" style="color:#f4b942">· Live Market</span></div>
+      <div class="mt-1 text-3xl font-black">Betting Intel</div>
+      <p class="mt-2 text-sm text-zinc-400 max-w-xl">Live ROTY odds and market movement. Props update through the season.</p>
+    </div>
+    ${data.map((p,i)=>{
+      const mov=moves[i%moves.length]; const intel=ctx[i%ctx.length];
+      return `<div class="glass card-hover rounded-2xl overflow-hidden">
+        <div style="height:2px;background:${p.ot==='neg'?'linear-gradient(90deg,#f4b942,rgba(244,185,66,.1))':'linear-gradient(90deg,#22c55e,rgba(34,197,94,.1))'}"></div>
+        <div class="p-4" style="display:grid;grid-template-columns:1fr 80px 110px 100px 110px;gap:12px;align-items:center">
+          <div>
+            <div class="text-xs uppercase tracking-[0.15em] text-zinc-500 mb-1">${p.school} · ${p.pos}</div>
+            <div class="text-lg font-black">${p.name}</div>
+            <div class="text-xs text-zinc-500 mt-1">${p.drafted}</div>
+          </div>
+          <div class="border-l border-white/10 pl-3">
+            <div class="text-xs uppercase tracking-[0.1em] text-zinc-500 mb-1">Grade</div>
+            <div class="text-xl font-black ${gradeColor(p.grade)}">${p.grade.toFixed(2)}</div>
+          </div>
+          <div class="border-l border-white/10 pl-3">
+            <div class="text-xs uppercase tracking-[0.1em] text-zinc-500 mb-1">ROTY Odds</div>
+            <div class="text-xl font-black" style="color:${p.ot==='neg'?'#f4b942':'#22c55e'}">${p.odds}</div>
+          </div>
+          <div class="border-l border-white/10 pl-3">
+            <div class="text-xs uppercase tracking-[0.1em] text-zinc-500 mb-2">7D Move</div>
+            <span class="odds-move ${mov.d}">${mov.d==='up'?'▲':'▼'} ${mov.v}</span>
+          </div>
+          <div class="border-l border-white/10 pl-3">
+            <div class="text-xs uppercase tracking-[0.1em] text-zinc-500 mb-1">${intel.l}</div>
+            <div class="text-sm font-bold text-zinc-300">${intel.v}</div>
+          </div>
+        </div>
+      </div>`;
+    }).join('')}`;
 }
 
 // CONSENSUS — Full 32-player 2027 board by position
@@ -1043,6 +1249,22 @@ function resetMock(){
 }
 
 // INIT
+(function buildRotyStrip(){
+  const el=document.getElementById('rotyItems'); if(!el) return;
+  const moves=[{v:'+12%',d:'up'},{v:'+7%',d:'up'},{v:'-3%',d:'dn'},{v:'+9%',d:'up'},{v:'+5%',d:'up'}];
+  const rankCol=['#f4b942','#a0a0b0','#cd7f32','#3a4a5a','#3a4a5a'];
+  el.innerHTML=BD.slice(0,5).map((p,i)=>{
+    const m=moves[i];
+    return `<div class="roty-item">
+      <span class="roty-rank" style="color:${rankCol[i]}">#${i+1}</span>
+      <span class="roty-name">${p.name}</span>
+      <span class="roty-pos">${p.pos}</span>
+      <span class="roty-divider"></span>
+      <span class="roty-odds" style="color:${p.ot==='neg'?'#f4b942':'#22c55e'}">${p.odds}</span>
+      <span class="roty-mv ${m.d}">${m.d==='up'?'▲':'▼'} ${m.v}</span>
+    </div>`;
+  }).join('');
+})();
 renderHome();
 renderConsensus();
 renderQB();
