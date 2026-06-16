@@ -343,6 +343,23 @@
 .nfl-lock-features{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:12px}
 .nfl-lock-feat{display:flex;align-items:center;gap:6px;font-size:.62rem;font-weight:700;color:#ffd9b0;background:rgba(255,120,40,.10);border:1px solid rgba(255,140,60,.28);border-radius:8px;padding:6px 12px}
 .nfl-lock-footnote{display:none;align-items:center;gap:8px;justify-content:center;margin:14px auto 0;max-width:520px;padding:9px 16px;font-size:.64rem;line-height:1.5;color:#ffcfa0;background:linear-gradient(90deg,rgba(255,120,40,.08),rgba(255,90,20,.04));border:1px solid rgba(255,140,60,.22);border-radius:10px}
+@media(max-width:760px){
+  /* cap the locked banner to a sensible mobile frame; let content set height */
+  .nfl-lock-wrap{height:auto;min-height:auto;max-width:none;margin:12px;border-radius:18px;align-items:center;padding:8px 0 14px}
+  .nfl-lock-content{padding:8px 18px 18px;max-width:100%}
+  .nfl-lock-icon-big{font-size:3rem;margin-bottom:6px}
+  .nfl-lock-icon-big svg{width:74px;height:100px}
+  .nfl-lock-headline{font-size:clamp(1.7rem,8vw,2.4rem)}
+  .nfl-lock-sub{font-size:.78rem;margin-bottom:8px}
+  .nfl-lock-promo{font-size:.7rem;padding:10px 13px;margin-bottom:10px}
+  /* email row: stack input above button so neither is crushed */
+  .nfl-lock-card{padding:12px}
+  .nfl-lock-card form,.nfl-lock-card .nfl-lock-inputrow{flex-direction:column;gap:8px}
+  .nfl-lock-input{width:100%}
+  .nfl-lock-btn{width:100%;padding:11px 18px}
+  .nfl-lock-features{gap:8px}
+  .nfl-lock-feat{font-size:.58rem;padding:6px 10px}
+}
 .nfl-foot-dot{width:6px;height:6px;border-radius:50%;background:#ff7a2c;box-shadow:0 0 8px rgba(255,122,44,.9);flex-shrink:0;animation:pulse 1.8s infinite}
   .sport-panel { display: none; }
   .sport-panel.active { display: block; }
@@ -1533,6 +1550,214 @@ body::after{
 
   @keyframes ppSheen { 0%{left:-60%} 60%,100%{left:140%} }
 
+  /* ════════════════════════════════════════════════════════════
+     PROP BOARD v2 — signal-ranked rail + spectrum bar + ticket
+     ════════════════════════════════════════════════════════════ */
+  .pp2-shell { display:grid; grid-template-columns:1fr 340px; max-width:100%; }
+  .pp2-board { border-right:1px solid rgba(139,92,246,.16); min-width:0; }
+
+  /* column header */
+  .pp2-colhdr { display:grid; grid-template-columns:50px minmax(0,320px) minmax(150px,1fr) 92px; border-bottom:1px solid rgba(167,139,250,.14); }
+  .pp2-colhdr .pp-col { padding:8px 14px; }
+  .pp2-colhdr .pp-col.c-grade { padding:8px 0; text-align:center; }
+  .pp2-colhdr .pp-col.c-player { padding-left:4px; }
+
+  /* row */
+  .pp2-row { display:grid; grid-template-columns:50px minmax(0,320px) minmax(150px,1fr) 92px; align-items:center;
+    position:relative; border-bottom:1px solid rgba(255,255,255,.045); cursor:pointer;
+    transition:background .15s, opacity .25s, filter .25s;
+    background:linear-gradient(100deg, rgba(48,18,82,.10), rgba(20,12,40,.02) 60%, transparent 92%); }
+  .pp2-row:hover { background:linear-gradient(100deg, rgba(167,139,250,.14), rgba(139,92,246,.04) 78%); }
+  .pp2-row::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; }
+  .pp2-row.tier-smash::before { background:#34d399; box-shadow:0 0 14px rgba(52,211,153,.7); }
+  .pp2-row.tier-lean::before  { background:#8b5cf6; box-shadow:0 0 10px rgba(139,92,246,.5); }
+  .pp2-row.tier-fade::before  { background:#ef4444; box-shadow:0 0 12px rgba(239,68,68,.55); }
+  .pp2-row.pp-deselected { opacity:.4; filter:grayscale(.55); }
+  .pp2-row.pp-deselected::before { box-shadow:none; opacity:.5; }
+
+  /* grade cell */
+  .pp2-grade { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; padding:26px 0 14px; }
+  .pp2-g { font-family:'Inter',sans-serif; font-weight:900; font-size:1.4rem; line-height:.9; letter-spacing:-.03em; }
+  .pp2-g.tier-smash { color:#34d399; text-shadow:0 0 14px rgba(52,211,153,.55); }
+  .pp2-g.tier-lean  { color:#c4b5fd; text-shadow:0 0 12px rgba(167,139,250,.45); }
+  .pp2-g.tier-fade  { color:#f87171; text-shadow:0 0 12px rgba(248,113,113,.45); }
+  .pp2-gl { font-family:'DM Mono',monospace; font-size:.42rem; font-weight:500; letter-spacing:.18em; text-transform:uppercase; }
+  .pp2-gl.tier-smash { color:#5fa07e; }
+  .pp2-gl.tier-lean  { color:#8b7fb8; }
+  .pp2-gl.tier-fade  { color:#c97a76; }
+  .pp2-chk { position:absolute; left:50%; transform:translateX(-50%); top:9px; width:12px; height:12px; border-radius:3px;
+    border:1.5px solid rgba(167,139,250,.5); background:rgba(124,92,200,.12);
+    display:flex; align-items:center; justify-content:center; transition:all .2s; z-index:2; }
+  .pp2-chk::after { content:''; width:5px; height:5px; border-radius:1px; transform:scale(1); transition:transform .18s cubic-bezier(.4,1.6,.5,1);
+    background:#a78bfa; box-shadow:0 0 7px rgba(167,139,250,.9); }
+  .pp-deselected .pp2-chk { border-color:rgba(140,140,160,.4); background:transparent; }
+  .pp-deselected .pp2-chk::after { transform:scale(0); }
+
+  /* player cell */
+  .pp2-mid { padding:13px 14px 13px 4px; min-width:0; }
+  .pp2-name { font-family:'Inter',sans-serif; font-size:.92rem; font-weight:700; letter-spacing:-.01em; color:#f7f5ff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.1; }
+  .pp2-stat { display:inline-block; font-family:'DM Mono',monospace; font-size:.6rem; color:#c4b5fd; background:rgba(167,139,250,.1); border:1px solid rgba(167,139,250,.3); border-radius:4px; padding:2px 8px; margin-top:6px; }
+  .pp2-meta { font-family:'DM Mono',monospace; font-size:.5rem; color:#7a6fa0; margin-top:7px; display:flex; gap:10px; }
+  .pp2-meta b { color:#9a93b8; font-weight:500; }
+
+  /* spectrum bar cell */
+  .pp2-spec { padding:12px 12px; }
+  .pp2-track { position:relative; height:34px; border-radius:7px; background:#140f24; border:1px solid rgba(167,139,250,.12); overflow:hidden; }
+  .pp2-fill { position:absolute; left:0; top:0; bottom:0; border-radius:6px 0 0 6px; transition:width .5s cubic-bezier(.34,1.2,.5,1);
+    background-size:200% 100%; animation:barFlow 3s linear infinite; }
+  .pp2-fill.edge { background:linear-gradient(90deg,#0e9e8c,#34d399,#0e9e8c); box-shadow:0 0 10px rgba(52,211,153,.4); }
+  .pp2-fill.thin { background:linear-gradient(90deg,#7c5cf0,#a78bfa,#7c5cf0); box-shadow:0 0 9px rgba(167,139,250,.4); }
+  .pp2-fill.neg  { background:linear-gradient(90deg,#7a2540,#c14a5f,#7a2540); box-shadow:0 0 9px rgba(193,74,95,.35); }
+  .pp2-imp { position:absolute; top:-2px; bottom:-2px; width:2px; background:rgba(255,255,255,.7); z-index:3; box-shadow:0 0 5px rgba(255,255,255,.5); }
+  .pp2-pct { position:absolute; right:8px; top:50%; transform:translateY(-50%); font-family:'DM Mono',monospace; font-size:.72rem; font-weight:700; color:#fff; z-index:4; text-shadow:0 0 6px rgba(0,0,0,.8); }
+  .pp2-specsub { display:flex; justify-content:space-between; margin-top:5px; font-family:'DM Mono',monospace; font-size:.46rem; letter-spacing:.06em; color:#6b6390; text-transform:uppercase; }
+
+  /* odds + ev cell */
+  .pp2-right { padding:12px 8px; text-align:center; }
+  .pp2-odds { display:inline-block; font-family:'DM Mono',monospace; font-size:.84rem; font-weight:700; color:#fff;
+    background:linear-gradient(180deg,#1c1430,#120d20); border:1px solid rgba(167,139,250,.4); border-radius:6px; padding:6px 9px; min-width:54px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 0 8px rgba(139,92,246,.12); }
+  .pp2-edge { font-family:'DM Mono',monospace; font-size:.92rem; font-weight:800; }
+  .pp2-edge.pos { color:#6ee7b7; }
+  .pp2-edge.neg { color:#fca5a5; }
+  .pp2-edge-l { font-family:'DM Mono',monospace; font-size:.42rem; letter-spacing:.12em; color:#6b6390; text-transform:uppercase; margin-top:3px; }
+
+  /* group label inside v2 board */
+  .pp2-group { display:flex; align-items:center; gap:10px; padding:9px 0; }
+  .pp2-group-text { display:inline-flex; align-items:center; gap:8px; font-family:'DM Mono',monospace; font-size:.54rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:#c4b5fd;
+    padding:6px 14px 6px 16px; background:linear-gradient(90deg, rgba(139,92,246,.18) 0%, rgba(139,92,246,.06) 60%, transparent 100%); border-left:3px solid #8b5cf6; }
+  .pp2-group-text::before { content:''; width:5px; height:5px; border-radius:50%; background:#8b5cf6; }
+  .pp2-group.alt .pp2-group-text { color:#5eead4; background:linear-gradient(90deg, rgba(45,212,191,.18) 0%, rgba(45,212,191,.06) 60%, transparent 100%); border-left:3px solid #2dd4bf; }
+  .pp2-group.alt .pp2-group-text::before { background:#2dd4bf; }
+  .pp2-group-line { flex:1; height:1px; background:linear-gradient(90deg,rgba(124,92,200,.15),transparent); }
+
+  /* ── STICKY TICKET ── */
+  .pp2-ticket { background:linear-gradient(180deg, rgba(46,26,82,.22), rgba(12,8,22,.5));
+    padding:20px 20px 22px; display:flex; flex-direction:column; gap:16px; align-self:start; position:sticky; top:12px; }
+  .pp2-tlabel { font-family:'DM Mono',monospace; font-size:.54rem; letter-spacing:.18em; text-transform:uppercase; color:#b8a8e8; line-height:1.5; margin-bottom:14px; }
+  .pp2-payout { font-family:'DM Mono',monospace; font-size:2.1rem; font-weight:800; color:#ffd36b; line-height:1.15; text-shadow:0 0 18px rgba(255,200,80,.5); }
+  .pp2-psub { font-family:'DM Mono',monospace; font-size:.58rem; color:#cba85a; margin-top:8px; }
+  .pp2-gauge { display:flex; align-items:center; gap:16px; padding:15px 0; border-top:1px solid rgba(255,255,255,.07); border-bottom:1px solid rgba(255,255,255,.07); }
+  .pp2-ring { width:80px; height:80px; flex-shrink:0; position:relative; }
+  .pp2-ring svg { width:100%; height:100%; transform:rotate(-90deg); }
+  .pp2-ring-bg { fill:none; stroke:rgba(255,255,255,.07); stroke-width:8; }
+  .pp2-ring-imp { fill:none; stroke:rgba(255,255,255,.35); stroke-width:2.5; stroke-linecap:round; }
+  .pp2-ring-arc { fill:none; stroke:#34d399; stroke-width:8; stroke-linecap:round; transition:stroke-dashoffset .55s cubic-bezier(.34,1.3,.5,1), stroke .3s; }
+  .pp2-ring-c { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .pp2-rp { font-family:'DM Mono',monospace; font-size:1.25rem; font-weight:800; color:#aef5c6; text-shadow:0 0 12px rgba(52,211,153,.5); line-height:1; transition:transform .12s ease; }
+  .pp2-rp .pp2-rsign { font-size:.7rem; opacity:.7; }
+  .pp2-rl { font-family:'DM Mono',monospace; font-size:.42rem; letter-spacing:.1em; color:#7a6fa0; text-transform:uppercase; margin-top:2px; }
+  .pp2-ginfo { flex:1; min-width:0; }
+  .pp2-gstat { display:flex; justify-content:space-between; align-items:center; font-family:'DM Mono',monospace; font-size:.62rem; padding:3px 0; }
+  .pp2-gstat span:first-child { color:#7a6fa0; }
+  .pp2-gstat .v { color:#e6dffb; font-weight:600; }
+  .pp2-gstat .v.ev { color:#7be0a0; text-shadow:0 0 10px rgba(52,211,153,.4); }
+  .pp2-gstat .v.ev.neg { color:#f4a3a3; text-shadow:0 0 10px rgba(244,113,113,.4); }
+  .pp2-corr-tag { font-family:'DM Mono',monospace; font-size:.5rem; letter-spacing:.08em; padding:2px 7px; border-radius:4px; }
+  .pp2-corr-tag.low  { color:#7be0a0; border:1px solid rgba(52,211,153,.3); background:rgba(52,211,153,.08); }
+  .pp2-corr-tag.high { color:#fcd34d; border:1px solid rgba(251,191,36,.3); background:rgba(251,191,36,.08); }
+  .pp2-thesis { font-family:'Inter',sans-serif; font-size:.66rem; font-style:italic; color:#9d8cd8; line-height:1.55; }
+  .pp2-btn { font-family:'Inter',sans-serif; font-weight:800; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:#1a1206;
+    background:linear-gradient(90deg,#ffd36b,#f4b942); border:none; border-radius:8px; padding:13px; cursor:pointer; text-align:center; transition:filter .15s, transform .1s; }
+  .pp2-btn:hover { filter:brightness(1.08); }
+  .pp2-btn:active { transform:scale(.98); }
+  .pp2-btn.empty { background:rgba(255,255,255,.06); color:#7a6fa0; cursor:default; }
+
+  /* ── live stat grid (fills space under the button) ── */
+  .pp2-statgrid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(167,139,250,.12);
+    border:1px solid rgba(167,139,250,.14); border-radius:8px; overflow:hidden; }
+  .pp2-statcell { background:linear-gradient(180deg, rgba(20,12,40,.5), rgba(12,8,22,.5)); padding:10px 12px; min-width:0; }
+  .pp2-stat-lbl { font-family:'DM Mono',monospace; font-size:.46rem; letter-spacing:.14em; text-transform:uppercase; color:#7a6fa0; margin-bottom:4px; }
+  .pp2-stat-v { font-family:'DM Mono',monospace; font-size:.95rem; font-weight:700; color:#e6dffb; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .pp2-stat-v.accent { color:#7be0a0; text-shadow:0 0 10px rgba(52,211,153,.35); }
+  .pp2-stat-sub { font-family:'DM Mono',monospace; font-size:.5rem; color:#8b7fb8; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+  /* optimize highlight pulse on rows */
+  @keyframes pp2OptFlash { 0%{box-shadow:inset 0 0 0 0 rgba(244,185,66,0);} 25%{box-shadow:inset 0 0 24px 2px rgba(244,185,66,.5);} 100%{box-shadow:inset 0 0 0 0 rgba(244,185,66,0);} }
+  .pp2-row.pp2-optflash { animation:pp2OptFlash 1.1s ease-out; }
+
+  /* ── RISK / REWARD BANNER v4 — bigger panel, bigger stake chip ── */
+  .pp2-meter { border:1px solid rgba(167,139,250,.25); border-radius:11px; overflow:hidden;
+    background:linear-gradient(180deg, rgba(32,20,58,.55), rgba(10,7,18,.65)); box-shadow:0 0 24px rgba(124,92,200,.08); }
+  .pp2-meter-hd { display:flex; align-items:center; justify-content:space-between; padding:11px 16px 10px; border-bottom:1px solid rgba(167,139,250,.14); }
+  .pp2-meter-ttl { display:flex; align-items:center; gap:7px; font-family:'DM Mono',monospace; font-size:.6rem; font-weight:500; letter-spacing:.18em; text-transform:uppercase; color:#c4b5fd; }
+  .pp2-meter-ttl::before { content:''; width:5px; height:5px; border-radius:50%; background:#a78bfa; box-shadow:0 0 7px rgba(167,139,250,.8); animation:pp2pulse 2s ease-in-out infinite; }
+  @keyframes pp2pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+  .pp2-rr-odds { font-family:'DM Mono',monospace; font-size:.56rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:4px 9px; border-radius:5px;
+    color:#ffd36b; border:1px solid rgba(244,185,66,.35); background:rgba(244,185,66,.08); }
+  .pp2-rr-body { padding:20px 20px 20px; }
+
+  /* split bar — thick, the visual anchor of the panel */
+  .pp2-rr-seg { display:flex; height:15px; border-radius:6px; overflow:hidden; border:1px solid rgba(167,139,250,.16); }
+  .pp2-rr-win { background:linear-gradient(90deg,#0e9e8c,#34d399,#0e9e8c); background-size:200% 100%; animation:barFlow 3s linear infinite;
+    transition:width .55s cubic-bezier(.34,1.2,.5,1); box-shadow:0 0 12px rgba(52,211,153,.45);
+    display:flex; align-items:center; justify-content:flex-end; padding-right:8px;
+    font-family:'DM Mono',monospace; font-size:.58rem; font-weight:800; color:#06342c; white-space:nowrap; overflow:hidden; }
+  .pp2-rr-win.under { background:linear-gradient(90deg,#7a2540,#c14a5f,#7a2540); box-shadow:0 0 10px rgba(193,74,95,.35); color:#3a0f18; }
+  .pp2-rr-lose { flex:1; background:#1c1430; }
+  .pp2-rr-leg { display:flex; justify-content:space-between; margin-top:8px; font-family:'DM Mono',monospace; font-size:.5rem; letter-spacing:.04em; color:#6b6390; }
+  .pp2-rr-leg span:first-child b { color:#9fe8c4; font-weight:600; }
+  .pp2-rr-leg span:last-child b { color:#ffd36b; font-weight:600; }
+
+  /* payout showcase — big stake stepper \u2192 payout, chip shifted right for breathing room */
+  .pp2-rr-showcase { display:flex; align-items:center; justify-content:center; gap:14px; margin-top:22px; padding:20px 8px 6px; border-top:1px solid rgba(167,139,250,.12); }
+
+  .pp2-stake { display:flex; flex-direction:column; align-items:center; gap:7px; flex-shrink:0; }
+  .pp2-stake-row { display:flex; align-items:center; gap:11px; }
+  .pp2-stepbtn { width:27px; height:27px; border-radius:7px; border:1px solid rgba(167,139,250,.35); background:rgba(167,139,250,.1);
+    color:#c4b5fd; font-family:'DM Mono',monospace; font-size:.92rem; font-weight:700; line-height:1; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; transition:background .15s, transform .1s, opacity .15s; flex-shrink:0; }
+  .pp2-stepbtn:hover { background:rgba(167,139,250,.2); }
+  .pp2-stepbtn:active { transform:scale(.9); }
+  .pp2-stepbtn:disabled { opacity:.3; cursor:default; }
+  .pp2-chip { position:relative; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 4px 0 rgba(0,0,0,.4), 0 6px 14px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.18); }
+  .pp2-chip::before { content:''; position:absolute; inset:5px; border-radius:50%; border:2px dashed rgba(255,255,255,.35); }
+  .pp2-chip-stake { width:70px; height:70px; background:repeating-conic-gradient(#7c5cf0 0deg 30deg, #5a3fc4 30deg 60deg); }
+  .pp2-chip-stake .pp2-chip-in { background:#1c1430; }
+  .pp2-chip-in { position:absolute; inset:9px; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.08); }
+  .pp2-chip-v { font-family:'DM Mono',monospace; font-size:.92rem; font-weight:800; color:#e6dffb; line-height:1; white-space:nowrap; }
+  .pp2-chip-l { font-family:'DM Mono',monospace; font-size:.4rem; letter-spacing:.12em; text-transform:uppercase; color:#7a6fa0; margin-top:2px; }
+  .pp2-stake-cap { font-family:'DM Mono',monospace; font-size:.44rem; letter-spacing:.1em; text-transform:uppercase; color:#5a5278; }
+
+  .pp2-rr-arrowtxt { font-family:'DM Mono',monospace; font-size:1.05rem; color:#4a4268; flex-shrink:0; }
+  .pp2-rr-num { text-align:center; flex-shrink:0; }
+  .pp2-rr-arrow { font-family:'DM Mono',monospace; font-size:.55rem; color:#7a6fa0; display:block; margin-bottom:4px; letter-spacing:.04em; }
+  .pp2-rr-big { font-family:'DM Mono',monospace; font-size:1.7rem; font-weight:800; line-height:1; color:#9fe8c4; text-shadow:0 0 14px rgba(52,211,153,.3); }
+  .pp2-rr-cap { font-family:'DM Mono',monospace; font-size:.42rem; letter-spacing:.1em; text-transform:uppercase; color:#5a5278; margin-top:5px; }
+
+  /* ── footer row: presented-by text + standalone branded casino chip, centered ── */
+  .pp2-footer-row { display:flex; align-items:center; justify-content:center; gap:18px; padding-top:16px; }
+  .pp2-bb-rule { width:1.5px; height:46px; flex-shrink:0;
+    background:linear-gradient(180deg, rgba(167,139,250,.85), rgba(167,139,250,.15) 70%, transparent);
+    box-shadow:0 0 8px rgba(167,139,250,.45); }
+  .pp2-bb { display:flex; flex-direction:column; align-items:center; gap:5px; }
+  .pp2-bb-logo { font-family:'DM Mono',monospace; font-size:.5rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:#b9a4f0; position:relative; padding-bottom:6px; }
+  .pp2-bb-logo::after { content:''; position:absolute; left:50%; bottom:0; width:26px; height:2px; transform:translateX(-50%);
+    background:linear-gradient(90deg, transparent, #a78bfa, transparent); box-shadow:0 0 6px rgba(167,139,250,.7); }
+  .pp2-bb-name { font-family:'Inter',sans-serif; font-size:1.15rem; font-weight:900; letter-spacing:-.02em; color:#fff; }
+  .pp2-bb-name span { color:#f4b942; }
+  .pp2-bb-sub { font-family:'DM Mono',monospace; font-size:.44rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.3); margin-top:1px; }
+
+
+  @media (max-width:980px){
+    .pp2-shell { grid-template-columns:1fr; }
+    .pp2-board { border-right:none; }
+    .pp2-ticket { position:static; border-top:1px solid rgba(139,92,246,.3); }
+  }
+  @media (max-width:620px){
+    .pp2-colhdr { display:none; }
+    .pp2-row { grid-template-columns:44px minmax(0,1fr) 78px; grid-template-areas:'grade mid right' 'grade spec spec'; row-gap:0; padding-bottom:10px; }
+    .pp2-grade { grid-area:grade; }
+    .pp2-mid { grid-area:mid; }
+    .pp2-spec { grid-area:spec; padding-top:0; padding-left:50px; }
+    .pp2-right { grid-area:right; padding:12px 12px 0 0; }
+    .pp2-odds { font-size:.82rem; padding:5px 9px; min-width:0; }
+    .pp2-edge { font-size:.82rem; }
+  }
+
   @media (max-width:1200px) {
     .pp-colhdr, .pp-row, .pp-parlay { grid-template-columns:2fr 1.6fr 1.7fr .9fr; }
   }
@@ -2181,8 +2406,14 @@ body::after{
     flex-shrink: 0;
     overflow: hidden;
   }
-  /* Wheel sizing wrapper keeps the wheel a centered square that fills the panel */
-  .ls-wheel-rail, .ls-wheel-track { aspect-ratio: 1 / 1; }
+  /* Wheel sizing wrapper keeps the wheel a centered square that fills the panel.
+     Sized off the panel WIDTH (fixed), not insets, so a taller info column
+     never stretches or vertically offsets the wheel. */
+  .ls-wheel-rail, .ls-wheel-track {
+    aspect-ratio: 1 / 1;
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    border-radius:50%;
+  }
 
   /* Outer ambient glow that pulses */
   .ls-wheel-panel::before {
@@ -2199,7 +2430,7 @@ body::after{
 
   /* Wooden rail */
   .ls-wheel-rail {
-    position:absolute; inset:8px; border-radius:50%;
+    width:min(284px, 78vw); height:min(284px, 78vw);
     background: conic-gradient(
       #6b3c18 0deg,#8a5020 20deg,#5a3010 45deg,#7a4820 70deg,
       #6b3c18 90deg,#8a5020 115deg,#5a3010 140deg,#7a4820 165deg,
@@ -2211,13 +2442,13 @@ body::after{
 
   /* Spinning track wrapper */
   .ls-wheel-track {
-    position:absolute; inset:16px; border-radius:50%;
+    width:min(268px, 74vw); height:min(268px, 74vw);
     animation: wheelSpin 6s linear infinite;
     will-change:transform;
   }
   @keyframes wheelSpin {
-    from { transform:rotate(0deg); }
-    to   { transform:rotate(360deg); }
+    from { transform:translate(-50%,-50%) rotate(0deg); }
+    to   { transform:translate(-50%,-50%) rotate(360deg); }
   }
 
   /* Green inset felt */
@@ -2239,14 +2470,14 @@ body::after{
     position:absolute; width:11px; height:11px; border-radius:50%;
     background:radial-gradient(circle at 30% 25%,#fffef0,#d8d8c8);
     box-shadow:0 2px 8px rgba(0,0,0,.8),0 0 10px rgba(255,255,240,.4);
-    top:20px; left:50%; margin-left:-5.5px;
+    top:50%; left:50%; margin:0;
     z-index:7;
-    transform-origin:5.5px 130px;
+    transform-origin:0 0;
     animation:ballOrbit 2.4s linear infinite;
   }
   @keyframes ballOrbit {
-    from { transform:rotate(0deg); }
-    to   { transform:rotate(-360deg); }
+    from { transform:translate(-50%,-50%) rotate(0deg)   translateY(-130px); }
+    to   { transform:translate(-50%,-50%) rotate(-360deg) translateY(-130px); }
   }
 
   /* Divider line between sectors — sparkle dots */
@@ -2272,18 +2503,38 @@ body::after{
   }
   .ls-legs { display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
   .ls-leg {
-    display:flex; align-items:center; gap:9px;
-    padding:7px 11px;
+    display:grid; grid-template-columns:30px 1fr auto; align-items:center; gap:10px;
+    padding:6px 11px;
     background:rgba(0,0,0,.22);
-    border:1px solid rgba(34,197,94,.08); border-radius:5px;
+    border:1px solid rgba(34,197,94,.08); border-radius:6px;
   }
-  .ls-leg-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
-  .ls-leg-dot.c0 { background:#ef4444; box-shadow:0 0 6px rgba(239,68,68,.6); }
-  .ls-leg-dot.c1 { background:#222; border:1px solid rgba(255,255,255,.18); }
-  .ls-leg-dot.c2 { background:#22c55e; box-shadow:0 0 6px rgba(34,197,94,.5); }
-  .ls-leg-dot.c3 { background:#f4b942; box-shadow:0 0 6px rgba(244,185,66,.5); }
-  .ls-leg-n { font-family:'DM Mono',monospace; font-size:.48rem; color:rgba(34,197,94,.25); flex-shrink:0; }
-  .ls-leg-name { font-size:.78rem; font-weight:600; color:#5aaa70; }
+  .ls-leg-n { font-family:'DM Mono',monospace; font-size:.58rem; font-weight:800; text-align:center;
+    border-radius:4px; padding:3px 0; }
+  .ls-leg-n.tier-edge { color:#34d399; background:rgba(52,211,153,.1); border:1px solid rgba(52,211,153,.3); text-shadow:0 0 8px rgba(52,211,153,.5); }
+  .ls-leg-n.tier-mid  { color:#f4b942; background:rgba(244,185,66,.08); border:1px solid rgba(244,185,66,.28); }
+  .ls-leg-n.tier-low  { color:#7a8a9a; background:rgba(122,138,154,.08); border:1px solid rgba(122,138,154,.22); }
+  .ls-leg-name { font-size:.74rem; font-weight:600; color:#bfe8cc; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ls-leg-odds { font-family:'DM Mono',monospace; font-size:.68rem; font-weight:700; color:#86efac; text-align:right; white-space:nowrap;
+    padding:3px 9px; border-radius:5px; background:rgba(34,197,94,.08); border:1px solid rgba(34,197,94,.2); }
+
+  /* ── roulette wager stepper ── */
+  .ls-wager { display:flex; align-items:center; gap:10px; margin-bottom:13px; padding:10px 12px;
+    background:rgba(0,0,0,.25); border:1px solid rgba(34,197,94,.14); border-radius:8px; }
+  .ls-wager-lbl { font-family:'DM Mono',monospace; font-size:.46rem; letter-spacing:.14em; text-transform:uppercase; color:#3a7a4a; flex-shrink:0; }
+  .ls-wager-btn { width:24px; height:24px; border-radius:6px; border:1px solid rgba(34,197,94,.3); background:rgba(34,197,94,.08);
+    color:#86efac; font-family:'DM Mono',monospace; font-size:.85rem; font-weight:700; line-height:1; cursor:pointer; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; transition:background .15s, transform .1s, opacity .15s; }
+  .ls-wager-btn:hover { background:rgba(34,197,94,.18); }
+  .ls-wager-btn:active { transform:scale(.9); }
+  .ls-wager-btn:disabled { opacity:.3; cursor:default; }
+  .ls-wager-chip { position:relative; width:46px; height:46px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    background:repeating-conic-gradient(#16a34a 0deg 30deg, #0e7a37 30deg 60deg);
+    box-shadow:0 3px 0 rgba(0,0,0,.4), 0 4px 10px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.18); }
+  .ls-wager-chip::before { content:''; position:absolute; inset:4px; border-radius:50%; border:1.5px dashed rgba(255,255,255,.32); }
+  .ls-wager-v { position:absolute; inset:7px; border-radius:50%; background:#06140d; display:flex; align-items:center; justify-content:center;
+    font-family:'DM Mono',monospace; font-size:.62rem; font-weight:800; color:#aef5c6; box-shadow:inset 0 0 0 1px rgba(255,255,255,.07); }
+  .ls-wager-hint { font-family:'DM Mono',monospace; font-size:.46rem; letter-spacing:.04em; color:#2d6b3e; margin-left:auto; text-align:right; }
 
   /* ── clickable picks + wheel center percentage ── */
   .ls-leg-click { cursor:pointer; border-radius:7px; padding:3px 7px; margin:0 -7px; transition:background .18s, box-shadow .18s; position:relative; }
@@ -2307,13 +2558,13 @@ body::after{
   @keyframes centerPop { 0%{transform:scale(.82);} 60%{transform:scale(1.06);} 100%{transform:scale(1);} }
   .ls-footer-row {
     display:flex; align-items:center; justify-content:space-between;
-    padding-top:10px; border-top:1px solid rgba(34,197,94,.07);
+    padding-top:11px; border-top:1px solid rgba(34,197,94,.1);
   }
-  .ls-warn { font-family:'DM Mono',monospace; font-size:.48rem; letter-spacing:.06em; color:#1a5c30; }
-  .ls-metrics { display:flex; gap:12px; }
+  .ls-warn { font-family:'DM Mono',monospace; font-size:.48rem; letter-spacing:.06em; color:#2d6b3e; }
+  .ls-metrics { display:flex; gap:14px; }
   .ls-metric { text-align:center; }
-  .ls-metric-lbl { font-family:'DM Mono',monospace; font-size:.38rem; letter-spacing:.12em; color:#163d22; text-transform:uppercase; margin-bottom:2px; }
-  .ls-metric-val { font-family:'DM Mono',monospace; font-size:.72rem; font-weight:700; color:#2d6b3e; }
+  .ls-metric-lbl { font-family:'DM Mono',monospace; font-size:.4rem; letter-spacing:.12em; color:#3a7a4a; text-transform:uppercase; margin-bottom:3px; }
+  .ls-metric-val { font-family:'DM Mono',monospace; font-size:.76rem; font-weight:700; color:#5aaa70; }
   .ls-metric-val.red    { color:#ef4444; }
   .ls-metric-val.green  { color:#22c55e; }
   .ls-metric-val.accent { color:#86efac; }
@@ -2326,7 +2577,11 @@ body::after{
     border-left:1px solid rgba(34,197,94,.1);
     min-width:110px;
     gap:6px;
+    cursor:pointer; transition:background .18s, box-shadow .18s;
   }
+  .ls-odds-panel:hover { background:rgba(34,197,94,.08); }
+  .ls-odds-panel.active { background:rgba(34,197,94,.14); box-shadow:inset 3px 0 0 #34d399, 0 0 16px rgba(52,211,153,.18); }
+  .ls-odds-hint { font-family:'DM Mono',monospace; font-size:.38rem; letter-spacing:.1em; text-transform:uppercase; color:#2d6b3e; margin-top:2px; }
   .ls-odds-lbl {
     font-family:'DM Mono',monospace;
     font-size:.44rem; letter-spacing:.2em;
@@ -2358,9 +2613,55 @@ body::after{
   @media(max-width:900px){
     .ls-wrap { padding:0 16px; }
     .ls-card { grid-template-columns:1fr; }
-    .ls-wheel-panel { width:100%; height:220px; border-right:none; border-bottom:1px solid rgba(34,197,94,.12); }
-    .ls-odds-panel { flex-direction:row; flex-wrap:wrap; border-left:none; border-top:1px solid rgba(34,197,94,.1); padding:14px 16px; min-width:unset; gap:10px; justify-content:flex-start; }
-    .ls-metrics { flex-wrap:wrap; gap:8px; }
+    .ls-leg { grid-template-columns:28px 1fr 64px 44px; gap:8px; padding:7px 9px; }
+    .ls-leg-n { font-size:.56rem; }
+    .ls-leg-ev { font-size:.6rem; }
+    /* Square, fixed wheel frame. The wheel internals are sized by the
+       SHORTER panel dimension so the wheel is always fully contained. */
+    .ls-wheel-panel {
+      width:100%;
+      height:300px;
+      max-height:84vw;            /* keep it square-ish on very narrow phones */
+      border-right:none;
+      border-bottom:1px solid rgba(34,197,94,.12);
+    }
+    /* Constrain the wheel to a centered square equal to the panel height,
+       instead of stretching to the full panel width. */
+    .ls-wheel-rail,
+    .ls-wheel-track {
+      inset:auto;
+      top:50%; left:50%;
+      width:min(300px,84vw);
+      height:min(300px,84vw);
+      transform:translate(-50%,-50%);
+      transform-origin:center center;
+    }
+    .ls-wheel-track { animation:wheelSpinM 6s linear infinite; }
+    /* keep the rail slightly larger than the track like desktop */
+    .ls-wheel-rail  { width:min(300px,84vw); height:min(300px,84vw); }
+    .ls-wheel-track { width:min(268px,75vw); height:min(268px,75vw); }
+    @keyframes wheelSpinM {
+      from { transform:translate(-50%,-50%) rotate(0deg); }
+      to   { transform:translate(-50%,-50%) rotate(360deg); }
+    }
+    /* re-anchor the orbiting ball to the smaller wheel radius */
+    .ls-wheel-ball {
+      top:50%; left:50%;
+      margin:0;
+      width:10px; height:10px;
+      transform-origin:0 0;
+      animation:ballOrbitM 2.4s linear infinite;
+    }
+    @keyframes ballOrbitM {
+      from { transform:translate(-50%,-50%) rotate(0deg)   translateY(calc(min(150px,42vw) * -1)); }
+      to   { transform:translate(-50%,-50%) rotate(-360deg) translateY(calc(min(150px,42vw) * -1)); }
+    }
+    .ls-odds-panel { flex-direction:row; flex-wrap:wrap; align-items:center; border-left:none; border-top:1px solid rgba(34,197,94,.1); padding:14px 16px; min-width:unset; gap:8px 14px; justify-content:space-between; }
+    .ls-odds-val { font-size:1.7rem; }
+    /* footer metrics: give them a tidy wrapping grid instead of overlap */
+    .ls-footer-row { flex-direction:column; align-items:flex-start; gap:10px; }
+    .ls-metrics { flex-wrap:wrap; gap:8px 14px; width:100%; }
+    .ls-metric { flex:0 0 auto; text-align:left; }
   }
 
 </style>
@@ -2529,6 +2830,48 @@ body::after{
 .kw-stat:last-child{border-right:none}
 .kw-sv{font-size:1.2rem;font-weight:900;color:#f0ece4;font-family:'DM Mono',monospace}
 .kw-sl{font-size:.4rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#3a4a5a;margin-top:2px}
+
+/* ── MOBILE: collapse the championship banner to a single fixed frame ── */
+@media(max-width:760px){
+  /* single column, auto height so nothing is clipped; the court canvas
+     becomes a short capped header strip instead of a half-width column */
+  .kw{
+    grid-template-columns:1fr;
+    grid-template-rows:auto;
+    height:auto;
+    margin:12px;
+    border-radius:16px;
+  }
+  .kw-left{
+    height:auto;
+    padding:22px 20px;
+    gap:11px;
+    /* full opaque panel now that the canvas sits above, not beside */
+    background:linear-gradient(160deg,rgba(0,66,160,.42) 0%,rgba(3,9,26,.92) 60%,rgba(3,9,26,.96) 100%);
+    order:2;
+  }
+  /* fixed short banner frame for the court animation */
+  .kw-right{
+    height:170px;
+    order:1;
+    border-bottom:1px solid rgba(247,100,10,.3);
+  }
+  .kw-year{font-size:.55rem;}
+  .kw-city{font-size:clamp(1.7rem,9vw,2.6rem);}
+  .kw-name{font-size:clamp(2.3rem,12vw,3.4rem);}
+  .kw-sub{font-size:.8rem;}
+  .kw-score{padding:13px 14px;gap:10px;}
+  .kw-abbr{font-size:1.15rem;}
+  .kw-sc-n{font-size:1.6rem;}
+  .kw-stats{flex-wrap:wrap;}
+  .kw-stat{flex:1 1 40%;border-right:none;border-top:1px solid rgba(255,255,255,.05);}
+  .kw-stat:nth-child(-n+2){border-top:none;}
+  .kw-stat:nth-child(odd){border-right:1px solid rgba(255,255,255,.05);}
+}
+@media(max-width:380px){
+  .kw-city{font-size:1.5rem;}
+  .kw-name{font-size:2rem;}
+}
 </style>
 <div class="kw">
   <div class="kw-conf" id="kwConf"></div>
@@ -2632,7 +2975,7 @@ body::after{
           <span style="width:6px;height:6px;border-radius:50%;background:#f4b942;box-shadow:0 0 8px #f4b942;flex-shrink:0"></span>
           <span>Early Access — shortopen NFL Drop</span>
         </div>
-        <div style="display:flex;gap:10px;margin-top:4px">
+        <div class="nfl-lock-inputrow" style="display:flex;gap:10px;margin-top:4px">
           <input class="nfl-lock-input" type="email" placeholder="your@email.com" id="nflEmailInput"/>
           <button class="nfl-lock-btn" onclick="submitNFLEmail()">Notify Me</button>
         </div>
@@ -2769,18 +3112,18 @@ const MLB_PROP_PARLAYS = [
     type: "MLB Props",
     market: "MLB Market Parlays",
     legs: [
-      { player: "Dustin May",   team: "STL", stat: "4.5+ Strikeouts",    odds: "+120", hitRate: 0.43 },
-      { player: "J.T Ginn",       team: "ATH", stat: "4.5+ Strikeouts",    odds: "+100", hitRate: 0.47 },
-      { player: "Chase Burns",   team: "CIN", stat: "5.5+ Strikeouts",    odds: "-108", hitRate: 0.48 },
-      { player: "ATH/PIT",        team: "ATH/PIT", stat: "U 1 Run 1st Inning", odds: "-118", hitRate: 0.58 },
-      { player: "Juan Soto",      team: "NYM", stat: "1.5+ Total Bases",    odds: "+110", hitRate: 0.50 },
-      { player: "Jared Jones",  team: "PIT", stat: "3.5+ Strikeouts",    odds: "+110", hitRate: 0.41 },
-      { player: "Yordan Alvarez",   team: "HOU", stat: "1.5+ Total Bases",  odds: "-108", hitRate: 0.49 },
-      { player: "Zack Wheeler", team: "PHI", stat: "5.5+ Strikeouts",   odds: "+118", hitRate: 0.54 },
-      { player: "Tyler Soderstrom",team: "ATH", stat: "Over 0.5 Homeruns",  odds: "+115", hitRate: 0.45 }
+      { player: "Dylan Cease",   team: "TOR", stat: "4.5+ Strikeouts",    odds: "-110", hitRate: 0.50 },
+      { player: "Framber Valdez", team: "DET", stat: "4.5+ Strikeouts",    odds: "+100", hitRate: 0.47 },
+      { player: "Gerrit Cole",   team: "NYY", stat: "5.5+ Strikeouts",    odds: "+108", hitRate: 0.48 },
+      { player: "NYY/CLE",        team: "NYY/CLE", stat: "U 1 Run 1st Inning", odds: "-118", hitRate: 0.58 },
+      { player: "Michael King",      team: "SDP", stat: "4.5+ Strikeouts",    odds: "-110", hitRate: 0.51 },
+      { player: "Michael Wacha",  team: "PIT", stat: "3.5+ Strikeouts",    odds: "+110", hitRate: 0.41 },
+      { player: "Hunter Brown",   team: "HOU", stat: "5.5+ Strikeouts",  odds: "-118", hitRate: 0.49 },
+      { player: "Jesus Luzardo", team: "PHI", stat: "5.5+ Strikeouts",   odds: "-118", hitRate: 0.52 },
+      { player: "Mike Trout",team: "LAA", stat: "Over 0.5 Homeruns",  odds: "+115", hitRate: 0.45 }
     ],
     betsPlaced: 1421,
-    edgeNote: "Wheeler, May, and Ginn are plus EV today."
+    edgeNote: "Cease and Brown are plus EV today."
   }
 ];
 
@@ -2793,16 +3136,21 @@ const MLB_PROP_PARLAYS = [
 
 // ── MLB ─────────────────────────────────────────────────────────
 const MLB_GAMES = [
-  {day:"TODAY", time:"6:41 PM ET", away:"Miami Marlins", awayAbbr:"MIA", home:"Philadelphia Phillies", homeAbbr:"PHI", awayPitcher:"P: R Gusto", homePitcher:"P: Z Wheeler", spreadAway:"+1.5", spreadAwayJuice:"-128", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+106", spreadHomeMove:"", spreadOpen:"", mlAway:"+176", mlHome:"-210", total:"8", totalOverJuice:"-106", totalUnderJuice:"-114", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PHI ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Wheeler sets the Phillies as substantial home favorites over Gusto on a flat 8 total shaded slightly to the under."},
-  {day:"TODAY", time:"6:46 PM ET", away:"Kansas City Royals", awayAbbr:"KC", home:"Washington Nationals", homeAbbr:"WSH", awayPitcher:"P: M Spence", homePitcher:"P: A Alvarez", spreadAway:"+1.5", spreadAwayJuice:"-196", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+162", spreadHomeMove:"", spreadOpen:"", mlAway:"+112", mlHome:"-132", total:"9", totalOverJuice:"-120", totalUnderJuice:"-102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"WSH ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Alvarez commands steady home preference for Washington while market money presses heavy over juice on the flat 9 line."},
-  {day:"TODAY", time:"7:11 PM ET", away:"New York Mets", awayAbbr:"NYM", home:"Cincinnati Reds", homeAbbr:"CIN", awayPitcher:"P: T Myers", homePitcher:"P: C Burns", spreadAway:"+1.5", spreadAwayJuice:"-182", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+150", spreadHomeMove:"", spreadOpen:"", mlAway:"+120", mlHome:"-142", total:"8.5", totalOverJuice:"-104", totalUnderJuice:"-118", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CIN ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Burns anchors the Reds as solid chalk at Great American Ball Park with the under drawing defining line juice dynamic."},
-  {day:"TODAY", time:"7:46 PM ET", away:"San Diego Padres", awayAbbr:"SD", home:"St. Louis Cardinals", homeAbbr:"STL", awayPitcher:"P: TBD", homePitcher:"P: D May", spreadAway:"+1.5", spreadAwayJuice:"-164", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+136", spreadHomeMove:"", spreadOpen:"", mlAway:"+128", mlHome:"-152", total:"8.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"STL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"May frames the Cardinals as clear home options over a TBD Padres squad inside a highly balanced 8.5 total canvas."},
-  {day:"TODAY", time:"8:06 PM ET", away:"Colorado Rockies", awayAbbr:"COL", home:"Chicago Cubs", homeAbbr:"CHC", awayPitcher:"P: M Lorenzen", homePitcher:"P: S Imanaga", spreadAway:"+1.5", spreadAwayJuice:"-122", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+102", spreadHomeMove:"", spreadOpen:"", mlAway:"+176", mlHome:"-210", total:"9.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CHC ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Imanaga installs the Cubs as strong home preferences at Wrigley with under action taking substantial premium juice weight."},
-  {day:"TODAY", time:"8:06 PM ET", away:"Minnesota Twins", awayAbbr:"MIN", home:"Texas Rangers", homeAbbr:"TEX", awayPitcher:"P: M Paredes", homePitcher:"P: M Gore", spreadAway:"+1.5", spreadAwayJuice:"-152", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+126", spreadHomeMove:"", spreadOpen:"", mlAway:"+144", mlHome:"-172", total:"8", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TEX ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Gore sets the Rangers as distinct favorites in Arlington with early over action applying minor pressure to the flat 8 board."},
-  {day:"TODAY", time:"8:11 PM ET", away:"Detroit Tigers", awayAbbr:"DET", home:"Houston Astros", homeAbbr:"HOU", awayPitcher:"P: T Melton", homePitcher:"P: K Teng", spreadAway:"+1.5", spreadAwayJuice:"-194", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+160", spreadHomeMove:"", spreadOpen:"", mlAway:"+108", mlHome:"-126", total:"9", totalOverJuice:"-102", totalUnderJuice:"-120", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"HOU ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Teng commands standard home favorite value for Houston over Melton behind an under-shaded 9 total layout."},
-  {day:"TODAY", time:"9:41 PM ET", away:"Pittsburgh Pirates", awayAbbr:"PIT", home:"Athletics", homeAbbr:"OAK", awayPitcher:"P: J Jones", homePitcher:"P: J Ginn", spreadAway:"-1.5", spreadAwayJuice:"+152", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-184", spreadHomeMove:"", spreadOpen:"", mlAway:"+102", mlHome:"-120", total:"10.5", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"OAK ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Ginn positions the A's as tight home preferences over Jones inside a high-scoring 10.5 canvas leaning slightly under."},
-  {day:"TODAY", time:"9:41 PM ET", away:"Los Angeles Angels", awayAbbr:"LAA", home:"Arizona Diamondbacks", homeAbbr:"AZ", awayPitcher:"P: W Urena", homePitcher:"P: R Nelson", spreadAway:"+1.5", spreadAwayJuice:"-200", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+164", spreadHomeMove:"", spreadOpen:"", mlAway:"+110", mlHome:"-130", total:"9", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"AZ ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Nelson guides Arizona as steady home options over Urena behind a flat 9 total blueprint drawing over market money."},
-  {day:"TODAY", time:"10:11 PM ET", away:"Tampa Bay Rays", awayAbbr:"TB", home:"Los Angeles Dodgers", homeAbbr:"LAD", awayPitcher:"P: N Martinez", homePitcher:"P: E Lauer", spreadAway:"+1.5", spreadAwayJuice:"-137", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+114", spreadHomeMove:"", spreadOpen:"", mlAway:"+140", mlHome:"-166", total:"9", totalOverJuice:"-112", totalUnderJuice:"-108", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAD ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Lauer lines up the Dodgers as comfortable favorites at Chavez Ravine over Martinez with standard balanced juice on the 9."}
+  {day:"TODAY", time:"6:41 PM ET", away:"Miami Marlins", awayAbbr:"MIA", home:"Philadelphia Phillies", homeAbbr:"PHI", awayPitcher:"P: T Phillips", homePitcher:"P: J Luzardo", spreadAway:"+1.5", spreadAwayJuice:"-152", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+126", spreadHomeMove:"", spreadOpen:"", mlAway:"+146", mlHome:"-174", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PHI ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Luzardo sets the Phillies as moderate home options facing Phillips on a flat 8 canvas with balanced line premium."},
+  {day:"TODAY", time:"6:46 PM ET", away:"Kansas City Royals", awayAbbr:"KC", home:"Washington Nationals", homeAbbr:"WSH", awayPitcher:"P: M Wacha", homePitcher:"P: F Griffin", spreadAway:"+1.5", spreadAwayJuice:"-184", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+152", spreadHomeMove:"", spreadOpen:"", mlAway:"+114", mlHome:"-134", total:"8.5", totalOverJuice:"-122", totalUnderJuice:"+100", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"WSH ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Griffin anchors the Nationals as solid home favorites over Wacha with over action absorbing extra juice on the 8.5 total."},
+  {day:"TODAY", time:"6:46 PM ET", away:"Toronto Blue Jays", awayAbbr:"TOR", home:"Boston Red Sox", homeAbbr:"BOS", awayPitcher:"P: D Cease", homePitcher:"P: P Tolle", spreadAway:"-1.5", spreadAwayJuice:"+142", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-172", spreadHomeMove:"", spreadOpen:"", mlAway:"-120", mlHome:"+102", total:"7.5", totalOverJuice:"-114", totalUnderJuice:"-106", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TOR ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Cease frames the Blue Jays as slim road priorities over Tolle inside a tight 7.5 line layout leaning slightly over."},
+  {day:"TODAY", time:"7:06 PM ET", away:"Chicago White Sox", awayAbbr:"CWS", home:"New York Yankees", homeAbbr:"NYY", awayPitcher:"P: D Martin", homePitcher:"P: G Cole", spreadAway:"+1.5", spreadAwayJuice:"-182", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+150", spreadHomeMove:"", spreadOpen:"", mlAway:"+122", mlHome:"-144", total:"7.5", totalOverJuice:"-122", totalUnderJuice:"+100", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Cole positions the Yankees as clear favorites at the Stadium with notable market pressure driving Over 7.5 metrics."},
+  {day:"TODAY", time:"7:11 PM ET", away:"New York Mets", awayAbbr:"NYM", home:"Cincinnati Reds", homeAbbr:"CIN", awayPitcher:"P: K Senga", homePitcher:"P: B Singer", spreadAway:"-1.5", spreadAwayJuice:"+128", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-154", spreadHomeMove:"", spreadOpen:"", mlAway:"-124", mlHome:"+106", total:"9.5", totalOverJuice:"-118", totalUnderJuice:"-104", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYM ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Senga lines up the Mets as standard favorites on the road over Singer behind an over-shaded 9.5 blueprint."},
+  {day:"TODAY", time:"7:16 PM ET", away:"San Francisco Giants", awayAbbr:"SF", home:"Atlanta Braves", homeAbbr:"ATL", awayPitcher:"P: A Houser", homePitcher:"P: G Holmes", spreadAway:"+1.5", spreadAwayJuice:"-142", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+118", spreadHomeMove:"", spreadOpen:"", mlAway:"+140", mlHome:"-166", total:"9", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ATL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Holmes commands standard home favor for Atlanta facing Houser with defensive total weight hit under on the flat 9."},
+  {day:"TODAY", time:"7:41 PM ET", away:"Cleveland Guardians", awayAbbr:"CLE", home:"Milwaukee Brewers", homeAbbr:"MIL", awayPitcher:"P: S Cecconi", homePitcher:"P: R Gasser", spreadAway:"+1.5", spreadAwayJuice:"-164", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+136", spreadHomeMove:"", spreadOpen:"", mlAway:"+130", mlHome:"-154", total:"8", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Gasser sets the Brewers as distinct selections in Milwaukee over Cecconi on a flat 8 total with brief over traction."},
+  {day:"TODAY", time:"7:46 PM ET", away:"San Diego Padres", awayAbbr:"SD", home:"St. Louis Cardinals", homeAbbr:"STL", awayPitcher:"P: M King", homePitcher:"P: A Pallante", spreadAway:"-1.5", spreadAwayJuice:"+164", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-200", spreadHomeMove:"", spreadOpen:"", mlAway:"+100", mlHome:"-118", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"STL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Pallante sets a tight micro-home selection border for the Cardinals over King across a highly balanced flat 8."},
+  {day:"TODAY", time:"8:06 PM ET", away:"Colorado Rockies", awayAbbr:"COL", home:"Chicago Cubs", homeAbbr:"CHC", awayPitcher:"P: R Feltner", homePitcher:"P: E Cabrera", spreadAway:"+1.5", spreadAwayJuice:"-125", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+104", spreadHomeMove:"", spreadOpen:"", mlAway:"+160", mlHome:"-190", total:"9.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CHC ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Cabrera installs the Cubs as definitive choices at Wrigley field over Feltner on an over-leaning 9.5 frame."},
+  {day:"TODAY", time:"8:06 PM ET", away:"Minnesota Twins", awayAbbr:"MIN", home:"Texas Rangers", homeAbbr:"TEX", awayPitcher:"P: Z Matthews", homePitcher:"P: K Rocker", spreadAway:"+1.5", spreadAwayJuice:"-194", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+160", spreadHomeMove:"", spreadOpen:"", mlAway:"+114", mlHome:"-134", total:"8.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TEX ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Rocker maps out steady home option layout parameters for Texas facing Matthews on an under-shaded 8.5 setup."},
+  {day:"TODAY", time:"8:11 PM ET", away:"Detroit Tigers", awayAbbr:"DET", home:"Houston Astros", homeAbbr:"HOU", awayPitcher:"P: F Valdez", homePitcher:"P: H Brown", spreadAway:"+1.5", spreadAwayJuice:"-152", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+126", spreadHomeMove:"", spreadOpen:"", mlAway:"+150", mlHome:"-178", total:"8.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"HOU ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Brown establishes the Astros as clear favorites at Minute Maid over Valdez with heavy market cash backing Under 8.5."},
+  {day:"TODAY", time:"9:41 PM ET", away:"Pittsburgh Pirates", awayAbbr:"PIT", home:"Athletics", homeAbbr:"OAK", awayPitcher:"P: M Keller", homePitcher:"P: J Perkins", spreadAway:"+1.5", spreadAwayJuice:"-172", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+142", spreadHomeMove:"", spreadOpen:"", mlAway:"+118", mlHome:"-138", total:"10.5", totalOverJuice:"-122", totalUnderJuice:"+100", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"OAK ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Perkins positions the A's as steady home choice options against Keller on an elevated 10.5 total shaded over."},
+  {day:"TODAY", time:"9:41 PM ET", away:"Los Angeles Angels", awayAbbr:"LAA", home:"Arizona Diamondbacks", homeAbbr:"AZ", awayPitcher:"P: R Detmers", homePitcher:"P: M Kelly", spreadAway:"-1.5", spreadAwayJuice:"+146", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-176", spreadHomeMove:"", spreadOpen:"", mlAway:"-106", mlHome:"-110", total:"8.5", totalOverJuice:"-124", totalUnderJuice:"+102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CIN ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Near pick'em frame in Phoenix with Kelly and the Dbacks holding micro home choice weight on an over-leaning 8.5 total."},
+  {day:"TODAY", time:"9:41 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Seattle Mariners", homeAbbr:"SEA", awayPitcher:"P: B Young", homePitcher:"P: L Gilbert", spreadAway:"+1.5", spreadAwayJuice:"-176", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+130", mlHome:"-154", total:"7.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"SEA ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Gilbert establishes comfortable home choices for the Mariners over Young on a low 7.5 board drawing over interest."},
+  {day:"TODAY", time:"10:11 PM ET", away:"Tampa Bay Rays", awayAbbr:"TB", home:"Los Angeles Dodgers", homeAbbr:"LAD", awayPitcher:"P: D Rasmussen", homePitcher:"P: J Wrobleski", spreadAway:"+1.5", spreadAwayJuice:"-182", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+150", spreadHomeMove:"", spreadOpen:"", mlAway:"+126", mlHome:"-148", total:"8.5", totalOverJuice:"+102", totalUnderJuice:"-124", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAD ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Wrobleski lines up the Dodgers as solid favorites at Chavez Ravine over Rasmussen with the under taking clear juice pressure."}
 ];
 
 // ════════════════════════════════════════════════════════════════
@@ -2815,7 +3163,7 @@ document.addEventListener('DOMContentLoaded', function initKnicksCanvas(){
   if(!cv) return;
   const col = cv.parentElement;
   const W = col.offsetWidth || 640;
-  const H = 620;
+  const H = col.offsetHeight || 620;
   cv.width = W; cv.height = H;
   const cx = cv.getContext('2d');
   let t = 0, bPhase = 0;
@@ -2961,13 +3309,18 @@ document.addEventListener('DOMContentLoaded', function initKnicksCanvas(){
       drawMVPSign(sx,sy);
       hand(sx,sy+4);
     } else if(pose==='shoot'){
-      // shooting motion: arms extend up toward the hoop, follow-through synced to shotT
+      // shooting motion: shooting (right) hand under the ball, guard (left)
+      // hand rises in to steady it from the side — both hands frame the ball
+      // so the player reads as squared up and shooting toward the hoop.
       const st = (typeof window.__shotT==='number')? window.__shotT : 0; // 0..1 release
       const ext = Math.sin(Math.min(st,1)*Math.PI*0.5);     // 0->1 arm rise
-      const ry = y-30 - ext*30, rx = px+8 + ext*6;
+      const ry = y-30 - ext*30, rx = px+8 + ext*6;          // shooting hand (ball)
+      // guard hand: tucked just left-and-below the ball, framing it
+      const gx = rx - 15, gy = ry + 13;
+      // draw guard arm first so the shooting arm overlaps in front
+      arm(shL,shY,gx,gy,armClr,11);arm(shL,shY,gx,gy,armClrD,4);
       arm(shR,shY,rx,ry,armClr,11);arm(shR,shY,rx,ry,armClrD,4);
-      arm(shL,shY,px-14,y-18+ext*4,armClr,11);arm(shL,shY,px-14,y-18+ext*4,armClrD,4);
-      hand(px-14,y-18+ext*4);
+      hand(gx,gy);
       // shooting hand (ball sits here pre-release)
       hand(rx,ry);
     } else if(pose==='linkR'){
@@ -3753,164 +4106,256 @@ function teamClr(t){ return PROP_TEAM_COLORS[t] || 'rgba(255,255,255,.18)'; }
 function buildPropRows(parlay, terminal) {
 
   const isK = (leg) => /strikeout/i.test(leg.stat);
-  const hasK = parlay.legs.some(isK);
-  const hasOther = parlay.legs.some(l => !isK(l));
-  // Only split into sections when both groups exist (keeps NBA cards untouched)
-  const useSections = hasK && hasOther;
 
-  const legRows = [];   // {el, leg, selected}
+  // ── grade from EV ──
+  function gradeFor(ev){
+    if (ev >= 10) return { g:'A+', tier:'smash', label:'smash' };
+    if (ev >= 4)  return { g:'A',  tier:'smash', label:'smash' };
+    if (ev >= 0)  return { g:'B',  tier:'lean',  label:'lean'  };
+    if (ev >= -5) return { g:'C',  tier:'lean',  label:'thin'  };
+    return { g:'D', tier:'fade', label:'fade' };
+  }
 
-  const renderLeg = (leg, i, alt) => {
+  // build a v2 shell: board (left) + ticket (right)
+  const shell = document.createElement('div');
+  shell.className = 'pp2-shell';
+  const board = document.createElement('div');
+  board.className = 'pp2-board';
+  shell.appendChild(board);
+
+  // column header
+  const colHdr = document.createElement('div');
+  colHdr.className = 'pp2-colhdr';
+  colHdr.innerHTML =
+      '<div class="pp-col c-grade">Grade</div>'
+    + '<div class="pp-col c-player">Player</div>'
+    + '<div class="pp-col">Win probability</div>'
+    + '<div class="pp-col">Odds / EV</div>';
+  board.appendChild(colHdr);
+
+  const legRows = [];   // {el, leg, selected, ev}
+  const meterId = 'ppmeter-' + Math.random().toString(36).slice(2,8);
+
+  const renderLeg = (leg, i, defaultSelected) => {
     const implied = oddsToImplied(leg.odds) * 100;
     const ev      = calcEV(leg.hitRate, leg.odds);
-    const evCls   = evClass(ev);
-    const evSign  = ev >= 0 ? '+' : '';
     const hit     = leg.hitRate * 100;
     const delta   = hit - implied;
-    const up      = delta >= 0;
-    const oddsPos = String(leg.odds).trim().charAt(0) === '+';
-    const fade    = ev < -15;
+    const gr      = gradeFor(ev);
+    const fillCls = ev >= 0 ? (gr.tier === 'smash' ? 'edge' : 'thin') : 'neg';
+    const evCls   = ev >= 0 ? 'pos' : 'neg';
+    const evSign  = ev >= 0 ? '+' : '';
 
     const row = document.createElement('div');
-    row.className = 'pp-row pp-selectable pp-selected' + (alt ? ' pp-alt' : '');
-    row.innerHTML = `
-      <div class="pp-cell pp-playercell">
-        <div class="pp-check" aria-hidden="true"></div>
-        <div class="pp-player">${leg.player}</div>
-        <div class="pp-team">${leg.team} \u00b7 L${i+1}</div>
-        <div class="pp-stat">${leg.stat}</div>
-        ${fade ? '<div class="pp-fade">Fade considered</div>' : ''}
-      </div>
-      <div class="pp-cell">
-        <div class="pp-tp">${hit.toFixed(0)}%</div>
-        <div class="pp-hr-label">Hit Rate</div>
-        <div class="pp-bar"><div class="pp-bar-fill" style="width:${hit}%"></div></div>
-      </div>
-      <div class="pp-cell">
-        <div class="pp-odds ${oddsPos ? 'pos' : ''}">${leg.odds}</div>
-        <div class="pp-odds-sub">${implied.toFixed(1)}% implied <span class="pp-odds-delta ${up ? 'up' : 'down'}">${up ? '+' : ''}${delta.toFixed(1)}%</span></div>
-      </div>
-      <div class="pp-cell"><span class="pp-ev ${evCls}"><span class="pp-ev-type">EV</span><span class="pp-ev-val">${evSign}${ev.toFixed(1)}%</span></span></div>`;
-    const entry = { el: row, leg, selected: true };
+    const startSel = !!defaultSelected;
+    row.className = 'pp2-row pp-selectable tier-' + gr.tier + (startSel ? ' pp-selected' : ' pp-deselected');
+    row.innerHTML =
+        '<div class="pp2-grade">'
+      +   '<div class="pp2-chk" aria-hidden="true"></div>'
+      +   '<span class="pp2-g tier-' + gr.tier + '">' + gr.g + '</span>'
+      +   '<span class="pp2-gl tier-' + gr.tier + '">' + gr.label + '</span>'
+      + '</div>'
+      + '<div class="pp2-mid">'
+      +   '<div class="pp2-name">' + leg.player + '</div>'
+      +   '<span class="pp2-stat">' + leg.stat + '</span>'
+      +   '<div class="pp2-meta"><span>' + leg.team + ' \u00b7 L' + (i+1) + '</span><span>HIT <b>' + hit.toFixed(0) + '%</b></span><span>IMPL <b>' + implied.toFixed(0) + '%</b></span></div>'
+      + '</div>'
+      + '<div class="pp2-spec">'
+      +   '<div class="pp2-track">'
+      +     '<div class="pp2-fill ' + fillCls + '" style="width:' + Math.max(3,Math.min(100,hit)) + '%"></div>'
+      +     '<div class="pp2-imp" style="left:' + Math.max(0,Math.min(100,implied)) + '%"></div>'
+      +     '<span class="pp2-pct">' + hit.toFixed(0) + '%</span>'
+      +   '</div>'
+      + '</div>'
+      + '<div class="pp2-right">'
+      +   '<div class="pp2-odds">' + leg.odds + '</div>'
+      +   '<div class="pp2-edge ' + evCls + '" style="margin-top:7px">' + evSign + ev.toFixed(1) + '%</div>'
+      +   '<div class="pp2-edge-l">EV edge</div>'
+      + '</div>';
+
+    const entry = { el: row, leg, selected: startSel, ev };
     legRows.push(entry);
     row.addEventListener('click', () => {
       entry.selected = !entry.selected;
       row.classList.toggle('pp-selected', entry.selected);
       row.classList.toggle('pp-deselected', !entry.selected);
-      if(window.__ppRecalc && window.__ppRecalc[meterId]) window.__ppRecalc[meterId]();
+      if (window.__ppRecalc && window.__ppRecalc[meterId]) window.__ppRecalc[meterId]();
     });
-    terminal.appendChild(row);
+    board.appendChild(row);
   };
 
-  const sectionLabel = (text, alt) => {
+  const groupLabel = (text, alt) => {
     const lab = document.createElement('div');
-    lab.className = 'pp-group-label' + (alt ? ' pp-alt' : '');
-    lab.innerHTML = `<span class="pp-group-dot"></span><span class="pp-group-text">${text}</span><span class="pp-group-line"></span>`;
-    terminal.appendChild(lab);
+    lab.className = 'pp2-group' + (alt ? ' alt' : '');
+    lab.innerHTML = '<span class="pp2-group-text">' + text + '</span><span class="pp2-group-line"></span>';
+    board.appendChild(lab);
   };
 
+  // ── rank: sort legs best-EV first; keep K/Other grouping if both exist ──
+  const withEV = parlay.legs.map((leg, idx) => ({ leg, idx, ev: calcEV(leg.hitRate, leg.odds) }));
+  const hasK = parlay.legs.some(isK);
+  const hasOther = parlay.legs.some(l => !isK(l));
+  const useSections = hasK && hasOther;
+
+  // global EV rank (independent of K/Other grouping) decides the default
+  // selection: the 4 strongest legs on the whole card start checked.
+  const globalRank = [...withEV].sort((a,b) => b.ev - a.ev);
+  const topLegIdx = new Set(globalRank.slice(0, 4).map(x => x.idx));
+
+  let order = 0;
   if (useSections) {
-    let idx = 0;
-    sectionLabel('Strikeout Props', false);
-    parlay.legs.forEach((leg) => { if (isK(leg)) renderLeg(leg, idx++, false); });
-    sectionLabel('Other Props', true);
-    parlay.legs.forEach((leg) => { if (!isK(leg)) renderLeg(leg, idx++, true); });
+    const ks = withEV.filter(x => isK(x.leg)).sort((a,b) => b.ev - a.ev);
+    const os = withEV.filter(x => !isK(x.leg)).sort((a,b) => b.ev - a.ev);
+    groupLabel('Strikeout Props \u00b7 ranked', false);
+    ks.forEach(x => renderLeg(x.leg, order++, topLegIdx.has(x.idx)));
+    groupLabel('Other Props \u00b7 ranked', true);
+    os.forEach(x => renderLeg(x.leg, order++, topLegIdx.has(x.idx)));
   } else {
-    parlay.legs.forEach((leg, i) => renderLeg(leg, i, false));
+    globalRank.forEach(x => renderLeg(x.leg, order++, topLegIdx.has(x.idx)));
   }
 
-  // Parlay summary row
-  const jointProb = parlay.legs.reduce((acc, l) => acc * l.hitRate, 1.0);
-  const parlayDec = parlay.legs.reduce((acc, l) => acc * oddsToDecimal(l.odds), 1.0);
-  const parlayAmer = parlayDec >= 2
-    ? '+' + Math.round((parlayDec - 1) * 100)
-    : '-' + Math.round(100 / (parlayDec - 1));
-  const parlayImplied = (1 / parlayDec) * 100;
-  const parlayEV    = calcEV(jointProb, parlayAmer);
-  const parlayEVCls = evClass(parlayEV);
-  const joint  = jointProb * 100;
-  const pDelta = joint - parlayImplied;
-  const pUp    = pDelta >= 0;
-  const pOddsPos = String(parlayAmer).charAt(0) === '+';
+  // ── correlation read ──
+  const uniqueTeams = [...new Set(parlay.legs.map(l => l.team))];
+  const corrLow = uniqueTeams.length > 2;
 
-  const summary = document.createElement('div');
-  summary.className = 'pp-parlay pp-meter-row';
-  const meterId = 'ppmeter-' + Math.random().toString(36).slice(2,8);
-  summary.innerHTML = `
-    <div class="pp-meter-wrap pp-gauge-wrap">
-      <div class="pp-gauge">
-        <svg class="pp-gauge-svg" viewBox="0 0 120 120">
-          <circle class="pp-gauge-bg" cx="60" cy="60" r="50"></circle>
-          <circle class="pp-gauge-imp" cx="60" cy="60" r="50"></circle>
-          <circle class="pp-gauge-arc" id="${meterId}-arc" cx="60" cy="60" r="50"></circle>
-        </svg>
-        <div class="pp-gauge-center">
-          <div class="pp-gauge-pct" id="${meterId}-pct">${joint.toFixed(1)}<span class="pp-gauge-sign">%</span></div>
-          <div class="pp-gauge-cap">win prob</div>
-        </div>
-      </div>
-      <div class="pp-gauge-info">
-        <div class="pp-parlay-label">Live Win Probability</div>
-        <div class="pp-parlay-sub" id="${meterId}-sub">${parlay.legs.length} legs · ${parlay.betsPlaced.toLocaleString()} bets placed</div>
-        ${parlay.edgeNote ? `<div class="pp-edge-note">${parlay.edgeNote}</div>` : ''}
-        <div class="pp-gauge-stats">
-          <div class="pp-gauge-stat"><span class="pp-gs-lbl">Parlay Odds</span><span class="pp-gs-val" id="${meterId}-odds">${parlayAmer}</span></div>
-          <div class="pp-gauge-stat"><span class="pp-gs-lbl">Edge / EV</span><span class="pp-gs-val ev" id="${meterId}-ev">${parlayEV >= 0 ? '+' : ''}${parlayEV.toFixed(1)}%</span></div>
-          <div class="pp-gauge-stat"><span class="pp-gs-lbl">Implied</span><span class="pp-gs-val" id="${meterId}-impv">${parlayImplied.toFixed(1)}%</span></div>
-        </div>
-      </div>
-      <div class="pp-bloomberg">
-        <div class="pp-bb-rule"></div>
-        <div class="pp-bb-inner">
-          <div class="pp-bb-logo">PRESENTED BY</div>
-          <div class="pp-bb-name">SHORTOPEN</div>
-          <div class="pp-bb-sub">Markets · Props · EV Edge</div>
-        </div>
-        <div class="pp-bb-rule"></div>
-      </div>
-    </div>`;
-  terminal.appendChild(summary);
+  // ── sticky ticket ──
+  const ticket = document.createElement('div');
+  ticket.className = 'pp2-ticket';
+  ticket.innerHTML =
+      '<div>'
+    +   '<div class="pp2-tlabel" id="' + meterId + '-tl">Your ticket</div>'
+    +   '<div class="pp2-payout" id="' + meterId + '-payout">+0</div>'
+    +   '<div class="pp2-psub" id="' + meterId + '-psub">$10 returns $0.00</div>'
+    + '</div>'
+    + '<div class="pp2-gauge">'
+    +   '<div class="pp2-ring">'
+    +     '<svg viewBox="0 0 80 80">'
+    +       '<circle class="pp2-ring-bg" cx="40" cy="40" r="33"></circle>'
+    +       '<circle class="pp2-ring-imp" id="' + meterId + '-imparc" cx="40" cy="40" r="33"></circle>'
+    +       '<circle class="pp2-ring-arc" id="' + meterId + '-arc" cx="40" cy="40" r="33"></circle>'
+    +     '</svg>'
+    +     '<div class="pp2-ring-c"><div class="pp2-rp" id="' + meterId + '-rp">0<span class="pp2-rsign">%</span></div><div class="pp2-rl">win prob</div></div>'
+    +   '</div>'
+    +   '<div class="pp2-ginfo">'
+    +     '<div class="pp2-gstat"><span>Combined EV</span><span class="v ev" id="' + meterId + '-ev">+0%</span></div>'
+    +     '<div class="pp2-gstat"><span>Parlay odds</span><span class="v" id="' + meterId + '-odds">+0</span></div>'
+    +     '<div class="pp2-gstat"><span>Implied</span><span class="v" id="' + meterId + '-imp">0%</span></div>'
+    +     '<div class="pp2-gstat"><span>Correlation</span><span class="pp2-corr-tag ' + (corrLow ? 'low' : 'high') + '">' + (corrLow ? 'LOW' : 'HIGH') + '</span></div>'
+    +   '</div>'
+    + '</div>'
+    + (parlay.edgeNote ? '<div class="pp2-thesis">' + parlay.edgeNote + '</div>' : '')
+    + '<div class="pp2-statgrid">'
+    +   '<div class="pp2-statcell"><div class="pp2-stat-lbl">Break-even</div><div class="pp2-stat-v" id="' + meterId + '-be">0%</div><div class="pp2-stat-sub">needed to profit</div></div>'
+    +   '<div class="pp2-statcell"><div class="pp2-stat-lbl">Avg hit rate</div><div class="pp2-stat-v" id="' + meterId + '-avg">0%</div><div class="pp2-stat-sub">across legs</div></div>'
+    +   '<div class="pp2-statcell"><div class="pp2-stat-lbl">Best leg</div><div class="pp2-stat-v accent" id="' + meterId + '-best">\u2014</div><div class="pp2-stat-sub" id="' + meterId + '-bestsub">\u2014</div></div>'
+    +   '<div class="pp2-statcell"><div class="pp2-stat-lbl">Bets placed</div><div class="pp2-stat-v">' + parlay.betsPlaced.toLocaleString() + '</div><div class="pp2-stat-sub">on this card</div></div>'
+    + '</div>'
+    + '<button class="pp2-btn" id="' + meterId + '-btn">Optimize for best odds</button>'
+    + '<div class="pp2-meter">'
+    +   '<div class="pp2-meter-hd"><span class="pp2-meter-ttl">Risk / Reward</span><span class="pp2-rr-odds" id="' + meterId + '-rrodds">+0</span></div>'
+    +   '<div class="pp2-rr-body">'
+    +     '<div class="pp2-rr-seg">'
+    +       '<div class="pp2-rr-win" id="' + meterId + '-rrwin" style="width:0%"></div>'
+    +       '<div class="pp2-rr-lose"></div>'
+    +     '</div>'
+    +     '<div class="pp2-rr-leg"><span>win <b id="' + meterId + '-rrwinlbl">0%</b></span><span>break-even <b id="' + meterId + '-rrbe">0%</b></span></div>'
+    +     '<div class="pp2-rr-showcase">'
+    +       '<div class="pp2-stake">'
+    +         '<div class="pp2-stake-row">'
+    +           '<button class="pp2-stepbtn" id="' + meterId + '-stakedn" type="button" aria-label="Decrease stake">\u2212</button>'
+    +           '<div class="pp2-chip pp2-chip-stake"><div class="pp2-chip-in"><span class="pp2-chip-v" id="' + meterId + '-stakeval">$10</span><span class="pp2-chip-l">stake</span></div></div>'
+    +           '<button class="pp2-stepbtn" id="' + meterId + '-stakeup" type="button" aria-label="Increase stake">+</button>'
+    +         '</div>'
+    +         '<span class="pp2-stake-cap">$1 \u2013 $1,000</span>'
+    +       '</div>'
+    +       '<span class="pp2-rr-arrowtxt">\u2192</span>'
+    +       '<div class="pp2-rr-num"><span class="pp2-rr-arrow">you\u2019d earn</span><div class="pp2-rr-big" id="' + meterId + '-rrpay">$0</div><div class="pp2-rr-cap">on a win</div></div>'
+    +     '</div>'
+    +   '</div>'
+    + '</div>'
+    + '<div class="pp2-footer-row">'
+    +   '<span class="pp2-bb-rule"></span>'
+    +   '<div class="pp2-bb"><div class="pp2-bb-logo">Presented by</div><div class="pp2-bb-name">short<span>open</span></div><div class="pp2-bb-sub">Markets \u00b7 Props \u00b7 EV Edge</div></div>'
+    +   '<span class="pp2-bb-rule"></span>'
+    + '</div>';
+  shell.appendChild(ticket);
+  terminal.appendChild(shell);
 
-  // circular count-up gauge — selection-driven (roulette-style reveal)
+  // ── live recompute + animation ──
   (function(){
-    const arc  = summary.querySelector('.pp-gauge-arc');
-    const impArc = summary.querySelector('.pp-gauge-imp');
-    const pctEl= summary.querySelector('.pp-gauge-pct');
-    const oddsEl = summary.querySelector('.pp-gs-val#'+CSS.escape(meterId+'-odds')) || summary.querySelector('#'+meterId+'-odds');
-    const evEl = summary.querySelector('#'+meterId+'-ev');
-    const impEl= summary.querySelector('#'+meterId+'-impv');
-    const subEl= summary.querySelector('#'+meterId+'-sub');
-    if(!arc||!pctEl) return;
-    const CIRC = 2*Math.PI*50;   // circumference
+    const CIRC = 2 * Math.PI * 33;
+    const arc    = ticket.querySelector('#' + meterId + '-arc');
+    const impArc = ticket.querySelector('#' + meterId + '-imparc');
+    const rpEl   = ticket.querySelector('#' + meterId + '-rp');
+    const payEl  = ticket.querySelector('#' + meterId + '-payout');
+    const psubEl = ticket.querySelector('#' + meterId + '-psub');
+    const tlEl   = ticket.querySelector('#' + meterId + '-tl');
+    const evEl   = ticket.querySelector('#' + meterId + '-ev');
+    const oddsEl = ticket.querySelector('#' + meterId + '-odds');
+    const impEl  = ticket.querySelector('#' + meterId + '-imp');
+    const beEl   = ticket.querySelector('#' + meterId + '-be');
+    const avgEl  = ticket.querySelector('#' + meterId + '-avg');
+    const bestEl = ticket.querySelector('#' + meterId + '-best');
+    const bestSubEl = ticket.querySelector('#' + meterId + '-bestsub');
+    const rrWin    = ticket.querySelector('#' + meterId + '-rrwin');
+    const rrWinLbl = ticket.querySelector('#' + meterId + '-rrwinlbl');
+    const rrBe     = ticket.querySelector('#' + meterId + '-rrbe');
+    const rrPay    = ticket.querySelector('#' + meterId + '-rrpay');
+    const rrOdds   = ticket.querySelector('#' + meterId + '-rrodds');
+    const stakeVal = ticket.querySelector('#' + meterId + '-stakeval');
+    const stakeDn  = ticket.querySelector('#' + meterId + '-stakedn');
+    const stakeUp  = ticket.querySelector('#' + meterId + '-stakeup');
+    const btnEl    = ticket.querySelector('#' + meterId + '-btn');
     arc.style.strokeDasharray = CIRC;
     impArc.style.strokeDasharray = CIRC;
 
+    // ── stake stepper: $1 up to $20, then $5 steps to $100, then $50 steps to $1000 ──
+    const STAKE_STEPS = [1,2,3,4,5,6,7,8,9,10,15,20,25,30,40,50,60,70,80,90,100,150,200,250,300,400,500,600,700,800,900,1000];
+    let stakeIdx = STAKE_STEPS.indexOf(10);
+    function stake(){ return STAKE_STEPS[stakeIdx]; }
+    function refreshStakeBtns(){
+      stakeDn.disabled = stakeIdx <= 0;
+      stakeUp.disabled = stakeIdx >= STAKE_STEPS.length - 1;
+      stakeVal.textContent = '$' + stake().toLocaleString();
+    }
+    stakeDn.addEventListener('click', () => { if (stakeIdx > 0){ stakeIdx--; refreshStakeBtns(); updatePayout(); } });
+    stakeUp.addEventListener('click', () => { if (stakeIdx < STAKE_STEPS.length-1){ stakeIdx++; refreshStakeBtns(); updatePayout(); } });
+    refreshStakeBtns();
+
+    function updatePayout(){
+      const s = stake();
+      const val = target.n === 0 ? 0 : s * (target.dec - 1);
+      const txt = '$' + val.toLocaleString(undefined, {maximumFractionDigits:0});
+      rrPay.textContent = txt;
+      rrPay.style.fontSize = txt.length >= 8 ? '1.15rem' : txt.length >= 6 ? '1.4rem' : '1.7rem';
+    }
+
+
     function compute(){
       const sel = legRows.filter(r => r.selected).map(r => r.leg);
-      if(sel.length === 0) return { joint:0, implied:0, amer:'—', ev:0, n:0 };
-      const jp  = sel.reduce((a,l)=>a*l.hitRate,1);
-      const dec = sel.reduce((a,l)=>a*oddsToDecimal(l.odds),1);
-      const amer = dec>=2 ? '+'+Math.round((dec-1)*100) : '-'+Math.round(100/(dec-1));
-      const imp = (1/dec)*100;
+      if (sel.length === 0) return { joint:0, implied:0, amer:'—', ev:0, n:0, dec:1 };
+      const jp  = sel.reduce((a,l) => a * l.hitRate, 1);
+      const dec = sel.reduce((a,l) => a * oddsToDecimal(l.odds), 1);
+      const amer = dec >= 2 ? '+' + Math.round((dec-1)*100) : '-' + Math.round(100/(dec-1));
+      const imp = (1/dec) * 100;
       const ev  = calcEV(jp, amer);
-      return { joint: jp*100, implied: imp, amer, ev, n: sel.length };
+      return { joint: jp*100, implied: imp, amer, ev, n: sel.length, dec };
     }
 
     let target = compute();
-    let display = target.joint;       // eased current value
-    let pulse = 0;                    // brief pulse on change
+    let display = 0;
+    let pulse = 0;
 
     function setArc(v){
-      const frac = Math.max(0,Math.min(1,v/100));
-      arc.style.strokeDashoffset = CIRC*(1-frac);
-      // color shifts green when above implied, purple below
+      const frac = Math.max(0, Math.min(1, v/100));
+      arc.style.strokeDashoffset = CIRC * (1 - frac);
       const above = v >= target.implied;
       arc.style.stroke = above ? '#34d399' : '#a78bfa';
-      arc.style.filter = 'drop-shadow(0 0 6px '+(above?'rgba(52,211,153,.8)':'rgba(167,139,250,.8)')+')';
+      arc.style.filter = 'drop-shadow(0 0 5px ' + (above ? 'rgba(52,211,153,.8)' : 'rgba(167,139,250,.8)') + ')';
     }
     function setImpArc(){
-      const frac = Math.max(0,Math.min(1,target.implied/100));
-      impArc.style.strokeDashoffset = CIRC*(1-frac);
+      const frac = Math.max(0, Math.min(1, target.implied/100));
+      impArc.style.strokeDashoffset = CIRC * (1 - frac);
     }
 
     window.__ppRecalc = window.__ppRecalc || {};
@@ -3918,24 +4363,93 @@ function buildPropRows(parlay, terminal) {
       target = compute();
       pulse = 1;
       setImpArc();
-      if(oddsEl) oddsEl.textContent = target.n ? target.amer : '—';
-      if(evEl){ evEl.textContent = target.n ? ((target.ev>=0?'+':'')+target.ev.toFixed(1)+'%') : '—'; evEl.classList.toggle('neg', target.ev<0); }
-      if(impEl) impEl.textContent = target.n ? target.implied.toFixed(1)+'%' : '—';
-      if(subEl) subEl.textContent = target.n + ' of ' + legRows.length + ' legs selected · ' + parlay.betsPlaced.toLocaleString() + ' bets placed';
+      const empty = target.n === 0;
+      tlEl.textContent = empty ? 'No legs selected' : ('Your ticket \u00b7 ' + target.n + ' of ' + legRows.length + ' legs');
+      payEl.textContent = empty ? '+0' : target.amer;
+      const ret = empty ? 0 : (10 * target.dec);
+      psubEl.textContent = empty ? 'Tap a leg to build' : ('$10 returns $' + ret.toFixed(2));
+      evEl.textContent = empty ? '—' : ((target.ev>=0?'+':'') + target.ev.toFixed(1) + '%');
+      evEl.classList.toggle('neg', target.ev < 0);
+      oddsEl.textContent = empty ? '—' : target.amer;
+      impEl.textContent = empty ? '—' : target.implied.toFixed(1) + '%';
+
+      // ── live stat grid ──
+      const selRows = legRows.filter(r => r.selected);
+      if (empty) {
+        beEl.textContent = '—'; avgEl.textContent = '—';
+        bestEl.textContent = '—'; bestSubEl.textContent = '—';
+      } else {
+        const breakEven = (1 / target.dec) * 100;
+        beEl.textContent = breakEven.toFixed(1) + '%';
+        const avgHit = selRows.reduce((a, r) => a + r.leg.hitRate, 0) / selRows.length * 100;
+        avgEl.textContent = avgHit.toFixed(0) + '%';
+        const best = selRows.reduce((a, r) => r.ev > a.ev ? r : a, selRows[0]);
+        const nameParts = best.leg.player.trim().split(/\s+/);
+        bestEl.textContent = nameParts.length > 1 ? nameParts[nameParts.length - 1] : best.leg.player;
+        bestSubEl.textContent = '+' + best.ev.toFixed(1) + '% EV · ' + best.leg.stat;
+      }
+
+      // ── risk / reward banner ──
+      if (empty) {
+        rrWin.style.width = '0%'; rrWin.classList.remove('under');
+        rrWinLbl.textContent = '—'; rrBe.textContent = '—'; rrOdds.textContent = '+0';
+      } else {
+        const winP = target.joint;
+        const beP  = target.implied;          // break-even = implied prob of the parlay price
+        const above = winP >= beP;            // model gives us better-than-fair odds
+        const wpClamped = Math.max(2, Math.min(100, winP));
+        rrWin.style.width = wpClamped.toFixed(1) + '%';
+        rrWin.classList.toggle('under', !above);
+        rrWinLbl.textContent = winP.toFixed(1) + '%';
+        rrBe.textContent = beP.toFixed(1) + '%';
+        rrOdds.textContent = target.amer;
+      }
+      updatePayout();
+
+      btnEl.classList.toggle('empty', empty);
+      btnEl.textContent = 'Optimize for best odds';
     };
     window.__ppRecalc[meterId]();
 
+    // ── OPTIMIZE FOR BEST ODDS ──
+    // Selects every leg the model gives a >50% win prob (true edge plays),
+    // deselects the rest, and flashes the chosen rows gold.
+    btnEl.addEventListener('click', function(){
+      let picked = 0;
+      legRows.forEach(r => {
+        const keep = r.leg.hitRate > 0.50;
+        const wasOff = !r.selected;
+        r.selected = keep;
+        r.el.classList.toggle('pp-selected', keep);
+        r.el.classList.toggle('pp-deselected', !keep);
+        if (keep) {
+          picked++;
+          if (wasOff) {
+            r.el.classList.remove('pp2-optflash');
+            void r.el.offsetWidth;
+            r.el.classList.add('pp2-optflash');
+          }
+        }
+      });
+      // fallback: if nothing clears 50%, keep the single best-EV leg
+      if (picked === 0 && legRows.length) {
+        const best = legRows.reduce((a, r) => r.ev > a.ev ? r : a, legRows[0]);
+        best.selected = true;
+        best.el.classList.add('pp-selected');
+        best.el.classList.remove('pp-deselected');
+        best.el.classList.add('pp2-optflash');
+      }
+      window.__ppRecalc[meterId]();
+    });
+
     function tick(){
-      // ease toward target with a subtle living wobble
       display += (target.joint - display) * 0.10;
       pulse *= 0.92;
-      const wob = (target.n? 1:0) * Math.sin(performance.now()/420) * Math.min(0.5, target.joint*0.02);
+      const wob = (target.n ? 1 : 0) * Math.sin(performance.now()/420) * Math.min(0.5, target.joint*0.02);
       const v = Math.max(0, display + wob);
       setArc(v);
-      // update only the numeric text node (keep the % span)
-      pctEl.childNodes[0].nodeValue = (target.n? v.toFixed(1):'0.0');
-      const sc = 1 + pulse*0.06;
-      pctEl.style.transform = 'scale('+sc.toFixed(3)+')';
+      rpEl.childNodes[0].nodeValue = (target.n ? v.toFixed(1) : '0');
+      rpEl.style.transform = 'scale(' + (1 + pulse*0.06).toFixed(3) + ')';
       requestAnimationFrame(tick);
     }
     tick();
@@ -3984,15 +4498,6 @@ function renderPropParlays(parlays, containerId) {
           <span class="pp-evcount">${evCount} / ${parlay.legs.length} +EV</span>
         </div>`;
       terminal.appendChild(head);
-
-      const colHdr = document.createElement('div');
-      colHdr.className = 'pp-colhdr';
-      colHdr.innerHTML = `
-        <div class="pp-col">Player</div>
-        <div class="pp-col">Hit Rate</div>
-        <div class="pp-col">Odds</div>
-        <div class="pp-col">◆ EV%</div>`;
-      terminal.appendChild(colHdr);
 
       buildPropRows(parlay, terminal);
       listWrap.appendChild(terminal);
@@ -4072,9 +4577,9 @@ const NBA_LONGSHOTS = [
     headline:"Q's Roulette",
     thesis:"Three low-probability legs with positive correlation. If one hits they likely all hit — or none do. Built for the contrarian who wants max upside on a small stake.",
     legs:[
-      {n:"01", name:"Josh Hart 20+ Pts", pct:31, ev:8.4},
-      {n:"02", name:"NYK -10", pct:38, ev:4.1},
-      {n:"03", name:"Victor Wembanyama/Jalen Brunson O 75.5 Pts", pct:44, ev:12.7}
+      {n:"01", name:"Josh Hart 20+ Pts", pct:31, ev:8.4, odds:"+260"},
+      {n:"02", name:"NYK -10", pct:38, ev:4.1, odds:"+180"},
+      {n:"03", name:"Victor Wembanyama/Jalen Brunson O 75.5 Pts", pct:44, ev:12.7, odds:"+135"}
     ],
     odds:"+2200", ret:"$10 to $330", ev:"+8.3%",
     metrics:[
@@ -4093,10 +4598,10 @@ const MLB_LONGSHOTS = [
     headline:"Q's Roulette",
     thesis:"Four correlated legs on one side of the market. Market overwhelmingly disagrees — this ticket pays if the public narrative collapses in the first five innings.",
     legs:[
-      {n:"01", name:"Chase Burns 7+ K's", pct:28, ev:6.2},
-      {n:"02", name:"Dustin May 7+ K's", pct:13, ev:8.8},
-      {n:"03", name:"Juan Soto HR", pct:18.9, ev:3.3},
-      {n:"04", name:"Sal Stewart HR", pct:16, ev:22.1}
+      {n:"01", name:"Gerrit Cole 7+ K's", pct:28, ev:6.2, odds:"+285"},
+      {n:"02", name:"Slade Cecconi 7+ K's", pct:13, ev:8.8, odds:"+650"},
+      {n:"03", name:"Spencer Jones HR", pct:18.9, ev:3.3, odds:"+440"},
+      {n:"04", name:"Chase DeLauter HR", pct:16, ev:22.1, odds:"+520"}
     ],
     odds:"+7800", ret:"$10 to $790", ev:"+14.7%",
     metrics:[
@@ -4115,16 +4620,18 @@ function renderLongshots(shots, containerId) {
   var dotCols = ['c0','c1','c2','c3'];
 
   shots.forEach(function(s) {
+    var ruid = 'rou-' + Math.random().toString(36).slice(2,8);
     var metricsHtml = s.metrics.map(function(m) {
       return '<div class="ls-metric"><div class="ls-metric-lbl">'+m.lbl+'</div>'
            + '<div class="ls-metric-val '+m.cls+'">'+m.val+'</div></div>';
     }).join('');
     var legsHtml = s.legs.map(function(l,i) {
-      return '<div class="ls-leg ls-leg-click" data-pct="'+(l.pct||0)+'" data-ev="'+(l.ev||0)+'" data-name="'+l.name.replace(/"/g,'&quot;')+'" data-idx="'+i+'">'
-        +'<div class="ls-leg-dot '+dotCols[i%4]+'"></div>'
-        +'<span class="ls-leg-n">'+l.n+'</span>'
+      var ev = l.ev||0;
+      var tier = ev >= 15 ? 'edge' : ev >= 5 ? 'mid' : 'low';
+      return '<div class="ls-leg ls-leg-click" data-pct="'+(l.pct||0)+'" data-ev="'+ev+'" data-odds="'+(l.odds||'')+'" data-name="'+l.name.replace(/"/g,'&quot;')+'" data-idx="'+i+'">'
+        +'<span class="ls-leg-n tier-'+tier+'">'+l.n+'</span>'
         +'<span class="ls-leg-name">'+l.name+'</span>'
-        +'<span class="ls-leg-pct">'+(l.pct||0)+'%</span>'
+        +'<span class="ls-leg-odds">'+(l.odds||'')+'</span>'
         +'</div>';
     }).join('');
 
@@ -4293,6 +4800,13 @@ function renderLongshots(shots, containerId) {
       +  '<div class="ls-headline">'+headlineHtml+'</div>'
       +  '<p class="ls-thesis">'+s.thesis+'</p>'
       +  '<div class="ls-legs">'+legsHtml+'</div>'
+      +  '<div class="ls-wager" id="'+ruid+'-wager">'
+      +    '<span class="ls-wager-lbl">Your wager</span>'
+      +    '<button class="ls-wager-btn" id="'+ruid+'-wdn" type="button" aria-label="Decrease wager">\u2212</button>'
+      +    '<div class="ls-wager-chip"><span class="ls-wager-v" id="'+ruid+'-wval">$10</span></div>'
+      +    '<button class="ls-wager-btn" id="'+ruid+'-wup" type="button" aria-label="Increase wager">+</button>'
+      +    '<span class="ls-wager-hint">tap a pick to see your payout \u2192</span>'
+      +  '</div>'
       +  '<div class="ls-footer-row">'
       +    '<span class="ls-warn">\u26a0 '+s.warn+'</span>'
       +    '<div class="ls-metrics">'+metricsHtml+'</div>'
@@ -4303,6 +4817,7 @@ function renderLongshots(shots, containerId) {
       +  '<div class="ls-odds-val">'+s.odds+'</div>'
       +  '<div class="ls-return">'+s.ret+'</div>'
       +  '<div class="ls-ev">'+s.ev+' EV</div>'
+      +  '<div class="ls-odds-hint">tap to select all</div>'
       +'</div>';
 
     var wrap = document.createElement('div');
@@ -4328,29 +4843,73 @@ function renderLongshots(shots, containerId) {
       }
     })();
 
-    // wire pick clicks -> show that pick's EV% in the center (probability already shown in the row)
+    // ── wager stepper ($1–$1000) + dollar payout on pick ──
+    var R_STEPS = [1,2,3,4,5,6,7,8,9,10,15,20,25,30,40,50,60,70,80,90,100,150,200,250,300,400,500,600,700,800,900,1000];
+    var rIdx = R_STEPS.indexOf(10);
+    var wval = card.querySelector('#'+ruid+'-wval');
+    var wdn  = card.querySelector('#'+ruid+'-wdn');
+    var wup  = card.querySelector('#'+ruid+'-wup');
+    function rStake(){ return R_STEPS[rIdx]; }
+    function oddsToDec(o){ var n=parseInt(o,10); if(isNaN(n)) return 1; return n>0 ? 1+n/100 : 1+100/Math.abs(n); }
+    function refreshWager(){
+      if(wdn) wdn.disabled = rIdx<=0;
+      if(wup) wup.disabled = rIdx>=R_STEPS.length-1;
+      if(wval) wval.textContent = '$'+rStake().toLocaleString();
+    }
+    refreshWager();
+
+    // wire pick clicks -> show the dollar payout for the active pick at the current wager
     var pct = card.querySelector('.ls-center-pct');
     var cap = card.querySelector('.ls-center-cap');
     var centerEl = card.querySelector('.ls-wheel-center');
+    var oddsPanel = card.querySelector('.ls-odds-panel');
+    var currentOdds = null;
+
+    function showPayout(animate){
+      if(currentOdds===null) return;
+      var dec = oddsToDec(currentOdds);
+      var profit = rStake() * (dec - 1);
+      if(cap) cap.textContent = 'you\u2019d win';
+      var target = profit;
+      if(!animate){
+        if(pct) pct.textContent = '$'+Math.round(target).toLocaleString();
+        return;
+      }
+      var start=performance.now(), dur=900, from=0;
+      function step(now){
+        var k=Math.min(1,(now-start)/dur);
+        var ease=1-Math.pow(1-k,3);
+        var v=from+(target-from)*ease;
+        if(pct) pct.textContent='$'+Math.round(v).toLocaleString();
+        if(k<1){requestAnimationFrame(step);} else { if(centerEl) centerEl.classList.remove('spinning'); }
+      }
+      requestAnimationFrame(step);
+    }
+
+    if(wdn) wdn.addEventListener('click', function(){ if(rIdx>0){ rIdx--; refreshWager(); showPayout(false); } });
+    if(wup) wup.addEventListener('click', function(){ if(rIdx<R_STEPS.length-1){ rIdx++; refreshWager(); showPayout(false); } });
+
     card.querySelectorAll('.ls-leg-click').forEach(function(legEl){
       legEl.addEventListener('click', function(){
         card.querySelectorAll('.ls-leg-click').forEach(function(e){e.classList.remove('active');});
+        if(oddsPanel) oddsPanel.classList.remove('active');
         legEl.classList.add('active');
-        var target = parseFloat(legEl.getAttribute('data-ev'))||0;
+        currentOdds = legEl.getAttribute('data-odds');
         if(centerEl){ centerEl.classList.add('spinning'); }
-        if(cap) cap.textContent = 'edge \u00b7 EV';
-        // count up animation toward the pick's EV%
-        var start=performance.now(), dur=900, from=0;
-        function step(now){
-          var k=Math.min(1,(now-start)/dur);
-          var ease=1-Math.pow(1-k,3);
-          var v=from+(target-from)*ease;
-          if(pct) pct.textContent='+'+v.toFixed(1)+'%';
-          if(k<1){requestAnimationFrame(step);} else { if(centerEl) centerEl.classList.remove('spinning'); }
-        }
-        requestAnimationFrame(step);
+        showPayout(true);
       });
     });
+
+    if(oddsPanel){
+      oddsPanel.addEventListener('click', function(){
+        card.querySelectorAll('.ls-leg-click').forEach(function(e){e.classList.add('active');});
+        oddsPanel.classList.add('active');
+        currentOdds = s.odds;
+        if(cap) cap.textContent = 'full parlay';
+        if(centerEl){ centerEl.classList.add('spinning'); }
+        showPayout(true);
+      });
+    }
   });
 }
 
