@@ -2999,6 +2999,138 @@ body::after{
   letter-spacing:.08em!important;
 }
 </style>
+<style id="so-market-mobile-fixes">
+/* ====================================================
+   MARKET.HTML MOBILE PROPORTION FIXES
+   Player Parlay, Risk/Reward, Roulette
+   ==================================================== */
+
+@media (max-width: 640px) {
+
+  /* ── PLAYER PARLAY BOARD (pp2) ── */
+  /* Shell: board + ticket side-by-side → stacked */
+  .pp2-shell { grid-template-columns: 1fr !important; }
+  .pp2-ticket { position: static !important; border-left: none !important; border-top: 1px solid rgba(139,92,246,.3) !important; }
+  /* Hide column headers on narrow screens */
+  .pp2-colhdr { display: none !important; }
+  /* Each player row: simplified 3-zone layout */
+  .pp2-row {
+    grid-template-columns: 38px minmax(0,1fr) 70px !important;
+    grid-template-areas: 'grade mid right' 'grade spec spec' !important;
+    row-gap: 0 !important;
+    padding: 8px 10px !important;
+    min-height: auto !important;
+  }
+  .pp2-grade { grid-area: grade !important; }
+  .pp2-mid   { grid-area: mid !important; }
+  .pp2-spec  { grid-area: spec !important; padding: 0 0 4px 44px !important; }
+  .pp2-right { grid-area: right !important; padding: 10px 8px 0 0 !important; align-self: start !important; }
+  .pp2-odds  { font-size: .8rem !important; padding: 4px 8px !important; min-width: 0 !important; }
+  .pp2-edge  { font-size: .78rem !important; }
+  .pp2-player { font-size: .82rem !important; }
+  .pp2-pos   { font-size: .55rem !important; }
+  .pp2-line  { font-size: .72rem !important; }
+  /* Parlay ticket stacked section */
+  .pp2-ticket { padding: 14px !important; }
+  .pp2-ticket-hd { font-size: .72rem !important; }
+  /* Section header */
+  .prop-section-header { padding: 20px 16px 8px !important; flex-wrap: wrap !important; gap: 8px !important; }
+  .prop-section-title  { font-size: .78rem !important; }
+  /* Parlay header bar */
+  .pp-head { padding: 10px 14px !important; }
+  .pp-head-title { font-size: .72rem !important; }
+  /* Game slip below each parlay */
+  .gm-slip-panel { padding: 0 12px 32px !important; }
+  .gm-slip-card  { padding: 14px 14px !important; }
+  .gm-slip-cols  { flex-direction: column !important; }
+  .gm-slip-aside { width: auto !important; padding: 12px 0 0 !important; border-left: none !important; border-top: 1px solid #1a2535 !important; }
+  .gm-slip-stats { gap: 12px !important; }
+  .gm-payout-v   { font-size: 1.3rem !important; }
+
+  /* ── OLD PROP PARLAY BOARD (pp / pp-row) ── */
+  .pp-colhdr { display: none !important; }
+  .pp-row, .pp-parlay { grid-template-columns: 1fr 1fr !important; }
+  .pp-playercell, .pp-parlaylabelcell { grid-column: 1 / -1 !important; }
+  .pp-bar { max-width: none !important; }
+  .prop-list { padding: 0 12px 24px !important; }
+
+  /* ── RISK / REWARD CALCULATOR (pp2-meter) ── */
+  .pp2-meter { padding: 16px !important; border-radius: 14px !important; }
+  .pp2-meter-hd { padding: 10px 14px !important; }
+  .pp2-meter-ttl { font-size: .88rem !important; }
+  /* Chip stake — make it smaller so it doesn't overflow */
+  .pp2-chip-stake { width: 56px !important; height: 56px !important; }
+  .pp2-chip-stake::after { font-size: .75rem !important; }
+  /* RR showcase compact */
+  .pp2-rr-showcase { padding-top: 16px !important; }
+  .pp2-stake-label { font-size: .42rem !important; }
+  /* Wager stepper row */
+  .ls-wager-stepper, [class*="wager"] { flex-wrap: wrap !important; gap: 6px !important; }
+  /* Stat grid inside risk/reward */
+  .pp2-gstats { grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
+  .pp2-gstat  { padding: 8px 10px !important; }
+
+  /* ── ROULETTE (ls-*) ── */
+  .ls-placard  { border-radius: 16px !important; }
+  /* Card layout: already collapses at 900px via existing rule;
+     on mobile we ensure proper height and no overflow */
+  .ls-card { border-radius: 14px !important; grid-template-columns: 1fr !important; }
+  /* Wheel panel — keep it square and reasonable size */
+  .ls-wheel-panel {
+    width: 100% !important;
+    height: min(320px, 88vw) !important;
+    max-height: 88vw !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(34,197,94,.12) !important;
+  }
+  .ls-wheel-rail  { width: min(280px, 78vw) !important; height: min(280px, 78vw) !important; }
+  .ls-wheel-track { width: min(252px, 70vw) !important; height: min(252px, 70vw) !important; }
+  /* Info panel beside/below wheel */
+  .ls-info { padding: 16px 14px !important; }
+  .ls-info-ttl { font-size: 1.1rem !important; }
+  .ls-info-sub  { font-size: .65rem !important; }
+  /* Each pick/leg row */
+  .ls-leg { padding: 8px 10px !important; border-radius: 10px !important; grid-template-columns: 24px 1fr auto !important; gap: 6px !important; }
+  .ls-leg-n  { width: 22px !important; height: 22px !important; font-size: .56rem !important; }
+  .ls-leg-name { font-size: .78rem !important; }
+  .ls-leg-team { font-size: .58rem !important; }
+  .ls-leg-pct  { font-size: .6rem !important; }
+  /* Odds panel below wheel on mobile */
+  .ls-odds-panel {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    border-left: none !important;
+    border-top: 1px solid rgba(34,197,94,.12) !important;
+    padding: 12px 14px !important;
+    gap: 6px 12px !important;
+    justify-content: space-between !important;
+    min-width: unset !important;
+  }
+  .ls-odds-val  { font-size: 1.5rem !important; }
+  .ls-odds-lbl  { font-size: .4rem !important; }
+  /* Wager chip smaller */
+  .ls-wager-chip { width: 42px !important; height: 42px !important; }
+  .ls-wager-v    { font-size: .7rem !important; }
+  /* Footer row of metrics */
+  .ls-footer-row { flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; }
+  .ls-metrics { flex-wrap: wrap !important; gap: 6px 10px !important; width: 100% !important; }
+  .ls-metric  { flex: 0 0 auto !important; min-width: 60px !important; padding: 5px 9px !important; }
+  .ls-metric-val { font-size: .72rem !important; }
+  .ls-market-note { margin-top: 8px !important; padding: 8px 10px !important; }
+  /* Aggregate cards at bottom */
+  .ls-agg-card { min-width: 80px !important; }
+}
+
+/* Very narrow phones (< 390px) */
+@media (max-width: 390px) {
+  .ls-wheel-panel { height: min(280px, 92vw) !important; }
+  .ls-wheel-rail  { width: min(240px, 82vw) !important; height: min(240px, 82vw) !important; }
+  .ls-wheel-track { width: min(215px, 74vw) !important; height: min(215px, 74vw) !important; }
+  .pp2-row { grid-template-columns: 34px minmax(0,1fr) 64px !important; }
+}
+
+</style>
 </head>
 <body>
 
