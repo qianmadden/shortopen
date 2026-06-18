@@ -8,7 +8,7 @@
 <script src="https://cdn.tailwindcss.com?plugins="></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
   body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at top left,rgba(244,185,66,.06),transparent 28%),radial-gradient(circle at bottom right,rgba(59,130,246,.08),transparent 32%),#05070b; overflow-x: hidden; }
   @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -47,7 +47,8 @@
   @keyframes rotySheen{0%{left:-60%}55%,100%{left:130%}}
   .roty-glass-card{
     position:relative;overflow:hidden;border-radius:16px;border:1px solid;padding:16px;
-    backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);
+    backdrop-filter:blur(24px) saturate(170%);-webkit-backdrop-filter:blur(24px) saturate(170%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.1);
     transition:transform .2s ease,box-shadow .2s ease;
   }
   .roty-glass-card::before{
@@ -59,7 +60,7 @@
     background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);
     animation:rotySheen 3.5s ease-in-out infinite;
   }
-  .roty-glass-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+  .roty-glass-card:hover{transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.1), 0 8px 32px rgba(0,0,0,.4)}
   .roty-stat-cell{position:relative;z-index:1;border-radius:10px;background:rgba(255,255,255,.06);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.08);padding:8px 10px}
   .roty-stat-lbl{font-size:.5rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4a5a7a}
   .roty-stat-val{font-size:.9rem;font-weight:900;color:#f0ece4;margin-top:3px;font-family:'DM Mono',monospace}
@@ -76,7 +77,405 @@
   .roty-mv{font-size:.54rem;font-weight:800;padding:2px 5px;border-radius:3px;font-family:'DM Mono',monospace}
   .roty-mv.up{color:#22c55e;background:rgba(34,197,94,.12)}.roty-mv.dn{color:#ef4444;background:rgba(239,68,68,.12)}
   @media(max-width:640px){.roty-strip{padding:0 16px}.roty-item:nth-child(n+4){display:none!important}}
+
+  /* ===== shortopen shared footer (matches market.html exactly) ===== */
+  footer.so-footer {
+    border-top: 1px solid #1a2535;
+    background: rgba(5,7,11,0.8);
+    padding: 32px 48px 26px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+  .so-footer .footer-top { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+  .so-footer .footer-logo { font-family:'Inter',sans-serif; font-weight:900; font-size:1rem; color:#f0ece4; letter-spacing:-0.02em; }
+  .so-footer .footer-logo span { color:#e8a020; }
+  .so-footer .footer-copy { font-family:'DM Sans',sans-serif; font-weight:300; font-size:0.75rem; color:#4d6070; letter-spacing:0.06em; }
+  .so-footer .footer-disclaimer { font-family:'DM Sans',sans-serif; font-weight:300; font-size:.62rem; line-height:1.65; color:rgba(255,255,255,.24); letter-spacing:.01em;
+    max-width:980px; border-top:1px solid rgba(255,255,255,.06); padding-top:14px; text-align:left; }
+  @media (max-width:900px) {
+    footer.so-footer { padding:24px 20px 22px; gap:14px; }
+    .so-footer .footer-top { flex-direction:column; gap:12px; text-align:center; }
+  }
+
 </style>
+
+<style id="shortopen-player-redesign">
+/* Player card redesign layer - infrastructure preserved */
+.roty-glass-card {
+  border-radius: 22px !important;
+  overflow: hidden;
+}
+
+.player-card,
+.roty-glass-card {
+  position: relative;
+}
+
+.roty-glass-card:hover {
+  transform: translateY(-5px) scale(1.01) !important;
+}
+
+.roty-glass-card::before {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.14), transparent 35%),
+    radial-gradient(circle at top right, rgba(244,185,66,.18), transparent 40%) !important;
+}
+
+.roty-stat-cell {
+  min-height: 58px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.roty-stat-val {
+  letter-spacing:-.04em;
+}
+
+.market-player-enhanced {
+  display:grid;
+  grid-template-columns: 90px 1fr;
+  gap:16px;
+  align-items:center;
+}
+
+.player-avatar-panel {
+  height:110px;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    linear-gradient(145deg,rgba(244,185,66,.15),rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.12);
+  animation:floatPlayer 4s ease-in-out infinite;
+}
+
+@keyframes floatPlayer {
+  0%,100% { transform:translateY(0); }
+  50% { transform:translateY(-4px); }
+}
+
+.intel-pill {
+  display:inline-flex;
+  gap:6px;
+  align-items:center;
+  padding:5px 9px;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  font-size:.55rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#9dafc2;
+}
+
+.grade-meter {
+  height:5px;
+  border-radius:999px;
+  overflow:hidden;
+  background:rgba(255,255,255,.08);
+  margin-top:10px;
+}
+
+.grade-meter span {
+  display:block;
+  height:100%;
+  background:linear-gradient(90deg,#f4b942,#22c55e);
+  animation:growMeter 1.2s ease;
+}
+
+@keyframes growMeter {
+  from {width:0}
+}
+
+.consensus-glow {
+  box-shadow:0 0 35px rgba(244,185,66,.12);
+}
+
+@media(max-width:640px){
+  .market-player-enhanced {
+    grid-template-columns:1fr;
+  }
+}
+</style>
+
+
+<style id="shortopen-terminal-redesign-v2">
+
+/* ===== Navigation + Intelligence Terminal Upgrade ===== */
+
+.glass {
+  transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+}
+
+.glass:hover {
+  border-color: rgba(244,185,66,.28);
+  box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+
+aside .glass:first-child {
+  background:
+  linear-gradient(145deg,rgba(244,185,66,.09),rgba(255,255,255,.03)),
+  rgba(5,7,11,.7);
+  position:relative;
+  overflow:hidden;
+}
+
+aside .glass:first-child:before {
+ content:"";
+ position:absolute;
+ width:180px;
+ height:180px;
+ right:-80px;
+ top:-80px;
+ background:radial-gradient(circle,rgba(244,185,66,.25),transparent 70%);
+ animation:pulseGlow 4s infinite;
+}
+
+@keyframes pulseGlow {
+ 0%,100% {opacity:.4;transform:scale(1)}
+ 50% {opacity:1;transform:scale(1.2)}
+}
+
+aside button[id^="nav-"] {
+ position:relative;
+ overflow:hidden;
+ transition:.25s ease;
+}
+
+aside button[id^="nav-"]:before {
+ content:"";
+ position:absolute;
+ left:-100%;
+ top:0;
+ width:100%;
+ height:100%;
+ background:linear-gradient(90deg,transparent,rgba(244,185,66,.18),transparent);
+ transition:.5s;
+}
+
+aside button[id^="nav-"]:hover:before {
+ left:100%;
+}
+
+.sb-active {
+ background:
+ linear-gradient(135deg,rgba(244,185,66,.2),rgba(255,255,255,.05)) !important;
+ box-shadow:
+ inset 0 0 25px rgba(244,185,66,.12),
+ 0 0 25px rgba(244,185,66,.08);
+}
+
+
+/* ===== Market Intelligence Cards ===== */
+
+#homeCards > * {
+ animation:intelRise .55s ease both;
+}
+
+#homeCards > *:nth-child(2){animation-delay:.08s}
+#homeCards > *:nth-child(3){animation-delay:.16s}
+
+@keyframes intelRise {
+ from {
+ opacity:0;
+ transform:translateY(25px);
+ }
+ to {
+ opacity:1;
+ transform:none;
+ }
+}
+
+#homeCards .roty-glass-card {
+ border-radius:24px !important;
+ background:
+ radial-gradient(circle at top right,rgba(244,185,66,.18),transparent 35%),
+ linear-gradient(145deg,rgba(255,255,255,.08),rgba(0,0,0,.55));
+}
+
+#homeCards .roty-glass-card:hover {
+ transform:translateY(-8px) scale(1.015);
+}
+
+
+/* ===== Section Headers ===== */
+
+.section-panel > .glass:first-child {
+ position:relative;
+ overflow:hidden;
+ border-color:rgba(244,185,66,.18);
+}
+
+.section-panel > .glass:first-child:after {
+ content:"LIVE MARKET DATA";
+ position:absolute;
+ right:20px;
+ top:20px;
+ font-size:.55rem;
+ letter-spacing:.25em;
+ color:#22c55e;
+ border:1px solid rgba(34,197,94,.25);
+ padding:5px 10px;
+ border-radius:20px;
+ animation:statusBlink 2s infinite;
+}
+
+@keyframes statusBlink {
+ 50% {opacity:.45}
+}
+
+
+/* ===== Consensus Board ===== */
+
+#consensusGrid > * {
+ position:relative;
+ overflow:hidden;
+ transition:.3s ease;
+}
+
+#consensusGrid > *:hover {
+ transform:translateY(-6px);
+ border-color:rgba(244,185,66,.35);
+}
+
+#consensusGrid > *:before {
+ content:"";
+ position:absolute;
+ inset:0;
+ background:
+ linear-gradient(120deg,transparent,rgba(244,185,66,.12),transparent);
+ transform:translateX(-100%);
+}
+
+#consensusGrid > *:hover:before {
+ animation:scan .8s;
+}
+
+@keyframes scan {
+ to {transform:translateX(100%)}
+}
+
+
+/* ===== Betting Intelligence ===== */
+
+#bettingTicker > * {
+ border-left:3px solid #f4b942;
+ background:
+ linear-gradient(90deg,rgba(244,185,66,.12),rgba(255,255,255,.03));
+ animation:feedSlide .5s ease both;
+}
+
+#bettingTicker > *:hover {
+ transform:translateX(8px);
+}
+
+@keyframes feedSlide {
+ from {
+ opacity:0;
+ transform:translateX(-20px);
+ }
+}
+
+
+/* ===== Mock Draft Simulator ===== */
+
+#mockTeamGrid > * {
+ transition:.25s ease;
+ position:relative;
+ overflow:hidden;
+}
+
+#mockTeamGrid > *:hover {
+ transform:translateY(-5px) scale(1.03);
+ box-shadow:0 15px 40px rgba(244,185,66,.15);
+}
+
+#mockSimulator .glass {
+ border-color:rgba(87,167,255,.16);
+}
+
+#mockBoard > div {
+ transition:.25s ease;
+}
+
+#mockBoard > div:hover {
+ background:rgba(244,185,66,.08);
+ padding-left:10px;
+}
+
+#mockProspectPool > * {
+ transition:.2s ease;
+}
+
+#mockProspectPool > *:hover {
+ transform:scale(1.04);
+ border-color:#f4b942 !important;
+}
+
+
+/* ===== Right Market Feed ===== */
+
+.panel-card {
+ overflow:hidden;
+}
+
+.panel-card .p-5:first-child {
+ background:
+ linear-gradient(90deg,rgba(244,185,66,.1),transparent);
+}
+
+</style>
+
+
+
+<style id="shortopen-draft-market-command-redesign-final">
+/* ==========================================================
+   NFL DRAFT MARKET — COMMAND CENTER REDESIGN LAYER
+   Keeps existing tabs, sections, data arrays, and onclicks intact.
+   ========================================================== */
+:root{--so-gold:#f4b942;--so-green:#22c55e;--so-blue:#57a7ff;--so-red:#f87171;--so-purple:#a78bfa;--so-panel:rgba(9,14,22,.76);}
+body{background:
+  radial-gradient(900px 700px at 10% 0%,rgba(244,185,66,.12),transparent 62%),
+  radial-gradient(760px 640px at 90% 18%,rgba(87,167,255,.10),transparent 66%),
+  radial-gradient(760px 700px at 72% 80%,rgba(34,197,94,.075),transparent 68%),
+  linear-gradient(180deg,#04070d,#060a12 42%,#04070d)!important;}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:52px 52px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.78),rgba(0,0,0,.24));}
+section.grid{align-items:start}.glass{box-shadow:0 18px 50px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.045)}
+/* Sidebar navigation as a draft command board */
+aside .glass:first-child{border-radius:28px!important;padding:14px!important;background:linear-gradient(180deg,rgba(16,24,37,.86),rgba(5,8,13,.78))!important;border:1px solid rgba(255,255,255,.10)!important;box-shadow:0 26px 70px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.055)!important;}
+aside .glass:first-child>div:first-child{display:flex;align-items:center;gap:9px;padding:8px 8px 12px;color:#f4b942!important;font-weight:900!important;}
+aside .glass:first-child>div:first-child:before{content:"";width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 18px rgba(34,197,94,.9);animation:navPulse 1.7s infinite;}
+@keyframes navPulse{50%{opacity:.42;transform:scale(.72)}}
+aside button[id^="nav-"]{min-height:58px!important;border-radius:18px!important;margin-bottom:8px!important;padding:12px 14px 12px 50px!important;background:linear-gradient(135deg,rgba(255,255,255,.045),rgba(255,255,255,.018))!important;border:1px solid rgba(255,255,255,.075)!important;color:#c7d2df!important;font-weight:850!important;letter-spacing:-.015em;box-shadow:inset 0 1px 0 rgba(255,255,255,.035);}
+aside button[id^="nav-"]:after{content:"";position:absolute;left:14px;top:50%;transform:translateY(-50%);width:24px;height:24px;border-radius:9px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);}
+#nav-home:after{background:linear-gradient(135deg,rgba(244,185,66,.25),rgba(244,185,66,.05))!important}#nav-consensus:after{background:linear-gradient(135deg,rgba(87,167,255,.28),rgba(87,167,255,.05))!important}#nav-qb:after{background:linear-gradient(135deg,rgba(167,139,250,.28),rgba(167,139,250,.05))!important}#nav-betting:after{background:linear-gradient(135deg,rgba(34,197,94,.28),rgba(34,197,94,.05))!important}
+#nav-home:before{content:"INTEL"!important}#nav-consensus:before{content:"BOARD"!important}#nav-qb:before{content:"QB27"!important}#nav-betting:before{content:"ODDS"!important}#nav-film:before{content:"FILM"!important}#nav-mock:before{content:"SIM"!important}
+aside button[id^="nav-"]:before{position:absolute!important;left:18px!important;top:50%!important;transform:translateY(-50%)!important;font-size:.47rem!important;font-weight:1000!important;letter-spacing:.04em!important;color:#f0ece4!important;z-index:2!important;background:none!important;width:auto!important;height:auto!important;}
+aside button[id^="nav-"] span:last-child{font-size:1.1rem;color:#65758a!important;transition:.22s ease;}
+aside button[id^="nav-"]:hover{transform:translateX(5px);border-color:rgba(244,185,66,.28)!important;background:linear-gradient(135deg,rgba(244,185,66,.10),rgba(87,167,255,.035))!important;box-shadow:0 14px 36px rgba(0,0,0,.25),inset 2px 0 0 rgba(244,185,66,.55)!important;}
+.sb-active{color:#fff!important;background:linear-gradient(135deg,rgba(244,185,66,.24),rgba(34,197,94,.06),rgba(87,167,255,.04))!important;border-color:rgba(244,185,66,.50)!important;box-shadow:0 0 38px rgba(244,185,66,.14),inset 2px 0 0 #f4b942!important;}
+.sb-active span:last-child{color:#f4b942!important;transform:translateX(3px)}
+/* Section headers */
+.section-panel>.glass:first-child{position:relative;overflow:hidden;border-radius:30px!important;background:linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.025) 42%,rgba(0,0,0,.35))!important;border:1px solid rgba(255,255,255,.10)!important;}
+.section-panel>.glass:first-child:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#f4b942,#22c55e,#57a7ff,transparent);}
+.section-panel>.glass:first-child:after{content:"SHORTOPEN TERMINAL"!important;position:absolute;right:20px;top:18px;font-size:.52rem;letter-spacing:.22em;color:#22c55e;border:1px solid rgba(34,197,94,.22);background:rgba(34,197,94,.075);padding:5px 10px;border-radius:999px;}
+/* Market intel and betting feed */
+#homeCards>.roty-glass-card,#homeCards>div{border-radius:28px!important;border-color:rgba(255,255,255,.10)!important;background:radial-gradient(circle at 80% 0%,rgba(244,185,66,.14),transparent 36%),linear-gradient(145deg,rgba(255,255,255,.075),rgba(0,0,0,.48))!important;}
+#bettingTicker>div{border-radius:20px!important;border:1px solid rgba(255,255,255,.085)!important;background:linear-gradient(90deg,rgba(34,197,94,.12),rgba(244,185,66,.055),rgba(255,255,255,.02))!important;box-shadow:0 14px 36px rgba(0,0,0,.28);}
+#bettingTicker>div:hover{transform:translateX(8px) scale(1.01)!important;border-color:rgba(34,197,94,.34)!important;}
+/* Redesigned consensus article cards */
+#consensusGrid{gap:18px!important}.pos-cluster-header{grid-column:1/-1;margin-top:8px;padding:12px 14px;border-radius:18px;border:1px solid rgba(255,255,255,.075);background:linear-gradient(90deg,rgba(244,185,66,.10),rgba(87,167,255,.035),transparent);display:flex;align-items:center;justify-content:space-between}.pos-cluster-title{font-size:.65rem;font-weight:1000;letter-spacing:.2em;text-transform:uppercase;color:#f4b942}.pos-cluster-count{font-size:.58rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#87a0bb}
+.draft-article-card{position:relative;overflow:hidden;border-radius:30px!important;border:1px solid rgba(255,255,255,.095)!important;background:linear-gradient(145deg,rgba(14,21,32,.93),rgba(4,7,12,.90))!important;box-shadow:0 20px 55px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.05);cursor:pointer;transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease;}
+.draft-article-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 82% 12%,rgba(244,185,66,.18),transparent 34%),linear-gradient(120deg,transparent,rgba(255,255,255,.055),transparent);opacity:.9;pointer-events:none}.draft-article-card:hover{transform:translateY(-7px);border-color:rgba(244,185,66,.40)!important;box-shadow:0 28px 70px rgba(0,0,0,.46),0 0 40px rgba(244,185,66,.09)}.draft-card-inner{position:relative;z-index:2;padding:20px}.draft-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:14px}.draft-rank-chip{display:inline-flex;align-items:center;gap:8px;border-radius:999px;border:1px solid rgba(244,185,66,.24);background:rgba(244,185,66,.10);padding:6px 10px;font-size:.57rem;font-weight:1000;letter-spacing:.15em;text-transform:uppercase;color:#f4b942}.draft-fit-chip{font-size:.58rem;font-weight:850;letter-spacing:.11em;text-transform:uppercase;color:#7d90a8}.draft-score{text-align:right}.draft-score strong{font-size:2rem;line-height:1;font-weight:1000;color:#f4b942;text-shadow:0 0 20px rgba(244,185,66,.25)}.draft-score span{display:block;margin-top:3px;font-size:.56rem;letter-spacing:.13em;text-transform:uppercase;color:#65758a}.draft-player-name{font-size:1.35rem;font-weight:1000;letter-spacing:-.045em;color:#f7f3eb}.draft-school{margin-top:4px;font-size:.82rem;color:#8ba0b8}.draft-tags{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}.draft-tags span{border-radius:999px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.045);padding:4px 9px;font-size:.58rem;font-weight:750;letter-spacing:.08em;text-transform:uppercase;color:#9dafc2}.draft-teaser{font-size:.86rem;line-height:1.75;color:#9dafc2}.draft-read-btn{margin-top:16px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.07);padding-top:13px;font-size:.62rem;font-weight:1000;letter-spacing:.16em;text-transform:uppercase;color:#f4b942}.draft-read-btn i{font-style:normal;transition:.22s ease}.draft-article-card.expanded .draft-read-btn i{transform:rotate(180deg)}.draft-article-body{display:none;position:relative;z-index:2;border-top:1px solid rgba(255,255,255,.075);background:linear-gradient(180deg,rgba(244,185,66,.055),rgba(0,0,0,.16));padding:18px 20px 20px}.draft-article-card.expanded .draft-article-body{display:block}.draft-article-body h4{font-size:.64rem;font-weight:1000;letter-spacing:.18em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}.draft-article-body p{font-size:.9rem;line-height:1.85;color:#d5deea}.draft-meter{height:5px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:14px}.draft-meter span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#f4b942,#22c55e);animation:growMeter 900ms ease both}
+/* QB board */
+#qbList>div{border-radius:24px!important;border-color:rgba(167,139,250,.18)!important;background:linear-gradient(115deg,rgba(167,139,250,.105),rgba(87,167,255,.04),rgba(255,255,255,.022))!important}#qbList>div:hover{border-color:rgba(167,139,250,.40)!important;transform:translateY(-5px)}
+@media(max-width:1024px){section.grid{grid-template-columns:1fr!important}aside{position:relative!important}.section-panel>.glass:first-child:after{display:none}}@media(max-width:640px){aside button[id^="nav-"]{min-height:54px!important}.draft-card-top{align-items:flex-start}.draft-player-name{font-size:1.12rem}.section-panel>.glass:first-child{padding:18px!important}}
+</style>
+
 </head>
 <body class="min-h-screen text-white">
 
@@ -177,7 +576,7 @@
       <!-- RIGHT: LIVE ROTY BOARD -->
       <div style="position:relative">
         <div style="position:absolute;inset:-40px;background:radial-gradient(ellipse at 60% 40%,rgba(244,185,66,.14),transparent 65%);pointer-events:none;border-radius:50%;filter:blur(28px);z-index:0"></div>
-        <div class="glass rounded-[2rem] p-5" style="position:relative;z-index:1;border-color:rgba(244,185,66,.2);box-shadow:0 0 50px rgba(244,185,66,.07),inset 0 0 30px rgba(244,185,66,.03)">
+        <div class="glass rounded-[2rem] p-5" style="position:relative;z-index:1;border-color:rgba(244,185,66,.2);box-shadow:0 0 50px rgba(244,185,66,.07),inset 0 1px 0 rgba(255,255,255,.12),inset 0 0 30px rgba(244,185,66,.03);backdrop-filter:blur(28px) saturate(165%);-webkit-backdrop-filter:blur(28px) saturate(165%);">
           <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 15%,rgba(244,185,66,.08),transparent 55%);pointer-events:none;border-radius:2rem"></div>
           <div class="flex items-center justify-between border-b border-white/10 pb-3" style="position:relative">
             <div><div class="text-xs uppercase tracking-[0.2em] text-zinc-500">Market Movers</div><div class="mt-1 text-xl font-black">Live ROTY Board</div></div>
@@ -205,15 +604,13 @@
               </div>
             </div>
             <!-- Tate -->
-            <div class="card-hover rounded-xl border border-white/10 bg-black/30 p-4">
+            <div class="roty-glass-card" style="background:linear-gradient(145deg,rgba(96,165,250,.1),rgba(255,255,255,.03) 40%,rgba(0,0,0,.6));border-color:rgba(96,165,250,.22)">
               <div class="flex items-start justify-between">
                 <div><div class="text-xs uppercase tracking-[0.2em] text-zinc-500">Ohio State</div><div class="mt-1 text-lg font-black leading-tight">Carnell Tate</div><div class="mt-1.5 inline-flex rounded-full border border-yellow-400/20 bg-yellow-400/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-[0.15em] text-yellow-300">WR</div></div>
                 <div class="text-right"><div class="text-xs uppercase tracking-[0.2em] text-zinc-500">Movement</div><div class="mt-1 text-lg font-black text-red-400">-3%</div></div>
               </div>
               <div class="mt-3 grid grid-cols-3 gap-2 text-sm">
-                <div class="rounded-lg bg-white/5 p-2.5"><div class="text-zinc-500 text-xs">Grade</div><div class="mt-1 text-base font-bold">6.71</div></div>
-                <div class="rounded-lg bg-white/5 p-2.5"><div class="text-zinc-500 text-xs">Odds</div><div class="mt-1 text-base font-bold text-emerald-400">+550</div></div>
-                <div class="rounded-lg bg-white/5 p-2.5"><div class="text-zinc-500 text-xs">Team</div><div class="mt-1 text-sm font-bold">Titans</div></div>
+                <div class="roty-stat-cell"><div class="roty-stat-lbl">Grade</div><div class="roty-stat-val">6.71</div></div><div class="roty-stat-cell"><div class="roty-stat-lbl">Odds</div><div class="roty-stat-val" style="color:#22c55e">+550</div></div><div class="roty-stat-cell"><div class="roty-stat-lbl">Team</div><div class="roty-stat-val">Titans</div></div>
               </div>
             </div>
           </div>
@@ -384,8 +781,12 @@
   </section>
 </main>
 
-<footer class="border-t border-white/10 px-6 py-5 text-center text-xs uppercase tracking-[0.15em] text-zinc-600 relative z-10">
-  &copy; 2026 shortopen &middot; All grades are editorial opinions &middot; Not financial advice
+<footer class="so-footer">
+  <div class="footer-top">
+    <div class="footer-logo">short<span>open</span></div>
+    <p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+  </div>
+  <p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, and payout or "you'd earn" calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only — they are not betting advice and do not represent a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, or operate as a sportsbook; any wagering is done independently and at your own discretion through a licensed third-party operator in your jurisdiction. Model estimates are not guarantees of outcome. You must be of legal gambling age in your jurisdiction. If you or someone you know has a gambling problem, call 1-800-GAMBLER.</p>
 </footer>
 
 <script>
@@ -426,7 +827,7 @@ function schoolHelmet(school, grade, pos){
   const pc=c.h, ac=c.a, dk=c.h2;
   const hl=lighten(pc,.45);
   // Football player holding grade card - fills the box
-  return '<svg viewBox="0 0 110 140" xmlns="http://www.w3.org/2000/svg" style="width:100px;height:128px">'+
+  return '<svg viewBox="0 0 110 140" xmlns="http://www.w3.org/2000/svg" style="width:70px;height:89px">'+
   // === HELMET ===
   // Back of helmet
   '<ellipse cx="55" cy="28" rx="26" ry="24" fill="'+dk+'" opacity="0.7"/>'+
@@ -567,65 +968,65 @@ function buildBigCard(p,i){
   const badge=pbadge(p.pos);
   const gc=gradeColor(p.grade);
   const upBadge=p.up?'border-emerald-400/20 bg-emerald-400/10 text-emerald-300':'border-zinc-600/30 bg-zinc-800/30 text-zinc-500';
-  const traits=p.traits.map(t=>`<div class="rounded-2xl border border-white/10 bg-black/30 p-4"><div class="text-xs uppercase tracking-[0.15em] text-zinc-500">Trait</div><div class="mt-2 text-base font-bold">${t}</div></div>`).join('');
+  const traits=p.traits.map(t=>`<div class="rounded-xl border border-white/10 bg-black/30 p-2"><div class="text-[0.6rem] uppercase tracking-[0.15em] text-zinc-500">Trait</div><div class="mt-1 text-xs font-bold">${t}</div></div>`).join('');
   const attrs=p.attrs.map(a=>attrBar(a.v,a.n)).join('');
   const accentGrad=i===0?'background:linear-gradient(to right,rgba(232,160,32,0.6),rgba(248,113,113,0.4),rgba(34,197,94,0.4))':'background:'+(p.pos==='Edge'?'rgba(248,113,113,0.6)':p.pos==='WR'?'rgba(96,165,250,0.6)':p.pos==='RB'?'rgba(52,211,153,0.6)':p.pos==='LB'?'rgba(251,146,60,0.6)':p.pos==='CB'?'rgba(232,121,249,0.6)':p.pos==='S'?'rgba(74,222,128,0.6)':'rgba(167,139,250,0.6)');
   const posCol={QB:'rgba(232,160,32,.06)',Edge:'rgba(248,113,113,.06)',EDGE:'rgba(248,113,113,.06)',WR:'rgba(96,165,250,.06)',RB:'rgba(52,211,153,.06)',LB:'rgba(251,146,60,.06)',CB:'rgba(232,121,249,.06)',S:'rgba(74,222,128,.06)',IOL:'rgba(167,139,250,.06)',DL:'rgba(148,163,184,.06)'};
   const cardBg=posCol[p.pos]||'rgba(255,255,255,.02)';
-  return `<div class="glass card-hover overflow-hidden rounded-[2rem]" style="background:linear-gradient(160deg,${cardBg},rgba(0,0,0,.4))" onclick="this.classList.toggle('expanded')">
+  return `<div class="glass card-hover overflow-hidden rounded-2xl" style="background:linear-gradient(160deg,${cardBg},rgba(0,0,0,.4))" onclick="this.classList.toggle('expanded')">
     <div style="${accentGrad};height:3px"></div>
-    <div class="grid gap-6 p-6 xl:grid-cols-[120px_1fr_280px]">
-      <div class="flex flex-col items-center justify-center rounded-3xl border border-white/10 bg-black/30 p-3" style="min-width:130px">
+    <div class="grid gap-3 p-3.5 xl:grid-cols-[88px_1fr_220px]">
+      <div class="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-black/30 p-2" style="min-width:96px">
         ${schoolHelmet(p.school, p.grade, p.pos)}
-        <div class="mt-2 rounded-full border ${upBadge} px-3 py-1 text-xs uppercase tracking-[0.15em]">${p.up?'↑ UP':'—'}</div>
+        <div class="mt-1.5 rounded-full border ${upBadge} px-2 py-0.5 text-[0.6rem] uppercase tracking-[0.15em]">${p.up?'↑ UP':'—'}</div>
       </div>
       <div>
-        <div class="flex flex-wrap items-center gap-3 mb-3">
-          <h3 class="text-3xl font-black tracking-tight">${p.name}</h3>
-          <div class="rounded-full border ${badge} px-3 py-1 text-xs uppercase tracking-[0.2em]">${p.pos}</div>
+        <div class="flex flex-wrap items-center gap-2 mb-1.5">
+          <h3 class="text-xl font-black tracking-tight">${p.name}</h3>
+          <div class="rounded-full border ${badge} px-2 py-0.5 text-[0.6rem] uppercase tracking-[0.2em]">${p.pos}</div>
         </div>
-        <div class="flex flex-wrap gap-2 text-sm text-zinc-400 mb-5">
+        <div class="flex flex-wrap gap-1.5 text-xs text-zinc-400 mb-2.5">
           <span>${p.school}</span><span>•</span><span>${p.detail}</span><span>•</span><span>Drafted: ${p.drafted}</span>
         </div>
-        <div class="grid gap-3 md:grid-cols-3 mb-5">${traits}</div>
-        <div class="rounded-2xl border border-white/10 bg-black/30 p-5">
-          <div class="text-xs uppercase tracking-[0.2em] text-zinc-500 mb-3">Scouting Summary</div>
-          <p class="leading-7 text-zinc-300 text-sm">${p.scout}</p>
+        <div class="grid gap-2 md:grid-cols-3 mb-2.5">${traits}</div>
+        <div class="rounded-xl border border-white/10 bg-black/30 p-3">
+          <div class="text-[0.65rem] uppercase tracking-[0.2em] text-zinc-500 mb-1.5">Scouting Summary</div>
+          <p class="leading-5 text-zinc-300 text-xs">${p.scout}</p>
         </div>
       </div>
-      <div class="space-y-4">
-        <div class="rounded-2xl border border-white/10 bg-black/30 p-5">
-          <div class="text-xs uppercase tracking-[0.2em] text-zinc-500 mb-3">ROTY Market</div>
+      <div class="space-y-2">
+        <div class="rounded-xl border border-white/10 bg-black/30 p-3">
+          <div class="text-[0.65rem] uppercase tracking-[0.2em] text-zinc-500 mb-1.5">ROTY Market</div>
           <div class="flex items-end justify-between">
             <div>
-              <div class="text-4xl font-black ${p.ot==='neg'?'text-yellow-400':'text-emerald-400'}">${p.odds}</div>
-              <div class="mt-1 text-sm text-zinc-500">ROTY Top-5 Odds</div>
+              <div class="text-2xl font-black ${p.ot==='neg'?'text-yellow-400':'text-emerald-400'}">${p.odds}</div>
+              <div class="mt-0.5 text-xs text-zinc-500">ROTY Top-5 Odds</div>
             </div>
-            <div class="rounded-full bg-emerald-400/10 px-3 py-1 text-xs uppercase tracking-[0.12em] text-emerald-300">Sharp Action</div>
+            <div class="rounded-full bg-emerald-400/10 px-2 py-0.5 text-[0.6rem] uppercase tracking-[0.12em] text-emerald-300">Sharp Action</div>
           </div>
         </div>
-        <div class="rounded-2xl border border-white/10 bg-black/30 p-5">
-          <div class="flex items-center justify-between mb-3">
-            <div class="text-xs uppercase tracking-[0.2em] text-zinc-500">Team Fit</div>
-            <div class="text-lg font-black text-emerald-400">${p.fit.pct}%</div>
+        <div class="rounded-xl border border-white/10 bg-black/30 p-3">
+          <div class="flex items-center justify-between mb-1.5">
+            <div class="text-[0.65rem] uppercase tracking-[0.2em] text-zinc-500">Team Fit</div>
+            <div class="text-sm font-black text-emerald-400">${p.fit.pct}%</div>
           </div>
-          <div class="h-2 overflow-hidden rounded-full bg-white/5 mb-3">
+          <div class="h-1.5 overflow-hidden rounded-full bg-white/5 mb-2">
             <div class="h-full rounded-full bg-gradient-to-r from-yellow-400 to-emerald-400" style="width:${p.fit.pct}%"></div>
           </div>
-          <p class="text-xs text-zinc-500 leading-6">${p.fit.desc}</p>
+          <p class="text-[0.68rem] text-zinc-500 leading-5">${p.fit.desc}</p>
         </div>
-        <div class="rounded-2xl border border-white/10 bg-black/30 p-5">
-          <div class="text-xs uppercase tracking-[0.2em] text-zinc-500 mb-2">Weakness</div>
-          <div class="text-sm font-semibold text-red-400">${p.weakness}</div>
+        <div class="rounded-xl border border-white/10 bg-black/30 p-3">
+          <div class="text-[0.65rem] uppercase tracking-[0.2em] text-zinc-500 mb-1">Weakness</div>
+          <div class="text-xs font-semibold text-red-400">${p.weakness}</div>
         </div>
       </div>
     </div>
-    <div class="border-t border-white/5 px-6 py-3 flex items-center justify-center gap-2 text-xs uppercase tracking-[0.15em] text-zinc-500 cursor-pointer hover:text-zinc-300 transition-colors">
+    <div class="border-t border-white/5 px-5 py-1.5 flex items-center justify-center gap-2 text-[0.65rem] uppercase tracking-[0.15em] text-zinc-500 cursor-pointer hover:text-zinc-300 transition-colors">
       Full Scout Report <span class="expand-arrow">▾</span>
     </div>
-    <div class="scout-expanded hidden border-t border-white/5 bg-black/20 px-6 py-5">
-      <div class="text-xs uppercase tracking-[0.2em] text-zinc-500 mb-4">Attributes</div>
-      <div class="space-y-3 max-w-md">${attrs}</div>
+    <div class="scout-expanded hidden border-t border-white/5 bg-black/20 px-5 py-3">
+      <div class="text-[0.65rem] uppercase tracking-[0.2em] text-zinc-500 mb-2">Attributes</div>
+      <div class="space-y-2 max-w-md">${attrs}</div>
     </div>
   </div>`;
 }
@@ -1271,6 +1672,174 @@ renderQB();
 renderTicker();
 
 document.getElementById('filterPanel').style.display='block';
+</script>
+
+
+<script id="shortopen-player-enhancements">
+document.addEventListener("DOMContentLoaded",()=>{
+  document.querySelectorAll(".roty-glass-card").forEach((card)=>{
+    if(!card.querySelector(".grade-meter")){
+      const grade = [...card.querySelectorAll(".roty-stat-val")]
+        .find(x=>x.textContent.includes("."));
+      if(grade){
+        const value=parseFloat(grade.textContent);
+        if(!isNaN(value)){
+          const meter=document.createElement("div");
+          meter.className="grade-meter";
+          meter.innerHTML="<span style='width:"+Math.min(100,(value/8)*100)+"%'></span>";
+          card.appendChild(meter);
+        }
+      }
+    }
+  });
+});
+</script>
+
+
+<script id="shortopen-terminal-animation">
+document.addEventListener("DOMContentLoaded",()=>{
+ document.querySelectorAll(".section-panel").forEach(section=>{
+   section.addEventListener("mouseenter",()=>{
+     section.style.transition="opacity .3s ease";
+   });
+ });
+
+ document.querySelectorAll(".roty-glass-card").forEach(card=>{
+   card.addEventListener("mousemove",(e)=>{
+     const r=card.getBoundingClientRect();
+     const x=((e.clientX-r.left)/r.width-.5)*8;
+     const y=((e.clientY-r.top)/r.height-.5)*8;
+     card.style.transform=`perspective(600px) rotateX(${-y}deg) rotateY(${x}deg) translateY(-3px)`;
+   });
+   card.addEventListener("mouseleave",()=>{
+     card.style.transform="";
+   });
+ });
+});
+</script>
+
+
+
+<script id="shortopen-draft-market-consensus-article-fix-final">
+(function(){
+  const posLabels={QB:'Quarterbacks',WR:'Wide Receivers',EDGE:'Edge Rushers',CB:'Cornerbacks',OT:'Offensive Tackles',DL:'Interior Defensive Line',LB:'Linebackers',TE:'Tight Ends',S:'Safeties',RB:'Running Backs',IOL:'Interior Offensive Line'};
+  const safePct=(grade)=>Math.max(48,Math.min(96,Math.round((parseFloat(grade||6.2)/7.25)*100)));
+  window.renderConsensus=function(){
+    const grid=document.getElementById('consensusGrid'); if(!grid||!window.CONSENSUS) return;
+    let html='';
+    const groups={}; CONSENSUS.forEach(p=>(groups[p.pos]||(groups[p.pos]=[])).push(p));
+    Object.keys(groups).forEach(pos=>{
+      const group=groups[pos];
+      html += `<div class="pos-cluster-header"><span class="pos-cluster-title">${posLabels[pos]||pos}</span><span class="pos-cluster-count">${group.length} prospect${group.length>1?'s':''} tracked</span></div>`;
+      group.forEach((p,i)=>{
+        const tags=(p.tags||[]).map(t=>`<span>${t}</span>`).join('');
+        const grade=(p.stat&&p.stat[0])?p.stat[0]:(p.grade?Number(p.grade).toFixed(2):'6.50');
+        const label=(p.stat&&p.stat[1])?p.stat[1]:'Grade';
+        const rankLabel=`#${i+1} ${posLabels[pos]||pos}`;
+        const pct=safePct(grade);
+        html += `<article class="draft-article-card" onclick="this.classList.toggle('expanded')">
+          <div class="draft-card-inner">
+            <div class="draft-card-top">
+              <div>
+                <div class="draft-rank-chip"><span>${rankLabel}</span></div>
+                <div class="draft-player-name" style="margin-top:14px">${p.name}</div>
+                <div class="draft-school">${p.school} · ${p.conf? p.conf[0] : ''} · ${p.team||'Consensus fit'}</div>
+              </div>
+              <div class="draft-score"><strong>${grade}</strong><span>${label}</span></div>
+            </div>
+            <div class="draft-tags"><span>${p.pos}</span>${tags}</div>
+            <p class="draft-teaser">${p.teaser||''}</p>
+            <div class="draft-meter"><span style="width:${pct}%"></span></div>
+            <div class="draft-read-btn"><span>Open full scouting read</span><i>⌄</i></div>
+          </div>
+          <div class="draft-article-body">
+            <h4>Full Read</h4>
+            <p>${p.writeup||p.teaser||'Expanded scouting note unavailable.'}</p>
+          </div>
+        </article>`;
+      });
+    });
+    grid.innerHTML=html;
+  };
+  const oldShow=window.showSection;
+  if(typeof oldShow==='function'){
+    window.showSection=function(section,btn){ oldShow(section,btn); if(section==='consensus') setTimeout(()=>window.renderConsensus&&window.renderConsensus(),0); };
+  }
+  document.addEventListener('DOMContentLoaded',()=>{ if(window.renderConsensus) window.renderConsensus(); });
+  if(document.readyState!=='loading') window.renderConsensus();
+})();
+</script>
+
+
+<style id="shortopen-nfl-deep-redesign-v2">
+/* ==========================================================
+   NFL Draft Market V2 — animated consensus, rich QB board,
+   war-room mock simulator. Infrastructure untouched.
+   ========================================================== */
+@keyframes soFloatPlayer{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-7px) rotate(1deg)}}
+@keyframes soCardIn{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes soScanLine{0%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
+@keyframes soPulseRing{0%,100%{opacity:.35;transform:scale(.92)}50%{opacity:.85;transform:scale(1.08)}}
+@keyframes soBoardGlow{0%,100%{box-shadow:0 18px 55px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.05)}50%{box-shadow:0 22px 72px rgba(244,185,66,.10), inset 0 1px 0 rgba(255,255,255,.07)}}
+
+#section-consensus .glass:first-child,
+#section-qb .glass:first-child,
+#section-mock .glass:first-child{
+  background:linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.025)),radial-gradient(circle at 84% 10%,rgba(244,185,66,.16),transparent 34%)!important;
+  border:1px solid rgba(244,185,66,.18)!important;
+  box-shadow:0 28px 80px rgba(0,0,0,.36), inset 0 1px 0 rgba(255,255,255,.07);
+}
+
+#consensusGrid{align-items:stretch;perspective:1200px}
+.consensus-pos-header{grid-column:1/-1;margin:28px 0 6px;padding:14px 18px;border-radius:18px;background:linear-gradient(90deg,rgba(244,185,66,.12),rgba(87,167,255,.045),transparent);border:1px solid rgba(255,255,255,.075);display:flex;align-items:center;gap:12px;overflow:hidden;position:relative}
+.consensus-pos-header:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);transform:translateX(-130%);animation:soScanLine 5s ease-in-out infinite}
+.consensus-pos-kicker{font-size:.58rem;font-weight:950;letter-spacing:.22em;text-transform:uppercase;color:#f4b942}.consensus-pos-title{font-size:.95rem;font-weight:950;color:#f0ece4;letter-spacing:-.02em}.consensus-pos-count{margin-left:auto;font-family:'DM Mono',monospace;font-size:.62rem;color:#8fa3ba;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:5px 10px}
+.consensus-card-v2{position:relative;min-height:300px;border-radius:30px;overflow:hidden;background:linear-gradient(145deg,rgba(12,17,27,.96),rgba(5,7,11,.95));border:1px solid rgba(255,255,255,.09);box-shadow:0 22px 60px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.055);animation:soCardIn .55s ease both;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .25s,box-shadow .25s;cursor:pointer}
+.consensus-card-v2:hover{transform:translateY(-9px) rotateX(2deg);border-color:rgba(244,185,66,.42);box-shadow:0 30px 92px rgba(0,0,0,.44),0 0 45px rgba(244,185,66,.09),inset 0 1px 0 rgba(255,255,255,.08)}
+.consensus-card-v2:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 78% 18%,var(--schoolGlow,rgba(244,185,66,.2)),transparent 38%),linear-gradient(110deg,rgba(255,255,255,.075),transparent 34%,rgba(255,255,255,.03));pointer-events:none}.consensus-card-v2:after{content:"";position:absolute;top:0;bottom:0;left:-55%;width:40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.11),transparent);animation:soScanLine 4.8s ease-in-out infinite;pointer-events:none}
+.consensus-card-v2.expanded .consensus-read-card{display:block}.consensus-card-v2.expanded .read-arrow{transform:rotate(180deg)}
+.consensus-card-top{position:relative;z-index:2;padding:20px;display:grid;grid-template-columns:116px 1fr;gap:18px;min-height:220px}.player-figure{height:172px;border-radius:24px;position:relative;overflow:hidden;background:linear-gradient(145deg,var(--schoolA,#f4b942),var(--schoolB,#111827));border:1px solid rgba(255,255,255,.13);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 16px 35px rgba(0,0,0,.25);animation:soFloatPlayer 4.4s ease-in-out infinite}.player-figure:before{content:"";position:absolute;inset:-30%;background:radial-gradient(circle at 55% 15%,rgba(255,255,255,.28),transparent 26%),linear-gradient(140deg,transparent 45%,rgba(255,255,255,.16),transparent 60%)}.football-player{position:absolute;left:22px;right:22px;bottom:9px;height:136px}.helmet{position:absolute;top:0;left:50%;transform:translateX(-50%);width:54px;height:44px;border-radius:50% 50% 42% 42%;background:linear-gradient(135deg,var(--schoolA,#f4b942),var(--schoolB,#111827));border:3px solid rgba(255,255,255,.72);box-shadow:0 0 0 3px rgba(0,0,0,.18)}.helmet:before{content:"";position:absolute;right:-8px;top:19px;width:28px;height:14px;border:3px solid rgba(255,255,255,.65);border-left:0;border-radius:0 10px 10px 0}.helmet:after{content:attr(data-school);position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:.62rem;font-weight:950;color:white;text-shadow:0 1px 5px rgba(0,0,0,.5)}.shoulders{position:absolute;top:48px;left:50%;transform:translateX(-50%);width:86px;height:66px;border-radius:18px 18px 28px 28px;background:linear-gradient(135deg,var(--schoolA,#f4b942),var(--schoolB,#111827));border:1px solid rgba(255,255,255,.24)}.shoulders:before{content:attr(data-pos);position:absolute;left:50%;top:13px;transform:translateX(-50%);font-size:1.3rem;font-weight:950;color:white;text-shadow:0 1px 6px rgba(0,0,0,.38)}.legs{position:absolute;left:34px;right:34px;bottom:0;height:38px;border-left:13px solid rgba(240,236,228,.9);border-right:13px solid rgba(240,236,228,.9);border-radius:0 0 12px 12px}.field-lines{position:absolute;left:0;right:0;bottom:0;height:38px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.18) 0 1px,transparent 1px 22px);opacity:.35}.consensus-main{min-width:0}.rank-line{display:flex;align-items:center;gap:9px;margin-bottom:10px}.rank-chip{font-size:.62rem;font-weight:950;letter-spacing:.12em;color:#05070b;background:#f4b942;border-radius:999px;padding:5px 10px}.school-chip{font-size:.58rem;font-weight:850;letter-spacing:.12em;text-transform:uppercase;color:#9dafc2;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:5px 9px}.prospect-title{font-size:1.35rem;font-weight:950;letter-spacing:-.04em;color:#fff;line-height:1.05}.prospect-sub{margin-top:4px;font-size:.78rem;color:#8fa3ba}.trait-row{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.trait-pill{border-radius:999px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.055);padding:5px 8px;font-size:.55rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#b7c5d7}.consensus-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}.mini-metric{border-radius:13px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.07);padding:8px}.mini-metric .m-lbl{font-size:.48rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#617187}.mini-metric .m-val{margin-top:2px;font-family:'DM Mono',monospace;font-size:.84rem;font-weight:900;color:#f0ece4}.metric-track{height:4px;border-radius:99px;background:rgba(255,255,255,.075);overflow:hidden;margin-top:7px}.metric-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--schoolA,#f4b942),#22c55e);animation:growMeter 1.2s ease}.consensus-read-toggle{position:relative;z-index:2;margin:0 20px 18px;padding:11px 14px;border-radius:16px;background:rgba(244,185,66,.08);border:1px solid rgba(244,185,66,.16);display:flex;align-items:center;justify-content:space-between;font-size:.62rem;font-weight:950;letter-spacing:.16em;text-transform:uppercase;color:#f4b942}.read-arrow{transition:.22s}.consensus-read-card{display:none;position:relative;z-index:3;margin:0 20px 20px;border-radius:22px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(0,0,0,.24));padding:18px}.article-label{font-size:.55rem;font-weight:950;letter-spacing:.18em;text-transform:uppercase;color:#22c55e}.article-title{font-size:1.05rem;font-weight:950;color:#f0ece4;margin:6px 0 8px}.article-copy{font-size:.86rem;line-height:1.75;color:#b8c4d4}.article-points{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}.article-point{border-radius:12px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.065);padding:9px;font-size:.62rem;color:#93a4b9}.article-point strong{display:block;color:#f0ece4;font-size:.72rem;margin-bottom:2px}
+
+#qbList{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px!important}.qb-card-v2{position:relative;border-radius:30px;overflow:hidden;background:linear-gradient(145deg,rgba(15,18,31,.96),rgba(5,7,11,.96));border:1px solid rgba(255,255,255,.09);box-shadow:0 24px 70px rgba(0,0,0,.36),inset 0 1px 0 rgba(255,255,255,.055);animation:soCardIn .5s ease both;transition:.3s ease}.qb-card-v2:hover{transform:translateY(-8px);border-color:rgba(167,139,250,.45);box-shadow:0 30px 90px rgba(0,0,0,.45),0 0 48px rgba(167,139,250,.13)}.qb-card-v2:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 82% 10%,var(--schoolGlow,rgba(167,139,250,.22)),transparent 40%);pointer-events:none}.qb-hero{position:relative;z-index:1;display:grid;grid-template-columns:116px 1fr;gap:18px;padding:20px}.qb-rank-badge{position:absolute;right:18px;top:16px;font-size:2.6rem;font-weight:950;color:rgba(255,255,255,.08);line-height:1}.qb-name{font-size:1.45rem;font-weight:950;letter-spacing:-.045em;color:#fff;line-height:1.05}.qb-school{margin-top:5px;font-size:.78rem;color:#8fa3ba}.qb-tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.qb-tag{border-radius:999px;padding:5px 8px;font-size:.55rem;font-weight:900;letter-spacing:.09em;text-transform:uppercase;border:1px solid rgba(167,139,250,.20);background:rgba(167,139,250,.10);color:#d8c7ff}.qb-report{position:relative;z-index:1;padding:0 20px 18px;color:#b8c4d4;font-size:.86rem;line-height:1.7}.qb-dash{position:relative;z-index:1;margin:0 20px 20px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.qb-datum{border-radius:14px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.07);padding:9px}.qb-datum span{display:block;font-size:.48rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#627189}.qb-datum strong{display:block;margin-top:2px;font-family:'DM Mono',monospace;color:#f0ece4;font-size:.86rem}.qb-grade-ring{position:absolute;right:18px;bottom:18px;width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--schoolA,#a78bfa) var(--ring,85%),rgba(255,255,255,.075) 0);box-shadow:0 0 30px var(--schoolGlow,rgba(167,139,250,.12))}.qb-grade-ring:after{content:"";position:absolute;inset:7px;border-radius:50%;background:#070b12}.qb-grade-ring b{position:relative;z-index:1;font-size:1rem;color:#fff}.qb-grade-ring small{position:relative;z-index:1;font-size:.45rem;color:#8998ad;letter-spacing:.08em;text-transform:uppercase;display:block;text-align:center;margin-top:-5px}
+
+#mockTeamSelect{position:relative;padding:18px;border-radius:30px;background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.075);box-shadow:0 24px 70px rgba(0,0,0,.26)}#mockTeamGrid{grid-template-columns:repeat(4,minmax(0,1fr))!important}.mock-team-card{position:relative;overflow:hidden;min-height:142px;border-radius:24px!important;padding:16px!important;background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(0,0,0,.42))!important;border:1px solid rgba(255,255,255,.085)!important;box-shadow:0 16px 45px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.045);transition:.27s ease!important}.mock-team-card:hover{transform:translateY(-7px) scale(1.015)!important;border-color:rgba(244,185,66,.42)!important;background:linear-gradient(145deg,rgba(244,185,66,.12),rgba(255,255,255,.035))!important}.mock-team-card:before{content:"";position:absolute;right:-42px;top:-44px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,var(--teamGlow,rgba(244,185,66,.22)),transparent 70%);animation:soPulseRing 3.6s ease-in-out infinite}.team-abbr-orb{position:absolute;right:13px;top:13px;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--teamA,#f4b942),var(--teamB,#111827));border:1px solid rgba(255,255,255,.22);font-size:.78rem;font-weight:950;color:white;text-shadow:0 1px 5px rgba(0,0,0,.45)}.team-slot{font-family:'DM Mono',monospace;font-size:.67rem;font-weight:950;color:#f4b942}.team-name{font-size:.92rem;font-weight:950;color:#f0ece4;line-height:1.18;margin-top:18px;max-width:140px}.team-need-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:13px}.team-need{border-radius:999px;font-size:.54rem;font-weight:900;letter-spacing:.09em;padding:4px 7px;color:#aab7c7;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08)}#mockSimulator>div.glass:first-child{border-radius:24px!important;background:linear-gradient(90deg,rgba(244,185,66,.10),rgba(34,197,94,.045),rgba(87,167,255,.055))!important;border-color:rgba(244,185,66,.18)!important}#mockSimulator>div[style*="grid-template-columns"]{grid-template-columns:1fr 330px!important}#mockBoard>div{border-bottom:1px solid rgba(255,255,255,.045);background:linear-gradient(90deg,rgba(255,255,255,.022),transparent);position:relative;overflow:hidden}#mockBoard>div:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:rgba(244,185,66,.0);transition:.2s}#mockBoard>div:hover:before{background:#f4b942}#mockProspectPool{grid-template-columns:repeat(2,minmax(0,1fr))!important}.mock-prospect-card{position:relative;overflow:hidden;border-radius:20px!important;padding:14px!important;background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(0,0,0,.32))!important;border:1px solid rgba(255,255,255,.085)!important;box-shadow:0 12px 30px rgba(0,0,0,.20)}.mock-prospect-card:hover{transform:translateY(-5px) scale(1.02)!important;border-color:rgba(244,185,66,.42)!important}.mock-grade-bar{height:5px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:8px}.mock-grade-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#f4b942,#22c55e)}
+@media(max-width:980px){#qbList{grid-template-columns:1fr!important}#mockTeamGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#mockSimulator>div[style*="grid-template-columns"]{grid-template-columns:1fr!important}.consensus-card-top,.qb-hero{grid-template-columns:92px 1fr}.player-figure{height:150px}.article-points{grid-template-columns:1fr}.consensus-metrics,.qb-dash{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){#mockTeamGrid{grid-template-columns:1fr!important}.consensus-card-top,.qb-hero{grid-template-columns:1fr}.player-figure{max-width:150px}.qb-grade-ring{position:relative;right:auto;bottom:auto;margin:0 20px 20px}.qb-dash{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+
+<script id="shortopen-nfl-deep-redesign-v2-js">
+(function(){
+  const schoolMap={
+    'Texas':['#bf5700','#ffffff','rgba(191,87,0,.34)','TEX'],'LSU':['#461d7c','#fdd023','rgba(253,208,35,.30)','LSU'],'Oregon':['#154733','#fee123','rgba(254,225,35,.28)','ORE'],'Ohio State':['#bb0000','#666666','rgba(187,0,0,.30)','OSU'],'Alabama':['#9e1b32','#ffffff','rgba(158,27,50,.30)','BAMA'],'Penn State':['#041e42','#ffffff','rgba(4,30,66,.34)','PSU'],'Notre Dame':['#0c2340','#c99700','rgba(201,151,0,.28)','ND'],'Clemson':['#f56600','#522d80','rgba(245,102,0,.32)','CLEM'],'Miami':['#005030','#f47321','rgba(244,115,33,.30)','MIA'],'Georgia':['#ba0c2f','#000000','rgba(186,12,47,.30)','UGA'],'Florida':['#0021a5','#fa4616','rgba(250,70,22,.30)','UF'],'Tennessee':['#ff8200','#ffffff','rgba(255,130,0,.32)','TENN'],'USC':['#990000','#ffcc00','rgba(255,204,0,.28)','USC'],'UCLA':['#2774ae','#ffd100','rgba(39,116,174,.32)','UCLA'],'Michigan':['#00274c','#ffcb05','rgba(255,203,5,.27)','MICH'],'Texas A&M':['#500000','#ffffff','rgba(80,0,0,.30)','A&M'],'South Carolina':['#73000a','#000000','rgba(115,0,10,.30)','SC'],'Arizona State':['#8c1d40','#ffc627','rgba(255,198,39,.28)','ASU'],'Missouri':['#f1b82d','#000000','rgba(241,184,45,.30)','MIZ'],'Auburn':['#0c2340','#f26522','rgba(242,101,34,.30)','AUB'],'Wisconsin':['#c5050c','#ffffff','rgba(197,5,12,.28)','WIS'],'Iowa':['#ffcd00','#000000','rgba(255,205,0,.28)','IOWA'],'Texas Tech':['#cc0000','#000000','rgba(204,0,0,.28)','TTU'],'Florida State':['#782f40','#ceb888','rgba(206,184,136,.25)','FSU'],'Indiana':['#990000','#ffffff','rgba(153,0,0,.28)','IU'],'Ole Miss':['#ce1126','#14213d','rgba(206,17,38,.28)','MISS']
+  };
+  const teamMap={ARI:['#97233f','#ffb612','rgba(151,35,63,.36)'],MIA:['#008e97','#fc4c02','rgba(0,142,151,.36)'],NYJ:['#125740','#ffffff','rgba(18,87,64,.36)'],CLE:['#311d00','#ff3c00','rgba(255,60,0,.34)'],TEN:['#4b92db','#c8102e','rgba(75,146,219,.34)'],LV:['#a5acaf','#000000','rgba(165,172,175,.34)'],NO:['#d3bc8d','#101820','rgba(211,188,141,.32)'],PIT:['#ffb612','#101820','rgba(255,182,18,.34)'],CAR:['#0085ca','#101820','rgba(0,133,202,.36)'],ATL:['#a71930','#000000','rgba(167,25,48,.34)'],WSH:['#5a1414','#ffb612','rgba(90,20,20,.34)'],MIN:['#4f2683','#ffc62f','rgba(79,38,131,.36)'],TB:['#d50a0a','#34302b','rgba(213,10,10,.34)'],NYG:['#0b2265','#a71930','rgba(11,34,101,.34)'],CHI:['#0b162a','#c83803','rgba(200,56,3,.32)'],CIN:['#fb4f14','#000000','rgba(251,79,20,.34)'],JAX:['#006778','#d7a22a','rgba(0,103,120,.34)'],HOU:['#03202f','#a71930','rgba(167,25,48,.32)'],LAC:['#0080c6','#ffc20e','rgba(0,128,198,.34)'],GB:['#203731','#ffb612','rgba(32,55,49,.34)'],DET:['#0076b6','#b0b7bc','rgba(0,118,182,.34)'],DAL:['#003594','#869397','rgba(0,53,148,.34)'],BAL:['#241773','#9e7c0c','rgba(36,23,115,.36)'],IND:['#002c5f','#ffffff','rgba(0,44,95,.34)'],LAR:['#003594','#ffa300','rgba(0,53,148,.34)'],BUF:['#00338d','#c60c30','rgba(0,51,141,.34)'],SF:['#aa0000','#b3995d','rgba(170,0,0,.34)'],KC:['#e31837','#ffb81c','rgba(227,24,55,.34)'],PHI:['#004c54','#a5acaf','rgba(0,76,84,.36)']};
+  function colors(school){return schoolMap[school]||['#f4b942','#111827','rgba(244,185,66,.25)',(school||'SO').split(/\s+/).map(x=>x[0]).join('').slice(0,4).toUpperCase()]}
+  function playerFigure(school,pos){const c=colors(school);return `<div class="player-figure" style="--schoolA:${c[0]};--schoolB:${c[1]};--schoolGlow:${c[2]}"><div class="field-lines"></div><div class="football-player"><div class="helmet" data-school="${c[3]}"></div><div class="shoulders" data-pos="${pos}"></div><div class="legs"></div></div></div>`}
+  function metricVal(seed, rank){return Math.max(68, Math.min(99, Math.round(seed - rank*1.7)))}
+  window.renderConsensus=function renderConsensus(){
+    const posGroups={}; const posOrder=['QB','WR','EDGE','CB','OT','DL','LB','TE','S','RB','IOL'];
+    CONSENSUS.forEach(p=>{(posGroups[p.pos]||(posGroups[p.pos]=[])).push(p)});
+    const posLabels={QB:'Quarterbacks',WR:'Wide Receivers',EDGE:'Edge Rushers',CB:'Cornerbacks',OT:'Offensive Tackles',DL:'Defensive Linemen',LB:'Defensive Backers',TE:'Tight Ends',S:'Safeties',RB:'Running Backs',IOL:'Interior O-Line'};
+    let html='';
+    posOrder.forEach(pos=>{const group=posGroups[pos]; if(!group) return; html+=`<div class="consensus-pos-header"><span class="consensus-pos-kicker">${pos}</span><span class="consensus-pos-title">${posLabels[pos]||pos}</span><span class="consensus-pos-count">${group.length} on board</span></div>`;
+      group.forEach((p,i)=>{const c=colors(p.school); const traits=(p.tags||[]).slice(0,3).map(t=>`<span class="trait-pill">${t}</span>`).join(''); const explosive=metricVal(96,i+1), floor=metricVal(91,i+1), market=metricVal(88,i+1); const stat=p.stat||['—','Metric'];
+        html+=`<div class="consensus-card-v2" style="--schoolA:${c[0]};--schoolB:${c[1]};--schoolGlow:${c[2]};animation-delay:${Math.min(i*.045,.35)}s" onclick="this.classList.toggle('expanded')">
+          <div class="consensus-card-top">${playerFigure(p.school,p.pos)}<div class="consensus-main"><div class="rank-line"><span class="rank-chip">#${i+1} ${pos}</span><span class="school-chip">${p.team||'NFL Fit'}</span></div><div class="prospect-title">${p.name}</div><div class="prospect-sub">${p.school} · ${p.conf?p.conf[0]:'Power 4'} · ${stat[1]||'Market marker'}: <b style="color:#f4b942">${stat[0]}</b></div><div class="trait-row">${traits}</div><p style="font-size:.82rem;line-height:1.65;color:#aebacc;margin-top:8px">${p.teaser}</p><div class="consensus-metrics"><div class="mini-metric"><div class="m-lbl">Burst</div><div class="m-val">${explosive}</div><div class="metric-track"><div class="metric-fill" style="width:${explosive}%"></div></div></div><div class="mini-metric"><div class="m-lbl">Floor</div><div class="m-val">${floor}</div><div class="metric-track"><div class="metric-fill" style="width:${floor}%"></div></div></div><div class="mini-metric"><div class="m-lbl">Steam</div><div class="m-val">${market}</div><div class="metric-track"><div class="metric-fill" style="width:${market}%"></div></div></div></div></div></div>
+          <div class="consensus-read-toggle"><span>Full Read · open article card</span><span class="read-arrow">⌄</span></div><div class="consensus-read-card"><div class="article-label">shortopen scouting note</div><div class="article-title">Why ${p.name} matters to the 2027 board</div><p class="article-copy">${p.writeup||p.teaser}</p><div class="article-points"><div class="article-point"><strong>Market Angle</strong>${market>=84?'Early helium candidate':'Needs catalyst to climb'}</div><div class="article-point"><strong>Best Use</strong>${(p.tags&&p.tags[0])||'Scheme weapon'}</div><div class="article-point"><strong>Risk</strong>${pos==='QB'?'rep sample + expectations':'role translation + weekly consistency'}</div></div></div>
+        </div>`})});
+    const grid=document.getElementById('consensusGrid'); if(grid) grid.innerHTML=html;
+  };
+  window.renderQB=function renderQB(){
+    const el=document.getElementById('qbList'); if(!el) return;
+    el.innerHTML=QB27.map((q,i)=>{const c=colors(q.school); const arm=metricVal(98,q.rank), process=metricVal(94,q.rank), creation=metricVal(q.tags.join(' ').match(/Dual|Run|Athlete|Playmaking/i)?97:89,q.rank), volatility=Math.min(96,65+q.rank*4); const ring=Math.min(96,Math.round((parseFloat(q.stat)||6.5)/7.2*100)); const tags=q.tags.map(t=>`<span class="qb-tag">${t}</span>`).join(''); return `<div class="qb-card-v2" style="--schoolA:${c[0]};--schoolB:${c[1]};--schoolGlow:${c[2]};--ring:${ring}%;animation-delay:${Math.min(i*.055,.4)}s"><div class="qb-rank-badge">#${q.rank}</div><div class="qb-hero">${playerFigure(q.school,'QB')}<div><div class="rank-line"><span class="rank-chip">QB${q.rank}</span><span class="school-chip">${q.conf}</span></div><div class="qb-name">${q.name}</div><div class="qb-school">${q.school} · ${q.top?'Blue-chip watchlist':'Board riser bucket'}</div><div class="qb-tags">${tags}</div></div></div><div class="qb-report">${q.teaser}</div><div class="qb-dash"><div class="qb-datum"><span>Arm</span><strong>${arm}</strong></div><div class="qb-datum"><span>Process</span><strong>${process}</strong></div><div class="qb-datum"><span>Create</span><strong>${creation}</strong></div><div class="qb-datum"><span>Volatility</span><strong>${volatility}</strong></div></div><div class="qb-grade-ring"><div><b>${q.stat}</b><small>${q.lbl}</small></div></div></div>`}).join('');
+  };
+  window.initMockTeamGrid=function initMockTeamGrid(){const grid=document.getElementById('mockTeamGrid'); if(!grid) return; grid.innerHTML=MOCK_TEAMS.map(t=>{const tm=teamMap[t.abbr]||['#f4b942','#111827','rgba(244,185,66,.3)']; return `<button class="mock-team-card" onclick="startMock(${t.slot-1})" style="--teamA:${tm[0]};--teamB:${tm[1]};--teamGlow:${tm[2]};font-family:'Inter',sans-serif;text-align:left;cursor:pointer"><div class="team-abbr-orb">${t.abbr}</div><div class="team-slot">PICK #${t.slot}</div><div class="team-name">${t.team}</div><div class="team-need-row">${t.needs.map((n,i)=>`<span class="team-need" style="color:${i===0?'#f4b942':'#aab7c7'}">${n}</span>`).join('')}</div><div style="margin-top:12px;font-size:.58rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#627189">Open war room →</div></button>`}).join('')};
+  const oldShowUser=window.showUserPickPanel;
+  window.showUserPickPanel=function(teamEntry){ if(oldShowUser) oldShowUser(teamEntry); const pool=document.getElementById('mockProspectPool'); if(!pool||!mockState) return; const top=mockState.available.slice(0,10); pool.innerHTML=top.map(p=>{const tag=pickLabel(p,teamEntry);const c=colors(p.school);const pct=Math.max(8,Math.min(100,Math.round((p.grade-6.2)/1.05*100)));return `<button class="mock-prospect-card" onclick="userPick(${p.id})" style="--schoolA:${c[0]};--schoolB:${c[1]};font-family:'Inter',sans-serif;text-align:left;cursor:pointer"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">${posBadge(p.pos)}<span style="font-size:.56rem;font-weight:900;letter-spacing:.08em;color:${tag.color};border:1px solid ${tag.color}55;background:${tag.color}18;border-radius:999px;padding:4px 8px;text-transform:uppercase">${tag.label}</span></div><div style="font-size:.95rem;font-weight:950;color:#fff;line-height:1.1">${p.name}</div><div style="font-size:.66rem;color:#8998ad;margin-top:4px">${p.school}</div><div class="mock-grade-bar"><div class="mock-grade-fill" style="width:${pct}%;background:linear-gradient(90deg,${c[0]},#22c55e)"></div></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><span style="font-size:.65rem;color:#75869c">Grade</span><b style="font-family:'DM Mono',monospace;color:${gradeColor(p.grade)}">${p.grade.toFixed(2)}</b></div></button>`}).join(''); };
+  const oldRenderBoard=window.renderBoard;
+  window.renderBoard=function(){ if(oldRenderBoard) oldRenderBoard(); const board=document.getElementById('mockBoard'); if(!board||!mockState) return; [...board.children].forEach((row,idx)=>{const pick=mockState.board[idx]; if(!pick) return; const tm=MOCK_TEAMS.find(t=>t.slot===pick.slot); const c=teamMap[(tm&&tm.abbr)||'']||['#f4b942','#111827','rgba(244,185,66,.3)']; row.style.background=`linear-gradient(90deg, ${c[2]}, rgba(255,255,255,.018), transparent)`; row.style.borderLeft=`3px solid ${c[0]}`;}); };
+  try{renderConsensus();renderQB();initMockTeamGrid();}catch(e){console.warn('shortopen nfl v2 render skipped',e)}
+})();
 </script>
 
 </body>

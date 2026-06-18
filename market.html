@@ -30,6 +30,8 @@
   html { scroll-behavior: smooth; }
   body {
     background:
+      radial-gradient(680px 520px at 2% 96%,  rgba(167,139,250,.24), transparent 68%),
+      radial-gradient(580px 460px at 6% 100%, rgba(244,185,66,.22), transparent 65%),
       radial-gradient(280px 220px at 2% 5%, rgba(139,92,246,.09), transparent 55%),
       radial-gradient(900px 600px at 12% 9%,  rgba(244,185,66,.06), transparent 70%),
       radial-gradient(820px 560px at 90% 17%, rgba(59,130,246,.05), transparent 70%),
@@ -168,6 +170,10 @@
     margin-top: 36px;
   }
   .hero-stat-card{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(255,255,255,.08) 0%,rgba(255,255,255,.02) 40%,rgba(5,9,16,.88) 100%);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:18px;backdrop-filter:blur(28px) saturate(1.5);-webkit-backdrop-filter:blur(28px) saturate(1.5);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.12),inset 0 -1px 0 rgba(0,0,0,.3);transition:transform .2s,box-shadow .2s;cursor:default}
+  .hero-value-prop { display:flex; align-items:center; gap:9px; margin-top:18px; padding:11px 18px; border-radius:999px;
+    background:rgba(244,185,66,.07); border:1px solid rgba(244,185,66,.22);
+    font-family:'DM Sans',sans-serif; font-size:.78rem; line-height:1.4; color:rgba(240,230,210,.78); max-width:560px; }
+  .hero-value-prop-dot { color:#f4b942; font-size:.7rem; flex-shrink:0; }
   .hero-stat-card::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(130deg,rgba(255,255,255,.1) 0%,rgba(255,255,255,.02) 40%,transparent 70%)}
   .hero-stat-card::after{content:'';position:absolute;top:0;left:-80%;width:55%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);transform:skewX(-12deg);transition:left .8s;pointer-events:none}
   .hero-stat-card:hover::after{left:140%}
@@ -218,9 +224,25 @@
   .ct-ev{font-size:.68rem;font-weight:900;padding:5px 13px;border-radius:8px;background:rgba(34,197,94,.13);border:1px solid rgba(34,197,94,.35);color:#22c55e;white-space:nowrap;box-shadow:0 0 14px rgba(34,197,94,.2);flex-shrink:0}
   .ct-steam{font-size:1.15rem;font-weight:900;color:#57a7ff;text-shadow:0 0 14px rgba(87,167,255,.5);flex-shrink:0}
   .ct-sharp{font-size:.95rem;font-weight:900;color:#a78bfa;text-shadow:0 0 12px rgba(167,139,250,.5);flex-shrink:0}
+  .lg-consensus{position:relative;overflow:hidden;border-radius:20px;padding:20px 22px;
+    background:linear-gradient(145deg,rgba(255,255,255,.08) 0%,rgba(255,255,255,.02) 40%,rgba(5,9,16,.88) 100%);
+    border:1px solid rgba(255,255,255,.1);
+    backdrop-filter:blur(28px) saturate(1.5); -webkit-backdrop-filter:blur(28px) saturate(1.5);
+    box-shadow:inset 0 1.5px 0 rgba(255,255,255,.12), inset 0 -1px 0 rgba(0,0,0,.3), 0 8px 32px rgba(0,0,0,.35);}
   .lg-consensus-before{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(130deg,rgba(255,255,255,.09) 0%,rgba(255,255,255,.02) 40%,transparent 70%)}
+  .lg-consensus-sheen{position:absolute;top:0;left:-80%;width:55%;height:100%;z-index:2;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);
+    transform:skewX(-12deg); transition:left .8s; pointer-events:none;}
+  .lg-consensus:hover .lg-consensus-sheen{left:140%}
   .lg-badge-pub{font-size:.48rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.25);color:#f87171;border-radius:6px;padding:4px 10px}
-  .lg-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+  .lg-row{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;
+    padding:14px 10px;margin:0 -10px;border-radius:10px;border-bottom:1px solid rgba(255,255,255,.06);
+    transition:background .2s, transform .2s;}
+  .lg-row::after{content:'';position:absolute;top:0;left:-80%;width:45%;height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.09),transparent);
+    transform:skewX(-12deg); transition:left .65s; pointer-events:none;}
+  .lg-row:hover{background:rgba(255,255,255,.04); transform:translateX(2px);}
+  .lg-row:hover::after{left:140%}
   .lg-meta{font-size:.52rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#4a5a7a;margin-bottom:4px}
   .lg-val{font-size:1rem;font-weight:800;color:#f0ece4}
   .lg-pct{font-size:1.5rem;font-weight:900;color:#22c55e;font-family:'DM Mono',monospace}
@@ -591,6 +613,10 @@
     min-width: 70px;
     justify-content: center;
   }
+  .t-odds-chip.slip-odds { cursor:pointer; transition:box-shadow .15s, transform .1s; }
+  .t-odds-chip.slip-odds:hover { box-shadow:0 0 0 1px rgba(244,185,66,.4); }
+  .t-odds-chip.slip-odds:active { transform:scale(.96); }
+  .t-odds-chip.in-slip { box-shadow:0 0 0 1px rgba(244,185,66,.6), 0 0 10px rgba(244,185,66,.25); }
   .t-odds-chip.neutral {
     color: #ddeaf5;
     background: #132030;
@@ -745,14 +771,17 @@
   footer {
     border-top: 1px solid var(--border);
     background: rgba(5,7,11,0.8);
-    padding: 40px 48px;
+    padding: 32px 48px 26px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 14px;
   }
+  .footer-top { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
   .footer-logo { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 1rem; color: var(--white); letter-spacing: -0.02em; }
   .footer-logo span { color: var(--gold); }
   .footer-copy { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; }
+  .footer-disclaimer { font-size:.62rem; line-height:1.65; color:rgba(255,255,255,.24); letter-spacing:.01em;
+    max-width:980px; border-top:1px solid rgba(255,255,255,.06); padding-top:14px; }
 
   /* HAMBURGER */
   .hamburger {
@@ -826,7 +855,8 @@
     .legend-bar   { padding: 16px 20px; }
     .date-divider { padding: 20px 20px 8px; }
     .games-list   { padding: 0 16px 48px; }
-    footer        { padding: 28px 20px; flex-direction: column; gap: 12px; text-align: center; }
+    footer        { padding: 24px 20px 22px; gap: 14px; }
+    .footer-top   { flex-direction: column; gap: 12px; text-align: center; }
   }
   @media (max-width: 480px) {
     .game-card { font-size: 0.8rem; }
@@ -1322,6 +1352,67 @@ body::after{
      ══════════════════════════════════════════════════════════ */
 
   /* Section header (per-day) */
+  /* ── fixed game-slip panel: implied odds / wager / payout, no coin ── */
+  /* outer wrapper mirrors .games-list exactly (1400px max-width, same 48px side padding) so the card inside lines up with game-card edges */
+  .gm-slip-panel { max-width:1400px; margin:32px auto 64px; padding:0 48px; }
+  .gm-slip-card { position:relative; overflow:hidden; padding:20px 28px 18px;
+    border-radius:10px; background:linear-gradient(145deg,rgba(255,255,255,.045) 0%,rgba(13,20,32,.97) 100%);
+    border:1px solid #1a2535; box-shadow:0 8px 28px rgba(0,0,0,.35); }
+  .gm-slip-card::before {
+    content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:linear-gradient(180deg, rgba(244,185,66,.15), #ffd36b, #f4b942, #ffd36b, rgba(244,185,66,.15));
+    background-size:100% 220%;
+    animation: gmBarShimmer 3.2s linear infinite;
+  }
+  @keyframes gmBarShimmer {
+    0%   { background-position:0 0%; }
+    100% { background-position:0 220%; }
+  }
+  .gm-slip-head { display:flex; align-items:center; justify-content:space-between; padding-bottom:12px;
+    border-bottom:1px solid #1a2535; margin-bottom:16px; flex-wrap:wrap; gap:8px; }
+  .gm-slip-title { font-family:'DM Mono',monospace; font-size:.68rem; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+    color:#ffd36b; display:flex; align-items:center; gap:8px; }
+  .gm-slip-title::before { content:''; width:5px; height:5px; border-radius:50%; background:#e8a020; box-shadow:0 0 7px rgba(232,160,32,.8); }
+  .gm-slip-count { font-family:'DM Mono',monospace; font-size:.6rem; color:#9a7f3e; }
+  .gm-slip-empty { font-family:'DM Mono',monospace; font-size:.72rem; color:#4d6070; text-align:center; padding:20px 0; }
+  .gm-slip-cols { display:flex; gap:28px; align-items:center; }
+  .gm-slip-main { flex:1; min-width:0; }
+  .gm-slip-stats { display:flex; gap:32px; justify-content:center; margin-bottom:20px; flex-wrap:wrap; }
+  .gm-stat { text-align:center; }
+  .gm-stat-lbl { font-family:'DM Mono',monospace; font-size:.46rem; letter-spacing:.14em; text-transform:uppercase; color:#4d6070; margin-bottom:4px; }
+  .gm-stat-v { font-family:'DM Mono',monospace; font-size:1.05rem; font-weight:800; color:#dbe6f0; }
+  .gm-stat-v.accent { color:#ffd36b; }
+  .gm-slip-showcase { display:flex; align-items:center; justify-content:center; gap:18px; padding-top:4px; flex-wrap:wrap; }
+  .gm-readout-wrap { display:flex; align-items:center; gap:10px; }
+  .gm-stake-btn { width:27px; height:27px; border-radius:7px; border:1px solid rgba(244,185,66,.3); background:rgba(244,185,66,.08);
+    color:#e8a020; font-family:'DM Mono',monospace; font-size:.92rem; font-weight:700; line-height:1; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; transition:background .15s; flex-shrink:0; }
+  .gm-stake-btn:hover { background:rgba(244,185,66,.18); }
+  .gm-stake-btn:disabled { opacity:.3; cursor:default; }
+  .gm-readout { position:relative; width:100px; height:54px; border-radius:10px; background:#080d13;
+    border:1.5px solid rgba(244,185,66,.35); display:flex; flex-direction:column; align-items:center; justify-content:center;
+    box-shadow:inset 0 2px 6px rgba(0,0,0,.55); }
+  .gm-readout-lbl { font-family:'DM Mono',monospace; font-size:.4rem; letter-spacing:.14em; text-transform:uppercase; color:#4d6070; margin-bottom:3px; }
+  .gm-readout-v { font-family:'DM Mono',monospace; font-size:1.05rem; font-weight:800; color:#ffd36b; }
+  .gm-arrow { font-family:'DM Mono',monospace; font-size:1.1rem; color:#2a3a4a; }
+  .gm-payout { text-align:center; }
+  .gm-payout-lbl { font-family:'DM Mono',monospace; font-size:.56rem; color:#4d6070; margin-bottom:5px; display:block; }
+  .gm-payout-v { font-family:'DM Mono',monospace; font-size:1.7rem; font-weight:800; color:#9fe8c4; text-shadow:0 0 14px rgba(52,211,153,.3); }
+  .gm-payout-cap { font-family:'DM Mono',monospace; font-size:.44rem; letter-spacing:.08em; text-transform:uppercase; color:#3a4a5a; margin-top:5px; display:block; }
+  .gm-slip-note { font-family:'DM Mono',monospace; font-size:.42rem; letter-spacing:.04em; color:rgba(255,255,255,.22); text-align:center; margin-top:16px; }
+  .gm-slip-aside { width:230px; flex-shrink:0; padding-left:24px; border-left:1px solid #1a2535; }
+  .gm-aside-lbl { font-family:'DM Mono',monospace; font-size:.42rem; letter-spacing:.16em; text-transform:uppercase; color:#9a7f3e; margin-bottom:7px; }
+  .gm-aside-text { font-family:'DM Sans',sans-serif; font-size:.68rem; line-height:1.55; color:#7a8a9a; }
+  @media (max-width:980px) {
+    .gm-slip-cols { flex-direction:column; align-items:stretch; }
+    .gm-slip-aside { width:auto; padding-left:0; padding-top:16px; border-left:none; border-top:1px solid #1a2535; }
+  }
+  @media (max-width:760px) {
+    .gm-slip-panel { margin:24px 0 48px; padding:0 16px; }
+    .gm-slip-card { padding:16px 18px 16px; }
+    .gm-slip-stats { gap:18px; }
+  }
+
   .prop-section-header { max-width:1400px; margin:0 auto; padding:36px 48px 12px; display:flex; align-items:center; gap:14px; }
   .prop-section-live { display:flex; align-items:center; gap:8px; }
   .prop-live-dot { width:6px; height:6px; border-radius:50%; background:#a78bfa; box-shadow:0 0 6px rgba(167,139,250,.6); }
@@ -1700,9 +1791,10 @@ body::after{
   .pp2-rr-leg span:last-child b { color:#ffd36b; font-weight:600; }
 
   /* payout showcase — big stake stepper \u2192 payout, chip shifted right for breathing room */
-  .pp2-rr-showcase { display:flex; align-items:center; justify-content:center; gap:14px; margin-top:22px; padding:20px 8px 6px; border-top:1px solid rgba(167,139,250,.12); }
+  .pp2-rr-showcase { display:flex; align-items:center; justify-content:center; gap:14px; margin-top:22px; padding:42px 8px 10px; border-top:1px solid rgba(167,139,250,.12); }
 
-  .pp2-stake { display:flex; flex-direction:column; align-items:center; gap:7px; flex-shrink:0; }
+  .pp2-stake { display:flex; flex-direction:column; align-items:center; gap:8px; flex-shrink:0; }
+  .pp2-stake-label { font-family:'DM Mono',monospace; font-size:.42rem; letter-spacing:.18em; text-transform:uppercase; color:#7a6fa0; margin-bottom:1px; }
   .pp2-stake-row { display:flex; align-items:center; gap:11px; }
   .pp2-stepbtn { width:27px; height:27px; border-radius:7px; border:1px solid rgba(167,139,250,.35); background:rgba(167,139,250,.1);
     color:#c4b5fd; font-family:'DM Mono',monospace; font-size:.92rem; font-weight:700; line-height:1; cursor:pointer;
@@ -1713,13 +1805,17 @@ body::after{
   .pp2-chip { position:relative; border-radius:50%; flex-shrink:0;
     display:flex; align-items:center; justify-content:center;
     box-shadow:0 4px 0 rgba(0,0,0,.4), 0 6px 14px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.18); }
-  .pp2-chip::before { content:''; position:absolute; inset:5px; border-radius:50%; border:2px dashed rgba(255,255,255,.35); }
-  .pp2-chip-stake { width:70px; height:70px; background:repeating-conic-gradient(#7c5cf0 0deg 30deg, #5a3fc4 30deg 60deg); }
-  .pp2-chip-stake .pp2-chip-in { background:#1c1430; }
-  .pp2-chip-in { position:absolute; inset:9px; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  .pp2-chip-stake { width:78px; height:78px;
+    background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Cdefs%3E%3CradialGradient%20id%3D%27f%27%20cx%3D%2735%25%27%20cy%3D%2728%25%27%20r%3D%2775%25%27%3E%3Cstop%20offset%3D%270%25%27%20stop-color%3D%27%23222229%27/%3E%3Cstop%20offset%3D%2770%25%27%20stop-color%3D%27%23040406%27/%3E%3C/radialGradient%3E%3ClinearGradient%20id%3D%27r%27%20x1%3D%2710%25%27%20y1%3D%270%25%27%20x2%3D%2790%25%27%20y2%3D%27100%25%27%3E%3Cstop%20offset%3D%270%25%27%20stop-color%3D%27%23fce6a3%27/%3E%3Cstop%20offset%3D%2745%25%27%20stop-color%3D%27%23f0b840%27/%3E%3Cstop%20offset%3D%27100%25%27%20stop-color%3D%27%239a6c18%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Cellipse%20cx%3D%2750%27%20cy%3D%2753%27%20rx%3D%2748%27%20ry%3D%2748%27%20fill%3D%27%235c3e0c%27/%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%2748%27%20fill%3D%27%230a0806%27/%3E%3Cg%20fill%3D%27url%28%23r%29%27%3E%3Cpath%20d%3D%27M%2044.16%2010.93%20L%2042.91%202.53%20A%2048%2048%200%200%201%2057.09%202.53%20L%2055.84%2010.93%20A%2039.5%2039.5%200%200%200%2044.16%2010.93%20Z%27/%3E%3Cpath%20d%3D%27M%2073.50%2018.25%20L%2078.55%2011.41%20A%2048%2048%200%200%201%2088.59%2021.45%20L%2081.75%2026.50%20A%2039.5%2039.5%200%200%200%2073.50%2018.25%20Z%27/%3E%3Cpath%20d%3D%27M%2089.07%2044.16%20L%2097.47%2042.91%20A%2048%2048%200%200%201%2097.47%2057.09%20L%2089.07%2055.84%20A%2039.5%2039.5%200%200%200%2089.07%2044.16%20Z%27/%3E%3Cpath%20d%3D%27M%2081.75%2073.50%20L%2088.59%2078.55%20A%2048%2048%200%200%201%2078.55%2088.59%20L%2073.50%2081.75%20A%2039.5%2039.5%200%200%200%2081.75%2073.50%20Z%27/%3E%3Cpath%20d%3D%27M%2055.84%2089.07%20L%2057.09%2097.47%20A%2048%2048%200%200%201%2042.91%2097.47%20L%2044.16%2089.07%20A%2039.5%2039.5%200%200%200%2055.84%2089.07%20Z%27/%3E%3Cpath%20d%3D%27M%2026.50%2081.75%20L%2021.45%2088.59%20A%2048%2048%200%200%201%2011.41%2078.55%20L%2018.25%2073.50%20A%2039.5%2039.5%200%200%200%2026.50%2081.75%20Z%27/%3E%3Cpath%20d%3D%27M%2010.93%2055.84%20L%202.53%2057.09%20A%2048%2048%200%200%201%202.53%2042.91%20L%2010.93%2044.16%20A%2039.5%2039.5%200%200%200%2010.93%2055.84%20Z%27/%3E%3Cpath%20d%3D%27M%2018.25%2026.50%20L%2011.41%2021.45%20A%2048%2048%200%200%201%2021.45%2011.41%20L%2026.50%2018.25%20A%2039.5%2039.5%200%200%200%2018.25%2026.50%20Z%27/%3E%3C/g%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%2737.5%27%20fill%3D%27none%27%20stroke%3D%27url%28%23r%29%27%20stroke-width%3D%273.4%27/%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%2734.3%27%20fill%3D%27none%27%20stroke%3D%27rgba%28255%2C255%2C255%2C.35%29%27%20stroke-width%3D%271%27/%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%2732.4%27%20fill%3D%27none%27%20stroke%3D%27%230a0806%27%20stroke-width%3D%272.2%27/%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%2730%27%20fill%3D%27url%28%23f%29%27/%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%2730%27%20fill%3D%27none%27%20stroke%3D%27rgba%28255%2C255%2C255%2C.08%29%27%20stroke-width%3D%271%27/%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2750%27%20r%3D%2748%27%20fill%3D%27rgba%28255%2C255%2C255%2C.001%29%27/%3E%3C/svg%3E");
+    background-size:100% 100%; background-repeat:no-repeat; }
+  .pp2-chip-stake .pp2-chip-in { inset:0;
+    background:transparent;
+    box-shadow:none; }
+  .pp2-chip-in { position:absolute; inset:6px; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center;
     box-shadow:inset 0 0 0 1px rgba(255,255,255,.08); }
-  .pp2-chip-v { font-family:'DM Mono',monospace; font-size:.92rem; font-weight:800; color:#e6dffb; line-height:1; white-space:nowrap; }
-  .pp2-chip-l { font-family:'DM Mono',monospace; font-size:.4rem; letter-spacing:.12em; text-transform:uppercase; color:#7a6fa0; margin-top:2px; }
+  .pp2-chip-stake .pp2-chip-v { color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.55); }
+  .pp2-chip-v { font-family:'DM Mono',monospace; font-size:1.12rem; font-weight:800; color:#f1ecff; line-height:1; white-space:nowrap;
+    text-shadow:0 0 12px rgba(167,139,250,.45); }
   .pp2-stake-cap { font-family:'DM Mono',monospace; font-size:.44rem; letter-spacing:.1em; text-transform:uppercase; color:#5a5278; }
 
   .pp2-rr-arrowtxt { font-family:'DM Mono',monospace; font-size:1.05rem; color:#4a4268; flex-shrink:0; }
@@ -1728,18 +1824,96 @@ body::after{
   .pp2-rr-big { font-family:'DM Mono',monospace; font-size:1.7rem; font-weight:800; line-height:1; color:#9fe8c4; text-shadow:0 0 14px rgba(52,211,153,.3); }
   .pp2-rr-cap { font-family:'DM Mono',monospace; font-size:.42rem; letter-spacing:.1em; text-transform:uppercase; color:#5a5278; margin-top:5px; }
 
-  /* ── footer row: presented-by text + standalone branded casino chip, centered ── */
-  .pp2-footer-row { display:flex; align-items:center; justify-content:center; gap:18px; padding-top:16px; }
-  .pp2-bb-rule { width:1.5px; height:46px; flex-shrink:0;
-    background:linear-gradient(180deg, rgba(167,139,250,.85), rgba(167,139,250,.15) 70%, transparent);
-    box-shadow:0 0 8px rgba(167,139,250,.45); }
-  .pp2-bb { display:flex; flex-direction:column; align-items:center; gap:5px; }
-  .pp2-bb-logo { font-family:'DM Mono',monospace; font-size:.5rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:#b9a4f0; position:relative; padding-bottom:6px; }
-  .pp2-bb-logo::after { content:''; position:absolute; left:50%; bottom:0; width:26px; height:2px; transform:translateX(-50%);
-    background:linear-gradient(90deg, transparent, #a78bfa, transparent); box-shadow:0 0 6px rgba(167,139,250,.7); }
-  .pp2-bb-name { font-family:'Inter',sans-serif; font-size:1.15rem; font-weight:900; letter-spacing:-.02em; color:#fff; }
+  /* ── YOUR SLIP: fixed bottom drawer for added game-card calls ── */
+  .slip-tray { position:fixed; left:0; right:0; bottom:0; z-index:220;
+    display:flex; flex-direction:column; gap:8px; padding:11px 24px 12px;
+    background:linear-gradient(180deg, rgba(22,15,40,.96), rgba(8,5,16,.98));
+    border-top:1px solid rgba(167,139,250,.35);
+    box-shadow:0 -12px 30px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06);
+    backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+    transform:translateY(100%); transition:transform .32s cubic-bezier(.34,1.2,.4,1); }
+  .slip-tray.open { transform:translateY(0); }
+  .slip-tray-top { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+  .slip-tray-label { font-family:'DM Mono',monospace; font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:#c4b5fd; flex-shrink:0; white-space:nowrap; }
+  .slip-tray-label b { color:#f4b942; font-weight:800; }
+  .slip-tray-controls { display:flex; align-items:center; gap:14px; flex-shrink:0; flex-wrap:wrap; }
+  .slip-stake { display:flex; align-items:center; gap:6px; }
+  .slip-stake-lbl { font-family:'DM Mono',monospace; font-size:.46rem; letter-spacing:.12em; text-transform:uppercase; color:#7a6fa0; margin-right:1px; }
+  .slip-stake-btn { width:20px; height:20px; border-radius:6px; border:1px solid rgba(167,139,250,.35); background:rgba(167,139,250,.1);
+    color:#c4b5fd; font-family:'DM Mono',monospace; font-size:.74rem; font-weight:700; line-height:1; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; transition:background .15s; flex-shrink:0; }
+  .slip-stake-btn:hover { background:rgba(167,139,250,.2); }
+  .slip-stake-btn:disabled { opacity:.3; cursor:default; }
+  .slip-stake-val { font-family:'DM Mono',monospace; font-size:.72rem; font-weight:800; color:#f1ecff; min-width:34px; text-align:center; }
+  .slip-tray-items { display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; min-width:0; }
+  .slip-tray-items::-webkit-scrollbar { display:none; }
+  .slip-chip { display:flex; align-items:stretch; flex-shrink:0; border-radius:999px;
+    background:rgba(167,139,250,.1); border:1px solid rgba(167,139,250,.3); white-space:nowrap; animation:slipChipIn .25s ease; overflow:hidden; }
+  @keyframes slipChipIn { from{ opacity:0; transform:scale(.85); } to{ opacity:1; transform:scale(1); } }
+  .slip-chip-body { display:flex; align-items:center; gap:7px; padding:6px 7px 6px 13px; cursor:pointer; transition:background .15s; }
+  .slip-chip-body:hover { background:rgba(167,139,250,.12); }
+  .slip-chip.expanded .slip-chip-body { background:rgba(244,185,66,.1); }
+  .slip-chip-label { font-family:'DM Mono',monospace; font-size:.62rem; font-weight:700; color:#e6dffb; }
+  .slip-chip-ev { font-family:'DM Mono',monospace; font-size:.58rem; font-weight:700; color:#86efac; }
+  .slip-chip-ev.neg { color:#f37272; }
+  .slip-chip-pay { font-family:'DM Mono',monospace; font-size:.6rem; font-weight:800; color:#f4d98b; }
+  .slip-chip-odds { font-family:'DM Mono',monospace; font-size:.6rem; font-weight:700; color:#c4b5fd; }
+  .slip-chip-x { width:17px; height:17px; border-radius:50%; border:none; background:rgba(255,255,255,.08); color:#a89bd0;
+    display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:.62rem; line-height:1; flex-shrink:0; margin:6px 6px 6px 0; transition:background .15s,color .15s; }
+  .slip-chip-x:hover { background:rgba(239,68,68,.28); color:#fca5a5; }
+  .slip-tray-stats { display:flex; gap:18px; flex-shrink:0; padding:0 6px; border-left:1px solid rgba(167,139,250,.16); border-right:1px solid rgba(167,139,250,.16); }
+  .slip-stat { text-align:center; padding:0 4px; }
+  .slip-stat-lbl { font-family:'DM Mono',monospace; font-size:.4rem; letter-spacing:.12em; text-transform:uppercase; color:#7a6fa0; margin-bottom:2px; }
+  .slip-stat-v { font-family:'DM Mono',monospace; font-size:.85rem; font-weight:800; color:#f1ecff; white-space:nowrap; }
+  .slip-stat-v.payout { color:#f4d98b; text-shadow:0 0 10px rgba(244,217,139,.35); }
+  .slip-clear { font-family:'DM Mono',monospace; font-size:.58rem; letter-spacing:.1em; text-transform:uppercase; color:#a89bd0;
+    border:1px solid rgba(167,139,250,.3); background:rgba(167,139,250,.08); border-radius:8px; padding:8px 14px; cursor:pointer; flex-shrink:0; white-space:nowrap; transition:background .15s; }
+  .slip-clear:hover { background:rgba(167,139,250,.18); }
+  .slip-tray-note { font-family:'DM Mono',monospace; font-size:.42rem; letter-spacing:.04em; color:rgba(255,255,255,.22); }
+
+  /* added-state highlight on the game card's call cell */
+  .t-edge-slip { cursor:pointer; transition:background .15s, box-shadow .15s; border-radius:6px; }
+  .t-edge-slip:hover { background:rgba(167,139,250,.06); }
+  .t-edge-slip.in-slip .t-call-btn { box-shadow:0 0 0 1px rgba(244,185,66,.5), 0 0 14px rgba(244,185,66,.2); }
+  .t-call-added-mark { display:none; align-items:center; justify-content:center; width:13px; height:13px; border-radius:50%;
+    background:#f4b942; color:#1c1430; font-size:.5rem; font-weight:900; margin-right:5px; flex-shrink:0; }
+  .t-edge-slip.in-slip .t-call-added-mark { display:inline-flex; }
+
+  @media (max-width:760px) {
+    .slip-tray { padding:9px 14px 10px; gap:7px; }
+    .slip-tray-label { font-size:.56rem; }
+    .slip-tray-controls { gap:10px; }
+    .slip-tray-stats { gap:10px; padding:0 8px; }
+    .slip-stat-v { font-size:.74rem; }
+    .slip-tray-note { font-size:.4rem; line-height:1.5; }
+  }
+  .pp2-footer-row { position:relative; display:flex; justify-content:center; padding-top:22px; margin-top:2px; }
+  .pp2-footer-row::before { content:''; position:absolute; top:0; left:6%; right:6%; height:1px;
+    background:linear-gradient(90deg, transparent, rgba(167,139,250,.5) 22%, rgba(244,185,66,.55) 50%, rgba(167,139,250,.5) 78%, transparent); }
+  .pp2-bb { display:flex; align-items:center; gap:11px; }
+  .pp2-bb-coin-stage { width:36px; height:36px; flex-shrink:0; perspective:280px; }
+  .pp2-bb-coin { width:100%; height:100%; position:relative; transform-style:preserve-3d;
+    animation:pp2coinspin 3.4s linear infinite; }
+  .pp2-bb-coin-face { position:absolute; inset:0; border-radius:50%; backface-visibility:hidden;
+    display:flex; align-items:center; justify-content:center;
+    background:
+      radial-gradient(circle, #060606 0%, #0a0a0a 64%, transparent 69%),
+      repeating-conic-gradient(from 0deg, #f5c518 0deg 6deg, transparent 6deg 18deg),
+      radial-gradient(circle at 35% 28%, #2b2b2b, #060606 72%);
+    box-shadow:inset 0 0 0 2px rgba(255,255,255,.28), 0 2px 7px rgba(0,0,0,.55); }
+  .pp2-bb-coin-face.back { transform:rotateY(180deg); }
+  .pp2-bb-coin-letters { font-family:'DM Mono',monospace; font-weight:800; font-size:.6rem; letter-spacing:-.02em; color:#fff; }
+  .pp2-bb-coin-face.back .pp2-bb-coin-letters { color:#f5c518; }
+  @keyframes pp2coinspin { from{ transform:rotateY(0deg); } to{ transform:rotateY(360deg); } }
+  .pp2-bb-text { display:flex; flex-direction:column; gap:3px; }
+  .pp2-bb-top { display:flex; align-items:baseline; gap:8px; }
+  .pp2-bb-logo { font-family:'DM Mono',monospace; font-size:.5rem; font-weight:800; letter-spacing:.2em; text-transform:uppercase; color:#c4b5fd; }
+  .pp2-bb-name { font-family:'Inter',sans-serif; font-size:1.12rem; font-weight:900; letter-spacing:-.015em; color:#fff; }
   .pp2-bb-name span { color:#f4b942; }
-  .pp2-bb-sub { font-family:'DM Mono',monospace; font-size:.44rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.3); margin-top:1px; }
+  .pp2-bb-sub { font-family:'DM Mono',monospace; font-size:.42rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.28); }
+  .pp2-market-note { margin-top:10px; padding:7px 11px; border-radius:7px; border:1px solid rgba(167,139,250,.16); background:rgba(124,92,200,.05); text-align:center; }
+  .pp2-market-note-lbl { display:block; font-family:'DM Mono',monospace; font-size:.34rem; letter-spacing:.14em; text-transform:uppercase; color:#7a6fa0; margin-bottom:3px; }
+  .pp2-market-note p { margin:0; font-family:'DM Sans',sans-serif; font-size:.56rem; line-height:1.4; color:#8b7fb8; }
 
 
   @media (max-width:980px){
@@ -2378,6 +2552,7 @@ body::after{
     overflow: hidden;
     border: 1px solid rgba(34,197,94,.26);
     background:
+      radial-gradient(ellipse 900px 260px at 38% 100%, rgba(134,239,172,.16), transparent 70%),
       linear-gradient(135deg, rgba(255,255,255,0.07), rgba(255,255,255,0.015) 38%, transparent 68%),
       radial-gradient(ellipse at 28% 40%, rgba(34,197,94,.14), transparent 58%),
       radial-gradient(ellipse at 85% 80%, rgba(244,185,66,.08), transparent 55%),
@@ -2501,25 +2676,26 @@ body::after{
   .ls-thesis {
     font-size:.72rem; color:#2d6b3e; line-height:1.6; margin-bottom:13px;
   }
-  .ls-legs { display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
+  .ls-legs { display:flex; flex-direction:column; gap:7px; margin-bottom:14px; }
   .ls-leg {
-    display:grid; grid-template-columns:30px 1fr auto; align-items:center; gap:10px;
-    padding:6px 11px;
-    background:rgba(0,0,0,.22);
-    border:1px solid rgba(34,197,94,.08); border-radius:6px;
+    display:grid; grid-template-columns:32px 1fr auto; align-items:center; gap:10px;
+    padding:8px 12px;
+    background:linear-gradient(160deg, rgba(34,197,94,.07), rgba(0,0,0,.28));
+    border:1px solid rgba(34,197,94,.1); border-radius:14px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.05), 0 2px 6px rgba(0,0,0,.25);
   }
   .ls-leg-n { font-family:'DM Mono',monospace; font-size:.58rem; font-weight:800; text-align:center;
-    border-radius:4px; padding:3px 0; }
-  .ls-leg-n.tier-edge { color:#34d399; background:rgba(52,211,153,.1); border:1px solid rgba(52,211,153,.3); text-shadow:0 0 8px rgba(52,211,153,.5); }
-  .ls-leg-n.tier-mid  { color:#f4b942; background:rgba(244,185,66,.08); border:1px solid rgba(244,185,66,.28); }
-  .ls-leg-n.tier-low  { color:#7a8a9a; background:rgba(122,138,154,.08); border:1px solid rgba(122,138,154,.22); }
+    width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+  .ls-leg-n.tier-edge { color:#34d399; background:rgba(52,211,153,.12); border:1px solid rgba(52,211,153,.32); text-shadow:0 0 8px rgba(52,211,153,.5); }
+  .ls-leg-n.tier-mid  { color:#f4b942; background:rgba(244,185,66,.1); border:1px solid rgba(244,185,66,.3); }
+  .ls-leg-n.tier-low  { color:#7a8a9a; background:rgba(122,138,154,.1); border:1px solid rgba(122,138,154,.24); }
   .ls-leg-name { font-size:.74rem; font-weight:600; color:#bfe8cc; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .ls-leg-odds { font-family:'DM Mono',monospace; font-size:.68rem; font-weight:700; color:#86efac; text-align:right; white-space:nowrap;
-    padding:3px 9px; border-radius:5px; background:rgba(34,197,94,.08); border:1px solid rgba(34,197,94,.2); }
+    padding:4px 11px; border-radius:999px; background:rgba(34,197,94,.1); border:1px solid rgba(34,197,94,.24); }
 
   /* ── roulette wager stepper ── */
-  .ls-wager { display:flex; align-items:center; gap:10px; margin-bottom:13px; padding:10px 12px;
-    background:rgba(0,0,0,.25); border:1px solid rgba(34,197,94,.14); border-radius:8px; }
+  .ls-wager { display:flex; align-items:center; gap:10px; margin-bottom:13px; padding:10px 14px;
+    background:linear-gradient(160deg, rgba(34,197,94,.08), rgba(0,0,0,.28)); border:1px solid rgba(34,197,94,.16); border-radius:14px; }
   .ls-wager-lbl { font-family:'DM Mono',monospace; font-size:.46rem; letter-spacing:.14em; text-transform:uppercase; color:#3a7a4a; flex-shrink:0; }
   .ls-wager-btn { width:24px; height:24px; border-radius:6px; border:1px solid rgba(34,197,94,.3); background:rgba(34,197,94,.08);
     color:#86efac; font-family:'DM Mono',monospace; font-size:.85rem; font-weight:700; line-height:1; cursor:pointer; flex-shrink:0;
@@ -2527,19 +2703,23 @@ body::after{
   .ls-wager-btn:hover { background:rgba(34,197,94,.18); }
   .ls-wager-btn:active { transform:scale(.9); }
   .ls-wager-btn:disabled { opacity:.3; cursor:default; }
-  .ls-wager-chip { position:relative; width:46px; height:46px; border-radius:50%; flex-shrink:0;
+  .ls-wager-chip { position:relative; width:52px; height:52px; border-radius:50%; flex-shrink:0;
     display:flex; align-items:center; justify-content:center;
-    background:repeating-conic-gradient(#16a34a 0deg 30deg, #0e7a37 30deg 60deg);
-    box-shadow:0 3px 0 rgba(0,0,0,.4), 0 4px 10px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.18); }
-  .ls-wager-chip::before { content:''; position:absolute; inset:4px; border-radius:50%; border:1.5px dashed rgba(255,255,255,.32); }
-  .ls-wager-v { position:absolute; inset:7px; border-radius:50%; background:#06140d; display:flex; align-items:center; justify-content:center;
-    font-family:'DM Mono',monospace; font-size:.62rem; font-weight:800; color:#aef5c6; box-shadow:inset 0 0 0 1px rgba(255,255,255,.07); }
+    background:repeating-conic-gradient(#16a34a 0deg 22.5deg, #0a0a0a 22.5deg 45deg);
+    box-shadow:0 3px 0 rgba(0,0,0,.45), 0 4px 10px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.18); }
+  .ls-wager-chip::before { content:''; position:absolute; inset:4px; border-radius:50%; border:1.5px solid rgba(74,222,128,.55); }
+  .ls-wager-v { position:absolute; inset:8px; border-radius:50%; background:#060606;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'DM Mono',monospace; font-size:.8rem; font-weight:800; color:#4ade80;
+    box-shadow:inset 0 0 0 1px rgba(34,197,94,.3), inset 0 2px 5px rgba(0,0,0,.5); }
   .ls-wager-hint { font-family:'DM Mono',monospace; font-size:.46rem; letter-spacing:.04em; color:#2d6b3e; margin-left:auto; text-align:right; }
 
   /* ── clickable picks + wheel center percentage ── */
-  .ls-leg-click { cursor:pointer; border-radius:7px; padding:3px 7px; margin:0 -7px; transition:background .18s, box-shadow .18s; position:relative; }
-  .ls-leg-click:hover { background:rgba(34,197,94,.08); }
-  .ls-leg-click.active { background:rgba(34,197,94,.14); box-shadow:inset 3px 0 0 #34d399, 0 0 14px rgba(52,211,153,.18); }
+  .ls-leg-click { cursor:pointer; transition:background .18s, box-shadow .18s, border-color .18s, transform .1s; }
+  .ls-leg-click:hover { background:linear-gradient(160deg, rgba(34,197,94,.13), rgba(0,0,0,.28)); border-color:rgba(34,197,94,.22); }
+  .ls-leg-click:active { transform:scale(.985); }
+  .ls-leg-click.active { background:linear-gradient(160deg, rgba(52,211,153,.18), rgba(0,0,0,.3)); border-color:rgba(52,211,153,.4);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.08), inset 4px 0 0 #34d399, 0 0 16px rgba(52,211,153,.22); }
   .ls-leg-pct { margin-left:auto; font-family:'DM Mono',monospace; font-size:.66rem; font-weight:700; color:#7be0a0; text-shadow:0 0 8px rgba(52,211,153,.5); }
   .ls-wheel-center { position:absolute; top:50%; left:50%; width:118px; height:118px; margin:-59px 0 0 -59px;
     border-radius:50%; display:flex; align-items:center; justify-content:center; z-index:9; pointer-events:none; }
@@ -2557,23 +2737,39 @@ body::after{
   .ls-wheel-center.spinning .ls-center-inner { animation:centerPop .5s ease; }
   @keyframes centerPop { 0%{transform:scale(.82);} 60%{transform:scale(1.06);} 100%{transform:scale(1);} }
   .ls-footer-row {
-    display:flex; align-items:center; justify-content:space-between;
+    display:flex; align-items:center; justify-content:flex-start;
     padding-top:11px; border-top:1px solid rgba(34,197,94,.1);
   }
   .ls-warn { font-family:'DM Mono',monospace; font-size:.48rem; letter-spacing:.06em; color:#2d6b3e; }
-  .ls-metrics { display:flex; gap:14px; }
-  .ls-metric { text-align:center; }
+  .ls-metrics { display:flex; gap:9px; flex-wrap:wrap; }
+  .ls-agg-card { min-width:96px; }
+  .ls-agg-card-text { font-family:'DM Mono',monospace; font-size:.54rem; font-weight:600; color:#5a8a68; line-height:1.3; }
+  .ls-metric { text-align:center; padding:7px 13px; border-radius:10px; min-width:60px;
+    background:rgba(134,239,172,.06); border:1px solid rgba(34,197,94,.22); }
+  .ls-metric.red    { background:rgba(239,68,68,.08); border-color:rgba(239,68,68,.24); }
+  .ls-metric.green  { background:rgba(34,197,94,.1);  border-color:rgba(34,197,94,.28); }
+  .ls-metric.accent { background:rgba(134,239,172,.08); border-color:rgba(134,239,172,.24); }
   .ls-metric-lbl { font-family:'DM Mono',monospace; font-size:.4rem; letter-spacing:.12em; color:#3a7a4a; text-transform:uppercase; margin-bottom:3px; }
-  .ls-metric-val { font-family:'DM Mono',monospace; font-size:.76rem; font-weight:700; color:#5aaa70; }
+  .ls-metric-val { font-family:'DM Mono',monospace; font-size:.78rem; font-weight:700; color:#5aaa70; white-space:nowrap; }
   .ls-metric-val.red    { color:#ef4444; }
   .ls-metric-val.green  { color:#22c55e; }
   .ls-metric-val.accent { color:#86efac; }
+  .ls-metric-bar { height:3px; width:100%; border-radius:2px; background:rgba(255,255,255,.08); margin-top:6px; overflow:hidden; }
+  .ls-metric-bar-fill { height:100%; border-radius:2px; transition:width .4s ease; }
+  .ls-metric.red .ls-metric-bar-fill    { background:linear-gradient(90deg,#ef4444,#f87171); }
+  .ls-metric.green .ls-metric-bar-fill  { background:linear-gradient(90deg,#16a34a,#4ade80); }
+  .ls-metric.accent .ls-metric-bar-fill { background:linear-gradient(90deg,#22c55e,#86efac); }
+  .ls-metric:not(.red):not(.green):not(.accent) .ls-metric-bar-fill { background:linear-gradient(90deg,#3a7a4a,#5aaa70); }
+  .ls-mini-disclaimer { font-family:'DM Mono',monospace; font-size:.4rem; letter-spacing:.05em; color:#5a9a6e; opacity:.9; margin-top:9px; }
+  .ls-market-note { margin-top:12px; padding:10px 14px; border-radius:9px; border:1px solid rgba(34,197,94,.16); background:rgba(34,197,94,.05); text-align:center; }
+  .ls-market-note-lbl { display:block; font-family:'DM Mono',monospace; font-size:.4rem; letter-spacing:.16em; text-transform:uppercase; color:#3a7a4a; margin-bottom:5px; }
+  .ls-market-note p { margin:0; font-family:'DM Sans',sans-serif; font-size:.62rem; line-height:1.5; color:#5a8a68; }
 
   /* ── RIGHT: ODDS PANEL ── */
   .ls-odds-panel {
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     padding:24px 22px;
-    background:rgba(0,0,0,.25);
+    background:rgba(20,40,28,.22);
     border-left:1px solid rgba(34,197,94,.1);
     min-width:110px;
     gap:6px;
@@ -2581,7 +2777,7 @@ body::after{
   }
   .ls-odds-panel:hover { background:rgba(34,197,94,.08); }
   .ls-odds-panel.active { background:rgba(34,197,94,.14); box-shadow:inset 3px 0 0 #34d399, 0 0 16px rgba(52,211,153,.18); }
-  .ls-odds-hint { font-family:'DM Mono',monospace; font-size:.38rem; letter-spacing:.1em; text-transform:uppercase; color:#2d6b3e; margin-top:2px; }
+  .ls-odds-hint { font-family:'DM Mono',monospace; font-size:.38rem; letter-spacing:.1em; text-transform:uppercase; color:#5a9a6e; opacity:.9; margin-top:2px; }
   .ls-odds-lbl {
     font-family:'DM Mono',monospace;
     font-size:.44rem; letter-spacing:.2em;
@@ -2613,9 +2809,8 @@ body::after{
   @media(max-width:900px){
     .ls-wrap { padding:0 16px; }
     .ls-card { grid-template-columns:1fr; }
-    .ls-leg { grid-template-columns:28px 1fr 64px 44px; gap:8px; padding:7px 9px; }
-    .ls-leg-n { font-size:.56rem; }
-    .ls-leg-ev { font-size:.6rem; }
+    .ls-leg { grid-template-columns:28px 1fr auto; gap:8px; padding:7px 10px; border-radius:12px; }
+    .ls-leg-n { font-size:.56rem; width:24px; height:24px; }
     /* Square, fixed wheel frame. The wheel internals are sized by the
        SHORTER panel dimension so the wheel is always fully contained. */
     .ls-wheel-panel {
@@ -2664,6 +2859,145 @@ body::after{
     .ls-metric { flex:0 0 auto; text-align:left; }
   }
 
+
+/* =========================================================
+   RISK REWARD CASINO REFRESH — VISUAL ONLY OVERRIDE
+   Infrastructure/classes/JS untouched
+========================================================= */
+
+/* Casino chip stake token */
+.pp2-chip-stake{
+  width:77px!important;
+  height:77px!important;
+  background:
+    radial-gradient(circle at 35% 25%,rgba(255,255,255,.35),transparent 18%),
+    radial-gradient(circle,#c9a24d 0%,#8b5a18 8%,#10151d 12%,#05070b 62%,#000 100%)!important;
+  border:5px solid #d4af37!important;
+  box-shadow:
+    0 6px 0 #3b2609,
+    0 16px 28px rgba(0,0,0,.65),
+    inset 0 0 0 4px #121820,
+    inset 0 0 0 7px #d4af37,
+    0 0 20px rgba(244,185,66,.35)!important;
+  animation:chipFloat 3s ease-in-out infinite;
+}
+.pp2-chip-stake::before{
+  content:'';
+  position:absolute;
+  inset:13px;
+  border-radius:50%;
+  border:2px dashed rgba(244,185,66,.65);
+}
+.pp2-chip-stake::after{
+  content:'$10';
+  position:absolute;
+  color:#f9e7a6;
+  font-family:'DM Mono',monospace;
+  font-size:1.15 rem;
+  font-weight:800;
+  letter-spacing:.04em;
+  text-shadow:0 2px 7px #000;
+}
+@keyframes chipFloat{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-5px) rotate(3deg)}
+}
+.pp2-chip-stake > *{
+  opacity:0;
+}
+
+/* Stake area feels like a casino betting rail */
+.pp2-rr-showcase{
+  background:linear-gradient(180deg,rgba(244,185,66,.06),transparent);
+  border-radius:14px;
+  padding-top:28px!important;
+}
+.pp2-stake-label{
+  color:#d4af37!important;
+  font-size:.48rem!important;
+}
+
+/* Risk/reward meter refresh */
+.pp2-meter{
+  border-radius:18px!important;
+  border:1px solid rgba(244,185,66,.3)!important;
+  background:
+    radial-gradient(circle at top right,rgba(167,139,250,.18),transparent 35%),
+    linear-gradient(160deg,#111827,#090b12)!important;
+  box-shadow:0 20px 50px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.12)!important;
+}
+.pp2-meter-hd{
+  background:linear-gradient(90deg,rgba(244,185,66,.12),transparent)!important;
+}
+.pp2-meter-ttl{
+  color:#ffe08a!important;
+}
+
+/* Roulette card premium casino table styling */
+.ls-placard{
+  border-radius:28px!important;
+  border:1px solid rgba(244,185,66,.35)!important;
+  background:
+    radial-gradient(circle at 80% 10%,rgba(244,185,66,.16),transparent 30%),
+    linear-gradient(145deg,#111827,#05070b)!important;
+  box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 45px rgba(244,185,66,.12)!important;
+}
+.ls-leg{
+  border-radius:12px!important;
+  margin:7px 0!important;
+  padding:12px!important;
+  background:rgba(255,255,255,.045)!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  transition:.25s!important;
+}
+.ls-leg:hover{
+  transform:translateX(5px);
+  border-color:rgba(244,185,66,.5)!important;
+  background:rgba(244,185,66,.08)!important;
+}
+.ls-leg-n{
+  border-radius:50%!important;
+  width:28px!important;
+  height:28px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:linear-gradient(135deg,#f4b942,#8a5c10)!important;
+  color:#05070b!important;
+}
+.ls-metric{
+  background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.015))!important;
+  border-radius:14px!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  padding:14px!important;
+}
+.ls-metric-val{
+  font-family:'DM Mono',monospace!important;
+  font-size:1.35rem!important;
+  text-shadow:0 0 18px rgba(244,185,66,.35);
+}
+.ls-metric-bar{
+  height:5px!important;
+  border-radius:10px!important;
+  overflow:hidden!important;
+  background:#101722!important;
+}
+.ls-metric-bar-fill{
+  background:linear-gradient(90deg,#f4b942,#34d399)!important;
+  box-shadow:0 0 12px rgba(244,185,66,.6)!important;
+}
+
+/* roulette wheel container gets more depth without touching animation */
+.ls-wheel,
+.ls-roulette,
+[class*="roulette"]{
+  filter:drop-shadow(0 18px 35px rgba(0,0,0,.65));
+}
+
+/* payout / odds hierarchy */
+.ls-q-text{
+  letter-spacing:.08em!important;
+}
 </style>
 </head>
 <body>
@@ -2747,6 +3081,7 @@ body::after{
         <div class="hero-stat-value blue">HIGH</div>
       </div>
     </div>
+    <div class="hero-value-prop"><span class="hero-value-prop-dot">&#9670;</span>We surface the numbers so you can make an informed call &mdash; then place it with whichever sportsbook you already trust.</div>
   </div>
   <!-- RIGHT: CONSENSUS TRACKER — MLB liquid glass -->
   <div class="lg-consensus">
@@ -2871,6 +3206,548 @@ body::after{
 @media(max-width:380px){
   .kw-city{font-size:1.5rem;}
   .kw-name{font-size:2rem;}
+}
+
+
+/* =========================================================
+   Q MARKET — CASINO FLOOR REFINEMENT v3
+   Visual-only layer: roulette banner/card, prop parlay board,
+   and game slip empty/active states. Existing data + JS stay intact.
+========================================================= */
+:root{
+  --q-felt:#0b2a1d;
+  --q-felt-2:#123624;
+  --q-burgundy:#251018;
+  --q-burgundy-2:#3a1823;
+  --q-caramel:#8f5d1b;
+  --q-gold:#f4b942;
+  --q-gold-2:#ffd66f;
+  --q-mint:#7ff2b2;
+  --q-ink:#07090d;
+  --q-purple:#a78bfa;
+}
+
+/* ── PLAYER PROP PARLAY: cleaner trading-table casino board ── */
+.prop-section-header{
+  padding-top:42px!important;
+  gap:16px!important;
+}
+.prop-live-dot{
+  background:linear-gradient(180deg,#d8c1ff,#7c5cf0)!important;
+  box-shadow:0 0 12px rgba(167,139,250,.85),0 0 24px rgba(167,139,250,.22)!important;
+}
+.prop-section-title{
+  letter-spacing:.08em!important;
+  text-shadow:0 0 18px rgba(167,139,250,.18)!important;
+}
+.prop-section-badge{
+  border-radius:999px!important;
+  background:linear-gradient(180deg,rgba(167,139,250,.14),rgba(33,21,56,.54))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 10px 28px rgba(0,0,0,.28)!important;
+}
+.pp-card{
+  border-radius:18px!important;
+  border:1px solid rgba(167,139,250,.24)!important;
+  border-top-color:rgba(201,176,255,.48)!important;
+  background:
+    radial-gradient(760px 340px at 74% 0%,rgba(167,139,250,.13),transparent 66%),
+    radial-gradient(520px 280px at 6% 14%,rgba(45,212,191,.08),transparent 68%),
+    linear-gradient(180deg,rgba(11,8,22,.98),rgba(5,5,10,.99))!important;
+  box-shadow:0 28px 80px rgba(0,0,0,.58),0 0 0 1px rgba(255,255,255,.028),inset 0 1px 0 rgba(255,255,255,.07)!important;
+}
+.pp-head{
+  padding:15px 18px!important;
+  background:
+    linear-gradient(90deg,rgba(78,50,130,.50),rgba(22,16,38,.72) 52%,rgba(8,7,14,.18)),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.018) 0 1px,transparent 1px 24px)!important;
+  border-bottom:1px solid rgba(167,139,250,.22)!important;
+}
+.pp-head-title{letter-spacing:.2em!important;color:#eee8ff!important;text-shadow:0 0 12px rgba(167,139,250,.42)!important;}
+.pp-head-dot{width:7px!important;height:7px!important;background:#c4b5fd!important;}
+.pp2-shell{
+  grid-template-columns:minmax(0,1fr) 354px!important;
+}
+.pp2-board{
+  position:relative;
+  background:linear-gradient(180deg,rgba(8,6,15,.62),rgba(5,5,10,.72))!important;
+  border-right:1px solid rgba(167,139,250,.20)!important;
+}
+.pp2-colhdr{
+  background:rgba(3,3,8,.42)!important;
+  border-bottom:1px solid rgba(167,139,250,.18)!important;
+}
+.pp2-colhdr .pp-col{
+  color:#8175a7!important;
+  font-weight:800!important;
+}
+.pp2-group{
+  padding:11px 0!important;
+  background:linear-gradient(90deg,rgba(167,139,250,.04),transparent)!important;
+}
+.pp2-group-text{
+  border-left:0!important;
+  border-radius:0 999px 999px 0!important;
+  padding:7px 16px!important;
+  background:linear-gradient(90deg,rgba(167,139,250,.22),rgba(167,139,250,.06))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+.pp2-group.alt .pp2-group-text{
+  background:linear-gradient(90deg,rgba(45,212,191,.20),rgba(45,212,191,.045))!important;
+}
+.pp2-row{
+  grid-template-columns:58px minmax(0,330px) minmax(160px,1fr) 96px!important;
+  min-height:94px!important;
+  background:
+    linear-gradient(90deg,rgba(167,139,250,.065),rgba(167,139,250,.018) 46%,transparent),
+    linear-gradient(180deg,rgba(255,255,255,.018),transparent)!important;
+  border-bottom:1px solid rgba(255,255,255,.055)!important;
+  transition:background .18s ease,opacity .24s ease,filter .24s ease,transform .18s ease!important;
+}
+.pp2-row:hover{
+  transform:translateX(2px);
+  background:
+    linear-gradient(90deg,rgba(45,212,191,.10),rgba(167,139,250,.09) 44%,rgba(244,185,66,.035))!important;
+}
+.pp2-row::before{width:5px!important;}
+.pp2-row.pp-deselected{opacity:.34!important;filter:grayscale(.62) saturate(.8)!important;}
+.pp2-row.pp-selected{box-shadow:inset 0 0 0 1px rgba(255,255,255,.012)!important;}
+.pp2-grade{padding-top:25px!important;}
+.pp2-g{font-size:1.52rem!important;}
+.pp2-gl{font-size:.43rem!important;}
+.pp2-chk{
+  width:13px!important;height:13px!important;border-radius:4px!important;
+  background:rgba(167,139,250,.10)!important;
+}
+.pp2-selected .pp2-chk,
+.pp-selected .pp2-chk{
+  border-color:rgba(244,185,66,.70)!important;
+  box-shadow:0 0 16px rgba(244,185,66,.20)!important;
+}
+.pp-selected .pp2-chk::after{background:linear-gradient(180deg,#ffd66f,#f4b942)!important;box-shadow:0 0 10px rgba(244,185,66,.88)!important;}
+.pp2-name{font-size:.98rem!important;font-weight:850!important;color:#f7f3ff!important;}
+.pp2-stat{
+  border-radius:7px!important;
+  background:linear-gradient(180deg,rgba(167,139,250,.13),rgba(167,139,250,.045))!important;
+  border-color:rgba(167,139,250,.30)!important;
+}
+.pp2-meta{gap:12px!important;color:#82759f!important;}
+.pp2-track{
+  height:38px!important;border-radius:10px!important;
+  background:linear-gradient(180deg,#171025,#100b1b)!important;
+  border-color:rgba(167,139,250,.18)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045)!important;
+}
+.pp2-fill{border-radius:9px 0 0 9px!important;}
+.pp2-fill.edge{background:linear-gradient(90deg,#16a897,#2dd4bf,#7ff2b2)!important;box-shadow:0 0 18px rgba(45,212,191,.35)!important;}
+.pp2-fill.thin{background:linear-gradient(90deg,#7154db,#a78bfa,#c4b5fd)!important;}
+.pp2-imp{width:3px!important;background:linear-gradient(180deg,transparent,#ffffff,transparent)!important;}
+.pp2-right{padding-right:12px!important;}
+.pp2-odds{
+  border-radius:9px!important;
+  background:linear-gradient(180deg,#23183c,#130d24)!important;
+  border-color:rgba(201,176,255,.40)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 18px rgba(0,0,0,.22)!important;
+}
+.pp2-edge.pos{color:#7ff2b2!important;text-shadow:0 0 14px rgba(45,212,191,.28)!important;}
+.pp2-ticket{
+  position:sticky!important;
+  top:42px!important;
+  padding:22px 22px 24px!important;
+  background:
+    radial-gradient(260px 180px at 15% 8%,rgba(244,185,66,.10),transparent 66%),
+    radial-gradient(260px 210px at 96% 18%,rgba(167,139,250,.13),transparent 64%),
+    linear-gradient(180deg,rgba(21,14,36,.80),rgba(8,7,14,.92))!important;
+  border-left:1px solid rgba(167,139,250,.22)!important;
+  box-shadow:inset 1px 0 0 rgba(255,255,255,.04)!important;
+}
+.pp2-tlabel{color:#cfc4ff!important;letter-spacing:.20em!important;}
+.pp2-payout{
+  color:#ffd66f!important;
+  text-shadow:0 0 22px rgba(244,185,66,.38),0 0 2px rgba(255,255,255,.28)!important;
+}
+.pp2-psub{color:#d2ad5e!important;}
+.pp2-gauge{
+  padding:16px 0!important;
+  border-color:rgba(255,255,255,.085)!important;
+}
+.pp2-ring{filter:drop-shadow(0 10px 18px rgba(0,0,0,.32));}
+.pp2-statgrid{
+  border-radius:12px!important;
+  border-color:rgba(167,139,250,.20)!important;
+  background:rgba(167,139,250,.17)!important;
+}
+.pp2-statcell{background:linear-gradient(180deg,rgba(31,21,52,.68),rgba(13,9,22,.72))!important;}
+.pp2-btn{
+  border-radius:12px!important;
+  background:linear-gradient(180deg,#ffd66f,#eeb038)!important;
+  box-shadow:0 16px 30px rgba(244,185,66,.20),inset 0 1px 0 rgba(255,255,255,.28)!important;
+}
+.pp2-meter{
+  border-radius:18px!important;
+  border-color:rgba(244,185,66,.34)!important;
+  background:
+    radial-gradient(260px 160px at 50% 100%,rgba(45,212,191,.09),transparent 70%),
+    linear-gradient(180deg,rgba(19,27,35,.72),rgba(8,9,14,.86))!important;
+  box-shadow:0 18px 45px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+.pp2-meter-hd{
+  padding:12px 16px!important;
+  background:linear-gradient(90deg,rgba(244,185,66,.15),rgba(167,139,250,.055),transparent)!important;
+  border-bottom-color:rgba(244,185,66,.18)!important;
+}
+.pp2-meter-ttl{color:#ffe19a!important;}
+.pp2-rr-showcase{
+  position:relative;
+  margin-top:20px!important;
+  padding:34px 10px 14px!important;
+  border:1px solid rgba(255,255,255,.07)!important;
+  border-radius:18px!important;
+  background:
+    radial-gradient(180px 100px at 30% 40%,rgba(244,185,66,.09),transparent 70%),
+    linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015))!important;
+}
+.pp2-rr-showcase::before{
+  content:'';position:absolute;left:16px;right:16px;top:15px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(244,185,66,.38),transparent);
+}
+.pp2-chip-stake{
+  width:80px!important;height:80px!important;
+  background:
+    radial-gradient(circle at 36% 26%,rgba(255,255,255,.20),transparent 17%),
+    repeating-conic-gradient(from 8deg,#f4b942 0deg 13deg,#080a10 13deg 25deg,#16a36b 25deg 36deg,#080a10 36deg 45deg)!important;
+  border:0!important;
+  box-shadow:0 7px 0 #3b2609,0 18px 30px rgba(0,0,0,.60),0 0 24px rgba(244,185,66,.22),inset 0 0 0 4px #0a0c12,inset 0 0 0 9px #d4a529,inset 0 0 0 12px #0a0c12!important;
+}
+.pp2-chip-stake::before{inset:16px!important;border:1px dashed rgba(255,214,111,.70)!important;}
+.pp2-chip-stake::after{display:none!important;}
+.pp2-chip-stake .pp2-chip-in{inset:21px!important;background:#07090d!important;border:1px solid rgba(244,185,66,.35)!important;box-shadow:inset 0 0 16px rgba(0,0,0,.72)!important;}
+.pp2-chip-stake .pp2-chip-v{color:#ffe8a8!important;font-size:1rem!important;text-shadow:0 0 12px rgba(244,185,66,.34)!important;opacity:1!important;}
+.pp2-stepbtn{
+  border-radius:9px!important;border-color:rgba(167,139,250,.38)!important;
+  background:rgba(167,139,250,.11)!important;color:#d8ccff!important;
+}
+.pp2-rr-big{color:#9ff0c6!important;text-shadow:0 0 16px rgba(45,212,191,.30)!important;}
+.pp2-bb-coin{filter:drop-shadow(0 10px 18px rgba(0,0,0,.45));}
+
+/* ── Q'S ROULETTE MARQUEE: warmer casino sign, no navy block ── */
+.ls-label-row{
+  align-items:center!important;
+  padding:0 4px 16px!important;
+}
+.ls-label{color:#d9ae5b!important;}
+.ls-divider{background:linear-gradient(90deg,rgba(244,185,66,.22),rgba(34,197,94,.26),transparent)!important;}
+.ls-q-banner{
+  min-width:258px!important;
+  padding:8px 13px!important;
+  border-radius:8px!important;
+  background:
+    radial-gradient(circle at 18% 20%,rgba(255,214,111,.16),transparent 32%),
+    linear-gradient(135deg,var(--q-burgundy-2),#28151a 45%,#132318)!important;
+  border:1px solid rgba(244,185,66,.42)!important;
+  box-shadow:0 18px 42px rgba(0,0,0,.45),0 0 28px rgba(244,185,66,.14),inset 0 1px 0 rgba(255,255,255,.11)!important;
+}
+.ls-q-banner::before{
+  content:'';position:absolute;inset:6px 8px;border-radius:6px;
+  border:1px solid rgba(34,197,94,.24);pointer-events:none;
+}
+.ls-marquee-strip{gap:10px!important;}
+.ls-bulb{
+  width:8px!important;height:8px!important;
+  background:radial-gradient(circle,#ffe08a 0%,#e8a020 58%,rgba(244,185,66,.15) 70%)!important;
+  box-shadow:0 0 9px rgba(244,185,66,.7)!important;
+}
+.ls-placard{
+  padding:13px 22px!important;
+  margin:5px 0!important;
+  border-radius:999px 14px 999px 14px!important;
+  background:
+    linear-gradient(90deg,rgba(13,37,25,.82),rgba(68,29,37,.88) 46%,rgba(29,52,34,.88))!important;
+  border:1px solid rgba(244,185,66,.42)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),inset 0 -1px 0 rgba(0,0,0,.45),0 0 18px rgba(244,185,66,.14)!important;
+}
+.ls-q-text{
+  color:#ffd66f!important;
+  text-shadow:0 0 14px rgba(244,185,66,.42),0 0 2px rgba(255,255,255,.28)!important;
+}
+
+/* ── Roulette card: keep wheel, refine everything around it ── */
+.ls-wrap{padding-top:8px!important;}
+.ls-card{
+  grid-template-columns:320px minmax(0,1fr) 160px!important;
+  border-radius:22px!important;
+  border:1px solid rgba(65,180,105,.28)!important;
+  background:
+    radial-gradient(700px 340px at 21% 45%,rgba(34,197,94,.15),transparent 66%),
+    radial-gradient(520px 260px at 84% 100%,rgba(244,185,66,.10),transparent 70%),
+    linear-gradient(140deg,rgba(10,31,20,.84),rgba(7,16,13,.92) 43%,rgba(24,16,20,.88))!important;
+  box-shadow:0 32px 80px rgba(0,0,0,.56),0 0 0 1px rgba(255,255,255,.025),inset 0 1px 0 rgba(255,255,255,.09)!important;
+}
+.ls-card::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 5px),
+    linear-gradient(90deg,transparent 0 22%,rgba(255,255,255,.034) 22.1%,transparent 22.3%,transparent 84%,rgba(255,255,255,.03) 84.1%,transparent 84.3%);
+  opacity:.42;
+}
+.ls-card>*{position:relative;z-index:2;}
+.ls-wheel-panel{
+  width:320px!important;
+  min-height:326px!important;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(34,197,94,.20),rgba(4,10,8,.82) 54%,rgba(0,0,0,.62)),
+    linear-gradient(180deg,rgba(255,255,255,.045),transparent)!important;
+  border-right:1px solid rgba(65,180,105,.18)!important;
+}
+.ls-wheel-panel::before{background:radial-gradient(circle,rgba(34,197,94,.22),transparent 66%)!important;}
+.ls-wheel-rail{width:300px!important;height:300px!important;}
+.ls-wheel-track{width:280px!important;height:280px!important;}
+.ls-wheel-ball{animation-duration:2.55s!important;}
+.ls-info{
+  padding:24px 28px 24px!important;
+  justify-content:center!important;
+}
+.ls-headline{
+  font-size:1.04rem!important;
+  margin-bottom:8px!important;
+  letter-spacing:-.025em!important;
+}
+.ls-thesis{
+  color:#629b70!important;
+  font-size:.76rem!important;
+  max-width:980px!important;
+  margin-bottom:18px!important;
+}
+.ls-legs{gap:11px!important;margin-bottom:18px!important;}
+.ls-leg{
+  grid-template-columns:38px minmax(0,1fr) auto!important;
+  padding:12px 14px!important;
+  border-radius:16px!important;
+  background:linear-gradient(90deg,rgba(255,255,255,.065),rgba(255,255,255,.025))!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 8px 20px rgba(0,0,0,.18)!important;
+}
+.ls-leg:hover,.ls-leg-click:hover{
+  transform:translateX(4px)!important;
+  border-color:rgba(244,185,66,.42)!important;
+  background:linear-gradient(90deg,rgba(244,185,66,.12),rgba(34,197,94,.06),rgba(255,255,255,.02))!important;
+}
+.ls-leg-click.active{
+  background:linear-gradient(90deg,rgba(244,185,66,.18),rgba(34,197,94,.10))!important;
+  border-color:rgba(244,185,66,.55)!important;
+  box-shadow:inset 4px 0 0 #f4b942,0 0 18px rgba(244,185,66,.16)!important;
+}
+.ls-leg-n{
+  width:30px!important;height:30px!important;
+  color:#0b0d10!important;
+  background:linear-gradient(180deg,#ffd66f,#c78621)!important;
+  border:1px solid rgba(255,226,130,.42)!important;
+  box-shadow:0 8px 16px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.38)!important;
+}
+.ls-leg-name{font-size:.80rem!important;font-weight:800!important;color:#d7f7df!important;}
+.ls-leg-odds{
+  color:#a8f3c1!important;
+  background:rgba(34,197,94,.10)!important;
+  border-color:rgba(34,197,94,.30)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+.ls-wager{
+  margin:2px 0 18px!important;
+  padding:13px 16px!important;
+  border-radius:18px!important;
+  background:linear-gradient(90deg,rgba(244,185,66,.08),rgba(34,197,94,.06),rgba(0,0,0,.14))!important;
+  border-color:rgba(244,185,66,.20)!important;
+}
+.ls-wager-chip{
+  width:58px!important;height:58px!important;
+  background:repeating-conic-gradient(from 10deg,#16a36b 0 14deg,#05070b 14deg 27deg,#f4b942 27deg 39deg,#05070b 39deg 48deg)!important;
+  box-shadow:0 7px 0 #022112,0 16px 24px rgba(0,0,0,.50),inset 0 0 0 5px #07100c,inset 0 0 0 8px rgba(244,185,66,.70)!important;
+}
+.ls-wager-v{color:#9ff0c6!important;background:#05070b!important;}
+.ls-wager-btn{
+  border-radius:9px!important;
+  border-color:rgba(34,197,94,.34)!important;
+  background:rgba(34,197,94,.11)!important;
+}
+.ls-wager-hint{color:#4b9360!important;}
+.ls-footer-row{border-top:1px solid rgba(255,255,255,.075)!important;padding-top:14px!important;}
+.ls-metrics{gap:10px!important;}
+.ls-metric{
+  min-width:92px!important;
+  padding:12px 14px!important;
+  border-radius:16px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.024))!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.065)!important;
+}
+.ls-metric-lbl{color:#539366!important;font-weight:800!important;}
+.ls-metric-val{font-size:1.2rem!important;}
+.ls-agg-card-text{color:#8ac49a!important;}
+.ls-mini-disclaimer{color:#5b9a6b!important;}
+.ls-odds-panel{
+  min-width:160px!important;
+  padding:24px 18px!important;
+  background:
+    radial-gradient(circle at 50% 42%,rgba(244,185,66,.08),transparent 62%),
+    linear-gradient(180deg,rgba(13,40,25,.60),rgba(7,18,13,.78))!important;
+  border-left:1px solid rgba(65,180,105,.18)!important;
+}
+.ls-odds-panel:hover,.ls-odds-panel.active{
+  background:linear-gradient(180deg,rgba(34,197,94,.13),rgba(244,185,66,.055))!important;
+}
+.ls-odds-lbl{color:#3d8c52!important;font-weight:800!important;}
+.ls-odds-val{
+  color:#f45b5b!important;
+  font-size:2.35rem!important;
+  text-shadow:0 0 22px rgba(244,91,91,.48)!important;
+}
+.ls-return{color:#438f55!important;}
+.ls-ev{border-radius:8px!important;border-color:rgba(34,197,94,.32)!important;background:rgba(34,197,94,.09)!important;}
+.ls-odds-hint{color:#5b9a6b!important;}
+
+/* ── Your slip: empty and active card states ── */
+.gm-slip-panel{margin:42px auto 70px!important;}
+.gm-slip-card{
+  min-height:208px!important;
+  padding:24px 28px!important;
+  border-radius:22px!important;
+  border:1px solid rgba(96,165,250,.20)!important;
+  background:
+    radial-gradient(620px 260px at 8% 10%,rgba(244,185,66,.09),transparent 70%),
+    radial-gradient(520px 240px at 94% 88%,rgba(96,165,250,.07),transparent 70%),
+    linear-gradient(150deg,rgba(17,24,34,.78),rgba(7,10,16,.90))!important;
+  box-shadow:0 26px 75px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.075)!important;
+}
+.gm-slip-card::before{
+  width:5px!important;
+  background:linear-gradient(180deg,#f4b942,#ffd66f,#2dd4bf)!important;
+  box-shadow:0 0 18px rgba(244,185,66,.35)!important;
+}
+.gm-slip-card::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0 1px,transparent 1px 5px);
+  opacity:.45;
+}
+.gm-slip-card>*{position:relative;z-index:2;}
+.gm-slip-head{
+  padding-bottom:15px!important;
+  border-bottom:1px solid rgba(96,165,250,.18)!important;
+}
+.gm-slip-title{
+  font-size:.82rem!important;
+  font-weight:900!important;
+  letter-spacing:.22em!important;
+  color:#ffd66f!important;
+  text-shadow:0 0 18px rgba(244,185,66,.22)!important;
+}
+.gm-slip-title::before{width:7px!important;height:7px!important;background:#f4b942!important;}
+.gm-slip-count{
+  font-size:.78rem!important;
+  color:#b38b38!important;
+  font-weight:800!important;
+}
+.gm-slip-cols{gap:32px!important;align-items:center!important;}
+.gm-slip-main{padding:8px 0!important;}
+.gm-slip-empty{
+  position:relative;
+  display:flex!important;
+  min-height:116px!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:1px dashed rgba(96,165,250,.18)!important;
+  border-radius:18px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.022),rgba(255,255,255,.008))!important;
+  color:#61768a!important;
+  letter-spacing:.08em!important;
+}
+.gm-slip-empty::before{
+  content:'BUILD A LIVE TICKET';
+  position:absolute;top:22px;left:50%;transform:translateX(-50%);
+  font-size:.42rem;letter-spacing:.22em;text-transform:uppercase;color:#8a6e36;
+}
+.gm-slip-has-picks .gm-slip-main{
+  background:linear-gradient(90deg,rgba(244,185,66,.025),transparent)!important;
+  border-radius:16px!important;
+}
+.gm-slip-stats{
+  gap:40px!important;
+  margin-bottom:24px!important;
+}
+.gm-stat{text-align:center!important;min-width:130px!important;}
+.gm-stat-lbl{
+  font-family:'DM Mono',monospace!important;
+  color:#5f7488!important;
+  font-size:.52rem!important;
+  letter-spacing:.18em!important;
+  text-transform:uppercase!important;
+}
+.gm-stat-v{
+  margin-top:6px!important;
+  font-size:1.5rem!important;
+  color:#e8edf5!important;
+  text-shadow:0 0 14px rgba(96,165,250,.16)!important;
+}
+.gm-stat-v.accent{color:#ffd66f!important;text-shadow:0 0 18px rgba(244,185,66,.28)!important;}
+.gm-slip-showcase{
+  gap:24px!important;
+  padding:14px 0 10px!important;
+}
+.gm-readout-wrap{
+  padding:6px!important;
+  border-radius:18px!important;
+  background:rgba(0,0,0,.14)!important;
+  border:1px solid rgba(244,185,66,.16)!important;
+}
+.gm-stake-btn{
+  border-radius:10px!important;
+  border-color:rgba(244,185,66,.38)!important;
+  background:rgba(244,185,66,.09)!important;
+  color:#f4b942!important;
+}
+.gm-readout{
+  min-width:130px!important;
+  padding:13px 28px!important;
+  border-radius:15px!important;
+  background:linear-gradient(180deg,rgba(15,22,30,.92),rgba(6,8,12,.96))!important;
+  border:1px solid rgba(244,185,66,.38)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 12px 28px rgba(0,0,0,.25)!important;
+}
+.gm-readout-lbl{color:#63778a!important;}
+.gm-readout-v{color:#ffd66f!important;font-size:1.22rem!important;}
+.gm-arrow{color:#31506a!important;}
+.gm-payout{
+  min-width:170px!important;
+  padding:12px 18px!important;
+  border-radius:18px!important;
+  background:linear-gradient(180deg,rgba(45,212,191,.08),rgba(45,212,191,.025))!important;
+  border:1px solid rgba(45,212,191,.16)!important;
+}
+.gm-payout-lbl{color:#617f94!important;}
+.gm-payout-v{font-size:2.05rem!important;color:#9ff0c6!important;text-shadow:0 0 20px rgba(45,212,191,.28)!important;}
+.gm-slip-note{color:rgba(255,255,255,.28)!important;margin-top:18px!important;}
+.gm-slip-aside{
+  width:270px!important;
+  padding:18px 0 18px 28px!important;
+  border-left:1px solid rgba(96,165,250,.18)!important;
+}
+.gm-aside-lbl{color:#b9903d!important;font-weight:900!important;}
+.gm-aside-text{color:#91a5b7!important;font-size:.82rem!important;line-height:1.55!important;}
+
+@media(max-width:1100px){
+  .pp2-shell{grid-template-columns:1fr!important;}
+  .pp2-ticket{position:static!important;border-left:none!important;border-top:1px solid rgba(167,139,250,.22)!important;}
+  .ls-card{grid-template-columns:1fr!important;}
+  .ls-wheel-panel{width:100%!important;}
+  .ls-odds-panel{border-left:none!important;border-top:1px solid rgba(65,180,105,.18)!important;min-width:0!important;}
+}
+@media(max-width:760px){
+  .pp2-row{grid-template-columns:46px minmax(0,1fr) 80px!important;min-height:auto!important;}
+  .ls-card{border-radius:18px!important;}
+  .ls-info{padding:20px 18px!important;}
+  .ls-wheel-panel{height:300px!important;min-height:300px!important;}
+  .ls-wheel-rail{width:min(300px,84vw)!important;height:min(300px,84vw)!important;}
+  .ls-wheel-track{width:min(270px,76vw)!important;height:min(270px,76vw)!important;}
+  .gm-slip-card{padding:20px 18px!important;}
+  .gm-slip-aside{width:auto!important;padding:18px 0 0!important;border-left:none!important;border-top:1px solid rgba(96,165,250,.18)!important;}
 }
 </style>
 <div class="kw">
@@ -3002,14 +3879,219 @@ body::after{
 </div>
 
 <footer>
-  <div class="footer-logo">short<span>open</span></div>
-  <p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+  <div class="footer-top">
+    <div class="footer-logo">short<span>open</span></div>
+    <p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+  </div>
+  <p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, and payout or "you'd earn" calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only — they are not betting advice and do not represent a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, or operate as a sportsbook; any wagering is done independently and at your own discretion through a licensed third-party operator in your jurisdiction. Model estimates are not guarantees of outcome. You must be of legal gambling age in your jurisdiction. If you or someone you know has a gambling problem, call 1-800-GAMBLER.</p>
 </footer>
+
+<div class="slip-tray" id="slipTray">
+  <div class="slip-tray-top">
+    <span class="slip-tray-label">YOUR SLIP &middot; <b id="slipCount">0</b> picks</span>
+    <div class="slip-tray-controls">
+      <div class="slip-stake">
+        <span class="slip-stake-lbl">Stake</span>
+        <button class="slip-stake-btn" id="slipStakeDn" type="button" aria-label="Decrease stake">&minus;</button>
+        <span class="slip-stake-val" id="slipStakeVal">$10</span>
+        <button class="slip-stake-btn" id="slipStakeUp" type="button" aria-label="Increase stake">+</button>
+      </div>
+      <div class="slip-tray-stats">
+        <div class="slip-stat"><div class="slip-stat-lbl">Payout if all hit</div><div class="slip-stat-v payout" id="slipTotalPayout">$0</div></div>
+        <div class="slip-stat"><div class="slip-stat-lbl">Avg EV</div><div class="slip-stat-v" id="slipAvgEv">+0%</div></div>
+      </div>
+      <button class="slip-clear" id="slipClearBtn" type="button">Clear</button>
+    </div>
+  </div>
+  <div class="slip-tray-items" id="slipItemsWrap"></div>
+  <div class="slip-tray-note">Payout if all hit, at your stake &middot; tap a pick for its individual payout. Estimates only, not a real-money wager &mdash; use this data to place your bets at your sportsbook of choice.</div>
+</div>
 
 <script>
 // ════════════════════════════════════════════════════════════════
 //  SHORTOPEN — THE MARKET  ·  EDIT GAMES ARRAYS TO UPDATE SLATE
 // ════════════════════════════════════════════════════════════════
+
+// ── YOUR SLIP: click a game card's shortopen call to add/remove it here ──
+const slipItems = {};
+const SLIP_STAKE_STEPS = [1,2,3,4,5,6,7,8,9,10,15,20,25,30,40,50,60,70,80,90,100,150,200,250,300,400,500,600,700,800,900,1000];
+let slipStakeIdx = SLIP_STAKE_STEPS.indexOf(10);
+function slipStake() { return SLIP_STAKE_STEPS[slipStakeIdx]; }
+function slipPayout(odds) {
+  if (!odds) return null;
+  const n = parseFloat(odds);
+  if (isNaN(n)) return null;
+  const dec = n > 0 ? 1 + n / 100 : 1 + 100 / Math.abs(n);
+  return slipStake() * (dec - 1);
+}
+function refreshSlipStakeBtns() {
+  const dn = document.getElementById('slipStakeDn');
+  const up = document.getElementById('slipStakeUp');
+  const val = document.getElementById('slipStakeVal');
+  if (!dn || !up || !val) return;
+  dn.disabled = slipStakeIdx <= 0;
+  up.disabled = slipStakeIdx >= SLIP_STAKE_STEPS.length - 1;
+  val.textContent = '$' + slipStake().toLocaleString();
+}
+function renderSlipTray() {
+  const tray = document.getElementById('slipTray');
+  const wrap = document.getElementById('slipItemsWrap');
+  const countEl = document.getElementById('slipCount');
+  const avgEl = document.getElementById('slipAvgEv');
+  const payEl = document.getElementById('slipTotalPayout');
+  const ids = Object.keys(slipItems);
+  tray.classList.toggle('open', ids.length > 0);
+  countEl.textContent = ids.length;
+  refreshSlipStakeBtns();
+  wrap.innerHTML = ids.map(id => {
+    const it = slipItems[id];
+    const hasEv = it.ev !== null && it.ev !== undefined && it.ev !== '';
+    const n = parseFloat(it.ev);
+    const sign = n >= 0 ? '+' : '';
+    const cls = n >= 0 ? '' : 'neg';
+    const pay = slipPayout(it.odds);
+    const rightHtml = (it.expanded && pay !== null)
+      ? '<span class="slip-chip-pay">\u2192 $' + pay.toFixed(2) + '</span>'
+      : hasEv
+        ? '<span class="slip-chip-ev ' + cls + '">' + sign + it.ev + '%</span>'
+        : '<span class="slip-chip-odds">' + it.odds + '</span>';
+    return '<div class="slip-chip' + (it.expanded ? ' expanded' : '') + '">'
+      + '<span class="slip-chip-body" data-id="' + id + '">'
+      +   '<span class="slip-chip-label">' + it.matchup + ' &middot; ' + it.label + '</span>'
+      +   rightHtml
+      + '</span>'
+      + '<button class="slip-chip-x" type="button" data-id="' + id + '" aria-label="Remove">\u2715</button>'
+      + '</div>';
+  }).join('');
+  const evIds = ids.filter(id => slipItems[id].ev !== null && slipItems[id].ev !== undefined && slipItems[id].ev !== '');
+  if (evIds.length) {
+    const avg = evIds.reduce((a, id) => a + parseFloat(slipItems[id].ev), 0) / evIds.length;
+    avgEl.textContent = (avg >= 0 ? '+' : '') + avg.toFixed(1) + '%';
+  } else {
+    avgEl.textContent = '\u2014';
+  }
+  if (ids.length) {
+    const totalPay = ids.reduce((a, id) => {
+      const p = slipPayout(slipItems[id].odds);
+      return a + (p !== null ? p : 0);
+    }, 0);
+    payEl.textContent = '$' + totalPay.toFixed(2);
+  } else {
+    payEl.textContent = '$0';
+  }
+  wrap.querySelectorAll('.slip-chip-body').forEach(body => {
+    body.addEventListener('click', () => {
+      const id = body.getAttribute('data-id');
+      if (slipItems[id]) {
+        slipItems[id].expanded = !slipItems[id].expanded;
+        renderSlipTray();
+      }
+    });
+  });
+  wrap.querySelectorAll('.slip-chip-x').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      removeSlipItem(btn.getAttribute('data-id'));
+    });
+  });
+  renderGameSlipPanel();
+}
+function selectCardPick(cardId, id, data, cellEl) {
+  if (slipItems[id]) {
+    delete slipItems[id];
+    if (cellEl) cellEl.classList.remove('in-slip');
+    renderSlipTray();
+    return;
+  }
+  Object.keys(slipItems).forEach(existId => {
+    if (slipItems[existId].cardId === cardId) {
+      delete slipItems[existId];
+      document.querySelectorAll('[data-slip-id="' + existId + '"]').forEach(el => el.classList.remove('in-slip'));
+    }
+  });
+  data.cardId = cardId;
+  slipItems[id] = data;
+  if (cellEl) cellEl.classList.add('in-slip');
+  renderSlipTray();
+}
+function removeSlipItem(id) {
+  delete slipItems[id];
+  document.querySelectorAll('[data-slip-id="' + id + '"]').forEach(el => el.classList.remove('in-slip'));
+  renderSlipTray();
+}
+document.getElementById('slipClearBtn').addEventListener('click', () => {
+  Object.keys(slipItems).forEach(id => delete slipItems[id]);
+  document.querySelectorAll('.t-edge-slip.in-slip, .t-odds-chip.in-slip').forEach(el => el.classList.remove('in-slip'));
+  renderSlipTray();
+});
+document.getElementById('slipStakeDn').addEventListener('click', () => {
+  if (slipStakeIdx > 0) { slipStakeIdx--; renderSlipTray(); }
+});
+document.getElementById('slipStakeUp').addEventListener('click', () => {
+  if (slipStakeIdx < SLIP_STAKE_STEPS.length - 1) { slipStakeIdx++; renderSlipTray(); }
+});
+
+// ── fixed games-section panel: implied odds / wager / payout, no coin ──
+function buildGameSlipPanel(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const panel = document.createElement('div');
+  panel.className = 'gm-slip-panel';
+  panel.innerHTML =
+      '<div class="gm-slip-card">'
+    + '<div class="gm-slip-head">'
+    +   '<span class="gm-slip-title">Your slip &middot; implied odds</span>'
+    +   '<span class="gm-slip-count" id="gmSlipCount">0 picks selected</span>'
+    + '</div>'
+    + '<div class="gm-slip-cols">'
+    +   '<div class="gm-slip-main" id="gmSlipBody"></div>'
+    +   '<div class="gm-slip-aside">'
+    +     '<div class="gm-aside-lbl">Market aggregate</div>'
+    +     '<p class="gm-aside-text">shortopen aggregates lines from across the market. If your sportsbook is offering this price, that\u2019s the one to lock in.</p>'
+    +   '</div>'
+    + '</div>'
+    + '</div>';
+  container.appendChild(panel);
+  renderGameSlipPanel();
+}
+function renderGameSlipPanel() {
+  const countEl = document.getElementById('gmSlipCount');
+  const body = document.getElementById('gmSlipBody');
+  if (!body) return;
+  const ids = Object.keys(slipItems).filter(id => slipItems[id].odds);
+  if (countEl) countEl.textContent = ids.length + (ids.length === 1 ? ' pick selected' : ' picks selected');
+  if (!ids.length) {
+    body.innerHTML = '<div class="gm-slip-empty">Tap \u201cshortopen call\u201d on any game above to build your slip.</div>';
+    return;
+  }
+  const dec = ids.reduce((a, id) => a * oddsToDecimal(slipItems[id].odds), 1);
+  const implied = (1 / dec) * 100;
+  const amer = dec >= 2 ? '+' + Math.round((dec - 1) * 100) : '-' + Math.round(100 / (dec - 1));
+  const stake = slipStake();
+  const payout = stake * (dec - 1);
+  body.innerHTML =
+      '<div class="gm-slip-stats">'
+    +   '<div class="gm-stat"><div class="gm-stat-lbl">Implied odds</div><div class="gm-stat-v accent">' + amer + '</div></div>'
+    +   '<div class="gm-stat"><div class="gm-stat-lbl">Implied probability</div><div class="gm-stat-v">' + implied.toFixed(1) + '%</div></div>'
+    +   '<div class="gm-stat"><div class="gm-stat-lbl">Combined legs</div><div class="gm-stat-v">' + ids.length + '</div></div>'
+    + '</div>'
+    + '<div class="gm-slip-showcase">'
+    +   '<div class="gm-readout-wrap">'
+    +     '<button class="gm-stake-btn" id="gmStakeDn" type="button" aria-label="Decrease stake">\u2212</button>'
+    +     '<div class="gm-readout"><span class="gm-readout-lbl">stake</span><span class="gm-readout-v">$' + stake.toLocaleString() + '</span></div>'
+    +     '<button class="gm-stake-btn" id="gmStakeUp" type="button" aria-label="Increase stake">+</button>'
+    +   '</div>'
+    +   '<span class="gm-arrow">\u2192</span>'
+    +   '<div class="gm-payout"><span class="gm-payout-lbl">you\u2019d earn</span><div class="gm-payout-v">$' + payout.toFixed(2) + '</div><span class="gm-payout-cap">on a win &middot; est. only</span></div>'
+    + '</div>'
+    + '<div class="gm-slip-note">Combined as one parlay across your selected calls. Estimates only &mdash; use this data to place your bets at your sportsbook of choice.</div>';
+  document.getElementById('gmStakeDn').addEventListener('click', () => {
+    if (slipStakeIdx > 0) { slipStakeIdx--; renderSlipTray(); }
+  });
+  document.getElementById('gmStakeUp').addEventListener('click', () => {
+    if (slipStakeIdx < SLIP_STAKE_STEPS.length - 1) { slipStakeIdx++; renderSlipTray(); }
+  });
+}
 //
 //  HOW TO EDIT:
 //  Find NBA_GAMES or MLB_GAMES below.
@@ -3112,18 +4194,18 @@ const MLB_PROP_PARLAYS = [
     type: "MLB Props",
     market: "MLB Market Parlays",
     legs: [
-      { player: "Dylan Cease",   team: "TOR", stat: "4.5+ Strikeouts",    odds: "-110", hitRate: 0.50 },
-      { player: "Framber Valdez", team: "DET", stat: "4.5+ Strikeouts",    odds: "+100", hitRate: 0.47 },
-      { player: "Gerrit Cole",   team: "NYY", stat: "5.5+ Strikeouts",    odds: "+108", hitRate: 0.48 },
-      { player: "NYY/CLE",        team: "NYY/CLE", stat: "U 1 Run 1st Inning", odds: "-118", hitRate: 0.58 },
-      { player: "Michael King",      team: "SDP", stat: "4.5+ Strikeouts",    odds: "-110", hitRate: 0.51 },
-      { player: "Michael Wacha",  team: "PIT", stat: "3.5+ Strikeouts",    odds: "+110", hitRate: 0.41 },
-      { player: "Hunter Brown",   team: "HOU", stat: "5.5+ Strikeouts",  odds: "-118", hitRate: 0.49 },
-      { player: "Jesus Luzardo", team: "PHI", stat: "5.5+ Strikeouts",   odds: "-118", hitRate: 0.52 },
-      { player: "Mike Trout",team: "LAA", stat: "Over 0.5 Homeruns",  odds: "+115", hitRate: 0.45 }
+      { player: "Joe Ryan",   team: "MIN", stat: "4.5+ Strikeouts",    odds: "-118", hitRate: 0.52, grade: "A", ev: 7.6 },
+      { player: "Parker Messick", team: "CLE", stat: "4.5+ Strikeouts",    odds: "+130", hitRate: 0.41, grade: null, ev: null },
+      { player: "Ryan Weathers",   team: "NYY", stat: "5.5+ Strikeouts",    odds: "-118", hitRate: 0.54, grade: "B-", ev: null },
+      { player: "NYY/CLE",        team: "NYY/CLE", stat: "U 1 Run 1st Inning", odds: "-118", hitRate: 0.61, grade: null, ev: null },
+      { player: "Byron Buxton",      team: "MIN", stat: "Over 1.5 Total Bases",    odds: "-110", hitRate: 0.51, grade: null, ev: null },
+      { player: "Bryan Woo",  team: "BAL", stat: "5.5+ Strikeouts",    odds: "+110", hitRate: 0.44, grade: null, ev: null },
+      { player: "Trey Yesavage",   team: "BOS", stat: "5.5+ Strikeouts",  odds: "+108", hitRate: 0.49, grade: "C+", ev: 7.8 },
+      { player: "Ben Rice", team: "NYY", stat: "Over 0.5 Homeruns",   odds: "+148", hitRate: 0.42, grade: null, ev: null },
+      { player: "Gage Jump",team: "ATH", stat: "4.5+ Strikeouts",  odds: "+135", hitRate: 0.45, grade: null, ev: null }
     ],
     betsPlaced: 1421,
-    edgeNote: "Cease and Brown are plus EV today."
+    edgeNote: "Jump and Yesavage make a good 2 stack."
   }
 ];
 
@@ -3136,21 +4218,15 @@ const MLB_PROP_PARLAYS = [
 
 // ── MLB ─────────────────────────────────────────────────────────
 const MLB_GAMES = [
-  {day:"TODAY", time:"6:41 PM ET", away:"Miami Marlins", awayAbbr:"MIA", home:"Philadelphia Phillies", homeAbbr:"PHI", awayPitcher:"P: T Phillips", homePitcher:"P: J Luzardo", spreadAway:"+1.5", spreadAwayJuice:"-152", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+126", spreadHomeMove:"", spreadOpen:"", mlAway:"+146", mlHome:"-174", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PHI ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Luzardo sets the Phillies as moderate home options facing Phillips on a flat 8 canvas with balanced line premium."},
-  {day:"TODAY", time:"6:46 PM ET", away:"Kansas City Royals", awayAbbr:"KC", home:"Washington Nationals", homeAbbr:"WSH", awayPitcher:"P: M Wacha", homePitcher:"P: F Griffin", spreadAway:"+1.5", spreadAwayJuice:"-184", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+152", spreadHomeMove:"", spreadOpen:"", mlAway:"+114", mlHome:"-134", total:"8.5", totalOverJuice:"-122", totalUnderJuice:"+100", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"WSH ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Griffin anchors the Nationals as solid home favorites over Wacha with over action absorbing extra juice on the 8.5 total."},
-  {day:"TODAY", time:"6:46 PM ET", away:"Toronto Blue Jays", awayAbbr:"TOR", home:"Boston Red Sox", homeAbbr:"BOS", awayPitcher:"P: D Cease", homePitcher:"P: P Tolle", spreadAway:"-1.5", spreadAwayJuice:"+142", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-172", spreadHomeMove:"", spreadOpen:"", mlAway:"-120", mlHome:"+102", total:"7.5", totalOverJuice:"-114", totalUnderJuice:"-106", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TOR ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Cease frames the Blue Jays as slim road priorities over Tolle inside a tight 7.5 line layout leaning slightly over."},
-  {day:"TODAY", time:"7:06 PM ET", away:"Chicago White Sox", awayAbbr:"CWS", home:"New York Yankees", homeAbbr:"NYY", awayPitcher:"P: D Martin", homePitcher:"P: G Cole", spreadAway:"+1.5", spreadAwayJuice:"-182", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+150", spreadHomeMove:"", spreadOpen:"", mlAway:"+122", mlHome:"-144", total:"7.5", totalOverJuice:"-122", totalUnderJuice:"+100", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Cole positions the Yankees as clear favorites at the Stadium with notable market pressure driving Over 7.5 metrics."},
-  {day:"TODAY", time:"7:11 PM ET", away:"New York Mets", awayAbbr:"NYM", home:"Cincinnati Reds", homeAbbr:"CIN", awayPitcher:"P: K Senga", homePitcher:"P: B Singer", spreadAway:"-1.5", spreadAwayJuice:"+128", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-154", spreadHomeMove:"", spreadOpen:"", mlAway:"-124", mlHome:"+106", total:"9.5", totalOverJuice:"-118", totalUnderJuice:"-104", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYM ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Senga lines up the Mets as standard favorites on the road over Singer behind an over-shaded 9.5 blueprint."},
-  {day:"TODAY", time:"7:16 PM ET", away:"San Francisco Giants", awayAbbr:"SF", home:"Atlanta Braves", homeAbbr:"ATL", awayPitcher:"P: A Houser", homePitcher:"P: G Holmes", spreadAway:"+1.5", spreadAwayJuice:"-142", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+118", spreadHomeMove:"", spreadOpen:"", mlAway:"+140", mlHome:"-166", total:"9", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ATL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Holmes commands standard home favor for Atlanta facing Houser with defensive total weight hit under on the flat 9."},
-  {day:"TODAY", time:"7:41 PM ET", away:"Cleveland Guardians", awayAbbr:"CLE", home:"Milwaukee Brewers", homeAbbr:"MIL", awayPitcher:"P: S Cecconi", homePitcher:"P: R Gasser", spreadAway:"+1.5", spreadAwayJuice:"-164", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+136", spreadHomeMove:"", spreadOpen:"", mlAway:"+130", mlHome:"-154", total:"8", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Gasser sets the Brewers as distinct selections in Milwaukee over Cecconi on a flat 8 total with brief over traction."},
-  {day:"TODAY", time:"7:46 PM ET", away:"San Diego Padres", awayAbbr:"SD", home:"St. Louis Cardinals", homeAbbr:"STL", awayPitcher:"P: M King", homePitcher:"P: A Pallante", spreadAway:"-1.5", spreadAwayJuice:"+164", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-200", spreadHomeMove:"", spreadOpen:"", mlAway:"+100", mlHome:"-118", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"STL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Pallante sets a tight micro-home selection border for the Cardinals over King across a highly balanced flat 8."},
-  {day:"TODAY", time:"8:06 PM ET", away:"Colorado Rockies", awayAbbr:"COL", home:"Chicago Cubs", homeAbbr:"CHC", awayPitcher:"P: R Feltner", homePitcher:"P: E Cabrera", spreadAway:"+1.5", spreadAwayJuice:"-125", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+104", spreadHomeMove:"", spreadOpen:"", mlAway:"+160", mlHome:"-190", total:"9.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CHC ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Cabrera installs the Cubs as definitive choices at Wrigley field over Feltner on an over-leaning 9.5 frame."},
-  {day:"TODAY", time:"8:06 PM ET", away:"Minnesota Twins", awayAbbr:"MIN", home:"Texas Rangers", homeAbbr:"TEX", awayPitcher:"P: Z Matthews", homePitcher:"P: K Rocker", spreadAway:"+1.5", spreadAwayJuice:"-194", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+160", spreadHomeMove:"", spreadOpen:"", mlAway:"+114", mlHome:"-134", total:"8.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TEX ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Rocker maps out steady home option layout parameters for Texas facing Matthews on an under-shaded 8.5 setup."},
-  {day:"TODAY", time:"8:11 PM ET", away:"Detroit Tigers", awayAbbr:"DET", home:"Houston Astros", homeAbbr:"HOU", awayPitcher:"P: F Valdez", homePitcher:"P: H Brown", spreadAway:"+1.5", spreadAwayJuice:"-152", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+126", spreadHomeMove:"", spreadOpen:"", mlAway:"+150", mlHome:"-178", total:"8.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"HOU ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Brown establishes the Astros as clear favorites at Minute Maid over Valdez with heavy market cash backing Under 8.5."},
-  {day:"TODAY", time:"9:41 PM ET", away:"Pittsburgh Pirates", awayAbbr:"PIT", home:"Athletics", homeAbbr:"OAK", awayPitcher:"P: M Keller", homePitcher:"P: J Perkins", spreadAway:"+1.5", spreadAwayJuice:"-172", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+142", spreadHomeMove:"", spreadOpen:"", mlAway:"+118", mlHome:"-138", total:"10.5", totalOverJuice:"-122", totalUnderJuice:"+100", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"OAK ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Perkins positions the A's as steady home choice options against Keller on an elevated 10.5 total shaded over."},
-  {day:"TODAY", time:"9:41 PM ET", away:"Los Angeles Angels", awayAbbr:"LAA", home:"Arizona Diamondbacks", homeAbbr:"AZ", awayPitcher:"P: R Detmers", homePitcher:"P: M Kelly", spreadAway:"-1.5", spreadAwayJuice:"+146", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-176", spreadHomeMove:"", spreadOpen:"", mlAway:"-106", mlHome:"-110", total:"8.5", totalOverJuice:"-124", totalUnderJuice:"+102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CIN ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Near pick'em frame in Phoenix with Kelly and the Dbacks holding micro home choice weight on an over-leaning 8.5 total."},
-  {day:"TODAY", time:"9:41 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Seattle Mariners", homeAbbr:"SEA", awayPitcher:"P: B Young", homePitcher:"P: L Gilbert", spreadAway:"+1.5", spreadAwayJuice:"-176", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+130", mlHome:"-154", total:"7.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"SEA ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Gilbert establishes comfortable home choices for the Mariners over Young on a low 7.5 board drawing over interest."},
-  {day:"TODAY", time:"10:11 PM ET", away:"Tampa Bay Rays", awayAbbr:"TB", home:"Los Angeles Dodgers", homeAbbr:"LAD", awayPitcher:"P: D Rasmussen", homePitcher:"P: J Wrobleski", spreadAway:"+1.5", spreadAwayJuice:"-182", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+150", spreadHomeMove:"", spreadOpen:"", mlAway:"+126", mlHome:"-148", total:"8.5", totalOverJuice:"+102", totalUnderJuice:"-124", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAD ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Wrobleski lines up the Dodgers as solid favorites at Chavez Ravine over Rasmussen with the under taking clear juice pressure."}
+  {day:"TODAY", time:"1:36 PM ET", away:"Toronto Blue Jays", awayAbbr:"TOR", home:"Boston Red Sox", homeAbbr:"BOS", awayPitcher:"P: T Yesavage", homePitcher:"P: S Gray", spreadAway:"+1.5", spreadAwayJuice:"-194", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+162", spreadHomeMove:"", spreadOpen:"", mlAway:"+106", mlHome:"-124", total:"9", totalOverJuice:"-112", totalUnderJuice:"-108", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"BOS ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Gray pins the Red Sox as narrow home favorites over Yesavage on a flat 9 total blueprint drawing minor over traction."},
+  {day:"TODAY", time:"2:11 PM ET", away:"Cleveland Guardians", awayAbbr:"CLE", home:"Milwaukee Brewers", homeAbbr:"MIL", awayPitcher:"P: P Messick", homePitcher:"P: S Drohan", spreadAway:"+1.5", spreadAwayJuice:"-178", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+126", mlHome:"-148", total:"7.5", totalOverJuice:"-104", totalUnderJuice:"-118", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Drohan commands clear home favorite layout parameters for Milwaukee behind a tight, under-shaded 7.5 canvas look."},
+  {day:"TODAY", time:"2:36 PM ET", away:"Minnesota Twins", awayAbbr:"MIN", home:"Texas Rangers", homeAbbr:"TEX", awayPitcher:"P: J Ryan", homePitcher:"P: J Leiter", spreadAway:"-1.5", spreadAwayJuice:"+142", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-172", spreadHomeMove:"", spreadOpen:"", mlAway:"-124", mlHome:"+106", total:"7.5", totalOverJuice:"-120", totalUnderJuice:"-102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIN ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Ryan sets the Twins as short road priorities facing Leiter while market cash presses notable over juice on the 7.5 total."},
+  {day:"TODAY", time:"4:11 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Seattle Mariners", homeAbbr:"SEA", awayPitcher:"P: S Baz", homePitcher:"P: B Woo", spreadAway:"+1.5", spreadAwayJuice:"-178", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+124", mlHome:"-146", total:"7.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"SEA ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Woo establishes steady home option status for Seattle over Baz on a low 7.5 board taking minor over money pressure."},
+  {day:"TODAY", time:"6:41 PM ET", away:"New York Mets", awayAbbr:"NYM", home:"Philadelphia Phillies", homeAbbr:"PHI", awayPitcher:"P: S Manaea", homePitcher:"P: A Nola", spreadAway:"+1.5", spreadAwayJuice:"-194", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+160", spreadHomeMove:"", spreadOpen:"", mlAway:"+104", mlHome:"-122", total:"9.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PHI ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Nola lines up the Phillies as clean home preferences over Manaea across an under-leaning 9.5 framework layout."},
+  {day:"TODAY", time:"7:06 PM ET", away:"Chicago White Sox", awayAbbr:"CWS", home:"New York Yankees", homeAbbr:"NYY", awayPitcher:"P: S Burke", homePitcher:"P: R Weathers", spreadAway:"+1.5", spreadAwayJuice:"-154", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+128", spreadHomeMove:"", spreadOpen:"", mlAway:"+134", mlHome:"-158", total:"9.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Weathers installs the Yankees as distinct selections at the Stadium against Burke on a perfectly balanced 9.5 total line."},
+  {day:"TODAY", time:"7:16 PM ET", away:"San Francisco Giants", awayAbbr:"SF", home:"Atlanta Braves", homeAbbr:"ATL", awayPitcher:"P: L Roupp", homePitcher:"P: M Perez", spreadAway:"+1.5", spreadAwayJuice:"-178", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+122", mlHome:"-144", total:"8", totalOverJuice:"-102", totalUnderJuice:"-120", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ATL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Perez commands standard home favor for Atlanta facing Roupp inside a flat 8 total landscape leaning heavily under."},
+  {day:"TODAY", time:"7:41 PM ET", away:"St. Louis Cardinals", awayAbbr:"STL", home:"Kansas City Royals", homeAbbr:"KC", awayPitcher:"P: M Liberatore", homePitcher:"P: N Cameron", spreadAway:"-1.5", spreadAwayJuice:"+162", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-196", spreadHomeMove:"", spreadOpen:"", mlAway:"+100", mlHome:"-118", total:"9", totalOverJuice:"-104", totalUnderJuice:"-118", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"KC ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Cameron handles a close home favorite dynamic for the Royals over Liberatore on a flat 9 board carrying distinct under weight."},
+  {day:"TODAY", time:"9:41 PM ET", away:"Los Angeles Angels", awayAbbr:"LAA", home:"Athletics", homeAbbr:"OAK", awayPitcher:"P: J Soriano", homePitcher:"P: G Jump", spreadAway:"+1.5", spreadAwayJuice:"-176", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+116", mlHome:"-136", total:"10.5", totalOverJuice:"-102", totalUnderJuice:"-120", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"OAK ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Jump anchors the A's as steady home choice selections in a high-scoring 10.5 environment shaded notably toward the under."}
 ];
 
 // ════════════════════════════════════════════════════════════════
@@ -3842,6 +4918,17 @@ function renderGames(games, containerId) {
   });
 }
 
+// ── derive the actual american odds behind a game's shortopen call ──
+// (edgeEV is a model EV%, not odds — the slip needs the real price to compute a payout)
+function edgeOdds(g) {
+  if (!g.edgeType || !g.edgeLabel) return null;
+  const labelIsHome = g.homeAbbr && g.edgeLabel.indexOf(g.homeAbbr) === 0;
+  if (g.edgeType === 'ml') return labelIsHome ? g.mlHome : g.mlAway;
+  if (g.edgeType === 'spread') return labelIsHome ? g.spreadHomeJuice : g.spreadAwayJuice;
+  if (g.edgeType === 'total') return /^O/i.test(g.edgeLabel) ? g.totalOverJuice : g.totalUnderJuice;
+  return null;
+}
+
 function buildCard(g) {
   const card = document.createElement('div');
   const isEdge = g.edgeType && g.edgeType !== 'fade' && g.edgeLabel;
@@ -3881,6 +4968,7 @@ function buildCard(g) {
     const noteHtml = g.edgeNote ? `<div class="t-edge-note">${g.edgeNote}</div>` : '';
     edgeHtml = `
       <div class="t-call-btn ${g.edgeType}">
+        <span class="t-call-added-mark">\u2713</span>
         <span class="t-call-type">${g.edgeType}</span>
         <span class="t-call-label">${g.edgeLabel}</span>
         <span class="t-call-ev ${evCls}" id="${uid}" data-ev="${n}" data-type="${g.edgeType}">${sign}${g.edgeEV}%</span>
@@ -3910,38 +4998,49 @@ function buildCard(g) {
 
     <div class="t-odds">
       <div class="t-odds-row">
-        <span class="t-odds-chip neutral">${g.spreadAway || '—'} <span style="font-size:0.6rem;opacity:0.5">${g.spreadAwayJuice || ''}</span></span>
+        <span class="t-odds-chip neutral${g.spreadAwayJuice ? ' slip-odds' : ''}"${g.spreadAwayJuice ? ` data-slip-id="${uid}-sA"` : ''}>${g.spreadAway || '—'} <span style="font-size:0.6rem;opacity:0.5">${g.spreadAwayJuice || ''}</span></span>
         ${mv(g.spreadAwayMove)}
       </div>
       <div class="t-odds-row">
-        <span class="t-odds-chip neutral">${g.spreadHome || '—'} <span style="font-size:0.6rem;opacity:0.5">${g.spreadHomeJuice || ''}</span></span>
+        <span class="t-odds-chip neutral${g.spreadHomeJuice ? ' slip-odds' : ''}"${g.spreadHomeJuice ? ` data-slip-id="${uid}-sH"` : ''}>${g.spreadHome || '—'} <span style="font-size:0.6rem;opacity:0.5">${g.spreadHomeJuice || ''}</span></span>
         ${mv(g.spreadHomeMove)}
       </div>
     </div>
 
     <div class="t-odds">
       <div class="t-odds-row">
-        <span class="t-odds-chip ${mlChip(g.mlAway)}">${g.mlAway || '—'}</span>
+        <span class="t-odds-chip ${mlChip(g.mlAway)}${g.mlAway ? ' slip-odds' : ''}"${g.mlAway ? ` data-slip-id="${uid}-mlA"` : ''}>${g.mlAway || '—'}</span>
       </div>
       <div class="t-odds-row">
-        <span class="t-odds-chip ${mlChip(g.mlHome)}">${g.mlHome || '—'}</span>
+        <span class="t-odds-chip ${mlChip(g.mlHome)}${g.mlHome ? ' slip-odds' : ''}"${g.mlHome ? ` data-slip-id="${uid}-mlH"` : ''}>${g.mlHome || '—'}</span>
       </div>
     </div>
 
     <div class="t-odds">
       <div class="t-odds-row">
-        <span class="t-odds-chip total-o">O ${g.total || '—'}</span>
+        <span class="t-odds-chip total-o${g.totalOverJuice ? ' slip-odds' : ''}"${g.totalOverJuice ? ` data-slip-id="${uid}-tO"` : ''}>O ${g.total || '—'}</span>
         <span class="t-odds-juice">${g.totalOverJuice || ''}</span>
         ${mv(g.totalMove)}
       </div>
       <div class="t-odds-row">
-        <span class="t-odds-chip total-u">U ${g.total || '—'}</span>
+        <span class="t-odds-chip total-u${g.totalUnderJuice ? ' slip-odds' : ''}"${g.totalUnderJuice ? ` data-slip-id="${uid}-tU"` : ''}>U ${g.total || '—'}</span>
         <span class="t-odds-juice">${g.totalUnderJuice || ''}</span>
       </div>
     </div>
 
-    <div class="t-edge">${edgeHtml}</div>
+    <div class="t-edge${isEdge ? ' t-edge-slip' : ''}"${isEdge ? ` data-slip-id="${uid}"` : ''}>${edgeHtml}</div>
   `;
+
+  // ── wire the call pill + spread / moneyline / total chips into the same per-card slip selection ──
+  // (done further below, after any series-banner DOM rebuild, so listeners attach to final nodes)
+  const oddsPicks = [
+    { id: uid + '-sA', cond: g.spreadAwayJuice, odds: g.spreadAwayJuice, label: g.awayAbbr + ' ' + g.spreadAway },
+    { id: uid + '-sH', cond: g.spreadHomeJuice, odds: g.spreadHomeJuice, label: g.homeAbbr + ' ' + g.spreadHome },
+    { id: uid + '-mlA', cond: g.mlAway, odds: g.mlAway, label: g.awayAbbr + ' ML' },
+    { id: uid + '-mlH', cond: g.mlHome, odds: g.mlHome, label: g.homeAbbr + ' ML' },
+    { id: uid + '-tO', cond: g.totalOverJuice, odds: g.totalOverJuice, label: 'O ' + g.total },
+    { id: uid + '-tU', cond: g.totalUnderJuice, odds: g.totalUnderJuice, label: 'U ' + g.total }
+  ];
 
   // ── Series banner ──
   if (g.series) {
@@ -3978,6 +5077,33 @@ function buildCard(g) {
       <div class="series-divider"></div>`;
     card.appendChild(banner);
   }
+
+  if (isEdge) {
+    const edgeCell = card.querySelector('.t-edge-slip');
+    if (edgeCell) {
+      edgeCell.addEventListener('click', function(){
+        selectCardPick(uid, uid, {
+          matchup: g.awayAbbr + ' @ ' + g.homeAbbr,
+          label: g.edgeLabel,
+          ev: g.edgeEV,
+          odds: edgeOdds(g)
+        }, edgeCell);
+      });
+    }
+  }
+  oddsPicks.forEach(function(p){
+    if (!p.cond) return;
+    const el = card.querySelector('[data-slip-id="' + p.id + '"]');
+    if (!el) return;
+    el.addEventListener('click', function(){
+      selectCardPick(uid, p.id, {
+        matchup: g.awayAbbr + ' @ ' + g.homeAbbr,
+        label: p.label,
+        ev: null,
+        odds: p.odds
+      }, el);
+    });
+  });
 
   return card;
 }
@@ -4086,6 +5212,14 @@ function calcEV(hitRate, american) {
   const dec = oddsToDecimal(american);
   return (hitRate * (dec - 1) - (1 - hitRate)) * 100;
 }
+// ── manual override hook ──
+// Most legs are auto-graded from hitRate/odds. To take the wheel yourself,
+// set `ev` (a number, e.g. 6.5) and/or `grade` ("A+","A","B","C","D") directly
+// on the leg object in the data array below. legEV() always prefers the
+// manual value when one is present.
+function legEV(leg) {
+  return (typeof leg.ev === 'number') ? leg.ev : calcEV(leg.hitRate, leg.odds);
+}
 function evClass(ev) {
   return ev > 0 ? 'pos' : ev < -5 ? 'neg' : 'neutral';
 }
@@ -4108,12 +5242,24 @@ function buildPropRows(parlay, terminal) {
   const isK = (leg) => /strikeout/i.test(leg.stat);
 
   // ── grade from EV ──
+  const GRADE_META = {
+    'A+': { tier:'smash', label:'smash' },
+    'A':  { tier:'smash', label:'smash' },
+    'B':  { tier:'lean',  label:'lean'  },
+    'C':  { tier:'lean',  label:'thin'  },
+    'D':  { tier:'fade',  label:'fade'  },
+  };
   function gradeFor(ev){
-    if (ev >= 10) return { g:'A+', tier:'smash', label:'smash' };
-    if (ev >= 4)  return { g:'A',  tier:'smash', label:'smash' };
-    if (ev >= 0)  return { g:'B',  tier:'lean',  label:'lean'  };
-    if (ev >= -5) return { g:'C',  tier:'lean',  label:'thin'  };
-    return { g:'D', tier:'fade', label:'fade' };
+    if (ev >= 10) return { g:'A+', ...GRADE_META['A+'] };
+    if (ev >= 4)  return { g:'A',  ...GRADE_META['A']  };
+    if (ev >= 0)  return { g:'B',  ...GRADE_META['B']  };
+    if (ev >= -5) return { g:'C',  ...GRADE_META['C']  };
+    return { g:'D', ...GRADE_META['D'] };
+  }
+  // manual override: leg.grade ("A+"/"A"/"B"/"C"/"D") wins when present, else fall back to auto grade
+  function gradeForLeg(leg, ev){
+    if (leg.grade && GRADE_META[leg.grade]) return { g: leg.grade, ...GRADE_META[leg.grade] };
+    return gradeFor(ev);
   }
 
   // build a v2 shell: board (left) + ticket (right)
@@ -4138,10 +5284,10 @@ function buildPropRows(parlay, terminal) {
 
   const renderLeg = (leg, i, defaultSelected) => {
     const implied = oddsToImplied(leg.odds) * 100;
-    const ev      = calcEV(leg.hitRate, leg.odds);
+    const ev      = legEV(leg);
     const hit     = leg.hitRate * 100;
     const delta   = hit - implied;
-    const gr      = gradeFor(ev);
+    const gr      = gradeForLeg(leg, ev);
     const fillCls = ev >= 0 ? (gr.tier === 'smash' ? 'edge' : 'thin') : 'neg';
     const evCls   = ev >= 0 ? 'pos' : 'neg';
     const evSign  = ev >= 0 ? '+' : '';
@@ -4192,7 +5338,7 @@ function buildPropRows(parlay, terminal) {
   };
 
   // ── rank: sort legs best-EV first; keep K/Other grouping if both exist ──
-  const withEV = parlay.legs.map((leg, idx) => ({ leg, idx, ev: calcEV(leg.hitRate, leg.odds) }));
+  const withEV = parlay.legs.map((leg, idx) => ({ leg, idx, ev: legEV(leg) }));
   const hasK = parlay.legs.some(isK);
   const hasOther = parlay.legs.some(l => !isK(l));
   const useSections = hasK && hasOther;
@@ -4261,23 +5407,32 @@ function buildPropRows(parlay, terminal) {
     +     '<div class="pp2-rr-leg"><span>win <b id="' + meterId + '-rrwinlbl">0%</b></span><span>break-even <b id="' + meterId + '-rrbe">0%</b></span></div>'
     +     '<div class="pp2-rr-showcase">'
     +       '<div class="pp2-stake">'
+    +         '<span class="pp2-stake-label">Wager</span>'
     +         '<div class="pp2-stake-row">'
     +           '<button class="pp2-stepbtn" id="' + meterId + '-stakedn" type="button" aria-label="Decrease stake">\u2212</button>'
-    +           '<div class="pp2-chip pp2-chip-stake"><div class="pp2-chip-in"><span class="pp2-chip-v" id="' + meterId + '-stakeval">$10</span><span class="pp2-chip-l">stake</span></div></div>'
+    +           '<div class="pp2-chip pp2-chip-stake"><div class="pp2-chip-in"><span class="pp2-chip-v" id="' + meterId + '-stakeval">$10</span></div></div>'
     +           '<button class="pp2-stepbtn" id="' + meterId + '-stakeup" type="button" aria-label="Increase stake">+</button>'
     +         '</div>'
     +         '<span class="pp2-stake-cap">$1 \u2013 $1,000</span>'
     +       '</div>'
     +       '<span class="pp2-rr-arrowtxt">\u2192</span>'
-    +       '<div class="pp2-rr-num"><span class="pp2-rr-arrow">you\u2019d earn</span><div class="pp2-rr-big" id="' + meterId + '-rrpay">$0</div><div class="pp2-rr-cap">on a win</div></div>'
+    +       '<div class="pp2-rr-num"><span class="pp2-rr-arrow">you\u2019d earn</span><div class="pp2-rr-big" id="' + meterId + '-rrpay">$0</div><div class="pp2-rr-cap">varies by book </div></div>'
     +     '</div>'
     +   '</div>'
     + '</div>'
     + '<div class="pp2-footer-row">'
-    +   '<span class="pp2-bb-rule"></span>'
-    +   '<div class="pp2-bb"><div class="pp2-bb-logo">Presented by</div><div class="pp2-bb-name">short<span>open</span></div><div class="pp2-bb-sub">Markets \u00b7 Props \u00b7 EV Edge</div></div>'
-    +   '<span class="pp2-bb-rule"></span>'
-    + '</div>';
+    +   '<div class="pp2-bb">'
+    +     '<div class="pp2-bb-coin-stage"><div class="pp2-bb-coin">'
+    +       '<div class="pp2-bb-coin-face front"><span class="pp2-bb-coin-letters">SO</span></div>'
+    +       '<div class="pp2-bb-coin-face back"><span class="pp2-bb-coin-letters">SO</span></div>'
+    +     '</div></div>'
+    +     '<div class="pp2-bb-text">'
+    +       '<div class="pp2-bb-top"><span class="pp2-bb-logo">Presented by</span><span class="pp2-bb-name">short<span>open</span></span></div>'
+    +       '<div class="pp2-bb-sub">Markets \u00b7 Props \u00b7 EV Edge</div>'
+    +     '</div>'
+    +   '</div>'
+    + '</div>'
+    + '<div class="pp2-market-note"><span class="pp2-market-note-lbl">Market aggregate</span><p>We provide the information \u2014 place your bets with your sportsbook of choice.</p></div>';
   shell.appendChild(ticket);
   terminal.appendChild(shell);
 
@@ -4327,7 +5482,7 @@ function buildPropRows(parlay, terminal) {
       const val = target.n === 0 ? 0 : s * (target.dec - 1);
       const txt = '$' + val.toLocaleString(undefined, {maximumFractionDigits:0});
       rrPay.textContent = txt;
-      rrPay.style.fontSize = txt.length >= 8 ? '1.15rem' : txt.length >= 6 ? '1.4rem' : '1.7rem';
+      rrPay.style.fontSize = txt.length >= 8 ? '1.05rem' : txt.length >= 6 ? '1.2rem' : '1.5rem';
     }
 
 
@@ -4485,7 +5640,7 @@ function renderPropParlays(parlays, containerId) {
       terminal.className = 'pp-card';
 
       // Header bar (market + correlation + +EV count)
-      const evCount = parlay.legs.filter(l => calcEV(l.hitRate, l.odds) > 0).length;
+      const evCount = parlay.legs.filter(l => legEV(l) > 0).length;
       const uniqueTeams = [...new Set(parlay.legs.map(l => l.team))];
       const isCorrelated = uniqueTeams.length <= 2;
 
@@ -4598,12 +5753,12 @@ const MLB_LONGSHOTS = [
     headline:"Q's Roulette",
     thesis:"Four correlated legs on one side of the market. Market overwhelmingly disagrees — this ticket pays if the public narrative collapses in the first five innings.",
     legs:[
-      {n:"01", name:"Gerrit Cole 7+ K's", pct:28, ev:6.2, odds:"+285"},
-      {n:"02", name:"Slade Cecconi 7+ K's", pct:13, ev:8.8, odds:"+650"},
-      {n:"03", name:"Spencer Jones HR", pct:18.9, ev:3.3, odds:"+440"},
-      {n:"04", name:"Chase DeLauter HR", pct:16, ev:22.1, odds:"+520"}
+      {n:"01", name:"Trey Yesavage 7+ K's", pct:48, ev:9.2, odds:"+385"},
+      {n:"02", name:"Ryan Weathers 7+ K's", pct:53, ev:8.8, odds:"+250"},
+      {n:"03", name:"Spencer Jones HR", pct:18.9, ev:3.3, odds:"+280"},
+      {n:"04", name:"Jasson Dominguez HR", pct:16, ev:6.1, odds:"+320"}
     ],
-    odds:"+7800", ret:"$10 to $790", ev:"+14.7%",
+    odds:"+2200", ret:"$10 to $230", ev:"+7.7%",
     metrics:[
       {lbl:"PUBLIC EXP", val:"91%",   cls:"red"},
       {lbl:"HIT RATE",   val:"1.8%",  cls:""},
@@ -4622,8 +5777,14 @@ function renderLongshots(shots, containerId) {
   shots.forEach(function(s) {
     var ruid = 'rou-' + Math.random().toString(36).slice(2,8);
     var metricsHtml = s.metrics.map(function(m) {
-      return '<div class="ls-metric"><div class="ls-metric-lbl">'+m.lbl+'</div>'
-           + '<div class="ls-metric-val '+m.cls+'">'+m.val+'</div></div>';
+      var pctMatch = /(-?\d+(?:\.\d+)?)%/.exec(m.val);
+      var barHtml = '';
+      if (pctMatch) {
+        var pv = Math.max(2, Math.min(100, Math.abs(parseFloat(pctMatch[1]))));
+        barHtml = '<div class="ls-metric-bar"><div class="ls-metric-bar-fill" style="width:'+pv+'%"></div></div>';
+      }
+      return '<div class="ls-metric '+m.cls+'"><div class="ls-metric-lbl">'+m.lbl+'</div>'
+           + '<div class="ls-metric-val '+m.cls+'">'+m.val+'</div>'+barHtml+'</div>';
     }).join('');
     var legsHtml = s.legs.map(function(l,i) {
       var ev = l.ev||0;
@@ -4644,7 +5805,7 @@ function renderLongshots(shots, containerId) {
 
     // Radii (matching photo proportions)
     var rWood1=99, rWood2=90;   // wooden outer rail
-    var rTrack1=90, rTrack2=72; // number pocket ring
+    var rTrack1=88, rTrack2=70; // number pocket ring
     var rFret=72, rFretH=68;    // green channel / fret area
     var rCone=60, rConeInner=18;// green cone area
     var rBowl=18;               // center bowl
@@ -4808,9 +5969,12 @@ function renderLongshots(shots, containerId) {
       +    '<span class="ls-wager-hint">tap a pick to see your payout \u2192</span>'
       +  '</div>'
       +  '<div class="ls-footer-row">'
-      +    '<span class="ls-warn">\u26a0 '+s.warn+'</span>'
-      +    '<div class="ls-metrics">'+metricsHtml+'</div>'
+      +    '<div class="ls-metrics">'
+      +      '<div class="ls-metric ls-agg-card"><div class="ls-metric-lbl">Market agg.</div><div class="ls-agg-card-text">Bet at your book</div></div>'
+      +      metricsHtml
+      +    '</div>'
       +  '</div>'
+      +  '<div class="ls-mini-disclaimer">Payout figures are model estimates, not real-money winnings.</div>'
       +'</div>'
       +'<div class="ls-odds-panel">'
       +  '<div class="ls-odds-lbl">Payout</div>'
@@ -4919,6 +6083,7 @@ function renderLongshots(shots, containerId) {
 // ── INIT ──
 // NBA season over — no render
 renderGames(MLB_GAMES, 'mlbContainer');
+buildGameSlipPanel('mlbContainer');
 renderPropParlays(MLB_PROP_PARLAYS, 'mlbContainer');
 renderFutures('nbaChampContainer', 'mlbContainer');
 renderLongshots(MLB_LONGSHOTS, 'mlbContainer');
@@ -4936,7 +6101,549 @@ renderLongshots(MLB_LONGSHOTS, 'mlbContainer');
   });
 })();
 
+
+
+// ── Q market cosmetic state sync: marks slip card empty/active and keeps stake readout live ──
+(function qMarketCosmeticSync(){
+  function syncSlipClass(){
+    var card=document.querySelector('.gm-slip-card');
+    var count=document.getElementById('gmSlipCount');
+    if(!card||!count) return;
+    var n=parseInt((count.textContent||'0').match(/\d+/)?.[0]||'0',10);
+    card.classList.toggle('gm-slip-has-picks',n>0);
+    card.classList.toggle('gm-slip-is-empty',n===0);
+  }
+  syncSlipClass();
+  var obs=new MutationObserver(syncSlipClass);
+  var count=document.getElementById('gmSlipCount');
+  var body=document.getElementById('gmSlipBody');
+  if(count) obs.observe(count,{childList:true,characterData:true,subtree:true});
+  if(body) obs.observe(body,{childList:true,subtree:true});
+  document.addEventListener('click',function(e){
+    if(e.target && (e.target.id==='gmStakeDn' || e.target.id==='gmStakeUp')){
+      setTimeout(function(){ if(typeof renderGameSlipPanel==='function') renderGameSlipPanel(); syncSlipClass(); },0);
+    }else if(e.target && (e.target.closest('.t-edge-slip') || e.target.closest('.t-odds-chip.slip-odds'))){
+      setTimeout(syncSlipClass,0);
+    }
+  },true);
+})();
 </script>
+
+
+
+<style id="q-final-parlay-roulette-slip-tighten">
+/* =========================================================
+   FINAL PASS — slimmer prop bars, fixed wager chip, coin rain,
+   tighter slip card. Visual-only overrides.
+========================================================= */
+
+/* Player prop parlay bars: still readable, no longer oversized */
+.pp2-row{
+  min-height:80px!important;
+}
+.pp2-spec{
+  padding:10px 12px!important;
+}
+.pp2-track{
+  height:24px!important;
+  border-radius:8px!important;
+  background:linear-gradient(180deg,#151021,#0e0918)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04), inset 0 -6px 14px rgba(0,0,0,.20)!important;
+}
+.pp2-fill{
+  border-radius:7px 0 0 7px!important;
+}
+.pp2-imp{
+  width:2px!important;
+  top:-1px!important;
+  bottom:-1px!important;
+}
+.pp2-pct{
+  font-size:.66rem!important;
+  right:9px!important;
+}
+.pp2-specsub{
+  margin-top:4px!important;
+  font-size:.42rem!important;
+}
+.pp2-grade{padding-top:21px!important;padding-bottom:10px!important;}
+.pp2-mid{padding-top:10px!important;padding-bottom:10px!important;}
+.pp2-right{padding-top:10px!important;padding-bottom:10px!important;}
+
+/* Risk/reward meter top bar: balanced height */
+.pp2-rr-seg{
+  height:11px!important;
+  border-radius:999px!important;
+  background:linear-gradient(180deg,#170f26,#100a1a)!important;
+}
+.pp2-rr-win{border-radius:999px 0 0 999px!important;}
+.pp2-rr-leg{margin-top:9px!important;}
+
+/* Risk/reward showcase: keep buttons and chip inside the card */
+.pp2-rr-showcase{
+  box-sizing:border-box!important;
+  width:100%!important;
+  max-width:100%!important;
+  justify-content:center!important;
+  gap:10px!important;
+  padding:28px 12px 16px!important;
+  overflow:hidden!important;
+}
+.pp2-stake{min-width:154px!important;max-width:154px!important;}
+.pp2-stake-row{
+  width:154px!important;
+  gap:8px!important;
+  justify-content:center!important;
+}
+.pp2-stepbtn{
+  width:31px!important;
+  height:31px!important;
+  min-width:31px!important;
+  border-radius:10px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  line-height:1!important;
+  font-size:1rem!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 8px 18px rgba(0,0,0,.25)!important;
+}
+.pp2-chip-stake{
+  width:68px!important;
+  height:68px!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+  background:
+    radial-gradient(circle at 35% 25%,rgba(255,255,255,.25),transparent 16%),
+    repeating-conic-gradient(from 8deg,#f4b942 0deg 12deg,#07110d 12deg 23deg,#19b878 23deg 34deg,#07110d 34deg 45deg)!important;
+  box-shadow:
+    0 6px 0 #342206,
+    0 16px 26px rgba(0,0,0,.58),
+    0 0 24px rgba(244,185,66,.20),
+    inset 0 0 0 4px #07090d,
+    inset 0 0 0 8px #d2a22d,
+    inset 0 0 0 11px #05070b!important;
+}
+.pp2-chip-stake > *{
+  opacity:1!important;
+  visibility:visible!important;
+}
+.pp2-chip-stake::before{
+  content:''!important;
+  position:absolute!important;
+  inset:13px!important;
+  border-radius:50%!important;
+  border:1px dashed rgba(255,222,126,.78)!important;
+  z-index:1!important;
+  pointer-events:none!important;
+}
+.pp2-chip-stake::after{
+  display:none!important;
+}
+.pp2-chip-stake .pp2-chip-in{
+  position:absolute!important;
+  inset:19px!important;
+  z-index:3!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:radial-gradient(circle at 45% 35%,#18221d,#05070b 72%)!important;
+  border:1px solid rgba(244,185,66,.48)!important;
+  border-radius:50%!important;
+  box-shadow:inset 0 0 13px rgba(0,0,0,.80),0 0 10px rgba(34,197,94,.10)!important;
+}
+.pp2-chip-stake .pp2-chip-v{
+  display:block!important;
+  opacity:1!important;
+  visibility:visible!important;
+  color:#ffe8a8!important;
+  font-size:.82rem!important;
+  font-weight:900!important;
+  letter-spacing:-.06em!important;
+  line-height:1!important;
+  text-shadow:0 0 10px rgba(244,185,66,.34),0 2px 4px #000!important;
+}
+.pp2-rr-arrowtxt{font-size:.98rem!important;color:#645686!important;}
+.pp2-rr-num{min-width:104px!important;}
+.pp2-rr-big{font-size:1.54rem!important;letter-spacing:-.05em!important;}
+.pp2-rr-arrow{font-size:.52rem!important;}
+.pp2-rr-cap{font-size:.48rem!important;}
+
+/* Roulette card: richer casino table depth without touching wheel mechanics */
+.ls-card{
+  position:relative!important;
+  overflow:hidden!important;
+}
+.ls-card::before{
+  content:''!important;
+  position:absolute!important;
+  inset:0!important;
+  pointer-events:none!important;
+  background:
+    linear-gradient(90deg,rgba(244,185,66,.05),transparent 20%,transparent 80%,rgba(34,197,94,.045)),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.014) 0 1px,transparent 1px 7px)!important;
+  opacity:.72!important;
+  z-index:1!important;
+}
+.ls-card>*{position:relative!important;z-index:2!important;}
+.ls-info{
+  background:
+    radial-gradient(460px 240px at 28% 4%,rgba(244,185,66,.10),transparent 70%),
+    radial-gradient(420px 220px at 80% 92%,rgba(34,197,94,.10),transparent 70%)!important;
+}
+.ls-info::after{
+  content:'';
+  position:absolute;
+  left:28px;right:28px;bottom:164px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(244,185,66,.28),rgba(34,197,94,.20),transparent);
+  pointer-events:none;
+}
+.ls-odds-panel{
+  position:relative!important;
+  overflow:hidden!important;
+  cursor:pointer!important;
+}
+.ls-odds-panel::before{
+  content:'';
+  position:absolute;inset:10px;
+  border:1px solid rgba(244,185,66,.10);
+  border-radius:18px;
+  pointer-events:none;
+}
+.ls-odds-panel::after{
+  content:'CLICK PAYOUT';
+  position:absolute;left:50%;bottom:22px;transform:translateX(-50%);
+  font-family:'DM Mono',monospace;font-size:.42rem;font-weight:800;letter-spacing:.18em;
+  color:rgba(244,185,66,.34);
+  pointer-events:none;
+}
+.ls-odds-panel.active::after{color:rgba(244,185,66,.62);}
+.ls-coin-rain{
+  position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:7;
+}
+.ls-coin-drop{
+  position:absolute;top:-10%;width:16px;height:16px;border-radius:50%;
+  background:radial-gradient(circle at 35% 28%,#fff2a6 0 10%,#ffd66f 13%,#d8991e 58%,#70420b 100%);
+  border:1px solid rgba(255,232,150,.72);
+  box-shadow:0 0 10px rgba(244,185,66,.50), inset 0 0 0 3px rgba(65,38,5,.34);
+  animation:lsCoinFall 1.25s cubic-bezier(.42,0,.78,1) forwards;
+  will-change:top,transform,opacity;
+}
+.ls-coin-drop::after{
+  content:'$';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;font-weight:900;font-size:.5rem;color:#4b2f07;
+}
+@keyframes lsCoinFall{
+  0%{top:-10%;transform:rotateZ(0deg);opacity:0;}
+  10%{opacity:1;}
+  78%{opacity:1;}
+  100%{top:108%;transform:rotateZ(65deg);opacity:0;}
+}
+
+/* Your slip: smaller before and after picks */
+.gm-slip-panel{
+  margin:26px auto 52px!important;
+}
+.gm-slip-card{
+  min-height:152px!important;
+  padding:18px 24px!important;
+  border-radius:20px!important;
+}
+.gm-slip-head{
+  padding-bottom:10px!important;
+}
+.gm-slip-title{font-size:.74rem!important;}
+.gm-slip-count{font-size:.70rem!important;}
+.gm-slip-cols{gap:24px!important;}
+.gm-slip-main{padding:4px 0!important;}
+.gm-slip-empty{
+  min-height:78px!important;
+  padding:12px 0!important;
+  font-size:.66rem!important;
+}
+.gm-slip-empty::before{
+  top:12px!important;
+  font-size:.38rem!important;
+}
+.gm-slip-stats{
+  gap:28px!important;
+  margin-bottom:14px!important;
+}
+.gm-stat{min-width:105px!important;}
+.gm-stat-lbl{font-size:.46rem!important;}
+.gm-stat-v{font-size:1.24rem!important;margin-top:3px!important;}
+.gm-slip-showcase{
+  gap:16px!important;
+  padding:8px 0 4px!important;
+}
+.gm-readout{
+  min-width:108px!important;
+  padding:10px 20px!important;
+}
+.gm-readout-v{font-size:1.02rem!important;}
+.gm-payout{
+  min-width:142px!important;
+  padding:10px 14px!important;
+}
+.gm-payout-v{font-size:1.62rem!important;}
+.gm-slip-note{margin-top:10px!important;font-size:.38rem!important;}
+.gm-slip-aside{
+  width:238px!important;
+  padding:12px 0 12px 22px!important;
+}
+.gm-aside-text{font-size:.76rem!important;line-height:1.46!important;}
+
+@media(max-width:760px){
+  .pp2-track{height:22px!important;}
+  .pp2-row{min-height:72px!important;}
+  .pp2-rr-showcase{flex-wrap:wrap!important;gap:8px!important;}
+  .pp2-stake{min-width:150px!important;max-width:150px!important;}
+  .pp2-stake-row{width:150px!important;}
+  .gm-slip-card{padding:16px!important;}
+  .gm-slip-empty{min-height:74px!important;}
+}
+</style>
+<script id="q-final-roulette-coin-rain">
+(function(){
+  // superseded by q-ultimate-chipfit-and-coinrain below — left as a no-op to avoid double-firing on the same click
+})();
+</script>
+
+
+<style id="q-ultimate-liquid-glass-fixes">
+/* =========================================================
+   ULTIMATE PASS — chip fit, roulette coin rain expansion,
+   and glassier consensus / stat cards.
+========================================================= */
+
+/* Make the top stat boxes and consensus tracker more translucent / liquid glass */
+.hero-stat-card,
+.lg-consensus,
+.ct-wrap{
+  background:linear-gradient(145deg,rgba(255,255,255,.11) 0%,rgba(255,255,255,.04) 32%,rgba(9,14,24,.52) 100%)!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+  backdrop-filter:blur(34px) saturate(1.25)!important;
+  -webkit-backdrop-filter:blur(34px) saturate(1.25)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.18),
+    inset 0 -1px 0 rgba(255,255,255,.035),
+    0 18px 42px rgba(0,0,0,.20),
+    0 0 0 1px rgba(255,255,255,.025)!important;
+}
+.hero-stat-card::before,
+.lg-consensus-before{
+  background:linear-gradient(130deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.05) 36%,transparent 76%)!important;
+}
+.hero-stat-card::after,
+.lg-consensus-sheen{
+  opacity:.82!important;
+}
+.lg-consensus,
+.ct-wrap{
+  overflow:hidden!important;
+}
+.lg-row,
+.ct-row{
+  background:linear-gradient(180deg,rgba(255,255,255,.022),rgba(255,255,255,.012))!important;
+  border:1px solid rgba(255,255,255,.045)!important;
+  border-radius:16px!important;
+  padding-left:18px!important;
+  padding-right:18px!important;
+  margin:0 0 10px!important;
+}
+.lg-row:last-child,
+.ct-row:last-child{
+  margin-bottom:0!important;
+}
+
+/* Chip fit fix: keep the denomination centered and never clipped */
+.pp2-rr-showcase{
+  padding-left:18px!important;
+  padding-right:18px!important;
+}
+.pp2-stake{
+  min-width:166px!important;
+  max-width:166px!important;
+}
+.pp2-stake-row{
+  width:166px!important;
+  gap:10px!important;
+}
+.pp2-chip-stake{
+  width:72px!important;
+  height:72px!important;
+}
+.pp2-chip-stake::before{
+  inset:14px!important;
+}
+.pp2-chip-stake .pp2-chip-in{
+  inset:17px!important;
+  padding:0 3px!important;
+}
+.pp2-chip-stake .pp2-chip-v{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  max-width:100%!important;
+  overflow:visible!important;
+  font-size:clamp(.58rem, .8vw, .78rem)!important;
+  line-height:1!important;
+  letter-spacing:-.085em!important;
+  padding:0 1px!important;
+  transform:scaleX(.92)!important;
+  transform-origin:center center!important;
+  white-space:nowrap!important;
+}
+.pp2-chip-stake .pp2-chip-v.is-long{
+  font-size:clamp(.52rem, .72vw, .69rem)!important;
+  letter-spacing:-.10em!important;
+  transform:scaleX(.86)!important;
+}
+
+/* Slightly more elegant roulette payout rail */
+.ls-odds-panel{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06), inset 0 -1px 0 rgba(0,0,0,.20), 0 10px 24px rgba(0,0,0,.18)!important;
+}
+.ls-odds-panel.active{
+  box-shadow:inset 0 0 0 1px rgba(244,185,66,.18), inset 3px 0 0 #34d399, 0 0 22px rgba(52,211,153,.16), 0 12px 24px rgba(0,0,0,.18)!important;
+}
+.ls-coin-rain{
+  filter:drop-shadow(0 0 10px rgba(244,185,66,.42));
+}
+.ls-coin-drop{
+  width:18px!important;
+  height:18px!important;
+}
+
+@media(max-width:760px){
+  .pp2-stake{min-width:160px!important;max-width:160px!important;}
+  .pp2-stake-row{width:160px!important;}
+  .pp2-chip-stake{width:68px!important;height:68px!important;}
+  .pp2-chip-stake .pp2-chip-v{font-size:.60rem!important;}
+  .pp2-chip-stake .pp2-chip-v.is-long{font-size:.54rem!important;}
+}
+</style>
+<script id="q-ultimate-chipfit-and-coinrain">
+(function(){
+  function syncRiskRewardChipText(){
+    document.querySelectorAll('.pp2-chip-stake .pp2-chip-v').forEach(function(el){
+      var txt=(el.textContent||'').trim();
+      var digits=txt.replace(/[^0-9]/g,'');
+      el.classList.toggle('is-long', digits.length >= 4 || txt.length >= 6);
+    });
+  }
+  syncRiskRewardChipText();
+  var mo = new MutationObserver(syncRiskRewardChipText);
+  document.querySelectorAll('.pp2-chip-stake .pp2-chip-v').forEach(function(el){
+    mo.observe(el,{childList:true,characterData:true,subtree:true});
+  });
+
+  function enhancedCoinRain(panel){
+    if(!panel) return;
+    var rain = panel.querySelector('.ls-coin-rain');
+    if(!rain){
+      rain = document.createElement('div');
+      rain.className = 'ls-coin-rain';
+      panel.appendChild(rain);
+    }
+    rain.innerHTML='';
+    var count = 24;
+    for(var i=0;i<count;i++){
+      var c = document.createElement('span');
+      c.className='ls-coin-drop';
+      c.style.left=(4 + Math.random()*92).toFixed(1)+'%';
+      c.style.animationDelay=(Math.random()*0.34).toFixed(2)+'s';
+      c.style.animationDuration=(1.0 + Math.random()*0.55).toFixed(2)+'s';
+      rain.appendChild(c);
+    }
+    setTimeout(function(){ if(rain) rain.innerHTML=''; }, 1900);
+  }
+
+  document.addEventListener('click', function(e){
+    var target = e.target.closest && e.target.closest('.ls-odds-panel, .ls-leg-click');
+    if(!target) return;
+    var panel = target.closest('.ls-card');
+    if(!panel) return;
+    var oddsPanel = panel.querySelector('.ls-odds-panel');
+    if(oddsPanel) enhancedCoinRain(oddsPanel);
+  }, true);
+})();
+</script>
+
+<style id="q-wager-showcase-fit-final">
+/* Bigger base size for the stake chip / stepper / payout — only the chip itself (not the
+   layout) shrinks, and only once the wager hits 4+ digits ($1,000+), preserving its
+   circular aspect ratio rather than squeezing text into a fixed-size circle. */
+.pp2-rr-showcase{
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:12px!important;
+  width:100%!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+  padding:24px 10px 16px!important;
+  overflow:visible!important;
+}
+.pp2-stake{min-width:160px!important;max-width:160px!important;flex-shrink:0!important;}
+.pp2-stake-row{width:160px!important;gap:10px!important;justify-content:center!important;}
+.pp2-stepbtn{width:30px!important;height:30px!important;min-width:30px!important;border-radius:8px!important;font-size:.95rem!important;line-height:1!important;}
+
+/* base (short) chip size */
+.pp2-chip-stake{width:88px!important;height:88px!important;flex-shrink:0!important;transition:width .25s ease,height .25s ease;}
+.pp2-chip-stake::before{inset:16px!important;transition:inset .25s ease;}
+.pp2-chip-stake .pp2-chip-in{inset:20px!important;padding:0 3px!important;transition:inset .25s ease;}
+.pp2-chip-stake .pp2-chip-v{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  width:100%!important;max-width:100%!important;overflow:visible!important;white-space:nowrap!important;
+  font-size:.92rem!important;letter-spacing:-.02em!important;transform:none!important;padding:0!important;
+}
+.pp2-chip-stake .pp2-chip-v.is-long{font-size:.68rem!important;letter-spacing:-.04em!important;}
+
+/* once the value is 4+ digits, shrink the whole chip proportionally (same aspect ratio) */
+.pp2-chip-stake:has(.pp2-chip-v.is-long){width:76px!important;height:76px!important;}
+.pp2-chip-stake:has(.pp2-chip-v.is-long)::before{inset:14px!important;}
+.pp2-chip-stake:has(.pp2-chip-v.is-long) .pp2-chip-in{inset:17px!important;}
+
+.pp2-rr-arrowtxt{font-size:1rem!important;flex-shrink:0!important;}
+.pp2-rr-num{min-width:104px!important;flex-shrink:0!important;}
+.pp2-rr-arrow{font-size:.5rem!important;}
+.pp2-rr-big{font-size:1.5rem!important;letter-spacing:-.03em!important;}
+.pp2-rr-cap{font-size:.46rem!important;}
+@media(max-width:460px){
+  .pp2-rr-showcase{flex-wrap:wrap!important;gap:10px!important;}
+}
+
+</style>
+
+<style id="q-glass-translucency-pass">
+/* Softer, more translucent glass for the top stat cards (Live Games / Positive EV /
+   Consensus / Volatility) and the consensus tracker — the moving white sheen was too harsh. */
+.hero-stat-card,
+.lg-consensus,
+.ct-wrap{
+  background:linear-gradient(145deg,rgba(255,255,255,.07) 0%,rgba(255,255,255,.025) 40%,rgba(9,14,24,.22) 100%)!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  backdrop-filter:blur(38px) saturate(1.15)!important;
+  -webkit-backdrop-filter:blur(38px) saturate(1.15)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.16),
+    inset 0 -1px 0 rgba(255,255,255,.02),
+    0 16px 38px rgba(0,0,0,.14),
+    0 0 0 1px rgba(255,255,255,.02)
+  !important;
+}
+.hero-stat-card::before,
+.lg-consensus-before{
+  background:linear-gradient(130deg,rgba(255,255,255,.08) 0%,rgba(255,255,255,.02) 36%,transparent 76%)!important;
+}
+.hero-stat-card::after,
+.lg-consensus-sheen{
+  opacity:.30!important;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent)!important;
+}
+</style>
 
 </body>
 </html>

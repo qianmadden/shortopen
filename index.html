@@ -8,7 +8,7 @@
 <script src="https://cdn.tailwindcss.com?plugins="></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{--bg:#05070b;--gold:#f4b942;--green:#3fc17a;--red:#ef4444;--blue:#57a7ff;--muted:#738296;--text:#e8edf5;}
 *{box-sizing:border-box}
@@ -128,7 +128,7 @@ body{padding-top:62px;margin:0;background:
   }
   @media (max-width: 768px) {
     /* Weekly stat card — shrink "Weekly" text so it doesn't overflow */
-    .grid.grid-cols-3 .text-3xl { font-size: 1.4rem !important; }
+    .grid.grid-cols-3 .text-3xl, .grid.grid-cols-3 .pop-num { font-size: 1.32rem !important; }
     /* Subscribe form — stack input and button vertically */
     form.flex { flex-direction: column !important; }
     form.flex input { border-radius: 1rem !important; margin-bottom: 8px; }
@@ -136,6 +136,44 @@ body{padding-top:62px;margin:0;background:
     /* Subscribe section right column padding */
     .border-l { border-left: none !important; border-top: 1px solid rgba(255,255,255,.05); }
   }
+
+
+  /* ===== shortopen shared footer (matches market.html exactly) ===== */
+  footer.so-footer {
+    border-top: 1px solid #1a2535;
+    background: rgba(5,7,11,0.8);
+    padding: 32px 48px 26px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+  .so-footer .footer-top { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+  .so-footer .footer-logo { font-family:'Inter',sans-serif; font-weight:900; font-size:1rem; color:#f0ece4; letter-spacing:-0.02em; }
+  .so-footer .footer-logo span { color:#e8a020; }
+  .so-footer .footer-copy { font-family:'DM Sans',sans-serif; font-weight:300; font-size:0.75rem; color:#4d6070; letter-spacing:0.06em; }
+  .so-footer .footer-disclaimer { font-family:'DM Sans',sans-serif; font-weight:300; font-size:.62rem; line-height:1.65; color:rgba(255,255,255,.24); letter-spacing:.01em;
+    max-width:980px; border-top:1px solid rgba(255,255,255,.06); padding-top:14px; text-align:left; }
+  @media (max-width:900px) {
+    footer.so-footer { padding:24px 20px 22px; gap:14px; }
+    .so-footer .footer-top { flex-direction:column; gap:12px; text-align:center; }
+  }
+
+  /* ===================== POP STAT CARDS ===================== */
+  .pop-card{position:relative}
+  .pop-glow{position:absolute;top:-34px;right:-30px;width:120px;height:120px;border-radius:50%;filter:blur(34px);opacity:.4;pointer-events:none;transition:opacity .35s ease,transform .35s ease;z-index:0}
+  .pop-card:hover .pop-glow{opacity:.75;transform:scale(1.18)}
+  .pop-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;position:relative;z-index:1}
+  .pop-num{font-size:2.1rem;font-weight:900;line-height:1;position:relative;z-index:1}
+  .pop-card .relative-z{position:relative;z-index:1}
+
+  /* ===================== WHO WE ARE ENHANCEMENTS ===================== */
+  .who-mark{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;overflow:hidden;background:linear-gradient(155deg,rgba(244,185,66,.18),rgba(244,185,66,.03));border:1px solid rgba(244,185,66,.25)}
+  .who-mark::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(120deg,transparent 35%,rgba(255,255,255,.22) 50%,transparent 65%);animation:sheen2 5s ease-in-out infinite}
+  @keyframes sheen2{0%,100%{transform:translateX(-55%) rotate(8deg)}50%{transform:translateX(55%) rotate(8deg)}}
+  .tile-pop{position:relative;overflow:hidden;transition:.3s ease}
+  .tile-pop:hover{border-color:rgba(244,185,66,.32);transform:translateY(-2px)}
+  .tile-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:9px}
 
 </style>
 </head>
@@ -194,30 +232,47 @@ body{padding-top:62px;margin:0;background:
 
         <!-- STAT ROW -->
         <div class="grid grid-cols-3 gap-4 mt-12 max-w-xl">
-          <div class="glass rounded-[24px] p-5 market-card text-center">
-            <div class="text-xs uppercase tracking-[.2em] text-zinc-500 mb-2">Leagues</div>
-            <div class="text-3xl font-black">3+</div>
-            <div class="text-xs text-zinc-500 mt-1">Covered</div>
+          <div class="glass rounded-[24px] p-5 market-card pop-card text-center">
+            <div class="pop-glow" style="background:rgba(87,167,255,.6)"></div>
+            <div class="pop-icon relative-z" style="background:rgba(87,167,255,.14);color:#57a7ff">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 4.9-9 4.9-9-4.9z"/><path d="M3 12.1l9 4.9 9-4.9"/><path d="M3 17.1l9 4.9 9-4.9"/></svg>
+            </div>
+            <div class="text-xs uppercase tracking-[.2em] text-zinc-500 mb-2 relative-z">Leagues</div>
+            <div class="pop-num relative-z"><span class="count-up" data-target="3">0</span>+</div>
+            <div class="text-xs text-zinc-500 mt-1 relative-z">Covered</div>
           </div>
-          <div class="glass rounded-[24px] p-5 market-card text-center">
-            <div class="text-xs uppercase tracking-[.2em] text-zinc-500 mb-2">Drops</div>
-            <div class="text-3xl font-black" style="color:var(--gold)">Weekly</div>
-            <div class="text-xs text-zinc-500 mt-1">Analysis</div>
+          <div class="glass rounded-[24px] p-5 market-card pop-card text-center">
+            <div class="pop-glow" style="background:rgba(244,185,66,.6)"></div>
+            <div class="pop-icon relative-z" style="background:rgba(244,185,66,.14);color:var(--gold)">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg>
+            </div>
+            <div class="text-xs uppercase tracking-[.2em] text-zinc-500 mb-2 relative-z">Drops</div>
+            <div class="pop-num relative-z" style="color:var(--gold)">Weekly</div>
+            <div class="text-xs text-zinc-500 mt-1 relative-z">Analysis</div>
           </div>
-          <div class="glass rounded-[24px] p-5 market-card text-center">
-            <div class="text-xs uppercase tracking-[.2em] text-zinc-500 mb-2">Always</div>
-            <div class="text-3xl font-black text-emerald-400">100%</div>
-            <div class="text-xs text-zinc-500 mt-1">Independent</div>
+          <div class="glass rounded-[24px] p-5 market-card pop-card text-center">
+            <div class="pop-glow" style="background:rgba(63,193,122,.6)"></div>
+            <div class="pop-icon relative-z" style="background:rgba(63,193,122,.14);color:#3fc17a">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 3.5v6c0 5-3.4 8.3-8 10.5-4.6-2.2-8-5.5-8-10.5v-6z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>
+            </div>
+            <div class="text-xs uppercase tracking-[.2em] text-zinc-500 mb-2 relative-z">Always</div>
+            <div class="pop-num relative-z text-emerald-400"><span class="count-up" data-target="100">0</span>%</div>
+            <div class="text-xs text-zinc-500 mt-1 relative-z">Independent</div>
           </div>
         </div>
       </div>
 
       <!-- RIGHT — Who We Are card -->
-      <div class="glass rounded-[36px] p-8">
+      <div class="glass rounded-[36px] p-8 market-card">
         <div class="flex items-center justify-between border-b border-white/10 pb-5 mb-7">
-          <div>
-            <div class="text-xs uppercase tracking-[.22em] text-zinc-500 mb-1">Who We Are</div>
-            <div class="text-2xl font-black">Built by a bettor.<br><span style="color:var(--gold)">Open to everyone.</span></div>
+          <div class="flex items-center gap-4">
+            <div class="who-mark">
+              <span style="position:relative;z-index:1;font-family:'Inter',sans-serif;font-weight:900;font-size:1.05rem;letter-spacing:-.02em;color:var(--gold)">SO</span>
+            </div>
+            <div>
+              <div class="text-xs uppercase tracking-[.22em] text-zinc-500 mb-1">Who We Are</div>
+              <div class="text-2xl font-black">Built by a bettor.<br><span style="color:var(--gold)">Open to everyone.</span></div>
+            </div>
           </div>
           <div class="rounded-full px-4 py-2 text-xs uppercase tracking-[.2em]" style="background:rgba(244,185,66,.1);color:var(--gold)">shortopen</div>
         </div>
@@ -227,11 +282,17 @@ body{padding-top:62px;margin:0;background:
           <p>A million dollar bankroll can always use a second set of eyes. That's exactly what Short Open is — <strong class="text-white">no experience required, no bankroll minimum.</strong></p>
         </div>
         <div class="grid grid-cols-2 gap-3">
-          <div class="rounded-[16px] border border-white/10 bg-black/20 p-4">
+          <div class="rounded-[16px] border border-white/10 bg-black/20 p-4 tile-pop">
+            <div class="tile-icon" style="background:rgba(87,167,255,.14);color:#57a7ff">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
+            </div>
             <div class="text-xs uppercase tracking-[.14em] text-zinc-500 mb-1">Data First</div>
             <div class="text-lg font-black">Always.</div>
           </div>
-          <div class="rounded-[16px] border border-white/10 bg-black/20 p-4">
+          <div class="rounded-[16px] border border-white/10 bg-black/20 p-4 tile-pop">
+            <div class="tile-icon" style="background:rgba(63,193,122,.14);color:#3fc17a">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.4-2"/></svg>
+            </div>
             <div class="text-xs uppercase tracking-[.14em] text-zinc-500 mb-1">Access</div>
             <div class="text-lg font-black text-emerald-400">Free Now</div>
           </div>
@@ -339,9 +400,12 @@ body{padding-top:62px;margin:0;background:
   </div>
 </section>
 
-<footer class="border-t border-white/5 px-6 xl:px-10 py-10 flex items-center justify-between max-w-[1600px] mx-auto">
-  <div class="text-xl font-black tracking-tight">short<span style="color:var(--gold)">open</span></div>
-  <p class="text-xs uppercase tracking-[.12em] text-zinc-600">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+<footer class="so-footer">
+  <div class="footer-top">
+    <div class="footer-logo">short<span>open</span></div>
+    <p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+  </div>
+  <p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, and payout or "you'd earn" calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only — they are not betting advice and do not represent a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, or operate as a sportsbook; any wagering is done independently and at your own discretion through a licensed third-party operator in your jurisdiction. Model estimates are not guarantees of outcome. You must be of legal gambling age in your jurisdiction. If you or someone you know has a gambling problem, call 1-800-GAMBLER.</p>
 </footer>
 
 <script>
@@ -359,6 +423,25 @@ function toggleMobileMenu(){const m=document.getElementById("mobileMenu");const 
 // Scroll fade-in
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}})},{threshold:0.08});
 document.querySelectorAll('.glass').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(18px)';el.style.transition='opacity 0.55s ease,transform 0.55s ease';obs.observe(el)});
+
+// Count-up animation for stat numbers
+const countObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting) return;
+    const el=e.target, target=parseInt(el.dataset.target,10);
+    if(el.dataset.done) return;
+    el.dataset.done='1';
+    const dur=900, start=performance.now();
+    function tick(now){
+      const p=Math.min((now-start)/dur,1);
+      el.textContent=Math.round(target*(1-Math.pow(1-p,3)));
+      if(p<1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+    countObs.unobserve(el);
+  });
+},{threshold:0.4});
+document.querySelectorAll('.count-up').forEach(el=>countObs.observe(el));
 </script>
 </body>
 </html>

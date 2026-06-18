@@ -8,7 +8,7 @@
 <script src="https://cdn.tailwindcss.com?plugins="></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{--bg:#05070b;--gold:#f4b942;--green:#3fc17a;--red:#ef4444;--muted:#738296;--text:#e8edf5;}
 *{box-sizing:border-box}
@@ -107,6 +107,73 @@ body{margin:0;background:radial-gradient(circle at 5% 10%,rgba(244,185,66,.12),t
     .nav-links { display: none !important; }
     .hamburger { display: flex; }
   }
+
+  /* ===== shortopen shared footer (matches market.html exactly) ===== */
+  footer.so-footer {
+    border-top: 1px solid #1a2535;
+    background: rgba(5,7,11,0.8);
+    padding: 32px 48px 26px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+  .so-footer .footer-top { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+  .so-footer .footer-logo { font-family:'Inter',sans-serif; font-weight:900; font-size:1rem; color:#f0ece4; letter-spacing:-0.02em; }
+  .so-footer .footer-logo span { color:#e8a020; }
+  .so-footer .footer-copy { font-family:'DM Sans',sans-serif; font-weight:300; font-size:0.75rem; color:#4d6070; letter-spacing:0.06em; }
+  .so-footer .footer-disclaimer { font-family:'DM Sans',sans-serif; font-weight:300; font-size:.62rem; line-height:1.65; color:rgba(255,255,255,.24); letter-spacing:.01em;
+    max-width:980px; border-top:1px solid rgba(255,255,255,.06); padding-top:14px; text-align:left; }
+  @media (max-width:900px) {
+    footer.so-footer { padding:24px 20px 22px; gap:14px; }
+    .so-footer .footer-top { flex-direction:column; gap:12px; text-align:center; }
+  }
+
+  /* ===================== LIQUID GLASS SYSTEM ===================== */
+  .liquid-field{position:relative;isolation:isolate}
+  .liquid-blob{position:absolute;border-radius:42% 58% 65% 35%/45% 40% 60% 55%;filter:blur(54px);pointer-events:none;will-change:transform,border-radius;z-index:0}
+  .blob-gold{background:radial-gradient(circle at 32% 32%,rgba(244,185,66,.55),transparent 72%);animation:blobMove1 17s ease-in-out infinite}
+  .blob-green{background:radial-gradient(circle at 68% 68%,rgba(63,193,122,.42),transparent 72%);animation:blobMove2 20s ease-in-out infinite}
+  .blob-blue{background:radial-gradient(circle at 50% 50%,rgba(87,167,255,.38),transparent 72%);animation:blobMove3 15s ease-in-out infinite}
+  .blob-red{background:radial-gradient(circle at 50% 50%,rgba(239,68,68,.3),transparent 72%);animation:blobMove2 18s ease-in-out infinite reverse}
+  @keyframes blobMove1{0%,100%{transform:translate(0,0) scale(1);border-radius:42% 58% 65% 35%/45% 40% 60% 55%}50%{transform:translate(50px,-35px) scale(1.1);border-radius:58% 42% 40% 60%/55% 60% 40% 45%}}
+  @keyframes blobMove2{0%,100%{transform:translate(0,0) scale(1);border-radius:50% 50% 38% 62%/40% 62% 38% 60%}50%{transform:translate(-40px,30px) scale(1.06);border-radius:38% 62% 55% 45%/60% 45% 55% 40%}}
+  @keyframes blobMove3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(28px,38px) scale(.93)}}
+
+  .glass-liquid{position:relative;background:linear-gradient(155deg,rgba(255,255,255,.09),rgba(255,255,255,.02) 55%,rgba(255,255,255,.05));backdrop-filter:blur(28px) saturate(150%);-webkit-backdrop-filter:blur(28px) saturate(150%);border:1px solid rgba(255,255,255,.14);box-shadow:0 10px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.18),inset 0 -1px 14px rgba(0,0,0,.25);overflow:hidden;z-index:1;transition:transform .4s ease,box-shadow .4s ease,border-color .4s ease}
+  .glass-liquid::before{content:'';position:absolute;top:-60%;left:-30%;width:160%;height:80%;background:linear-gradient(115deg,transparent 32%,rgba(255,255,255,.14) 48%,transparent 64%);transform:rotate(6deg) translateX(-45%);animation:sheen 8s ease-in-out infinite;pointer-events:none}
+  @keyframes sheen{0%,100%{transform:rotate(6deg) translateX(-50%)}50%{transform:rotate(6deg) translateX(50%)}}
+  .glass-liquid::after{content:'';position:absolute;inset:0;border-radius:inherit;background:radial-gradient(circle at var(--mx,50%) var(--my,20%),rgba(255,255,255,.14),transparent 60%);opacity:0;transition:opacity .35s ease;pointer-events:none}
+  .glass-liquid:hover::after{opacity:1}
+  .glass-liquid:hover{transform:translateY(-3px);border-color:rgba(244,185,66,.3);box-shadow:0 18px 54px rgba(0,0,0,.5),0 0 0 1px rgba(244,185,66,.15),inset 0 1px 0 rgba(255,255,255,.22)}
+
+  .float-slow{animation:floatY 6.5s ease-in-out infinite}
+  .float-slow.d1{animation-delay:1.1s}.float-slow.d2{animation-delay:2.3s}.float-slow.d3{animation-delay:.5s}.float-slow.d4{animation-delay:1.7s}
+  @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+  .matchup-row{position:relative}
+  .vs-badge{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:conic-gradient(from 0deg,rgba(63,193,122,.9) 0%,rgba(5,7,11,.95) 25%,rgba(63,193,122,.9) 50%,rgba(5,7,11,.95) 75%,rgba(63,193,122,.9) 100%);animation:spinSlow 9s linear infinite;box-shadow:0 0 12px rgba(63,193,122,.25)}
+  .vs-badge span{background:#0a0c10;width:25px;height:25px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#3fc17a;font-size:.56rem;font-weight:800;letter-spacing:.02em}
+  @keyframes spinSlow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+  .col-icon{width:24px;height:24px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.2,.7,.3,1),transform .6s cubic-bezier(.2,.7,.3,1)}
+  .reveal.in{opacity:1;transform:translateY(0)}
+
+  .quote-mark{font-family:'Inter',sans-serif;font-size:5rem;line-height:1;font-weight:900;color:rgba(244,185,66,.18);position:absolute;top:-18px;left:-6px;pointer-events:none;user-select:none}
+
+  .tug-wrap{position:relative;height:16px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden;border:1px solid rgba(255,255,255,.1)}
+  .tug-l{position:absolute;left:0;top:0;bottom:0;border-radius:999px 0 0 999px;background:linear-gradient(90deg,rgba(63,193,122,.9),rgba(63,193,122,.45));animation:tugL 6s ease-in-out infinite}
+  .tug-r{position:absolute;right:0;top:0;bottom:0;border-radius:0 999px 999px 0;background:linear-gradient(270deg,rgba(239,68,68,.9),rgba(239,68,68,.45));animation:tugR 6s ease-in-out infinite}
+  @keyframes tugL{0%,100%{width:40%}50%{width:58%}}
+  @keyframes tugR{0%,100%{width:60%}50%{width:42%}}
+
+  .flow-node{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.78rem;flex-shrink:0;position:relative;z-index:1;border:1px solid rgba(244,185,66,.45);background:rgba(244,185,66,.1);color:var(--gold);text-align:center;letter-spacing:.02em}
+  .flow-line{flex:1;height:2px;background:rgba(255,255,255,.08);position:relative;overflow:hidden;margin:23px -1px 0}
+  .flow-line::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--gold),rgba(244,185,66,.25));width:0;transition:width 1.1s cubic-bezier(.2,.7,.3,1)}
+  .flow-line.in::after{width:100%}
+  .why-card{position:relative;transition:.35s ease}
+  .why-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
 </style>
 </head>
 <body>
@@ -141,10 +208,14 @@ body{margin:0;background:radial-gradient(circle at 5% 10%,rgba(244,185,66,.12),t
   <a href="subscribe.html" onclick="toggleMobileMenu()">Subscribe</a>
 </div>
 
-<section class="relative overflow-hidden border-b border-white/5">
+<section class="relative overflow-hidden border-b border-white/5 liquid-field">
   <div class="hero-glow"></div>
   <div style="position:absolute;width:400px;height:400px;border-radius:9999px;background:rgba(59,130,246,.07);filter:blur(100px);bottom:-120px;left:-80px;pointer-events:none"></div>
   <div style="position:absolute;width:300px;height:300px;border-radius:9999px;background:rgba(34,197,94,.05);filter:blur(80px);top:40%;right:10%;pointer-events:none"></div>
+  <!-- liquid blobs that drift behind the glass cards -->
+  <div class="liquid-blob blob-gold" style="width:340px;height:340px;top:60px;right:280px"></div>
+  <div class="liquid-blob blob-green" style="width:300px;height:300px;top:420px;right:60px"></div>
+  <div class="liquid-blob blob-blue" style="width:260px;height:260px;top:680px;right:380px"></div>
   <div class="max-w-[1600px] mx-auto px-6 xl:px-10 py-20 relative z-10">
     <div class="grid xl:grid-cols-[1.1fr_.9fr] gap-16 items-start">
       <!-- LEFT -->
@@ -157,13 +228,13 @@ body{margin:0;background:radial-gradient(circle at 5% 10%,rgba(244,185,66,.12),t
         </h1>
         <!-- Name breakdown -->
         <div class="grid md:grid-cols-2 gap-4 mb-10">
-          <div class="glass rounded-[28px] p-7 market-card">
+          <div class="glass-liquid rounded-[28px] p-7 reveal">
             <div class="text-xs uppercase tracking-[.22em] text-zinc-500 mb-2">verb · markets &amp; betting</div>
             <div class="text-3xl font-black mb-4">short</div>
             <div class="text-sm text-zinc-500 uppercase tracking-[.14em] mb-3" style="color:var(--gold)">fade the consensus</div>
             <p class="text-sm text-zinc-400 leading-7">In financial markets, to <strong class="text-white">short</strong> is to bet against the crowd — to position yourself to profit when the consensus is wrong. In sports betting, the instinct is identical: find where public money has inflated a line past its true value, and fade it. The house doesn't beat most bettors. Groupthink does.</p>
           </div>
-          <div class="glass rounded-[28px] p-7 market-card">
+          <div class="glass-liquid rounded-[28px] p-7 reveal">
             <div class="text-xs uppercase tracking-[.22em] text-zinc-500 mb-2">noun · betting markets</div>
             <div class="text-3xl font-black mb-4" style="color:var(--gold)">open</div>
             <div class="text-sm text-zinc-500 uppercase tracking-[.14em] mb-3" style="color:var(--gold)">know the line first</div>
@@ -171,83 +242,189 @@ body{margin:0;background:radial-gradient(circle at 5% 10%,rgba(244,185,66,.12),t
           </div>
         </div>
       </div>
-      <!-- RIGHT -->
-      <div class="glass rounded-[36px] p-7">
+      <!-- RIGHT — Two Markets, One Mindset (liquid glass) -->
+      <div class="glass-liquid rounded-[36px] p-7 reveal">
         <div class="flex items-center justify-between border-b border-white/10 pb-5">
           <div><div class="text-xs uppercase tracking-[.22em] text-zinc-500">Two Markets</div><div class="mt-2 text-3xl font-black">One Mindset.</div></div>
-          <div class="rounded-full px-4 py-2 text-xs uppercase tracking-[.2em]" style="background:rgba(244,185,66,.1);color:var(--gold)">shortopen</div>
+          <div class="rounded-full px-4 py-2 text-xs uppercase tracking-[.2em] float-slow" style="background:rgba(244,185,66,.1);color:var(--gold)">shortopen</div>
         </div>
         <div class="mt-6 space-y-3">
-          <!-- Row -->
-          <div class="rounded-[20px] border border-white/10 bg-black/20 p-5 market-card">
-            <div class="text-xs uppercase tracking-[.14em] text-zinc-600 mb-3">The Move</div>
+
+          <!-- Row: The Move -->
+          <div class="rounded-[20px] border border-white/10 bg-black/20 p-5 market-card matchup-row float-slow d1">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-xs uppercase tracking-[.14em] text-zinc-500">The Move</div>
+              <div class="vs-badge"><span>VS</span></div>
+            </div>
             <div class="grid grid-cols-2 gap-3">
-              <div><div class="text-xs text-zinc-500 mb-1">Financial</div><div class="text-sm font-semibold text-white">Short a stock — bet against an overvalued consensus</div></div>
-              <div><div class="text-xs text-zinc-500 mb-1">Sports</div><div class="text-sm font-semibold text-white">Fade the public — bet against an inflated favorite</div></div>
+              <div class="flex items-start gap-2.5">
+                <div class="col-icon" style="background:rgba(87,167,255,.12);color:#57a7ff">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 17l5-5 4 4 8-9"/><path d="M15 7h6v6"/></svg>
+                </div>
+                <div><div class="text-xs text-zinc-500 mb-1">Financial</div><div class="text-sm font-semibold text-white">Short a stock — bet against an overvalued consensus</div></div>
+              </div>
+              <div class="flex items-start gap-2.5">
+                <div class="col-icon" style="background:rgba(244,185,66,.12);color:var(--gold)">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+                </div>
+                <div><div class="text-xs text-zinc-500 mb-1">Sports</div><div class="text-sm font-semibold text-white">Fade the public — bet against an inflated favorite</div></div>
+              </div>
             </div>
           </div>
-          <div class="rounded-[20px] border border-white/10 bg-black/20 p-5 market-card">
-            <div class="text-xs uppercase tracking-[.14em] text-zinc-600 mb-3">The Signal</div>
+
+          <!-- Row: The Signal -->
+          <div class="rounded-[20px] border border-white/10 bg-black/20 p-5 market-card matchup-row float-slow d2">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-xs uppercase tracking-[.14em] text-zinc-500">The Signal</div>
+              <div class="vs-badge"><span>VS</span></div>
+            </div>
             <div class="grid grid-cols-2 gap-3">
-              <div><div class="text-xs text-zinc-500 mb-1">Financial</div><div class="text-sm font-semibold text-white">Price drifts from fair value on sentiment, not fundamentals</div></div>
-              <div><div class="text-xs text-zinc-500 mb-1">Sports</div><div class="text-sm font-semibold text-white">Line moves off the open on public money, not sharp action</div></div>
+              <div class="flex items-start gap-2.5">
+                <div class="col-icon" style="background:rgba(87,167,255,.12);color:#57a7ff">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 17l5-5 4 4 8-9"/><path d="M15 7h6v6"/></svg>
+                </div>
+                <div><div class="text-xs text-zinc-500 mb-1">Financial</div><div class="text-sm font-semibold text-white">Price drifts from fair value on sentiment, not fundamentals</div></div>
+              </div>
+              <div class="flex items-start gap-2.5">
+                <div class="col-icon" style="background:rgba(244,185,66,.12);color:var(--gold)">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+                </div>
+                <div><div class="text-xs text-zinc-500 mb-1">Sports</div><div class="text-sm font-semibold text-white">Line moves off the open on public money, not sharp action</div></div>
+              </div>
             </div>
           </div>
-          <div class="rounded-[20px] border border-white/10 bg-black/20 p-5 market-card">
-            <div class="text-xs uppercase tracking-[.14em] text-zinc-600 mb-3">The Edge</div>
+
+          <!-- Row: The Edge -->
+          <div class="rounded-[20px] border border-white/10 bg-black/20 p-5 market-card matchup-row float-slow d3">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-xs uppercase tracking-[.14em] text-zinc-500">The Edge</div>
+              <div class="vs-badge"><span>VS</span></div>
+            </div>
             <div class="grid grid-cols-2 gap-3">
-              <div><div class="text-xs text-zinc-500 mb-1">Financial</div><div class="text-sm font-semibold text-white">Research what the crowd ignores. Act before they catch up.</div></div>
-              <div><div class="text-xs text-zinc-500 mb-1">Sports</div><div class="text-sm font-semibold text-white">Know the open. Lock in value before the market prices it out.</div></div>
+              <div class="flex items-start gap-2.5">
+                <div class="col-icon" style="background:rgba(87,167,255,.12);color:#57a7ff">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 17l5-5 4 4 8-9"/><path d="M15 7h6v6"/></svg>
+                </div>
+                <div><div class="text-xs text-zinc-500 mb-1">Financial</div><div class="text-sm font-semibold text-white">Research what the crowd ignores. Act before they catch up.</div></div>
+              </div>
+              <div class="flex items-start gap-2.5">
+                <div class="col-icon" style="background:rgba(244,185,66,.12);color:var(--gold)">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+                </div>
+                <div><div class="text-xs text-zinc-500 mb-1">Sports</div><div class="text-sm font-semibold text-white">Know the open. Lock in value before the market prices it out.</div></div>
+              </div>
             </div>
           </div>
-          <div class="rounded-[20px] border border-white/10 bg-black/20 p-5 market-card">
-            <div class="text-xs uppercase tracking-[.14em] text-zinc-600 mb-3">The Discipline</div>
+
+          <!-- Row: The Discipline -->
+          <div class="rounded-[20px] border border-white/10 bg-black/20 p-5 market-card matchup-row float-slow d4">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-xs uppercase tracking-[.14em] text-zinc-500">The Discipline</div>
+              <div class="vs-badge"><span>VS</span></div>
+            </div>
             <div class="grid grid-cols-2 gap-3">
-              <div><div class="text-xs text-zinc-500 mb-1">Financial</div><div class="text-sm font-semibold text-white">Process over emotion. Sample size over single trades.</div></div>
-              <div><div class="text-xs text-zinc-500 mb-1">Sports</div><div class="text-sm font-semibold text-white">Process over picks. Long-term ROI over last night's result.</div></div>
+              <div class="flex items-start gap-2.5">
+                <div class="col-icon" style="background:rgba(87,167,255,.12);color:#57a7ff">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 17l5-5 4 4 8-9"/><path d="M15 7h6v6"/></svg>
+                </div>
+                <div><div class="text-xs text-zinc-500 mb-1">Financial</div><div class="text-sm font-semibold text-white">Process over emotion. Sample size over single trades.</div></div>
+              </div>
+              <div class="flex items-start gap-2.5">
+                <div class="col-icon" style="background:rgba(244,185,66,.12);color:var(--gold)">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+                </div>
+                <div><div class="text-xs text-zinc-500 mb-1">Sports</div><div class="text-sm font-semibold text-white">Process over picks. Long-term ROI over last night's result.</div></div>
+              </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PHILOSOPHY -->
-<section class="max-w-[1600px] mx-auto px-6 xl:px-10 py-16 border-b border-white/5">
-  <div class="grid xl:grid-cols-[1.2fr_.8fr] gap-14 items-start">
-    <div>
-      <div class="text-xs uppercase tracking-[.22em] mb-3" style="color:var(--gold)">Why It Matters</div>
-      <p class="text-2xl md:text-3xl font-black text-white leading-tight mb-8 max-w-2xl">The same forces that drive inefficiency in financial markets are alive in sports betting.</p>
-      <div class="space-y-5 text-zinc-400 text-base leading-8 max-w-2xl">
-        <p><strong class="text-white">Crowds push prices away from fair value.</strong> Public money piles into favorites, into star players on big stages, into narratives the media is already running. Lines shift. Value disappears. The people who got there first — who knew the open — already have their edge locked in.</p>
-        <p>We built Short Open around that intersection. <strong class="text-white">The discipline of financial market thinking applied to sports.</strong> Respect the data. Understand what the line is actually telling you. Recognize when the market is mispriced — and have the conviction to go the other direction.</p>
-        <p>That's shorting the consensus. That's knowing the open. That's the whole thing.</p>
+<!-- PHILOSOPHY / WHY IT MATTERS -->
+<section class="relative overflow-hidden max-w-[1600px] mx-auto px-6 xl:px-10 py-20 border-b border-white/5 liquid-field">
+  <div class="liquid-blob blob-gold" style="width:300px;height:300px;top:0px;left:-60px"></div>
+  <div class="liquid-blob blob-blue" style="width:280px;height:280px;top:340px;right:-40px"></div>
+  <div class="liquid-blob blob-green" style="width:240px;height:240px;bottom:0;left:30%"></div>
+
+  <div class="relative z-10">
+    <!-- Pull quote header -->
+    <div class="relative max-w-3xl mb-16 reveal">
+      <span class="quote-mark">&ldquo;</span>
+      <div class="text-xs uppercase tracking-[.22em] mb-4" style="color:var(--gold)">Why It Matters</div>
+      <p class="text-3xl md:text-[2.75rem] font-black text-white leading-[1.15]">The same forces that drive inefficiency in financial markets are <span style="background:linear-gradient(90deg,#f4b942,#fde68a);-webkit-background-clip:text;background-clip:text;color:transparent">alive in sports betting.</span></p>
+    </div>
+
+    <!-- Three supporting ideas as glass cards -->
+    <div class="grid md:grid-cols-3 gap-5 mb-12">
+      <div class="glass-liquid why-card rounded-[26px] p-7 reveal">
+        <div class="why-icon" style="background:rgba(239,68,68,.12);color:#ef4444">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        </div>
+        <div class="text-xs uppercase tracking-[.18em] text-zinc-500 mb-2">Crowd Behavior</div>
+        <h3 class="text-lg font-black text-white mb-3 leading-snug">Crowds push prices away from fair value.</h3>
+        <p class="text-sm text-zinc-400 leading-7">Public money piles into favorites, into star players on big stages, into narratives the media is already running. Lines shift. Value disappears. The people who got there first — who knew the open — already have their edge locked in.</p>
+      </div>
+      <div class="glass-liquid why-card rounded-[26px] p-7 reveal">
+        <div class="why-icon" style="background:rgba(244,185,66,.12);color:var(--gold)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        </div>
+        <div class="text-xs uppercase tracking-[.18em] text-zinc-500 mb-2">Our Discipline</div>
+        <h3 class="text-lg font-black text-white mb-3 leading-snug">The discipline of financial market thinking, applied to sports.</h3>
+        <p class="text-sm text-zinc-400 leading-7">We built Short Open around that intersection. Respect the data. Understand what the line is actually telling you. Recognize when the market is mispriced — and have the conviction to go the other direction.</p>
+      </div>
+      <div class="glass-liquid why-card rounded-[26px] p-7 reveal">
+        <div class="why-icon" style="background:rgba(63,193,122,.12);color:#3fc17a">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+        </div>
+        <div class="text-xs uppercase tracking-[.18em] text-zinc-500 mb-2">The Bottom Line</div>
+        <h3 class="text-lg font-black text-white mb-3 leading-snug">That's shorting the consensus. That's knowing the open.</h3>
+        <p class="text-sm text-zinc-400 leading-7">Two markets, one mindset. Fade the inflated narrative, arrive before the crowd does, and let process — not emotion — decide where the value is.</p>
       </div>
     </div>
-    <!-- Philosophy stat cards -->
-    <div class="space-y-4">
-      <div class="glass rounded-[24px] p-6 market-card">
+
+    <!-- Reality + Approach -->
+    <div class="grid md:grid-cols-2 gap-5">
+      <div class="glass-liquid rounded-[26px] p-7 reveal">
         <div class="text-xs uppercase tracking-[.22em] text-zinc-500 mb-2">The Reality</div>
-        <div class="text-2xl font-black mb-3">Lines move for two reasons.</div>
-        <div class="grid grid-cols-2 gap-3 mt-4">
+        <div class="text-2xl font-black mb-5">Lines move for two reasons.</div>
+        <div class="tug-wrap mb-4"><div class="tug-l"></div><div class="tug-r"></div></div>
+        <div class="grid grid-cols-2 gap-3">
           <div class="rounded-[16px] border border-white/10 bg-black/20 p-4 text-center">
-            <div class="text-3xl font-black text-emerald-400 mb-1">Sharp</div>
+            <div class="text-2xl font-black text-emerald-400 mb-1">Sharp</div>
             <div class="text-xs text-zinc-500 uppercase tracking-[.1em]">Real information</div>
           </div>
           <div class="rounded-[16px] border border-white/10 bg-black/20 p-4 text-center">
-            <div class="text-3xl font-black text-red-400 mb-1">Public</div>
+            <div class="text-2xl font-black text-red-400 mb-1">Public</div>
             <div class="text-xs text-zinc-500 uppercase tracking-[.1em]">Crowd behavior</div>
           </div>
         </div>
       </div>
-      <div class="glass rounded-[24px] p-6 market-card">
+
+      <div class="glass-liquid rounded-[26px] p-7 reveal">
         <div class="text-xs uppercase tracking-[.22em] text-zinc-500 mb-2">The Approach</div>
-        <div class="text-2xl font-black mb-4">Research. Respect. React.</div>
-        <div class="space-y-3">
-          <div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full" style="background:var(--gold)"></div><div class="text-sm text-zinc-300">Respect what the line is telling you</div></div>
-          <div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full" style="background:var(--gold)"></div><div class="text-sm text-zinc-300">Research what the crowd is ignoring</div></div>
-          <div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full" style="background:var(--gold)"></div><div class="text-sm text-zinc-300">React before the market closes the window</div></div>
+        <div class="text-2xl font-black mb-7">Research. Respect. React.</div>
+        <div class="flex items-start justify-between flow-track">
+          <div class="flex flex-col items-center text-center" style="width:30%">
+            <div class="flow-node">01</div>
+            <div class="text-[.7rem] uppercase tracking-[.1em] text-zinc-500 mt-3">Research</div>
+            <div class="text-xs text-zinc-400 mt-1 leading-5">What the crowd is ignoring</div>
+          </div>
+          <div class="flow-line"></div>
+          <div class="flex flex-col items-center text-center" style="width:30%">
+            <div class="flow-node">02</div>
+            <div class="text-[.7rem] uppercase tracking-[.1em] text-zinc-500 mt-3">Respect</div>
+            <div class="text-xs text-zinc-400 mt-1 leading-5">What the line is telling you</div>
+          </div>
+          <div class="flow-line"></div>
+          <div class="flex flex-col items-center text-center" style="width:30%">
+            <div class="flow-node">03</div>
+            <div class="text-[.7rem] uppercase tracking-[.1em] text-zinc-500 mt-3">React</div>
+            <div class="text-xs text-zinc-400 mt-1 leading-5">Before the window closes</div>
+          </div>
         </div>
       </div>
     </div>
@@ -283,9 +460,12 @@ body{margin:0;background:radial-gradient(circle at 5% 10%,rgba(244,185,66,.12),t
   </div>
 </section>
 
-<footer class="border-t border-white/5 px-6 xl:px-10 py-10 flex items-center justify-between max-w-[1600px] mx-auto">
-  <div class="text-xl font-black tracking-tight">short<span style="color:var(--gold)">open</span></div>
-  <p class="text-xs uppercase tracking-[.12em] text-zinc-600">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+<footer class="so-footer">
+  <div class="footer-top">
+    <div class="footer-logo">short<span>open</span></div>
+    <p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+  </div>
+  <p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, and payout or "you'd earn" calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only — they are not betting advice and do not represent a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, or operate as a sportsbook; any wagering is done independently and at your own discretion through a licensed third-party operator in your jurisdiction. Model estimates are not guarantees of outcome. You must be of legal gambling age in your jurisdiction. If you or someone you know has a gambling problem, call 1-800-GAMBLER.</p>
 </footer>
 
 <script>
@@ -296,6 +476,24 @@ function toggleMobileMenu() {
   btn.classList.toggle('open');
   document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
 }
+
+// Scroll-triggered reveal for cards + flow connector lines
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal, .flow-line').forEach((el, i) => {
+  el.style.transitionDelay = (i % 6) * 70 + 'ms';
+  revealObs.observe(el);
+});
+
+// Liquid glass — mouse-tracked specular highlight
+document.querySelectorAll('.glass-liquid').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+    card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+  });
+});
 </script>
 </body>
 </html>
