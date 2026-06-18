@@ -953,6 +953,314 @@ th.th-active { color: #ffd36b !important; }
     .so-footer .footer-top { flex-direction:column; gap:12px; text-align:center; }
   }
 
+
+
+/* ═══════════════════════════════════════════════
+   HR INDEX — STAT BOARD REWORK
+   Reworks the main stats presentation only; sidebar model remains intact.
+═══════════════════════════════════════════════ */
+.main{position:relative;z-index:1;padding:22px 24px 28px;}
+.stats-command{
+  display:grid;
+  grid-template-columns:minmax(240px,1.6fr) repeat(3,minmax(150px,1fr));
+  gap:12px;
+  margin:0 0 14px;
+}
+.cmd-card{
+  position:relative;
+  overflow:hidden;
+  min-height:92px;
+  border-radius:18px;
+  padding:15px 16px;
+  background:
+    radial-gradient(circle at 10% 0%,rgba(244,185,66,.12),transparent 42%),
+    linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+  border:1px solid rgba(244,185,66,.16);
+  box-shadow:0 14px 36px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.06);
+}
+.cmd-card::after{
+  content:'';
+  position:absolute;
+  inset:auto 14px 0 14px;
+  height:2px;
+  background:linear-gradient(90deg,transparent,rgba(244,185,66,.72),transparent);
+  opacity:.7;
+}
+.cmd-card-primary{
+  background:
+    radial-gradient(circle at 0% 0%,rgba(34,197,94,.16),transparent 45%),
+    radial-gradient(circle at 100% 30%,rgba(244,185,66,.12),transparent 40%),
+    linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.018));
+}
+.cmd-kicker{
+  font-family:'DM Mono',monospace;
+  font-size:.61rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:#a89051;
+  margin-bottom:8px;
+}
+.cmd-main{
+  font-size:clamp(1.1rem,2vw,1.55rem);
+  font-weight:900;
+  line-height:1.05;
+  letter-spacing:-.04em;
+  color:#fff7e6;
+}
+.cmd-sub{
+  margin-top:7px;
+  font-family:'DM Mono',monospace;
+  font-size:.68rem;
+  color:#77889a;
+}
+.table-wrap{
+  border-radius:20px !important;
+  overflow:auto;
+}
+table{border-collapse:separate;border-spacing:0 8px;min-width:1120px;padding:8px 10px 12px;}
+thead tr{background:transparent!important;}
+th{
+  position:sticky;
+  top:0;
+  z-index:4;
+  padding:10px 12px !important;
+  background:rgba(6,10,16,.94);
+  backdrop-filter:blur(18px);
+  border-top:1px solid rgba(244,185,66,.16);
+  border-bottom:1px solid rgba(244,185,66,.18) !important;
+}
+th:first-child{border-radius:12px 0 0 12px;}
+th:last-child{border-radius:0 12px 12px 0;}
+tbody tr{
+  border:0!important;
+  transform:none!important;
+  transition:filter .18s ease, transform .18s ease, background .18s ease;
+}
+tbody tr:hover{filter:brightness(1.12);transform:translateY(-1px)!important;}
+tbody tr::after{display:none!important;}
+td{
+  padding:12px 12px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
+  border-top:1px solid rgba(255,255,255,.055);
+  border-bottom:1px solid rgba(0,0,0,.32);
+}
+td:first-child{
+  border-left:1px solid rgba(244,185,66,.12);
+  border-radius:16px 0 0 16px;
+}
+td:last-child{
+  border-right:1px solid rgba(244,185,66,.12);
+  border-radius:0 16px 16px 0;
+}
+#tbody tr.sel td{
+  background:linear-gradient(180deg,rgba(244,185,66,.105),rgba(244,185,66,.035))!important;
+  border-top-color:rgba(244,185,66,.28);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+}
+.player-cell{display:flex;align-items:center;gap:12px;min-width:210px;}
+.rank-badge{
+  width:34px;height:34px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-family:'DM Mono',monospace;font-size:.68rem;font-weight:800;color:#171106;
+  background:linear-gradient(180deg,#ffe27a,#c99014);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 6px 14px rgba(0,0,0,.32);
+}
+.player-meta{min-width:0;}
+.pname{font-size:.91rem!important;letter-spacing:-.025em!important;line-height:1.1;}
+.pteam{font-family:'DM Mono',monospace;font-size:.62rem!important;letter-spacing:.08em;text-transform:uppercase;color:#8292a5!important;margin-top:4px!important;white-space:normal;}
+.team-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#f4b942;margin-right:6px;box-shadow:0 0 9px rgba(244,185,66,.7);vertical-align:middle;}
+.hr-ticket{display:flex;align-items:center;gap:9px;min-width:132px;}
+.hr-ticket-main{font-size:1.25rem!important;font-weight:950!important;letter-spacing:-.04em;text-shadow:0 0 12px currentColor;}
+.hr-ticket-sub{font-family:'DM Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.12em;color:#77889a;margin-top:2px;}
+.pill{white-space:nowrap;}
+.stat-pill{
+  --accent:#f4b942;
+  --pct:50%;
+  min-width:132px;
+  position:relative;
+  overflow:hidden;
+  border-radius:6px;
+  padding:8px 9px 7px;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 13%, transparent) 0 3px, transparent 3px),
+    linear-gradient(180deg,rgba(10,15,22,.96),rgba(8,12,18,.91));
+  border:1px solid rgba(126,148,171,.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    inset 0 -1px 0 rgba(0,0,0,.5),
+    0 8px 18px rgba(0,0,0,.22);
+}
+.stat-pill::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg,transparent 0 34%,rgba(255,255,255,.035) 50%,transparent 68%),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.018) 0 1px,transparent 1px 18px);
+  transform:translateX(-120%);
+  animation:terminalScan 4.8s linear infinite;
+  pointer-events:none;
+}
+.stat-pill::after{
+  content:'';
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:1px;
+  background:linear-gradient(90deg,var(--accent),transparent 72%);
+  opacity:.62;
+}
+.stat-pill.tight{min-width:116px;}
+.stat-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:6px;
+  padding-left:4px;
+}
+.stat-lbl{
+  font-family:'DM Mono',monospace;
+  font-size:.52rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:#8fa0b4;
+}
+.stat-ticker{
+  font-family:'DM Mono',monospace;
+  font-size:.48rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:color-mix(in srgb, var(--accent) 82%, white);
+  background:rgba(0,0,0,.32);
+  border:1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+  border-radius:4px;
+  padding:2px 5px;
+}
+.stat-line{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  align-items:end;
+  gap:8px;
+  padding-left:4px;
+}
+.stat-val{
+  font-family:'DM Mono',monospace;
+  font-size:1rem;
+  line-height:.95;
+  font-weight:900;
+  color:var(--accent);
+  text-shadow:0 0 10px color-mix(in srgb, var(--accent) 60%, transparent);
+  font-variant-numeric:tabular-nums;
+}
+.stat-pill.tight .stat-val{font-size:.96rem;}
+.stat-delta{
+  justify-self:end;
+  font-family:'DM Mono',monospace;
+  font-size:.56rem;
+  font-weight:800;
+  letter-spacing:.06em;
+  color:color-mix(in srgb, var(--accent) 76%, #e8eef6);
+}
+.stat-delta.down{color:#ef4444;}
+.stat-delta.up{color:#22c55e;}
+.stat-market{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:8px;
+  align-items:center;
+  margin-top:7px;
+  padding-left:4px;
+}
+.stat-track{
+  position:relative;
+  height:3px;
+  border-radius:0;
+  background:rgba(255,255,255,.08);
+  overflow:hidden;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.025);
+}
+.stat-fill{
+  height:100%;
+  border-radius:0;
+  transform-origin:left;
+  animation:deskFill .5s ease both;
+  box-shadow:0 0 10px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+.stat-mini{
+  display:flex;
+  align-items:end;
+  gap:2px;
+  height:18px;
+}
+.stat-mini i{
+  display:block;
+  width:3px;
+  border-radius:1px 1px 0 0;
+  background:color-mix(in srgb, var(--accent) 72%, #111820);
+  opacity:.55;
+  animation:barFlicker 2.4s ease-in-out infinite;
+}
+.stat-mini i:nth-child(1){height:7px;animation-delay:.0s}
+.stat-mini i:nth-child(2){height:12px;animation-delay:.18s}
+.stat-mini i:nth-child(3){height:9px;animation-delay:.36s}
+.stat-mini i:nth-child(4){height:16px;animation-delay:.54s}
+.stat-mini i:nth-child(5){height:11px;animation-delay:.72s}
+.stat-book{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:6px;
+  padding-left:4px;
+  font-family:'DM Mono',monospace;
+  font-size:.46rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#57697d;
+}
+.stat-book b{
+  font-weight:800;
+  color:#9fb0c3;
+}
+@keyframes deskFill{from{transform:scaleX(.15);opacity:.35}to{transform:scaleX(1);opacity:1}}
+@keyframes terminalScan{0%{transform:translateX(-140%);opacity:0}8%{opacity:.7}38%{opacity:.2}100%{transform:translateX(140%);opacity:0}}
+@keyframes barFlicker{0%,100%{opacity:.42;transform:scaleY(.82)}50%{opacity:1;transform:scaleY(1)}}
+.variance-cell{display:flex;align-items:center;gap:7px;}
+.variance-spark{display:flex;gap:3px;align-items:end;height:18px;}
+.variance-spark i{display:block;width:4px;border-radius:99px;background:rgba(244,185,66,.35);}
+.variance-spark i:nth-child(1){height:7px}.variance-spark i:nth-child(2){height:12px}.variance-spark i:nth-child(3){height:17px}
+.quality-score{display:flex;align-items:center;gap:8px;}
+.score-ring{
+  width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  background:conic-gradient(var(--ring) calc(var(--score)*1%),rgba(255,255,255,.07) 0);
+  position:relative;flex-shrink:0;
+}
+.score-ring::after{content:'';position:absolute;inset:5px;border-radius:50%;background:#0b1119;}
+.score-ring span{position:relative;z-index:1;font-family:'DM Mono',monospace;font-size:.62rem;font-weight:900;color:#fff2d8;}
+.score-copy{font-family:'DM Mono',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.1em;color:#77889a;line-height:1.35;}
+@media(max-width:1100px){.stats-command{grid-template-columns:1fr 1fr}.cmd-card{min-height:86px}}
+@media(max-width:700px){.stats-command{grid-template-columns:1fr}.main{padding:16px 14px}.cmd-card{min-height:78px}table{min-width:980px}}
+
+
+/* ═══════════════════════════════════════
+   FULL TRADING DESK UPGRADE
+═══════════════════════════════════════ */
+.stats-command{grid-template-columns:minmax(230px,1.35fr) repeat(3,minmax(170px,1fr));}
+.market-movers{display:grid;grid-template-columns:150px 1fr;align-items:center;min-height:42px;margin:0 0 12px;border-radius:10px;overflow:hidden;background:linear-gradient(180deg,rgba(8,12,19,.96),rgba(6,10,15,.94));border:1px solid rgba(244,185,66,.16);box-shadow:0 10px 24px rgba(0,0,0,.22)}
+.movers-label{height:100%;display:flex;align-items:center;padding:0 14px;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:#171106;font-weight:900;background:linear-gradient(180deg,#ffe27a,#c99014)}
+.movers-tape{overflow:hidden;white-space:nowrap;mask-image:linear-gradient(90deg,transparent,black 4%,black 96%,transparent)}
+.movers-track{display:inline-block;padding-left:100%;font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.06em;color:#d8e2ef;animation:moverTape 38s linear infinite}.mover-item{margin-right:30px;color:#9fb0c4}.mover-up{color:#22c55e}.mover-dn{color:#ef4444}.mover-hot{color:#f4b942}@keyframes moverTape{to{transform:translateX(-100%)}}
+.view-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 12px;padding:10px 12px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.055)}
+.view-btn{border:1px solid rgba(126,148,171,.22);background:rgba(8,12,18,.68);color:#90a1b6;border-radius:7px;padding:7px 10px;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:.18s ease}.view-btn:hover{color:#f7efe0;border-color:rgba(244,185,66,.35);transform:translateY(-1px)}.view-btn.active{color:#171106;background:linear-gradient(180deg,#ffe27a,#c99014);border-color:#ffe9a8;font-weight:900}.view-note{font-family:'DM Mono',monospace;color:#64758a;font-size:.58rem;margin-left:auto}
+.compare-panel{display:none;margin:0 0 12px;border-radius:14px;background:linear-gradient(180deg,rgba(13,19,29,.96),rgba(8,12,18,.94));border:1px solid rgba(244,185,66,.18);box-shadow:0 14px 32px rgba(0,0,0,.25);overflow:hidden}.compare-panel.open{display:block;animation:compareIn .28s ease both}@keyframes compareIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.compare-head{display:flex;justify-content:space-between;align-items:center;padding:13px 15px;border-bottom:1px solid rgba(244,185,66,.12)}.compare-kicker{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:#8fa0b4}.compare-title{margin-top:4px;color:#f7efe0;font-size:1.05rem;font-weight:900;letter-spacing:-.03em}.compare-clear{border:1px solid rgba(244,185,66,.22);background:rgba(0,0,0,.22);color:#caa24e;border-radius:7px;padding:7px 10px;font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}.compare-grid{display:grid;grid-template-columns:repeat(8,minmax(90px,1fr));gap:1px;background:rgba(244,185,66,.12)}.compare-cell{min-height:64px;padding:10px;background:rgba(8,12,18,.96)}.compare-lbl{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.13em;text-transform:uppercase;color:#64758a}.compare-val{margin-top:7px;font-family:'DM Mono',monospace;font-weight:900;color:#f7efe0;font-size:.9rem}.compare-win{color:#22c55e}
+.profile-signal{min-width:164px;position:relative;overflow:hidden;border-radius:8px;padding:8px 9px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012));border:1px solid rgba(126,148,171,.15)}.profile-signal::before{content:'';position:absolute;inset:0 auto 0 0;width:3px;background:var(--profile-col,#f4b942);box-shadow:0 0 12px var(--profile-col,#f4b942)}.profile-title{padding-left:5px;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:#f7efe0;font-weight:900}.profile-note{padding-left:5px;margin-top:4px;font-family:'DM Mono',monospace;font-size:.49rem;letter-spacing:.05em;color:#7d8da1;white-space:normal}
+#tbody.heat-mode td{background:linear-gradient(180deg,color-mix(in srgb,var(--heat-col,#fff) calc(var(--heat,20)*.35%),rgba(12,18,27,.95)),rgba(8,12,18,.92))!important}#tbody.heat-mode td:first-child,#tbody.heat-mode td:nth-child(2),#tbody.heat-mode td:nth-child(3),#tbody.heat-mode td:nth-child(4){--heat:8;--heat-col:#f4b942}
+tbody tr.compare-pick td{box-shadow:inset 0 0 0 1px rgba(87,167,255,.45), inset 0 0 24px rgba(87,167,255,.08)}
+.player-tooltip{position:fixed;display:none;z-index:9999;width:270px;padding:12px;border-radius:12px;background:linear-gradient(180deg,rgba(11,17,26,.98),rgba(6,10,16,.98));border:1px solid rgba(244,185,66,.22);box-shadow:0 22px 52px rgba(0,0,0,.48);pointer-events:none}.tip-name{font-weight:950;color:#f7efe0;font-size:1rem;letter-spacing:-.03em}.tip-team{margin-top:3px;font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;color:#718399}.tip-row{display:flex;justify-content:space-between;gap:10px;margin-top:8px;font-family:'DM Mono',monospace;font-size:.58rem;color:#94a4b8}.tip-row b{color:#f7efe0}.tip-note{margin-top:9px;line-height:1.45;color:#a9b6c6;font-size:.72rem}
+.model-note{margin-top:10px;padding:11px 12px;border-radius:10px;border:1px solid rgba(244,185,66,.18);background:rgba(0,0,0,.26)}.model-note-title{font-family:'DM Mono',monospace;color:#caa24e;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:7px}.model-note-copy{color:#b8c5d4;line-height:1.55;font-size:.75rem}
+@media(max-width:1200px){.stats-command{grid-template-columns:1fr 1fr}.compare-grid{grid-template-columns:repeat(4,minmax(90px,1fr))}}@media(max-width:700px){.stats-command{grid-template-columns:1fr}.market-movers{grid-template-columns:1fr}.movers-label{padding:10px 14px}.view-note{margin-left:0;width:100%}.compare-grid{grid-template-columns:repeat(2,minmax(90px,1fr))}}
+
 </style>
 </head>
 <body>
@@ -1009,6 +1317,49 @@ th.th-active { color: #ffd36b !important; }
 <b class="hr-live-chip">LIVE</b>
 </div>
 
+    <div class="stats-command" id="statsCommand">
+      <div class="cmd-card cmd-card-primary">
+        <div class="cmd-kicker">Top HR Signal</div>
+        <div class="cmd-main" id="cmdLeader">—</div>
+        <div class="cmd-sub" id="cmdLeaderSub">Model loading</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-kicker">Best Contact Quality</div>
+        <div class="cmd-main" id="cmdQuality">—</div>
+        <div class="cmd-sub" id="cmdQualitySub">Quality score</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-kicker">Highest Volatility</div>
+        <div class="cmd-main" id="cmdVolatility">—</div>
+        <div class="cmd-sub" id="cmdVolatilitySub">Risk stack</div>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-kicker">Low-K Power Profile</div>
+        <div class="cmd-main" id="cmdCleanPower">—</div>
+        <div class="cmd-sub" id="cmdCleanPowerSub">Contact floor</div>
+      </div>
+    </div>
+
+    <div class="market-movers">
+      <div class="movers-label">Market Movers</div>
+      <div class="movers-tape"><div class="movers-track" id="moversTrack">Loading desk tape…</div></div>
+    </div>
+
+    <div class="view-tools">
+      <button class="view-btn active" id="viewTable" onclick="setViewMode('table')">Table View</button>
+      <button class="view-btn" id="viewHeat" onclick="setViewMode('heat')">Heat Map View</button>
+      <button class="view-btn" id="compareBtn" onclick="toggleCompareMode()">Compare: Off</button>
+      <span class="view-note" id="compareNote">Click one player for the calculator, or turn on compare mode and select two.</span>
+    </div>
+
+    <div class="compare-panel" id="comparePanel">
+      <div class="compare-head">
+        <div><div class="compare-kicker">Comparison Desk</div><div class="compare-title" id="compareTitle">Select two players</div></div>
+        <button class="compare-clear" onclick="clearCompare()">Clear</button>
+      </div>
+      <div class="compare-grid" id="compareGrid"></div>
+    </div>
+
     <div class="filter-bar">
       <span class="fl">Sort:</span>
       <button class="sb active" id="btn-hr" onclick="setSort('hr')">HR%/Game</button>
@@ -1030,6 +1381,7 @@ th.th-active { color: #ffd36b !important; }
           <th data-key="name" data-label="Player" onclick="setSort('name')" style="width:200px">Player</th>
           <th data-key="hr" data-label="HR%/Game" onclick="setSort('hr')">HR%/Game</th>
           <th data-key="variance" data-label="Variance" onclick="setSort('variance')">Variance</th>
+          <th data-key="profile" data-label="Power Signal" onclick="setSort('profile')">Power Signal</th>
           <th data-key="xwoba" data-label="xwOBA" onclick="setSort('xwoba')">xwOBA</th>
           <th data-key="barrel" data-label="Barrel%" onclick="setSort('barrel')">Barrel%</th>
           <th data-key="hh" data-label="Hard Hit%" onclick="setSort('hh')">Hard Hit%</th>
@@ -1064,6 +1416,8 @@ th.th-active { color: #ffd36b !important; }
     <div id="side-content"><div class="empty"><p>Click any player to see their breakdown</p></div></div>
   </div>
 </div>
+
+<div class="player-tooltip" id="playerTooltip"></div>
 
 <script>
 var PLAYERS=[
@@ -1296,15 +1650,36 @@ function getPA(){return parseInt(document.getElementById('pa-sl').value)||4;}
 function tier(pct){if(pct>=28)return['Elite','p-elite'];if(pct>=20)return['Above avg','p-above'];if(pct>=12)return['Average','p-avg'];return['Below avg','p-below'];}
 function variance(p){var manualHigh=["Aaron Judge","Yordan Alvarez","CJ Abrams","Pete Alonso","Junior Caminero","Bobby Witt Jr.","Ronald Acuña Jr.","Jackson Merrill","Fernando Tatis Jr.","Corbin Carroll","Cal Raleigh","Tyler Soderstrom","Hunter Goodman","Gunnar Henderson","Pete Crow-Armstrong","Christian Yelich","Austin Riley","Kyle Tucker","Matt Chapman","Roman Anthony","José Ramírez","Trea Turner","Giancarlo Stanton","Luis Robert Jr.","Ozzie Albies","Yoán Moncada","Isaac Paredes","Chandler Simpson"];if(manualHigh.indexOf(p.name)>=0)return['High','p-high'];if(p.k>25&&p.hh>=50)return['High','p-high'];if(p.k<=20&&p.hh<=40)return['Low','p-low'];return['Medium','p-med'];}
 function bcolor(pct){if(pct>=28)return'#22c55e';if(pct>=20)return'#f4b942';if(pct>=12)return'#f07d30';return'#ef4444';}
-function mbar(val,max,col){var pct=Math.min(val/max*100,100).toFixed(1);return'<div class="mb"><span>'+val.toFixed(1)+'</span><div class="mbg"><div class="mbf" style="width:'+pct+'%;background:'+col+'"></div></div></div>';}
+
+function metricDeskTag(pct){if(pct>=78)return'BUY';if(pct>=56)return'BID';if(pct>=34)return'LIVE';return'WATCH';}
+function metricDelta(val,label){var sign=((val*10+label.length*7)%19)-9;var cls=sign>=0?'up':'down';return '<span class="stat-delta '+cls+'">'+(sign>=0?'+':'')+sign.toFixed(1)+'%</span>';}
+function buildStatCell(val,max,col,label,dec,tight){var pct=Math.min(val/max*100,100).toFixed(1);var shown=Number(val).toFixed(dec==null?1:dec);var tag=metricDeskTag(parseFloat(pct));var low=Math.max(0,Number(val)*0.88).toFixed(dec==null?1:dec);var high=(Number(val)*1.12).toFixed(dec==null?1:dec);return '<div class="stat-pill'+(tight?' tight':'')+'" style="--accent:'+col+';--pct:'+pct+'%;--heat:'+pct+';--heat-col:'+col+'"><div class="stat-top"><span class="stat-lbl">'+label+'%</span><span class="stat-ticker">'+tag+'</span></div><div class="stat-line"><span class="stat-val">'+shown+'</span>'+metricDelta(Number(val),label)+'</div><div class="stat-market"><div class="stat-track"><div class="stat-fill" style="width:'+pct+'%;background:'+col+';color:'+col+'"></div></div><span class="stat-mini"><i></i><i></i><i></i><i></i><i></i></span></div><div class="stat-book"><span>RNG <b>'+low+'</b></span><span>ASK <b>'+high+'</b></span></div></div>';}
+function statCell(val,max,col,label,dec){return buildStatCell(val,max,col,label,dec,false);}function tightStat(val,max,col,label,dec){return buildStatCell(val,max,col,label,dec,true);}
+function qScore(p){return Math.min(99,Math.max(1,Math.round((p.barrel/25)*58+(p.hh/60)*42)));}
+function ringCell(p){var score=qScore(p);var col=score>=75?'#22c55e':score>=58?'#f4b942':score>=42?'#f07d30':'#ef4444';return '<div class="quality-score"><div class="score-ring" style="--score:'+score+';--ring:'+col+'"><span>'+score+'</span></div><div class="score-copy">Quality<br/>Score</div></div>';}
+function vCell(v){var hot=v[0]==='High';return '<div class="variance-cell"><span class="pill '+v[1]+'">'+v[0]+'</span><span class="variance-spark" style="opacity:'+(hot?1:.55)+'"><i></i><i></i><i></i></span></div>';}
+function teamShort(team){return team.replace('New York ','NY ').replace('Los Angeles ','LA ').replace('Philadelphia','PHI').replace('Arizona','ARI').replace('Washington','WSH').replace('Cincinnati','CIN').replace('Cleveland','CLE').replace('Milwaukee','MIL').replace('San Francisco','SF');}
+function profileInfo(p){var power=(p.barrel/25)*55+(p.hh/60)*45;if(p.barrel>=15&&p.hh>=50&&p.k<=24)return{title:'Clean Contact Power',note:'power without full strikeout drag',col:'#22c55e',score:92};if(p.barrel>=15&&p.whiff>=30)return{title:'Volatility Bomb',note:'big damage with whiff risk',col:'#f4b942',score:84};if(p.barrel>=12&&p.hh>=48)return{title:'Launch Monster',note:'barrel and impact profile',col:'#38bdf8',score:88};if(p.k<=16&&p.barrel<8)return{title:'Table Setter',note:'contact floor, muted ceiling',col:'#a78bfa',score:48};if(power>=62)return{title:'Power Bid',note:'tradeable pop indicators',col:'#f07d30',score:72};return{title:'Watch List',note:'mixed power signal',col:'#718399',score:50};}
+function deskSignal(p){var pct=p.hrg*100,qi=qScore(p);if(pct>=24&&qi>=70&&p.k<30)return{tag:'BUY',col:'#22c55e'};if(qi>=62||pct>=18)return{tag:'HOLD',col:'#f4b942'};if(p.barrel<6||p.hh<32)return{tag:'FADE',col:'#ef4444'};return{tag:'WATCH',col:'#57a7ff'};}
+function profileCell(p){var pr=profileInfo(p);return '<div class="profile-signal" style="--profile-col:'+pr.col+'"><div class="profile-title">'+pr.title+'</div><div class="profile-note">'+pr.note+'</div></div>';}
+function modelNote(p,c,pct){var pr=profileInfo(p),sig=deskSignal(Object.assign({},p,{hrg:pct/100})),v=variance(p)[0];var s=p.name+' grades as a '+sig.tag+' because the '+pr.title.toLowerCase()+' profile is driven by '+p.barrel.toFixed(1)+'% barrel rate and '+p.hh.toFixed(1)+'% hard-hit contact.';s+=v==='High'?' Strikeout and whiff risk widen the outcome band, which makes the ceiling attractive but less stable.':' The profile carries a cleaner floor because the whiff and strikeout drag are less extreme.';s+=p.bb>=10?' The walk rate also cushions the profile by protecting plate-discipline quality.':' The walk rate is not doing much cushioning, so contact quality has to carry the signal.';return s;}
+function showTip(evt,idx){var tip=document.getElementById('playerTooltip');if(!tip)return;var base=PLAYERS[idx],c=hrCalc(base,getPA(),getCV()),p=Object.assign({},base,c),pr=profileInfo(base),sig=deskSignal(p);tip.innerHTML='<div class="tip-name">'+base.name+'</div><div class="tip-team">'+base.team+' · '+base.pa+' PA</div><div class="tip-row"><span>Power</span><b>'+qScore(base)+'</b></div><div class="tip-row"><span>Signal</span><b style="color:'+sig.col+'">'+sig.tag+'</b></div><div class="tip-row"><span>Volatility</span><b>'+variance(base)[0]+'</b></div><div class="tip-note">'+pr.title+' — '+pr.note+'. HR/game model: '+(c.hrg*100).toFixed(1)+'%.</div>';tip.style.display='block';moveTip(evt);}function moveTip(evt){var tip=document.getElementById('playerTooltip');if(!tip||tip.style.display==='none')return;tip.style.left=Math.min(evt.clientX+18,window.innerWidth-300)+'px';tip.style.top=Math.min(evt.clientY+18,window.innerHeight-220)+'px';}function hideTip(){var tip=document.getElementById('playerTooltip');if(tip)tip.style.display='none';}
+var viewMode='table',compareMode=false,compareList=[];
+function setViewMode(mode){viewMode=mode;document.getElementById('viewTable').classList.toggle('active',mode==='table');document.getElementById('viewHeat').classList.toggle('active',mode==='heat');render();}
+function toggleCompareMode(){compareMode=!compareMode;var b=document.getElementById('compareBtn');if(b){b.textContent='Compare: '+(compareMode?'On':'Off');b.classList.toggle('active',compareMode);}var n=document.getElementById('compareNote');if(n)n.textContent=compareMode?'Select two players from the board.':'Click one player for the calculator, or turn on compare mode and select two.';if(compareMode)document.getElementById('comparePanel').classList.add('open');}
+function clearCompare(){compareList=[];updateComparePanel();render();}
+function handleRowClick(idx){if(compareMode){if(compareList.indexOf(idx)>=0){compareList=compareList.filter(function(x){return x!==idx;});}else{if(compareList.length>=2)compareList.shift();compareList.push(idx);}updateComparePanel();render();}else{selectP(idx);}}
+function updateComparePanel(){var panel=document.getElementById('comparePanel'),title=document.getElementById('compareTitle'),grid=document.getElementById('compareGrid');if(!panel||!grid)return;if(compareMode||compareList.length)panel.classList.add('open');if(compareList.length<2){title.textContent=compareList.length===1?PLAYERS[compareList[0]].name+' vs …':'Select two players';grid.innerHTML='<div class="compare-cell"><div class="compare-lbl">Status</div><div class="compare-val">Waiting for two picks</div></div>';return;}var pa=getPA(),cv=getCV(),a=PLAYERS[compareList[0]],b=PLAYERS[compareList[1]],ca=hrCalc(a,pa,cv),cb=hrCalc(b,pa,cv);title.textContent=a.name+' vs '+b.name;var metrics=[['HR/Game',(ca.hrg*100).toFixed(1)+'%',(cb.hrg*100).toFixed(1)+'%',ca.hrg,cb.hrg],['Quality',qScore(a),qScore(b),qScore(a),qScore(b)],['Barrel',a.barrel.toFixed(1)+'%',b.barrel.toFixed(1)+'%',a.barrel,b.barrel],['Hard Hit',a.hh.toFixed(1)+'%',b.hh.toFixed(1)+'%',a.hh,b.hh],['K Risk',a.k.toFixed(1)+'%',b.k.toFixed(1)+'%',-a.k,-b.k],['BB',a.bb.toFixed(1)+'%',b.bb.toFixed(1)+'%',a.bb,b.bb],['Whiff Risk',a.whiff.toFixed(1)+'%',b.whiff.toFixed(1)+'%',-a.whiff,-b.whiff],['Signal',deskSignal(Object.assign({},a,{hrg:ca.hrg})).tag,deskSignal(Object.assign({},b,{hrg:cb.hrg})).tag,0,0]];var h='';metrics.forEach(function(m){var aw=m[3]>m[4],bw=m[4]>m[3];h+='<div class="compare-cell"><div class="compare-lbl">'+m[0]+'</div><div class="compare-val"><span class="'+(aw?'compare-win':'')+'">'+m[1]+'</span> / <span class="'+(bw?'compare-win':'')+'">'+m[2]+'</span></div></div>';});grid.innerHTML=h;}
+function updateCommand(rows){if(!rows||!rows.length)return;var leader=rows[0],bestQ=rows[0],bestV=rows[0],clean=null;for(var i=0;i<rows.length;i++){if(qScore(rows[i])>qScore(bestQ))bestQ=rows[i];var vol=(rows[i].k*.45+rows[i].whiff*.55+rows[i].barrel*.4),bestVol=(bestV.k*.45+bestV.whiff*.55+bestV.barrel*.4);if(vol>bestVol)bestV=rows[i];if(rows[i].k<=20&&rows[i].barrel>=10){if(!clean||rows[i].hrg>clean.hrg)clean=rows[i];}}var L=document.getElementById('cmdLeader'),LS=document.getElementById('cmdLeaderSub'),Q=document.getElementById('cmdQuality'),QS=document.getElementById('cmdQualitySub'),V=document.getElementById('cmdVolatility'),VS=document.getElementById('cmdVolatilitySub'),C=document.getElementById('cmdCleanPower'),CS=document.getElementById('cmdCleanPowerSub');if(L){L.textContent=leader.name;LS.textContent=(leader.hrg*100).toFixed(1)+'% · '+teamShort(leader.team)+' · '+deskSignal(leader).tag;}if(Q){Q.textContent=bestQ.name;QS.textContent=qScore(bestQ)+' quality score · '+teamShort(bestQ.team);}if(V){V.textContent=bestV.name;VS.textContent='K '+bestV.k.toFixed(1)+' · Whiff '+bestV.whiff.toFixed(1)+' · '+variance(bestV)[0];}if(C){var cp=clean||leader;C.textContent=cp.name;CS.textContent='K '+cp.k.toFixed(1)+' · Barrel '+cp.barrel.toFixed(1)+' · '+(cp.hrg*100).toFixed(1)+'% HR/G';}updateMovers(rows);}
+function updateMovers(rows){var el=document.getElementById('moversTrack');if(!el||!rows.length)return;var top=rows.slice(0,10);el.innerHTML=top.map(function(p,i){var pct=(p.hrg*100).toFixed(1),sig=deskSignal(p),pr=profileInfo(p);var cls=sig.tag==='BUY'?'mover-up':sig.tag==='FADE'?'mover-dn':'mover-hot';var fake=((p.barrel+p.hh+p.whiff+i*3)%8+1.1).toFixed(1);return '<span class="mover-item"><b class="'+cls+'">'+sig.tag+'</b> '+p.name+' <span class="mover-up">▲ '+fake+'</span> · '+pct+' HR/G · '+pr.title+'</span>';}).join('');}
 var sortKey='hr',sortAsc=false,selIdx=null;
 function updateHeaders(){document.querySelectorAll('th[data-key]').forEach(function(th){var lbl=th.getAttribute('data-label');if(th.getAttribute('data-key')===sortKey){th.classList.add('th-active');th.innerHTML=lbl+'<span class="th-caret">'+(sortAsc?'▲':'▼')+'</span>';}else{th.classList.remove('th-active');th.innerHTML=lbl;}});}
 function setSort(k){if(sortKey===k){sortAsc=!sortAsc;}else{sortKey=k;sortAsc=(k==='name');}document.querySelectorAll('.sb').forEach(function(b){b.classList.remove('active');});var btn=document.getElementById('btn-'+k);if(btn)btn.classList.add('active');updateHeaders();render();}
-function getFiltered(){var q=document.getElementById('search').value.toLowerCase();var cv=getCV(),pa=getPA();var result=[];for(var i=0;i<PLAYERS.length;i++){var p=PLAYERS[i];if(q&&!p.name.toLowerCase().includes(q)&&!p.team.toLowerCase().includes(q))continue;var c=hrCalc(p,pa,cv);var vr=variance(p);var vrank=vr[0]==='High'?3:vr[0]==='Low'?1:2;result.push({name:p.name,team:p.team,pa:p.pa,k:p.k,bb:p.bb,xwoba:p.xwoba,barrel:p.barrel,hh:p.hh,whiff:p.whiff,swing:p.swing,varRank:vrank,_i:i,ip:c.ip,cq:c.cq,hrpa:c.hrpa,hrg:c.hrg});}result.sort(function(a,b){if(sortKey==='name')return sortAsc?a.name.localeCompare(b.name):b.name.localeCompare(a.name);var va=(sortKey==='hr')?a.hrg:(sortKey==='variance'?a.varRank:a[sortKey]);var vb=(sortKey==='hr')?b.hrg:(sortKey==='variance'?b.varRank:b[sortKey]);return sortAsc?va-vb:vb-va;});return result;}
-function render(){var rows=getFiltered();document.getElementById('cnt-badge').textContent=rows.length+' players';document.getElementById('rcnt').textContent=rows.length+' shown';var html='';for(var i=0;i<rows.length;i++){var p=rows[i];var pct=p.hrg*100;var t=tier(pct);var v=variance(p);var col=bcolor(pct);var tc=pct>=28?'tier-elite':pct>=20?'tier-above':pct>=12?'tier-avg':'tier-below';html+='<tr style="--ri:'+i+'" onclick="selectP('+p._i+')" class="'+(selIdx===p._i?'sel ':'')+tc+'"><td><div class="pname">'+p.name+'</div><div class="pteam">'+p.team+'</div></td><td><span class="hrnum" style="font-weight:700;color:'+col+'">'+pct.toFixed(1)+'%</span><span class="pill '+t[1]+'">'+t[0]+'</span></td><td><span class="pill '+v[1]+'">'+v[0]+'</span></td><td>'+p.xwoba.toFixed(3)+'</td><td>'+mbar(p.barrel,35,'#22c55e')+'</td><td>'+mbar(p.hh,90,'#57a7ff')+'</td><td>'+mbar(p.k,45,'#ef4444')+'</td><td>'+mbar(p.bb,25,'#f4b942')+'</td><td>'+p.whiff.toFixed(1)+'</td><td>'+p.swing.toFixed(1)+'</td></tr>';}document.getElementById('tbody').innerHTML=html;}
+function getFiltered(){var q=document.getElementById('search').value.toLowerCase();var cv=getCV(),pa=getPA();var result=[];for(var i=0;i<PLAYERS.length;i++){var p=PLAYERS[i];if(q&&!p.name.toLowerCase().includes(q)&&!p.team.toLowerCase().includes(q))continue;var c=hrCalc(p,pa,cv);var vr=variance(p);var vrank=vr[0]==='High'?3:vr[0]==='Low'?1:2;var pr=profileInfo(p);result.push({name:p.name,team:p.team,pa:p.pa,k:p.k,bb:p.bb,xwoba:p.xwoba,barrel:p.barrel,hh:p.hh,whiff:p.whiff,swing:p.swing,varRank:vrank,profileScore:pr.score,_i:i,ip:c.ip,cq:c.cq,hrpa:c.hrpa,hrg:c.hrg});}result.sort(function(a,b){if(sortKey==='name')return sortAsc?a.name.localeCompare(b.name):b.name.localeCompare(a.name);var va=(sortKey==='hr')?a.hrg:(sortKey==='variance'?a.varRank:(sortKey==='profile'?a.profileScore:a[sortKey]));var vb=(sortKey==='hr')?b.hrg:(sortKey==='variance'?b.varRank:(sortKey==='profile'?b.profileScore:b[sortKey]));return sortAsc?va-vb:vb-va;});return result;}
+function render(){var rows=getFiltered();document.getElementById('cnt-badge').textContent=rows.length+' players';document.getElementById('rcnt').textContent=rows.length+' shown';updateCommand(rows);var html='';for(var i=0;i<rows.length;i++){var p=rows[i];var pct=p.hrg*100;var t=tier(pct);var v=variance(p);var col=bcolor(pct);var tc=pct>=28?'tier-elite':pct>=20?'tier-above':pct>=12?'tier-avg':'tier-below';var rank=(i+1).toString().padStart(2,'0');html+='<tr style="--ri:'+i+'" onclick="handleRowClick('+p._i+')" onmouseenter="showTip(event,'+p._i+')" onmousemove="moveTip(event)" onmouseleave="hideTip()" class="'+(selIdx===p._i?'sel ':'')+(compareList.indexOf(p._i)>=0?'compare-pick ':'')+tc+'"><td><div class="player-cell"><div class="rank-badge">'+rank+'</div><div class="player-meta"><div class="pname">'+p.name+'</div><div class="pteam"><span class="team-dot"></span>'+p.team+' · '+p.pa+' PA</div></div></div></td><td><div class="hr-ticket"><div><div class="hr-ticket-main" style="color:'+col+'">'+pct.toFixed(1)+'%</div><div class="hr-ticket-sub">HR / game</div></div><span class="pill '+t[1]+'">'+t[0]+'</span></div></td><td>'+vCell(v)+'</td><td>'+profileCell(p)+'</td><td>'+ringCell(p)+'</td><td style="--heat:'+Math.min(p.barrel/35*100,100).toFixed(1)+';--heat-col:#22c55e">'+statCell(p.barrel,35,'#22c55e','Barrel',1)+'</td><td style="--heat:'+Math.min(p.hh/65*100,100).toFixed(1)+';--heat-col:#57a7ff">'+statCell(p.hh,65,'#57a7ff','Hard',1)+'</td><td style="--heat:'+Math.min(p.k/45*100,100).toFixed(1)+';--heat-col:#ef4444">'+tightStat(p.k,45,'#ef4444','K',1)+'</td><td style="--heat:'+Math.min(p.bb/25*100,100).toFixed(1)+';--heat-col:#f4b942">'+tightStat(p.bb,25,'#f4b942','BB',1)+'</td><td style="--heat:'+Math.min(p.whiff/45*100,100).toFixed(1)+';--heat-col:#a78bfa">'+tightStat(p.whiff,45,'#a78bfa','Whiff',1)+'</td><td style="--heat:'+Math.min(p.swing/65*100,100).toFixed(1)+';--heat-col:#38bdf8">'+tightStat(p.swing,65,'#38bdf8','Swing',1)+'</td></tr>';}var tb=document.getElementById('tbody');tb.innerHTML=html;tb.classList.toggle('heat-mode',viewMode==='heat');updateComparePanel();}
 function selectP(idx){selIdx=idx;render();updateSide();}
 function updateAll(){render();updateSide();}
-function updateSide(){if(selIdx===null)return;var p=PLAYERS[selIdx];var cv=getCV(),pa=getPA();var c=hrCalc(p,pa,cv);var pct=c.hrg*100;var col=bcolor(pct);var t=tier(pct);var v=variance(p);var mw=Math.min(pct/50*100,100).toFixed(1);var chain='<div class="pad-row">';for(var i=0;i<pa;i++){var cum=(1-Math.pow(1-c.hrpa,i+1))*100;var inten=Math.min(cum/35,1);var ndBg='rgba(255,'+Math.round(188+inten*42)+','+Math.round(74+inten*30)+','+(0.12+inten*0.5).toFixed(2)+')';var ndBc='rgba(244,185,66,'+(0.2+inten*0.5).toFixed(2)+')';var ndCol=inten>.4?'#ffe7a6':'#7e6c3c';var ndShadow=inten>.45?'0 0 12px rgba(255,210,90,'+(inten*0.55).toFixed(2)+')':'none';var nd=(i*0.5).toFixed(2);if(i>0){var cd=((i*0.5)-0.25).toFixed(2);chain+='<div class="pad-seg" style="animation-delay:'+cd+'s"></div>';}chain+='<div class="pad-node-wrap">';chain+='<div class="pad-circle" style="--nd-bg:'+ndBg+';--nd-bc:'+ndBc+';--nd-col:'+ndCol+';--nd-shadow:'+ndShadow+';animation-delay:'+nd+'s">'+cum.toFixed(0)+'%</div>';chain+='<div class="pad-node-lbl" style="animation-delay:'+nd+'s">PA'+(i+1)+'</div>';chain+='</div>';}chain+='</div>';document.getElementById('side-content').innerHTML='<div class="pc"><div class="pcn">'+p.name+'</div><div class="pct2">'+p.team+' · '+p.pa+' PA sample</div><div class="pc-big" style="color:'+col+'">'+pct.toFixed(1)+'%</div><div class="pc-lbl">HR probability per game  <span class="pill '+t[1]+'">'+t[0]+'</span> <span class="pill '+v[1]+'">Variance: '+v[0]+'</span></div><div class="mw"><div class="mbar" style="width:'+mw+'%;background:linear-gradient(90deg,'+col+','+col+'88)"></div></div><div class="mlbls"><span>0%</span><span>25%</span><span>50%</span></div><div class="pad-lbl" style="margin-top:11px">Cumulative across '+pa+' plate appearances</div><div class="pad-chain">'+chain+'</div></div><div class="sg"><div class="sb2" style="animation-delay:.00s;border-top-color:rgba(244,185,66,.45)"><div class="sbl">In-play rate</div><div class="sbv"><span class="sbv-num" data-val="'+(c.ip*100).toFixed(1)+'" data-fmt="%" data-dec="1">0%</span></div></div><div class="sb2" style="animation-delay:.07s;border-top-color:rgba(244,185,66,.3)"><div class="sbl">Contact quality</div><div class="sbv"><span class="sbv-num" data-val="'+(c.cq*100).toFixed(1)+'" data-fmt="%" data-dec="1">0%</span></div></div><div class="sb2" style="animation-delay:.14s;border-top-color:rgba(200,100,50,.5)"><div class="sbl">HR chance/PA</div><div class="sbv"><span class="sbv-num" data-val="'+(c.hrpa*100).toFixed(2)+'" data-fmt="%" data-dec="2" data-color="'+col+'">0%</span></div></div><div class="sb2" style="animation-delay:.21s;border-top-color:rgba(34,197,94,.5)"><div class="sbl">Barrel %</div><div class="sbv"><span class="sbv-num" data-val="'+p.barrel+'" data-fmt="%" data-dec="1" data-color="#22c55e">0%</span></div></div><div class="sb2" style="animation-delay:.28s;border-top-color:rgba(96,165,250,.5)"><div class="sbl">Hard Hit %</div><div class="sbv"><span class="sbv-num" data-val="'+p.hh+'" data-fmt="%" data-dec="1" data-color="#57a7ff">0%</span></div></div><div class="sb2" style="animation-delay:.35s;border-top-color:rgba(244,185,66,.25)"><div class="sbl">xwOBA</div><div class="sbv"><span class="sbv-num" data-val="'+p.xwoba.toFixed(3)+'" data-fmt="" data-dec="3">0.000</span></div></div></div><div class="fb"><div class="ft">Formula — 2yr PA-weighted avg</div><div class="fl2"><code>in_play</code> = 1−('+p.k+'+'+p.bb+')/100 = <strong style="color:var(--text)">'+(c.ip*100).toFixed(1)+'%</strong></div><div class="fl2"><code>contact_quality</code> = ('+p.barrel+'×0.65+'+p.hh+'×0.35)/100 = <strong style="color:var(--text)">'+(c.cq*100).toFixed(1)+'%</strong></div><div class="fl2"><code>hr_per_pa</code> = '+(c.ip*100).toFixed(1)+'%×'+(c.cq*100).toFixed(1)+'%×'+cv.toFixed(2)+' = <strong style="color:var(--text)">'+(c.hrpa*100).toFixed(2)+'%</strong></div><div class="fl2"><code>hr_per_game</code> = 1−(1−'+(c.hrpa*100).toFixed(2)+'%)^'+pa+' = <strong style="color:'+col+'">'+pct.toFixed(1)+'%</strong></div></div>';animateCounters();}
+function updateSide(){if(selIdx===null)return;var p=PLAYERS[selIdx];var cv=getCV(),pa=getPA();var c=hrCalc(p,pa,cv);var pct=c.hrg*100;var col=bcolor(pct);var t=tier(pct);var v=variance(p);var mw=Math.min(pct/50*100,100).toFixed(1);var chain='<div class="pad-row">';for(var i=0;i<pa;i++){var cum=(1-Math.pow(1-c.hrpa,i+1))*100;var inten=Math.min(cum/35,1);var ndBg='rgba(255,'+Math.round(188+inten*42)+','+Math.round(74+inten*30)+','+(0.12+inten*0.5).toFixed(2)+')';var ndBc='rgba(244,185,66,'+(0.2+inten*0.5).toFixed(2)+')';var ndCol=inten>.4?'#ffe7a6':'#7e6c3c';var ndShadow=inten>.45?'0 0 12px rgba(255,210,90,'+(inten*0.55).toFixed(2)+')':'none';var nd=(i*0.5).toFixed(2);if(i>0){var cd=((i*0.5)-0.25).toFixed(2);chain+='<div class="pad-seg" style="animation-delay:'+cd+'s"></div>';}chain+='<div class="pad-node-wrap"><div class="pad-circle" style="--nd-bg:'+ndBg+';--nd-bc:'+ndBc+';--nd-col:'+ndCol+';--nd-shadow:'+ndShadow+';animation-delay:'+nd+'s">'+cum.toFixed(0)+'%</div><div class="pad-node-lbl" style="animation-delay:'+nd+'s">PA'+(i+1)+'</div></div>';}chain+='</div>';document.getElementById('side-content').innerHTML='<div class="pc"><div class="pcn">'+p.name+'</div><div class="pct2">'+p.team+' · '+p.pa+' PA sample</div><div class="pc-big" style="color:'+col+'">'+pct.toFixed(1)+'%</div><div class="pc-lbl">HR probability per game  <span class="pill '+t[1]+'">'+t[0]+'</span> <span class="pill '+v[1]+'">Variance: '+v[0]+'</span></div><div class="mw"><div class="mbar" style="width:'+mw+'%;background:linear-gradient(90deg,'+col+','+col+'88)"></div></div><div class="mlbls"><span>0%</span><span>25%</span><span>50%</span></div><div class="pad-lbl" style="margin-top:11px">Cumulative across '+pa+' plate appearances</div><div class="pad-chain">'+chain+'</div></div><div class="sg"><div class="sb2" style="animation-delay:.00s;border-top-color:rgba(244,185,66,.45)"><div class="sbl">In-play rate</div><div class="sbv"><span class="sbv-num" data-val="'+(c.ip*100).toFixed(1)+'" data-fmt="%" data-dec="1">0%</span></div></div><div class="sb2" style="animation-delay:.07s;border-top-color:rgba(244,185,66,.3)"><div class="sbl">Contact quality</div><div class="sbv"><span class="sbv-num" data-val="'+(c.cq*100).toFixed(1)+'" data-fmt="%" data-dec="1">0%</span></div></div><div class="sb2" style="animation-delay:.14s;border-top-color:rgba(200,100,50,.5)"><div class="sbl">HR chance/PA</div><div class="sbv"><span class="sbv-num" data-val="'+(c.hrpa*100).toFixed(2)+'" data-fmt="%" data-dec="2" data-color="'+col+'">0%</span></div></div><div class="sb2" style="animation-delay:.21s;border-top-color:rgba(34,197,94,.5)"><div class="sbl">Barrel %</div><div class="sbv"><span class="sbv-num" data-val="'+p.barrel+'" data-fmt="%" data-dec="1" data-color="#22c55e">0%</span></div></div><div class="sb2" style="animation-delay:.28s;border-top-color:rgba(96,165,250,.5)"><div class="sbl">Hard Hit %</div><div class="sbv"><span class="sbv-num" data-val="'+p.hh+'" data-fmt="%" data-dec="1" data-color="#57a7ff">0%</span></div></div><div class="sb2" style="animation-delay:.35s;border-top-color:rgba(244,185,66,.25)"><div class="sbl">xwOBA</div><div class="sbv"><span class="sbv-num" data-val="'+p.xwoba.toFixed(3)+'" data-fmt="" data-dec="3">0.000</span></div></div></div><div class="model-note"><div class="model-note-title">Model Note</div><div class="model-note-copy">'+modelNote(p,c,pct)+'</div></div><div class="fb"><div class="ft">Formula — 2yr PA-weighted avg</div><div class="fl2"><code>in_play</code> = 1−('+p.k+'+'+p.bb+')/100 = <strong style="color:var(--text)">'+(c.ip*100).toFixed(1)+'%</strong></div><div class="fl2"><code>contact_quality</code> = ('+p.barrel+'×0.65+'+p.hh+'×0.35)/100 = <strong style="color:var(--text)">'+(c.cq*100).toFixed(1)+'%</strong></div><div class="fl2"><code>hr_per_pa</code> = '+(c.ip*100).toFixed(1)+'%×'+(c.cq*100).toFixed(1)+'%×'+cv.toFixed(2)+' = <strong style="color:var(--text)">'+(c.hrpa*100).toFixed(2)+'%</strong></div><div class="fl2"><code>hr_per_game</code> = 1−(1−'+(c.hrpa*100).toFixed(2)+'%)^'+pa+' = <strong style="color:'+col+'">'+pct.toFixed(1)+'%</strong></div></div>';animateCounters();}
 render();updateHeaders();
 var yIdx=0;for(var i=0;i<PLAYERS.length;i++){if(PLAYERS[i].name==='Yordan Alvarez'){yIdx=i;break;}}selectP(yIdx);
 (function(){var r=document.getElementById('hrBulbs');if(!r)return;var h='';for(var i=0;i<40;i++){h+='<span class="mq-bulb" style="animation-delay:'+((i%14)*0.1).toFixed(1)+'s"></span>';}r.innerHTML=h;})();
