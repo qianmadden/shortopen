@@ -2836,8 +2836,9 @@ body::after{
   @keyframes lsSpinPulse{0%,100%{opacity:.4}50%{opacity:1}}
   .ls-spin-chips{display:flex;gap:4px;flex-wrap:wrap;overflow:hidden}
   .ls-spin-chip{font-family:'DM Mono',monospace;font-size:.5rem;font-weight:700;padding:3px 6px;border-radius:5px;min-width:24px;text-align:center;transition:transform .38s cubic-bezier(.22,1,.36,1),opacity .38s ease}
-  .ls-spin-chip.hit{color:#22c55e;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3)}
-  .ls-spin-chip.miss{color:#5e7188;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07)}
+  .ls-spin-chip.red{color:#ff9d8f;background:rgba(196,28,28,.22);border:1px solid rgba(220,60,50,.45)}
+  .ls-spin-chip.black{color:#cfd6df;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12)}
+  .ls-spin-chip.green{color:#7ddc6e;background:rgba(21,128,61,.28);border:1px solid rgba(34,197,94,.5)}
   .ls-spin-chip.ls-spin-deal{animation:lsSpinDeal .42s cubic-bezier(.22,1,.36,1) both}
   @keyframes lsSpinDeal{from{opacity:0;transform:translateY(6px) scale(.85)}to{opacity:1;transform:translateY(0) scale(1)}}
   .ls-spin-chip.ls-spin-enter{opacity:0;transform:translateX(14px) scale(.85)}
@@ -4443,22 +4444,16 @@ const MLB_PROP_PARLAYS = [
     type: "MLB Props",
     market: "MLB Market Parlays",
     legs: [
-      { player: "Kevin Gausman",   team: "TOR", stat: "4.5+ Strikeouts",    odds: "-118", hitRate: 0.52, grade: "A", ev: 7.6 },
-      { player: "Tarik Skubal", team: "DET", stat: "4.5+ Strikeouts",    odds: "+100", hitRate: 0.46, grade: "B", ev: null },
-      { player: "Cam Schlittler",   team: "NYY", stat: "5.5+ Strikeouts",    odds: "-118", hitRate: 0.54, grade: "B-", ev: null },
+      { player: "Chris Sale",   team: "ATL", stat: "4.5+ Strikeouts",    odds: "-118", hitRate: 0.52, grade: "B+", ev: 7.6 },
+      { player: "Nathan Eovaldi", team: "TEX", stat: "4.5+ Strikeouts",    odds: "+120", hitRate: 0.41, grade: null, ev: null },
+      { player: "Will Warren",   team: "NYY", stat: "5.5+ Strikeouts",    odds: "+118", hitRate: 0.54, grade: "B-", ev: null },
       { player: "NYY/CIN",        team: "NYY/CIN", stat: "U 1 Run 1st Inning", odds: "-118", hitRate: 0.61, grade: null, ev: null },
-      { player: "Byron Buxton",      team: "MIN", stat: "Over 1.5 Total Bases",    odds: "-110", hitRate: 0.51, grade: null, ev: null },
-      { player: "Roki Sasaki",  team: "LAD", stat: "5.5+ Strikeouts",    odds: "+110", hitRate: 0.44, grade: null, ev: null },
-      { player: "Ranger Suarez",   team: "BOS", stat: "5.5+ Strikeouts",  odds: "+148", hitRate: 0.39, grade: "C", ev: 8.8 },
-      { player: "Ben Rice", team: "NYY", stat: "Over 0.5 Homeruns",   odds: "+168", hitRate: 0.42, grade: null, ev: null },
-      { player: "Tatsuya Imai",   team: "HOU", stat: "5.5+ Strikeouts",  odds: "+148", hitRate: 0.39, grade: "C-", ev: 2.8 },
-      { player: "Tyler Soderstrom", team: "ATH", stat: "Over 0.5 Homeruns",   odds: "+178", hitRate: 0.42, grade: null, ev: null },
-      { player: "Jacob Misiorowski",   team: "MIL", stat: "6.5+ Strikeouts",  odds: "-148", hitRate: 0.59, grade: "A", ev: 7.8 },
-      { player: "Fernando Tatis Jr.", team: "SDP", stat: "Over 0.5 Homeruns",   odds: "+148", hitRate: 0.42, grade: null, ev: null },
-      { player: "Jacob DeGrom",team: "TEX", stat: "4.5+ Strikeouts",  odds: "+135", hitRate: 0.45, grade: null, ev: null }
+      { player: "Nick Kurtz",      team: "MIN", stat: "Over 1.5 Total Bases",    odds: "-110", hitRate: 0.51, grade: "A", ev: null },
+      { player: "Ben Rice", team: "NYY", stat: "Over 0.5 Homeruns",   odds: "+148", hitRate: 0.42, grade: "B-", ev: null },
+      { player: "J.T Ginn",team: "ATH", stat: "4.5+ Strikeouts",  odds: "+135", hitRate: 0.45, grade: "C+", ev: null }
     ],
     betsPlaced: 1421,
-    edgeNote: "Suarez is an interesting add to any card."
+    edgeNote: "Any Skenes and Sanchez bet is plus EV"
   }
 ];
 
@@ -4471,20 +4466,20 @@ const MLB_PROP_PARLAYS = [
 
 // ── MLB ─────────────────────────────────────────────────────────
 const MLB_GAMES = [
-  {day:"TODAY", time:"2:21 PM ET", away:"Toronto Blue Jays", awayAbbr:"TOR", home:"Chicago Cubs", homeAbbr:"CHC", awayPitcher:"P: K Gausman", homePitcher:"P: B Brown", spreadAway:"+1.5", spreadAwayJuice:"-215", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+176", spreadHomeMove:"", spreadOpen:"", mlAway:"+102", mlHome:"-120", total:"7", totalOverJuice:"-118", totalUnderJuice:"-104", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CHC ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Brown pins the Cubs as tight home favorites over Gausman on a low flat 7 total drawing early over action."},
-  {day:"TODAY", time:"6:41 PM ET", away:"Chicago White Sox", awayAbbr:"CWS", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: B Eisert", homePitcher:"P: T Skubal", spreadAway:"+1.5", spreadAwayJuice:"-115", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"-105", spreadHomeMove:"", spreadOpen:"", mlAway:"+194", mlHome:"-235", total:"8", totalOverJuice:"-106", totalUnderJuice:"-114", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"DET ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Skubal sets the Tigers as premium home chalk against Eisert behind an under-shaded flat 8 layout framework."},
-  {day:"TODAY", time:"7:06 PM ET", away:"Cincinnati Reds", awayAbbr:"CIN", home:"New York Yankees", homeAbbr:"NYY", awayPitcher:"P: R Lowder", homePitcher:"P: C Schlittler", spreadAway:"+1.5", spreadAwayJuice:"+104", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"-125", spreadHomeMove:"", spreadOpen:"", mlAway:"+220", mlHome:"-270", total:"8.5", totalOverJuice:"-120", totalUnderJuice:"-102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.8", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Schlittler anchors the Yankees as overwhelming favorites at the Stadium over Lowder with heavy over juice hitting the 8.5."},
-  {day:"TODAY", time:"7:11 PM ET", away:"San Francisco Giants", awayAbbr:"SF", home:"Miami Marlins", homeAbbr:"MIA", awayPitcher:"P: L Roupp", homePitcher:"P: TBD", spreadAway:"-1.5", spreadAwayJuice:"+168", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-205", spreadHomeMove:"", spreadOpen:"", mlAway:"+100", mlHome:"-118", total:"8", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIA ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"A near pick'em layout gives Miami the micro-home edge against Roupp on a flat 8 total carrying minor over pressure."},
-  {day:"TODAY", time:"7:11 PM ET", away:"Washington Nationals", awayAbbr:"WSH", home:"Tampa Bay Rays", homeAbbr:"TB", awayPitcher:"P: C Cavalli", homePitcher:"P: G Jax", spreadAway:"+1.5", spreadAwayJuice:"-220", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+180", spreadHomeMove:"", spreadOpen:"", mlAway:"+108", mlHome:"-126", total:"7.5", totalOverJuice:"-120", totalUnderJuice:"-102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TB ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Jax commands standard home favor for the Rays over Cavalli inside a tight 7.5 landscape frame pulling over cash."},
-  {day:"TODAY", time:"7:16 PM ET", away:"Milwaukee Brewers", awayAbbr:"MIL", home:"Atlanta Braves", homeAbbr:"ATL", awayPitcher:"P: J Misiorowski", homePitcher:"P: M Perez", spreadAway:"-1.5", spreadAwayJuice:"+106", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-128", spreadHomeMove:"", spreadOpen:"", mlAway:"-166", mlHome:"+140", total:"7.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Misiorowski maps out comfortable road chalk value for the Brewers over Perez with a tight 7.5 total shading slightly over."},
-  {day:"TODAY", time:"8:06 PM ET", away:"San Diego Padres", awayAbbr:"SD", home:"Texas Rangers", homeAbbr:"TEX", awayPitcher:"P: R Vasquez", homePitcher:"P: J deGrom", spreadAway:"+1.5", spreadAwayJuice:"-170", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+140", spreadHomeMove:"", spreadOpen:"", mlAway:"+136", mlHome:"-162", total:"7", totalOverJuice:"-120", totalUnderJuice:"-102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TEX ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"deGrom anchors the Rangers as solid choices in Arlington over Vasquez behind a defensive flat 7 line leaning over."},
-  {day:"TODAY", time:"8:11 PM ET", away:"Cleveland Guardians", awayAbbr:"CLE", home:"Houston Astros", homeAbbr:"HOU", awayPitcher:"P: T Bibee", homePitcher:"P: T Imai", spreadAway:"-1.5", spreadAwayJuice:"+164", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-200", spreadHomeMove:"", spreadOpen:"", mlAway:"+102", mlHome:"-120", total:"8.5", totalOverJuice:"-106", totalUnderJuice:"-114", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"HOU ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Imai establishes a close home favorite metric for Houston over Bibee behind an under-shaded 8.5 blueprint loop."},
-  {day:"TODAY", time:"8:16 PM ET", away:"St. Louis Cardinals", awayAbbr:"STL", home:"Kansas City Royals", homeAbbr:"KC", awayPitcher:"P: M McGreevy", homePitcher:"P: S Lugo", spreadAway:"-1.5", spreadAwayJuice:"+134", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-162", spreadHomeMove:"", spreadOpen:"", mlAway:"-120", mlHome:"+102", total:"9", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"STL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"McGreevy frames the Cardinals as short priorities on the road over Lugo across a flat 9 total canvas drawing over money."},
-  {day:"TODAY", time:"8:41 PM ET", away:"Pittsburgh Pirates", awayAbbr:"PIT", home:"Colorado Rockies", homeAbbr:"COL", awayPitcher:"P: B Chandler", homePitcher:"P: K Freeland", spreadAway:"-1.5", spreadAwayJuice:"+105", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-126", spreadHomeMove:"", spreadOpen:"", mlAway:"-136", mlHome:"+116", total:"11.5", totalOverJuice:"-106", totalUnderJuice:"-114", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PIT ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Chandler lines up the Pirates as road targets over Freeland inside Coors Field's massive 11.5 frame leaning under."},
-  {day:"TODAY", time:"9:41 PM ET", away:"Los Angeles Angels", awayAbbr:"LAA", home:"Athletics", homeAbbr:"OAK", awayPitcher:"P: J Soriano", homePitcher:"P: J Springs", spreadAway:"+1.5", spreadAwayJuice:"-152", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+126", spreadHomeMove:"", spreadOpen:"", mlAway:"+130", mlHome:"-154", total:"10", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"OAK ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Springs lines up the A's as steady options at home over Soriano on a flat 10 canvas taking under line juice pressure."},
-  {day:"TODAY", time:"9:46 PM ET", away:"Minnesota Twins", awayAbbr:"MIN", home:"Arizona Diamondbacks", homeAbbr:"AZ", awayPitcher:"P: C Prielipp", homePitcher:"P: M Soroka", spreadAway:"+1.5", spreadAwayJuice:"-156", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+130", spreadHomeMove:"", spreadOpen:"", mlAway:"+142", mlHome:"-168", total:"8.5", totalOverJuice:"-112", totalUnderJuice:"-108", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"AZ ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Soroka locks in comfortable home choice parameters for the D-backs facing Prielipp with a standard balanced 8.5 line."},
-  {day:"TODAY", time:"10:11 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Los Angeles Dodgers", homeAbbr:"LAD", awayPitcher:"P: T Gibson", homePitcher:"P: R Sasaki", spreadAway:"+1.5", spreadAwayJuice:"-122", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+102", spreadHomeMove:"", spreadOpen:"", mlAway:"+168", mlHome:"-200", total:"9.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAD ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sasaki anchors the Dodgers as heavy home choice value over Gibson with under metrics soaking up significant juice on the 9.5."},
-  {day:"TODAY", time:"10:11 PM ET", away:"Boston Red Sox", awayAbbr:"BOS", home:"Seattle Mariners", homeAbbr:"SEA", awayPitcher:"P: R Suarez", homePitcher:"P: B Miller", spreadAway:"+1.5", spreadAwayJuice:"-200", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+164", spreadHomeMove:"", spreadOpen:"", mlAway:"+110", mlHome:"-130", total:"6.5", totalOverJuice:"-120", totalUnderJuice:"-102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"SEA ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Miller sets Seattle as steady favorite selections over Suarez inside an ultra-tight 6.5 total frame shaded to the over."}
+  {day:"TODAY", time:"1:11 PM ET", away:"Chicago White Sox", awayAbbr:"CWS", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: S Newcomb", homePitcher:"P: T Melton", spreadAway:"+1.5", spreadAwayJuice:"-205", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+168", spreadHomeMove:"", spreadOpen:"", mlAway:"+108", mlHome:"-126", total:"9", totalOverJuice:"-102", totalUnderJuice:"-120", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"DET ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Melton establishes the Tigers as slight home favorites over Newcomb on a flat 9 total drawing notable under action."},
+  {day:"TODAY", time:"1:36 PM ET", away:"Cincinnati Reds", awayAbbr:"CIN", home:"New York Yankees", homeAbbr:"NYY", awayPitcher:"P: A Abbott", homePitcher:"P: W Warren", spreadAway:"+1.5", spreadAwayJuice:"-122", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+102", spreadHomeMove:"", spreadOpen:"", mlAway:"+168", mlHome:"-200", total:"9.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Warren anchors the Yankees as solid home chalk over Abbott with a 9.5 total slightly shaded toward the under."},
+  {day:"TODAY", time:"2:21 PM ET", away:"Toronto Blue Jays", awayAbbr:"TOR", home:"Chicago Cubs", homeAbbr:"CHC", awayPitcher:"P: P Corbin", homePitcher:"P: C Rea", spreadAway:"+1.5", spreadAwayJuice:"-194", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+160", spreadHomeMove:"", spreadOpen:"", mlAway:"+110", mlHome:"-130", total:"9", totalOverJuice:"-122", totalUnderJuice:"+100", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CHC ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Rea lines up the Cubs as moderate home priorities over Corbin behind a flat 9 total seeing heavy over juice."},
+  {day:"TODAY", time:"4:06 PM ET", away:"San Diego Padres", awayAbbr:"SD", home:"Texas Rangers", homeAbbr:"TEX", awayPitcher:"P: W Buehler", homePitcher:"P: N Eovaldi", spreadAway:"+1.5", spreadAwayJuice:"-205", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+168", spreadHomeMove:"", spreadOpen:"", mlAway:"+114", mlHome:"-134", total:"7.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TEX ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Eovaldi commands typical home favoritism over Buehler inside a defensive 7.5 landscape frame leaning under."},
+  {day:"TODAY", time:"4:11 PM ET", away:"San Francisco Giants", awayAbbr:"SF", home:"Miami Marlins", homeAbbr:"MIA", awayPitcher:"P: T McDonald", homePitcher:"P: M Meyer", spreadAway:"+1.5", spreadAwayJuice:"-178", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+116", mlHome:"-136", total:"8", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIA ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Meyer maps out home favorite value for Miami against McDonald on a flat 8 line carrying minor under pressure."},
+  {day:"TODAY", time:"4:11 PM ET", away:"Milwaukee Brewers", awayAbbr:"MIL", home:"Atlanta Braves", homeAbbr:"ATL", awayPitcher:"P: K Harrison", homePitcher:"P: C Sale", spreadAway:"+1.5", spreadAwayJuice:"-210", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+172", spreadHomeMove:"", spreadOpen:"", mlAway:"+114", mlHome:"-134", total:"7", totalOverJuice:"-120", totalUnderJuice:"-102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ATL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sale sets the Braves as standard home favorites over Harrison across a tight flat 7 total shaded over."},
+  {day:"TODAY", time:"4:11 PM ET", away:"Washington Nationals", awayAbbr:"WSH", home:"Tampa Bay Rays", homeAbbr:"TB", awayPitcher:"P: C Cavalli", homePitcher:"P: I Seymour", spreadAway:"-1.5", spreadAwayJuice:"+172", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-210", spreadHomeMove:"", spreadOpen:"", mlAway:"+102", mlHome:"-120", total:"8", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TB ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Seymour anchors a close home favorite metric for Tampa Bay against Cavalli on a flat 8 total taking over money."},
+  {day:"TODAY", time:"7:16 PM ET", away:"Cleveland Guardians", awayAbbr:"CLE", home:"Houston Astros", homeAbbr:"HOU", awayPitcher:"P: J Cantillo", homePitcher:"P: S Arrighetti", spreadAway:"+1.5", spreadAwayJuice:"-184", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+152", spreadHomeMove:"", spreadOpen:"", mlAway:"+120", mlHome:"-142", total:"8.5", totalOverJuice:"-102", totalUnderJuice:"-120", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"HOU ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Arrighetti establishes steady home favorite value over Cantillo behind an under-shaded 8.5 blueprint line."},
+  {day:"TODAY", time:"7:16 PM ET", away:"New York Mets", awayAbbr:"NYM", home:"Philadelphia Phillies", homeAbbr:"PHI", awayPitcher:"P: F Peralta", homePitcher:"P: C Sanchez", spreadAway:"+1.5", spreadAwayJuice:"-146", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+122", spreadHomeMove:"", spreadOpen:"", mlAway:"+154", mlHome:"-184", total:"7.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PHI ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sanchez frames the Phillies as comfortable favorites over Peralta with tight 7.5 under metrics pulling minor action."},
+  {day:"TODAY", time:"9:11 PM ET", away:"Pittsburgh Pirates", awayAbbr:"PIT", home:"Colorado Rockies", homeAbbr:"COL", awayPitcher:"P: P Skenes", homePitcher:"P: T Sugano", spreadAway:"-1.5", spreadAwayJuice:"-142", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"+118", spreadHomeMove:"", spreadOpen:"", mlAway:"-210", mlHome:"+176", total:"10.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PIT ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Skenes lines up the Pirates as clear road favorites over Sugano inside Coors Field's typical double-digit 10.5 total."},
+  {day:"TODAY", time:"10:06 PM ET", away:"Los Angeles Angels", awayAbbr:"LAA", home:"Athletics", homeAbbr:"OAK", awayPitcher:"P: W Urena", homePitcher:"P: J Ginn", spreadAway:"+1.5", spreadAwayJuice:"-142", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+118", spreadHomeMove:"", spreadOpen:"", mlAway:"+142", mlHome:"-168", total:"9.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"OAK ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Ginn sets the A's as stable options at home over Urena across a 9.5 canvas shaded toward the over."},
+  {day:"TODAY", time:"10:11 PM ET", away:"Boston Red Sox", awayAbbr:"BOS", home:"Seattle Mariners", homeAbbr:"SEA", awayPitcher:"P: C Early", homePitcher:"P: E Hancock", spreadAway:"+1.5", spreadAwayJuice:"-205", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+172", spreadHomeMove:"", spreadOpen:"", mlAway:"+108", mlHome:"-126", total:"7.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"SEA ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Hancock pins Seattle as a close home choice over Early with under juice heavily impacting the 7.5 framework."},
+  {day:"TODAY", time:"10:11 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Los Angeles Dodgers", homeAbbr:"LAD", awayPitcher:"P: T Rogers", homePitcher:"P: Y Yamamoto", spreadAway:"+1.5", spreadAwayJuice:"-108", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"-111", spreadHomeMove:"", spreadOpen:"", mlAway:"+205", mlHome:"-250", total:"8", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAD ML", edgeEV:"+1.8", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Yamamoto anchors the Dodgers as massive home chalk over Rogers, forcing heavy protection on the -1.5 spread line down to -111."},
+  {day:"TODAY", time:"10:11 PM ET", away:"Minnesota Twins", awayAbbr:"MIN", home:"Arizona Diamondbacks", homeAbbr:"AZ", awayPitcher:"P: T Bradley", homePitcher:"P: Z Gallen", spreadAway:"+1.5", spreadAwayJuice:"-192", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+158", spreadHomeMove:"", spreadOpen:"", mlAway:"+110", mlHome:"-130", total:"9", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"AZ ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Gallen locks in standard home favorite numbers for the D-backs against Bradley on a flat 9 layout leaning over."}
 ];
 
 // ════════════════════════════════════════════════════════════════
@@ -5414,6 +5409,8 @@ function renderTabExtras(){
 }
 renderTabExtras();
 
+var ROULETTE_NUMS = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
+var ROULETTE_RED = {1:1,3:1,5:1,7:1,9:1,12:1,14:1,16:1,18:1,19:1,21:1,23:1,25:1,27:1,30:1,32:1,34:1,36:1};
 function qSeed(str){var h=0;for(var i=0;i<str.length;i++){h=(h<<5)-h+str.charCodeAt(i);h|=0;}return Math.abs(h);}
 function qSparkPoints(seedStr,bias){
   var seed=qSeed(seedStr);
@@ -6122,10 +6119,14 @@ const MLB_LONGSHOTS = [
     headline:"Q's Roulette",
     thesis:"Four correlated legs on one side of the market. Market overwhelmingly disagrees — this ticket pays if the public narrative collapses in the first five innings.",
     legs:[
-      {n:"01", name:"Cam Schlittler 7+ K's", pct:48, ev:9.2, odds:"+225"},
-      {n:"02", name:"Jacob DeGrom 7+ K's", pct:43, ev:8.8, odds:"+270"},
-      {n:"03", name:"Spencer Jones HR", pct:18.9, ev:3.3, odds:"+350"},
-      {n:"04", name:"Henry Bolte HR", pct:13, ev:5.1, odds:"+520"}
+      {n:"01", name:"Paul Skenes 10+ K's", pct:48, ev:9.2, odds:"+385"},
+      {n:"02", name:"Will Warren 8.5+ K's", pct:53, ev:8.8, odds:"+250"},
+      {n:"03", name:"Spencer Jones HR", pct:18.9, ev:3.3, odds:"+280"},
+      {n:"04", name:"Nathan Eovaldi 8.5+ K's", pct:45, ev:9.2, odds:"+385"},
+      {n:"05", name:"Y. Yamamoto 10.5+ K's", pct:49, ev:8.8, odds:"+275"},
+      {n:"06", name:"Mookie Betts HR", pct:14.9, ev:3.3, odds:"+280"},
+      {n:"07", name:"Hunter Goodman HR", pct:18.9, ev:3.3, odds:"+280"},
+      {n:"08", name:"C. Sanchez 9+ K's", pct:16, ev:6.1, odds:"+320"}
     ],
     odds:"+2200", ret:"$10 to $230", ev:"+7.7%",
     metrics:[
@@ -6150,6 +6151,33 @@ function landRouletteBall(ballEl, legIndex){
     ballEl.classList.remove('ls-ball-landing');
     ballEl.style.animation = '';
   }, 2350);
+}
+function initIdleReshuffle(card){
+  var legs = card.querySelectorAll('.ls-leg-click');
+  if(!legs.length) return;
+  function tick(){
+    var idx = Math.floor(Math.random()*legs.length);
+    var el = legs[idx];
+    if(el){
+      el.classList.add('ls-idle-lift');
+      setTimeout(function(){ el.classList.remove('ls-idle-lift'); }, 900);
+    }
+    setTimeout(tick, 30000 + Math.random()*15000);
+  }
+  setTimeout(tick, 6000 + Math.random()*8000);
+}
+function initGoldDust(card){
+  var zone = card.querySelector('.ls-hero-zone');
+  if(!zone) return;
+  var n = 5;
+  for(var i=0;i<n;i++){
+    var p = document.createElement('span');
+    p.className = 'ls-dust';
+    p.style.left = (10 + Math.random()*80) + '%';
+    p.style.animationDelay = (Math.random()*9) + 's';
+    p.style.animationDuration = (7 + Math.random()*5) + 's';
+    zone.appendChild(p);
+  }
 }
 function wireDealerCall(card, ruid){
   var el = card.querySelector('#'+ruid+'-dealer');
@@ -6176,16 +6204,14 @@ function wireDealerCall(card, ruid){
     }
   };
 }
-function qSpinChip(hit){
-  if(hit){
-    var mult=(2+Math.random()*30).toFixed(1);
-    return '<span class="ls-spin-chip hit ls-spin-enter">'+mult+'x</span>';
-  }
-  return '<span class="ls-spin-chip miss ls-spin-enter">\u2014</span>';
+function rouletteSpin(rand){
+  var n = ROULETTE_NUMS[Math.floor((rand?rand():Math.random())*ROULETTE_NUMS.length)];
+  var color = n===0 ? 'green' : (ROULETTE_RED[n] ? 'red' : 'black');
+  return {n:n, color:color};
 }
 function qSpinHistoryHTML(seedStr){
   var id='spinrow-'+Math.random().toString(36).slice(2,9);
-  return '<div class="ls-spin-history"><span class="ls-spin-lbl"><span class="ls-spin-live-dot"></span>Recent spins</span><div class="ls-spin-chips" id="'+id+'" data-seed="'+seedStr.replace(/"/g,'')+'"></div></div>';
+  return '<div class="ls-spin-history"><span class="ls-spin-lbl"><span class="ls-spin-live-dot"></span>Recent Spins</span><div class="ls-spin-chips" id="'+id+'" data-seed="'+seedStr.replace(/"/g,'')+'"></div></div>';
 }
 function initSpinFeeds(){
   document.querySelectorAll('.ls-spin-chips[data-seed]').forEach(function(el){
@@ -6194,14 +6220,14 @@ function initSpinFeeds(){
     el.style.position='relative';
     var seed=qSeed(el.getAttribute('data-seed')+'-spins');
     function rand(){seed=(seed*9301+49297)%233280;return seed/233280;}
-    // deal in the initial 8, staggered
-    for(var i=0;i<8;i++){
+    // deal in the initial 5 (kept tight so it stays a single line under the wheel)
+    for(var i=0;i<5;i++){
       (function(idx){
         setTimeout(function(){
-          var hit=rand()<0.32;
+          var spin=rouletteSpin(rand);
           var chip=document.createElement('span');
-          chip.className='ls-spin-chip '+(hit?'hit':'miss')+' ls-spin-deal';
-          chip.textContent=hit?(2+rand()*30).toFixed(1)+'x':'\u2014';
+          chip.className='ls-spin-chip '+spin.color+' ls-spin-deal';
+          chip.textContent=spin.n;
           el.appendChild(chip);
         },idx*90);
       })(i);
@@ -6209,16 +6235,16 @@ function initSpinFeeds(){
     // then a live trickle of new spins, oldest falls off the left
     var tickDelay=4200+Math.random()*2600;
     setInterval(function(){
-      var hit=Math.random()<0.32;
+      var spin=rouletteSpin();
       var chip=document.createElement('span');
-      chip.className='ls-spin-chip '+(hit?'hit':'miss')+' ls-spin-enter';
-      chip.textContent=hit?(2+Math.random()*30).toFixed(1)+'x':'\u2014';
+      chip.className='ls-spin-chip '+spin.color+' ls-spin-enter';
+      chip.textContent=spin.n;
       el.appendChild(chip);
       requestAnimationFrame(function(){
         chip.classList.add('ls-spin-settled');
-        if(hit) spawnHitBurst(el, chip);
+        if(spin.color==='green') spawnHitBurst(el, chip);
       });
-      if(el.children.length>8){
+      if(el.children.length>5){
         var first=el.firstElementChild;
         first.classList.add('ls-spin-exit');
         setTimeout(function(){ if(first.parentNode===el) el.removeChild(first); },420);
@@ -6264,18 +6290,24 @@ function renderLongshots(shots, containerId) {
            + '<div class="ls-metric-val '+m.cls+'">'+m.val+'</div>'+barHtml+'</div>';
     }).join('');
     var SUITS = ['\u2660','\u2665','\u2666','\u2663'];
-    var legsHtml = s.legs.map(function(l,i) {
+    var allLegs = s.legs.slice(0, 8).map(function(l, idx){
+      return { name: l.name, pct: l.pct, ev: l.ev, odds: l.odds, n: String(idx+1).padStart(2,'0') };
+    });
+    var legTokens = allLegs.map(function(l,i) {
       var ev = l.ev||0;
       var tier = ev >= 15 ? 'edge' : ev >= 5 ? 'mid' : 'low';
       var suit = SUITS[i % SUITS.length];
       var suitRed = (suit === '\u2665' || suit === '\u2666');
       return '<div class="ls-leg ls-leg-click ls-leg-deal" style="animation-delay:'+(i*70)+'ms" data-pct="'+(l.pct||0)+'" data-ev="'+ev+'" data-odds="'+(l.odds||'')+'" data-name="'+l.name.replace(/"/g,'&quot;')+'" data-idx="'+i+'">'
-        +'<span class="ls-leg-n tier-'+tier+'">'+l.n+'</span>'
+        +'<span class="ls-leg-n tier-'+tier+'"><b>'+l.n+'</b></span>'
         +'<span class="ls-leg-name">'+l.name+'</span>'
         +'<span class="ls-leg-suit" style="color:'+(suitRed?'#e8546a':'#cfd8e3')+'">'+suit+'</span>'
         +'<span class="ls-leg-odds">'+(l.odds||'')+'</span>'
         +'</div>';
-    }).join('');
+    });
+    var splitAt = Math.ceil(legTokens.length / 2);
+    var legsLeftHtml = legTokens.slice(0, splitAt).join('');
+    var legsRightHtml = legTokens.slice(splitAt).join('');
 
     // ── ROULETTE WHEEL ──
     // Real European roulette pocket sequence
@@ -6426,11 +6458,18 @@ function renderLongshots(shots, containerId) {
     var card = document.createElement('div');
     card.className = 'ls-card';
     card.innerHTML =
-      '<div class="ls-wheel-panel">'
+      '<div class="ls-felt-seam"></div>'
+      +'<div class="ls-hero-zone">'
+      + '<div class="ls-chip-rail left">'+legsLeftHtml+'</div>'
+      + '<div class="ls-wheel-panel">'
+      +  '<div class="ls-bulb-rail">'+Array.from({length:24}).map(function(_,bi){return '<span class="ls-rim-bulb" style="--bi:'+bi+'"></span>';}).join('')+'</div>'
+      +  '<div class="ls-dome-shine"></div>'
       +  '<div class="ls-dealer-call" id="'+ruid+'-dealer">Place your bets\u2026</div>'
       +  '<div class="ls-wheel-rail"></div>'
       +  '<div class="ls-wheel-track">'+wheelSvg+'</div>'
       +  '<div class="ls-wheel-hub"></div>'
+      +  '<span class="ls-ball-trail t1"></span>'
+      +  '<span class="ls-ball-trail t2"></span>'
       +  '<div class="ls-wheel-ball"></div>'
       +  '<div class="ls-wheel-center">'
       +    '<svg class="ls-center-ring" viewBox="0 0 120 120">'
@@ -6438,34 +6477,31 @@ function renderLongshots(shots, containerId) {
       +    '</svg>'
       +    '<div class="ls-center-inner"><div class="ls-center-pct">--</div><div class="ls-center-cap">tap a pick</div></div>'
       +  '</div>'
+      +  qSpinHistoryHTML(s.headline||s.label)
+      + '</div>'
+      + '<div class="ls-chip-rail right">'+legsRightHtml+'</div>'
       +'</div>'
       +'<div class="ls-info">'
-      +  '<div class="ls-headline">'+headlineHtml+'</div>'
-      +  '<p class="ls-thesis">'+s.thesis+'</p>'
-      +  '<div class="ls-legs">'+legsHtml+'</div>'
-      +  '<div class="ls-wager" id="'+ruid+'-wager">'
-      +    '<span class="ls-wager-lbl">Your wager</span>'
-      +    '<button class="ls-wager-btn" id="'+ruid+'-wdn" type="button" aria-label="Decrease wager">\u2212</button>'
-      +    '<div class="ls-wager-chip"><span class="ls-wager-v" id="'+ruid+'-wval">$10</span></div>'
-      +    '<button class="ls-wager-btn" id="'+ruid+'-wup" type="button" aria-label="Increase wager">+</button>'
-      +    '<span class="ls-wager-hint">tap a pick to see your payout \u2192</span>'
-      +    '<div class="ls-table-limit"><span class="ls-table-limit-tag">\u25c6 Table Limit</span><span class="ls-table-limit-range">$1 \u2014 $1,000</span></div>'
-      +  '</div>'
-      +  '<div class="ls-footer-row">'
-      +    '<div class="ls-metrics">'
-      +      '<div class="ls-metric ls-agg-card"><div class="ls-metric-lbl">Market agg.</div><div class="ls-agg-card-text">Bet at your book</div></div>'
-      +      metricsHtml
+      +  '<p class="ls-thesis-line">'+s.thesis+'</p>'
+      +  '<div class="ls-action-row">'
+      +    '<div class="ls-wager" id="'+ruid+'-wager">'
+      +      '<span class="ls-wager-lbl">Your Wager</span>'
+      +      '<div class="ls-wager-core">'
+      +        '<button class="ls-wager-btn" id="'+ruid+'-wdn" type="button" aria-label="Decrease wager">\u2212</button>'
+      +        '<div class="ls-wager-chip"><span class="ls-wager-casino-lbl">CASINO</span><span class="ls-wager-v" id="'+ruid+'-wval">$10</span></div>'
+      +        '<button class="ls-wager-btn" id="'+ruid+'-wup" type="button" aria-label="Increase wager">+</button>'
+      +      '</div>'
+      +      '<div class="ls-table-limit"><span class="ls-table-limit-tag">\u25c6 Table Limit</span><span class="ls-table-limit-range">$1 \u2014 $1,000</span></div>'
+      +    '</div>'
+      +    '<div class="ls-odds-panel">'
+      +      '<div class="ls-odds-lbl">Payout</div>'
+      +      '<div class="ls-odds-val">'+s.odds+'</div>'
+      +      '<div class="ls-return">'+s.ret+'</div>'
+      +      '<div class="ls-ev">'+s.ev+' EV</div>'
+      +      '<div class="ls-odds-hint">tap to select all</div>'
       +    '</div>'
       +  '</div>'
-      +  qSpinHistoryHTML(s.headline||s.label)
       +  '<div class="ls-mini-disclaimer">Payout figures are model estimates, not real-money winnings.</div>'
-      +'</div>'
-      +'<div class="ls-odds-panel">'
-      +  '<div class="ls-odds-lbl">Payout</div>'
-      +  '<div class="ls-odds-val">'+s.odds+'</div>'
-      +  '<div class="ls-return">'+s.ret+'</div>'
-      +  '<div class="ls-ev">'+s.ev+' EV</div>'
-      +  '<div class="ls-odds-hint">tap to select all</div>'
       +'</div>';
 
     var wrap = document.createElement('div');
@@ -6519,6 +6555,11 @@ function renderLongshots(shots, containerId) {
       var profit = rStake() * (dec - 1);
       if(cap) cap.textContent = 'you\u2019d win';
       var target = profit;
+      if(oddsPanel){
+        oddsPanel.classList.remove('ls-pulse');
+        void oddsPanel.offsetWidth;
+        oddsPanel.classList.add('ls-pulse');
+      }
       if(!animate){
         if(pct) pct.textContent = '$'+Math.round(target).toLocaleString();
         return;
@@ -6539,6 +6580,24 @@ function renderLongshots(shots, containerId) {
 
     var dealer = wireDealerCall(card, ruid);
     var ballEl = card.querySelector('.ls-wheel-ball');
+    initIdleReshuffle(card);
+    initGoldDust(card);
+
+    function triggerPickFX(originXPct){
+      var wp = card.querySelector('.ls-wheel-panel');
+      if(wp){
+        wp.classList.add('ls-spin-active');
+        clearTimeout(wp.__spinTimer);
+        wp.__spinTimer = setTimeout(function(){ wp.classList.remove('ls-spin-active'); }, 2300);
+      }
+      card.classList.remove('ls-pick-flash');
+      void card.offsetWidth;
+      card.classList.add('ls-pick-flash');
+      if(typeof originXPct === 'number'){
+        card.style.setProperty('--spot-x', originXPct+'%');
+        card.style.setProperty('--spot-y', '30%');
+      }
+    }
 
     card.querySelectorAll('.ls-leg-click').forEach(function(legEl, legIdx){
       legEl.addEventListener('click', function(){
@@ -6549,8 +6608,26 @@ function renderLongshots(shots, containerId) {
         if(centerEl){ centerEl.classList.add('spinning'); }
         if(dealer) dealer.onSpin();
         landRouletteBall(ballEl, legIdx);
+        var isLeftRail = !!legEl.closest('.ls-chip-rail.left');
+        triggerPickFX(isLeftRail ? 28 : 72);
         showPayout(true);
         if(dealer) setTimeout(dealer.onLanded, 2300);
+      });
+      legEl.addEventListener('mouseenter', function(){
+        if(legEl.classList.contains('active')) return;
+        var odds = legEl.getAttribute('data-odds');
+        if(!odds) return;
+        var dec = oddsToDec(odds);
+        var profit = rStake() * (dec - 1);
+        if(cap) cap.textContent = 'PREVIEW';
+        if(pct){ pct.textContent = '$'+Math.round(profit).toLocaleString(); pct.classList.add('ls-preview-text'); }
+        if(centerEl) centerEl.classList.add('ls-preview-mode');
+      });
+      legEl.addEventListener('mouseleave', function(){
+        if(pct) pct.classList.remove('ls-preview-text');
+        if(centerEl) centerEl.classList.remove('ls-preview-mode');
+        if(currentOdds!==null){ showPayout(false); if(cap) cap.textContent='you\u2019d win'; }
+        else { if(pct) pct.textContent='--'; if(cap) cap.textContent='tap a pick'; }
       });
     });
 
@@ -6563,12 +6640,14 @@ function renderLongshots(shots, containerId) {
         if(centerEl){ centerEl.classList.add('spinning'); }
         if(dealer) dealer.onSpin();
         landRouletteBall(ballEl, s.legs.length + 3);
+        triggerPickFX(50);
         showPayout(true);
         if(dealer) setTimeout(dealer.onLanded, 2300);
       });
     }
   });
 }
+
 
 
 
@@ -6816,21 +6895,19 @@ initSpinFeeds();
 }
 .ls-coin-drop{
   position:absolute;top:-10%;width:16px;height:16px;border-radius:50%;
-  background:radial-gradient(circle at 35% 28%,#fff2a6 0 10%,#ffd66f 13%,#d8991e 58%,#70420b 100%);
-  border:1px solid rgba(255,232,150,.72);
-  box-shadow:0 0 10px rgba(244,185,66,.50), inset 0 0 0 3px rgba(65,38,5,.34);
+  background:
+    radial-gradient(circle at 38% 34%, #2c2014 0%, #120c06 70%) 50% 50% / 60% 60% no-repeat,
+    repeating-conic-gradient(from 6deg, #f4b942 0 13deg, #160f08 13deg 26deg);
+  border:1px solid rgba(255,226,130,.4);
+  box-shadow:0 0 8px rgba(244,185,66,.4), inset 0 0 0 2px rgba(65,38,5,.3);
   animation:lsCoinFall 1.25s cubic-bezier(.42,0,.78,1) forwards;
   will-change:top,transform,opacity;
-}
-.ls-coin-drop::after{
-  content:'$';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-family:'DM Mono',monospace;font-weight:900;font-size:.5rem;color:#4b2f07;
 }
 @keyframes lsCoinFall{
   0%{top:-10%;transform:rotateZ(0deg);opacity:0;}
   10%{opacity:1;}
   78%{opacity:1;}
-  100%{top:108%;transform:rotateZ(65deg);opacity:0;}
+  100%{top:108%;transform:rotateZ(var(--spin,65deg));opacity:0;}
 }
 
 /* Your slip: smaller before and after picks */
@@ -7032,7 +7109,7 @@ initSpinFeeds();
     mo.observe(el,{childList:true,characterData:true,subtree:true});
   });
 
-  function enhancedCoinRain(panel){
+  function enhancedChipRain(panel){
     if(!panel) return;
     var rain = panel.querySelector('.ls-coin-rain');
     if(!rain){
@@ -7041,16 +7118,17 @@ initSpinFeeds();
       panel.appendChild(rain);
     }
     rain.innerHTML='';
-    var count = 24;
+    var count = 46;
     for(var i=0;i<count;i++){
       var c = document.createElement('span');
       c.className='ls-coin-drop';
-      c.style.left=(4 + Math.random()*92).toFixed(1)+'%';
-      c.style.animationDelay=(Math.random()*0.34).toFixed(2)+'s';
-      c.style.animationDuration=(1.0 + Math.random()*0.55).toFixed(2)+'s';
+      c.style.left=(2 + Math.random()*96).toFixed(1)+'%';
+      c.style.animationDelay=(Math.random()*0.6).toFixed(2)+'s';
+      c.style.animationDuration=(1.1 + Math.random()*0.7).toFixed(2)+'s';
+      c.style.setProperty('--spin', (Math.random()<0.5?'':'-') + (50+Math.random()*60).toFixed(0)+'deg');
       rain.appendChild(c);
     }
-    setTimeout(function(){ if(rain) rain.innerHTML=''; }, 1900);
+    setTimeout(function(){ if(rain) rain.innerHTML=''; }, 2200);
   }
 
   document.addEventListener('click', function(e){
@@ -7058,8 +7136,8 @@ initSpinFeeds();
     if(!target) return;
     var panel = target.closest('.ls-card');
     if(!panel) return;
-    var oddsPanel = panel.querySelector('.ls-odds-panel');
-    if(oddsPanel) enhancedCoinRain(oddsPanel);
+    var infoPanel = panel.querySelector('.ls-info');
+    if(infoPanel) enhancedChipRain(infoPanel);
   }, true);
 })();
 </script>
@@ -7137,6 +7215,540 @@ initSpinFeeds();
   opacity:.30!important;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent)!important;
 }
+
+/* =========================================================
+   ROULETTE REBUILD — wheel as centerpiece, props as poker
+   chip tokens flanking it (Concept C). Wheel geometry,
+   animations, wager/payout/spin-history infra unchanged.
+   Condensed pass: ~50% shorter card, no metrics block,
+   compact top headline, 8 chips (4/side), tighter spacing.
+========================================================= */
+.ls-card{
+  display:flex!important;
+  flex-direction:column!important;
+  grid-template-columns:none!important;
+  background:
+    radial-gradient(ellipse 760px 420px at 50% 18%, rgba(34,197,94,.14), transparent 65%),
+    radial-gradient(ellipse 600px 360px at 50% 100%, rgba(244,185,66,.06), transparent 70%),
+    linear-gradient(160deg, rgba(14,34,22,0.62), rgba(8,20,13,0.72))
+  !important;
+}
+
+/* ---- compact top headline strip ---- */
+.ls-headline-bar{
+  display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+  padding:14px 20px 0;
+}
+.ls-headline-title{
+  font-family:'Inter',sans-serif; font-size:.8rem; font-weight:900;
+  color:#c8f0d4; letter-spacing:-.01em; flex-shrink:0;
+}
+.ls-headline-thesis{
+  font-size:.62rem; color:#3f8a55; line-height:1.4;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+
+/* ---- hero zone: chip rail | wheel | chip rail ---- */
+.ls-hero-zone{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:0;
+  padding:32px 16px 26px;
+  position:relative;
+}
+.ls-chip-rail{
+  margin-top:18px;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  z-index:1;
+  position:relative;
+  padding:6px 0;
+}
+.ls-chip-rail::before{
+  content:'';
+  position:absolute;
+  inset:-20px -10px;
+  z-index:-1;
+  pointer-events:none;
+  opacity:.07;
+  background-image:
+    repeating-radial-gradient(circle at 50% 50%, rgba(244,185,66,.9) 0 2px, transparent 2px 16px),
+    repeating-conic-gradient(from 0deg at 50% 50%, rgba(244,185,66,.7) 0 6deg, transparent 6deg 22.5deg);
+  background-size: 140% 140%, 140% 140%;
+  background-position:center;
+  border-radius:50%;
+  filter:blur(.3px);
+}
+.ls-chip-rail.left{ margin-right:-20px; }
+.ls-chip-rail.right{ margin-left:-20px; }
+
+/* re-home the wheel panel: no longer a side column, now a centered stage */
+.ls-wheel-panel{
+  position:relative!important;
+  width:320px!important;
+  min-height:326px!important;
+  flex-shrink:0;
+  z-index:2;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(34,197,94,.22), rgba(4,10,8,.7) 56%, transparent) !important;
+  border-right:none!important;
+  border-radius:50%;
+}
+.ls-wheel-panel::before{
+  background:radial-gradient(circle, rgba(34,197,94,.24), transparent 66%) !important;
+}
+
+/* ---- chip token (formerly the flat leg row) ---- */
+.ls-leg{
+  width:148px!important;
+  display:grid!important;
+  grid-template-columns:30px 1fr auto!important;
+  grid-template-rows:auto auto!important;
+  column-gap:7px!important;
+  row-gap:2px!important;
+  align-items:center!important;
+  padding:7px 9px 7px!important;
+  border-radius:13px 13px 6px 6px!important;
+  background:
+    linear-gradient(160deg, rgba(255,255,255,.06), rgba(0,0,0,.34)) !important;
+  border:1px solid rgba(244,185,66,.16)!important;
+  box-shadow:
+    0 8px 18px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.08)
+  !important;
+  position:relative;
+}
+.ls-leg::before{
+  content:'';
+  position:absolute; left:8px; right:8px; bottom:0px; height:4px;
+  border-radius:0 0 5px 5px;
+  background:repeating-linear-gradient(90deg, var(--team-clr,#f4b942) 0 4px, #1c1408 4px 8px);
+  opacity:.6;
+}
+.ls-leg-n{
+  grid-column:1!important; grid-row:1 / 3!important;
+  width:30px!important;height:30px!important;
+  border-radius:50%!important;
+  background:
+    radial-gradient(circle at 36% 32%, #3c2c14 0%, #160f08 72%) 50% 50% / 64% 64% no-repeat,
+    repeating-conic-gradient(from 4deg, #ffd66f 0 11deg, #120c06 11deg 22.5deg)
+  !important;
+  box-shadow:
+    0 3px 0 rgba(0,0,0,.5),
+    0 7px 12px rgba(0,0,0,.45),
+    inset 0 0 0 1px rgba(255,226,130,.35),
+    inset 0 1px 1px rgba(255,255,255,.18)
+  !important;
+  color:#ffe9b0!important;
+  font-size:.56rem!important;
+}
+.ls-leg-n b{ position:relative; font-weight:900; text-shadow:0 1px 2px rgba(0,0,0,.6); }
+.ls-leg-name{
+  grid-column:2 / 4!important; grid-row:1!important;
+  font-size:.6rem!important;
+  line-height:1.22!important;
+  white-space:normal!important;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.ls-leg-suit{ grid-column:2!important; grid-row:2!important; justify-self:start!important; font-size:.62rem!important; }
+.ls-leg-odds{
+  grid-column:3!important; grid-row:2!important; justify-self:end!important;
+  font-size:.54rem!important;
+  padding:1px 6px!important;
+}
+
+.ls-leg:hover, .ls-leg-click:hover{
+  transform:translateY(-3px) scale(1.02)!important;
+  border-color:rgba(244,185,66,.5)!important;
+}
+.ls-leg-click.active{
+  box-shadow:
+    0 0 0 2px rgba(244,185,66,.7),
+    0 14px 26px rgba(244,185,66,.18),
+    inset 0 1px 0 rgba(255,255,255,.1)
+  !important;
+}
+
+/* ---- action row: wager + payout side by side, content-width not stretched ---- */
+.ls-info{
+  padding:8px 20px 14px!important;
+}
+.ls-action-row{
+  display:flex;
+  gap:12px;
+  align-items:stretch;
+  justify-content:center;
+  margin-bottom:10px;
+}
+.ls-action-row .ls-wager{
+  flex:0 1 420px!important;
+  margin:0!important;
+  justify-content:center;
+  flex-wrap:wrap;
+  row-gap:8px;
+}
+.ls-info::after{ display:none; }
+.ls-odds-panel{
+  flex-shrink:0;
+  width:140px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  border-radius:16px;
+  padding:10px 12px;
+  background:linear-gradient(160deg, rgba(244,185,66,.1), rgba(0,0,0,.3));
+  border:1px solid rgba(244,185,66,.22);
+}
+.ls-odds-panel::before{ inset:6px!important; }
+.ls-odds-panel::after{
+  content:'CLICK PAYOUT';
+  position:static!important;
+  transform:none!important;
+  margin-top:3px;
+  font-family:'DM Mono',monospace;font-size:.4rem;font-weight:800;letter-spacing:.14em;
+  color:#caa24e; opacity:.8;
+}
+
+@media(max-width:900px){
+  .ls-headline-bar{ flex-direction:column; gap:2px; padding:12px 14px 0; }
+  .ls-headline-thesis{ white-space:normal; }
+  .ls-hero-zone{ flex-direction:column; gap:14px; padding:16px 14px 4px; }
+  .ls-chip-rail{ flex-direction:row; flex-wrap:wrap; justify-content:center; margin:0!important; }
+  .ls-chip-rail::before{ display:none; }
+  .ls-leg{ width:124px!important; }
+  .ls-action-row{ flex-direction:column; }
+  .ls-odds-panel{ width:100%; flex-direction:row; justify-content:space-between; padding:12px 16px; }
+  .ls-odds-panel::after{ display:none; }
+}
+
+/* =========================================================
+   ROULETTE v2 — bigger wheel, animated chip rails wrapping
+   the rim, rim nameplate, chase light, felt+chip background,
+   ticket-stub payout, big-coin wager. Wins entire cascade.
+========================================================= */
+
+/* ---- card background: felt weave + chip-rim pattern + vignette ---- */
+.ls-card{
+  background:
+    radial-gradient(ellipse 900px 520px at var(--spot-x,50%) var(--spot-y,30%), rgba(34,197,94,.16), transparent 68%),
+    radial-gradient(ellipse 700px 460px at 50% 100%, rgba(244,185,66,.07), transparent 72%),
+    radial-gradient(ellipse 1100px 700px at 50% 50%, transparent 55%, rgba(0,0,0,.38) 100%),
+    repeating-linear-gradient(135deg, rgba(255,255,255,.012) 0 2px, transparent 2px 7px),
+    linear-gradient(160deg, rgba(14,34,22,0.66), rgba(8,20,13,0.76))
+  !important;
+  position:relative;
+  animation:lsNeonBorder 5s ease-in-out infinite;
+}
+.ls-card.ls-pick-flash{ animation:lsNeonBorderFlash 1.1s ease-out; }
+@keyframes lsNeonBorder{
+  0%,100%{ box-shadow:0 0 0 1px rgba(34,197,94,.35), 0 0 18px rgba(34,197,94,.20), 0 14px 34px rgba(0,0,0,.4); border-color:rgba(34,197,94,.4); }
+  50%{ box-shadow:0 0 0 1px rgba(244,185,66,.4), 0 0 24px rgba(244,185,66,.28), 0 14px 34px rgba(0,0,0,.4); border-color:rgba(244,185,66,.45); }
+}
+@keyframes lsNeonBorderFlash{
+  0%{ box-shadow:0 0 0 1px rgba(244,185,66,.4), 0 0 24px rgba(244,185,66,.28), 0 14px 34px rgba(0,0,0,.4); }
+  35%{ box-shadow:0 0 0 2px rgba(244,185,66,.85), 0 0 46px rgba(244,185,66,.55), 0 14px 34px rgba(0,0,0,.4); }
+  100%{ box-shadow:0 0 0 1px rgba(34,197,94,.35), 0 0 18px rgba(34,197,94,.20), 0 14px 34px rgba(0,0,0,.4); }
+}
+.ls-felt-seam{
+  position:absolute; inset:7px; pointer-events:none; z-index:0;
+  border:1px dashed rgba(244,185,66,.14);
+  border-radius:14px;
+}
+.ls-card::after{
+  content:'';
+  position:absolute; inset:0; pointer-events:none; z-index:0; border-radius:inherit;
+  opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22130%22%20height%3D%22130%22%20viewBox%3D%220%200%20130%2065%22%3E%3Ccircle%20cx%3D%2233%22%20cy%3D%2233%22%20r%3D%2222%22%20fill%3D%22none%22%20stroke%3D%22%23f4b942%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%224%204%22/%3E%3Ccircle%20cx%3D%2233%22%20cy%3D%2233%22%20r%3D%2213%22%20fill%3D%22none%22%20stroke%3D%22%23f4b942%22%20stroke-width%3D%221.5%22/%3E%3Ccircle%20cx%3D%2298%22%20cy%3D%2298%22%20r%3D%2222%22%20fill%3D%22none%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%224%204%22/%3E%3Ccircle%20cx%3D%2298%22%20cy%3D%2298%22%20r%3D%2213%22%20fill%3D%22none%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%221.5%22/%3E%3C/svg%3E");
+  background-repeat:repeat;
+  background-size:130px 130px;
+}
+.ls-hero-zone, .ls-info{ position:relative; z-index:1; }
+
+/* ---- wheel +30% ---- */
+.ls-wheel-panel{
+  width:416px!important;
+  min-height:424px!important;
+  transform:perspective(1300px) rotateX(7deg)!important;
+  transform-style:preserve-3d;
+}
+.ls-wheel-rail{ width:390px!important; height:390px!important; }
+.ls-wheel-track{ width:364px!important; height:364px!important; }
+.ls-wheel-hub{ width:29px!important; height:29px!important; }
+.ls-wheel-ball{ width:14px!important; height:14px!important; }
+.ls-wheel-center{ width:153px!important; height:153px!important; margin:-76.5px 0 0 -76.5px!important; }
+.ls-center-inner{ width:96px!important; height:96px!important; }
+@keyframes ballOrbit{
+  from{ transform:translate(-50%,-50%) rotate(0deg) translateY(-169px); }
+  to{ transform:translate(-50%,-50%) rotate(-360deg) translateY(-169px); }
+}
+.ls-ball-trail{
+  position:absolute; top:50%; left:50%; width:8px; height:8px; margin:0; border-radius:50%;
+  background:radial-gradient(circle, rgba(255,254,240,.5), transparent 70%);
+  transform-origin:0 0;
+  animation:ballOrbit 2.55s linear infinite;
+  pointer-events:none; z-index:6;
+}
+.ls-ball-trail.t1{ animation-delay:.07s; opacity:.4; width:7px; height:7px; }
+.ls-ball-trail.t2{ animation-delay:.14s; opacity:.22; width:6px; height:6px; }
+
+.ls-center-pct.ls-preview-text{ opacity:.85; font-style:italic; }
+.ls-wheel-center.ls-preview-mode .ls-center-inner{
+  border:1.5px dashed rgba(125,180,255,.55)!important;
+  box-shadow:0 0 16px rgba(87,167,255,.3), inset 0 0 14px rgba(0,0,0,.6)!important;
+  background:radial-gradient(circle at 38% 32%, rgba(18,30,48,.96), rgba(6,12,20,.98))!important;
+}
+.ls-wheel-center.ls-preview-mode .ls-center-pct{
+  color:#bcdcff!important; text-shadow:0 0 12px rgba(87,167,255,.6)!important;
+}
+.ls-wheel-center.ls-preview-mode .ls-center-cap{
+  color:rgba(150,200,255,.85)!important; font-weight:800; letter-spacing:.16em;
+}
+@keyframes lsBallLand{
+  0%{ transform:translate(-50%,-50%) rotate(0deg) translateY(-169px); }
+  100%{ transform:translate(-50%,-50%) rotate(var(--land-to,-720deg)) translateY(-169px); }
+}
+
+/* ---- bulb chase traveling around the wooden rim, sequential lighting ---- */
+.ls-bulb-rail{
+  position:absolute; top:50%; left:50%; width:390px; height:390px;
+  margin:-195px 0 0 -195px;
+  pointer-events:none; z-index:6;
+}
+.ls-rim-bulb{
+  position:absolute; top:50%; left:50%; width:5px; height:5px; border-radius:50%;
+  margin:-2.5px 0 0 -2.5px;
+  background:#5a4310;
+  box-shadow:inset 0 0 2px rgba(0,0,0,.6);
+  transform:rotate(calc(var(--bi) * 15deg)) translateY(-191px);
+  animation:lsBulbChase 3.6s linear infinite;
+  animation-delay:calc(var(--bi) * -150ms);
+}
+@keyframes lsBulbChase{
+  0%, 91%{ background:#5a4310; box-shadow:inset 0 0 2px rgba(0,0,0,.6); }
+  4%{ background:#ffe9a0; box-shadow:0 0 7px rgba(255,224,102,.95), 0 0 14px rgba(255,200,60,.5); }
+  10%, 100%{ background:#5a4310; box-shadow:inset 0 0 2px rgba(0,0,0,.6); }
+}
+.ls-wheel-panel.ls-spin-active .ls-rim-bulb{
+  animation-duration:1.1s;
+}
+.ls-wheel-panel.ls-spin-active .ls-rim-bulb{
+  background:#ffe9a0; box-shadow:0 0 8px rgba(255,224,102,1), 0 0 16px rgba(255,200,60,.6);
+}
+
+/* ---- subtle diagonal shine sweeping the wheel's dome/glass face ---- */
+.ls-dome-shine{
+  position:absolute; top:50%; left:50%; width:364px; height:364px;
+  margin:-182px 0 0 -182px;
+  border-radius:50%;
+  overflow:hidden;
+  pointer-events:none; z-index:5;
+}
+.ls-dome-shine::after{
+  content:'';
+  position:absolute; top:-40%; left:-60%; width:50%; height:180%;
+  background:linear-gradient(100deg, transparent, rgba(255,255,255,.10) 45%, transparent 80%);
+  animation:lsDomeShine 9s ease-in-out infinite;
+}
+@keyframes lsDomeShine{
+  0%, 78%{ transform:translateX(0); }
+  92%{ transform:translateX(260%); }
+  100%{ transform:translateX(260%); }
+}
+
+/* ---- spin history tray tucked under the wheel, kept translucent ---- */
+.ls-wheel-panel .ls-spin-history{
+  position:absolute; left:50%; bottom:10px; transform:translateX(-50%);
+  z-index:9; margin:0;
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+  background:rgba(8,14,10,.46);
+  -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);
+  border:1px solid rgba(244,185,66,.22);
+  border-radius:11px;
+  padding:4px 10px 5px;
+  box-shadow:0 6px 16px rgba(0,0,0,.32);
+}
+.ls-wheel-panel .ls-spin-lbl{
+  display:flex!important; font-size:.36rem!important; opacity:.8;
+}
+.ls-wheel-panel .ls-spin-chips{ gap:2px; flex-wrap:nowrap!important; }
+.ls-wheel-panel .ls-spin-chip{ background:rgba(0,0,0,.32)!important; font-size:.42rem!important; padding:1px 4px!important; min-width:16px!important; }
+.ls-wheel-panel .ls-spin-chip.green{ background:rgba(34,197,94,.32)!important; }
+
+/* ---- thesis line (replaces the old headline bar) ---- */
+.ls-thesis-line{
+  font-size:.62rem; color:#3f8a55; line-height:1.4; text-align:center;
+  max-width:560px; margin:0 auto 10px;
+}
+
+/* ---- chip rail: arc'd, breathing, fanning on hover ---- */
+.ls-chip-rail.left{ margin-right:-22px; }
+.ls-chip-rail.right{ margin-left:-22px; }
+.ls-chip-rail .ls-leg:nth-child(1){ --rot:-9deg; }
+.ls-chip-rail .ls-leg:nth-child(2){ --rot:-3deg; }
+.ls-chip-rail .ls-leg:nth-child(3){ --rot:3deg; }
+.ls-chip-rail .ls-leg:nth-child(4){ --rot:9deg; }
+.ls-chip-rail:hover .ls-leg{
+  transform:rotate(calc(var(--rot,0deg) * 1.9)) translateX(-6px) !important;
+}
+.ls-chip-rail.right:hover .ls-leg{ transform:rotate(calc(var(--rot,0deg) * 1.9)) translateX(6px) !important; }
+
+@keyframes lsLegDeal{
+  from{ opacity:0; transform:translateY(10px) rotate(calc(var(--rot,0deg) - 2deg)); }
+  to{ opacity:1; transform:translateY(0) rotate(var(--rot,0deg)); }
+}
+@keyframes lsChipBreathe{
+  0%,100%{ filter:brightness(1) saturate(1); }
+  50%{ filter:brightness(1.1) saturate(1.15); }
+}
+.ls-leg-deal{
+  animation: lsLegDeal .46s cubic-bezier(.22,1,.36,1) both, lsChipBreathe 4.6s ease-in-out infinite !important;
+}
+.ls-leg.ls-idle-lift{
+  animation: lsIdleLift .9s ease-in-out !important;
+}
+@keyframes lsIdleLift{
+  0%,100%{ transform:rotate(var(--rot,0deg)) translateY(0) scale(1); }
+  40%{ transform:rotate(var(--rot,0deg)) translateY(-7px) scale(1.04); box-shadow:0 16px 26px rgba(0,0,0,.5); }
+}
+
+/* glint sweep across each chip, staggered, mostly idle */
+.ls-leg{ overflow:hidden; }
+.ls-leg::after{
+  content:'';
+  position:absolute; top:0; left:-60%; width:40%; height:100%;
+  background:linear-gradient(115deg, transparent, rgba(255,255,255,.22) 45%, transparent 75%);
+  animation:lsGlint 6.5s ease-in-out infinite;
+  pointer-events:none;
+}
+.ls-chip-rail .ls-leg:nth-child(2)::after{ animation-delay:1.6s; }
+.ls-chip-rail .ls-leg:nth-child(3)::after{ animation-delay:3.2s; }
+.ls-chip-rail .ls-leg:nth-child(4)::after{ animation-delay:4.8s; }
+@keyframes lsGlint{
+  0%, 82%{ left:-60%; }
+  92%{ left:130%; }
+  100%{ left:130%; }
+}
+
+/* ---- chip token redesign: dashed border + corner pips + inner plate (per reference) ---- */
+.ls-leg{
+  width:172px!important;
+  grid-template-columns:34px 1fr auto!important;
+  border:1.5px dashed rgba(244,185,66,.4)!important;
+  background:
+    linear-gradient(160deg, rgba(255,255,255,.05), rgba(0,0,0,.4)) !important;
+  padding:9px 11px 8px!important;
+  column-gap:9px!important;
+}
+.ls-leg-n{
+  width:32px!important; height:32px!important;
+  font-size:.6rem!important;
+}
+.ls-leg-name{
+  background:rgba(0,0,0,.22);
+  border:1px solid rgba(244,185,66,.16);
+  border-radius:6px;
+  padding:4px 6px;
+  margin-top:1px;
+  font-size:.68rem!important;
+  line-height:1.28!important;
+}
+.ls-leg-suit{ font-size:.66rem!important; }
+.ls-leg-odds{ font-size:.6rem!important; padding:2px 7px!important; }
+
+/* ---- wager: big coin, compact tucked buttons ---- */
+.ls-wager{
+  max-width:280px!important;
+  flex:0 0 auto!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  gap:8px!important;
+}
+.ls-wager-core{
+  display:flex; align-items:center; justify-content:center; gap:10px;
+}
+.ls-wager-btn{
+  width:26px!important; height:26px!important;
+  flex-shrink:0;
+}
+.ls-wager-chip{
+  width:96px!important; height:96px!important;
+  background:
+    url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20x%3D%22183.0%22%20y%3D%2287.0%22%20width%3D%2210.0%22%20height%3D%2226.0%22%20rx%3D%222.5%22%20fill%3D%22%23fdf6e3%22%20opacity%3D%220.92%22%20transform%3D%22rotate%2890.0%20188.0%20100.0%29%22/%3E%3Crect%20x%3D%22157.2%22%20y%3D%22149.2%22%20width%3D%2210.0%22%20height%3D%2226.0%22%20rx%3D%222.5%22%20fill%3D%22%23fdf6e3%22%20opacity%3D%220.92%22%20transform%3D%22rotate%28135.0%20162.2%20162.2%29%22/%3E%3Crect%20x%3D%2295.0%22%20y%3D%22175.0%22%20width%3D%2210.0%22%20height%3D%2226.0%22%20rx%3D%222.5%22%20fill%3D%22%23fdf6e3%22%20opacity%3D%220.92%22%20transform%3D%22rotate%28180.0%20100.0%20188.0%29%22/%3E%3Crect%20x%3D%2232.8%22%20y%3D%22149.2%22%20width%3D%2210.0%22%20height%3D%2226.0%22%20rx%3D%222.5%22%20fill%3D%22%23fdf6e3%22%20opacity%3D%220.92%22%20transform%3D%22rotate%28225.0%2037.8%20162.2%29%22/%3E%3Crect%20x%3D%227.0%22%20y%3D%2287.0%22%20width%3D%2210.0%22%20height%3D%2226.0%22%20rx%3D%222.5%22%20fill%3D%22%23fdf6e3%22%20opacity%3D%220.92%22%20transform%3D%22rotate%28270.0%2012.0%20100.0%29%22/%3E%3Crect%20x%3D%2232.8%22%20y%3D%2224.8%22%20width%3D%2210.0%22%20height%3D%2226.0%22%20rx%3D%222.5%22%20fill%3D%22%23fdf6e3%22%20opacity%3D%220.92%22%20transform%3D%22rotate%28315.0%2037.8%2037.8%29%22/%3E%3Crect%20x%3D%2295.0%22%20y%3D%22-1.0%22%20width%3D%2210.0%22%20height%3D%2226.0%22%20rx%3D%222.5%22%20fill%3D%22%23fdf6e3%22%20opacity%3D%220.92%22%20transform%3D%22rotate%28360.0%20100.0%2012.0%29%22/%3E%3Crect%20x%3D%22157.2%22%20y%3D%2224.8%22%20width%3D%2210.0%22%20height%3D%2226.0%22%20rx%3D%222.5%22%20fill%3D%22%23fdf6e3%22%20opacity%3D%220.92%22%20transform%3D%22rotate%28405.0%20162.2%2037.8%29%22/%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%2260%22%20fill%3D%22none%22%20stroke%3D%22%23fdf6e3%22%20stroke-width%3D%222%22%20opacity%3D%220.85%22/%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%2253%22%20fill%3D%22none%22%20stroke%3D%22%23f4b942%22%20stroke-width%3D%221.4%22%20stroke-dasharray%3D%223%203%22%20opacity%3D%220.7%22/%3E%3Ccircle%20cx%3D%22133.2%22%20cy%3D%22133.2%22%20r%3D%222%22%20fill%3D%22%2322c55e%22%20opacity%3D%220.6%22/%3E%3Ccircle%20cx%3D%2266.8%22%20cy%3D%22133.2%22%20r%3D%222%22%20fill%3D%22%2322c55e%22%20opacity%3D%220.6%22/%3E%3Ccircle%20cx%3D%2266.8%22%20cy%3D%2266.8%22%20r%3D%222%22%20fill%3D%22%2322c55e%22%20opacity%3D%220.6%22/%3E%3Ccircle%20cx%3D%22133.2%22%20cy%3D%2266.8%22%20r%3D%222%22%20fill%3D%22%2322c55e%22%20opacity%3D%220.6%22/%3E%3C/svg%3E"),
+    radial-gradient(circle, #0f2417 0%, #0a1810 62%, #08130c 100%),
+    repeating-conic-gradient(from 0deg, #1b5c34 0 16deg, #0a2415 16deg 32deg, #f4b942 32deg 38deg, #0a2415 38deg 54deg)
+  !important;
+  background-size: 100% 100%, 76% 76%, 100% 100% !important;
+  background-position: center, center, center !important;
+  background-repeat: no-repeat, no-repeat, no-repeat !important;
+  box-shadow:
+    0 7px 0 #03130a, 0 18px 26px rgba(0,0,0,.55),
+    inset 0 0 0 4px #0a1810,
+    inset 0 0 0 5px rgba(244,185,66,.55),
+    inset 0 2px 3px rgba(255,255,255,.1)
+  !important;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;
+}
+.ls-wager-casino-lbl{
+  font-family:'Inter',sans-serif; font-weight:800; font-size:.36rem; letter-spacing:.22em;
+  color:#caa24e; opacity:.85; text-transform:uppercase;
+}
+.ls-wager-v{
+  font-size:1.02rem!important;
+  font-family:'DM Mono',monospace; font-weight:900;
+  color:#fdf6e3!important; background:none!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.6);
+}
+.ls-wager-lbl{ font-size:.56rem!important; }
+.ls-wager .ls-table-limit{ flex-basis:auto!important; width:100%; margin-top:2px; }
+
+/* ---- payout: ticket-stub style with pulse on selection ---- */
+.ls-odds-panel{
+  border-style:dashed!important;
+  border-width:1.5px!important;
+  position:relative;
+}
+.ls-odds-panel::before{ border-style:dashed!important; }
+@keyframes lsPayoutPulse{
+  0%{ box-shadow:0 0 0 0 rgba(244,185,66,.55); }
+  70%{ box-shadow:0 0 0 12px rgba(244,185,66,0); }
+  100%{ box-shadow:0 0 0 0 rgba(244,185,66,0); }
+}
+.ls-odds-panel.ls-pulse{ animation:lsPayoutPulse .8s ease-out; }
+
+/* ---- ambient gold dust ---- */
+.ls-dust{
+  position:absolute; bottom:6%; width:2.5px; height:2.5px; border-radius:50%;
+  background:#ffe9b0; box-shadow:0 0 5px rgba(255,224,102,.7);
+  opacity:0; pointer-events:none; z-index:3;
+  animation-name:lsDustRise; animation-timing-function:ease-out; animation-iteration-count:infinite;
+}
+@keyframes lsDustRise{
+  0%{ opacity:0; transform:translateY(0); }
+  12%{ opacity:.55; }
+  85%{ opacity:.2; }
+  100%{ opacity:0; transform:translateY(-220px); }
+}
+
+@media(max-width:900px){
+  .ls-wheel-panel{ width:min(380px,92vw)!important; min-height:min(388px,92vw)!important; }
+  .ls-wheel-rail{ width:min(356px,86vw)!important; height:min(356px,86vw)!important; }
+  .ls-wheel-track{ width:min(332px,80vw)!important; height:min(332px,80vw)!important; }
+  .ls-bulb-rail{ width:min(356px,86vw)!important; height:min(356px,86vw)!important; margin:calc(min(356px,86vw) / -2) 0 0 calc(min(356px,86vw) / -2)!important; }
+  .ls-rim-bulb{ transform:rotate(calc(var(--bi) * 15deg)) translateY(calc(min(356px,86vw) / -2 + 4px))!important; }
+  .ls-dome-shine{ width:min(332px,80vw)!important; height:min(332px,80vw)!important; margin:calc(min(332px,80vw) / -2) 0 0 calc(min(332px,80vw) / -2)!important; }
+  .ls-chip-rail.left, .ls-chip-rail.right{ margin:0!important; }
+  .ls-chip-rail:hover .ls-leg, .ls-chip-rail.right:hover .ls-leg{ transform:rotate(var(--rot,0deg))!important; }
+  .ls-wager{ max-width:none!important; width:100%; }
+}
+
+
 </style>
 
 </body>
