@@ -201,8 +201,10 @@ body{margin:0;background:radial-gradient(ellipse 800px 600px at 12% 8%,rgba(244,
 .fan-step-num{width:24px;height:24px;border-radius:50%;background:rgba(244,185,66,.12);border:1px solid rgba(244,185,66,.3);color:var(--gold);font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 .fan-step-text{font-size:.82rem;color:var(--text);line-height:1.55}
 .fan-step-text a{color:var(--gold);text-decoration:none}
-.sport-block-label{font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);padding:22px 0 10px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:18px;margin-top:28px;display:flex;align-items:center;gap:10px}
-.sport-block-label::before{content:'';display:block;width:16px;height:1px;background:var(--gold)}
+.sport-block-label{font-size:.62rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;padding:24px 0 14px;margin-bottom:16px;margin-top:24px;display:flex;align-items:center;gap:12px}
+.sport-block-label::before,.sport-block-label::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.07)}
+.sport-block-label .sbl-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:6px;flex-shrink:0}
+.sport-block-label .sbl-count{font-family:'DM Mono',monospace;font-size:.44rem;font-weight:700;letter-spacing:.1em;opacity:.55;margin-left:4px}
 .sport-block-label:first-child{padding-top:0;margin-top:0}
   /* NAV */
   nav {
@@ -345,6 +347,152 @@ body{margin:0;background:radial-gradient(ellipse 800px 600px at 12% 8%,rgba(244,
 }
 
 </style>
+
+<style id="so-user-analysis-final-polish">
+/* User-requested polish: calmer article cards, no secondary signal chips. */
+.sig-chip{display:none!important;}
+.article-card{
+  background:linear-gradient(145deg,rgba(13,19,29,.90),rgba(6,10,16,.97) 56%,rgba(4,7,12,.99))!important;
+  border:1px solid rgba(255,255,255,.085)!important;
+  box-shadow:0 14px 38px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.045)!important;
+  backdrop-filter:blur(22px) saturate(1.12)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(1.12)!important;
+}
+.article-card::before{
+  background:linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.012) 38%,transparent 68%)!important;
+}
+.article-card::after{display:none!important;}
+.article-card:hover{
+  transform:translateY(-2px)!important;
+  border-color:rgba(255,255,255,.135)!important;
+  box-shadow:0 20px 50px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.055)!important;
+}
+.article-card h3,.article-card [style*="font-size:1.08rem"]{color:#edf2f8!important;}
+.article-card p,.article-card [style*="color:#4a5e70"]{color:#8190a5!important;}
+.article-card button{
+  color:#8fa2b8!important;
+  border-color:rgba(255,255,255,.10)!important;
+  background:rgba(255,255,255,.018)!important;
+}
+.article-card button:hover{background:rgba(255,255,255,.045)!important;border-color:rgba(255,255,255,.16)!important;}
+.article-card span[style*="border:1px solid rgba"]{
+  background:rgba(255,255,255,.035)!important;
+  border-color:rgba(255,255,255,.085)!important;
+  color:#8fa2b8!important;
+}
+.article-card .card-full{background:rgba(0,0,0,.18)!important;}
+</style>
+
+
+
+<style id="so-q-20260623-analysis-article-tabs-color">
+/* Subtle color separation for tags/buttons inside article cards. */
+.article-card.sport-nba{--article-accent:96,165,250;--article-accent-hex:#60a5fa;}
+.article-card.sport-mlb{--article-accent:52,211,153;--article-accent-hex:#34d399;}
+.article-card.sport-nfl{--article-accent:251,146,60;--article-accent-hex:#fb923c;}
+.article-card.sport-uni{--article-accent:244,185,66;--article-accent-hex:#f4b942;}
+.article-card span[style*="border-radius:4px"][style*="text-transform:uppercase"]{
+  background:linear-gradient(135deg,rgba(var(--article-accent),.16),rgba(var(--article-accent),.045))!important;
+  border-color:rgba(var(--article-accent),.32)!important;
+  color:rgba(var(--article-accent),.92)!important;
+  box-shadow:0 0 18px rgba(var(--article-accent),.10),inset 0 1px 0 rgba(255,255,255,.07)!important;
+}
+.article-card button{
+  background:linear-gradient(135deg,rgba(var(--article-accent),.095),rgba(255,255,255,.018))!important;
+  border-color:rgba(var(--article-accent),.24)!important;
+  color:rgba(var(--article-accent),.90)!important;
+  box-shadow:0 0 18px rgba(var(--article-accent),.08),inset 0 1px 0 rgba(255,255,255,.04)!important;
+}
+.article-card button:hover{
+  background:linear-gradient(135deg,rgba(var(--article-accent),.16),rgba(255,255,255,.028))!important;
+  border-color:rgba(var(--article-accent),.40)!important;
+  color:#fff!important;
+  box-shadow:0 0 22px rgba(var(--article-accent),.14),inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+.article-card [style*="min read"]{
+  color:rgba(var(--article-accent),.46)!important;
+}
+.article-card .card-full > div:first-child{
+  color:rgba(var(--article-accent),.62)!important;
+}
+.article-card .card-full > div:first-child span{
+  background:linear-gradient(90deg,rgba(var(--article-accent),.22),rgba(255,255,255,.035),transparent)!important;
+}
+.article-card{box-shadow:0 14px 38px rgba(0,0,0,.26),0 0 22px rgba(var(--article-accent),.035),inset 0 1px 0 rgba(255,255,255,.045)!important;}
+.article-card:hover{box-shadow:0 22px 54px rgba(0,0,0,.36),0 0 34px rgba(var(--article-accent),.095),inset 0 1px 0 rgba(255,255,255,.06)!important;}
+</style>
+
+
+
+<style id="so-q-20260623-analysis-liquid-gradient-candles">
+/* Final pass: matte liquid-gradient article cards with faint deep navy candlestick texture. */
+.article-card{
+  isolation:isolate!important;
+  overflow:hidden!important;
+  border-color:rgba(var(--article-accent,96,165,250),.20)!important;
+  background:
+    radial-gradient(70% 95% at 13% -6%,rgba(var(--article-accent,96,165,250),.18),transparent 55%),
+    radial-gradient(55% 75% at 102% 20%,rgba(13,34,58,.48),transparent 62%),
+    linear-gradient(150deg,rgba(13,20,32,.96),rgba(5,9,16,.985) 55%,rgba(3,6,12,.995))!important;
+  box-shadow:0 18px 46px rgba(0,0,0,.34),0 0 34px rgba(var(--article-accent,96,165,250),.075),inset 0 1px 0 rgba(255,255,255,.05)!important;
+}
+.article-card.sport-nba{--article-accent:96,165,250;--article-accent-hex:#60a5fa;}
+.article-card.sport-mlb{--article-accent:52,211,153;--article-accent-hex:#34d399;}
+.article-card.sport-nfl{--article-accent:251,146,60;--article-accent-hex:#fb923c;}
+.article-card.sport-uni{--article-accent:244,185,66;--article-accent-hex:#f4b942;}
+.article-card::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:0!important;
+  pointer-events:none!important;
+  opacity:.58!important;
+  border-radius:inherit!important;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='164' height='112' viewBox='0 0 164 112'%3E%3Cg fill='none' stroke='%230b223a' stroke-width='1' opacity='.36'%3E%3Cpath d='M0 28h164M0 56h164M0 84h164M41 0v112M82 0v112M123 0v112'/%3E%3Cpath d='M12 75 34 52 58 65 82 35 111 58 147 29' opacity='.34'/%3E%3C/g%3E%3Cg stroke='%230e2a46' stroke-width='1.15' opacity='.42'%3E%3Cline x1='28' y1='18' x2='28' y2='82'/%3E%3Crect x='23' y='39' width='10' height='25' rx='2' fill='%23081424'/%3E%3Cline x1='68' y1='25' x2='68' y2='94'/%3E%3Crect x='63' y='47' width='10' height='32' rx='2' fill='%230b1f34'/%3E%3Cline x1='105' y1='12' x2='105' y2='73'/%3E%3Crect x='100' y='31' width='10' height='27' rx='2' fill='%23081424'/%3E%3Cline x1='139' y1='36' x2='139' y2='99'/%3E%3Crect x='134' y='57' width='10' height='26' rx='2' fill='%230b1f34'/%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(135deg,rgba(255,255,255,.060),rgba(255,255,255,.014) 38%,transparent 72%),
+    radial-gradient(circle at 78% 0%,rgba(var(--article-accent,96,165,250),.10),transparent 36%);
+  background-size:246px 168px,auto,auto;
+  background-position:center;
+  mix-blend-mode:screen;
+}
+.article-card::after{
+  display:block!important;
+  content:""!important;
+  position:absolute!important;
+  top:-35%!important;
+  left:-75%!important;
+  width:44%!important;
+  height:170%!important;
+  z-index:1!important;
+  pointer-events:none!important;
+  transform:rotate(16deg)!important;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.075),rgba(var(--article-accent,96,165,250),.055),transparent)!important;
+  animation:soArticleLiquidSheen 6.4s ease-in-out infinite!important;
+  opacity:.72!important;
+}
+@keyframes soArticleLiquidSheen{0%,18%{left:-82%;opacity:0}42%{opacity:.70}72%,100%{left:135%;opacity:0}}
+.article-card > *{position:relative;z-index:2;}
+.article-card:hover{
+  transform:translateY(-3px)!important;
+  border-color:rgba(var(--article-accent,96,165,250),.34)!important;
+  box-shadow:0 24px 62px rgba(0,0,0,.44),0 0 44px rgba(var(--article-accent,96,165,250),.135),inset 0 1px 0 rgba(255,255,255,.065)!important;
+}
+.article-card .card-full{
+  background:linear-gradient(180deg,rgba(3,7,12,.62),rgba(0,0,0,.28))!important;
+  border-top-color:rgba(var(--article-accent,96,165,250),.13)!important;
+}
+.article-card span[style*="border-radius:4px"][style*="text-transform:uppercase"]{
+  background:linear-gradient(135deg,rgba(var(--article-accent,96,165,250),.20),rgba(var(--article-accent,96,165,250),.050))!important;
+  border-color:rgba(var(--article-accent,96,165,250),.38)!important;
+  color:rgba(var(--article-accent,96,165,250),.96)!important;
+}
+.article-card button{
+  background:linear-gradient(135deg,rgba(var(--article-accent,96,165,250),.13),rgba(255,255,255,.020))!important;
+  border-color:rgba(var(--article-accent,96,165,250),.30)!important;
+}
+</style>
+
 </head>
 <body>
 
@@ -532,15 +680,15 @@ body{margin:0;background:radial-gradient(ellipse 800px 600px at 12% 8%,rgba(244,
 
   <!-- ALL SPORTS -->
   <div class="filter-panel active" id="section-allsports">
-    <div class="sport-block-label lbl-nba">NBA</div>
+    <div class="sport-block-label lbl-nba"><div class="sbl-badge" style="background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.22)"><span style="color:#60a5fa;font-size:.62rem;font-weight:800;letter-spacing:.18em">NBA</span><span class="sbl-count" style="color:#60a5fa">4 articles</span></div></div>
     <div class="grid md:grid-cols-2 gap-4 mb-2" id="nba-grid">
       <!-- NBA cards injected by JS -->
     </div>
-    <div class="sport-block-label lbl-mlb">MLB</div>
+    <div class="sport-block-label lbl-mlb"><div class="sbl-badge" style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.22)"><span style="color:#34d399;font-size:.62rem;font-weight:800;letter-spacing:.18em">MLB</span><span class="sbl-count" style="color:#34d399">4 articles</span></div></div>
     <div class="grid md:grid-cols-2 gap-4 mb-2" id="mlb-grid"></div>
-    <div class="sport-block-label lbl-nfl">NFL</div>
+    <div class="sport-block-label lbl-nfl"><div class="sbl-badge" style="background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.22)"><span style="color:#fb923c;font-size:.62rem;font-weight:800;letter-spacing:.18em">NFL</span><span class="sbl-count" style="color:#fb923c">4 articles</span></div></div>
     <div class="grid md:grid-cols-2 gap-4 mb-2" id="nfl-grid"></div>
-    <div class="sport-block-label lbl-uni">Universal</div>
+    <div class="sport-block-label lbl-uni"><div class="sbl-badge" style="background:rgba(244,185,66,.1);border:1px solid rgba(244,185,66,.22)"><span style="color:#f4b942;font-size:.62rem;font-weight:800;letter-spacing:.18em">Universal</span><span class="sbl-count" style="color:#f4b942">3 articles</span></div></div>
     <div class="grid md:grid-cols-2 gap-4" id="universal-cards-main"></div>
   </div>
 
@@ -720,27 +868,28 @@ function buildArticleCard(a, idx){
   d.className=`article-card glass rounded-[24px] overflow-hidden cursor-pointer sport-${c.key}`;
   d.dataset.sport=sportKey;
   d.dataset.ctype='Article';
-  d.style.cssText=`background:linear-gradient(145deg,rgba(${c.rgb},.13) 0%,rgba(255,255,255,.04) 30%,rgba(8,12,20,.88) 70%,rgba(${c.rgb},.04) 100%);border:1px solid rgba(${c.rgb},.2);border-radius:20px;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.12),inset 0 -1px 0 rgba(0,0,0,.4),0 4px 24px rgba(0,0,0,.3)`;
+  d.style.cssText=`background:linear-gradient(145deg,rgba(13,19,29,.88),rgba(6,10,16,.96) 54%,rgba(4,7,12,.98));border:1px solid rgba(255,255,255,.085);border-radius:20px;box-shadow:0 14px 38px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.045)`;
   d.onclick=()=>toggleCard(d);
   d.innerHTML=`
-    <div class="sport-accent" style="background:linear-gradient(90deg,${c.hex},rgba(${c.rgb},.4) 60%,transparent);height:2px"></div>
-    <div style="padding:22px 24px 18px">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-          <span style="font-size:.56rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:${c.hex};background:rgba(${c.rgb},.12);border:1px solid rgba(${c.rgb},.25);border-radius:6px;padding:3px 9px">${a.tag}</span>
-          ${chip}
+    <div style="position:absolute;top:0;left:0;bottom:0;width:2px;background:linear-gradient(180deg,rgba(${c.rgb},.32),rgba(255,255,255,.04));border-radius:3px 0 0 3px"></div>
+    <div style="display:flex;align-items:center;gap:9px;padding:14px 20px 0 22px">
+      <span style="font-size:.46rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:rgba(${c.rgb},.7);background:rgba(${c.rgb},.04);border:1px solid rgba(${c.rgb},.14);border-radius:4px;padding:3px 8px">${a.tag}</span>
+      <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:.44rem;letter-spacing:.1em;color:#2e3d4a;text-transform:uppercase">${readMins} min read</span>
+    </div>
+    <div style="padding:12px 20px 16px 22px">
+      <h3 style="font-size:1.08rem;font-weight:900;color:#d8d4cc;line-height:1.3;margin-bottom:9px;letter-spacing:-.015em">${a.title}</h3>
+      <p style="font-size:.76rem;color:#4a5e70;line-height:1.75;margin-bottom:16px">${a.intro}</p>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid rgba(255,255,255,.04)">
+        <button style="display:inline-flex;align-items:center;gap:6px;font-size:.56rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(${c.rgb},.65);background:transparent;border:1px solid rgba(${c.rgb},.18);border-radius:6px;padding:6px 12px;cursor:pointer;transition:all .2s" onmouseenter="this.style.background='rgba(${c.rgb},.08)'" onmouseleave="this.style.background='transparent'">Full Breakdown <span class="expand-arrow" style="font-size:.62rem">▾</span></button>
+        <div style="display:flex;align-items:center;gap:5px">
+          <span style="font-family:'DM Mono',monospace;font-size:.44rem;color:#283644;letter-spacing:.06em">shortopen</span>
+          <span style="width:2px;height:2px;border-radius:50%;background:#283644"></span>
+          <span style="font-family:'DM Mono',monospace;font-size:.44rem;color:#283644;letter-spacing:.06em">2026</span>
         </div>
-        <span style="font-size:1.8rem;font-weight:900;color:rgba(${c.rgb},.15);font-family:'Inter',sans-serif;flex-shrink:0;line-height:1">${num}</span>
-      </div>
-      <h3 style="font-size:1.15rem;font-weight:900;color:#f0ece4;line-height:1.3;margin-bottom:10px;letter-spacing:-.01em">${a.title}</h3>
-      <p style="font-size:.78rem;color:#6b8097;line-height:1.7;margin-bottom:16px">${a.intro}</p>
-      <div style="display:flex;align-items:center;justify-content:space-between">
-        <button style="display:inline-flex;align-items:center;gap:6px;font-size:.6rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:${c.hex};background:rgba(${c.rgb},.1);border:1px solid rgba(${c.rgb},.25);border-radius:8px;padding:6px 12px;cursor:pointer">Full Breakdown <span class="expand-arrow">▾</span></button>
-        <span style="font-size:.55rem;color:#3d4d5c;font-family:'DM Mono',monospace">${readMins} min read</span>
       </div>
     </div>
-    <div class="card-full" style="border-top:1px solid rgba(${c.rgb},.1);background:rgba(0,0,0,.3);padding:20px 24px">
-      <div style="font-size:.5rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(${c.rgb},.6);margin-bottom:14px;display:flex;align-items:center;gap:10px">Full Analysis <span style="flex:1;height:1px;background:rgba(${c.rgb},.15);display:block"></span></div>
+    <div class="card-full" style="border-top:1px solid rgba(255,255,255,.05);background:rgba(0,0,0,.22);padding:18px 20px 18px 22px">
+      <div style="font-size:.46rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(${c.rgb},.4);margin-bottom:12px;display:flex;align-items:center;gap:10px">Full Analysis <span style="flex:1;height:1px;background:rgba(255,255,255,.04);display:block"></span></div>
       <div class="full-body">${a.body}</div>
     </div>`;
   return d;
@@ -772,7 +921,8 @@ function renderDD(){
   grid.innerHTML=DD_CARDS.map(c=>{
     const sc=sigColor[c.signal]||'#9dafc2', sb=sigBg[c.signal], sbo=sigBorder[c.signal];
     const tcls=sigCls[c.signal]||'';
-    return `<div class="trend-card ${tcls}" data-sport="${c.sport}" data-signal="${c.signal}" data-ctype="Trend">
+    return `<div class="trend-card ${tcls}" data-sport="${c.sport}" data-signal="${c.signal}" data-ctype="Trend" style="position:relative">
+      <div style="position:absolute;top:12px;right:-22px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.22);font-family:'DM Mono',monospace;font-size:.38rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;padding:4px 28px;transform:rotate(35deg);pointer-events:none;border-top:1px solid rgba(244,185,66,.2);border-bottom:1px solid rgba(244,185,66,.2);z-index:5">Deep Dive</div>
       <div class="tc-top">
         <div class="tc-signal-bar tc-sig-${c.signal}"></div>
         <div class="tc-head" style="position:relative;z-index:3">
@@ -896,12 +1046,7 @@ const SIG_MAP={
   'Opening Lines':{cls:'hot',label:'🔥 CLV Edge'},
   'Mindset':{cls:'edu',label:'📚 Education'},
 };
-function getChip(tag){
-  const key=Object.keys(SIG_MAP).find(k=>tag.includes(k));
-  if(!key) return '';
-  const s=SIG_MAP[key];
-  return `<span class="sig-chip ${s.cls}">${s.label}</span>`;
-}
+function getChip(tag){ return ''; }
 
 // (overrides folded into originals below)
 

@@ -3087,6 +3087,69 @@ body::after{
 .ls-q-text{
   letter-spacing:.08em!important;
 }
+
+
+/* ──────────────────────────────────────────────────────────────
+   WORLD CUP ADD-ON — isolated classes, no MLB/NBA renderer edits
+────────────────────────────────────────────────────────────── */
+.sport-tab.wc-tab-featured{
+  position:relative;
+  color:#f8e6b5;
+  border-bottom-color:rgba(244,185,66,.38);
+  text-shadow:0 0 18px rgba(244,185,66,.45),0 0 34px rgba(34,197,94,.18);
+  isolation:isolate;
+}
+.sport-tab.wc-tab-featured::before{
+  content:'';position:absolute;inset:5px 9px;border-radius:999px;z-index:-1;
+  background:radial-gradient(circle at 25% 50%,rgba(34,197,94,.25),transparent 42%),linear-gradient(90deg,rgba(244,185,66,.16),rgba(34,197,94,.08),rgba(96,165,250,.12));
+  border:1px solid rgba(244,185,66,.22);
+  box-shadow:0 0 22px rgba(244,185,66,.2), inset 0 1px 0 rgba(255,255,255,.08);
+  animation:wcTabGlow 2.8s ease-in-out infinite;
+}
+.sport-tab.wc-tab-featured::after{
+  content:'⚽';position:absolute;right:10px;top:3px;font-size:.72rem;filter:drop-shadow(0 0 8px rgba(244,185,66,.7));animation:wcBallNudge 2.4s ease-in-out infinite;
+}
+.sport-tab.wc-tab-featured.active{color:#fff2c7;border-bottom-color:#f4b942;text-shadow:0 0 24px rgba(244,185,66,.65)}
+@keyframes wcTabGlow{0%,100%{opacity:.65;transform:scaleX(.97)}50%{opacity:1;transform:scaleX(1.02)}}
+@keyframes wcBallNudge{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-3px) rotate(18deg)}}
+
+#wc-panel-anchor{display:block}
+.wc-stage{position:relative;overflow:hidden;max-width:1400px;margin:18px auto 72px;padding:0 48px 42px;color:#f2f6ed;isolation:isolate}
+.wc-stage::before{content:'';position:absolute;inset:0 48px 0;border-radius:30px;background:
+  radial-gradient(680px 420px at 18% 6%,rgba(244,185,66,.24),transparent 65%),
+  radial-gradient(760px 480px at 85% 18%,rgba(34,197,94,.18),transparent 68%),
+  radial-gradient(620px 540px at 48% 98%,rgba(96,165,250,.12),transparent 72%),
+  linear-gradient(180deg,rgba(5,18,14,.94),rgba(5,8,13,.98) 58%,rgba(3,5,8,.99));
+  border:1px solid rgba(244,185,66,.16);box-shadow:0 32px 120px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.08);z-index:-3}
+.wc-stage::after{content:'';position:absolute;inset:0 48px;border-radius:30px;z-index:-2;opacity:.14;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(180deg,black,transparent 92%)}
+.wc-bg-balls{position:absolute;inset:0 48px;overflow:hidden;border-radius:30px;pointer-events:none;z-index:-1}
+.wc-bg-balls span{position:absolute;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:17px;opacity:.22;animation:wcFloatBall 12s linear infinite;filter:drop-shadow(0 0 16px rgba(255,255,255,.18))}
+.wc-bg-balls span:nth-child(1){left:8%;top:16%;animation-duration:16s}.wc-bg-balls span:nth-child(2){left:38%;top:6%;animation-duration:20s;animation-delay:-5s}.wc-bg-balls span:nth-child(3){left:75%;top:10%;animation-duration:18s;animation-delay:-9s}.wc-bg-balls span:nth-child(4){left:18%;top:62%;animation-duration:22s;animation-delay:-13s}.wc-bg-balls span:nth-child(5){left:88%;top:54%;animation-duration:19s;animation-delay:-7s}.wc-bg-balls span:nth-child(6){left:56%;top:72%;animation-duration:24s;animation-delay:-16s}
+@keyframes wcFloatBall{0%{transform:translate3d(0,20px,0) rotate(0deg);opacity:.12}35%{opacity:.28}100%{transform:translate3d(80px,-160px,0) rotate(520deg);opacity:.03}}
+.wc-flag-marquee{position:relative;overflow:hidden;margin:0 0 20px;border-radius:0 0 18px 18px;border:1px solid rgba(255,255,255,.06);border-top:none;background:rgba(255,255,255,.035);backdrop-filter:blur(18px)}
+.wc-flag-track{display:flex;gap:18px;width:max-content;padding:10px 0;font-size:1.3rem;animation:wcFlags 34s linear infinite;opacity:.9}
+.wc-flag-track span{display:inline-flex;filter:drop-shadow(0 0 10px rgba(244,185,66,.10))}
+@keyframes wcFlags{from{transform:translateX(0)}to{transform:translateX(-33.333%)}}
+.wc-hero{position:relative;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(340px,.9fr);gap:24px;padding:28px 28px 20px;align-items:stretch}
+.wc-eyebrow{display:inline-flex;align-items:center;gap:9px;width:max-content;padding:7px 13px;border-radius:999px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.28);font-size:.56rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#9ef0b7;box-shadow:0 0 28px rgba(34,197,94,.12)}
+.wc-title{font-family:'Inter',sans-serif;font-size:clamp(2.8rem,6vw,6.4rem);font-weight:950;line-height:.86;letter-spacing:-.065em;margin:18px 0 14px;color:#fff9e9;text-shadow:0 0 38px rgba(244,185,66,.20)}
+.wc-title span{display:block;background:linear-gradient(90deg,#f8d26a,#f2f8db,#22c55e,#60a5fa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;background-size:240% 100%;animation:wcTextSweep 7s linear infinite}
+@keyframes wcTextSweep{0%{background-position:0%}100%{background-position:240%}}
+.wc-sub{max-width:720px;color:rgba(230,238,224,.68);font-size:.94rem;line-height:1.75}.wc-sub strong{color:#f4d46e}.wc-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:22px;max-width:760px}.wc-stat{position:relative;overflow:hidden;border-radius:16px;padding:16px 15px;background:linear-gradient(150deg,rgba(255,255,255,.09),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.09)}.wc-stat small{display:block;font-size:.48rem;font-weight:900;letter-spacing:.17em;text-transform:uppercase;color:rgba(255,255,255,.36);margin-bottom:6px}.wc-stat b{font-family:'DM Mono',monospace;font-size:1.55rem;color:#f8dfa0}.wc-stat:nth-child(2) b{color:#72eaa0}.wc-stat:nth-child(3) b{color:#91c7ff}.wc-stat:nth-child(4) b{color:#fff}
+.wc-road-scene{position:relative;overflow:hidden;min-height:330px;border-radius:24px;background:linear-gradient(180deg,rgba(33,87,57,.36) 0%,rgba(12,60,37,.36) 46%,rgba(76,47,24,.78) 47%,rgba(34,22,14,.92) 100%);border:1px solid rgba(244,185,66,.16);box-shadow:0 22px 70px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.08)}
+.wc-road-scene::before{content:'';position:absolute;left:-20%;right:-20%;bottom:-20px;height:155px;background:radial-gradient(ellipse at 50% 0%,rgba(202,147,70,.82),rgba(93,58,30,.95) 58%,rgba(40,25,16,.95) 100%);border-radius:50% 50% 0 0;box-shadow:inset 0 26px 42px rgba(255,201,113,.12)}
+.wc-road-scene::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 78%,rgba(244,185,66,.13) 0 2px,transparent 3px),radial-gradient(circle at 72% 84%,rgba(255,255,255,.12) 0 1px,transparent 2px),linear-gradient(90deg,transparent 0 47%,rgba(255,255,255,.08) 48% 52%,transparent 53% 100%);opacity:.55}
+.wc-sun{position:absolute;right:34px;top:28px;width:72px;height:72px;border-radius:50%;background:radial-gradient(circle,#fff2aa,#f4b942 55%,rgba(244,185,66,0));box-shadow:0 0 65px rgba(244,185,66,.56);animation:wcSun 5s ease-in-out infinite}@keyframes wcSun{50%{transform:scale(1.08);filter:saturate(1.35)}}
+.wc-mini-flags{position:absolute;left:20px;top:22px;right:130px;display:flex;flex-wrap:wrap;gap:8px;font-size:1.05rem;opacity:.82}.wc-mini-flags span{padding:4px 6px;border-radius:9px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.08)}
+.wc-kid{position:absolute;left:54%;bottom:74px;width:72px;height:126px;transform-origin:bottom center;animation:wcKidLean 1.6s ease-in-out infinite;z-index:2}.wc-kid-head{position:absolute;top:0;left:23px;width:30px;height:30px;border-radius:50%;background:#8b552f;box-shadow:inset -6px -3px 0 rgba(0,0,0,.18)}.wc-kid-body{position:absolute;top:33px;left:20px;width:34px;height:42px;border-radius:16px 16px 10px 10px;background:linear-gradient(135deg,#f4b942,#d56b29);box-shadow:0 0 18px rgba(244,185,66,.24)}.wc-kid-arm{position:absolute;top:38px;left:7px;width:56px;height:9px;border-radius:999px;background:#8b552f;transform:rotate(-18deg)}.wc-kid-leg{position:absolute;top:72px;left:22px;width:10px;height:48px;border-radius:999px;background:#2c3550;transform-origin:top}.wc-kid-leg.one{transform:rotate(10deg)}.wc-kid-leg.two{left:39px;animation:wcKickLeg 1.6s ease-in-out infinite}.wc-kid-foot{position:absolute;bottom:-4px;left:-4px;width:22px;height:8px;border-radius:999px;background:#f0ece4}.wc-scene-ball{position:absolute;left:calc(54% + 62px);bottom:63px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:26px;z-index:2;animation:wcKickBall 1.6s ease-in-out infinite;filter:drop-shadow(0 12px 16px rgba(0,0,0,.45))}@keyframes wcKidLean{50%{transform:rotate(-3deg) translateX(-3px)}}@keyframes wcKickLeg{0%,100%{transform:rotate(-8deg)}45%{transform:rotate(-52deg)}}@keyframes wcKickBall{0%,100%{transform:translate(0,0) rotate(0deg)}45%{transform:translate(58px,-38px) rotate(260deg)}70%{transform:translate(76px,-8px) rotate(410deg)}}
+.wc-road-caption{position:absolute;left:20px;bottom:18px;right:20px;z-index:3;display:flex;justify-content:space-between;gap:12px;align-items:end}.wc-road-caption h3{font-size:1.05rem;color:#fff;margin:0}.wc-road-caption p{font-size:.64rem;color:rgba(255,255,255,.55);margin:3px 0 0;line-height:1.45}.wc-road-badge{font-family:'DM Mono',monospace;font-size:.58rem;color:#0b1a12;background:#9ef0b7;border-radius:999px;padding:7px 10px;font-weight:900;white-space:nowrap}
+.wc-section-head{position:relative;padding:20px 28px 14px;display:flex;align-items:end;justify-content:space-between;gap:18px}.wc-section-head h3{font-size:1.35rem;font-weight:950;color:#fff;margin:0}.wc-section-head p{font-size:.72rem;color:rgba(255,255,255,.45);margin-top:4px}.wc-section-kicker{font-family:'DM Mono',monospace;font-size:.55rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:#f4b942}.wc-games-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:0 28px 26px}.wc-game-card{position:relative;overflow:hidden;min-height:212px;border-radius:20px;padding:16px;background:linear-gradient(160deg,rgba(255,255,255,.085),rgba(8,14,17,.86) 42%,rgba(3,8,10,.94));border:1px solid rgba(255,255,255,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 44px rgba(0,0,0,.22);animation:wcRise .45s ease both;animation-delay:var(--delay)}.wc-game-card::before{content:'';position:absolute;inset:-80px;background:radial-gradient(circle at 12% 5%,rgba(244,185,66,.20),transparent 28%),radial-gradient(circle at 88% 7%,rgba(34,197,94,.18),transparent 34%);opacity:.85;pointer-events:none}.wc-game-card::after{content:'⚽';position:absolute;right:14px;bottom:12px;font-size:3.8rem;opacity:.045;transform:rotate(-18deg)}@keyframes wcRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}.wc-card-pitch{position:absolute;inset:0;opacity:.08;background:linear-gradient(90deg,transparent 49.4%,#fff 49.6% 50.4%,transparent 50.6%),radial-gradient(circle at 50% 50%,transparent 0 58px,#fff 59px 61px,transparent 62px),linear-gradient(rgba(255,255,255,.18) 1px,transparent 1px);background-size:100% 100%,100% 100%,100% 34px}.wc-card-top{position:relative;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.wc-card-time{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.12em;color:#f4d46e;text-transform:uppercase}.wc-card-chip{font-size:.5rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#9ef0b7;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);border-radius:999px;padding:5px 8px}.wc-match-line{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 42px minmax(0,1fr);gap:10px;align-items:center;margin-bottom:14px}.wc-team-block{min-height:54px;display:flex;align-items:center;gap:10px;padding:10px 11px;border-radius:14px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);font-weight:900;color:#fff}.wc-team-block.away{justify-content:flex-end;text-align:right}.wc-team-flag{font-size:1.65rem;filter:drop-shadow(0 0 10px rgba(255,255,255,.18))}.wc-vs{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:radial-gradient(circle,#f4b942,#9d6424);color:#10150d;font-size:.56rem;font-weight:950;letter-spacing:.1em;text-transform:uppercase;box-shadow:0 0 24px rgba(244,185,66,.36)}.wc-prices{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.wc-price{min-width:0;border-radius:14px;padding:10px 9px;background:rgba(0,0,0,.20);border:1px solid rgba(255,255,255,.075);transition:transform .18s, border-color .18s, background .18s}.wc-price:hover{transform:translateY(-2px);border-color:rgba(244,185,66,.34);background:rgba(244,185,66,.075)}.wc-price-k{display:block;font-size:.47rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.34);margin-bottom:5px}.wc-price-team{display:flex;align-items:center;gap:5px;font-size:.66rem;color:rgba(255,255,255,.70);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wc-price-odds{display:block;margin-top:2px;font-family:'DM Mono',monospace;font-size:1.22rem;font-weight:900;color:#fff}.wc-price.wc-favorite{background:linear-gradient(180deg,rgba(34,197,94,.18),rgba(34,197,94,.055));border-color:rgba(34,197,94,.34);box-shadow:0 0 24px rgba(34,197,94,.12),inset 0 1px 0 rgba(255,255,255,.09)}.wc-price.wc-favorite .wc-price-odds{color:#9ef0b7}.wc-card-foot{position:relative;display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:11px;border-top:1px solid rgba(255,255,255,.07);font-size:.58rem;color:rgba(255,255,255,.36);letter-spacing:.08em;text-transform:uppercase}.wc-card-foot strong{color:#f4d46e;font-size:.68rem}
+.wc-awards-grid{display:grid;grid-template-columns:repeat(5,minmax(210px,1fr));gap:12px;padding:0 28px 26px}.wc-award-card{position:relative;overflow:hidden;border-radius:20px;padding:16px;background:linear-gradient(145deg,rgba(244,185,66,.12),rgba(255,255,255,.04) 34%,rgba(4,8,11,.92));border:1px solid rgba(244,185,66,.16);box-shadow:0 18px 48px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.08);animation:wcRise .45s ease both;animation-delay:var(--delay)}.wc-award-ring{position:absolute;right:-38px;top:-38px;width:120px;height:120px;border-radius:50%;border:16px solid rgba(244,185,66,.08);box-shadow:0 0 44px rgba(244,185,66,.10)}.wc-award-head{position:relative;display:flex;gap:10px;align-items:flex-start;border-bottom:1px solid rgba(255,255,255,.07);padding-bottom:12px;margin-bottom:10px}.wc-trophy{font-size:1.55rem;filter:drop-shadow(0 0 12px rgba(244,185,66,.36))}.wc-award-head h4{font-size:.92rem;line-height:1.1;color:#fff;margin:0}.wc-award-head p{font-size:.58rem;color:rgba(255,255,255,.42);margin:4px 0 0;line-height:1.35}.wc-award-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.045)}.wc-award-row span{min-width:0;font-size:.69rem;color:rgba(255,255,255,.78);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wc-award-row span b{margin-right:6px}.wc-award-row em{font-style:normal;color:rgba(255,255,255,.36);font-size:.57rem;margin-left:3px}.wc-award-row strong{font-family:'DM Mono',monospace;font-size:.76rem;color:#9ef0b7}.wc-award-time{margin-top:12px;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,185,66,.72)}
+.wc-parlay-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding:0 28px 10px}.wc-parlay-card{position:relative;overflow:hidden;border-radius:22px;padding:17px;background:linear-gradient(160deg,rgba(96,165,250,.13),rgba(255,255,255,.045) 42%,rgba(5,8,12,.94));border:1px solid rgba(96,165,250,.17);box-shadow:0 18px 50px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.09);animation:wcRise .45s ease both;animation-delay:var(--delay)}.wc-ticket-perf{position:absolute;left:-9px;top:0;bottom:0;width:18px;background:radial-gradient(circle at 50% 8px,transparent 0 6px,rgba(255,255,255,.14) 6.5px 7px,transparent 7.5px);background-size:18px 24px;opacity:.55}.wc-parlay-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.wc-parlay-top span{font-size:.5rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:#91c7ff}.wc-parlay-top strong{font-family:'DM Mono',monospace;color:#f4d46e;font-size:1rem}.wc-parlay-card h4{font-size:1rem;color:#fff;margin:0 0 12px}.wc-leg-list{display:grid;gap:8px}.wc-leg{display:grid;grid-template-columns:24px 1fr auto;gap:8px;align-items:center;padding:8px;border-radius:13px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.06)}.wc-leg-ball{font-size:1rem;filter:drop-shadow(0 0 8px rgba(255,255,255,.12))}.wc-leg strong{display:block;font-size:.7rem;color:rgba(255,255,255,.86);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wc-leg small{display:block;color:rgba(255,255,255,.38);font-size:.55rem;margin-top:1px}.wc-leg b{font-family:'DM Mono',monospace;color:#9ef0b7;font-size:.72rem}.wc-parlay-card p{font-size:.64rem;line-height:1.55;color:rgba(255,255,255,.48);margin:12px 0 0}.wc-note{margin:18px 28px 0;padding:13px 15px;border-radius:14px;background:rgba(244,185,66,.065);border:1px solid rgba(244,185,66,.12);font-size:.66rem;color:rgba(255,255,255,.48);line-height:1.6}.wc-note strong{color:#f4d46e}
+@media(max-width:1200px){.wc-awards-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.wc-parlay-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.wc-hero{grid-template-columns:1fr}.wc-road-scene{min-height:300px}}
+@media(max-width:900px){.wc-stage{padding:0 16px 36px}.wc-stage::before,.wc-stage::after,.wc-bg-balls{inset:0 16px}.wc-hero{padding:22px 18px 16px}.wc-stats{grid-template-columns:repeat(2,1fr)}.wc-games-grid{grid-template-columns:1fr;padding:0 18px 22px}.wc-section-head{padding:20px 18px 12px;align-items:flex-start;flex-direction:column}.wc-awards-grid,.wc-parlay-grid{grid-template-columns:1fr;padding:0 18px 22px}.wc-title{font-size:clamp(2.6rem,17vw,4.6rem)}.wc-mini-flags{right:20px}.wc-kid{left:42%}.wc-scene-ball{left:calc(42% + 62px)}}
+@media(max-width:520px){.wc-prices{grid-template-columns:1fr}.wc-match-line{grid-template-columns:1fr;gap:8px}.wc-vs{margin:auto}.wc-team-block.away{justify-content:flex-start;text-align:left}.wc-road-caption{display:block}.wc-road-badge{display:inline-block;margin-top:8px}.wc-kid{transform:scale(.9);left:38%}.wc-scene-ball{left:calc(38% + 54px)}}
+
 </style>
 <style id="so-market-mobile-fixes">
 /* ====================================================
@@ -3323,7 +3386,7 @@ body::after{
       <div class="lg-split-lbls"><span>Public 68%</span><span>Sharp 32%</span></div>
       <div class="lg-row"><div><div class="lg-meta">Sharp Side</div><div class="lg-val">HOU +1.5</div></div><span class="lg-ev">+EV</span></div>
       <div class="lg-signalbar"><div class="lg-signal-fill green" style="width:82%"></div></div>
-      <div class="lg-row"><div><div class="lg-meta">Total Movement</div><div class="lg-val">Over 8.5 (NYM/CIN)</div></div><div style="font-weight:900;font-size:1.3rem;color:#57a7ff">↑ Steam</div></div>
+      <div class="lg-row"><div><div class="lg-meta">Total Movement</div><div class="lg-val">Over 8.5 (NYY/DET)</div></div><div style="font-weight:900;font-size:1.3rem;color:#57a7ff">↑ Steam</div></div>
       <div class="lg-signalbar"><div class="lg-signal-fill blue" style="width:74%"></div></div>
       <div class="lg-row" style="border:none"><div><div class="lg-meta">Reverse Line Movement</div><div class="lg-val">MIL +110 ML</div></div><div style="font-weight:900;font-size:1.1rem;color:#a78bfa">Sharp</div></div>
       <div class="lg-signalbar" style="margin-bottom:0"><div class="lg-signal-fill purple" style="width:65%"></div></div>
@@ -3349,6 +3412,7 @@ body::after{
 <!-- SPORT TABS -->
 <div class="sport-tabs">
   <button class="sport-tab active" onclick="switchSport('mlb', this)">MLB<span class="sport-tab-count" id="mlbTabCount"></span></button>
+  <button class="sport-tab wc-tab-featured" onclick="switchSport('worldcup', this)">World Cup<span class="sport-tab-count">28</span></button>
   <button class="sport-tab" onclick="switchSport('nba', this)" style="position:relative">NBA<span class="season-done-badge">Season Done</span></button>
   <button class="sport-tab nfl-locked-tab" onclick="showNFLLock()" style="position:relative">NFL <span class="nfl-lock-icon">🔒</span><span class="nfl-countdown" id="nflCountdown"></span></button>
 </div>
@@ -3361,6 +3425,828 @@ body::after{
   <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>fade / no edge</div>
   <div class="legend-sep"></div>
   <div class="legend-item" style="font-family:'Inter',sans-serif;font-weight:500;color:var(--gold);font-size:0.72rem;letter-spacing:0.04em">+EV = positive expected value vs. closing line</div>
+</div>
+
+
+<!-- WORLD CUP PANEL -->
+<div class="sport-panel" id="panel-worldcup">
+  <section class="wc-stage" id="wc-panel-anchor">
+    <div class="wc-bg-balls"><span>⚽</span><span>⚽</span><span>⚽</span><span>⚽</span><span>⚽</span><span>⚽</span></div>
+    <div class="wc-flag-marquee" aria-hidden="true"><div class="wc-flag-track"><span>🇩🇿</span><span>🇦🇷</span><span>🇦🇺</span><span>🇦🇹</span><span>🇧🇪</span><span>🇧🇦</span><span>🇧🇷</span><span>🇨🇦</span><span>🇨🇻</span><span>🇨🇴</span><span>🇭🇷</span><span>🇨🇼</span><span>🇨🇿</span><span>🇨🇩</span><span>🇪🇨</span><span>🇪🇬</span><span>🏴</span><span>🇫🇷</span><span>🇩🇪</span><span>🇬🇭</span><span>🇭🇹</span><span>🇮🇷</span><span>🇮🇶</span><span>🇨🇮</span><span>🇯🇵</span><span>🇯🇴</span><span>🇲🇽</span><span>🇲🇦</span><span>🇳🇱</span><span>🇳🇿</span><span>🇳🇴</span><span>🇵🇦</span><span>🇵🇾</span><span>🇵🇹</span><span>🇶🇦</span><span>🇸🇦</span><span>🏴</span><span>🇸🇳</span><span>🇿🇦</span><span>🇰🇷</span><span>🇪🇸</span><span>🇸🇪</span><span>🇨🇭</span><span>🇹🇳</span><span>🇹🇷</span><span>🇺🇸</span><span>🇺🇾</span><span>🇺🇿</span><span>🇩🇿</span><span>🇦🇷</span><span>🇦🇺</span><span>🇦🇹</span><span>🇧🇪</span><span>🇧🇦</span><span>🇧🇷</span><span>🇨🇦</span><span>🇨🇻</span><span>🇨🇴</span><span>🇭🇷</span><span>🇨🇼</span><span>🇨🇿</span><span>🇨🇩</span><span>🇪🇨</span><span>🇪🇬</span><span>🏴</span><span>🇫🇷</span><span>🇩🇪</span><span>🇬🇭</span><span>🇭🇹</span><span>🇮🇷</span><span>🇮🇶</span><span>🇨🇮</span><span>🇯🇵</span><span>🇯🇴</span><span>🇲🇽</span><span>🇲🇦</span><span>🇳🇱</span><span>🇳🇿</span><span>🇳🇴</span><span>🇵🇦</span><span>🇵🇾</span><span>🇵🇹</span><span>🇶🇦</span><span>🇸🇦</span><span>🏴</span><span>🇸🇳</span><span>🇿🇦</span><span>🇰🇷</span><span>🇪🇸</span><span>🇸🇪</span><span>🇨🇭</span><span>🇹🇳</span><span>🇹🇷</span><span>🇺🇸</span><span>🇺🇾</span><span>🇺🇿</span><span>🇩🇿</span><span>🇦🇷</span><span>🇦🇺</span><span>🇦🇹</span><span>🇧🇪</span><span>🇧🇦</span><span>🇧🇷</span><span>🇨🇦</span><span>🇨🇻</span><span>🇨🇴</span><span>🇭🇷</span><span>🇨🇼</span><span>🇨🇿</span><span>🇨🇩</span><span>🇪🇨</span><span>🇪🇬</span><span>🏴</span><span>🇫🇷</span><span>🇩🇪</span><span>🇬🇭</span><span>🇭🇹</span><span>🇮🇷</span><span>🇮🇶</span><span>🇨🇮</span><span>🇯🇵</span><span>🇯🇴</span><span>🇲🇽</span><span>🇲🇦</span><span>🇳🇱</span><span>🇳🇿</span><span>🇳🇴</span><span>🇵🇦</span><span>🇵🇾</span><span>🇵🇹</span><span>🇶🇦</span><span>🇸🇦</span><span>🏴</span><span>🇸🇳</span><span>🇿🇦</span><span>🇰🇷</span><span>🇪🇸</span><span>🇸🇪</span><span>🇨🇭</span><span>🇹🇳</span><span>🇹🇷</span><span>🇺🇸</span><span>🇺🇾</span><span>🇺🇿</span></div></div>
+    <div class="wc-hero">
+      <div>
+        <div class="wc-eyebrow"><span>⚽</span> World Cup Board · Featured</div>
+        <h2 class="wc-title">World Cup<br><span>Market Atlas</span></h2>
+        <p class="wc-sub">A separate soccer terminal built around three-way match cards, country flags, award boards, and World Cup parlay tickets. MLB stays untouched; this section lives on its own pitch.</p>
+        <div class="wc-stats">
+          <div class="wc-stat"><small>Matches</small><b>28</b></div>
+          <div class="wc-stat"><small>Countries</small><b>48</b></div>
+          <div class="wc-stat"><small>Awards</small><b>5</b></div>
+          <div class="wc-stat"><small>Markets</small><b>1X2</b></div>
+        </div>
+      </div>
+      <div class="wc-road-scene">
+        <div class="wc-sun"></div>
+        <div class="wc-mini-flags"><span>🇩🇿</span><span>🇦🇷</span><span>🇦🇺</span><span>🇦🇹</span><span>🇧🇪</span><span>🇧🇦</span><span>🇧🇷</span><span>🇨🇦</span><span>🇨🇻</span><span>🇨🇴</span><span>🇭🇷</span><span>🇨🇼</span><span>🇨🇿</span><span>🇨🇩</span><span>🇪🇨</span><span>🇪🇬</span><span>🏴</span><span>🇫🇷</span><span>🇩🇪</span><span>🇬🇭</span></div>
+        <div class="wc-kid" aria-hidden="true"><div class="wc-kid-head"></div><div class="wc-kid-arm"></div><div class="wc-kid-body"></div><div class="wc-kid-leg one"><div class="wc-kid-foot"></div></div><div class="wc-kid-leg two"><div class="wc-kid-foot"></div></div></div>
+        <div class="wc-scene-ball">⚽</div>
+        <div class="wc-road-caption"><div><h3>Dirt road to the world stage</h3><p>Flags, street-ball motion, and pitch graphics sit behind the board without changing the existing market page logic.</p></div><span class="wc-road-badge">LIVE ODDS BOARD</span></div>
+      </div>
+    </div>
+    <div class="wc-section-head"><div><span class="wc-section-kicker">Group slate</span><h3>World Cup Game Cards</h3><p>Three-way moneyline board: home, draw, away.</p></div><span class="wc-section-kicker">28 cards</span></div>
+    <div class="wc-games-grid">
+      <article class="wc-game-card" style="--delay:0.00s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">TODAY · 1:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇵🇹</span><span>Portugal</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇺🇿</span><span>Uzbekistan</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price wc-favorite">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇵🇹</b>Portugal</span>
+              <span class="wc-price-odds">-800</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+700</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇺🇿</b>Uzbekistan</span>
+              <span class="wc-price-odds">+1900</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Portugal</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.04s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">TODAY · 4:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🏴</span><span>England</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇬🇭</span><span>Ghana</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price wc-favorite">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🏴</b>England</span>
+              <span class="wc-price-odds">-600</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+600</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇬🇭</b>Ghana</span>
+              <span class="wc-price-odds">+1500</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>England</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.09s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">TODAY · 7:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇵🇦</span><span>Panama</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇭🇷</span><span>Croatia</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price ">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇵🇦</b>Panama</span>
+              <span class="wc-price-odds">+600</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+340</span>
+            </div><div class="wc-price wc-favorite">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇭🇷</b>Croatia</span>
+              <span class="wc-price-odds">-210</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Croatia</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.14s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">TODAY · 10:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇨🇴</span><span>Colombia</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇨🇩</span><span>DR Congo</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price wc-favorite">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇨🇴</b>Colombia</span>
+              <span class="wc-price-odds">-190</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+300</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇨🇩</b>DR Congo</span>
+              <span class="wc-price-odds">+600</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Colombia</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.18s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">WED · 3:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇧🇦</span><span>Bosnia</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇶🇦</span><span>Qatar</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price wc-favorite">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇧🇦</b>Bosnia</span>
+              <span class="wc-price-odds">-270</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+420</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇶🇦</b>Qatar</span>
+              <span class="wc-price-odds">+650</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Bosnia</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.22s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">WED · 3:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇨🇭</span><span>Switzerland</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇨🇦</span><span>Canada</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price wc-favorite">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇨🇭</b>Switzerland</span>
+              <span class="wc-price-odds">+130</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+200</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇨🇦</b>Canada</span>
+              <span class="wc-price-odds">+240</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Switzerland</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.27s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">WED · 6:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🏴</span><span>Scotland</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇧🇷</span><span>Brazil</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price ">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🏴</b>Scotland</span>
+              <span class="wc-price-odds">+700</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+410</span>
+            </div><div class="wc-price wc-favorite">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇧🇷</b>Brazil</span>
+              <span class="wc-price-odds">-280</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Brazil</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.32s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">WED · 6:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇲🇦</span><span>Morocco</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇭🇹</span><span>Haiti</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price wc-favorite">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇲🇦</b>Morocco</span>
+              <span class="wc-price-odds">-600</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+600</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇭🇹</b>Haiti</span>
+              <span class="wc-price-odds">+1600</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Morocco</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.36s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">WED · 9:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇿🇦</span><span>South Africa</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇰🇷</span><span>South Korea</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price ">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇿🇦</b>South Africa</span>
+              <span class="wc-price-odds">+420</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+270</span>
+            </div><div class="wc-price wc-favorite">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇰🇷</b>South Korea</span>
+              <span class="wc-price-odds">-145</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>South Korea</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.40s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">WED · 9:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇨🇿</span><span>Czechia</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇲🇽</span><span>Mexico</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price ">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇨🇿</b>Czechia</span>
+              <span class="wc-price-odds">+270</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+280</span>
+            </div><div class="wc-price wc-favorite">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇲🇽</b>Mexico</span>
+              <span class="wc-price-odds">-110</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Mexico</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.00s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">THU · 4:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇪🇨</span><span>Ecuador</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇩🇪</span><span>Germany</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price ">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇪🇨</b>Ecuador</span>
+              <span class="wc-price-odds">+270</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+300</span>
+            </div><div class="wc-price wc-favorite">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇩🇪</b>Germany</span>
+              <span class="wc-price-odds">-115</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Germany</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.04s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">THU · 4:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇨🇼</span><span>Curacao</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇨🇮</span><span>Ivory Coast</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price ">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇨🇼</b>Curacao</span>
+              <span class="wc-price-odds">+1700</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+700</span>
+            </div><div class="wc-price wc-favorite">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇨🇮</b>Ivory Coast</span>
+              <span class="wc-price-odds">-700</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Ivory Coast</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.09s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">THU · 7:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇹🇳</span><span>Tunisia</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇳🇱</span><span>Netherlands</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price ">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇹🇳</b>Tunisia</span>
+              <span class="wc-price-odds">+2200</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+850</span>
+            </div><div class="wc-price wc-favorite">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇳🇱</b>Netherlands</span>
+              <span class="wc-price-odds">-900</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Netherlands</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.14s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">THU · 7:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇯🇵</span><span>Japan</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇸🇪</span><span>Sweden</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price wc-favorite">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇯🇵</b>Japan</span>
+              <span class="wc-price-odds">-115</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+250</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇸🇪</b>Sweden</span>
+              <span class="wc-price-odds">+340</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Japan</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.18s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">THU · 10:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇵🇾</span><span>Paraguay</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇦🇺</span><span>Australia</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price ">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇵🇾</b>Paraguay</span>
+              <span class="wc-price-odds">+185</span>
+            </div><div class="wc-price wc-favorite">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+120</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇦🇺</b>Australia</span>
+              <span class="wc-price-odds">+300</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Tie</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.22s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">THU · 10:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇹🇷</span><span>Türkiye</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇺🇸</span><span>USA</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price ">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇹🇷</b>Türkiye</span>
+              <span class="wc-price-odds">+260</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+310</span>
+            </div><div class="wc-price wc-favorite">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇺🇸</b>USA</span>
+              <span class="wc-price-odds">-115</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>USA</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.27s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">FRI · 3:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇳🇴</span><span>Norway</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇫🇷</span><span>France</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price ">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇳🇴</b>Norway</span>
+              <span class="wc-price-odds">+410</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+330</span>
+            </div><div class="wc-price wc-favorite">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇫🇷</b>France</span>
+              <span class="wc-price-odds">-165</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>France</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.32s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">FRI · 3:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇸🇳</span><span>Senegal</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇮🇶</span><span>Iraq</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price wc-favorite">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇸🇳</b>Senegal</span>
+              <span class="wc-price-odds">-450</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+500</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇮🇶</b>Iraq</span>
+              <span class="wc-price-odds">+1200</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Senegal</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.36s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">FRI · 8:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇨🇻</span><span>Cape Verde</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇸🇦</span><span>Saudi Arabia</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price wc-favorite">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇨🇻</b>Cape Verde</span>
+              <span class="wc-price-odds">+140</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+230</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇸🇦</b>Saudi Arabia</span>
+              <span class="wc-price-odds">+190</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Cape Verde</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.40s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">FRI · 8:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇺🇾</span><span>Uruguay</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇪🇸</span><span>Spain</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price ">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇺🇾</b>Uruguay</span>
+              <span class="wc-price-odds">+600</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+320</span>
+            </div><div class="wc-price wc-favorite">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇪🇸</b>Spain</span>
+              <span class="wc-price-odds">-210</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Spain</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.00s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">FRI · 11:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇳🇿</span><span>New Zealand</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇧🇪</span><span>Belgium</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price ">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇳🇿</b>New Zealand</span>
+              <span class="wc-price-odds">+1300</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+600</span>
+            </div><div class="wc-price wc-favorite">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇧🇪</b>Belgium</span>
+              <span class="wc-price-odds">-550</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Belgium</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.04s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">FRI · 11:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇪🇬</span><span>Egypt</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇮🇷</span><span>Iran</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price wc-favorite">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇪🇬</b>Egypt</span>
+              <span class="wc-price-odds">+145</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+160</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇮🇷</b>Iran</span>
+              <span class="wc-price-odds">+290</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Egypt</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.09s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">SAT · 5:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇵🇦</span><span>Panama</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🏴</span><span>England</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price ">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇵🇦</b>Panama</span>
+              <span class="wc-price-odds">+1300</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+650</span>
+            </div><div class="wc-price wc-favorite">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🏴</b>England</span>
+              <span class="wc-price-odds">-550</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>England</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.14s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">SAT · 5:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇭🇷</span><span>Croatia</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇬🇭</span><span>Ghana</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price wc-favorite">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇭🇷</b>Croatia</span>
+              <span class="wc-price-odds">-140</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+230</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇬🇭</b>Ghana</span>
+              <span class="wc-price-odds">+500</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Croatia</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.18s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">SAT · 7:30PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇨🇴</span><span>Colombia</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇵🇹</span><span>Portugal</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price ">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇨🇴</b>Colombia</span>
+              <span class="wc-price-odds">+260</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+260</span>
+            </div><div class="wc-price wc-favorite">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇵🇹</b>Portugal</span>
+              <span class="wc-price-odds">+100</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Portugal</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.22s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">SAT · 7:30PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇨🇩</span><span>DR Congo</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇺🇿</span><span>Uzbekistan</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price wc-favorite">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇨🇩</b>DR Congo</span>
+              <span class="wc-price-odds">+105</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+270</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇺🇿</b>Uzbekistan</span>
+              <span class="wc-price-odds">+240</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>DR Congo</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.27s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">SAT · 10:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇯🇴</span><span>Jordan</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇦🇷</span><span>Argentina</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price ">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇯🇴</b>Jordan</span>
+              <span class="wc-price-odds">+1400</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+600</span>
+            </div><div class="wc-price wc-favorite">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇦🇷</b>Argentina</span>
+              <span class="wc-price-odds">-550</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Argentina</strong></div>
+      </article>
+      <article class="wc-game-card" style="--delay:0.32s">
+        <div class="wc-card-pitch"></div>
+        <div class="wc-card-top">
+          <span class="wc-card-time">SAT · 10:00PM ET</span>
+          <span class="wc-card-chip">More wagers</span>
+        </div>
+        <div class="wc-match-line">
+          <div class="wc-team-block"><span class="wc-team-flag">🇩🇿</span><span>Algeria</span></div>
+          <span class="wc-vs">vs</span>
+          <div class="wc-team-block away"><span class="wc-team-flag">🇦🇹</span><span>Austria</span></div>
+        </div>
+        <div class="wc-prices"><div class="wc-price ">
+              <span class="wc-price-k">HOME</span>
+              <span class="wc-price-team"><b>🇩🇿</b>Algeria</span>
+              <span class="wc-price-odds">+280</span>
+            </div><div class="wc-price wc-favorite">
+              <span class="wc-price-k">DRAW</span>
+              <span class="wc-price-team"><b>✕</b>Tie</span>
+              <span class="wc-price-odds">+135</span>
+            </div><div class="wc-price ">
+              <span class="wc-price-k">AWAY</span>
+              <span class="wc-price-team"><b>🇦🇹</b>Austria</span>
+              <span class="wc-price-odds">+180</span>
+            </div></div>
+        <div class="wc-card-foot"><span>Market lean</span><strong>Tie</strong></div>
+      </article></div>
+    <div class="wc-section-head"><div><span class="wc-section-kicker">Tournament futures</span><h3>Awards Market</h3><p>Golden Boot, Golden Ball, Golden Glove, Young Player, and Top Goalscorer.</p></div><span class="wc-section-kicker">JUL 19 board</span></div>
+    <div class="wc-awards-grid">
+      <article class="wc-award-card" style="--delay:0.00s">
+        <div class="wc-award-ring"></div>
+        <div class="wc-award-head"><span class="wc-trophy">🏆</span><div><h4>FIFA Golden Boot Winner</h4><p>Most goals in the tournament</p></div></div>
+        <div class="wc-award-board"><div class="wc-award-row"><span><b>🇫🇷</b>Kylian Mbappe <em>France</em></span><strong>+150</strong></div><div class="wc-award-row"><span><b>🇦🇷</b>Lionel Messi <em>Argentina</em></span><strong>+165</strong></div><div class="wc-award-row"><span><b>🇳🇴</b>Erling Haaland <em>Norway</em></span><strong>+500</strong></div><div class="wc-award-row"><span><b>🏴</b>Harry Kane <em>England</em></span><strong>+650</strong></div><div class="wc-award-row"><span><b>🇪🇸</b>Mikel Oyarzabal <em>Spain</em></span><strong>+2500</strong></div><div class="wc-award-row"><span><b>🇩🇪</b>Deniz Undav <em>Germany</em></span><strong>+3000</strong></div></div>
+        <div class="wc-award-time">JUL 19, 6:01PM ET</div>
+      </article>
+      <article class="wc-award-card" style="--delay:0.06s">
+        <div class="wc-award-ring"></div>
+        <div class="wc-award-head"><span class="wc-trophy">🏆</span><div><h4>FIFA Golden Ball</h4><p>Player of the Tournament</p></div></div>
+        <div class="wc-award-board"><div class="wc-award-row"><span><b>🇦🇷</b>Lionel Messi <em>Argentina</em></span><strong>+440</strong></div><div class="wc-award-row"><span><b>🇫🇷</b>Kylian Mbappe <em>France</em></span><strong>+480</strong></div><div class="wc-award-row"><span><b>🇫🇷</b>Michael Olise <em>France</em></span><strong>+500</strong></div><div class="wc-award-row"><span><b>🇳🇴</b>Erling Haaland <em>Norway</em></span><strong>+650</strong></div><div class="wc-award-row"><span><b>🏴</b>Harry Kane <em>England</em></span><strong>+900</strong></div><div class="wc-award-row"><span><b>🇪🇸</b>Lamine Yamal <em>Spain</em></span><strong>+1200</strong></div></div>
+        <div class="wc-award-time">JUL 19, 6:01PM ET</div>
+      </article>
+      <article class="wc-award-card" style="--delay:0.12s">
+        <div class="wc-award-ring"></div>
+        <div class="wc-award-head"><span class="wc-trophy">🏆</span><div><h4>FIFA Golden Glove</h4><p>Best goalkeeper of the tournament</p></div></div>
+        <div class="wc-award-board"><div class="wc-award-row"><span><b>🇦🇷</b>Emiliano Martinez <em>Argentina</em></span><strong>+300</strong></div><div class="wc-award-row"><span><b>🇪🇸</b>Unai Simon <em>Spain</em></span><strong>+390</strong></div><div class="wc-award-row"><span><b>🇫🇷</b>Mike Maignan <em>France</em></span><strong>+440</strong></div><div class="wc-award-row"><span><b>🇧🇷</b>Alisson Becker <em>Brazil</em></span><strong>+750</strong></div><div class="wc-award-row"><span><b>🏴</b>Jordan Pickford <em>England</em></span><strong>+1200</strong></div><div class="wc-award-row"><span><b>🇩🇪</b>Manuel Neuer <em>Germany</em></span><strong>+1400</strong></div></div>
+        <div class="wc-award-time">JUL 19, 6:01PM ET</div>
+      </article>
+      <article class="wc-award-card" style="--delay:0.18s">
+        <div class="wc-award-ring"></div>
+        <div class="wc-award-head"><span class="wc-trophy">🏆</span><div><h4>FIFA Young Player Award</h4><p>Top eligible young player</p></div></div>
+        <div class="wc-award-board"><div class="wc-award-row"><span><b>🇪🇸</b>Lamine Yamal <em>Spain</em></span><strong>+175</strong></div><div class="wc-award-row"><span><b>🇲🇦</b>Ayyoub Bouaddi <em>Morocco</em></span><strong>+380</strong></div><div class="wc-award-row"><span><b>🇨🇮</b>Yan Diomande <em>Ivory Coast</em></span><strong>+650</strong></div><div class="wc-award-row"><span><b>🇫🇷</b>Desire Doue <em>France</em></span><strong>+750</strong></div><div class="wc-award-row"><span><b>🇨🇭</b>Johan Manzambi <em>Switzerland</em></span><strong>+1300</strong></div><div class="wc-award-row"><span><b>🏴</b>Nico O&#x27;Reilly <em>England</em></span><strong>+1400</strong></div></div>
+        <div class="wc-award-time">JUL 19, 6:01PM ET</div>
+      </article>
+      <article class="wc-award-card" style="--delay:0.24s">
+        <div class="wc-award-ring"></div>
+        <div class="wc-award-head"><span class="wc-trophy">🏆</span><div><h4>Top Goalscorer</h4><p>Tournament top scoring market</p></div></div>
+        <div class="wc-award-board"><div class="wc-award-row"><span><b>🇦🇷</b>Lionel Messi <em>Argentina</em></span><strong>-125</strong></div><div class="wc-award-row"><span><b>🇫🇷</b>Kylian Mbappe <em>France</em></span><strong>+230</strong></div><div class="wc-award-row"><span><b>🏴</b>Harry Kane <em>England</em></span><strong>+480</strong></div><div class="wc-award-row"><span><b>🇳🇴</b>Erling Haaland <em>Norway</em></span><strong>+600</strong></div><div class="wc-award-row"><span><b>🇪🇸</b>Mikel Oyarzabal <em>Spain</em></span><strong>+1500</strong></div><div class="wc-award-row"><span><b>🇩🇪</b>Deniz Undav <em>Germany</em></span><strong>+1700</strong></div></div>
+        <div class="wc-award-time">JUL 19, 5:00PM ET</div>
+      </article></div>
+    <div class="wc-section-head"><div><span class="wc-section-kicker">Player tickets</span><h3>World Stage Parlays</h3><p>Soccer-themed parlay cards built from the award prices above.</p></div><span class="wc-section-kicker">themed builders</span></div>
+    <div class="wc-parlay-grid">
+      <article class="wc-parlay-card" style="--delay:0.00s">
+        <div class="wc-ticket-perf"></div>
+        <div class="wc-parlay-top"><span>Goal scorer runway</span><strong>+4685</strong></div>
+        <h4>Golden Boot Fireworks</h4>
+        <div class="wc-leg-list"><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇫🇷 Kylian Mbappe</strong><small>Golden Boot</small></div><b>+150</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇫🇷 Kylian Mbappe</strong><small>Top Goalscorer</small></div><b>+230</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇫🇷 France</strong><small>Golden Ball path</small></div><b>+480</b></div></div>
+        <p>Mbappe-led scoring ticket with France award upside.</p>
+      </article>
+      <article class="wc-parlay-card" style="--delay:0.07s">
+        <div class="wc-ticket-perf"></div>
+        <div class="wc-parlay-top"><span>Messi awards lane</span><strong>+2476</strong></div>
+        <h4>Legacy World Tour</h4>
+        <div class="wc-leg-list"><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇦🇷 Lionel Messi</strong><small>Golden Boot</small></div><b>+165</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇦🇷 Lionel Messi</strong><small>Golden Ball</small></div><b>+440</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇦🇷 Lionel Messi</strong><small>Top Goalscorer</small></div><b>-125</b></div></div>
+        <p>Legacy-focused card built around Messi winning the award markets.</p>
+      </article>
+      <article class="wc-parlay-card" style="--delay:0.14s">
+        <div class="wc-ticket-perf"></div>
+        <div class="wc-parlay-top"><span>Future face ticket</span><strong>+92850</strong></div>
+        <h4>Young Star Breakout</h4>
+        <div class="wc-leg-list"><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇪🇸 Lamine Yamal</strong><small>Young Player</small></div><b>+175</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇪🇸 Lamine Yamal</strong><small>Golden Ball</small></div><b>+1200</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇪🇸 Mikel Oyarzabal</strong><small>Golden Boot</small></div><b>+2500</b></div></div>
+        <p>Spain-heavy ceiling card with a youth-award anchor.</p>
+      </article>
+      <article class="wc-parlay-card" style="--delay:0.21s">
+        <div class="wc-ticket-perf"></div>
+        <div class="wc-parlay-top"><span>Golden Glove split</span><strong>+10484</strong></div>
+        <h4>Keeper Wall</h4>
+        <div class="wc-leg-list"><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇦🇷 Emiliano Martinez</strong><small>Golden Glove</small></div><b>+300</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇪🇸 Unai Simon</strong><small>Golden Glove</small></div><b>+390</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇫🇷 Mike Maignan</strong><small>Golden Glove</small></div><b>+440</b></div></div>
+        <p>A goalkeeper award ladder for clean-sheet tournament paths.</p>
+      </article></div>
+    <div class="wc-note"><strong>Note:</strong> Parlay tickets combine the listed award prices into estimated display odds for the page experience. They are informational display cards, not wagers booked by shortopen.</div>
+  </section>
 </div>
 
 <!-- NBA PANEL — KNICKS CHAMPIONS -->
@@ -4444,16 +5330,16 @@ const MLB_PROP_PARLAYS = [
     type: "MLB Props",
     market: "MLB Market Parlays",
     legs: [
-      { player: "Chris Sale",   team: "ATL", stat: "4.5+ Strikeouts",    odds: "-118", hitRate: 0.52, grade: "B+", ev: 7.6 },
-      { player: "Nathan Eovaldi", team: "TEX", stat: "4.5+ Strikeouts",    odds: "+120", hitRate: 0.41, grade: null, ev: null },
-      { player: "Will Warren",   team: "NYY", stat: "5.5+ Strikeouts",    odds: "+118", hitRate: 0.54, grade: "B-", ev: null },
-      { player: "NYY/CIN",        team: "NYY/CIN", stat: "U 1 Run 1st Inning", odds: "-118", hitRate: 0.61, grade: null, ev: null },
-      { player: "Nick Kurtz",      team: "MIN", stat: "Over 1.5 Total Bases",    odds: "-110", hitRate: 0.51, grade: "A", ev: null },
+      { player: "Carlos Rodon",   team: "NYY", stat: "6+ Strikeouts",    odds: "-118", hitRate: 0.52, grade: "B+", ev: 7.6 },
+      { player: "Shane McClanahan", team: "TBR", stat: "6+ Strikeouts",    odds: "+129", hitRate: 0.47, grade: "B-", ev: null },
+      { player: "Shane Bieber",   team: "TOR", stat: "6+ Strikeouts",    odds: "+118", hitRate: 0.54, grade: "B-", ev: null },
+      { player: "NYY/DET",        team: "NYY/DET", stat: "U 1 Run 1st Inning", odds: "-118", hitRate: 0.61, grade: null, ev: null },
+      { player: "George Springer",      team: "TOR", stat: "Over 1.5 Total Bases",    odds: "+110", hitRate: 0.51, grade: "B", ev: null },
       { player: "Ben Rice", team: "NYY", stat: "Over 0.5 Homeruns",   odds: "+148", hitRate: 0.42, grade: "B-", ev: null },
-      { player: "J.T Ginn",team: "ATH", stat: "4.5+ Strikeouts",  odds: "+135", hitRate: 0.45, grade: "C+", ev: null }
+      { player: "Jesus Luzardo",team: "SDP", stat: "6.5+ Strikeouts",  odds: "+127", hitRate: 0.48, grade: "B+", ev: null }
     ],
     betsPlaced: 1421,
-    edgeNote: "Any Skenes and Sanchez bet is plus EV"
+    edgeNote: "Good day to bet 1+ K's above expected"
   }
 ];
 
@@ -4466,22 +5352,22 @@ const MLB_PROP_PARLAYS = [
 
 // ── MLB ─────────────────────────────────────────────────────────
 const MLB_GAMES = [
-  {day:"TODAY", time:"1:11 PM ET", away:"Chicago White Sox", awayAbbr:"CWS", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: S Newcomb", homePitcher:"P: T Melton", spreadAway:"+1.5", spreadAwayJuice:"-205", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+168", spreadHomeMove:"", spreadOpen:"", mlAway:"+108", mlHome:"-126", total:"9", totalOverJuice:"-102", totalUnderJuice:"-120", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"DET ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Melton establishes the Tigers as slight home favorites over Newcomb on a flat 9 total drawing notable under action."},
-  {day:"TODAY", time:"1:36 PM ET", away:"Cincinnati Reds", awayAbbr:"CIN", home:"New York Yankees", homeAbbr:"NYY", awayPitcher:"P: A Abbott", homePitcher:"P: W Warren", spreadAway:"+1.5", spreadAwayJuice:"-122", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+102", spreadHomeMove:"", spreadOpen:"", mlAway:"+168", mlHome:"-200", total:"9.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Warren anchors the Yankees as solid home chalk over Abbott with a 9.5 total slightly shaded toward the under."},
-  {day:"TODAY", time:"2:21 PM ET", away:"Toronto Blue Jays", awayAbbr:"TOR", home:"Chicago Cubs", homeAbbr:"CHC", awayPitcher:"P: P Corbin", homePitcher:"P: C Rea", spreadAway:"+1.5", spreadAwayJuice:"-194", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+160", spreadHomeMove:"", spreadOpen:"", mlAway:"+110", mlHome:"-130", total:"9", totalOverJuice:"-122", totalUnderJuice:"+100", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CHC ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Rea lines up the Cubs as moderate home priorities over Corbin behind a flat 9 total seeing heavy over juice."},
-  {day:"TODAY", time:"4:06 PM ET", away:"San Diego Padres", awayAbbr:"SD", home:"Texas Rangers", homeAbbr:"TEX", awayPitcher:"P: W Buehler", homePitcher:"P: N Eovaldi", spreadAway:"+1.5", spreadAwayJuice:"-205", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+168", spreadHomeMove:"", spreadOpen:"", mlAway:"+114", mlHome:"-134", total:"7.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TEX ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Eovaldi commands typical home favoritism over Buehler inside a defensive 7.5 landscape frame leaning under."},
-  {day:"TODAY", time:"4:11 PM ET", away:"San Francisco Giants", awayAbbr:"SF", home:"Miami Marlins", homeAbbr:"MIA", awayPitcher:"P: T McDonald", homePitcher:"P: M Meyer", spreadAway:"+1.5", spreadAwayJuice:"-178", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+116", mlHome:"-136", total:"8", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIA ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Meyer maps out home favorite value for Miami against McDonald on a flat 8 line carrying minor under pressure."},
-  {day:"TODAY", time:"4:11 PM ET", away:"Milwaukee Brewers", awayAbbr:"MIL", home:"Atlanta Braves", homeAbbr:"ATL", awayPitcher:"P: K Harrison", homePitcher:"P: C Sale", spreadAway:"+1.5", spreadAwayJuice:"-210", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+172", spreadHomeMove:"", spreadOpen:"", mlAway:"+114", mlHome:"-134", total:"7", totalOverJuice:"-120", totalUnderJuice:"-102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ATL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sale sets the Braves as standard home favorites over Harrison across a tight flat 7 total shaded over."},
-  {day:"TODAY", time:"4:11 PM ET", away:"Washington Nationals", awayAbbr:"WSH", home:"Tampa Bay Rays", homeAbbr:"TB", awayPitcher:"P: C Cavalli", homePitcher:"P: I Seymour", spreadAway:"-1.5", spreadAwayJuice:"+172", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-210", spreadHomeMove:"", spreadOpen:"", mlAway:"+102", mlHome:"-120", total:"8", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TB ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Seymour anchors a close home favorite metric for Tampa Bay against Cavalli on a flat 8 total taking over money."},
-  {day:"TODAY", time:"7:16 PM ET", away:"Cleveland Guardians", awayAbbr:"CLE", home:"Houston Astros", homeAbbr:"HOU", awayPitcher:"P: J Cantillo", homePitcher:"P: S Arrighetti", spreadAway:"+1.5", spreadAwayJuice:"-184", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+152", spreadHomeMove:"", spreadOpen:"", mlAway:"+120", mlHome:"-142", total:"8.5", totalOverJuice:"-102", totalUnderJuice:"-120", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"HOU ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Arrighetti establishes steady home favorite value over Cantillo behind an under-shaded 8.5 blueprint line."},
-  {day:"TODAY", time:"7:16 PM ET", away:"New York Mets", awayAbbr:"NYM", home:"Philadelphia Phillies", homeAbbr:"PHI", awayPitcher:"P: F Peralta", homePitcher:"P: C Sanchez", spreadAway:"+1.5", spreadAwayJuice:"-146", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+122", spreadHomeMove:"", spreadOpen:"", mlAway:"+154", mlHome:"-184", total:"7.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PHI ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sanchez frames the Phillies as comfortable favorites over Peralta with tight 7.5 under metrics pulling minor action."},
-  {day:"TODAY", time:"9:11 PM ET", away:"Pittsburgh Pirates", awayAbbr:"PIT", home:"Colorado Rockies", homeAbbr:"COL", awayPitcher:"P: P Skenes", homePitcher:"P: T Sugano", spreadAway:"-1.5", spreadAwayJuice:"-142", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"+118", spreadHomeMove:"", spreadOpen:"", mlAway:"-210", mlHome:"+176", total:"10.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PIT ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Skenes lines up the Pirates as clear road favorites over Sugano inside Coors Field's typical double-digit 10.5 total."},
-  {day:"TODAY", time:"10:06 PM ET", away:"Los Angeles Angels", awayAbbr:"LAA", home:"Athletics", homeAbbr:"OAK", awayPitcher:"P: W Urena", homePitcher:"P: J Ginn", spreadAway:"+1.5", spreadAwayJuice:"-142", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+118", spreadHomeMove:"", spreadOpen:"", mlAway:"+142", mlHome:"-168", total:"9.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"OAK ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Ginn sets the A's as stable options at home over Urena across a 9.5 canvas shaded toward the over."},
-  {day:"TODAY", time:"10:11 PM ET", away:"Boston Red Sox", awayAbbr:"BOS", home:"Seattle Mariners", homeAbbr:"SEA", awayPitcher:"P: C Early", homePitcher:"P: E Hancock", spreadAway:"+1.5", spreadAwayJuice:"-205", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+172", spreadHomeMove:"", spreadOpen:"", mlAway:"+108", mlHome:"-126", total:"7.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"SEA ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Hancock pins Seattle as a close home choice over Early with under juice heavily impacting the 7.5 framework."},
-  {day:"TODAY", time:"10:11 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Los Angeles Dodgers", homeAbbr:"LAD", awayPitcher:"P: T Rogers", homePitcher:"P: Y Yamamoto", spreadAway:"+1.5", spreadAwayJuice:"-108", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"-111", spreadHomeMove:"", spreadOpen:"", mlAway:"+205", mlHome:"-250", total:"8", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAD ML", edgeEV:"+1.8", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Yamamoto anchors the Dodgers as massive home chalk over Rogers, forcing heavy protection on the -1.5 spread line down to -111."},
-  {day:"TODAY", time:"10:11 PM ET", away:"Minnesota Twins", awayAbbr:"MIN", home:"Arizona Diamondbacks", homeAbbr:"AZ", awayPitcher:"P: T Bradley", homePitcher:"P: Z Gallen", spreadAway:"+1.5", spreadAwayJuice:"-192", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+158", spreadHomeMove:"", spreadOpen:"", mlAway:"+110", mlHome:"-130", total:"9", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"AZ ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Gallen locks in standard home favorite numbers for the D-backs against Bradley on a flat 9 layout leaning over."}
+  {day:"TODAY", time:"4:08 PM ET", away:"Houston Astros", awayAbbr:"HOU", home:"Toronto Blue Jays", homeAbbr:"TOR", awayPitcher:"P: P Lambert", homePitcher:"P: S Bieber", spreadAway:"+1.5", spreadAwayJuice:"-194", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+160", spreadHomeMove:"", spreadOpen:"", mlAway:"+112", mlHome:"-132", total:"8.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TOR ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Bieber establishes the Blue Jays as moderate home favorites over Lambert on an over-shaded 8.5 baseline layout."},
+  {day:"TODAY", time:"6:41 PM ET", away:"Seattle Mariners", awayAbbr:"SEA", home:"Pittsburgh Pirates", homeAbbr:"PIT", awayPitcher:"P: G Kirby", homePitcher:"P: M Keller", spreadAway:"-1.5", spreadAwayJuice:"+132", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-160", spreadHomeMove:"", spreadOpen:"", mlAway:"-132", mlHome:"+112", total:"8.5", totalOverJuice:"-112", totalUnderJuice:"-108", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"SEA ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Kirby targets comfortable road favorite parameters for the Mariners over Keller behind an over-shaded flat 8.5 structure."},
+  {day:"TODAY", time:"6:41 PM ET", away:"Texas Rangers", awayAbbr:"TEX", home:"Miami Marlins", homeAbbr:"MIA", awayPitcher:"P: C Quantrill", homePitcher:"P: S Alcantara", spreadAway:"+1.5", spreadAwayJuice:"-164", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+136", spreadHomeMove:"", spreadOpen:"", mlAway:"+132", mlHome:"-156", total:"8.5", totalOverJuice:"-106", totalUnderJuice:"-114", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIA ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Alcantara sets steady home favor for Miami against Quantrill inside an under-shaded 8.5 total framework block."},
+  {day:"TODAY", time:"6:41 PM ET", away:"New York Yankees", awayAbbr:"NYY", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: C Rodon", homePitcher:"P: C Mize", spreadAway:"-1.5", spreadAwayJuice:"+158", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-192", spreadHomeMove:"", spreadOpen:"", mlAway:"-112", mlHome:"-104", total:"7.5", totalOverJuice:"-124", totalUnderJuice:"+102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Rodon maps out tight away favor for the Yankees over Mize behind a low 7.5 total drawing strong over money."},
+  {day:"TODAY", time:"6:41 PM ET", away:"Kansas City Royals", awayAbbr:"KC", home:"Tampa Bay Rays", homeAbbr:"TB", awayPitcher:"P: L Avila", homePitcher:"P: S McClanahan", spreadAway:"+1.5", spreadAwayJuice:"-140", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+116", spreadHomeMove:"", spreadOpen:"", mlAway:"+154", mlHome:"-184", total:"8", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TB ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"McClanahan anchors premium home chalk loops for the Rays against Avila across an under-shaded flat 8 outline frame."},
+  {day:"TODAY", time:"6:46 PM ET", away:"Philadelphia Phillies", awayAbbr:"PHI", home:"Washington Nationals", homeAbbr:"WSH", awayPitcher:"P: J Luzardo", homePitcher:"P: P Poulin", spreadAway:"-1.5", spreadAwayJuice:"-106", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-113", spreadHomeMove:"", spreadOpen:"", mlAway:"-174", mlHome:"+146", total:"8.5", totalOverJuice:"-118", totalUnderJuice:"-104", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PHI ML", edgeEV:"+1.8", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Luzardo commands heavy road chalk value over Poulin, forcing tight protections on both sides of the 1.5 spread threshold."},
+  {day:"TODAY", time:"7:11 PM ET", away:"Chicago Cubs", awayAbbr:"CHC", home:"New York Mets", homeAbbr:"NYM", awayPitcher:"P: E Cabrera", homePitcher:"P: K Senga", spreadAway:"-1.5", spreadAwayJuice:"+172", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-210", spreadHomeMove:"", spreadOpen:"", mlAway:"+100", mlHome:"-118", total:"8.5", totalOverJuice:"-102", totalUnderJuice:"-120", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYM ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"A tight home-shaded pick'em gives Senga and the Mets minor leverage over Cabrera inside an under-shaded 8.5 line loops."},
+  {day:"TODAY", time:"7:11 PM ET", away:"Milwaukee Brewers", awayAbbr:"MIL", home:"Cincinnati Reds", homeAbbr:"CIN", awayPitcher:"P: B Sproat", homePitcher:"P: N Lodolo", spreadAway:"-1.5", spreadAwayJuice:"+142", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-172", spreadHomeMove:"", spreadOpen:"", mlAway:"-110", mlHome:"-106", total:"9.5", totalOverJuice:"-112", totalUnderJuice:"-108", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIL ML", edgeEV:"", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sproat sets the Brewers as razor-thin road targets over Lodolo inside a balanced, wide 9.5 total layout outline."},
+  {day:"TODAY", time:"7:41 PM ET", away:"Cleveland Guardians", awayAbbr:"CLE", home:"Chicago White Sox", homeAbbr:"CWS", awayPitcher:"P: P Messick", homePitcher:"P: S Burke", spreadAway:"-1.5", spreadAwayJuice:"+162", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-196", spreadHomeMove:"", spreadOpen:"", mlAway:"-112", mlHome:"-104", total:"7", totalOverJuice:"-118", totalUnderJuice:"-104", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CLE ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Messick outlines micro-away favor leverage for Cleveland over Burke on a crisp flat 7 line leaning over."},
+  {day:"TODAY", time:"7:41 PM ET", away:"Los Angeles Dodgers", awayAbbr:"LAD", home:"Minnesota Twins", homeAbbr:"MIN", awayPitcher:"P: J Wrobleski", homePitcher:"P: K Rojas", spreadAway:"-1.5", spreadAwayJuice:"-106", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-113", spreadHomeMove:"", spreadOpen:"", mlAway:"-176", mlHome:"+148", total:"9", totalOverJuice:"-102", totalUnderJuice:"-120", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAD ML", edgeEV:"+1.8", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Wrobleski frames strong away favorite metrics for Los Angeles over Rojas with heavy under cash tracking the flat 9 line."},
+  {day:"TODAY", time:"7:46 PM ET", away:"Arizona Diamondbacks", awayAbbr:"AZ", home:"St. Louis Cardinals", homeAbbr:"STL", awayPitcher:"P: E Rodriguez", homePitcher:"P: K Leahy", spreadAway:"-1.5", spreadAwayJuice:"+160", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-194", spreadHomeMove:"", spreadOpen:"", mlAway:"-104", mlHome:"-112", total:"8.5", totalOverJuice:"-114", totalUnderJuice:"-106", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"STL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Leahy logs steady home preference indices for St. Louis facing Rodriguez over an over-leaning 8.5 total canvas."},
+  {day:"TODAY", time:"8:41 PM ET", away:"Boston Red Sox", awayAbbr:"BOS", home:"Colorado Rockies", homeAbbr:"COL", awayPitcher:"P: S Gray", homePitcher:"P: S Sullivan", spreadAway:"-1.5", spreadAwayJuice:"-104", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-115", spreadHomeMove:"", spreadOpen:"", mlAway:"-162", mlHome:"+136", total:"10.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"BOS ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Gray maps out distinct away favorite status for Boston in Coors Field against Sullivan behind a solid 10.5 over structure."},
+  {day:"TODAY", time:"9:39 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Los Angeles Angels", homeAbbr:"LAA", awayPitcher:"P: S Baz", homePitcher:"P: R Johnson", spreadAway:"-1.5", spreadAwayJuice:"+114", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-137", spreadHomeMove:"", spreadOpen:"", mlAway:"-142", mlHome:"+120", total:"9", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"BAL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Baz sets comfortable road favoritism markers for Baltimore over Johnson on a flat 9 canvas drawing strong under pressure."},
+  {day:"TODAY", time:"9:41 PM ET", away:"Atlanta Braves", awayAbbr:"ATL", home:"San Diego Padres", homeAbbr:"SD", awayPitcher:"P: J Ritchie", homePitcher:"P: TBD", spreadAway:"-1.5", spreadAwayJuice:"+146", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-178", spreadHomeMove:"", spreadOpen:"", mlAway:"-116", mlHome:"-102", total:"8.5", totalOverJuice:"-104", totalUnderJuice:"-118", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ATL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Ritchie establishes a micro-away favorite priority position for Atlanta against a TBD Padres framework with strong under trends on the 8.5."},
+  {day:"TODAY", time:"9:46 PM ET", away:"Athletics", awayAbbr:"OAK", home:"San Francisco Giants", homeAbbr:"SF", awayPitcher:"P: A Civale", homePitcher:"P: R Ray", spreadAway:"+1.5", spreadAwayJuice:"-194", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+160", spreadHomeMove:"", spreadOpen:"", mlAway:"+116", mlHome:"-136", total:"8.5", totalOverJuice:"-124", totalUnderJuice:"+102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"SF ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Ray secures standard home favorites standing for the Giants over Civale with high over-juice pressure hitting the 8.5 board line."}
 ];
-
 // ════════════════════════════════════════════════════════════════
 //  RENDER ENGINE — no need to edit below this line
 // ════════════════════════════════════════════════════════════════
@@ -6119,14 +7005,14 @@ const MLB_LONGSHOTS = [
     headline:"Q's Roulette",
     thesis:"Four correlated legs on one side of the market. Market overwhelmingly disagrees — this ticket pays if the public narrative collapses in the first five innings.",
     legs:[
-      {n:"01", name:"Paul Skenes 10+ K's", pct:48, ev:9.2, odds:"+385"},
-      {n:"02", name:"Will Warren 8.5+ K's", pct:53, ev:8.8, odds:"+250"},
-      {n:"03", name:"Spencer Jones HR", pct:18.9, ev:3.3, odds:"+280"},
-      {n:"04", name:"Nathan Eovaldi 8.5+ K's", pct:45, ev:9.2, odds:"+385"},
-      {n:"05", name:"Y. Yamamoto 10.5+ K's", pct:49, ev:8.8, odds:"+275"},
-      {n:"06", name:"Mookie Betts HR", pct:14.9, ev:3.3, odds:"+280"},
-      {n:"07", name:"Hunter Goodman HR", pct:18.9, ev:3.3, odds:"+280"},
-      {n:"08", name:"C. Sanchez 9+ K's", pct:16, ev:6.1, odds:"+320"}
+      {n:"01", name:"Carlos Rodon 8+ K's", pct:48, ev:9.2, odds:"+257"},
+      {n:"02", name:"Jesus Luzardo 8.5+ K's", pct:43, ev:8.8, odds:"+270"},
+      {n:"03", name:"Fernando Tatis Jr. HR", pct:18.9, ev:3.3, odds:"+380"},
+      {n:"04", name:"Shane Bieber 8+ K's", pct:45, ev:9.2, odds:"+385"},
+      {n:"05", name:"Tyler Soderstrom HR", pct:49, ev:8.8, odds:"+385"},
+      {n:"06", name:"Jose Altuve HR", pct:14.9, ev:3.3, odds:"+480"},
+      {n:"07", name:"Spencer Jones HR", pct:18.9, ev:3.3, odds:"+480"},
+      {n:"08", name:"Parker Messick 9+ K's", pct:46, ev:6.1, odds:"+470"}
     ],
     odds:"+2200", ret:"$10 to $230", ev:"+7.7%",
     metrics:[

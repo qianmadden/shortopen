@@ -270,6 +270,7 @@ box-shadow:
 .sub-header{
 position:sticky;
 overflow:hidden;
+border-bottom:0!important;
 }
 
 .sub-header::before{
@@ -279,11 +280,18 @@ inset:0;
 background-image:
 linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
 linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px);
-
 background-size:60px 60px;
-
 pointer-events:none;
 opacity:.16;
+}
+
+.sub-header::after{
+content:'';
+position:absolute;
+left:0;right:0;bottom:0;
+height:2px;
+background:linear-gradient(90deg,rgba(34,197,94,.7),rgba(244,185,66,.5) 55%,transparent 85%);
+pointer-events:none;
 }
 
 .sub-header h1{
@@ -925,6 +933,7 @@ th.th-active { color: #ffd36b !important; }
 #tbody tr.tier-avg   td:first-child::before { content:''; position:absolute; left:0; top:8%; width:3px; height:84%; border-radius:2px; background:#f07d30; box-shadow:0 0 6px 1px rgba(240,125,48,.20); opacity:.7; }
 #tbody tr.tier-below td:first-child::before { content:''; position:absolute; left:0; top:8%; width:3px; height:84%; border-radius:2px; background:#ef4444; box-shadow:0 0 5px 1px rgba(239,68,68,.16); opacity:.65; }
 #tbody tr.tier-elite { background:linear-gradient(90deg,rgba(34,197,94,.05) 0%,transparent 16%); }
+.tier-elite .pname::after{content:"ELITE";display:inline-block;margin-left:5px;font-family:"DM Mono",monospace;font-size:.36rem;font-weight:700;letter-spacing:.1em;background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.3);border-radius:3px;padding:1px 4px;vertical-align:2px}
 #tbody tr.tier-above { background:linear-gradient(90deg,rgba(244,185,66,.04) 0%,transparent 16%); }
 
   /* ===== shortopen shared footer (matches market.html exactly) ===== */
@@ -968,19 +977,35 @@ th.th-active { color: #ffd36b !important; }
   border-radius:18px;
   padding:15px 16px;
   background:
-    radial-gradient(circle at 10% 0%,rgba(244,185,66,.12),transparent 42%),
-    linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
-  border:1px solid rgba(244,185,66,.16);
-  box-shadow:0 14px 36px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.06);
+    radial-gradient(circle at 10% 0%,rgba(244,185,66,.1),transparent 42%),
+    linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
+  border:1px solid rgba(244,185,66,.14);
+  box-shadow:0 14px 36px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.05);
+}
+/* Glowing top accent stripe */
+.cmd-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,rgba(244,185,66,.8),rgba(244,185,66,.35) 55%,transparent);
+  border-radius:18px 18px 0 0;
 }
 .cmd-card::after{
   content:'';
   position:absolute;
-  inset:auto 14px 0 14px;
-  height:2px;
-  background:linear-gradient(90deg,transparent,rgba(244,185,66,.72),transparent);
-  opacity:.7;
+  top:-20px;right:-20px;
+  width:70px;height:70px;
+  border-radius:50%;
+  background:rgba(244,185,66,.06);
+  filter:blur(20px);
+  pointer-events:none;
 }
+/* Colored top accent per card variant */
+.cmd-card-green::before{background:linear-gradient(90deg,rgba(34,197,94,.85),rgba(34,197,94,.3) 55%,transparent)}
+.cmd-card-green::after{background:rgba(34,197,94,.06)}
+.cmd-card-blue::before{background:linear-gradient(90deg,rgba(87,167,255,.85),rgba(87,167,255,.3) 55%,transparent)}
+.cmd-card-blue::after{background:rgba(87,167,255,.06)}
 .cmd-card-primary{
   background:
     radial-gradient(circle at 0% 0%,rgba(34,197,94,.16),transparent 45%),
@@ -1415,17 +1440,17 @@ tbody tr.compare-pick td{box-shadow:inset 0 0 0 1px rgba(87,167,255,.45), inset 
         <div class="cmd-main" id="cmdLeader">—</div>
         <div class="cmd-sub" id="cmdLeaderSub">Model loading</div>
       </div>
-      <div class="cmd-card">
+      <div class="cmd-card cmd-card-green">
         <div class="cmd-kicker">Best Contact Quality</div>
         <div class="cmd-main" id="cmdQuality">—</div>
         <div class="cmd-sub" id="cmdQualitySub">Quality score</div>
       </div>
-      <div class="cmd-card">
+      <div class="cmd-card" style="border-color:rgba(239,68,68,.16)">
         <div class="cmd-kicker">Highest Volatility</div>
         <div class="cmd-main" id="cmdVolatility">—</div>
         <div class="cmd-sub" id="cmdVolatilitySub">Risk stack</div>
       </div>
-      <div class="cmd-card">
+      <div class="cmd-card cmd-card-blue">
         <div class="cmd-kicker">Low-K Power Profile</div>
         <div class="cmd-main" id="cmdCleanPower">—</div>
         <div class="cmd-sub" id="cmdCleanPowerSub">Contact floor</div>
@@ -1437,11 +1462,30 @@ tbody tr.compare-pick td{box-shadow:inset 0 0 0 1px rgba(87,167,255,.45), inset 
       <div class="movers-tape"><div class="movers-track" id="moversTrack">Loading desk tape…</div></div>
     </div>
 
+    <!-- PERSISTENT COMPARE BAR -->
+    <div id="persistCompareBar" style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:linear-gradient(90deg,rgba(244,185,66,.06),rgba(87,167,255,.04),transparent);border:1px solid rgba(244,185,66,.15);border-radius:12px;margin-bottom:10px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+        <div style="width:6px;height:6px;border-radius:50%;background:#f4b942;box-shadow:0 0 6px rgba(244,185,66,.7)"></div>
+        <span style="font-family:'DM Mono',monospace;font-size:.5rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#8fa0b4">Compare Players</span>
+      </div>
+      <div id="cmpSlotA" onclick="if(compareList.length>0)document.querySelector('[data-idx=\''+compareList[0]+'\']')&&document.querySelector('[data-idx=\''+compareList[0]+'\']').scrollIntoView({behavior:'smooth',block:'center'})" style="flex:1;min-width:130px;max-width:200px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.12);border-radius:8px;padding:7px 12px;cursor:pointer;transition:all .2s">
+        <div style="font-size:.44rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#3d4e60;margin-bottom:3px">Player A</div>
+        <div id="cmpSlotAName" style="font-size:.72rem;font-weight:700;color:#6b7a8a">— select from table</div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:.7rem;font-weight:900;color:rgba(244,185,66,.4);flex-shrink:0">VS</div>
+      <div id="cmpSlotB" style="flex:1;min-width:130px;max-width:200px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.12);border-radius:8px;padding:7px 12px">
+        <div style="font-size:.44rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#3d4e60;margin-bottom:3px">Player B</div>
+        <div id="cmpSlotBName" style="font-size:.72rem;font-weight:700;color:#6b7a8a">— select from table</div>
+      </div>
+      <button onclick="if(!compareMode)toggleCompareMode();" id="cmpActivateBtn" style="flex-shrink:0;background:rgba(244,185,66,.12);border:1px solid rgba(244,185,66,.3);color:#f4b942;border-radius:8px;padding:8px 14px;font-family:'DM Mono',monospace;font-size:.52rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s" onmouseenter="this.style.background='rgba(244,185,66,.2)'" onmouseleave="this.style.background='rgba(244,185,66,.12)'">Activate Compare →</button>
+      <button onclick="clearCompare();document.getElementById('persistCompareBar').style.borderColor='rgba(244,185,66,.15)'" style="flex-shrink:0;background:transparent;border:1px solid rgba(255,255,255,.08);color:#4a5c6e;border-radius:8px;padding:8px 10px;font-size:.5rem;cursor:pointer">Clear</button>
+    </div>
+
     <div class="view-tools">
       <button class="view-btn active" id="viewTable" onclick="setViewMode('table')">Table View</button>
       <button class="view-btn" id="viewHeat" onclick="setViewMode('heat')">Heat Map View</button>
       <button class="view-btn" id="compareBtn" onclick="toggleCompareMode()">Compare: Off</button>
-      <span class="view-note" id="compareNote">Click one player for the calculator, or turn on compare mode and select two.</span>
+      <span class="view-note" id="compareNote">Select players from the table below to compare head-to-head.</span>
     </div>
 
     <div class="compare-panel" id="comparePanel">
@@ -1802,7 +1846,14 @@ function ch2DoSwap(slot,idx){compareList[slot]=idx;ch2SwapSlot=null;updateCompar
 function ch2FilterSwapList(slot){var inp=document.getElementById('ch2SwapInput');var list=document.getElementById('ch2SwapList');if(!inp||!list)return;var q=inp.value.toLowerCase();var otherIdx=compareList[slot===0?1:0];var matches=[];for(var i=0;i<PLAYERS.length&&matches.length<8;i++){if(i===otherIdx)continue;var p=PLAYERS[i];if(!q||p.name.toLowerCase().indexOf(q)>=0||p.team.toLowerCase().indexOf(q)>=0){matches.push(i);}}if(!matches.length){list.innerHTML='<div class="ch2-swap-empty">No matches</div>';return;}list.innerHTML=matches.map(function(i){var p=PLAYERS[i];return '<div class="ch2-swap-opt" onclick="ch2DoSwap('+slot+','+i+')">'+p.name+'<span>'+p.team+'</span></div>';}).join('');}
 function ch2CountUp(el,duration){var target=parseFloat(el.getAttribute('data-target')),dec=parseInt(el.getAttribute('data-dec'),10),suf=el.getAttribute('data-suf')||'';var start=performance.now();function step(now){var t=Math.min(1,(now-start)/duration);var eased=1-Math.pow(1-t,3);var val=target*eased;el.textContent=val.toFixed(dec)+suf;if(t<1)requestAnimationFrame(step);else el.textContent=target.toFixed(dec)+suf;}requestAnimationFrame(step);}
 function ch2Animate(grid){var confEls=grid.querySelectorAll('.ch2-conf-a,.ch2-conf-b');confEls.forEach(function(el){var w=el.getAttribute('data-w');setTimeout(function(){el.style.width=w+'%';},80);});var rows=grid.querySelectorAll('.ch2-row');rows.forEach(function(row,i){var delay=i*70;setTimeout(function(){var fills=row.querySelectorAll('.ch2-fill');fills.forEach(function(f){var w=f.getAttribute('data-w');f.style.width=w+'%';});var vals=row.querySelectorAll('.ch2-val');vals.forEach(function(v){ch2CountUp(v,520);});setTimeout(function(){fills.forEach(function(f){if(f.classList.contains('ch2-win')){f.classList.add('ch2-pulse');}});},560);},delay);});}
-function updateComparePanel(){var panel=document.getElementById('comparePanel'),title=document.getElementById('compareTitle'),grid=document.getElementById('compareGrid');if(!panel||!grid)return;if(compareMode||compareList.length)panel.classList.add('open');if(compareList.length<2){if(compareList.length===1){var only=PLAYERS[compareList[0]];title.textContent=only.name+' vs …';grid.innerHTML='<div class="ch2-empty">'+only.name+' is locked in.<b>Pick one more player from the board to compare.</b></div>';}else{title.textContent='Select two players';grid.innerHTML='<div class="ch2-empty">Click two rows in the table below.<b>Or turn on Compare mode to pick freely.</b></div>';}return;}
+function updateComparePanel(){
+  // Sync persistent compare bar slots
+  var slotA=document.getElementById('cmpSlotAName'),slotB=document.getElementById('cmpSlotBName'),bar=document.getElementById('persistCompareBar');
+  if(slotA){slotA.textContent=compareList.length>0&&PLAYERS[compareList[0]]?PLAYERS[compareList[0]].name:'— select from table';slotA.style.color=compareList.length>0?'#f0ece4':'#6b7a8a';}
+  if(slotB){slotB.textContent=compareList.length>1&&PLAYERS[compareList[1]]?PLAYERS[compareList[1]].name:'— select from table';slotB.style.color=compareList.length>1?'#f0ece4':'#6b7a8a';}
+  if(bar){bar.style.borderColor=compareList.length===2?'rgba(244,185,66,.4)':'rgba(244,185,66,.15)';}
+  var ab=document.getElementById('cmpActivateBtn');if(ab){ab.textContent=compareMode?'Compare: ON ✓':'Activate Compare →';ab.style.background=compareMode?'rgba(34,197,94,.18)':'rgba(244,185,66,.12)';ab.style.borderColor=compareMode?'rgba(34,197,94,.4)':'rgba(244,185,66,.3)';ab.style.color=compareMode?'#22c55e':'#f4b942';}
+  var panel=document.getElementById('comparePanel'),title=document.getElementById('compareTitle'),grid=document.getElementById('compareGrid');if(!panel||!grid)return;if(compareMode||compareList.length)panel.classList.add('open');if(compareList.length<2){if(compareList.length===1){var only=PLAYERS[compareList[0]];title.textContent=only.name+' vs …';grid.innerHTML='<div class="ch2-empty">'+only.name+' is locked in.<b>Pick one more player from the board to compare.</b></div>';}else{title.textContent='Select two players';grid.innerHTML='<div class="ch2-empty">Click two rows in the table below.<b>Or turn on Compare mode to pick freely.</b></div>';}return;}
 var pa=getPA(),cv=getCV(),a=PLAYERS[compareList[0]],b=PLAYERS[compareList[1]],ca=hrCalc(a,pa,cv),cb=hrCalc(b,pa,cv);
 title.textContent=a.name+' vs '+b.name;
 var qa=qScore(a),qb=qScore(b);
@@ -1848,7 +1899,7 @@ function updateHeaders(){document.querySelectorAll('th[data-key]').forEach(funct
 function setSort(k){if(sortKey===k){sortAsc=!sortAsc;}else{sortKey=k;sortAsc=(k==='name');}document.querySelectorAll('.sb').forEach(function(b){b.classList.remove('active');});var btn=document.getElementById('btn-'+k);if(btn)btn.classList.add('active');updateHeaders();render();}
 function getFiltered(){var q=document.getElementById('search').value.toLowerCase();var cv=getCV(),pa=getPA();var result=[];for(var i=0;i<PLAYERS.length;i++){var p=PLAYERS[i];if(q&&!p.name.toLowerCase().includes(q)&&!p.team.toLowerCase().includes(q))continue;var c=hrCalc(p,pa,cv);var vr=variance(p);var vrank=vr[0]==='High'?3:vr[0]==='Low'?1:2;var pr=profileInfo(p);result.push({name:p.name,team:p.team,pa:p.pa,k:p.k,bb:p.bb,xwoba:p.xwoba,barrel:p.barrel,hh:p.hh,whiff:p.whiff,swing:p.swing,varRank:vrank,profileScore:pr.score,_i:i,ip:c.ip,cq:c.cq,hrpa:c.hrpa,hrg:c.hrg});}result.sort(function(a,b){if(sortKey==='name')return sortAsc?a.name.localeCompare(b.name):b.name.localeCompare(a.name);var va=(sortKey==='hr')?a.hrg:(sortKey==='variance'?a.varRank:(sortKey==='profile'?a.profileScore:a[sortKey]));var vb=(sortKey==='hr')?b.hrg:(sortKey==='variance'?b.varRank:(sortKey==='profile'?b.profileScore:b[sortKey]));return sortAsc?va-vb:vb-va;});return result;}
 var currentRows=[];var ROW_H=98;var rowHMeasured=false;
-function buildRowHTML(p,i){var pct=p.hrg*100;var t=tier(pct);var v=variance(p);var col=bcolor(pct);var tc=pct>=28?'tier-elite':pct>=20?'tier-above':pct>=12?'tier-avg':'tier-below';var rank=(i+1).toString().padStart(2,'0');return '<tr data-idx="'+p._i+'" onclick="handleRowClick('+p._i+')" onmouseenter="showTip(event,'+p._i+')" onmousemove="moveTip(event)" onmouseleave="hideTip()" class="'+(selIdx===p._i?'sel ':'')+(compareList.indexOf(p._i)>=0?'compare-pick ':'')+tc+'"><td><div class="player-cell"><div class="rank-badge">'+rank+'</div><div class="player-meta"><div class="pname">'+p.name+'</div><div class="pteam"><span class="team-dot"></span>'+p.team+'</div></div></div></td><td><div class="hr-ticket"><div><div class="hr-ticket-main" style="color:'+col+'">'+pct.toFixed(1)+'%</div><div class="hr-ticket-sub">HR / game</div></div><span class="pill '+t[1]+'">'+t[0]+'</span></div></td><td>'+vCell(p,pct)+'</td><td>'+profileCell(p)+'</td><td>'+ringCell(p)+'</td><td style="--heat:'+Math.min(p.barrel/35*100,100).toFixed(1)+';--heat-col:#22c55e">'+statCell(p.barrel,35,'#22c55e','Barrel',1)+'</td><td style="--heat:'+Math.min(p.hh/65*100,100).toFixed(1)+';--heat-col:#57a7ff">'+statCell(p.hh,65,'#57a7ff','Hard',1)+'</td><td style="--heat:'+Math.min(p.k/45*100,100).toFixed(1)+';--heat-col:#ef4444">'+tightStat(p.k,45,'#ef4444','K',1)+'</td><td style="--heat:'+Math.min(p.bb/25*100,100).toFixed(1)+';--heat-col:#f4b942">'+tightStat(p.bb,25,'#f4b942','BB',1)+'</td><td style="--heat:'+Math.min(p.whiff/45*100,100).toFixed(1)+';--heat-col:#a78bfa">'+tightStat(p.whiff,45,'#a78bfa','Whiff',1)+'</td><td style="--heat:'+Math.min(p.swing/65*100,100).toFixed(1)+';--heat-col:#38bdf8">'+tightStat(p.swing,65,'#38bdf8','Swing',1)+'</td></tr>';}
+function buildRowHTML(p,i){var pct=p.hrg*100;var t=tier(pct);var v=variance(p);var col=bcolor(pct);var tc=pct>=28?'tier-elite':pct>=20?'tier-above':pct>=12?'tier-avg':'tier-below';var rank=(i+1).toString().padStart(2,'0');var isElite=pct>=28;var eliteStyle=isElite?'background:linear-gradient(90deg,rgba(34,197,94,.04),transparent 70%);border-left:2px solid rgba(34,197,94,.5)':'';return '<tr data-idx="'+p._i+'" onclick="handleRowClick('+p._i+')" onmouseenter="showTip(event,'+p._i+')" onmousemove="moveTip(event)" onmouseleave="hideTip()" style="'+eliteStyle+'" class="'+(selIdx===p._i?'sel ':'')+(compareList.indexOf(p._i)>=0?'compare-pick ':'')+tc+'"><td><div class="player-cell"><div class="rank-badge">'+rank+'</div><div class="player-meta"><div class="pname">'+p.name+'</div><div class="pteam"><span class="team-dot"></span>'+p.team+'</div></div></div></td><td><div class="hr-ticket"><div><div class="hr-ticket-main" style="color:'+col+'">'+pct.toFixed(1)+'%</div><div class="hr-ticket-sub">HR / game</div></div><span class="pill '+t[1]+'">'+t[0]+'</span></div></td><td>'+vCell(p,pct)+'</td><td>'+profileCell(p)+'</td><td>'+ringCell(p)+'</td><td style="--heat:'+Math.min(p.barrel/35*100,100).toFixed(1)+';--heat-col:#22c55e">'+statCell(p.barrel,35,'#22c55e','Barrel',1)+'</td><td style="--heat:'+Math.min(p.hh/65*100,100).toFixed(1)+';--heat-col:#57a7ff">'+statCell(p.hh,65,'#57a7ff','Hard',1)+'</td><td style="--heat:'+Math.min(p.k/45*100,100).toFixed(1)+';--heat-col:#ef4444">'+tightStat(p.k,45,'#ef4444','K',1)+'</td><td style="--heat:'+Math.min(p.bb/25*100,100).toFixed(1)+';--heat-col:#f4b942">'+tightStat(p.bb,25,'#f4b942','BB',1)+'</td><td style="--heat:'+Math.min(p.whiff/45*100,100).toFixed(1)+';--heat-col:#a78bfa">'+tightStat(p.whiff,45,'#a78bfa','Whiff',1)+'</td><td style="--heat:'+Math.min(p.swing/65*100,100).toFixed(1)+';--heat-col:#38bdf8">'+tightStat(p.swing,65,'#38bdf8','Swing',1)+'</td></tr>';}
 function renderWindow(){var tw=document.getElementById('tableWrap');var tb=document.getElementById('tbody');if(!tw||!tb)return;var total=currentRows.length;var viewportH=tw.clientHeight||600;var scrollTop=tw.scrollTop;var buffer=6;var visibleCount=Math.ceil(viewportH/ROW_H)+buffer*2;var startIdx=Math.max(0,Math.floor(scrollTop/ROW_H)-buffer);var endIdx=Math.min(total,startIdx+visibleCount);var topH=startIdx*ROW_H;var botH=Math.max(0,(total-endIdx)*ROW_H);var html='';if(topH>0)html+='<tr class="vrow-spacer" style="height:'+topH+'px"><td colspan="11" style="padding:0;border:0;background:transparent"></td></tr>';for(var i=startIdx;i<endIdx;i++){html+=buildRowHTML(currentRows[i],i);}if(botH>0)html+='<tr class="vrow-spacer" style="height:'+botH+'px"><td colspan="11" style="padding:0;border:0;background:transparent"></td></tr>';tb.innerHTML=html;tb.classList.toggle('heat-mode',viewMode==='heat');if(!rowHMeasured){var sampleRows=tb.querySelectorAll('tr[data-idx]');if(sampleRows.length>=2){var pitch=sampleRows[1].getBoundingClientRect().top-sampleRows[0].getBoundingClientRect().top;rowHMeasured=true;if(pitch>20&&Math.abs(pitch-ROW_H)>4){ROW_H=pitch;renderWindow();return;}}else if(sampleRows.length===1){var h=sampleRows[0].getBoundingClientRect().height+8;rowHMeasured=true;if(h>20&&Math.abs(h-ROW_H)>4){ROW_H=h;renderWindow();return;}}}}
 function render(){var rows=getFiltered();currentRows=rows;document.getElementById('cnt-badge').textContent=rows.length+' players';document.getElementById('rcnt').textContent=rows.length+' shown';updateCommand(rows);var tw=document.getElementById('tableWrap');if(tw)tw.scrollTop=0;renderWindow();updateComparePanel();}
 function selectP(idx){var prev=selIdx;selIdx=idx;document.querySelectorAll('#tbody tr[data-idx]').forEach(function(tr){var i=parseInt(tr.getAttribute('data-idx'),10);tr.classList.toggle('sel',i===idx);});updateSide();}
