@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>shortopen — World Cup Board</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ── ROOT TOKENS ── */
+:root {
+  --bg:       #04100a;
+  --surface:  #081810;
+  --surface2: #0b1e14;
+  --border:   rgba(255,255,255,.07);
+  --border-g: rgba(34,197,94,.14);
+  --green:    #22c55e;
+  --green-n:  #4ade80;
+  --green-d:  #16a34a;
+  --gold:     #f4b942;
+  --gold-l:   #f8d26a;
+  --cream:    #fff9e9;
+  --white:    #f0ece4;
+  --muted:    #4d7060;
+  --text:     #6b9b7a;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+body {
+  background:
+    radial-gradient(900px 600px at 6% 8%,  rgba(40,90,50,.32),transparent 62%),
+    radial-gradient(700px 500px at 94% 16%, rgba(30,70,40,.22),transparent 62%),
+    radial-gradient(600px 450px at 50% 90%, rgba(40,90,50,.18),transparent 60%),
+    #08110a;
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  font-weight:300;
+  line-height:1.6;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+body::before {
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:1;
+  background:
+    radial-gradient(ellipse 800px 380px at 0% 6%,   rgba(34,197,94,.06),transparent 56%),
+    radial-gradient(ellipse 700px 340px at 100% 12%, rgba(34,197,94,.04),transparent 54%);
+}
+
+/* ══════════════════════════════════════════
+   NAV
+══════════════════════════════════════════ */
+nav {
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 48px;
+  background:rgba(6,12,7,.97);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(34,197,94,.15);
+  height:62px;
+}
+.nav-logo {
+  font-family:'Inter',sans-serif;font-weight:900;font-size:1.25rem;
+  color:var(--white);letter-spacing:-.02em;text-decoration:none;
+  display:flex;align-items:center;gap:10px;
+}
+.nav-logo-word { color:var(--white); white-space:nowrap; }
+.nav-logo-word .accent { color:var(--green-n); }
+/* badge inherits from parent, not targeted by span rule */
+.nav-wc-badge {
+  font-size:.52rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--green-n);background:rgba(74,222,128,.1);
+  border:1px solid rgba(74,222,128,.25);border-radius:999px;padding:3px 9px;
+  white-space:nowrap;
+}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a {
+  font-size:.78rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:#4d6070;text-decoration:none;transition:color .2s;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--green-n);}
+.hamburger {
+  display:none;flex-direction:column;gap:5px;cursor:pointer;
+  padding:4px;background:transparent;border:none;z-index:300;
+}
+.hamburger span{display:block;width:22px;height:2px;background:var(--white);transition:all .25s;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.mobile-menu {
+  display:none;position:fixed;top:0;left:0;right:0;bottom:0;
+  background:rgba(3,12,7,.98);backdrop-filter:blur(20px);
+  z-index:250;flex-direction:column;align-items:center;justify-content:center;
+}
+.mobile-menu.open{display:flex;}
+.mobile-menu a {
+  font-family:'Inter',sans-serif;font-size:clamp(1.6rem,7vw,2.2rem);
+  font-weight:900;color:var(--white);text-decoration:none;
+  padding:14px 0;border-bottom:1px solid rgba(255,255,255,.07);
+  width:80%;text-align:center;transition:color .2s;
+}
+.mobile-menu a:hover,.mobile-menu a.active{color:var(--green-n);}
+.mobile-menu-close {
+  position:absolute;top:24px;right:24px;background:transparent;
+  border:none;color:#4d6070;font-size:1.4rem;cursor:pointer;padding:8px;
+}
+@media(max-width:640px){
+  nav{padding:14px 20px;}
+  .nav-links{display:none!important;}
+  .hamburger{display:flex;}
+}
+
+/* ══════════════════════════════════════════
+   TOP SCROLLING BANNER
+══════════════════════════════════════════ */
+.wc-top-banner {
+  position:fixed;top:62px;left:0;right:0;z-index:190;height:28px;
+  overflow:hidden;background:rgba(6,12,7,.97);
+  border-bottom:1px solid rgba(34,197,94,.12);
+}
+.wc-top-banner-track {
+  display:flex;gap:36px;white-space:nowrap;width:max-content;
+  animation:marqueeLeft 32s linear infinite;
+  align-items:center;padding:0 20px;height:28px;
+  font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(74,222,128,.5);
+}
+.wc-top-banner-track em{font-style:normal;color:rgba(74,222,128,.78);}
+.wc-top-banner-track .sep{color:rgba(34,197,94,.22);font-size:.9rem;}
+@keyframes marqueeLeft{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ══════════════════════════════════════════
+   PAGE WRAP
+══════════════════════════════════════════ */
+.wc-page-wrap{max-width:1780px;margin:0 auto;padding-top:90px;}
+
+/* ══════════════════════════════════════════
+   WC STAGE (main container)
+══════════════════════════════════════════ */
+.wc-stage {
+  position:relative;overflow:visible;
+  margin:0 auto 80px;padding:0 48px 48px;
+  color:#f2f6ed;isolation:isolate;
+}
+.wc-stage::before {
+  content:'';position:absolute;inset:0 48px 0;border-radius:30px;z-index:-3;
+  background:
+    radial-gradient(700px 460px at 14% 5%,  rgba(244,185,66,.38), transparent 62%),
+    radial-gradient(800px 520px at 88% 16%,  rgba(34,197,94,.20),  transparent 66%),
+    radial-gradient(640px 560px at 48% 100%, rgba(96,165,250,.12), transparent 70%),
+    linear-gradient(180deg,rgba(5,16,10,.82),rgba(4,9,6,.92) 55%,rgba(3,6,4,.96));
+  border:1px solid rgba(244,185,66,.14);
+  box-shadow:0 32px 120px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.07);
+}
+.wc-stage::after {
+  content:'';position:absolute;inset:0 48px;border-radius:30px;z-index:-2;opacity:.06;
+  background-image:
+    linear-gradient(rgba(34,197,94,.2) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(34,197,94,.2) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:linear-gradient(180deg,black,transparent 88%);
+}
+.wc-bg-balls{position:absolute;inset:0 48px;overflow:hidden;border-radius:30px;pointer-events:none;z-index:-1;}
+.wc-bg-balls span{
+  position:absolute;width:20px;height:20px;border-radius:50%;
+  display:grid;place-items:center;font-size:15px;opacity:.14;
+  animation:wcFloatBall 16s linear infinite;
+}
+.wc-bg-balls span:nth-child(1){left:6%;top:14%;animation-duration:18s}
+.wc-bg-balls span:nth-child(2){left:36%;top:5%;animation-duration:22s;animation-delay:-5s}
+.wc-bg-balls span:nth-child(3){left:74%;top:9%;animation-duration:20s;animation-delay:-9s}
+.wc-bg-balls span:nth-child(4){left:16%;top:60%;animation-duration:24s;animation-delay:-13s}
+.wc-bg-balls span:nth-child(5){left:86%;top:52%;animation-duration:21s;animation-delay:-7s}
+.wc-bg-balls span:nth-child(6){left:54%;top:70%;animation-duration:26s;animation-delay:-16s}
+@keyframes wcFloatBall{0%{transform:translate3d(0,20px,0) rotate(0deg);opacity:.04}35%{opacity:.18}100%{transform:translate3d(80px,-160px,0) rotate(520deg);opacity:.02}}
+
+/* celebration confetti */
+.wc-stage-celebration{position:absolute;inset:0 64px auto;z-index:0;pointer-events:none;height:180px;overflow:hidden;}
+.wc-confetti span{position:absolute;border-radius:2px;opacity:.65;animation:wcConfettiDrop linear infinite;}
+.wc-confetti span:nth-child(odd)  {width:7px;height:12px;background:linear-gradient(180deg,#f4b942,#fff0ba);}
+.wc-confetti span:nth-child(even) {width:6px;height:11px;background:linear-gradient(180deg,#4ade80,#bbf7d0);}
+.wc-confetti span:nth-child(3n)   {width:5px;height:10px;background:linear-gradient(180deg,#60a5fa,#dbeafe);}
+.wc-confetti span:nth-child(1){left:4%;animation-duration:7s;animation-delay:-1s}
+.wc-confetti span:nth-child(2){left:11%;animation-duration:9s;animation-delay:-2s}
+.wc-confetti span:nth-child(3){left:19%;animation-duration:8.5s;animation-delay:-3s}
+.wc-confetti span:nth-child(4){left:28%;animation-duration:7.6s;animation-delay:-4.6s}
+.wc-confetti span:nth-child(5){left:39%;animation-duration:9.6s;animation-delay:-2.8s}
+.wc-confetti span:nth-child(6){left:47%;animation-duration:7.8s;animation-delay:-5.4s}
+.wc-confetti span:nth-child(7){left:56%;animation-duration:10s;animation-delay:-3.3s}
+.wc-confetti span:nth-child(8){left:66%;animation-duration:7.1s;animation-delay:-1.4s}
+.wc-confetti span:nth-child(9){left:74%;animation-duration:8.8s;animation-delay:-4.2s}
+.wc-confetti span:nth-child(10){left:82%;animation-duration:9.3s;animation-delay:-5.1s}
+.wc-confetti span:nth-child(11){left:90%;animation-duration:7.4s;animation-delay:-3.7s}
+.wc-confetti span:nth-child(12){left:96%;animation-duration:8.9s;animation-delay:-4.9s}
+@keyframes wcConfettiDrop{0%{transform:translateY(-24px) rotate(0deg);opacity:0}12%{opacity:.7}100%{transform:translateY(220px) rotate(340deg);opacity:0}}
+
+/* ── FLAG MARQUEE ── */
+.wc-flag-marquee{position:relative;overflow:hidden;margin:0 0 20px;border-radius:0 0 18px 18px;border:1px solid rgba(255,255,255,.055);border-top:none;background:rgba(255,255,255,.028);backdrop-filter:blur(18px);}
+.wc-flag-track{display:flex;gap:14px;width:max-content;padding:9px 0;font-size:1.25rem;animation:wcFlags 32s linear infinite;opacity:.88;}
+@keyframes wcFlags{from{transform:translateX(0)}to{transform:translateX(-33.333%)}}
+.wc-flag-track span,.wc-mini-flags span{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:30px;height:22px;padding:0 6px;border-radius:8px;
+  background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(10px);
+}
+.wc-flag-badge{
+  display:inline-flex!important;align-items:center;justify-content:center;
+  flex-shrink:0;width:26px;height:18px;border-radius:5px;
+  border:1px solid rgba(255,255,255,.24);
+  box-shadow:0 3px 8px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.16);
+  background-size:100% 100%;background-repeat:no-repeat;
+  color:transparent!important;font-size:0!important;overflow:hidden;position:relative;
+}
+.wc-mini-flags .wc-flag-badge,.wc-flag-track .wc-flag-badge{width:28px;height:19px;}
+.wc-flag-badge.england{background-image:linear-gradient(90deg,transparent 0 37%,#c1121f 37% 63%,transparent 63% 100%),linear-gradient(180deg,transparent 0 34%,#c1121f 34% 66%,transparent 66% 100%),linear-gradient(180deg,#fff,#f6f6f6);}
+.wc-flag-badge.scotland{background-image:linear-gradient(45deg,transparent 42%,#fff 42% 48%,transparent 48% 52%,#fff 52% 58%,transparent 58%),linear-gradient(-45deg,transparent 42%,#fff 42% 48%,transparent 48% 52%,#fff 52% 58%,transparent 58%),linear-gradient(180deg,#2d65cc,#1d4fb2);}
+.wc-team-flag{
+  display:inline-flex;align-items:center;justify-content:center;
+  flex-shrink:0;width:34px;height:24px;border-radius:7px;padding:0;
+  border:1px solid rgba(255,255,255,.12);
+  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.04));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+  font-size:1.1rem;animation:wcFlagWave 4.6s ease-in-out infinite;
+}
+@keyframes wcFlagWave{0%,100%{transform:rotate(0deg) translateY(0)}50%{transform:rotate(-3deg) translateY(-1px)}}
+
+/* ══════════════════════════════════════════
+   HERO — matching screenshot palette
+══════════════════════════════════════════ */
+.wc-hero{
+  position:relative;display:grid;
+  grid-template-columns:minmax(0,1.1fr) minmax(340px,.9fr);
+  gap:24px;padding:28px 28px 20px;align-items:stretch;
+}
+.wc-eyebrow{
+  display:inline-flex;align-items:center;gap:9px;width:max-content;
+  padding:6px 13px;border-radius:999px;
+  background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.22);
+  font-size:.54rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;
+  color:#9ef0b7;
+}
+/* Title — line 1: warm cream like screenshot */
+.wc-title{
+  font-family:'Inter',sans-serif;
+  font-size:clamp(3.6rem,7.5vw,8.4rem);
+  font-weight:950;line-height:.86;letter-spacing:-.065em;
+  margin:18px 0 14px;
+  color:var(--cream);
+  text-shadow:0 0 60px rgba(244,185,66,.15);
+}
+/* Title line 2: back-and-forth sweep like screenshot */
+.wc-title span{
+  display:block;
+  background:linear-gradient(90deg,
+    #d4e070 0%,   #9ef0b7 18%,
+    #60a5fa 40%,  #f4b942 62%,
+    #60a5fa 80%,  #d4e070 100%
+  );
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  background-size:280% 100%;
+  animation:wcTextPing 4.5s ease-in-out infinite alternate;
+}
+/* Alternate direction creates the visible back-and-forth */
+@keyframes wcTextPing{
+  0%   {background-position:0% 50%;}
+  100% {background-position:100% 50%;}
+}
+.wc-sub{max-width:680px;color:rgba(200,220,205,.55);font-size:.94rem;line-height:1.75;}
+.wc-sub strong{color:rgba(244,185,66,.82);}
+
+/* STAT CARDS — dark glass matching screenshot */
+.wc-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:22px;max-width:720px;}
+.wc-stat{
+  position:relative;overflow:hidden;border-radius:16px;padding:16px 15px;
+  background:linear-gradient(160deg,rgba(255,255,255,.042),rgba(5,14,8,.92));
+  border:1px solid rgba(255,255,255,.07);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 12px 30px rgba(0,0,0,.22);
+}
+.wc-stat small{display:block;font-size:.46rem;font-weight:900;letter-spacing:.17em;text-transform:uppercase;color:rgba(34,197,94,.55);margin-bottom:6px;}
+.wc-stat b{font-family:'DM Mono',monospace;font-size:1.55rem;color:var(--white);}
+.wc-stat:nth-child(2) b{color:#9ef0b7;}
+.wc-stat:nth-child(3) b{color:#91c7ff;}
+.wc-stat:nth-child(4) b{color:var(--gold-l);}
+
+/* ══════════════════════════════════════════
+   HERO ROAD SCENE — preserved from original
+══════════════════════════════════════════ */
+.wc-road-scene{
+  position:relative;overflow:hidden;min-height:380px;border-radius:24px;
+  background:linear-gradient(180deg,rgba(19,53,39,.3) 0%,rgba(12,64,38,.3) 28%,rgba(14,80,46,.32) 40%,rgba(84,54,26,.82) 41%,rgba(34,22,14,.94) 100%);
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 22px 70px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.07);
+}
+.wc-road-scene::before{content:'';position:absolute;left:-20%;right:-20%;bottom:-20px;height:155px;background:radial-gradient(ellipse at 50% 0%,rgba(202,147,70,.82),rgba(93,58,30,.95) 58%,rgba(40,25,16,.95) 100%);border-radius:50% 50% 0 0;box-shadow:inset 0 26px 42px rgba(255,201,113,.1);}
+.wc-road-scene::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 78%,rgba(244,185,66,.1) 0 2px,transparent 3px),radial-gradient(circle at 72% 84%,rgba(255,255,255,.09) 0 1px,transparent 2px),linear-gradient(90deg,transparent 0 47%,rgba(255,255,255,.07) 48% 52%,transparent 53% 100%);opacity:.55;}
+.wc-hero-sky-glow{position:absolute;left:0;right:0;top:0;height:140px;pointer-events:none;background:radial-gradient(ellipse 80% 70% at 50% 0%,rgba(244,185,66,.1),transparent 70%);}
+.wc-hero-crowd{position:absolute;top:0;left:0;right:0;height:80px;pointer-events:none;overflow:hidden;}
+.wc-hero-crowd-row{position:absolute;left:-4%;right:-4%;background:radial-gradient(circle at 4px 30px,rgba(255,255,255,.8) 0 2px,transparent 2.5px) 0 0/18px 18px repeat,radial-gradient(circle at 10px 22px,rgba(244,185,66,.65) 0 2px,transparent 2.5px) 0 0/22px 22px repeat,linear-gradient(180deg,rgba(6,18,12,.94),rgba(6,18,12,.4));opacity:.18;filter:blur(.2px);}
+.wc-hero-crowd-row.r1{top:0;height:52px}.wc-hero-crowd-row.r2{top:44px;height:46px;opacity:.12}
+.wc-hero-crowd-scarf{position:absolute;top:12px;left:0;right:0;height:18px;pointer-events:none;background:repeating-linear-gradient(90deg,rgba(34,197,94,.22) 0 16px,rgba(244,185,66,.18) 16px 32px,rgba(255,255,255,.08) 32px 40px);opacity:.5;}
+.wc-flag-rope{position:absolute;top:0;left:0;right:0;height:78px;z-index:6;pointer-events:none;}
+.wc-flag-rope::before{content:'';position:absolute;top:11px;left:2%;right:2%;height:2px;background:linear-gradient(90deg,transparent,rgba(180,150,60,.6) 7%,rgba(180,150,60,.6) 93%,transparent);}
+.wc-fn{position:absolute;top:13px;display:flex;flex-direction:column;align-items:center;transform-origin:top center;animation:wcPnSway 3.4s ease-in-out infinite;}
+.wc-fn::before{content:'';width:1.5px;height:14px;background:rgba(180,150,60,.48);flex-shrink:0;}
+.wc-fn-flag{display:inline-flex;align-items:center;justify-content:center;font-size:1.05rem;width:30px;height:22px;border-radius:4px;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.18);box-shadow:0 4px 10px rgba(0,0,0,.32);}
+.wc-fn.f01{left:6%}.wc-fn.f02{left:15%}.wc-fn.f03{left:24%}.wc-fn.f04{left:33%}.wc-fn.f05{left:42%}.wc-fn.f06{left:51%}.wc-fn.f07{left:60%}.wc-fn.f08{left:69%}.wc-fn.f09{left:78%}.wc-fn.f10{left:87%}
+.wc-fn:nth-child(even){animation-delay:-.8s}.wc-fn:nth-child(3n){animation-delay:-1.6s}
+@keyframes wcPnSway{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(9deg)}}
+.wc-hero-flagline{position:absolute;top:56px;left:20px;right:20px;display:flex;gap:8px;flex-wrap:wrap;font-size:1.2rem;opacity:.8;}
+.wc-rs-conf{position:absolute;inset:0;pointer-events:none;z-index:5;overflow:hidden;}
+.wc-rs-conf span{position:absolute;width:6px;height:10px;border-radius:2px;animation:wcRsCF linear infinite;}
+.wc-rs-conf span:nth-child(1){left:6%;background:#f4b942;animation-duration:2.9s}.wc-rs-conf span:nth-child(2){left:15%;background:#4ade80;animation-duration:3.5s;animation-delay:-1.2s}.wc-rs-conf span:nth-child(3){left:24%;background:#60a5fa;animation-duration:2.7s;animation-delay:-.4s}.wc-rs-conf span:nth-child(4){left:34%;background:#f8d26a;animation-duration:3.1s;animation-delay:-2.1s}.wc-rs-conf span:nth-child(5){left:43%;background:#9ef0b7;animation-duration:2.9s;animation-delay:-.8s}.wc-rs-conf span:nth-child(6){left:52%;background:#f4b942;animation-duration:3.6s;animation-delay:-1.7s}.wc-rs-conf span:nth-child(7){left:62%;background:#a78bfa;animation-duration:2.8s;animation-delay:-.2s}.wc-rs-conf span:nth-child(8){left:71%;background:#4ade80;animation-duration:3.2s;animation-delay:-2.4s}.wc-rs-conf span:nth-child(9){left:80%;background:#60a5fa;animation-duration:2.6s;animation-delay:-1.4s}.wc-rs-conf span:nth-child(10){left:88%;background:#f4b942;animation-duration:3s;animation-delay:-.6s}
+@keyframes wcRsCF{0%{transform:translateY(0);opacity:0}8%{opacity:.8}90%{opacity:.35}100%{transform:translateY(300px);opacity:0}}
+.wc-hero-trophy-faint{position:absolute;left:50%;top:52px;transform:translateX(-50%);z-index:1;width:118px;height:172px;display:flex;flex-direction:column;align-items:center;pointer-events:none;}
+.wc-trophy-glow{position:absolute;top:6px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(244,185,66,.3),transparent 66%);filter:blur(18px);animation:wcTrophyPulse 2.8s ease-in-out infinite;}
+@keyframes wcTrophyPulse{0%,100%{transform:scale(.94);opacity:.45}50%{transform:scale(1.06);opacity:.9}}
+.wc-trophy-cup{position:relative;margin-top:10px;width:56px;height:78px;background:linear-gradient(180deg,#fff0ba 0%,#f4b942 34%,#b3761d 100%);clip-path:polygon(22% 0,78% 0,82% 18%,71% 52%,61% 72%,61% 86%,39% 86%,39% 72%,29% 52%,18% 18%);box-shadow:0 0 24px rgba(244,185,66,.28);}
+.wc-trophy-cup::before,.wc-trophy-cup::after{content:'';position:absolute;top:14px;width:16px;height:24px;border:4px solid #d4a33f;border-left:none;border-radius:0 14px 14px 0;}
+.wc-trophy-cup::before{left:-14px;transform:scaleX(-1)}.wc-trophy-cup::after{right:-14px}
+.wc-trophy-base{margin-top:6px;width:72px;height:46px;background:linear-gradient(180deg,#6d4715,#231305);clip-path:polygon(24% 0,76% 0,88% 30%,76% 100%,24% 100%,12% 30%);box-shadow:0 12px 24px rgba(0,0,0,.28);}
+.wc-hero-road-arc{position:absolute;left:0;right:0;bottom:0;height:48%;background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.06),transparent 28%),linear-gradient(180deg,transparent 0%,rgba(0,0,0,.08) 30%,rgba(0,0,0,.18) 100%);pointer-events:none;}
+.wc-hero-road-dust{position:absolute;border-radius:50%;filter:blur(14px);}
+.wc-hero-road-dust.d1{left:28%;bottom:82px;width:48px;height:12px;background:rgba(255,220,160,.1);animation:dustPuff 3s ease-in-out infinite}
+.wc-hero-road-dust.d2{right:28%;bottom:78px;width:36px;height:8px;background:rgba(255,220,160,.08);animation:dustPuff 3s ease-in-out infinite;animation-delay:-1.5s}
+@keyframes dustPuff{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:.8;transform:scale(1.3)}}
+.wc-kid{position:absolute;bottom:84px;width:72px;height:126px;transform-origin:bottom center;animation:wcKidLean 1.6s ease-in-out infinite;z-index:2;}
+.wc-kid-hero{left:54%;bottom:84px;}
+.wc-kid-head{position:absolute;top:0;left:23px;width:30px;height:30px;border-radius:50%;background:#8b552f;box-shadow:inset -6px -3px 0 rgba(0,0,0,.18);}
+.wc-kid-body{position:absolute;top:33px;left:20px;width:34px;height:42px;border-radius:16px 16px 10px 10px;background:linear-gradient(135deg,#f4b942,#d56b29);box-shadow:0 0 18px rgba(244,185,66,.2);}
+.wc-kid-arm{position:absolute;top:38px;left:7px;width:56px;height:9px;border-radius:999px;background:#8b552f;transform:rotate(-18deg);}
+.wc-kid-leg{position:absolute;top:72px;left:22px;width:10px;height:48px;border-radius:999px;background:#2c3550;transform-origin:top;}
+.wc-kid-leg.one{transform:rotate(10deg)}.wc-kid-leg.two{left:39px;animation:wcKickLeg 1.6s ease-in-out infinite}
+.wc-kid-foot{position:absolute;bottom:-4px;left:-4px;width:22px;height:8px;border-radius:999px;background:#f0ece4;}
+.wc-scene-ball{position:absolute;border-radius:50%;display:grid;place-items:center;font-size:26px;z-index:2;animation:wcKickBall 1.6s ease-in-out infinite;filter:drop-shadow(0 12px 16px rgba(0,0,0,.45));}
+.wc-ball-hero{left:calc(54% + 62px);bottom:72px;width:34px;height:34px;animation-duration:1.75s;}
+@keyframes wcKidLean{50%{transform:rotate(-3deg) translateX(-3px)}}
+@keyframes wcKickLeg{0%,100%{transform:rotate(-8deg)}45%{transform:rotate(-52deg)}}
+@keyframes wcKickBall{0%,100%{transform:translate(0,0) rotate(0deg)}45%{transform:translate(58px,-38px) rotate(260deg)}70%{transform:translate(76px,-8px) rotate(410deg)}}
+.wc-hero-mini-crowd-flags{position:absolute;bottom:60px;right:24px;display:flex;gap:5px;font-size:1rem;opacity:.72;}
+.wc-road-caption{position:absolute;left:20px;bottom:18px;right:20px;z-index:3;display:flex;justify-content:space-between;gap:12px;align-items:end;}
+.wc-road-caption h3{font-size:1.05rem;color:#fff;margin:0;}
+.wc-road-caption p{font-size:.64rem;color:rgba(255,255,255,.46);margin:3px 0 0;line-height:1.45;}
+.wc-road-badge{font-family:'DM Mono',monospace;font-size:.58rem;color:#0b1a12;background:#9ef0b7;border-radius:999px;padding:7px 12px;font-weight:900;white-space:nowrap;}
+
+/* ══════════════════════════════════════════
+   ANIMATED STAT CARDS (new section)
+══════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   DIVIDER SECTION BANNERS
+══════════════════════════════════════════ */
+.wc-divider-banner{
+  position:relative;overflow:hidden;height:36px;margin:0 28px 2px;border-radius:10px;
+  display:flex;align-items:center;
+  background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.055);
+}
+.wc-divider-track{
+  display:flex;gap:40px;width:max-content;white-space:nowrap;
+  animation:marqueeLeft 26s linear infinite;
+  align-items:center;padding:0 20px;
+  font-family:'DM Mono',monospace;font-size:.52rem;font-weight:900;
+  letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.22);
+}
+.wc-divider-track .hi{color:rgba(244,185,66,.65);}
+.wc-divider-track .sep{color:rgba(255,255,255,.1);font-size:.8rem;}
+
+/* ══════════════════════════════════════════
+   SECTION HEADER
+══════════════════════════════════════════ */
+.wc-section-head{position:relative;padding:20px 28px 14px;display:flex;align-items:end;justify-content:space-between;gap:18px;}
+.wc-section-head h3{font-size:1.35rem;font-weight:950;color:var(--white);margin:0;}
+.wc-section-head p{font-size:.72rem;color:rgba(200,220,205,.38);margin-top:4px;}
+.wc-section-kicker{font-family:'DM Mono',monospace;font-size:.55rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);}
+
+/* ══════════════════════════════════════════
+   GAME CARDS — dark glass, not neon
+══════════════════════════════════════════ */
+.wc-games-grid{display:grid;grid-template-columns:repeat(2,minmax(300px,1fr));gap:16px;padding:0 28px 28px;}
+.wc-game-card{
+  position:relative;overflow:hidden;min-height:0;border-radius:20px;padding:18px 18px 16px;
+  background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(6,16,10,.88) 42%,rgba(2,8,5,.96));
+  border:1px solid rgba(255,255,255,.075);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 18px 44px rgba(0,0,0,.22);
+  animation:wcRise .45s ease both;animation-delay:var(--delay);
+  transition:border-color .25s,box-shadow .25s;
+}
+.wc-game-card:hover{border-color:rgba(34,197,94,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 18px 60px rgba(0,0,0,.3),0 0 30px rgba(34,197,94,.04);}
+.wc-game-card::before{content:'';position:absolute;inset:-80px;background:radial-gradient(circle at 12% 5%,rgba(244,185,66,.14),transparent 28%),radial-gradient(circle at 88% 7%,rgba(34,197,94,.1),transparent 34%);opacity:.85;pointer-events:none;}
+.wc-game-card::after{content:'⚽';position:absolute;right:14px;bottom:12px;font-size:3.8rem;opacity:.035;transform:rotate(-18deg);}
+@keyframes wcRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.wc-card-pitch{position:absolute;inset:0;opacity:.065;background:linear-gradient(90deg,transparent 49.4%,rgba(255,255,255,.5) 49.6% 50.4%,transparent 50.6%),radial-gradient(circle at 50% 50%,transparent 0 58px,rgba(255,255,255,.5) 59px 61px,transparent 62px),linear-gradient(rgba(255,255,255,.15) 1px,transparent 1px);background-size:100% 100%,100% 100%,100% 34px;}
+.wc-card-top{position:relative;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.wc-card-time{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.12em;color:rgba(244,185,66,.72);text-transform:uppercase;}
+.wc-card-chip{font-size:.5rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:4px 8px;}
+.wc-match-line{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 38px minmax(0,1fr);gap:8px;align-items:center;margin-bottom:12px;}
+.wc-team-block{min-height:52px;display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.065);font-weight:700;color:var(--white);overflow:hidden;min-width:0;font-size:.9rem;}
+.wc-team-block.away{justify-content:flex-end;text-align:right;flex-direction:row-reverse;}
+.wc-vs{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:radial-gradient(circle,#f4b942,#9d6424);color:#0a0800;font-size:.52rem;font-weight:950;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 0 16px rgba(244,185,66,.25);flex-shrink:0;}
+.wc-prices{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.wc-price{min-width:0;border-radius:14px;padding:12px 10px 10px;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.065);transition:transform .18s,border-color .18s,background .18s;}
+.wc-price:hover{transform:translateY(-2px);border-color:rgba(244,185,66,.28);background:rgba(244,185,66,.06);}
+.wc-price-k{display:block;font-size:.44rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.wc-price-team{display:none;}
+.wc-price-team b{display:inline-flex;align-items:center;justify-content:center;width:24px;height:17px;border-radius:5px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);font-size:.86rem;}
+.wc-price-odds{display:block;font-family:'DM Mono',monospace;font-size:1.28rem;font-weight:900;color:var(--white);letter-spacing:-.01em;margin-top:3px;}
+.wc-price.wc-favorite{background:linear-gradient(180deg,rgba(34,197,94,.14),rgba(34,197,94,.04));border-color:rgba(34,197,94,.28);box-shadow:0 0 22px rgba(34,197,94,.08),inset 0 1px 0 rgba(34,197,94,.1);}
+.wc-price.wc-favorite .wc-price-odds{color:#9ef0b7;}
+.wc-card-foot{position:relative;display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:11px;border-top:1px solid rgba(255,255,255,.06);font-size:.58rem;color:rgba(255,255,255,.28);letter-spacing:.08em;text-transform:uppercase;}
+.wc-card-foot strong{color:rgba(244,185,66,.8);font-size:.68rem;}
+
+/* pass strip */
+.wc-pass-strip{position:relative;overflow:hidden;height:68px;margin:0 28px 10px;border-radius:16px;background:linear-gradient(90deg,rgba(255,255,255,.028),rgba(34,197,94,.04),rgba(255,255,255,.028));border:1px solid rgba(255,255,255,.055);}
+.wc-ps-pitchline{position:absolute;inset:0;background:linear-gradient(90deg,transparent 49.4%,rgba(255,255,255,.1) 49.6% 50.4%,transparent 50.6%),radial-gradient(circle at 50% 50%,transparent 0 26px,rgba(255,255,255,.08) 27px 28px,transparent 29px);}
+.wc-ps-lbl{position:absolute;bottom:8px;font-family:'DM Mono',monospace;font-size:.44rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.22);}
+.wc-ps-lbl.lt{left:14px}.wc-ps-lbl.rt{right:14px}
+.wc-ps-ball{position:absolute;top:22px;left:22%;font-size:1.2rem;animation:wcPassBall 2.4s ease-in-out infinite;}
+@keyframes wcPassBall{0%,100%{transform:translate(0,0) rotate(0deg)}50%{transform:translate(120px,-6px) rotate(240deg)}}
+
+/* ══════════════════════════════════════════
+   AWARDS GRID — dark glass
+══════════════════════════════════════════ */
+.wc-awards-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding:0 28px 26px;}
+.wc-award-card{
+  position:relative;overflow:hidden;border-radius:20px;padding:16px;
+  background:linear-gradient(145deg,rgba(244,185,66,.08),rgba(255,255,255,.02) 34%,rgba(3,10,5,.94));
+  border:1px solid rgba(255,255,255,.07);
+  box-shadow:0 18px 48px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.07);
+  animation:wcRise .45s ease both;animation-delay:var(--delay);
+}
+.wc-award-ring{position:absolute;right:-38px;top:-38px;width:120px;height:120px;border-radius:50%;border:16px solid rgba(244,185,66,.06);box-shadow:0 0 44px rgba(244,185,66,.08);}
+.wc-award-head{position:relative;display:flex;gap:10px;align-items:flex-start;border-bottom:1px solid rgba(255,255,255,.065);padding-bottom:12px;margin-bottom:10px;}
+.wc-trophy-icon{font-size:1.55rem;filter:drop-shadow(0 0 10px rgba(244,185,66,.3));}
+.wc-award-head h4{font-size:.92rem;line-height:1.1;color:var(--white);margin:0;}
+.wc-award-head p{font-size:.58rem;color:rgba(200,220,205,.32);margin:4px 0 0;line-height:1.35;}
+.wc-award-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.wc-award-row span{min-width:0;font-size:.69rem;color:rgba(255,255,255,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.wc-award-row span b{margin-right:6px;display:inline-flex;align-items:center;justify-content:center;width:24px;height:17px;border-radius:5px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);font-size:.86rem;}
+.wc-award-row em{font-style:normal;color:rgba(200,220,205,.28);font-size:.57rem;margin-left:3px;}
+.wc-award-row strong{font-family:'DM Mono',monospace;font-size:.76rem;color:#9ef0b7;}
+.wc-award-time{margin-top:12px;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,185,66,.6);}
+
+/* ══════════════════════════════════════════
+   PARLAY CARDS
+══════════════════════════════════════════ */
+.wc-parlay-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding:0 28px 10px;}
+.wc-parlay-card{
+  position:relative;overflow:hidden;border-radius:22px;padding:17px;
+  background:linear-gradient(160deg,rgba(96,165,250,.08),rgba(255,255,255,.025) 42%,rgba(3,8,12,.94));
+  border:1px solid rgba(255,255,255,.07);
+  box-shadow:0 18px 50px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.07);
+  animation:wcRise .45s ease both;animation-delay:var(--delay);
+}
+.wc-ticket-perf{position:absolute;left:-9px;top:0;bottom:0;width:18px;background:radial-gradient(circle at 50% 8px,transparent 0 6px,rgba(255,255,255,.1) 6.5px 7px,transparent 7.5px);background-size:18px 24px;opacity:.5;}
+.wc-parlay-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.wc-parlay-top span{font-size:.5rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:#91c7ff;}
+.wc-parlay-top strong{font-family:'DM Mono',monospace;color:#f8dfa0;font-size:1rem;}
+.wc-parlay-card h4{font-size:1rem;color:var(--white);margin:0 0 12px;}
+.wc-leg-list{display:grid;gap:8px;}
+.wc-leg{display:grid;grid-template-columns:24px 1fr auto;gap:8px;align-items:center;padding:8px;border-radius:13px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.06);}
+.wc-leg-ball{font-size:1rem;filter:drop-shadow(0 0 6px rgba(255,255,255,.1));}
+.wc-leg strong{display:block;font-size:.7rem;color:rgba(255,255,255,.82);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.wc-leg small{display:block;color:rgba(200,220,205,.3);font-size:.55rem;margin-top:1px;}
+.wc-leg b{font-family:'DM Mono',monospace;color:#9ef0b7;font-size:.72rem;}
+.wc-parlay-card p{font-size:.64rem;line-height:1.55;color:rgba(200,220,205,.38);margin:12px 0 0;}
+.wc-note{margin:18px 28px 0;padding:13px 15px;border-radius:14px;background:rgba(244,185,66,.05);border:1px solid rgba(244,185,66,.1);font-size:.66rem;color:rgba(200,220,205,.4);line-height:1.6;}
+.wc-note strong{color:rgba(244,185,66,.8);}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media(max-width:1200px){
+  .wc-hero{grid-template-columns:1fr;}
+  .wc-awards-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+}
+@media(max-width:900px){
+  .wc-stage{padding:0 18px 36px;}
+  .wc-stage::before,.wc-stage::after,.wc-bg-balls{inset:0 18px;}
+  .wc-hero{padding:20px 18px 16px;}
+  .wc-stats{grid-template-columns:repeat(2,1fr);}
+  .wc-games-grid{grid-template-columns:minmax(0,1fr);padding:0 18px 22px;}
+  .wc-awards-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:0 18px 22px;}
+  .wc-parlay-grid{grid-template-columns:1fr;padding:0 18px 22px;}
+  .wc-section-head{padding:20px 18px 12px;flex-direction:column;align-items:flex-start;}
+  .wc-divider-banner{margin:0 18px 2px;}
+  .wc-pass-strip{margin:0 18px 10px;}
+  .wc-note{margin:18px 18px 0;}
+  .wc-title{font-size:clamp(2.8rem,16vw,5rem);}
+}
+@media(max-width:640px){
+  .wc-hero{gap:18px;}
+  .wc-stats{grid-template-columns:repeat(2,1fr);}
+  .wc-road-scene{min-height:280px;}
+}
+@media(max-width:520px){
+  .wc-prices{grid-template-columns:1fr;}
+  .wc-match-line{grid-template-columns:1fr;gap:8px;}
+  .wc-vs{margin:auto;}
+  .wc-team-block.away{justify-content:flex-start;text-align:left;}
+  .wc-awards-grid{grid-template-columns:1fr;}
+  .wc-title{font-size:clamp(2.4rem,14vw,4rem);}
+}
+
+/* ══ STORY CARDS (8 — 4x2 grid) ═══════════════════════════ */
+.wc-festival-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;padding:0 28px 28px;}
+.wc-story-card{position:relative;overflow:hidden;min-height:330px;padding:20px 20px 168px;border-radius:24px;background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.012) 42%,rgba(3,9,5,.92));border:1px solid rgba(255,255,255,.075);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 18px 44px rgba(0,0,0,.2);}
+.wc-story-card::after{content:'';position:absolute;top:0;bottom:0;left:-54%;width:44%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.04),transparent);transform:skewX(-14deg);animation:sdStorySheen 10s ease-in-out infinite;pointer-events:none;}
+.wc-story-card:nth-child(2)::after{animation-delay:1.4s}.wc-story-card:nth-child(3)::after{animation-delay:2.8s}.wc-story-card:nth-child(4)::after{animation-delay:4.2s}.wc-story-card:nth-child(5)::after{animation-delay:.7s}.wc-story-card:nth-child(6)::after{animation-delay:2.1s}.wc-story-card:nth-child(7)::after{animation-delay:3.5s}.wc-story-card:nth-child(8)::after{animation-delay:4.9s}
+@keyframes sdStorySheen{0%,78%{left:-54%}92%,100%{left:128%}}
+.wc-story-k{display:block;font-size:.48rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:rgba(34,197,94,.6);margin-bottom:9px;}
+.wc-story-card h4{font-size:1.1rem;line-height:1.1;color:#fff;margin-bottom:9px;}
+.wc-story-card p{font-size:.68rem;line-height:1.55;color:rgba(200,220,205,.46);}
+.wc-story-visual{position:absolute;left:16px;right:16px;bottom:16px;height:148px;border-radius:18px;overflow:hidden;}
+.wc-vis-svg{width:100%;height:100%;display:block;}
+.wc-card-confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.wc-card-confetti span{position:absolute;width:5px;height:9px;border-radius:2px;opacity:.5;animation:wcConfettiDrop linear infinite;}
+.wc-card-confetti span:nth-child(1){left:8%;background:#f4b942;animation-duration:6.5s;animation-delay:-1s}.wc-card-confetti span:nth-child(2){left:22%;background:#4ade80;animation-duration:7.2s;animation-delay:-2.4s}.wc-card-confetti span:nth-child(3){left:38%;background:#60a5fa;animation-duration:6.8s;animation-delay:-3.1s}.wc-card-confetti span:nth-child(4){left:55%;background:#9ef0b7;animation-duration:7.5s;animation-delay:-1.8s}.wc-card-confetti span:nth-child(5){left:72%;background:#f4b942;animation-duration:6.2s;animation-delay:-4.2s}.wc-card-confetti span:nth-child(6){left:88%;background:#a78bfa;animation-duration:7s;animation-delay:-2.9s}
+@keyframes svgBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes svgSway{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+@keyframes svgPulse{0%,100%{opacity:.65}50%{opacity:1}}
+@keyframes svgOrbit{from{transform:rotate(0deg) translateX(52px) rotate(0deg)}to{transform:rotate(360deg) translateX(52px) rotate(-360deg)}}
+@keyframes svgKick{0%,100%{transform:rotate(-8deg)}45%{transform:rotate(-52deg)}}
+@keyframes svgSip{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px) rotate(-2deg)}}
+@keyframes svgLift{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px) rotate(-3deg)}}
+@keyframes svgCrowdWave{0%,100%{opacity:.18}50%{opacity:.28}}
+.sv-bob{animation:svgBob 2s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+.sv-sway{animation:svgSway 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+.sv-pulse{animation:svgPulse 2s ease-in-out infinite}
+.sv-kick{animation:svgKick 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 0%}
+.sv-lift{animation:svgLift 2.2s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+.sv-sip{animation:svgSip 2.6s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+.sv-sip2{animation:svgSip 2.6s ease-in-out infinite;animation-delay:-.7s;transform-box:fill-box;transform-origin:50% 100%}
+.sv-sip3{animation:svgSip 2.6s ease-in-out infinite;animation-delay:-1.3s;transform-box:fill-box;transform-origin:50% 100%}
+.sv-scarf{animation:svgSway 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:0% 50%}
+.sv-scarf2{animation:svgSway 2s ease-in-out infinite reverse;transform-box:fill-box;transform-origin:100% 50%}
+.sv-crowd{animation:svgCrowdWave 2.8s ease-in-out infinite}
+@media(max-width:1200px){.wc-festival-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:900px){.wc-festival-grid{grid-template-columns:1fr;padding:0 18px 24px;}}
+
+/* ══ ODDS MOVEMENT SPARKLINES ══════════════════════════════ */
+.wc-spark-section{padding:4px 28px 0;}
+.wc-spark-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding:0 28px 28px;}
+.wc-spark-card{
+  position:relative;overflow:hidden;border-radius:20px;padding:16px 16px 12px;
+  background:linear-gradient(155deg,rgba(255,255,255,.046),rgba(255,255,255,.01) 44%,rgba(3,9,5,.92));
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 16px 40px rgba(0,0,0,.2);
+  animation:wcRise .4s ease both;animation-delay:var(--sd,.0s);
+}
+.wc-spark-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px;}
+.wc-spark-left{display:flex;align-items:center;gap:10px;}
+.wc-spark-flag{font-size:1.6rem;line-height:1;}
+.wc-spark-name{font-family:'Inter',sans-serif;font-weight:900;font-size:.92rem;color:#fff;letter-spacing:-.015em;}
+.wc-spark-group{font-size:.44rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-top:2px;}
+.wc-spark-right{text-align:right;}
+.wc-spark-odds{font-family:'DM Mono',monospace;font-size:1.32rem;font-weight:900;color:var(--white);letter-spacing:-.01em;display:block;line-height:1;}
+.wc-spark-move{font-size:.52rem;font-weight:700;letter-spacing:.08em;margin-top:3px;display:inline-flex;align-items:center;gap:3px;}
+.wc-spark-move.up{color:#4ade80;}
+.wc-spark-move.dn{color:#f87171;}
+.wc-spark-move.fl{color:rgba(255,255,255,.35);}
+.wc-spark-chart{position:relative;height:52px;margin:0 -2px;}
+.wc-spark-chart svg{width:100%;height:100%;display:block;overflow:visible;}
+.wc-spark-line{fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.wc-spark-line.green{stroke:#4ade80;}
+.wc-spark-line.red{stroke:#f87171;}
+.wc-spark-line.amber{stroke:#f4b942;}
+.wc-spark-area{opacity:.12;}
+.wc-spark-area.green{fill:#4ade80;}
+.wc-spark-area.red{fill:#f87171;}
+.wc-spark-area.amber{fill:#f4b942;}
+.wc-spark-dot{r:4;stroke:#08110a;stroke-width:2;animation:svgPulse 2s ease-in-out infinite;}
+.wc-spark-dot.green{fill:#4ade80;}
+.wc-spark-dot.red{fill:#f87171;}
+.wc-spark-dot.amber{fill:#f4b942;}
+@keyframes sparkDraw{from{stroke-dashoffset:300}to{stroke-dashoffset:0}}
+.wc-spark-line{stroke-dasharray:300;stroke-dashoffset:300;animation:sparkDraw 1.8s ease forwards;animation-delay:var(--sd,.0s);}
+.wc-spark-foot{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:.44rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.22);}
+@media(max-width:900px){.wc-spark-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:0 18px 22px;}}
+@media(max-width:480px){.wc-spark-grid{grid-template-columns:minmax(0,1fr);}}
+
+/* ══ GROUP TABLES ══════════════════════════════════════════ */
+.wc-group-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding:0 28px 28px;}
+.wc-group-card{
+  border-radius:20px;overflow:hidden;
+  background:linear-gradient(155deg,rgba(255,255,255,.04),rgba(3,9,5,.92));
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 16px 40px rgba(0,0,0,.2);
+  animation:wcRise .4s ease both;animation-delay:var(--gd,.0s);
+}
+.wc-group-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 14px 10px;border-bottom:1px solid rgba(255,255,255,.06);
+}
+.wc-group-lbl{font-family:'Inter',sans-serif;font-size:.7rem;font-weight:900;letter-spacing:.08em;color:#fff;}
+.wc-group-matches{font-family:'DM Mono',monospace;font-size:.5rem;color:rgba(255,255,255,.28);letter-spacing:.06em;}
+.wc-group-table{width:100%;border-collapse:collapse;}
+.wc-group-table th{font-size:.42rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.2);padding:6px 14px 4px;text-align:left;}
+.wc-group-table th:not(:first-child){text-align:center;padding:6px 6px 4px;}
+.wc-group-table td{font-size:.68rem;padding:7px 14px;border-top:1px solid rgba(255,255,255,.04);color:rgba(255,255,255,.7);}
+.wc-group-table td:not(:first-child){text-align:center;font-family:'DM Mono',monospace;font-size:.64rem;color:rgba(255,255,255,.5);}
+.wc-group-table .pts{color:var(--white);font-weight:700;}
+.wc-group-row-team{display:flex;align-items:center;gap:7px;}
+.wc-group-row-team .flag{font-size:.9rem;flex-shrink:0;}
+.wc-group-row-team .name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px;}
+.wc-gt-q{background:rgba(34,197,94,.07);border-left:2px solid rgba(34,197,94,.4);}
+.wc-gt-elim td{color:rgba(255,255,255,.32)!important;opacity:.7;}
+@media(max-width:900px){.wc-group-grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:0 18px 22px;}}
+@media(max-width:480px){.wc-group-grid{grid-template-columns:minmax(0,1fr);}}
+
+/* ══ PLAYER FORM SCROLL ════════════════════════════════════ */
+.wc-player-scroll-wrap{position:relative;padding:0 28px 28px;}
+.wc-player-scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.wc-player-scroll::-webkit-scrollbar{display:none;}
+.wc-player-card{
+  flex-shrink:0;width:190px;border-radius:20px;padding:16px;
+  background:linear-gradient(155deg,rgba(255,255,255,.045),rgba(3,9,5,.92));
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 14px 36px rgba(0,0,0,.2);
+  animation:wcRise .4s ease both;animation-delay:var(--pd,.0s);
+}
+.wc-player-top{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.wc-player-flag-big{font-size:1.5rem;line-height:1;}
+.wc-player-info{}
+.wc-player-name{font-family:'Inter',sans-serif;font-size:.84rem;font-weight:900;color:#fff;letter-spacing:-.01em;}
+.wc-player-role{font-size:.46rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-top:2px;}
+.wc-player-form-label{font-size:.42rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:6px;}
+.wc-player-form-dots{display:flex;gap:5px;margin-bottom:12px;}
+.wc-pf-dot{
+  width:28px;height:28px;border-radius:9px;
+  display:grid;place-items:center;
+  font-size:.56rem;font-weight:900;letter-spacing:.04em;
+  border:1px solid rgba(255,255,255,.06);
+  animation:wcRise .35s ease both;
+}
+.wc-pf-dot.g{background:rgba(244,185,66,.18);color:#f8dfa0;border-color:rgba(244,185,66,.2);}
+.wc-pf-dot.a{background:rgba(96,165,250,.18);color:#93c5fd;border-color:rgba(96,165,250,.2);}
+.wc-pf-dot.x{background:rgba(255,255,255,.04);color:rgba(255,255,255,.25);}
+.wc-pf-dot:nth-child(1){animation-delay:.05s}.wc-pf-dot:nth-child(2){animation-delay:.1s}.wc-pf-dot:nth-child(3){animation-delay:.15s}.wc-pf-dot:nth-child(4){animation-delay:.2s}.wc-pf-dot:nth-child(5){animation-delay:.25s}
+.wc-player-odds-row{padding-top:10px;border-top:1px solid rgba(255,255,255,.06);}
+.wc-player-odds-label{font-size:.44rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);display:block;margin-bottom:3px;}
+.wc-player-odds-val{font-family:'DM Mono',monospace;font-size:1.05rem;font-weight:900;color:#f8dfa0;}
+.wc-form-legend{display:flex;gap:10px;margin-top:6px;}
+.wc-form-legend span{font-size:.42rem;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:4px;}
+.wc-form-legend span::before{content:'';width:8px;height:8px;border-radius:3px;display:block;}
+.wc-form-legend .lg{color:#f8dfa0;}.wc-form-legend .lg::before{background:rgba(244,185,66,.3);}
+.wc-form-legend .la{color:#93c5fd;}.wc-form-legend .la::before{background:rgba(96,165,250,.3);}
+.wc-form-legend .lx::before{background:rgba(255,255,255,.08);}
+
+/* ══ TOURNAMENT BRACKET ════════════════════════════════════ */
+.wc-bracket-wrap{margin:0 28px 16px;border-radius:20px;padding:20px 24px;overflow:hidden;
+  background:linear-gradient(155deg,rgba(244,185,66,.06),rgba(3,9,5,.92));
+  border:1px solid rgba(244,185,66,.12);
+  box-shadow:inset 0 1px 0 rgba(244,185,66,.08),0 16px 40px rgba(0,0,0,.22);}
+.wc-bracket-title{font-family:'DM Mono',monospace;font-size:.52rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,185,66,.65);margin-bottom:14px;}
+.wc-bracket-inner{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;align-items:center;}
+.wc-bracket-round{display:flex;flex-direction:column;gap:0;}
+.wc-bracket-round-label{font-family:'DM Mono',monospace;font-size:.44rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:10px;text-align:center;}
+/* QF column */
+.wc-br-qf{display:flex;flex-direction:column;gap:6px;}
+.wc-br-matchup{display:flex;flex-direction:column;gap:3px;margin-bottom:12px;}
+.wc-br-matchup:last-child{margin-bottom:0;}
+.wc-br-slot{
+  display:flex;align-items:center;gap:7px;padding:6px 10px;border-radius:10px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
+  font-size:.7rem;color:rgba(255,255,255,.72);white-space:nowrap;
+  transition:border-color .2s;
+}
+.wc-br-slot:hover{border-color:rgba(244,185,66,.22);}
+.wc-br-slot .flag{font-size:.88rem;flex-shrink:0;}
+.wc-br-slot .team{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;font-weight:600;}
+.wc-br-slot .odds{font-family:'DM Mono',monospace;font-size:.64rem;color:rgba(255,255,255,.35);flex-shrink:0;}
+.wc-br-divider{width:100%;height:1px;background:rgba(244,185,66,.12);margin:3px 0;}
+/* SF column - connectors */
+.wc-br-sf{display:flex;flex-direction:column;gap:0;justify-content:space-around;padding:0 16px;}
+.wc-br-sf-slot{
+  display:flex;flex-direction:column;gap:3px;padding:10px 12px;border-radius:12px;
+  background:rgba(244,185,66,.06);border:1px solid rgba(244,185,66,.12);
+  margin:14px 0;
+}
+.wc-br-sf-slot .wc-br-slot{background:transparent;border-color:rgba(244,185,66,.1);padding:5px 8px;}
+.wc-br-sf-slot .wc-br-slot:hover{border-color:rgba(244,185,66,.28);}
+/* Final column */
+.wc-br-final{display:flex;align-items:center;justify-content:center;padding:0 0 0 16px;}
+.wc-br-final-slot{
+  padding:14px 16px;border-radius:16px;width:100%;
+  background:linear-gradient(155deg,rgba(244,185,66,.14),rgba(244,185,66,.04));
+  border:1px solid rgba(244,185,66,.2);
+  box-shadow:0 0 30px rgba(244,185,66,.08);
+  display:flex;flex-direction:column;gap:5px;
+}
+.wc-br-final-label{font-family:'DM Mono',monospace;font-size:.42rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,185,66,.55);margin-bottom:4px;}
+.wc-br-final-slot .wc-br-slot{background:rgba(244,185,66,.07);border-color:rgba(244,185,66,.15);}
+.wc-br-final-slot .odds{color:var(--gold)!important;}
+@media(max-width:900px){.wc-bracket-wrap{margin:0 18px 14px;padding:16px 14px;}.wc-bracket-inner{grid-template-columns:1fr;gap:12px;}}
+
+/* ══ H2H HISTORY IN GAME CARDS ═════════════════════════════ */
+.wc-h2h{
+  display:flex;align-items:center;gap:8px;
+  margin-top:10px;padding-top:9px;
+  border-top:1px solid rgba(255,255,255,.055);
+}
+.wc-h2h-label{font-size:.44rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.22);white-space:nowrap;flex-shrink:0;}
+.wc-h2h-dots{display:flex;gap:4px;}
+.wc-h2h-dot{
+  width:22px;height:22px;border-radius:7px;
+  display:grid;place-items:center;
+  font-size:.52rem;font-weight:900;letter-spacing:.02em;
+  flex-shrink:0;
+}
+.wc-h2h-dot.w{background:rgba(34,197,94,.18);color:#86efac;border:1px solid rgba(34,197,94,.2);}
+.wc-h2h-dot.d{background:rgba(244,185,66,.14);color:#f8dfa0;border:1px solid rgba(244,185,66,.18);}
+.wc-h2h-dot.l{background:rgba(248,113,113,.12);color:#fca5a5;border:1px solid rgba(248,113,113,.15);}
+.wc-h2h-record{font-family:'DM Mono',monospace;font-size:.56rem;color:rgba(255,255,255,.28);margin-left:2px;flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo"><span class="nav-logo-word">short<span class="accent">open</span></span><span class="nav-wc-badge">⚽ World Cup Edition</span></a>
+  <ul class="nav-links">
+    <li><a href="analysis.html">Analysis</a></li>
+    <li><a href="market.html">Market</a></li>
+    <li><a href="worldcup.html" class="active">World Cup</a></li>
+    <li><a href="optimizer.html">Optimizer</a></li>
+    <li><a href="hr-index.html">HR Index</a></li>
+    <li><a href="nfl-draft-market.html">NFL Draft</a></li>
+    <li><a href="film-room.html">Film Room</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="subscribe.html">Subscribe</a></li>
+  </ul>
+  <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+  <a href="index.html" onclick="toggleMobileMenu()">Home</a>
+  <a href="analysis.html" onclick="toggleMobileMenu()">Analysis</a>
+  <a href="market.html" onclick="toggleMobileMenu()">Market</a>
+  <a href="worldcup.html" class="active" onclick="toggleMobileMenu()">World Cup</a>
+  <a href="optimizer.html" onclick="toggleMobileMenu()">Optimizer</a>
+  <a href="hr-index.html" onclick="toggleMobileMenu()">HR Index</a>
+  <a href="nfl-draft-market.html" onclick="toggleMobileMenu()">NFL Draft</a>
+  <a href="film-room.html" onclick="toggleMobileMenu()">Film Room</a>
+  <a href="about.html" onclick="toggleMobileMenu()">About</a>
+  <a href="subscribe.html" onclick="toggleMobileMenu()">Subscribe</a>
+</div>
+
+<!-- TOP TICKER BANNER -->
+<div class="wc-top-banner" aria-hidden="true">
+  <div class="wc-top-banner-track">
+    <span>⚽ World Cup 2026</span><span class="sep">·</span>
+    <em>48 Nations</em><span class="sep">·</span>
+    <span>28 Markets Open</span><span class="sep">·</span>
+    <span>⚽ Golden Boot · Golden Ball · Golden Glove</span><span class="sep">·</span>
+    <em>Mbappe +150 · Messi +165 · Haaland +500</em><span class="sep">·</span>
+    <span>Parlay Board Live</span><span class="sep">·</span>
+    <em>shortopen World Cup Edition</em><span class="sep">·</span>
+    <span>⚽ World Cup 2026</span><span class="sep">·</span>
+    <em>48 Nations</em><span class="sep">·</span>
+    <span>28 Markets Open</span><span class="sep">·</span>
+    <span>⚽ Golden Boot · Golden Ball · Golden Glove</span><span class="sep">·</span>
+    <em>Mbappe +150 · Messi +165 · Haaland +500</em><span class="sep">·</span>
+    <span>Parlay Board Live</span><span class="sep">·</span>
+    <em>shortopen World Cup Edition</em><span class="sep">·</span>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="wc-page-wrap">
+<section class="wc-stage">
+
+  <div class="wc-stage-celebration"><div class="wc-confetti"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+  <div class="wc-bg-balls"><span>⚽</span><span>⚽</span><span>⚽</span><span>⚽</span><span>⚽</span><span>⚽</span></div>
+
+  <!-- flag marquee -->
+  <div class="wc-flag-marquee" aria-hidden="true">
+    <div class="wc-flag-track">
+      <span>🇩🇿</span><span>🇦🇷</span><span>🇦🇺</span><span>🇦🇹</span><span>🇧🇪</span><span>🇧🇦</span><span>🇧🇷</span><span>🇨🇦</span><span>🇨🇻</span><span>🇨🇴</span><span>🇭🇷</span><span>🇨🇿</span><span>🇨🇩</span><span>🇪🇨</span><span>🇪🇬</span><span class="wc-flag-badge england"></span><span>🇫🇷</span><span>🇩🇪</span><span>🇬🇭</span><span>🇭🇹</span><span>🇮🇷</span><span>🇨🇮</span><span>🇯🇵</span><span>🇯🇴</span><span>🇲🇽</span><span>🇲🇦</span><span>🇳🇱</span><span>🇳🇴</span><span>🇵🇦</span><span>🇵🇾</span><span>🇵🇹</span><span>🇶🇦</span><span>🇸🇦</span><span class="wc-flag-badge scotland"></span><span>🇸🇳</span><span>🇿🇦</span><span>🇰🇷</span><span>🇪🇸</span><span>🇸🇪</span><span>🇨🇭</span><span>🇹🇳</span><span>🇹🇷</span><span>🇺🇸</span><span>🇺🇾</span><span>🇺🇿</span>
+      <span>🇩🇿</span><span>🇦🇷</span><span>🇦🇺</span><span>🇦🇹</span><span>🇧🇪</span><span>🇧🇦</span><span>🇧🇷</span><span>🇨🇦</span><span>🇨🇻</span><span>🇨🇴</span><span>🇭🇷</span><span>🇨🇿</span><span>🇨🇩</span><span>🇪🇨</span><span>🇪🇬</span><span class="wc-flag-badge england"></span><span>🇫🇷</span><span>🇩🇪</span><span>🇬🇭</span><span>🇭🇹</span><span>🇮🇷</span><span>🇨🇮</span><span>🇯🇵</span><span>🇯🇴</span><span>🇲🇽</span><span>🇲🇦</span><span>🇳🇱</span><span>🇳🇴</span><span>🇵🇦</span><span>🇵🇾</span><span>🇵🇹</span><span>🇶🇦</span><span>🇸🇦</span><span class="wc-flag-badge scotland"></span><span>🇸🇳</span><span>🇿🇦</span><span>🇰🇷</span><span>🇪🇸</span><span>🇸🇪</span><span>🇨🇭</span><span>🇹🇳</span><span>🇹🇷</span><span>🇺🇸</span><span>🇺🇾</span><span>🇺🇿</span>
+      <span>🇩🇿</span><span>🇦🇷</span><span>🇦🇺</span><span>🇦🇹</span><span>🇧🇪</span><span>🇧🇦</span><span>🇧🇷</span><span>🇨🇦</span><span>🇨🇻</span><span>🇨🇴</span><span>🇭🇷</span><span>🇨🇿</span><span>🇨🇩</span><span>🇪🇨</span><span>🇪🇬</span><span class="wc-flag-badge england"></span><span>🇫🇷</span><span>🇩🇪</span><span>🇬🇭</span><span>🇭🇹</span><span>🇮🇷</span><span>🇨🇮</span><span>🇯🇵</span><span>🇯🇴</span><span>🇲🇽</span><span>🇲🇦</span><span>🇳🇱</span><span>🇳🇴</span><span>🇵🇦</span><span>🇵🇾</span><span>🇵🇹</span><span>🇶🇦</span><span>🇸🇦</span><span class="wc-flag-badge scotland"></span><span>🇸🇳</span><span>🇿🇦</span><span>🇰🇷</span><span>🇪🇸</span><span>🇸🇪</span><span>🇨🇭</span><span>🇹🇳</span><span>🇹🇷</span><span>🇺🇸</span><span>🇺🇾</span><span>🇺🇿</span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="wc-hero">
+    <div>
+      <div class="wc-eyebrow"><span>⚽</span> World Cup Board · Featured</div>
+      <h2 class="wc-title">World Cup<br><span>Market Atlas</span></h2>
+      <p class="wc-sub">A dedicated World Cup terminal built around three-way match cards, country flags, award boards, and themed parlay tickets. <strong>48 nations. One pitch.</strong></p>
+      <div class="wc-stats">
+        <div class="wc-stat"><small>Matches</small><b>28</b></div>
+        <div class="wc-stat"><small>Countries</small><b>48</b></div>
+        <div class="wc-stat"><small>Awards</small><b>5</b></div>
+        <div class="wc-stat"><small>Markets</small><b>1X2</b></div>
+      </div>
+    </div>
+    <div class="wc-road-scene">
+      <div class="wc-flag-rope" aria-hidden="true">
+        <div class="wc-fn f01"><div class="wc-fn-flag">🇧🇷</div></div>
+        <div class="wc-fn f02"><div class="wc-fn-flag">🇦🇷</div></div>
+        <div class="wc-fn f03"><div class="wc-fn-flag">🇫🇷</div></div>
+        <div class="wc-fn f04"><div class="wc-fn-flag"><span class="wc-flag-badge england"></span></div></div>
+        <div class="wc-fn f05"><div class="wc-fn-flag">🇩🇪</div></div>
+        <div class="wc-fn f06"><div class="wc-fn-flag">🇪🇸</div></div>
+        <div class="wc-fn f07"><div class="wc-fn-flag">🇯🇵</div></div>
+        <div class="wc-fn f08"><div class="wc-fn-flag">🇺🇸</div></div>
+        <div class="wc-fn f09"><div class="wc-fn-flag">🇵🇹</div></div>
+        <div class="wc-fn f10"><div class="wc-fn-flag">🇨🇦</div></div>
+      </div>
+      <div class="wc-rs-conf" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="wc-hero-sky-glow"></div>
+      <div class="wc-hero-crowd">
+        <div class="wc-hero-crowd-row r1"></div>
+        <div class="wc-hero-crowd-row r2"></div>
+        <div class="wc-hero-crowd-scarf"></div>
+      </div>
+      <div class="wc-hero-flagline"><span>🇵🇹</span><span>🇦🇷</span><span>🇧🇷</span><span class="wc-flag-badge england"></span><span>🇫🇷</span><span>🇩🇪</span><span>🇪🇸</span><span>🇯🇵</span><span>🇺🇸</span><span>🇨🇦</span></div>
+      <div class="wc-hero-trophy-faint">
+        <div class="wc-trophy-glow"></div>
+        <div class="wc-trophy-cup"></div>
+        <div class="wc-trophy-base"></div>
+      </div>
+      <div class="wc-hero-road-arc"></div>
+      <div class="wc-hero-road-dust d1"></div>
+      <div class="wc-hero-road-dust d2"></div>
+      <div class="wc-kid wc-kid-hero" aria-hidden="true">
+        <div class="wc-kid-head"></div><div class="wc-kid-arm"></div><div class="wc-kid-body"></div>
+        <div class="wc-kid-leg one"><div class="wc-kid-foot"></div></div>
+        <div class="wc-kid-leg two"><div class="wc-kid-foot"></div></div>
+      </div>
+      <div class="wc-scene-ball wc-ball-hero">⚽</div>
+      <div class="wc-hero-mini-crowd-flags"><span>🇲🇽</span><span>🇨🇴</span><span>🇲🇦</span><span>🇳🇱</span><span>🇰🇷</span><span>🇺🇾</span></div>
+      <div class="wc-road-caption">
+        <div><h3>Dirt road to the world stage</h3><p>Street-ball path, crowd flags, and a faint trophy glow — the road-to-World-Cup feel.</p></div>
+        <span class="wc-road-badge">LIVE ODDS BOARD</span>
+      </div>
+    </div>
+  </div>
+  <!-- ══ ODDS MOVEMENT SPARKLINES ══ -->
+  <div class="wc-section-head"><div><span class="wc-section-kicker">Win probability shift</span><h3>Odds Movement</h3><p>Line movement over the last 16 sessions. Green = shortening (improving). Red = lengthening (drifting).</p></div></div>
+  <div class="wc-spark-grid">
+
+    <article class="wc-spark-card" style="--sd:.00s">
+      <div class="wc-spark-top">
+        <div class="wc-spark-left"><div class="wc-spark-flag">🇧🇷</div><div><div class="wc-spark-name">Brazil</div><div class="wc-spark-group">Group C · Pot 1</div></div></div>
+        <div class="wc-spark-right"><span class="wc-spark-odds">+350</span><span class="wc-spark-move up">▲ Shortening</span></div>
+      </div>
+      <div class="wc-spark-chart">
+        <svg viewBox="0 0 184 52" preserveAspectRatio="none">
+          <defs><linearGradient id="sg0" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4ade80" stop-opacity=".28"/><stop offset="100%" stop-color="#4ade80" stop-opacity="0"/></linearGradient></defs>
+          <polygon points="10,38 21,36 32,33 43,35 54,31 65,29 76,31 87,27 98,29 109,26 120,28 131,24 142,26 153,23 164,25 174,22 174,52 10,52" fill="url(#sg0)" class="wc-spark-area green"/>
+          <polyline points="10,38 21,36 32,33 43,35 54,31 65,29 76,31 87,27 98,29 109,26 120,28 131,24 142,26 153,23 164,25 174,22" class="wc-spark-line green" style="--sd:.0s"/>
+          <circle cx="174" cy="22" class="wc-spark-dot green"/>
+        </svg>
+      </div>
+      <div class="wc-spark-foot"><span>16 sessions</span><span>Open: +420</span></div>
+    </article>
+
+    <article class="wc-spark-card" style="--sd:.06s">
+      <div class="wc-spark-top">
+        <div class="wc-spark-left"><div class="wc-spark-flag">🇫🇷</div><div><div class="wc-spark-name">France</div><div class="wc-spark-group">Group A · Pot 1</div></div></div>
+        <div class="wc-spark-right"><span class="wc-spark-odds">+380</span><span class="wc-spark-move up">▲ Shortening</span></div>
+      </div>
+      <div class="wc-spark-chart">
+        <svg viewBox="0 0 184 52" preserveAspectRatio="none">
+          <defs><linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4ade80" stop-opacity=".28"/><stop offset="100%" stop-color="#4ade80" stop-opacity="0"/></linearGradient></defs>
+          <polygon points="10,34 21,33 32,34 43,31 54,32 65,30 76,31 87,29 98,30 109,28 120,29 131,27 142,28 153,26 164,27 174,25 174,52 10,52" fill="url(#sg1)" class="wc-spark-area green"/>
+          <polyline points="10,34 21,33 32,34 43,31 54,32 65,30 76,31 87,29 98,30 109,28 120,29 131,27 142,28 153,26 164,27 174,25" class="wc-spark-line green" style="--sd:.06s"/>
+          <circle cx="174" cy="25" class="wc-spark-dot green"/>
+        </svg>
+      </div>
+      <div class="wc-spark-foot"><span>16 sessions</span><span>Open: +440</span></div>
+    </article>
+
+    <article class="wc-spark-card" style="--sd:.12s">
+      <div class="wc-spark-top">
+        <div class="wc-spark-left"><div class="wc-spark-flag">🇦🇷</div><div><div class="wc-spark-name">Argentina</div><div class="wc-spark-group">Group D · Pot 1</div></div></div>
+        <div class="wc-spark-right"><span class="wc-spark-odds">+420</span><span class="wc-spark-move fl">→ Stable</span></div>
+      </div>
+      <div class="wc-spark-chart">
+        <svg viewBox="0 0 184 52" preserveAspectRatio="none">
+          <defs><linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f4b942" stop-opacity=".25"/><stop offset="100%" stop-color="#f4b942" stop-opacity="0"/></linearGradient></defs>
+          <polygon points="10,30 21,31 32,29 43,31 54,30 65,29 76,31 87,30 98,29 109,31 120,30 131,28 142,30 153,29 164,31 174,29 174,52 10,52" fill="url(#sg2)" class="wc-spark-area amber"/>
+          <polyline points="10,30 21,31 32,29 43,31 54,30 65,29 76,31 87,30 98,29 109,31 120,30 131,28 142,30 153,29 164,31 174,29" class="wc-spark-line amber" style="--sd:.12s"/>
+          <circle cx="174" cy="29" class="wc-spark-dot amber"/>
+        </svg>
+      </div>
+      <div class="wc-spark-foot"><span>16 sessions</span><span>Open: +430</span></div>
+    </article>
+
+    <article class="wc-spark-card" style="--sd:.18s">
+      <div class="wc-spark-top">
+        <div class="wc-spark-left"><div class="wc-spark-flag">🇩🇪</div><div><div class="wc-spark-name">Germany</div><div class="wc-spark-group">Group B · Pot 1</div></div></div>
+        <div class="wc-spark-right"><span class="wc-spark-odds">+550</span><span class="wc-spark-move dn">▼ Lengthening</span></div>
+      </div>
+      <div class="wc-spark-chart">
+        <svg viewBox="0 0 184 52" preserveAspectRatio="none">
+          <defs><linearGradient id="sg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f87171" stop-opacity=".25"/><stop offset="100%" stop-color="#f87171" stop-opacity="0"/></linearGradient></defs>
+          <polygon points="10,24 21,25 32,24 43,26 54,25 65,27 76,26 87,28 98,27 109,29 120,28 131,30 142,29 153,31 164,30 174,33 174,52 10,52" fill="url(#sg3)" class="wc-spark-area red"/>
+          <polyline points="10,24 21,25 32,24 43,26 54,25 65,27 76,26 87,28 98,27 109,29 120,28 131,30 142,29 153,31 164,30 174,33" class="wc-spark-line red" style="--sd:.18s"/>
+          <circle cx="174" cy="33" class="wc-spark-dot red"/>
+        </svg>
+      </div>
+      <div class="wc-spark-foot"><span>16 sessions</span><span>Open: +480</span></div>
+    </article>
+
+    <article class="wc-spark-card" style="--sd:.24s">
+      <div class="wc-spark-top">
+        <div class="wc-spark-left"><div class="wc-spark-flag">🇪🇸</div><div><div class="wc-spark-name">Spain</div><div class="wc-spark-group">Group E · Pot 1</div></div></div>
+        <div class="wc-spark-right"><span class="wc-spark-odds">+600</span><span class="wc-spark-move up">▲ Shortening</span></div>
+      </div>
+      <div class="wc-spark-chart">
+        <svg viewBox="0 0 184 52" preserveAspectRatio="none">
+          <defs><linearGradient id="sg4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4ade80" stop-opacity=".28"/><stop offset="100%" stop-color="#4ade80" stop-opacity="0"/></linearGradient></defs>
+          <polygon points="10,28 21,27 32,29 43,27 54,26 65,28 76,25 87,27 98,24 109,26 120,23 131,25 142,22 153,24 164,21 174,22 174,52 10,52" fill="url(#sg4)" class="wc-spark-area green"/>
+          <polyline points="10,28 21,27 32,29 43,27 54,26 65,28 76,25 87,27 98,24 109,26 120,23 131,25 142,22 153,24 164,21 174,22" class="wc-spark-line green" style="--sd:.24s"/>
+          <circle cx="174" cy="22" class="wc-spark-dot green"/>
+        </svg>
+      </div>
+      <div class="wc-spark-foot"><span>16 sessions</span><span>Open: +700</span></div>
+    </article>
+
+    <article class="wc-spark-card" style="--sd:.30s">
+      <div class="wc-spark-top">
+        <div class="wc-spark-left"><div class="wc-spark-flag">🇵🇹</div><div><div class="wc-spark-name">Portugal</div><div class="wc-spark-group">Group F · Pot 1</div></div></div>
+        <div class="wc-spark-right"><span class="wc-spark-odds">+700</span><span class="wc-spark-move fl">→ Stable</span></div>
+      </div>
+      <div class="wc-spark-chart">
+        <svg viewBox="0 0 184 52" preserveAspectRatio="none">
+          <defs><linearGradient id="sg5" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f4b942" stop-opacity=".2"/><stop offset="100%" stop-color="#f4b942" stop-opacity="0"/></linearGradient></defs>
+          <polygon points="10,22 21,23 32,22 43,24 54,23 65,22 76,24 87,23 98,25 109,24 120,23 131,25 142,24 153,26 164,25 174,24 174,52 10,52" fill="url(#sg5)" class="wc-spark-area amber"/>
+          <polyline points="10,22 21,23 32,22 43,24 54,23 65,22 76,24 87,23 98,25 109,24 120,23 131,25 142,24 153,26 164,25 174,24" class="wc-spark-line amber" style="--sd:.30s"/>
+          <circle cx="174" cy="24" class="wc-spark-dot amber"/>
+        </svg>
+      </div>
+      <div class="wc-spark-foot"><span>16 sessions</span><span>Open: +720</span></div>
+    </article>
+
+    <article class="wc-spark-card" style="--sd:.36s">
+      <div class="wc-spark-top">
+        <div class="wc-spark-left"><div class="wc-spark-flag">🇳🇱</div><div><div class="wc-spark-name">Netherlands</div><div class="wc-spark-group">Group G · Pot 1</div></div></div>
+        <div class="wc-spark-right"><span class="wc-spark-odds">+800</span><span class="wc-spark-move dn">▼ Lengthening</span></div>
+      </div>
+      <div class="wc-spark-chart">
+        <svg viewBox="0 0 184 52" preserveAspectRatio="none">
+          <defs><linearGradient id="sg6" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f87171" stop-opacity=".22"/><stop offset="100%" stop-color="#f87171" stop-opacity="0"/></linearGradient></defs>
+          <polygon points="10,18 21,19 32,18 43,20 54,19 65,21 76,20 87,22 98,21 109,23 120,22 131,24 142,23 153,25 164,24 174,26 174,52 10,52" fill="url(#sg6)" class="wc-spark-area red"/>
+          <polyline points="10,18 21,19 32,18 43,20 54,19 65,21 76,20 87,22 98,21 109,23 120,22 131,24 142,23 153,25 164,24 174,26" class="wc-spark-line red" style="--sd:.36s"/>
+          <circle cx="174" cy="26" class="wc-spark-dot red"/>
+        </svg>
+      </div>
+      <div class="wc-spark-foot"><span>16 sessions</span><span>Open: +750</span></div>
+    </article>
+
+    <article class="wc-spark-card" style="--sd:.42s">
+      <div class="wc-spark-top">
+        <div class="wc-spark-left"><div class="wc-spark-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div><div><div class="wc-spark-name">England</div><div class="wc-spark-group">Group H · Pot 1</div></div></div>
+        <div class="wc-spark-right"><span class="wc-spark-odds">+900</span><span class="wc-spark-move fl">→ Stable</span></div>
+      </div>
+      <div class="wc-spark-chart">
+        <svg viewBox="0 0 184 52" preserveAspectRatio="none">
+          <defs><linearGradient id="sg7" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f4b942" stop-opacity=".18"/><stop offset="100%" stop-color="#f4b942" stop-opacity="0"/></linearGradient></defs>
+          <polygon points="10,16 21,17 32,16 43,18 54,17 65,16 76,18 87,17 98,18 109,17 120,19 131,18 142,17 153,19 164,18 174,20 174,52 10,52" fill="url(#sg7)" class="wc-spark-area amber"/>
+          <polyline points="10,16 21,17 32,16 43,18 54,17 65,16 76,18 87,17 98,18 109,17 120,19 131,18 142,17 153,19 164,18 174,20" class="wc-spark-line amber" style="--sd:.42s"/>
+          <circle cx="174" cy="20" class="wc-spark-dot amber"/>
+        </svg>
+      </div>
+      <div class="wc-spark-foot"><span>16 sessions</span><span>Open: +920</span></div>
+    </article>
+
+  </div><!-- /wc-spark-grid -->
+
+  <!-- ══ GROUP TABLES ══ -->
+  <div class="wc-section-head"><div><span class="wc-section-kicker">Group stage</span><h3>Group Standings</h3><p>Current table positions after matchday 2. Top 2 qualify.</p></div></div>
+  <div class="wc-group-grid">
+
+    <div class="wc-group-card" style="--gd:.00s">
+      <div class="wc-group-head"><span class="wc-group-lbl">Group A</span><span class="wc-group-matches">MD 2 of 3</span></div>
+      <table class="wc-group-table">
+        <thead><tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th></tr></thead>
+        <tbody>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇫🇷</span><span class="name">France</span></div></td><td>2</td><td>2</td><td>0</td><td>0</td><td class="pts">6</td></tr>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇲🇦</span><span class="name">Morocco</span></div></td><td>2</td><td>1</td><td>0</td><td>1</td><td class="pts">3</td></tr>
+          <tr><td><div class="wc-group-row-team"><span class="flag">🇨🇦</span><span class="name">Canada</span></div></td><td>2</td><td>1</td><td>0</td><td>1</td><td class="pts">3</td></tr>
+          <tr class="wc-gt-elim"><td><div class="wc-group-row-team"><span class="flag">🇭🇷</span><span class="name">Croatia</span></div></td><td>2</td><td>0</td><td>0</td><td>2</td><td class="pts">0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="wc-group-card" style="--gd:.07s">
+      <div class="wc-group-head"><span class="wc-group-lbl">Group B</span><span class="wc-group-matches">MD 2 of 3</span></div>
+      <table class="wc-group-table">
+        <thead><tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th></tr></thead>
+        <tbody>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇧🇷</span><span class="name">Brazil</span></div></td><td>2</td><td>2</td><td>0</td><td>0</td><td class="pts">6</td></tr>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇨🇭</span><span class="name">Switzerland</span></div></td><td>2</td><td>1</td><td>0</td><td>1</td><td class="pts">3</td></tr>
+          <tr><td><div class="wc-group-row-team"><span class="flag">🇪🇨</span><span class="name">Ecuador</span></div></td><td>2</td><td>1</td><td>0</td><td>1</td><td class="pts">3</td></tr>
+          <tr class="wc-gt-elim"><td><div class="wc-group-row-team"><span class="flag">🇸🇳</span><span class="name">Senegal</span></div></td><td>2</td><td>0</td><td>0</td><td>2</td><td class="pts">0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="wc-group-card" style="--gd:.14s">
+      <div class="wc-group-head"><span class="wc-group-lbl">Group C</span><span class="wc-group-matches">MD 1 of 3</span></div>
+      <table class="wc-group-table">
+        <thead><tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th></tr></thead>
+        <tbody>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇦🇷</span><span class="name">Argentina</span></div></td><td>1</td><td>1</td><td>0</td><td>0</td><td class="pts">3</td></tr>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇺🇸</span><span class="name">USA</span></div></td><td>1</td><td>1</td><td>0</td><td>0</td><td class="pts">3</td></tr>
+          <tr><td><div class="wc-group-row-team"><span class="flag">🇵🇱</span><span class="name">Poland</span></div></td><td>1</td><td>0</td><td>0</td><td>1</td><td class="pts">0</td></tr>
+          <tr class="wc-gt-elim"><td><div class="wc-group-row-team"><span class="flag">🇸🇦</span><span class="name">Saudi Arabia</span></div></td><td>1</td><td>0</td><td>0</td><td>1</td><td class="pts">0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="wc-group-card" style="--gd:.21s">
+      <div class="wc-group-head"><span class="wc-group-lbl">Group D</span><span class="wc-group-matches">MD 2 of 3</span></div>
+      <table class="wc-group-table">
+        <thead><tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th></tr></thead>
+        <tbody>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇪🇸</span><span class="name">Spain</span></div></td><td>2</td><td>2</td><td>0</td><td>0</td><td class="pts">6</td></tr>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇯🇵</span><span class="name">Japan</span></div></td><td>2</td><td>1</td><td>0</td><td>1</td><td class="pts">3</td></tr>
+          <tr><td><div class="wc-group-row-team"><span class="flag">🇩🇪</span><span class="name">Germany</span></div></td><td>2</td><td>1</td><td>0</td><td>1</td><td class="pts">3</td></tr>
+          <tr class="wc-gt-elim"><td><div class="wc-group-row-team"><span class="flag">🇨🇷</span><span class="name">Costa Rica</span></div></td><td>2</td><td>0</td><td>0</td><td>2</td><td class="pts">0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /wc-group-grid -->
+
+  <!-- ══ PLAYER FORM SCROLL ══ -->
+  <div class="wc-section-head"><div><span class="wc-section-kicker">Individual form</span><h3>Player Form</h3><p>Last 5 international matches. G = goal, A = assist.</p></div><div class="wc-form-legend"><span class="lg">G Goal</span><span class="la">A Assist</span><span class="lx">– Blank</span></div></div>
+  <div class="wc-player-scroll-wrap">
+    <div class="wc-player-scroll">
+
+      <div class="wc-player-card" style="--pd:.00s">
+        <div class="wc-player-top"><div class="wc-player-flag-big">🇫🇷</div><div class="wc-player-info"><div class="wc-player-name">K. Mbappé</div><div class="wc-player-role">FW · France</div></div></div>
+        <div class="wc-player-form-label">Last 5 matches</div>
+        <div class="wc-player-form-dots"><span class="wc-pf-dot g">G</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot a">A</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot x">–</span></div>
+        <div class="wc-player-odds-row"><span class="wc-player-odds-label">Golden Boot</span><span class="wc-player-odds-val">+150</span></div>
+      </div>
+
+      <div class="wc-player-card" style="--pd:.06s">
+        <div class="wc-player-top"><div class="wc-player-flag-big">🇦🇷</div><div class="wc-player-info"><div class="wc-player-name">L. Messi</div><div class="wc-player-role">FW · Argentina</div></div></div>
+        <div class="wc-player-form-label">Last 5 matches</div>
+        <div class="wc-player-form-dots"><span class="wc-pf-dot g">G</span><span class="wc-pf-dot a">A</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot x">–</span><span class="wc-pf-dot a">A</span></div>
+        <div class="wc-player-odds-row"><span class="wc-player-odds-label">Golden Ball</span><span class="wc-player-odds-val">+440</span></div>
+      </div>
+
+      <div class="wc-player-card" style="--pd:.12s">
+        <div class="wc-player-top"><div class="wc-player-flag-big">🇳🇴</div><div class="wc-player-info"><div class="wc-player-name">E. Haaland</div><div class="wc-player-role">FW · Norway</div></div></div>
+        <div class="wc-player-form-label">Last 5 matches</div>
+        <div class="wc-player-form-dots"><span class="wc-pf-dot g">G</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot x">–</span><span class="wc-pf-dot g">G</span></div>
+        <div class="wc-player-odds-row"><span class="wc-player-odds-label">Golden Boot</span><span class="wc-player-odds-val">+500</span></div>
+      </div>
+
+      <div class="wc-player-card" style="--pd:.18s">
+        <div class="wc-player-top"><div class="wc-player-flag-big">🇪🇸</div><div class="wc-player-info"><div class="wc-player-name">L. Yamal</div><div class="wc-player-role">FW · Spain</div></div></div>
+        <div class="wc-player-form-label">Last 5 matches</div>
+        <div class="wc-player-form-dots"><span class="wc-pf-dot a">A</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot a">A</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot a">A</span></div>
+        <div class="wc-player-odds-row"><span class="wc-player-odds-label">Young Player</span><span class="wc-player-odds-val">+175</span></div>
+      </div>
+
+      <div class="wc-player-card" style="--pd:.24s">
+        <div class="wc-player-top"><div class="wc-player-flag-big">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div><div class="wc-player-info"><div class="wc-player-name">H. Kane</div><div class="wc-player-role">FW · England</div></div></div>
+        <div class="wc-player-form-label">Last 5 matches</div>
+        <div class="wc-player-form-dots"><span class="wc-pf-dot g">G</span><span class="wc-pf-dot x">–</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot x">–</span></div>
+        <div class="wc-player-odds-row"><span class="wc-player-odds-label">Golden Boot</span><span class="wc-player-odds-val">+650</span></div>
+      </div>
+
+      <div class="wc-player-card" style="--pd:.30s">
+        <div class="wc-player-top"><div class="wc-player-flag-big">🇵🇹</div><div class="wc-player-info"><div class="wc-player-name">C. Ronaldo</div><div class="wc-player-role">FW · Portugal</div></div></div>
+        <div class="wc-player-form-label">Last 5 matches</div>
+        <div class="wc-player-form-dots"><span class="wc-pf-dot g">G</span><span class="wc-pf-dot x">–</span><span class="wc-pf-dot x">–</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot a">A</span></div>
+        <div class="wc-player-odds-row"><span class="wc-player-odds-label">Top Scorer</span><span class="wc-player-odds-val">+850</span></div>
+      </div>
+
+      <div class="wc-player-card" style="--pd:.36s">
+        <div class="wc-player-top"><div class="wc-player-flag-big">🇩🇪</div><div class="wc-player-info"><div class="wc-player-name">K. Havertz</div><div class="wc-player-role">MF/FW · Germany</div></div></div>
+        <div class="wc-player-form-label">Last 5 matches</div>
+        <div class="wc-player-form-dots"><span class="wc-pf-dot a">A</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot x">–</span><span class="wc-pf-dot a">A</span><span class="wc-pf-dot g">G</span></div>
+        <div class="wc-player-odds-row"><span class="wc-player-odds-label">Golden Boot</span><span class="wc-player-odds-val">+1800</span></div>
+      </div>
+
+      <div class="wc-player-card" style="--pd:.42s">
+        <div class="wc-player-top"><div class="wc-player-flag-big">🇧🇷</div><div class="wc-player-info"><div class="wc-player-name">V. Jr.</div><div class="wc-player-role">FW · Brazil</div></div></div>
+        <div class="wc-player-form-label">Last 5 matches</div>
+        <div class="wc-player-form-dots"><span class="wc-pf-dot g">G</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot x">–</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot a">A</span></div>
+        <div class="wc-player-odds-row"><span class="wc-player-odds-label">Golden Boot</span><span class="wc-player-odds-val">+900</span></div>
+      </div>
+
+    </div><!-- /wc-player-scroll -->
+  </div><!-- /wc-player-scroll-wrap -->
+
+  <!-- 8 ANIMATED STORY CARDS -->
+  <div class="wc-festival-grid">
+
+    <article class="wc-story-card">
+      <span class="wc-story-k">Supporters End</span>
+      <h4>Stadium crowd energy</h4>
+      <p>Terraces, scarves, and flags move underneath the copy instead of fighting the headline.</p>
+      <div class="wc-story-visual">
+        <svg viewBox="0 0 240 148" xmlns="http://www.w3.org/2000/svg" class="wc-vis-svg">
+          <rect width="240" height="148" fill="#080c18"/>
+          <defs><linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d1f0f"/><stop offset="100%" stop-color="#060c18"/></linearGradient></defs>
+          <rect width="240" height="88" fill="url(#skyG)"/>
+          <g class="sv-crowd" opacity=".22"><circle cx="12" cy="32" r="5" fill="#fff"/><circle cx="30" cy="28" r="5" fill="#f4b942"/><circle cx="48" cy="34" r="5" fill="#fff"/><circle cx="66" cy="26" r="5" fill="#4ade80"/><circle cx="84" cy="30" r="5" fill="#fff"/><circle cx="102" cy="32" r="5" fill="#f87171"/><circle cx="120" cy="26" r="5" fill="#fff"/><circle cx="138" cy="30" r="5" fill="#f4b942"/><circle cx="156" cy="34" r="5" fill="#fff"/><circle cx="174" cy="28" r="5" fill="#4ade80"/><circle cx="192" cy="32" r="5" fill="#fff"/><circle cx="210" cy="26" r="5" fill="#f87171"/><circle cx="228" cy="30" r="5" fill="#fff"/></g>
+          <g opacity=".15"><circle cx="6" cy="48" r="4.5" fill="#fff"/><circle cx="22" cy="44" r="4.5" fill="#60a5fa"/><circle cx="38" cy="50" r="4.5" fill="#fff"/><circle cx="54" cy="44" r="4.5" fill="#f4b942"/><circle cx="70" cy="48" r="4.5" fill="#fff"/><circle cx="86" cy="44" r="4.5" fill="#4ade80"/><circle cx="102" cy="50" r="4.5" fill="#fff"/><circle cx="118" cy="44" r="4.5" fill="#a78bfa"/><circle cx="134" cy="48" r="4.5" fill="#fff"/><circle cx="150" cy="44" r="4.5" fill="#60a5fa"/><circle cx="166" cy="50" r="4.5" fill="#fff"/><circle cx="182" cy="44" r="4.5" fill="#f4b942"/><circle cx="198" cy="48" r="4.5" fill="#fff"/><circle cx="214" cy="44" r="4.5" fill="#4ade80"/><circle cx="230" cy="48" r="4.5" fill="#fff"/></g>
+          <g class="sv-scarf"><rect x="18" y="64" width="40" height="6" rx="3" fill="#f4b942" opacity=".7"/></g>
+          <g class="sv-scarf2"><rect x="140" y="64" width="60" height="6" rx="3" fill="#4ade80" opacity=".65"/></g>
+          <rect x="80" y="65" width="50" height="5" rx="2.5" fill="#60a5fa" opacity=".6"/>
+          <rect x="0" y="88" width="240" height="60" fill="#0c2e14"/>
+          <line x1="120" y1="88" x2="120" y2="148" stroke="rgba(255,255,255,.14)" stroke-width="1.5"/>
+          <ellipse cx="120" cy="118" rx="28" ry="18" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="1.5"/>
+          <rect x="0" y="144" width="240" height="4" fill="rgba(34,197,94,.25)" rx="2"/>
+          <rect x="0" y="144" width="160" height="4" fill="rgba(34,197,94,.6)" rx="2"/>
+        </svg>
+      </div>
+    </article>
+
+    <article class="wc-story-card">
+      <div class="wc-card-confetti"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <span class="wc-story-k">Centerpiece</span>
+      <h4>Golden trophy spotlight</h4>
+      <p>A contained cup animation with a soft glow, flags, and falling confetti inside the lower frame.</p>
+      <div class="wc-story-visual">
+        <svg viewBox="0 0 240 148" xmlns="http://www.w3.org/2000/svg" class="wc-vis-svg">
+          <rect width="240" height="148" fill="#080a04"/>
+          <defs>
+            <radialGradient id="tglow" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="rgba(244,185,66,.45)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+            <linearGradient id="tcup" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff8c0"/><stop offset="40%" stop-color="#f4b942"/><stop offset="100%" stop-color="#8a5010"/></linearGradient>
+            <linearGradient id="tbase" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6d4715"/><stop offset="100%" stop-color="#231305"/></linearGradient>
+          </defs>
+          <ellipse cx="120" cy="60" rx="80" ry="60" fill="url(#tglow)"/>
+          <text x="48" y="108" font-size="26" text-anchor="middle" class="sv-sway">🇧🇷</text>
+          <text x="192" y="108" font-size="26" text-anchor="middle" class="sv-sway" style="animation-delay:-.5s">🇦🇷</text>
+          <text x="48" y="132" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.5)" font-family="sans-serif">Brazil</text>
+          <text x="192" y="132" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.5)" font-family="sans-serif">Argentina</text>
+          <g class="sv-lift" transform="translate(120,14)">
+            <path d="M-22,-4 L22,-4 L18,32 L12,42 L12,52 L-12,52 L-12,42 L-18,32 Z" fill="url(#tcup)" stroke="rgba(255,200,60,.3)" stroke-width="1"/>
+            <path d="M-22,4 Q-38,4 -38,18 Q-38,30 -22,30" fill="none" stroke="#d4a33f" stroke-width="4" stroke-linecap="round"/>
+            <path d="M22,4 Q38,4 38,18 Q38,30 22,30" fill="none" stroke="#d4a33f" stroke-width="4" stroke-linecap="round"/>
+            <text x="0" y="26" text-anchor="middle" font-size="14" fill="#fff8c0">★</text>
+            <polygon points="-16,52 16,52 22,70 -22,70" fill="url(#tbase)"/>
+            <rect x="-28" y="70" width="56" height="8" rx="4" fill="#1a0800"/>
+          </g>
+        </svg>
+      </div>
+    </article>
+
+    <article class="wc-story-card">
+      <span class="wc-story-k">Street to Stadium</span>
+      <h4>Kids playing everywhere</h4>
+      <p>Two small players and a rolling ball sit on the lower dirt-pitch scene, separated from the text.</p>
+      <div class="wc-story-visual">
+        <svg viewBox="0 0 240 148" xmlns="http://www.w3.org/2000/svg" class="wc-vis-svg">
+          <rect width="240" height="148" fill="#071408"/>
+          <rect x="0" y="104" width="240" height="44" fill="#1a3d0f"/>
+          <line x1="120" y1="104" x2="120" y2="148" stroke="rgba(255,255,255,.12)" stroke-width="1.5"/>
+          <ellipse cx="120" cy="126" rx="22" ry="14" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="1.5"/>
+          <g class="sv-bob" transform="translate(70,44)"><ellipse cx="0" cy="-2" rx="9" ry="9" fill="#1a0a00"/><circle cx="0" cy="7" r="9" fill="#d4956a"/><rect x="-9" y="17" width="18" height="24" rx="4" fill="#1aa34a"/><text x="0" y="34" text-anchor="middle" font-size="8" fill="rgba(0,0,0,.3)" font-weight="bold">10</text><line x1="-9" y1="21" x2="-18" y2="28" stroke="#d4956a" stroke-width="5" stroke-linecap="round"/><g class="sv-kick"><line x1="9" y1="21" x2="18" y2="14" stroke="#d4956a" stroke-width="5" stroke-linecap="round"/></g><rect x="-8" y="41" width="7" height="18" rx="3.5" fill="#002395"/><rect x="1" y="41" width="7" height="18" rx="3.5" fill="#002395"/></g>
+          <g class="sv-bob" transform="translate(160,44)" style="animation-delay:-.5s"><ellipse cx="0" cy="-2" rx="9" ry="9" fill="#3d2010"/><circle cx="0" cy="7" r="9" fill="#d4a574"/><rect x="-9" y="17" width="18" height="24" rx="4" fill="#f0ece4"/><rect x="-1.5" y="17" width="3" height="24" fill="#c8102e"/><rect x="-9" y="28" width="18" height="3" fill="#c8102e"/><line x1="-9" y1="21" x2="-18" y2="28" stroke="#d4a574" stroke-width="5" stroke-linecap="round"/><line x1="9" y1="21" x2="18" y2="28" stroke="#d4a574" stroke-width="5" stroke-linecap="round"/><rect x="-8" y="41" width="7" height="18" rx="3.5" fill="#1a2744"/><rect x="1" y="41" width="7" height="18" rx="3.5" fill="#1a2744"/></g>
+          <g class="sv-bob" transform="translate(115,50)" style="animation-delay:-.9s"><circle cx="0" cy="6" r="8" fill="#9b5e30"/><rect x="-8" y="15" width="16" height="20" rx="3.5" fill="#d81920"/><line x1="-8" y1="18" x2="-15" y2="24" stroke="#9b5e30" stroke-width="4.5" stroke-linecap="round"/><line x1="8" y1="18" x2="15" y2="24" stroke="#9b5e30" stroke-width="4.5" stroke-linecap="round"/><rect x="-7" y="35" width="6" height="14" rx="3" fill="#1a2744"/><rect x="1" y="35" width="6" height="14" rx="3" fill="#1a2744"/></g>
+          <g transform="translate(95,96)"><circle r="7" fill="#f0ece4" stroke="#222" stroke-width="1.5"/><path d="M-3,-5 L0,-7 L3,-5 L2.5,0 L-2.5,0 Z" fill="#222" opacity=".7"/></g>
+        </svg>
+      </div>
+    </article>
+
+    <article class="wc-story-card">
+      <span class="wc-story-k">World Stage</span>
+      <h4>Flags in orbit</h4>
+      <p>A globe, orbiting national flags, and a quiet trophy glint give the board a global tournament identity.</p>
+      <div class="wc-story-visual">
+        <svg viewBox="0 0 240 148" xmlns="http://www.w3.org/2000/svg" class="wc-vis-svg">
+          <rect width="240" height="148" fill="#040a18"/>
+          <defs><radialGradient id="globeG" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="#1a4a8a"/><stop offset="100%" stop-color="#060c2a"/></radialGradient><radialGradient id="glowG2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="rgba(244,185,66,.25)"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs>
+          <circle cx="120" cy="78" r="52" fill="url(#globeG)" stroke="rgba(96,165,250,.2)" stroke-width="1.5"/>
+          <ellipse cx="120" cy="78" rx="52" ry="20" fill="none" stroke="rgba(96,165,250,.12)" stroke-width="1"/>
+          <ellipse cx="120" cy="78" rx="26" ry="52" fill="none" stroke="rgba(96,165,250,.1)" stroke-width="1"/>
+          <line x1="68" y1="78" x2="172" y2="78" stroke="rgba(96,165,250,.1)" stroke-width="1"/>
+          <circle cx="120" cy="78" r="28" fill="url(#glowG2)"/>
+          <text x="120" y="86" text-anchor="middle" font-size="18" class="sv-pulse">🏆</text>
+          <g style="transform-origin:120px 78px;animation:svgOrbit 8s linear infinite"><text transform="translate(172,78)" font-size="14">🇧🇷</text></g>
+          <g style="transform-origin:120px 78px;animation:svgOrbit 8s linear infinite;animation-delay:-2.67s"><text transform="translate(172,78)" font-size="14">🇫🇷</text></g>
+          <g style="transform-origin:120px 78px;animation:svgOrbit 8s linear infinite;animation-delay:-5.33s"><text transform="translate(172,78)" font-size="14">🇦🇷</text></g>
+        </svg>
+      </div>
+    </article>
+
+    <article class="wc-story-card">
+      <div class="wc-card-confetti"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <span class="wc-story-k">Final Whistle</span>
+      <h4>Trophy lift moment</h4>
+      <p>The player and trophy lift are now scaled into the lower stage with confetti contained below the copy.</p>
+      <div class="wc-story-visual">
+        <svg viewBox="0 0 240 148" xmlns="http://www.w3.org/2000/svg" class="wc-vis-svg">
+          <rect width="240" height="148" fill="#07100c"/>
+          <ellipse cx="120" cy="148" rx="100" ry="30" fill="rgba(10,30,18,.9)"/>
+          <rect x="20" y="110" width="200" height="38" fill="rgba(8,22,14,.9)" rx="4"/>
+          <g opacity=".22"><circle cx="35" cy="122" r="3" fill="#fff"/><circle cx="55" cy="118" r="3" fill="#f4b942"/><circle cx="75" cy="122" r="3" fill="#fff"/><circle cx="95" cy="118" r="3" fill="#4ade80"/><circle cx="145" cy="122" r="3" fill="#fff"/><circle cx="165" cy="118" r="3" fill="#60a5fa"/><circle cx="185" cy="122" r="3" fill="#fff"/><circle cx="205" cy="118" r="3" fill="#f87171"/></g>
+          <g class="sv-lift" transform="translate(120,18)">
+            <defs><linearGradient id="tcup3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff8c0"/><stop offset="40%" stop-color="#f4b942"/><stop offset="100%" stop-color="#8a5010"/></linearGradient></defs>
+            <circle cx="0" cy="7" r="10" fill="#9b6336"/>
+            <rect x="-10" y="19" width="20" height="28" rx="5" fill="#1aa34a"/>
+            <line x1="-10" y1="23" x2="-22" y2="8" stroke="#9b6336" stroke-width="6" stroke-linecap="round"/>
+            <line x1="10" y1="23" x2="22" y2="8" stroke="#9b6336" stroke-width="6" stroke-linecap="round"/>
+            <rect x="-9" y="47" width="8" height="22" rx="4" fill="#26324a"/>
+            <rect x="1" y="47" width="8" height="22" rx="4" fill="#26324a"/>
+            <g transform="translate(0,-26)">
+              <path d="M-12,-4 L12,-4 L10,18 L7,24 L7,30 L-7,30 L-7,24 L-10,18 Z" fill="url(#tcup3)"/>
+              <path d="M-12,4 Q-22,4 -22,14 Q-22,22 -12,22" fill="none" stroke="#d4a33f" stroke-width="3" stroke-linecap="round"/>
+              <path d="M12,4 Q22,4 22,14 Q22,22 12,22" fill="none" stroke="#d4a33f" stroke-width="3" stroke-linecap="round"/>
+              <text x="0" y="15" text-anchor="middle" font-size="8" fill="#fff8c0">★</text>
+              <polygon points="-8,30 8,30 12,42 -12,42" fill="#1a0800"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </article>
+
+    <article class="wc-story-card">
+      <span class="wc-story-k">Matchday Noise</span>
+      <h4>Stadium eruption</h4>
+      <p>A mini bowl, crowd bands, wave banner, and goal net sit inside the visual frame.</p>
+      <div class="wc-story-visual">
+        <svg viewBox="0 0 240 148" xmlns="http://www.w3.org/2000/svg" class="wc-vis-svg">
+          <rect width="240" height="148" fill="#060c06"/>
+          <ellipse cx="120" cy="90" rx="108" ry="56" fill="rgba(10,25,12,.9)" stroke="rgba(34,197,94,.12)" stroke-width="2"/>
+          <ellipse cx="120" cy="90" rx="96" ry="48" fill="rgba(8,20,10,.8)"/>
+          <g class="sv-crowd"><ellipse cx="120" cy="90" rx="96" ry="48" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="4" stroke-dasharray="4 3"/></g>
+          <ellipse cx="120" cy="100" rx="66" ry="32" fill="#0c3010"/>
+          <ellipse cx="120" cy="100" rx="66" ry="32" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>
+          <line x1="54" y1="100" x2="186" y2="100" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>
+          <ellipse cx="120" cy="100" rx="18" ry="10" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>
+          <circle cx="120" cy="100" r="5" fill="#f0ece4"/>
+          <rect x="56" y="92" width="18" height="10" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
+          <rect x="166" y="92" width="18" height="10" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
+          <rect x="84" y="52" width="72" height="22" rx="5" fill="rgba(0,0,0,.7)" stroke="rgba(244,185,66,.3)" stroke-width="1"/>
+          <text x="120" y="67" text-anchor="middle" font-size="11" fill="#f8dfa0" font-family="monospace" font-weight="bold">BRA 2 — 1 ARG</text>
+        </svg>
+      </div>
+    </article>
+
+    <article class="wc-story-card">
+      <span class="wc-story-k">Training Ground</span>
+      <h4>Passing patterns</h4>
+      <p>Animated passing lanes and training cones add motion without interrupting the description.</p>
+      <div class="wc-story-visual">
+        <svg viewBox="0 0 240 134" xmlns="http://www.w3.org/2000/svg" class="wc-vis-svg">
+          <rect width="240" height="134" fill="#071408"/>
+          <line x1="0" y1="104" x2="240" y2="104" stroke="rgba(34,197,94,.2)" stroke-width="1"/>
+          <path d="M64,100 Q120,58 176,100" fill="none" stroke="rgba(244,185,66,.5)" stroke-width="1.5" stroke-dasharray="6,4"/>
+          <polygon points="120,100 115,103 125,103" fill="#ff6200" opacity=".9"/>
+          <g transform="translate(42,36)">
+            <circle cx="0" cy="7" r="10" fill="#c4844a"/>
+            <rect x="-10" y="18" width="20" height="26" rx="4" fill="#374151"/>
+            <line x1="-10" y1="22" x2="-20" y2="31" stroke="#c4844a" stroke-width="5" stroke-linecap="round"/>
+            <rect x="10" y="16" width="16" height="22" rx="2" fill="#f0ece4" stroke="#ccc" stroke-width=".8"/>
+            <line x1="13" y1="22" x2="23" y2="22" stroke="#374151" stroke-width="1.2"/><line x1="13" y1="26" x2="23" y2="26" stroke="#374151" stroke-width="1.2"/>
+            <rect x="-8" y="44" width="7" height="20" rx="3.5" fill="#1a2744"/>
+            <rect x="1" y="44" width="7" height="20" rx="3.5" fill="#1a2744"/>
+          </g>
+          <g transform="translate(176,36)">
+            <circle cx="0" cy="7" r="9" fill="#d4956a"/>
+            <rect x="-9" y="17" width="18" height="24" rx="4" fill="#1aa34a"/>
+            <line x1="-9" y1="21" x2="-18" y2="28" stroke="#d4956a" stroke-width="5" stroke-linecap="round"/>
+            <g class="sv-kick"><line x1="9" y1="21" x2="18" y2="14" stroke="#d4956a" stroke-width="5" stroke-linecap="round"/></g>
+            <rect x="-8" y="41" width="7" height="18" rx="3.5" fill="#002395"/>
+            <rect x="1" y="41" width="7" height="18" rx="3.5" fill="#002395"/>
+          </g>
+          <g transform="translate(64,97)"><circle r="7" fill="#f0ece4" stroke="#222" stroke-width="1.5"/></g>
+        </svg>
+      </div>
+    </article>
+
+    <article class="wc-story-card">
+      <span class="wc-story-k">Sideline Reset</span>
+      <h4>Water break</h4>
+      <p>Bench, cooler, bottles, and kit colors keep the tournament camp feel in a clean visual lane.</p>
+      <div class="wc-story-visual">
+        <svg viewBox="0 0 240 134" xmlns="http://www.w3.org/2000/svg" class="wc-vis-svg">
+          <rect width="240" height="134" fill="#080c18"/>
+          <rect x="30" y="100" width="180" height="8" rx="4" fill="#3d2e1e"/>
+          <rect x="40" y="108" width="12" height="20" rx="3" fill="#2c2010"/>
+          <rect x="188" y="108" width="12" height="20" rx="3" fill="#2c2010"/>
+          <rect x="196" y="78" width="30" height="24" rx="5" fill="#1e4a8a" stroke="#2a5fa0" stroke-width="1"/>
+          <rect x="201" y="73" width="20" height="6" rx="3" fill="#c0c0c0"/>
+          <g class="sv-sip" transform="translate(64,28)">
+            <circle cx="0" cy="7" r="9" fill="#d4a574"/>
+            <rect x="-9" y="17" width="18" height="24" rx="4" fill="#f0ece4"/>
+            <rect x="-1.5" y="17" width="3" height="24" fill="#c8102e"/>
+            <rect x="-9" y="28" width="18" height="3" fill="#c8102e"/>
+            <line x1="-9" y1="21" x2="-18" y2="15" stroke="#d4a574" stroke-width="5" stroke-linecap="round"/>
+            <line x1="9" y1="21" x2="18" y2="10" stroke="#d4a574" stroke-width="5" stroke-linecap="round"/>
+            <rect x="14" y="5" width="8" height="18" rx="4" fill="#dff5ff" stroke="#57a7ff" stroke-width="1"/>
+            <rect x="-8" y="41" width="7" height="20" rx="3.5" fill="#1a2744"/>
+            <rect x="1" y="41" width="7" height="20" rx="3.5" fill="#1a2744"/>
+          </g>
+          <g class="sv-sip2" transform="translate(120,28)">
+            <circle cx="0" cy="7" r="9" fill="#c4844a"/>
+            <rect x="-9" y="17" width="18" height="24" rx="4" fill="#1aa34a"/>
+            <line x1="-9" y1="21" x2="-18" y2="15" stroke="#c4844a" stroke-width="5" stroke-linecap="round"/>
+            <line x1="9" y1="21" x2="18" y2="10" stroke="#c4844a" stroke-width="5" stroke-linecap="round"/>
+            <rect x="14" y="5" width="8" height="18" rx="4" fill="#dff5ff" stroke="#57a7ff" stroke-width="1"/>
+            <rect x="-8" y="41" width="7" height="20" rx="3.5" fill="#002395"/>
+            <rect x="1" y="41" width="7" height="20" rx="3.5" fill="#002395"/>
+          </g>
+          <g class="sv-sip3" transform="translate(168,28)">
+            <circle cx="0" cy="7" r="9" fill="#9b5e30"/>
+            <rect x="-9" y="17" width="18" height="24" rx="4" fill="#c8102e"/>
+            <line x1="-9" y1="21" x2="-18" y2="15" stroke="#9b5e30" stroke-width="5" stroke-linecap="round"/>
+            <line x1="9" y1="21" x2="18" y2="10" stroke="#9b5e30" stroke-width="5" stroke-linecap="round"/>
+            <rect x="14" y="5" width="8" height="18" rx="4" fill="#dff5ff" stroke="#57a7ff" stroke-width="1"/>
+            <rect x="-8" y="41" width="7" height="20" rx="3.5" fill="#1a2744"/>
+            <rect x="1" y="41" width="7" height="20" rx="3.5" fill="#1a2744"/>
+          </g>
+          <text x="120" y="130" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.28)" font-family="sans-serif">Halftime — recharging</text>
+        </svg>
+      </div>
+    </article>
+
+  </div><!-- /wc-festival-grid -->
+
+  <!-- GAME CARDS BANNER -->
+  <div class="wc-divider-banner" aria-hidden="true">
+    <div class="wc-divider-track">
+      <span class="hi">⚽ TODAY</span><span class="sep">·</span>
+      <span>Portugal vs Uzbekistan</span><span class="sep">·</span><span class="hi">England vs Ghana</span><span class="sep">·</span>
+      <span>Panama vs Croatia</span><span class="sep">·</span><span class="hi">Colombia vs DR Congo</span><span class="sep">·</span>
+      <span>Scotland vs Brazil</span><span class="sep">·</span><span class="hi">Morocco vs Haiti</span><span class="sep">·</span>
+      <span>⚽ TODAY</span><span class="sep">·</span>
+      <span>Portugal vs Uzbekistan</span><span class="sep">·</span><span class="hi">England vs Ghana</span><span class="sep">·</span>
+      <span>Panama vs Croatia</span><span class="sep">·</span><span class="hi">Colombia vs DR Congo</span><span class="sep">·</span>
+      <span>Scotland vs Brazil</span><span class="sep">·</span><span class="hi">Morocco vs Haiti</span><span class="sep">·</span>
+    </div>
+  </div>
+
+  <div class="wc-section-head"><div><span class="wc-section-kicker">Group slate</span><h3>World Cup Game Cards</h3><p>Three-way moneyline board: home · draw · away.</p></div><span class="wc-section-kicker">28 cards</span></div>
+
+  <div class="wc-pass-strip" aria-hidden="true">
+    <div class="wc-ps-pitchline"></div>
+    <div class="wc-ps-ball">⚽</div>
+    <span class="wc-ps-lbl lt">From the streets</span>
+    <span class="wc-ps-lbl rt">The world stage</span>
+  </div>
+
+  <div class="wc-games-grid">
+    <article class="wc-game-card" style="--delay:0.00s"><div class="wc-card-pitch"></div>
+      <div class="wc-card-top"><span class="wc-card-time">TODAY · 1:00PM ET</span><span class="wc-card-chip">More wagers</span></div>
+      <div class="wc-match-line">
+        <div class="wc-team-block"><span class="wc-team-flag">🇵🇹</span><span>Portugal</span></div>
+        <span class="wc-vs">vs</span>
+        <div class="wc-team-block away"><span>Uzbekistan</span><span class="wc-team-flag">🇺🇿</span></div>
+      </div>
+      <div class="wc-prices">
+        <div class="wc-price wc-favorite"><span class="wc-price-k">HOME</span><span class="wc-price-odds">-800</span></div>
+        <div class="wc-price"><span class="wc-price-k">DRAW</span><span class="wc-price-odds">+700</span></div>
+        <div class="wc-price"><span class="wc-price-k">AWAY</span><span class="wc-price-odds">+1900</span></div>
+      </div>
+      <div class="wc-h2h"><span class="wc-h2h-label">H2H Last 5</span><div class="wc-h2h-dots"><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot d">D</span></div><span class="wc-h2h-record">4W-1D-0L</span></div>
+      <div class="wc-card-foot"><span>Market lean</span><strong>Portugal</strong></div>
+    </article>
+    <article class="wc-game-card" style="--delay:0.04s"><div class="wc-card-pitch"></div>
+      <div class="wc-card-top"><span class="wc-card-time">TODAY · 4:00PM ET</span><span class="wc-card-chip">More wagers</span></div>
+      <div class="wc-match-line">
+        <div class="wc-team-block"><span class="wc-team-flag wc-flag-badge england"></span><span>England</span></div>
+        <span class="wc-vs">vs</span>
+        <div class="wc-team-block away"><span>Ghana</span><span class="wc-team-flag">🇬🇭</span></div>
+      </div>
+      <div class="wc-prices">
+        <div class="wc-price wc-favorite"><span class="wc-price-k">HOME</span><span class="wc-price-odds">-600</span></div>
+        <div class="wc-price"><span class="wc-price-k">DRAW</span><span class="wc-price-odds">+600</span></div>
+        <div class="wc-price"><span class="wc-price-k">AWAY</span><span class="wc-price-odds">+1500</span></div>
+      </div>
+      <div class="wc-h2h"><span class="wc-h2h-label">H2H Last 5</span><div class="wc-h2h-dots"><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot d">D</span><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot l">L</span></div><span class="wc-h2h-record">3W-1D-1L</span></div>
+      <div class="wc-card-foot"><span>Market lean</span><strong>England</strong></div>
+    </article>
+    <article class="wc-game-card" style="--delay:0.09s"><div class="wc-card-pitch"></div>
+      <div class="wc-card-top"><span class="wc-card-time">TODAY · 7:00PM ET</span><span class="wc-card-chip">More wagers</span></div>
+      <div class="wc-match-line">
+        <div class="wc-team-block"><span class="wc-team-flag">🇵🇦</span><span>Panama</span></div>
+        <span class="wc-vs">vs</span>
+        <div class="wc-team-block away"><span>Croatia</span><span class="wc-team-flag">🇭🇷</span></div>
+      </div>
+      <div class="wc-prices">
+        <div class="wc-price"><span class="wc-price-k">HOME</span><span class="wc-price-odds">+600</span></div>
+        <div class="wc-price"><span class="wc-price-k">DRAW</span><span class="wc-price-odds">+340</span></div>
+        <div class="wc-price wc-favorite"><span class="wc-price-k">AWAY</span><span class="wc-price-odds">-210</span></div>
+      </div>
+      <div class="wc-h2h"><span class="wc-h2h-label">H2H Last 5</span><div class="wc-h2h-dots"><span class="wc-h2h-dot l">L</span><span class="wc-h2h-dot l">L</span><span class="wc-h2h-dot d">D</span><span class="wc-h2h-dot l">L</span><span class="wc-h2h-dot l">L</span></div><span class="wc-h2h-record">0W-1D-4L</span></div>
+      <div class="wc-card-foot"><span>Market lean</span><strong>Croatia</strong></div>
+    </article>
+    <article class="wc-game-card" style="--delay:0.14s"><div class="wc-card-pitch"></div>
+      <div class="wc-card-top"><span class="wc-card-time">TODAY · 10:00PM ET</span><span class="wc-card-chip">More wagers</span></div>
+      <div class="wc-match-line">
+        <div class="wc-team-block"><span class="wc-team-flag">🇨🇴</span><span>Colombia</span></div>
+        <span class="wc-vs">vs</span>
+        <div class="wc-team-block away"><span>DR Congo</span><span class="wc-team-flag">🇨🇩</span></div>
+      </div>
+      <div class="wc-prices">
+        <div class="wc-price wc-favorite"><span class="wc-price-k">HOME</span><span class="wc-price-odds">-190</span></div>
+        <div class="wc-price"><span class="wc-price-k">DRAW</span><span class="wc-price-odds">+300</span></div>
+        <div class="wc-price"><span class="wc-price-k">AWAY</span><span class="wc-price-odds">+600</span></div>
+      </div>
+      <div class="wc-h2h"><span class="wc-h2h-label">H2H Last 5</span><div class="wc-h2h-dots"><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot d">D</span><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot w">W</span></div><span class="wc-h2h-record">4W-1D-0L</span></div>
+      <div class="wc-card-foot"><span>Market lean</span><strong>Colombia</strong></div>
+    </article>
+    <article class="wc-game-card" style="--delay:0.18s"><div class="wc-card-pitch"></div>
+      <div class="wc-card-top"><span class="wc-card-time">WED · 3:00PM ET</span><span class="wc-card-chip">More wagers</span></div>
+      <div class="wc-match-line">
+        <div class="wc-team-block"><span class="wc-team-flag">🇧🇦</span><span>Bosnia</span></div>
+        <span class="wc-vs">vs</span>
+        <div class="wc-team-block away"><span>Qatar</span><span class="wc-team-flag">🇶🇦</span></div>
+      </div>
+      <div class="wc-prices">
+        <div class="wc-price wc-favorite"><span class="wc-price-k">HOME</span><span class="wc-price-odds">-270</span></div>
+        <div class="wc-price"><span class="wc-price-k">DRAW</span><span class="wc-price-odds">+420</span></div>
+        <div class="wc-price"><span class="wc-price-k">AWAY</span><span class="wc-price-odds">+650</span></div>
+      </div>
+      <div class="wc-h2h"><span class="wc-h2h-label">H2H Last 5</span><div class="wc-h2h-dots"><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot d">D</span><span class="wc-h2h-dot w">W</span></div><span class="wc-h2h-record">4W-1D-0L</span></div>
+      <div class="wc-card-foot"><span>Market lean</span><strong>Bosnia</strong></div>
+    </article>
+    <article class="wc-game-card" style="--delay:0.22s"><div class="wc-card-pitch"></div>
+      <div class="wc-card-top"><span class="wc-card-time">WED · 3:00PM ET</span><span class="wc-card-chip">More wagers</span></div>
+      <div class="wc-match-line">
+        <div class="wc-team-block"><span class="wc-team-flag">🇨🇭</span><span>Switzerland</span></div>
+        <span class="wc-vs">vs</span>
+        <div class="wc-team-block away"><span>Canada</span><span class="wc-team-flag">🇨🇦</span></div>
+      </div>
+      <div class="wc-prices">
+        <div class="wc-price wc-favorite"><span class="wc-price-k">HOME</span><span class="wc-price-odds">+130</span></div>
+        <div class="wc-price"><span class="wc-price-k">DRAW</span><span class="wc-price-odds">+200</span></div>
+        <div class="wc-price"><span class="wc-price-k">AWAY</span><span class="wc-price-odds">+240</span></div>
+      </div>
+      <div class="wc-h2h"><span class="wc-h2h-label">H2H Last 5</span><div class="wc-h2h-dots"><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot d">D</span><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot l">L</span><span class="wc-h2h-dot w">W</span></div><span class="wc-h2h-record">3W-1D-1L</span></div>
+      <div class="wc-card-foot"><span>Market lean</span><strong>Switzerland</strong></div>
+    </article>
+    <article class="wc-game-card" style="--delay:0.27s"><div class="wc-card-pitch"></div>
+      <div class="wc-card-top"><span class="wc-card-time">WED · 6:00PM ET</span><span class="wc-card-chip">More wagers</span></div>
+      <div class="wc-match-line">
+        <div class="wc-team-block"><span class="wc-team-flag wc-flag-badge scotland"></span><span>Scotland</span></div>
+        <span class="wc-vs">vs</span>
+        <div class="wc-team-block away"><span>Brazil</span><span class="wc-team-flag">🇧🇷</span></div>
+      </div>
+      <div class="wc-prices">
+        <div class="wc-price"><span class="wc-price-k">HOME</span><span class="wc-price-odds">+700</span></div>
+        <div class="wc-price"><span class="wc-price-k">DRAW</span><span class="wc-price-odds">+410</span></div>
+        <div class="wc-price wc-favorite"><span class="wc-price-k">AWAY</span><span class="wc-price-odds">-280</span></div>
+      </div>
+      <div class="wc-h2h"><span class="wc-h2h-label">H2H Last 5</span><div class="wc-h2h-dots"><span class="wc-h2h-dot l">L</span><span class="wc-h2h-dot l">L</span><span class="wc-h2h-dot l">L</span><span class="wc-h2h-dot l">L</span><span class="wc-h2h-dot l">L</span></div><span class="wc-h2h-record">0W-0D-5L</span></div>
+      <div class="wc-card-foot"><span>Market lean</span><strong>Brazil</strong></div>
+    </article>
+    <article class="wc-game-card" style="--delay:0.32s"><div class="wc-card-pitch"></div>
+      <div class="wc-card-top"><span class="wc-card-time">WED · 6:00PM ET</span><span class="wc-card-chip">More wagers</span></div>
+      <div class="wc-match-line">
+        <div class="wc-team-block"><span class="wc-team-flag">🇲🇦</span><span>Morocco</span></div>
+        <span class="wc-vs">vs</span>
+        <div class="wc-team-block away"><span>Haiti</span><span class="wc-team-flag">🇭🇹</span></div>
+      </div>
+      <div class="wc-prices">
+        <div class="wc-price wc-favorite"><span class="wc-price-k">HOME</span><span class="wc-price-odds">-600</span></div>
+        <div class="wc-price"><span class="wc-price-k">DRAW</span><span class="wc-price-odds">+600</span></div>
+        <div class="wc-price"><span class="wc-price-k">AWAY</span><span class="wc-price-odds">+1600</span></div>
+      </div>
+      <div class="wc-h2h"><span class="wc-h2h-label">H2H Last 5</span><div class="wc-h2h-dots"><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot d">D</span></div><span class="wc-h2h-record">4W-1D-0L</span></div>
+      <div class="wc-card-foot"><span>Market lean</span><strong>Morocco</strong></div>
+    </article>
+  </div><!-- /wc-games-grid -->
+
+  <!-- AWARDS BANNER -->
+  <div class="wc-divider-banner" aria-hidden="true">
+    <div class="wc-divider-track">
+      <span class="hi">🏆 AWARD FUTURES</span><span class="sep">·</span>
+      <span>Golden Boot · Mbappe +150</span><span class="sep">·</span><span class="hi">Golden Ball · Messi +440</span><span class="sep">·</span>
+      <span>Golden Glove · Martinez +300</span><span class="sep">·</span><span class="hi">Young Player · Yamal +175</span><span class="sep">·</span>
+      <span>Top Scorer · Messi -125</span><span class="sep">·</span>
+      <span class="hi">🏆 AWARD FUTURES</span><span class="sep">·</span>
+      <span>Golden Boot · Mbappe +150</span><span class="sep">·</span><span class="hi">Golden Ball · Messi +440</span><span class="sep">·</span>
+      <span>Golden Glove · Martinez +300</span><span class="sep">·</span><span class="hi">Young Player · Yamal +175</span><span class="sep">·</span>
+      <span>Top Scorer · Messi -125</span><span class="sep">·</span>
+    </div>
+  </div>
+
+  <div class="wc-section-head"><div><span class="wc-section-kicker">Tournament futures</span><h3>Awards Market</h3><p>Golden Boot, Golden Ball, Golden Glove, Young Player, and Top Goalscorer.</p></div><span class="wc-section-kicker">JUL 19 board</span></div>
+  <div class="wc-awards-grid">
+    <article class="wc-award-card" style="--delay:0.00s"><div class="wc-award-ring"></div><div class="wc-award-head"><span class="wc-trophy-icon">🏆</span><div><h4>FIFA Golden Boot</h4><p>Most goals in the tournament</p></div></div><div class="wc-award-row"><span><b>🇫🇷</b>Kylian Mbappe <em>France</em></span><strong>+150</strong></div><div class="wc-award-row"><span><b>🇦🇷</b>Lionel Messi <em>Argentina</em></span><strong>+165</strong></div><div class="wc-award-row"><span><b>🇳🇴</b>Erling Haaland <em>Norway</em></span><strong>+500</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge england"></b>Harry Kane <em>England</em></span><strong>+650</strong></div><div class="wc-award-row"><span><b>🇪🇸</b>Mikel Oyarzabal <em>Spain</em></span><strong>+2500</strong></div><div class="wc-award-time">JUL 19, 6:01PM ET</div></article>
+    <article class="wc-award-card" style="--delay:0.06s"><div class="wc-award-ring"></div><div class="wc-award-head"><span class="wc-trophy-icon">🏆</span><div><h4>FIFA Golden Ball</h4><p>Player of the Tournament</p></div></div><div class="wc-award-row"><span><b>🇦🇷</b>Lionel Messi <em>Argentina</em></span><strong>+440</strong></div><div class="wc-award-row"><span><b>🇫🇷</b>Kylian Mbappe <em>France</em></span><strong>+480</strong></div><div class="wc-award-row"><span><b>🇫🇷</b>Michael Olise <em>France</em></span><strong>+500</strong></div><div class="wc-award-row"><span><b>🇳🇴</b>Erling Haaland <em>Norway</em></span><strong>+650</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge england"></b>Harry Kane <em>England</em></span><strong>+900</strong></div><div class="wc-award-time">JUL 19, 6:01PM ET</div></article>
+    <article class="wc-award-card" style="--delay:0.12s"><div class="wc-award-ring"></div><div class="wc-award-head"><span class="wc-trophy-icon">🥅</span><div><h4>FIFA Golden Glove</h4><p>Best goalkeeper of the tournament</p></div></div><div class="wc-award-row"><span><b>🇦🇷</b>Emiliano Martinez <em>Argentina</em></span><strong>+300</strong></div><div class="wc-award-row"><span><b>🇪🇸</b>Unai Simon <em>Spain</em></span><strong>+390</strong></div><div class="wc-award-row"><span><b>🇫🇷</b>Mike Maignan <em>France</em></span><strong>+440</strong></div><div class="wc-award-row"><span><b>🇧🇷</b>Alisson Becker <em>Brazil</em></span><strong>+750</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge england"></b>Jordan Pickford <em>England</em></span><strong>+1200</strong></div><div class="wc-award-time">JUL 19, 6:01PM ET</div></article>
+    <article class="wc-award-card" style="--delay:0.18s"><div class="wc-award-ring"></div><div class="wc-award-head"><span class="wc-trophy-icon">⭐</span><div><h4>FIFA Young Player</h4><p>Top eligible young player</p></div></div><div class="wc-award-row"><span><b>🇪🇸</b>Lamine Yamal <em>Spain</em></span><strong>+175</strong></div><div class="wc-award-row"><span><b>🇲🇦</b>Ayyoub Bouaddi <em>Morocco</em></span><strong>+380</strong></div><div class="wc-award-row"><span><b>🇨🇮</b>Yan Diomande <em>Ivory Coast</em></span><strong>+650</strong></div><div class="wc-award-row"><span><b>🇫🇷</b>Desire Doue <em>France</em></span><strong>+750</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge england"></b>Nico O'Reilly <em>England</em></span><strong>+1400</strong></div><div class="wc-award-time">JUL 19, 6:01PM ET</div></article>
+    <article class="wc-award-card" style="--delay:0.24s"><div class="wc-award-ring"></div><div class="wc-award-head"><span class="wc-trophy-icon">🥇</span><div><h4>Top Goalscorer</h4><p>Tournament top scoring market</p></div></div><div class="wc-award-row"><span><b>🇦🇷</b>Lionel Messi <em>Argentina</em></span><strong>-125</strong></div><div class="wc-award-row"><span><b>🇫🇷</b>Kylian Mbappe <em>France</em></span><strong>+230</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge england"></b>Harry Kane <em>England</em></span><strong>+480</strong></div><div class="wc-award-row"><span><b>🇳🇴</b>Erling Haaland <em>Norway</em></span><strong>+600</strong></div><div class="wc-award-row"><span><b>🇪🇸</b>Mikel Oyarzabal <em>Spain</em></span><strong>+1500</strong></div><div class="wc-award-time">JUL 19, 5:00PM ET</div></article>
+  </div>
+
+  <!-- PARLAY BANNER -->
+  <div class="wc-divider-banner" aria-hidden="true">
+    <div class="wc-divider-track">
+      <span class="hi">🎟 PARLAY TICKETS</span><span class="sep">·</span>
+      <span>Golden Boot Fireworks +4685</span><span class="sep">·</span><span class="hi">Legacy World Tour +2476</span><span class="sep">·</span>
+      <span>Young Star Breakout +92850</span><span class="sep">·</span><span class="hi">Keeper Wall +10484</span><span class="sep">·</span>
+      <span class="hi">🎟 PARLAY TICKETS</span><span class="sep">·</span>
+      <span>Golden Boot Fireworks +4685</span><span class="sep">·</span><span class="hi">Legacy World Tour +2476</span><span class="sep">·</span>
+      <span>Young Star Breakout +92850</span><span class="sep">·</span><span class="hi">Keeper Wall +10484</span><span class="sep">·</span>
+    </div>
+  </div>
+
+  <div class="wc-section-head"><div><span class="wc-section-kicker">Player tickets</span><h3>World Stage Parlays</h3><p>Soccer-themed parlay cards built from the award prices above.</p></div><span class="wc-section-kicker">themed builders</span></div>
+  <div class="wc-parlay-grid">
+    <article class="wc-parlay-card" style="--delay:0.00s"><div class="wc-ticket-perf"></div><div class="wc-parlay-top"><span>Goal scorer runway</span><strong>+4685</strong></div><h4>Golden Boot Fireworks</h4><div class="wc-leg-list"><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇫🇷 Kylian Mbappe</strong><small>Golden Boot</small></div><b>+150</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇫🇷 Kylian Mbappe</strong><small>Top Goalscorer</small></div><b>+230</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇫🇷 France</strong><small>Golden Ball path</small></div><b>+480</b></div></div><p>Mbappe-led scoring ticket with France award upside.</p></article>
+    <article class="wc-parlay-card" style="--delay:0.07s"><div class="wc-ticket-perf"></div><div class="wc-parlay-top"><span>Messi awards lane</span><strong>+2476</strong></div><h4>Legacy World Tour</h4><div class="wc-leg-list"><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇦🇷 Lionel Messi</strong><small>Golden Boot</small></div><b>+165</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇦🇷 Lionel Messi</strong><small>Golden Ball</small></div><b>+440</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇦🇷 Lionel Messi</strong><small>Top Goalscorer</small></div><b>-125</b></div></div><p>Legacy-focused card built around Messi winning the award markets.</p></article>
+    <article class="wc-parlay-card" style="--delay:0.14s"><div class="wc-ticket-perf"></div><div class="wc-parlay-top"><span>Future face ticket</span><strong>+92850</strong></div><h4>Young Star Breakout</h4><div class="wc-leg-list"><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇪🇸 Lamine Yamal</strong><small>Young Player</small></div><b>+175</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇪🇸 Lamine Yamal</strong><small>Golden Ball</small></div><b>+1200</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇪🇸 Mikel Oyarzabal</strong><small>Golden Boot</small></div><b>+2500</b></div></div><p>Spain-heavy ceiling card with a youth-award anchor.</p></article>
+    <article class="wc-parlay-card" style="--delay:0.21s"><div class="wc-ticket-perf"></div><div class="wc-parlay-top"><span>Golden Glove split</span><strong>+10484</strong></div><h4>Keeper Wall</h4><div class="wc-leg-list"><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇦🇷 Emiliano Martinez</strong><small>Golden Glove</small></div><b>+300</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇪🇸 Unai Simon</strong><small>Golden Glove</small></div><b>+390</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇫🇷 Mike Maignan</strong><small>Golden Glove</small></div><b>+440</b></div></div><p>A goalkeeper award ladder for clean-sheet tournament paths.</p></article>
+  </div>
+
+  <div class="wc-note"><strong>Note:</strong> Parlay tickets combine the listed award prices into estimated display odds for the page experience. They are informational display cards, not wagers booked by shortopen.</div>
+
+
+</section>
+</div>
+
+<script>
+function toggleMobileMenu(){
+  const m=document.getElementById('mobileMenu');
+  const b=document.getElementById('hamburgerBtn');
+  m.classList.toggle('open');
+  if(b)b.classList.toggle('open');
+  document.body.style.overflow=m.classList.contains('open')?'hidden':'';
+}
+</script>
+</body>
+</html>
