@@ -1829,6 +1829,97 @@ body::after{
 #featuredDeepDiveArticle{scroll-margin-top:90px;}
 </style>
 
+<style id="so-rail-mobile-fix">
+/* ── Mobile fix: Live Signals · Fan Take · Latest Article ────────
+   All earlier passes set grid-template-columns with !important and
+   no winning mobile override — this block comes last so it wins.
+   ─────────────────────────────────────────────────────────────── */
+
+/* Medium — 2 columns: Fan Take spans full row, signals + latest side by side */
+@media (max-width: 900px) {
+  .analysis-rail {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+    align-items: start !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding-right: 0 !important;
+  }
+
+  /* Fan Take (middle child) goes full width above the two cards */
+  .analysis-rail > .so-fan-stack-feature-main {
+    grid-column: 1 / -1 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Live Signals + Latest Article each take one column */
+  .analysis-rail > .rail-card {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  /* Scroll containers: give them a comfortable natural height */
+  #railSignals,
+  #railLatest {
+    max-height: 260px !important;
+    height: auto !important;
+  }
+
+  /* Fan Take inner card: natural height, no clipping */
+  .so-fan-feature-main {
+    min-height: 140px !important;
+    height: auto !important;
+  }
+
+  /* Fan Take title: free to wrap on narrow screens */
+  .so-fan-feature-main .so-fan-feature-title,
+  .so-fan-feature-title {
+    font-size: 1.18rem !important;
+    max-width: 100% !important;
+  }
+
+  /* Fan main copy: readable at narrow width */
+  .so-fan-main-copy {
+    font-size: .74rem !important;
+    max-width: 100% !important;
+  }
+
+  /* Remove the bottom fade pseudo — looks odd when height is auto */
+  .analysis-rail > .rail-card::after,
+  .so-fan-stack-feature-main::after {
+    display: none !important;
+  }
+
+  /* Soft scroll still active but with sensible cap */
+  .so-fan-stack-feature-main {
+    overflow-y: visible !important;
+    padding-right: 0 !important;
+  }
+}
+
+/* Small — single column stack below 560px */
+@media (max-width: 560px) {
+  .analysis-rail {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .analysis-rail > .so-fan-stack-feature-main {
+    grid-column: 1 !important;
+  }
+
+  #railSignals,
+  #railLatest {
+    max-height: 220px !important;
+  }
+}
+</style>
+
 
 <style id="so-wc-nav-badge">
 /* World Cup — gold limited-edition tab (all non-WC pages) */

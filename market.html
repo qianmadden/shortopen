@@ -3326,54 +3326,85 @@ body::after{
   <a href="subscribe.html" onclick="toggleMobileMenu()">Subscribe</a>
 </div>
 
-<div class="hero-grid">
+<div class="hero-grid q-hero-market">
   <!-- LEFT -->
-  <div class="hero-left">
-    <div class="live-badge" style="margin-bottom:20px"><div class="live-dot"></div>Live Market</div>
-    <h1 class="page-title">The Line<br><span class="gold-line">Before The<br>Crowd</span></h1>
-    <p class="page-sub">Tracking where the market <em>opened</em>, where the public pushed it, and where we believe the value still exists before closing movement takes over.</p>
-    <div class="hero-stat-row">
-      <div class="hero-stat-card">
-        <div class="hero-stat-label">Live Games</div>
-        <div class="hero-stat-value">18</div>
+  <div class="hero-left q-hero-left">
+    <div class="live-badge q-market-badge" style="margin-bottom:20px"><div class="live-dot"></div>MLB Market Board</div>
+    <h1 class="page-title q-market-title">The Open<br><span class="gold-line">Before the Crowd.</span></h1>
+    <p class="page-sub q-market-sub">A live MLB command center that reads the slate before the noise gets loud — runline pressure, model calls, total climate, and plus-money movement pulled straight from the cards below.</p>
+    <div class="q-hero-command-rail">
+      <span class="q-rail-dot"></span>
+      <span>Auto-pulled from current MLB cards</span>
+      <span class="q-rail-sep"></span>
+      <span id="qHeroSlateTime">Market scan active</span>
+    </div>
+    <div class="hero-stat-row q-hero-stat-row">
+      <div class="hero-stat-card q-hero-stat-card">
+        <div class="hero-stat-label">Games Loaded</div>
+        <div class="hero-stat-value" id="qStatGames">--</div>
+        <div class="q-stat-sub" id="qStatGamesSub">MLB slate</div>
         <div class="hero-spark" id="heroSpark0"></div>
       </div>
-      <div class="hero-stat-card">
-        <div class="hero-stat-label">Positive EV</div>
-        <div class="hero-stat-value green">7</div>
+      <div class="hero-stat-card q-hero-stat-card">
+        <div class="hero-stat-label">Best EV</div>
+        <div class="hero-stat-value green" id="qStatBestEV">--</div>
+        <div class="q-stat-sub" id="qStatBestEVSub">shortopen call</div>
         <div class="hero-spark" id="heroSpark1"></div>
       </div>
-      <div class="hero-stat-card">
-        <div class="hero-stat-label">Consensus</div>
-        <div class="hero-stat-value red">Heavy</div>
+      <div class="hero-stat-card q-hero-stat-card">
+        <div class="hero-stat-label">Highest Total</div>
+        <div class="hero-stat-value gold" id="qStatHighTotal">--</div>
+        <div class="q-stat-sub" id="qStatHighTotalSub">scoring climate</div>
         <div class="hero-spark" id="heroSpark2"></div>
       </div>
-      <div class="hero-stat-card">
-        <div class="hero-stat-label">Volatility</div>
-        <div class="hero-stat-value blue">HIGH</div>
+      <div class="hero-stat-card q-hero-stat-card">
+        <div class="hero-stat-label">Best Dog ML</div>
+        <div class="hero-stat-value blue" id="qStatDogML">--</div>
+        <div class="q-stat-sub" id="qStatDogMLSub">reverse-line watch</div>
         <div class="hero-spark" id="heroSpark3"></div>
       </div>
     </div>
-    <div class="hero-value-prop market-hero-webline"><span class="hero-value-prop-dot">&#9670;</span>We surface the numbers so you can make an informed call &mdash; then place it with whichever sportsbook you already trust.</div>
+    <div class="hero-value-prop market-hero-webline q-hero-value-prop"><span class="hero-value-prop-dot">&#9670;</span>We surface the numbers so you can make an informed call — then place it with whichever sportsbook you already trust.</div>
   </div>
-  <!-- RIGHT: CONSENSUS TRACKER — MLB liquid glass -->
-  <div class="lg-consensus">
+  <!-- RIGHT: CONSENSUS TRACKER — MLB live board -->
+  <div class="lg-consensus q-consensus-board" id="qConsensusBoard">
     <div class="lg-consensus-before"></div>
     <div class="lg-consensus-sheen"></div>
-    <div style="position:relative;z-index:1">
-      <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:4px">
-        <div><div style="font-size:.48rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#4a5a7a;margin-bottom:3px">Market Pulse · MLB</div><div style="font-size:1.1rem;font-weight:900;color:#f0ece4">Consensus Tracker</div></div>
-        <span class="lg-badge-pub">Public Heavy</span>
+    <div class="q-consensus-scan"></div>
+    <div class="q-consensus-inner">
+      <div class="q-consensus-header">
+        <div>
+          <div class="q-consensus-kicker">Market Pulse · MLB</div>
+          <div class="q-consensus-title">Consensus Board</div>
+          <div class="q-consensus-sub">Best signals pulled from the current game cards</div>
+        </div>
+        <span class="lg-badge-pub q-board-badge" id="qConsensusBadge">Scanning</span>
       </div>
-      <div class="lg-row"><div><div class="lg-meta">Most Bet Spread</div><div class="lg-val">NYY -1.5</div></div><div class="lg-pct">68%</div></div>
-      <div class="lg-splitbar"><div class="lg-split-a" style="width:68%"></div><div class="lg-split-b" style="width:32%"></div></div>
-      <div class="lg-split-lbls"><span>Public 68%</span><span>Sharp 32%</span></div>
-      <div class="lg-row"><div><div class="lg-meta">Sharp Side</div><div class="lg-val">HOU +1.5</div></div><span class="lg-ev">+EV</span></div>
-      <div class="lg-signalbar"><div class="lg-signal-fill green" style="width:82%"></div></div>
-      <div class="lg-row"><div><div class="lg-meta">Total Movement</div><div class="lg-val">Over 8.5 (NYM/CIN)</div></div><div style="font-weight:900;font-size:1.3rem;color:#57a7ff">↑ Steam</div></div>
-      <div class="lg-signalbar"><div class="lg-signal-fill blue" style="width:74%"></div></div>
-      <div class="lg-row" style="border:none"><div><div class="lg-meta">Reverse Line Movement</div><div class="lg-val">MIL +110 ML</div></div><div style="font-weight:900;font-size:1.1rem;color:#a78bfa">Sharp</div></div>
-      <div class="lg-signalbar" style="margin-bottom:0"><div class="lg-signal-fill purple" style="width:65%"></div></div>
+
+      <div class="lg-row q-board-row">
+        <div class="q-row-main"><div class="lg-meta">Most Bet Spread</div><div class="lg-val" id="qMostBetSpread">--</div><div class="q-source" id="qMostBetSpreadSrc">Runline pressure</div></div>
+        <div class="q-row-metric"><span class="lg-pct" id="qMostBetPct">--</span><span class="q-row-odds" id="qMostBetOdds">--</span></div>
+      </div>
+      <div class="lg-splitbar q-splitbar"><div class="lg-split-a" id="qPublicBar" style="width:50%"></div><div class="lg-split-b" id="qSharpPublicBar" style="width:50%"></div></div>
+      <div class="lg-split-lbls q-split-labels"><span id="qPublicLabel">Public --</span><span id="qSharpLabel">Sharp --</span></div>
+
+      <div class="lg-row q-board-row">
+        <div class="q-row-main"><div class="lg-meta">Sharp Side</div><div class="lg-val" id="qSharpSide">--</div><div class="q-source" id="qSharpSideSrc">Best model call</div></div>
+        <span class="lg-ev q-ev-pill" id="qSharpEV">+EV</span>
+      </div>
+      <div class="lg-signalbar q-signalbar"><div class="lg-signal-fill green" id="qSharpSignalBar" style="width:50%"></div></div>
+
+      <div class="lg-row q-board-row">
+        <div class="q-row-main"><div class="lg-meta">Total Movement</div><div class="lg-val" id="qTotalMove">--</div><div class="q-source" id="qTotalMoveSrc">Highest total environment</div></div>
+        <div class="q-steam-tag" id="qTotalSteam">Steam</div>
+      </div>
+      <div class="lg-signalbar q-signalbar"><div class="lg-signal-fill blue" id="qTotalBar" style="width:50%"></div></div>
+
+      <div class="lg-row q-board-row" style="border:none">
+        <div class="q-row-main"><div class="lg-meta">Reverse Line Movement</div><div class="lg-val" id="qRLM">--</div><div class="q-source" id="qRLMSrc">Best plus-money ML</div></div>
+        <div class="q-sharp-tag" id="qRLMTag">Sharp Dog</div>
+      </div>
+      <div class="lg-signalbar q-signalbar" style="margin-bottom:0"><div class="lg-signal-fill purple" id="qRLMBar" style="width:50%"></div></div>
     </div>
   </div>
 </div>
@@ -4174,7 +4205,6 @@ body::after{
 <div class="sport-panel active" id="panel-mlb">
   <div id="mlbContainer"></div>
 </div>
-</div>
 
 <footer>
   <div class="footer-top">
@@ -4492,18 +4522,16 @@ const MLB_PROP_PARLAYS = [
     type: "MLB Props",
     market: "MLB Prop Updates — Strikeouts",
     legs: [
-      { player: "Bryce Miller",      team: "SEA", stat: "Under 10.5 Strikeouts @ PIT",  odds: "-195", hitRate: 0.70, grade: "A",  ev: 11.5 },
-      { player: "MacKenzie Gore",    team: "TEX", stat: "Over 4.5 Strikeouts @ TOR",    odds: "-156", hitRate: 0.66, grade: "A",  ev: 10.2 },
-      { player: "Kevin Gausman",     team: "TOR", stat: "Over 5.5 Strikeouts vs TEX",   odds: "-150", hitRate: 0.65, grade: "A",  ev: 9.8 },
-      { player: "Freddy Peralta",    team: "NYM", stat: "Under 5.5 Strikeouts vs CHC",  odds: "-150", hitRate: 0.65, grade: "A",  ev: 9.8 },
-      { player: "Landen Roupp",      team: "SF",  stat: "Under 6.5 Strikeouts vs ATH",  odds: "-142", hitRate: 0.64, grade: "A",  ev: 9.4 },
-      { player: "Cristopher Sanchez",team: "PHI", stat: "Under 6.5 Strikeouts @ WSH",   odds: "-137", hitRate: 0.63, grade: "A",  ev: 9.0 },
-      { player: "Cam Schlittler",    team: "NYY", stat: "Under 6.5 Strikeouts @ BOS",   odds: "-136", hitRate: 0.63, grade: "A",  ev: 8.9 },
-      { player: "Tatsuya Imai",      team: "HOU", stat: "Under 5.5 Strikeouts @ DET",   odds: "-129", hitRate: 0.61, grade: "A",  ev: 8.3 },
-      { player: "Connelly Early",    team: "BOS", stat: "Over 5.5 Strikeouts vs NYY",   odds: "-124", hitRate: 0.60, grade: "A",  ev: 8.0 }
+      { player: "Gerrit Cole",        team: "NYY", stat: "Over 5.5 Strikeouts @ BOS",    odds: "-122", hitRate: 0.57, grade: "B+",  ev: 10.6 },
+      { player: "Framer Valdez",      team: "DET", stat: "Under 5.5 Strikeouts vs HOU",   odds: "-141", hitRate: 0.57, grade: "B-",  ev: 10.4 },
+      { player: "Reid Detmers",       team: "LAA", stat: "Over 5.5 Strikeouts vs ATH",  odds: "-151", hitRate: 0.65, grade: "A",  ev: 9.8 },
+      { player: "Yoshinobu Yamamoto", team: "LAD", stat: "Over 6.5 Strikeouts @ SD",    odds: "-148", hitRate: 0.65, grade: "A",  ev: 9.6 },
+      { player: "Nick Kurtz",         team: "ATH", stat: "Over 0.5 Strikeouts @ LAA",  odds: "-142", hitRate: 0.64, grade: "A",  ev: 9.4 },
+      { player: "Wilson Contreras",   team: "BOS", stat: "Over 1.5 Total Bases vs NYY",  odds: "-132", hitRate: 0.42, grade: "C+",  ev: 8.8 },
+      { player: "Zach Neto",          team: "LAA", stat: "Over 1.5 Total Bases vs ATH",   odds: "-131", hitRate: 0.42, grade: "B",  ev: 8.7 }
     ],
     betsPlaced: 1421,
-    edgeNote: "Updated MLB player-prop board: nine starting-pitcher strikeout lines ranked into the same selectable EV ticket flow."
+    edgeNote: "Updated MLB player-prop board: the seven strongest odds favorites ranked into the same selectable EV ticket flow."
   }
 ];
 
@@ -4515,13 +4543,21 @@ const MLB_PROP_PARLAYS = [
 //       total is the over/under (e.g. '8.5').
 
 const MLB_GAMES = [
-  {day:"TODAY", time:"3:46 PM ET", away:"Athletics", awayAbbr:"OAK", home:"San Francisco Giants", homeAbbr:"SF", awayPitcher:"P: J Springs", homePitcher:"P: L Roupp", spreadAway:"+1.5", spreadAwayJuice:"-188", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+155", spreadHomeMove:"", spreadOpen:"", mlAway:"+114", mlHome:"-134", total:"8", totalOverJuice:"-118", totalUnderJuice:"-104", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"SF ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Roupp maps out steady home favorite value for the Giants over Springs across a flat 8 canvas pulling over action."},
-  {day:"TODAY", time:"6:41 PM ET", away:"Houston Astros", awayAbbr:"HOU", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: T Imai", homePitcher:"P: T Melton", spreadAway:"-1.5", spreadAwayJuice:"+158", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-192", spreadHomeMove:"", spreadOpen:"", mlAway:"-106", mlHome:"-110", total:"9", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"DET ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Melton secures standard home favor standing for Detroit over Imai behind a balanced, flat 9 total blueprint layout."},
-  {day:"TODAY", time:"6:46 PM ET", away:"Philadelphia Phillies", awayAbbr:"PHI", home:"Washington Nationals", homeAbbr:"WSH", awayPitcher:"P: C Sanchez", homePitcher:"P: C Cavalli", spreadAway:"-1.5", spreadAwayJuice:"-102", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-118", spreadHomeMove:"", spreadOpen:"", mlAway:"-172", mlHome:"+144", total:"8.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PHI ML", edgeEV:"+1.8", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sanchez frames target road chalk loops for the Phillies over Cavalli, forcing heavy protection down to -102 on the spread threshold."},
-  {day:"TODAY", time:"7:08 PM ET", away:"Texas Rangers", awayAbbr:"TEX", home:"Toronto Blue Jays", homeAbbr:"TOR", awayPitcher:"P: M Gore", homePitcher:"P: K Gausman", spreadAway:"+1.5", spreadAwayJuice:"-178", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+128", mlHome:"-152", total:"8", totalOverJuice:"-102", totalUnderJuice:"-120", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TOR ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Gausman sets clear home favorites parameter infrastructure for Toronto against Gore on an under-pressured flat 8 line."},
-  {day:"TODAY", time:"7:11 PM ET", away:"New York Yankees", awayAbbr:"NYY", home:"Boston Red Sox", homeAbbr:"BOS", awayPitcher:"P: C Schlittler", homePitcher:"P: C Early", spreadAway:"-1.5", spreadAwayJuice:"+115", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-138", spreadHomeMove:"", spreadOpen:"", mlAway:"-148", mlHome:"+126", total:"8.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Schlittler outlines cozy road preference metrics for the Yankees over Early behind an under-shaded 8.5 baseline layout frame."},
-  {day:"TODAY", time:"7:11 PM ET", away:"Chicago Cubs", awayAbbr:"CHC", home:"New York Mets", homeAbbr:"NYM", awayPitcher:"P: M Boyd", homePitcher:"P: F Peralta", spreadAway:"-1.5", spreadAwayJuice:"+152", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-184", spreadHomeMove:"", spreadOpen:"", mlAway:"-108", mlHome:"-108", total:"8.5", totalOverJuice:"-112", totalUnderJuice:"-108", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYM ML", edgeEV:"-", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"A balanced pick'em splits Peralta and the Mets against Boyd on an over-leaning 8.5 structural card line layout."},
-  {day:"TODAY", time:"7:46 PM ET", away:"Arizona Diamondbacks", awayAbbr:"AZ", home:"St. Louis Cardinals", homeAbbr:"STL", awayPitcher:"P: Z Gallen", homePitcher:"P: M McGreevy", spreadAway:"+1.5", spreadAwayJuice:"-194", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+160", spreadHomeMove:"", spreadOpen:"", mlAway:"+112", mlHome:"-132", total:"9", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"STL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"McGreevy hooks steady home priority indices for St. Louis facing Gallen inside a flat 9 canvas drawing strong under action."}
+  {day:"TODAY", time:"1:11 PM ET", away:"Houston Astros", awayAbbr:"HOU", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: K Teng", homePitcher:"P: F Valdez", spreadAway:"+1.5", spreadAwayJuice:"-184", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+152", spreadHomeMove:"", spreadOpen:"", mlAway:"+116", mlHome:"-136", total:"8.5", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"DET ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Valdez positions the Tigers as standard home favorites over Teng across a balanced 8.5 total canvas."},
+  {day:"TODAY", time:"1:11 PM ET", away:"New York Yankees", awayAbbr:"NYY", home:"Boston Red Sox", homeAbbr:"BOS", awayPitcher:"P: G Cole", homePitcher:"P: J Bennett", spreadAway:"-1.5", spreadAwayJuice:"+146", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-178", spreadHomeMove:"", spreadOpen:"", mlAway:"-116", mlHome:"-102", total:"8", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Cole marks the Yankees as tight away priorities over Bennett on a flat 8 line layout drawing over action."},
+  {day:"TODAY", time:"3:08 PM ET", away:"Texas Rangers", awayAbbr:"TEX", home:"Toronto Blue Jays", homeAbbr:"TOR", awayPitcher:"P: C Quantrill", homePitcher:"P: D Cease", spreadAway:"+1.5", spreadAwayJuice:"-142", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+118", spreadHomeMove:"", spreadOpen:"", mlAway:"+154", mlHome:"-184", total:"8", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TOR ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Cease anchors premium home favorite infrastructure for Toronto against Quantrill on an under-shaded flat 8 line."},
+  {day:"TODAY", time:"4:06 PM ET", away:"Cincinnati Reds", awayAbbr:"CIN", home:"Pittsburgh Pirates", homeAbbr:"PIT", awayPitcher:"P: C Burns", homePitcher:"P: J Jones", spreadAway:"-1.5", spreadAwayJuice:"+138", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-166", spreadHomeMove:"", spreadOpen:"", mlAway:"-120", mlHome:"+102", total:"8", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CIN ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Burns establishes stable away favor leverage for Cincinnati over Jones inside an under-pressured flat 8 board framework."},
+  {day:"TODAY", time:"4:11 PM ET", away:"Kansas City Royals", awayAbbr:"KC", home:"Chicago White Sox", homeAbbr:"CWS", awayPitcher:"P: M Wacha", homePitcher:"P: D Martin", spreadAway:"+1.5", spreadAwayJuice:"-210", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+172", spreadHomeMove:"", spreadOpen:"", mlAway:"+104", mlHome:"-122", total:"8", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CWS ML", edgeEV:"-", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"A tight home-shaded match frames Martin and the White Sox against Wacha over an under-pressured flat 8 line layout."},
+  {day:"TODAY", time:"4:11 PM ET", away:"Philadelphia Phillies", awayAbbr:"PHI", home:"New York Mets", homeAbbr:"NYM", awayPitcher:"P: A Rangel", homePitcher:"P: C Scott", spreadAway:"+1.5", spreadAwayJuice:"-196", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+162", spreadHomeMove:"", spreadOpen:"", mlAway:"+112", mlHome:"-132", total:"9", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYM ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Scott secures moderate home preference parameters for the Mets facing Rangel over a flat 9 total pulling under cash."},
+  {day:"TODAY", time:"6:11 PM ET", away:"Arizona Diamondbacks", awayAbbr:"AZ", home:"Tampa Bay Rays", homeAbbr:"TB", awayPitcher:"P: J Cabrera", homePitcher:"P: C Sulser", spreadAway:"+1.5", spreadAwayJuice:"-188", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+155", spreadHomeMove:"", spreadOpen:"", mlAway:"+118", mlHome:"-138", total:"8.5", totalOverJuice:"+102", totalUnderJuice:"-124", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TB ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sulser logs typical home favorites standing for Tampa Bay over Cabrera behind an under-pressured 8.5 total structural line."},
+  {day:"TODAY", time:"7:06 PM ET", away:"Washington Nationals", awayAbbr:"WSH", home:"Baltimore Orioles", homeAbbr:"BAL", awayPitcher:"P: F Griffin", homePitcher:"P: B Young", spreadAway:"-1.5", spreadAwayJuice:"+158", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-192", spreadHomeMove:"", spreadOpen:"", mlAway:"-104", mlHome:"-112", total:"9", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"BAL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Young locks in a micro-home favorite position for Baltimore over Griffin with distinct under pressure tracking the flat 9 canvas."},
+  {day:"TODAY", time:"7:11 PM ET", away:"Seattle Mariners", awayAbbr:"SEA", home:"Cleveland Guardians", homeAbbr:"CLE", awayPitcher:"P: L Gilbert", homePitcher:"P: S Cecconi", spreadAway:"-1.5", spreadAwayJuice:"+115", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-138", spreadHomeMove:"", spreadOpen:"", mlAway:"-148", mlHome:"+126", total:"7.5", totalOverJuice:"-104", totalUnderJuice:"-118", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"SEA ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Gilbert outlines cozy road favoritism indices for the Mariners over Cecconi inside a defensive, under-shaded 7.5 line blueprint loop."},
+  {day:"TODAY", time:"7:11 PM ET", away:"Colorado Rockies", awayAbbr:"COL", home:"Minnesota Twins", homeAbbr:"MIN", awayPitcher:"P: M Lorenzen", homePitcher:"P: M Paredes", spreadAway:"+1.5", spreadAwayJuice:"-170", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+140", spreadMove:"", spreadOpen:"", mlAway:"+122", mlHome:"-144", total:"9.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIN ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Paredes maps steady home preference boundaries for Minnesota against Lorenzen across a wide 9.5 total canvas drawing under cash."},
+  {day:"TODAY", time:"7:11 PM ET", away:"Chicago Cubs", awayAbbr:"CHC", home:"Milwaukee Brewers", homeAbbr:"MIL", awayPitcher:"P: D Peterson", homePitcher:"P: K Harrison", spreadAway:"+1.5", spreadAwayJuice:"-152", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+126", spreadHomeMove:"", spreadOpen:"", mlAway:"+138", mlHome:"-164", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Harrison hooks comfortable home favor priority standing for Milwaukee over Peterson behind a perfectly split flat 8 loop template."},
+  {day:"TODAY", time:"7:16 PM ET", away:"Miami Marlins", awayAbbr:"MIA", home:"St. Louis Cardinals", homeAbbr:"STL", awayPitcher:"P: R Gusto", homePitcher:"P: A Pallante", spreadAway:"+1.5", spreadAwayJuice:"-184", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+152", spreadHomeMove:"", spreadOpen:"", mlAway:"+120", mlHome:"-142", total:"8.5", totalOverJuice:"-120", totalUnderJuice:"-102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"STL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Pallante sets steady home priority metrics for St. Louis facing Gusto over an over-shaded 8.5 total layout structure."},
+  {day:"TODAY", time:"8:41 PM ET", away:"Los Angeles Dodgers", awayAbbr:"LAD", home:"San Diego Padres", homeAbbr:"SD", awayPitcher:"P: Y Yamamoto", homePitcher:"P: R Vasquez", spreadAway:"-1.5", spreadAwayJuice:"-115", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-105", spreadHomeMove:"", spreadOpen:"", mlAway:"-200", mlHome:"+168", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAD ML", edgeEV:"+1.8", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Yamamoto anchors the Dodgers as heavy road chalk, forcing deep line protections down to -115 on the -1.5 spread boundary block."},
+  {day:"TODAY", time:"9:06 PM ET", away:"Atlanta Braves", awayAbbr:"ATL", home:"San Francisco Giants", homeAbbr:"SF", awayPitcher:"P: B Elder", homePitcher:"P: L Webb", spreadAway:"+1.5", spreadAwayJuice:"-205", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+168", spreadHomeMove:"", spreadOpen:"", mlAway:"+112", mlHome:"-132", total:"8", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"SF ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Webb secures standard home favorite posture for the Giants over Elder on a flat 8 timeline carrying steady under pressure."},
+  {day:"TODAY", time:"9:39 PM ET", away:"Athletics", awayAbbr:"OAK", home:"Los Angeles Angels", homeAbbr:"LAA", awayPitcher:"P: J Perkins", homePitcher:"P: R Detmers", spreadAway:"-1.5", spreadAwayJuice:"+158", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-192", spreadHomeMove:"", spreadOpen:"", mlAway:"-106", mlHome:"-110", total:"8.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAA ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Detmers logs narrow home preference status over Perkins inside an under-leaning 8.5 total board layout frame."}
 ];
 
 // ── MLB ─────────────────────────────────────────────────────────
@@ -6177,43 +6213,44 @@ const NBA_LONGSHOTS = [
 ];
 const MLB_LONGSHOTS = [
   {
-    label:"HOT TABLE · TEAM PARLAY BOARD", badge:"Q's ROULETTE",
-    kicker:"YANKEES BUILDER · @ BOS",
-    headline:"NY Yankees Roulette Props",
-    thesis:"Four correlated Yankees legs straight off the screenshot board — moneyline, Schlittler's strikeout total, and two lineup props bundled into one spin.",
+    label:"Q'S CLOSING TABLE · LIVE MLB CHIPS", badge:"Q's TABLE",
+    kicker:"GREEN FELT · LIVE BOARD SIGNALS",
+    headline:"Q's Closing Table",
+    thesis:"Dedicated to Q: one green-table roulette wheel where the current MLB slate gets dealt as chips — sharp side, public pressure, top dog, total watch, and best EV all pulled from the board.",
     legs:[
-      {n:"01", name:"NY Yankees to Win (@ BOS)",              pct:62, ev:4.0,  odds:"-148"},
-      {n:"02", name:"Cam Schlittler 7+ Strikeouts",           pct:38, ev:9.0,  odds:"+145"},
-      {n:"03", name:"Ben Rice 3+ Hits + Runs + RBIs",         pct:30, ev:11.5, odds:"+250"},
-      {n:"04", name:"Paul Goldschmidt 2+ Total Bases",        pct:58, ev:5.0,  odds:"-125"}
+      {n:"01", name:"Will Warren 8+ K's",          pct:18, ev:2.6, odds:"+600"},
+      {n:"02", name:"J.T. Ginn 7+ K's",            pct:20, ev:2.2, odds:"+520"},
+      {n:"03", name:"LAD/SD O 10 Runs",            pct:21, ev:1.9, odds:"+480"},
+      {n:"04", name:"Rafael Devers O 0.5 HR's",    pct:19, ev:2.0, odds:"+500"},
+      {n:"05", name:"Roki Sasaki 8+ K's",          pct:19, ev:2.4, odds:"+580"}
     ],
-    odds:"+2450", ret:"$10 to $255", ev:"+8.6%",
+    odds:"+600", ret:"$10 to $70", ev:"Longshot Board",
     metrics:[
-      {lbl:"PUBLIC EXP", val:"81%",   cls:"red"},
-      {lbl:"HIT RATE",   val:"3.9%",  cls:""},
-      {lbl:"FAIR ODDS",  val:"+3800", cls:"accent"},
-      {lbl:"EDGE",       val:"+7%",   cls:"green"}
+      {lbl:"PUBLIC EXP", val:"64%",   cls:"red"},
+      {lbl:"HIT RATE",   val:"33.1%", cls:""},
+      {lbl:"FAIR ODDS",  val:"+230",  cls:"accent"},
+      {lbl:"EDGE",       val:"+3%",   cls:"green"}
     ],
-    warn:"Team Parlay — Correlated Outcome"
+    warn:"Q's Green Table — Pick a chip, spin the wheel"
   },
   {
     label:"HOT TABLE · HIGH RISK BUILDER", badge:"Q's LONGSHOT ROULETTE",
-    kicker:"METS LONGSHOT BUILDER · VS CHC · EXTREME RISK",
-    headline:"NY Mets Longshot Roulette",
+    kicker:"LONGSHOT HIT BUILDER · EXTREME RISK",
+    headline:"MLB Longshot Hit Roulette",
     theme:"risk",
-    thesis:"Four Mets-correlated legs stacked for max variance — anchored by Soto's longshot home-run prop. High risk, high payout: built for the contrarian chasing the big multiplier, not the safe single.",
+    thesis:"Four more 1+ Hit props off the same screenshot board — Rodriguez, Diaz, Ward, and Jung stacked together for the contrarian chasing the bigger combined multiplier.",
     legs:[
-      {n:"01", name:"NY Mets to Win (vs CHC)",   pct:55, ev:3.5, odds:"-108"},
-      {n:"02", name:"Juan Soto 1+ Home Run",     pct:28, ev:8.5, odds:"+300"},
-      {n:"03", name:"Bo Bichette 1+ Hit",        pct:80, ev:2.0, odds:"-350"},
-      {n:"04", name:"Francisco Lindor 1+ Hit",   pct:78, ev:2.3, odds:"-320"}
+      {n:"01", name:"Julio Rodriguez 1+ Hit",   pct:81, ev:1.7, odds:"-380"},
+      {n:"02", name:"Yandy Diaz 1+ Hit",        pct:75, ev:2.2, odds:"-270"},
+      {n:"03", name:"Taylor Ward 1+ Hit",       pct:73, ev:2.6, odds:"-240"},
+      {n:"04", name:"Josh Jung 1+ Hit",         pct:72, ev:2.8, odds:"-230"}
     ],
-    odds:"+1200", ret:"$10 to $130", ev:"+5.4%",
+    odds:"+250", ret:"$10 to $35", ev:"+4.6%",
     metrics:[
-      {lbl:"PUBLIC EXP", val:"68%",   cls:"red"},
-      {lbl:"HIT RATE",   val:"7.7%",  cls:""},
-      {lbl:"FAIR ODDS",  val:"+1600", cls:"accent"},
-      {lbl:"EDGE",       val:"+5%",   cls:"green"}
+      {lbl:"PUBLIC EXP", val:"59%",   cls:"red"},
+      {lbl:"HIT RATE",   val:"28.4%", cls:""},
+      {lbl:"FAIR ODDS",  val:"+280",  cls:"accent"},
+      {lbl:"EDGE",       val:"+4%",   cls:"green"}
     ],
     warn:"Longshot — High Variance Outcome"
   }
@@ -7983,6 +8020,1290 @@ initSpinFeeds();
 .ls-wrap.ls-risk .ls-odds-panel.ls-pulse{ animation:lsRiskPayoutPulse .8s ease-out !important; }
 .ls-wrap.ls-risk .ls-dust{ background:#ff8fc0 !important; box-shadow:0 0 5px rgba(232,84,106,.7) !important; }
 </style>
+
+
+
+<style id="q-mlb-market-refresh-v1">
+/* =========================================================
+   MLB MARKET REFRESH — live hero, grid atmosphere, Q table
+   ========================================================= */
+body{
+  background:
+    linear-gradient(rgba(255,255,255,.024) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.020) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,.007) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.007) 1px, transparent 1px),
+    radial-gradient(720px 470px at 16% 18%, rgba(244,185,66,.082), transparent 66%),
+    radial-gradient(760px 520px at 84% 12%, rgba(96,165,250,.070), transparent 64%),
+    radial-gradient(860px 620px at 48% 86%, rgba(34,197,94,.052), transparent 68%),
+    linear-gradient(180deg, rgba(10,14,20,.94) 0%, rgba(5,8,13,.98) 55%, #03060a 100%) !important;
+  background-size:96px 96px,96px 96px,24px 24px,24px 24px,auto,auto,auto,auto !important;
+}
+body::after{
+  content:'';
+  position:fixed;
+  inset:88px 0 auto 0;
+  height:420px;
+  pointer-events:none;
+  z-index:1;
+  opacity:.32;
+  background:
+    linear-gradient(30deg, transparent 0 47%, rgba(255,255,255,.050) 48% 49%, transparent 50% 100%),
+    linear-gradient(-30deg, transparent 0 47%, rgba(255,255,255,.045) 48% 49%, transparent 50% 100%),
+    radial-gradient(ellipse 460px 220px at 50% 40%, rgba(244,185,66,.055), transparent 70%);
+  mask-image:linear-gradient(to bottom, transparent, #000 18%, #000 70%, transparent);
+}
+.q-hero-market{
+  position:relative;
+  z-index:2;
+  grid-template-columns:minmax(0,1.02fr) minmax(420px,.98fr) !important;
+  gap:44px !important;
+  padding-top:148px !important;
+  padding-bottom:34px !important;
+}
+.q-hero-market::before{
+  content:'';
+  position:absolute;
+  left:48px;
+  right:48px;
+  top:112px;
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(244,185,66,.22), rgba(255,255,255,.12), rgba(96,165,250,.18), transparent);
+  opacity:.78;
+}
+.q-hero-left{
+  min-height:530px;
+  padding:8px 0 0;
+}
+.q-hero-left::before{
+  content:'';
+  position:absolute;
+  width:310px;
+  height:310px;
+  right:28px;
+  top:78px;
+  opacity:.16;
+  transform:rotate(45deg);
+  border:1px solid rgba(255,255,255,.12);
+  background:
+    linear-gradient(90deg, transparent 49%, rgba(255,255,255,.12) 50%, transparent 51%),
+    linear-gradient(0deg, transparent 49%, rgba(255,255,255,.10) 50%, transparent 51%);
+  box-shadow:0 0 60px rgba(244,185,66,.10), inset 0 0 60px rgba(96,165,250,.06);
+  pointer-events:none;
+}
+.q-hero-left::after{
+  content:'';
+  position:absolute;
+  left:-42px;
+  bottom:78px;
+  width:590px;
+  height:110px;
+  opacity:.24;
+  pointer-events:none;
+  background:repeating-linear-gradient(90deg, rgba(255,255,255,.12) 0 1px, transparent 1px 29px);
+  mask-image:linear-gradient(90deg, transparent, #000 12%, #000 78%, transparent);
+  animation:qTapeDrift 16s linear infinite;
+}
+@keyframes qTapeDrift{from{transform:translateX(0)}to{transform:translateX(-58px)}}
+.q-market-badge{
+  border-color:rgba(244,185,66,.28) !important;
+  background:linear-gradient(90deg, rgba(244,185,66,.09), rgba(34,197,94,.055)) !important;
+  color:#f7d170 !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07), 0 0 24px rgba(244,185,66,.08);
+}
+.q-market-title{
+  font-size:clamp(48px,6.8vw,92px) !important;
+  line-height:.92 !important;
+  letter-spacing:-.062em !important;
+  text-shadow:0 18px 46px rgba(0,0,0,.34);
+}
+.q-market-title .gold-line{
+  background:linear-gradient(92deg,#f0ece4 0%,#fff2b8 14%,#e4a72e 34%,#5be18e 56%,#89c5ff 78%,#f0ece4 100%);
+  background-size:230% auto;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:transparent;
+  animation:qTitleFlow 5.8s ease-in-out infinite;
+}
+@keyframes qTitleFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.q-market-sub{
+  max-width:650px !important;
+  color:rgba(218,229,238,.62) !important;
+  font-size:1.02rem !important;
+}
+.q-hero-command-rail{
+  margin-top:22px;
+  max-width:660px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:12px 16px;
+  border:1px solid rgba(255,255,255,.085);
+  border-radius:999px;
+  background:linear-gradient(90deg, rgba(255,255,255,.045), rgba(34,197,94,.035), rgba(96,165,250,.025));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+  font-family:'DM Mono',monospace;
+  font-size:.56rem;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  color:rgba(205,221,234,.54);
+  overflow:hidden;
+  position:relative;
+}
+.q-hero-command-rail::after{
+  content:'';
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:-30%;
+  width:28%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
+  transform:skewX(-16deg);
+  animation:qRailSweep 4.2s ease-in-out infinite;
+}
+@keyframes qRailSweep{0%,42%{left:-32%}72%,100%{left:110%}}
+.q-rail-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 10px rgba(34,197,94,.85);flex-shrink:0;animation:pulse 1.6s ease infinite}
+.q-rail-sep{width:1px;height:13px;background:rgba(255,255,255,.13);flex-shrink:0}
+.q-hero-stat-row{
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:12px !important;
+  margin-top:24px !important;
+  max-width:780px;
+}
+.q-hero-stat-card{
+  padding:15px 15px 14px !important;
+  min-height:124px;
+  border-color:rgba(255,255,255,.092) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.018) 36%, rgba(3,7,12,.70)),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.025) 0 1px, transparent 1px 18px) !important;
+}
+.q-hero-stat-card .hero-stat-value{
+  font-size:clamp(1.55rem,2.2vw,2.1rem) !important;
+  letter-spacing:-.045em;
+  white-space:nowrap;
+}
+.q-stat-sub{
+  margin-top:8px;
+  font-family:'DM Mono',monospace;
+  font-size:.48rem;
+  letter-spacing:.06em;
+  color:rgba(141,160,179,.64);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.q-hero-value-prop{
+  max-width:650px !important;
+  border-color:rgba(244,185,66,.15) !important;
+  background:linear-gradient(90deg,rgba(244,185,66,.06),rgba(255,255,255,.024),rgba(34,197,94,.04)) !important;
+}
+.q-consensus-board{
+  min-height:560px;
+  border-radius:28px !important;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse 680px 420px at 80% 0%, rgba(96,165,250,.10), transparent 65%),
+    radial-gradient(ellipse 620px 420px at 8% 90%, rgba(34,197,94,.095), transparent 67%),
+    linear-gradient(155deg, rgba(255,255,255,.066) 0%, rgba(255,255,255,.021) 32%, rgba(4,8,14,.95) 100%) !important;
+  border:1px solid rgba(255,255,255,.12) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.11), 0 28px 72px rgba(0,0,0,.34), 0 0 0 1px rgba(244,185,66,.035) !important;
+}
+.q-consensus-board::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  opacity:.14;
+  pointer-events:none;
+  background:
+    linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+  background-size:54px 54px;
+  mask-image:radial-gradient(ellipse 86% 70% at 50% 38%, #000 24%, transparent 84%);
+}
+.q-consensus-board::after{
+  opacity:.028 !important;
+}
+.q-consensus-inner{
+  position:relative;
+  z-index:2;
+  padding:24px 28px 26px;
+}
+.q-consensus-scan{
+  position:absolute;
+  top:-20%;
+  bottom:-20%;
+  left:-12%;
+  width:24%;
+  z-index:1;
+  pointer-events:none;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.10), rgba(96,165,250,.055), transparent);
+  filter:blur(.2px);
+  transform:skewX(-15deg);
+  animation:qScanBoard 6.8s ease-in-out infinite;
+  opacity:.8;
+}
+@keyframes qScanBoard{0%,28%{left:-28%}58%,100%{left:112%}}
+.q-consensus-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+  padding-bottom:18px;
+  border-bottom:1px solid rgba(255,255,255,.095);
+  margin-bottom:8px;
+}
+.q-consensus-kicker{font-family:'DM Mono',monospace;font-size:.55rem;font-weight:800;letter-spacing:.20em;text-transform:uppercase;color:#6680a5;margin-bottom:4px}
+.q-consensus-title{font-family:'Inter',sans-serif;font-size:1.9rem;font-weight:900;letter-spacing:-.045em;color:#f0ece4;line-height:1}
+.q-consensus-sub{font-family:'DM Sans',sans-serif;font-size:.72rem;color:rgba(157,175,194,.54);margin-top:7px}
+.q-board-badge{font-size:.6rem!important;border-radius:12px!important;padding:9px 13px!important;background:rgba(248,113,113,.105)!important;color:#ff9292!important;box-shadow:0 0 22px rgba(248,113,113,.10);white-space:nowrap}
+.q-board-badge.sharp{background:rgba(167,139,250,.14)!important;color:#bda7ff!important;border-color:rgba(167,139,250,.34)!important;box-shadow:0 0 22px rgba(167,139,250,.14)}
+.q-board-badge.total{background:rgba(96,165,250,.13)!important;color:#89c5ff!important;border-color:rgba(96,165,250,.32)!important;box-shadow:0 0 22px rgba(96,165,250,.13)}
+.q-board-badge.balanced{background:rgba(34,197,94,.12)!important;color:#6ee7a0!important;border-color:rgba(34,197,94,.32)!important;box-shadow:0 0 22px rgba(34,197,94,.13)}
+.q-board-row{
+  min-height:88px;
+  margin:0 -12px !important;
+  padding:16px 12px !important;
+  border-bottom:1px solid rgba(255,255,255,.065) !important;
+  background:linear-gradient(90deg,rgba(255,255,255,.022),transparent 62%);
+}
+.q-board-row:hover{background:linear-gradient(90deg,rgba(255,255,255,.050),rgba(255,255,255,.016) 70%)!important;transform:translateX(3px)!important}
+.q-row-main{min-width:0;}
+.q-board-row .lg-meta{font-family:'DM Mono',monospace;font-size:.56rem!important;color:#6982a9!important;letter-spacing:.18em!important;margin-bottom:5px!important}
+.q-board-row .lg-val{font-family:'Inter',sans-serif;font-size:1.25rem!important;font-weight:900!important;line-height:1.08;color:#f4f0e8!important;white-space:normal!important}
+.q-source{font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.05em;color:rgba(141,160,179,.56);margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:320px}
+.q-row-metric{display:flex;align-items:flex-end;flex-direction:column;gap:4px;flex-shrink:0}
+.q-row-metric .lg-pct{font-size:2.2rem!important;color:#22c55e!important;line-height:.92;text-shadow:0 0 24px rgba(34,197,94,.20)}
+.q-row-odds{font-family:'DM Mono',monospace;font-size:.62rem;color:#8da0b3;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.075);border-radius:8px;padding:3px 7px}
+.q-splitbar{height:7px!important;margin:-3px 0 7px!important;background:rgba(255,255,255,.055)!important}
+.q-split-labels{margin:0 0 10px!important;font-size:.56rem!important;color:#7086a3!important}
+.q-signalbar{height:6px!important;margin:-3px 0 9px!important;background:rgba(255,255,255,.055)!important}
+.q-ev-pill{font-size:.78rem!important;border-radius:10px!important;padding:8px 13px!important;color:#43e889!important;background:rgba(34,197,94,.14)!important}
+.q-steam-tag{font-family:'Inter',sans-serif;font-size:1.25rem;font-weight:900;color:#60a5fa;text-shadow:0 0 20px rgba(96,165,250,.34);white-space:nowrap}
+.q-sharp-tag{font-family:'Inter',sans-serif;font-size:1.12rem;font-weight:900;color:#b197ff;text-shadow:0 0 18px rgba(167,139,250,.36);white-space:nowrap}
+
+/* Q's roulette: one green casino table, explicitly dedicated to Q */
+#mlbContainer .ls-wrap + .ls-wrap{display:none!important;}
+#mlbContainer .ls-wrap{
+  position:relative;
+  margin-top:14px!important;
+  margin-bottom:58px!important;
+}
+#mlbContainer .ls-wrap::before{
+  content:"Q'S CLOSING LINE CASINO";
+  display:block;
+  max-width:1400px;
+  margin:0 auto 12px;
+  padding:12px 18px;
+  border-radius:16px;
+  border:1px solid rgba(34,197,94,.22);
+  background:
+    linear-gradient(90deg, rgba(34,197,94,.12), rgba(244,185,66,.07), rgba(255,255,255,.025)),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.045) 0 1px, transparent 1px 22px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 18px 40px rgba(0,0,0,.22);
+  font-family:'DM Mono',monospace;
+  font-size:.68rem;
+  font-weight:900;
+  letter-spacing:.22em;
+  color:#86efac;
+  text-shadow:0 0 16px rgba(34,197,94,.34);
+}
+#mlbContainer .ls-label-row{
+  margin-top:2px!important;
+  padding:0 2px!important;
+}
+#mlbContainer .ls-label{
+  color:#86efac!important;
+  font-family:'DM Mono',monospace!important;
+  letter-spacing:.16em!important;
+}
+#mlbContainer .ls-q-banner{
+  transform:translateY(-1px);
+}
+#mlbContainer .ls-card{
+  border-radius:26px!important;
+  border:1px solid rgba(34,197,94,.42)!important;
+  background:
+    radial-gradient(ellipse 900px 520px at 50% 20%, rgba(34,197,94,.17), transparent 66%),
+    radial-gradient(ellipse 700px 420px at 50% 100%, rgba(244,185,66,.09), transparent 68%),
+    linear-gradient(160deg, rgba(7,29,18,.88), rgba(3,9,8,.96))!important;
+}
+#mlbContainer .ls-card::before{
+  content:"Q";
+  position:absolute;
+  right:22px;
+  top:18px;
+  z-index:1;
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Inter',sans-serif;
+  font-size:1.25rem;
+  font-weight:900;
+  color:#07100b;
+  background:linear-gradient(135deg,#fff4b6,#f4b942 55%,#86efac);
+  box-shadow:0 0 22px rgba(244,185,66,.20), inset 0 1px 0 rgba(255,255,255,.42);
+}
+#mlbContainer .ls-thesis-line{
+  max-width:900px;
+  color:rgba(191,232,204,.70)!important;
+}
+#mlbContainer .ls-odds-panel{
+  min-width:220px!important;
+  background:linear-gradient(160deg,rgba(34,197,94,.11),rgba(0,0,0,.22))!important;
+}
+#mlbContainer .ls-odds-panel::before{
+  content:'BEST TICKET';
+  display:block;
+  font-family:'DM Mono',monospace;
+  font-size:.44rem;
+  letter-spacing:.16em;
+  color:#86efac;
+  margin-bottom:4px;
+}
+#mlbContainer .ls-mini-disclaimer::after{
+  content:' · Q table keeps the roulette wheel, trims the duplicate board, and lets this section stand on its own.';
+  color:rgba(134,239,172,.66);
+}
+@media(max-width:1100px){
+  .q-hero-market{grid-template-columns:1fr!important;padding-top:132px!important;}
+  .q-hero-left{min-height:auto;}
+  .q-consensus-board{min-height:auto;}
+}
+@media(max-width:760px){
+  .q-hero-market{padding-left:18px!important;padding-right:18px!important;}
+  .q-hero-stat-row{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  .q-hero-command-rail{border-radius:18px;flex-wrap:wrap;}
+  .q-market-title{font-size:clamp(2.8rem,16vw,4.4rem)!important;}
+  .q-consensus-inner{padding:20px 18px;}
+  .q-consensus-header{flex-direction:column;align-items:flex-start;}
+  .q-board-row{align-items:flex-start!important;gap:12px!important;}
+  .q-board-row .lg-val{font-size:1.08rem!important;}
+  .q-row-metric .lg-pct{font-size:1.75rem!important;}
+  .q-source{max-width:210px;}
+  #mlbContainer .ls-wrap::before{font-size:.52rem;letter-spacing:.16em;margin-left:16px;margin-right:16px;}
+}
+@media(max-width:480px){
+  .q-hero-stat-row{grid-template-columns:1fr!important;}
+  .q-steam-tag,.q-sharp-tag{font-size:.96rem;}
+}
+</style>
+
+<script id="q-mlb-market-refresh-v1-script">
+(function(){
+  function num(v){
+    if(v === null || v === undefined) return null;
+    var n = parseFloat(String(v).replace(/[^0-9+.-]/g,''));
+    return isNaN(n) ? null : n;
+  }
+  function pctClamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+  function implied(odds){
+    var n=num(odds); if(n===null) return 0;
+    return n < 0 ? Math.abs(n)/(Math.abs(n)+100) : 100/(n+100);
+  }
+  function fmtOdds(odds){
+    var n=num(odds); if(n===null) return odds || '--';
+    return n>0 ? '+'+n : String(n);
+  }
+  function evNum(v){
+    var n=num(v); return n===null ? -999 : n;
+  }
+  function edgePrice(g){
+    if(typeof edgeOdds === 'function') return edgeOdds(g);
+    if(!g.edgeType || !g.edgeLabel) return null;
+    var home = g.homeAbbr && g.edgeLabel.indexOf(g.homeAbbr)===0;
+    if(g.edgeType==='ml') return home ? g.mlHome : g.mlAway;
+    if(g.edgeType==='spread') return home ? g.spreadHomeJuice : g.spreadAwayJuice;
+    if(g.edgeType==='total') return /^O/i.test(g.edgeLabel) ? g.totalOverJuice : g.totalUnderJuice;
+    return null;
+  }
+  function setText(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; }
+  function setWidth(id,v){ var el=document.getElementById(id); if(el) el.style.width=pctClamp(v,0,100).toFixed(0)+'%'; }
+  function updateSlateClock(){
+    var el=document.getElementById('qHeroSlateTime');
+    if(!el) return;
+    var d=new Date();
+    el.textContent='Last scan '+d.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
+  }
+  function derive(games){
+    games = (games || []).filter(Boolean);
+    var spreadCandidates=[];
+    games.forEach(function(g){
+      if(g.spreadAway && g.spreadAwayJuice) spreadCandidates.push({g:g, team:g.awayAbbr, label:g.awayAbbr+' '+g.spreadAway, odds:g.spreadAwayJuice, imp:implied(g.spreadAwayJuice)});
+      if(g.spreadHome && g.spreadHomeJuice) spreadCandidates.push({g:g, team:g.homeAbbr, label:g.homeAbbr+' '+g.spreadHome, odds:g.spreadHomeJuice, imp:implied(g.spreadHomeJuice)});
+    });
+    var mostSpread = spreadCandidates.sort(function(a,b){return b.imp-a.imp;})[0] || null;
+    var publicPct = mostSpread ? Math.round(pctClamp(48 + mostSpread.imp*42, 55, 84)) : 50;
+
+    var edges = games.filter(function(g){ return g.edgeType && g.edgeType !== 'fade' && g.edgeLabel && evNum(g.edgeEV) > -100; });
+    var sharp = edges.sort(function(a,b){ return evNum(b.edgeEV)-evNum(a.edgeEV); })[0] || games[0] || null;
+
+    var totals = games.filter(function(g){ return num(g.total)!==null; }).sort(function(a,b){ return num(b.total)-num(a.total); });
+    var highTotal = totals[0] || null;
+    var totalOverImp = highTotal ? implied(highTotal.totalOverJuice) : 0;
+    var totalUnderImp = highTotal ? implied(highTotal.totalUnderJuice) : 0;
+    var totalSide = totalOverImp >= totalUnderImp ? 'Over' : 'Under';
+    var totalJuice = highTotal ? (totalOverImp >= totalUnderImp ? highTotal.totalOverJuice : highTotal.totalUnderJuice) : null;
+    var totalPct = highTotal ? Math.round(pctClamp(Math.max(totalOverImp,totalUnderImp)*100,50,82)) : 50;
+
+    var dogCandidates=[];
+    games.forEach(function(g){
+      if(num(g.mlAway)>0) dogCandidates.push({g:g, team:g.awayAbbr, label:g.awayAbbr+' '+fmtOdds(g.mlAway)+' ML', odds:g.mlAway, imp:implied(g.mlAway)});
+      if(num(g.mlHome)>0) dogCandidates.push({g:g, team:g.homeAbbr, label:g.homeAbbr+' '+fmtOdds(g.mlHome)+' ML', odds:g.mlHome, imp:implied(g.mlHome)});
+    });
+    var dog = dogCandidates.sort(function(a,b){ return num(b.odds)-num(a.odds); })[0] || null;
+
+    var badge='PUBLIC HEAVY', badgeClass='';
+    if(sharp && evNum(sharp.edgeEV) >= 1.8){ badge='SHARP EDGE'; badgeClass='sharp'; }
+    if(highTotal && num(highTotal.total) >= 9.5){ badge='TOTAL STEAM'; badgeClass='total'; }
+    if(publicPct < 62){ badge='BALANCED BOARD'; badgeClass='balanced'; }
+
+    return {mostSpread:mostSpread, publicPct:publicPct, sharp:sharp, highTotal:highTotal, totalSide:totalSide, totalJuice:totalJuice, totalPct:totalPct, dog:dog, badge:badge, badgeClass:badgeClass, games:games};
+  }
+  function refresh(){
+    var games = (typeof MLB_GAMES !== 'undefined') ? MLB_GAMES : [];
+    var d=derive(games);
+
+    setText('qStatGames', String(d.games.length));
+    setText('qStatGamesSub', d.games.length ? 'current MLB cards' : 'waiting on slate');
+    if(d.sharp){
+      setText('qStatBestEV', evNum(d.sharp.edgeEV)>-100 ? ((evNum(d.sharp.edgeEV)>=0?'+':'')+evNum(d.sharp.edgeEV).toFixed(1)+'%') : '--');
+      setText('qStatBestEVSub', d.sharp.edgeLabel || 'shortopen call');
+    }
+    if(d.highTotal){
+      setText('qStatHighTotal', String(d.highTotal.total));
+      setText('qStatHighTotalSub', d.highTotal.awayAbbr+' @ '+d.highTotal.homeAbbr);
+    }
+    if(d.dog){
+      setText('qStatDogML', fmtOdds(d.dog.odds));
+      setText('qStatDogMLSub', d.dog.team+' moneyline');
+    } else {
+      setText('qStatDogML','--'); setText('qStatDogMLSub','no plus ML');
+    }
+
+    if(d.mostSpread){
+      setText('qMostBetSpread', d.mostSpread.label);
+      setText('qMostBetSpreadSrc', d.mostSpread.g.awayAbbr+' @ '+d.mostSpread.g.homeAbbr+' · '+(d.mostSpread.g.time||'live'));
+      setText('qMostBetPct', d.publicPct+'%');
+      setText('qMostBetOdds', fmtOdds(d.mostSpread.odds));
+      setWidth('qPublicBar', d.publicPct);
+      setWidth('qSharpPublicBar', 100-d.publicPct);
+      setText('qPublicLabel', 'Public '+d.publicPct+'%');
+      setText('qSharpLabel', 'Sharp '+(100-d.publicPct)+'%');
+    }
+
+    if(d.sharp){
+      var price=edgePrice(d.sharp);
+      setText('qSharpSide', d.sharp.edgeLabel + (price ? ' '+fmtOdds(price) : ''));
+      setText('qSharpSideSrc', d.sharp.awayAbbr+' @ '+d.sharp.homeAbbr+' · '+(d.sharp.time||'live'));
+      setText('qSharpEV', evNum(d.sharp.edgeEV)>-100 ? ((evNum(d.sharp.edgeEV)>=0?'+':'')+evNum(d.sharp.edgeEV).toFixed(1)+'% EV') : '+EV');
+      setWidth('qSharpSignalBar', pctClamp(52 + Math.max(0,evNum(d.sharp.edgeEV))*12, 54, 90));
+    }
+
+    if(d.highTotal){
+      setText('qTotalMove', d.totalSide+' '+d.highTotal.total+' ('+d.highTotal.awayAbbr+'/'+d.highTotal.homeAbbr+')');
+      setText('qTotalMoveSrc', fmtOdds(d.totalJuice)+' · '+(d.highTotal.time||'live')+' first pitch');
+      setText('qTotalSteam', (d.totalSide==='Over' ? '↑ Over Steam' : '↓ Under Steam'));
+      setWidth('qTotalBar', pctClamp(d.totalPct, 52, 86));
+    }
+
+    if(d.dog){
+      setText('qRLM', d.dog.label);
+      setText('qRLMSrc', d.dog.g.awayAbbr+' @ '+d.dog.g.homeAbbr+' · plus-money watch');
+      setText('qRLMTag', num(d.dog.odds)>=140 ? 'Sharp Dog' : 'Dog Value');
+      setWidth('qRLMBar', pctClamp(48 + implied(d.dog.odds)*65, 50, 82));
+    }
+
+    var badge=document.getElementById('qConsensusBadge');
+    if(badge){
+      badge.textContent=d.badge;
+      badge.classList.remove('sharp','total','balanced');
+      if(d.badgeClass) badge.classList.add(d.badgeClass);
+    }
+    updateSlateClock();
+  }
+  function tuneRoulette(){
+    var wraps=document.querySelectorAll('#mlbContainer .ls-wrap');
+    wraps.forEach(function(w,i){ if(i>0){ w.remove(); } });
+    var first=document.querySelector('#mlbContainer .ls-wrap');
+    if(!first) return;
+    var label=first.querySelector('.ls-label');
+    if(label) label.textContent="Q'S TABLE · CLOSING LINE CASINO";
+    first.querySelectorAll('.ls-q-text').forEach(function(el){
+      if(/MLB Contact Roulette Props|Q's Closing Line Casino|Q's ROULETTE/i.test(el.textContent||'')){
+        el.textContent = el.closest('.ls-placard') ? "Q's ROULETTE" : "Q's Closing Line Casino";
+      }
+    });
+    var dealer=first.querySelector('.ls-dealer-call');
+    if(dealer) dealer.textContent='Q is dealing…';
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', function(){ refresh(); tuneRoulette(); setTimeout(function(){refresh(); tuneRoulette();}, 120); });
+  }else{
+    refresh(); tuneRoulette(); setTimeout(function(){refresh(); tuneRoulette();}, 120);
+  }
+})();
+</script>
+
+
+<style id="q-closing-table-v2">
+/* ────────────────────────────────────────────────────────────────
+   Q's Closing Table v2 — casino terminal + live-chip layout
+   Keeps the original roulette wheel, turns the surrounding space into a
+   green felt board where MLB market signals get dealt as clickable chips.
+   ──────────────────────────────────────────────────────────────── */
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  background:
+    linear-gradient(rgba(255,255,255,.026) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px),
+    linear-gradient(120deg, transparent 0 45%, rgba(244,185,66,.018) 46% 47%, transparent 48% 100%);
+  background-size:92px 92px,92px 92px,380px 380px;
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,.85), rgba(0,0,0,.44) 52%, rgba(0,0,0,.18));
+  opacity:.58;
+}
+.q-market-title .gold-line{
+  background:linear-gradient(90deg,#f0ece4 0%,#f4b942 32%,#86efac 62%,#60a5fa 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 18px rgba(244,185,66,.16));
+}
+.q-hero-value-prop{max-width:720px!important;color:rgba(240,236,228,.76)!important;}
+.q-hero-value-prop .hero-value-prop-dot{color:#86efac!important;}
+#mlbContainer .ls-wrap:first-of-type{
+  position:relative;
+  border-radius:30px!important;
+  padding:22px!important;
+  margin-top:36px!important;
+  background:
+    radial-gradient(900px 420px at 30% 8%,rgba(34,197,94,.14),transparent 62%),
+    radial-gradient(620px 460px at 92% 42%,rgba(244,185,66,.12),transparent 64%),
+    linear-gradient(160deg,rgba(5,29,18,.95),rgba(4,10,12,.94) 54%,rgba(6,8,12,.98))!important;
+  border:1px solid rgba(134,239,172,.22)!important;
+  box-shadow:0 34px 100px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,255,255,.08), 0 0 70px rgba(34,197,94,.06)!important;
+  overflow:hidden;
+}
+#mlbContainer .ls-wrap:first-of-type::before{
+  content:''!important;
+  position:absolute!important;
+  inset:0!important;
+  pointer-events:none!important;
+  background:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px),
+    radial-gradient(360px 220px at 26% 50%,rgba(134,239,172,.08),transparent 70%)!important;
+  background-size:54px 54px,54px 54px,auto!important;
+  opacity:.58!important;
+  border-radius:inherit!important;
+}
+#mlbContainer .ls-wrap:first-of-type::after{
+  content:'Q\2019S PRIVATE GREEN TABLE';
+  position:absolute;
+  top:18px;
+  right:22px;
+  font-family:'DM Mono',monospace;
+  font-size:.5rem;
+  font-weight:800;
+  letter-spacing:.18em;
+  color:rgba(134,239,172,.46);
+  pointer-events:none;
+}
+#mlbContainer .ls-wrap:first-of-type .ls-label-row{
+  position:relative;z-index:2;
+  margin-bottom:18px!important;
+  background:linear-gradient(90deg,rgba(0,0,0,.32),rgba(34,197,94,.08),rgba(0,0,0,.12));
+  border:1px solid rgba(134,239,172,.18);
+  border-radius:18px;
+  padding:10px 16px!important;
+}
+#mlbContainer .ls-wrap:first-of-type .ls-label{
+  color:#c9f7d9!important;
+  letter-spacing:.18em!important;
+}
+#mlbContainer .ls-wrap:first-of-type .ls-placard{
+  background:linear-gradient(135deg,rgba(34,197,94,.24),rgba(244,185,66,.16))!important;
+  border-color:rgba(134,239,172,.35)!important;
+  box-shadow:0 0 26px rgba(34,197,94,.14), inset 0 1px 0 rgba(255,255,255,.16)!important;
+}
+#mlbContainer .ls-wrap:first-of-type .ls-card{
+  position:relative;z-index:2;
+  border-radius:26px!important;
+  background:
+    radial-gradient(ellipse 70% 42% at 27% 48%,rgba(8,70,35,.34),transparent 67%),
+    linear-gradient(160deg,rgba(0,0,0,.22),rgba(255,255,255,.035) 42%,rgba(0,0,0,.30))!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09), 0 22px 58px rgba(0,0,0,.32)!important;
+}
+#mlbContainer .ls-wrap:first-of-type .ls-hero-zone{
+  display:grid!important;
+  grid-template-columns:minmax(310px,430px) minmax(0,1fr)!important;
+  gap:24px!important;
+  align-items:stretch!important;
+  padding:24px!important;
+}
+#mlbContainer .ls-wrap:first-of-type .ls-chip-rail{display:none!important;}
+#mlbContainer .ls-wrap:first-of-type .ls-wheel-panel{
+  min-height:430px!important;
+  width:100%!important;
+  align-self:stretch!important;
+  border-radius:28px!important;
+  background:
+    radial-gradient(circle at 50% 45%,rgba(134,239,172,.16),transparent 54%),
+    linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.42))!important;
+  border:1px solid rgba(134,239,172,.14)!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.03), 0 18px 56px rgba(0,0,0,.32)!important;
+}
+#mlbContainer .ls-wrap:first-of-type .ls-wheel-track{
+  filter:drop-shadow(0 28px 34px rgba(0,0,0,.45)) drop-shadow(0 0 28px rgba(34,197,94,.12));
+}
+.q-closing-terminal{
+  position:relative;
+  overflow:hidden;
+  min-height:430px;
+  border-radius:28px;
+  padding:20px;
+  background:
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
+    radial-gradient(520px 220px at 18% 12%,rgba(244,185,66,.13),transparent 62%),
+    linear-gradient(155deg,rgba(5,24,15,.88),rgba(7,11,14,.86) 52%,rgba(3,6,8,.94));
+  background-size:42px 42px,42px 42px,auto,auto;
+  border:1px solid rgba(134,239,172,.18);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 18px 50px rgba(0,0,0,.28);
+}
+.q-closing-terminal::before{
+  content:'';
+  position:absolute;
+  inset:-40% -20%;
+  background:linear-gradient(110deg,transparent 34%,rgba(255,255,255,.07) 48%,transparent 62%);
+  transform:translateX(-60%) rotate(6deg);
+  animation:qTerminalSweep 7s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes qTerminalSweep{0%,54%{transform:translateX(-64%) rotate(6deg);opacity:0}62%{opacity:.8}100%{transform:translateX(58%) rotate(6deg);opacity:0}}
+.q-terminal-top,.q-terminal-body,.q-terminal-footer{position:relative;z-index:2;}
+.q-terminal-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+  padding-bottom:14px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  margin-bottom:14px;
+}
+.q-terminal-kicker{
+  font-family:'DM Mono',monospace;
+  font-size:.54rem;
+  font-weight:800;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:#86efac;
+  margin-bottom:7px;
+}
+.q-terminal-title{
+  font-family:'Inter',sans-serif;
+  font-weight:900;
+  font-size:clamp(1.3rem,2.4vw,2.05rem);
+  line-height:1;
+  color:#f0ece4;
+  letter-spacing:-.04em;
+}
+.q-terminal-title span{color:#f4b942;}
+.q-terminal-sub{
+  max-width:490px;
+  margin-top:10px;
+  font-size:.78rem;
+  line-height:1.65;
+  color:rgba(211,231,220,.64);
+}
+.q-terminal-badge{
+  flex-shrink:0;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 12px;
+  border-radius:999px;
+  font-family:'DM Mono',monospace;
+  font-size:.52rem;
+  font-weight:800;
+  letter-spacing:.13em;
+  color:#06140c;
+  background:linear-gradient(135deg,#86efac,#f4b942);
+  box-shadow:0 0 24px rgba(134,239,172,.16);
+}
+.q-terminal-body{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 240px;
+  gap:16px;
+  align-items:stretch;
+}
+.q-chip-felt{
+  position:relative;
+  border-radius:22px;
+  padding:14px;
+  min-height:230px;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(134,239,172,.10),transparent 56%),
+    linear-gradient(180deg,rgba(10,68,34,.30),rgba(0,0,0,.20));
+  border:1px solid rgba(134,239,172,.16);
+}
+.q-chip-felt::before{
+  content:'PLACE CHIPS HERE';
+  position:absolute;
+  top:50%;left:50%;transform:translate(-50%,-50%) rotate(-8deg);
+  font-family:'Inter',sans-serif;
+  font-size:2.2rem;
+  font-weight:900;
+  letter-spacing:.05em;
+  color:rgba(255,255,255,.026);
+  pointer-events:none;
+  white-space:nowrap;
+}
+.q-chip-felt-label{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+  font-family:'DM Mono',monospace;
+  font-size:.52rem;
+  font-weight:800;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:#86efac;
+}
+.q-chip-drop-zone{
+  position:relative;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+.q-chip-drop-zone .ls-leg{
+  min-height:74px!important;
+  width:100%!important;
+  display:grid!important;
+  grid-template-columns:42px minmax(0,1fr) auto!important;
+  grid-template-areas:'num name odds' 'num meta odds'!important;
+  align-items:center!important;
+  gap:4px 10px!important;
+  padding:11px 12px!important;
+  border-radius:999px 22px 22px 999px!important;
+  background:
+    radial-gradient(circle at 20px 50%,rgba(255,255,255,.16),transparent 36px),
+    linear-gradient(135deg,rgba(134,239,172,.18),rgba(10,20,14,.80) 54%,rgba(0,0,0,.34))!important;
+  border:1px solid rgba(134,239,172,.22)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.11), 0 10px 24px rgba(0,0,0,.24)!important;
+  transform:translateY(0);
+}
+.q-chip-drop-zone .ls-leg:hover,
+.q-chip-drop-zone .ls-leg.active{
+  transform:translateY(-3px) rotate(-.5deg)!important;
+  border-color:rgba(244,185,66,.54)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 0 0 1px rgba(244,185,66,.20),0 16px 32px rgba(0,0,0,.28),0 0 30px rgba(34,197,94,.12)!important;
+}
+.q-chip-drop-zone .ls-leg-n{
+  grid-area:num!important;
+  width:36px!important;height:36px!important;
+  border-radius:50%!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  background:radial-gradient(circle at 35% 30%,#fff8c7,#f4b942 55%,#8b5c12)!important;
+  color:#06120a!important;
+  border:2px dashed rgba(6,18,10,.52)!important;
+  box-shadow:0 0 0 4px rgba(244,185,66,.14), inset 0 1px 0 rgba(255,255,255,.7)!important;
+}
+.q-chip-drop-zone .ls-leg-name{
+  grid-area:name!important;
+  font-family:'Inter',sans-serif!important;
+  font-size:.78rem!important;
+  font-weight:900!important;
+  line-height:1.05!important;
+  color:#f0ece4!important;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.q-chip-drop-zone .ls-leg-suit{
+  grid-area:meta!important;
+  font-family:'DM Mono',monospace!important;
+  font-size:.5rem!important;
+  font-weight:800!important;
+  letter-spacing:.12em!important;
+  text-transform:uppercase!important;
+  color:rgba(134,239,172,.76)!important;
+}
+.q-chip-drop-zone .ls-leg-odds{
+  grid-area:odds!important;
+  font-family:'DM Mono',monospace!important;
+  font-size:.74rem!important;
+  font-weight:900!important;
+  color:#86efac!important;
+  background:rgba(0,0,0,.26)!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  padding:5px 8px!important;
+  border-radius:10px!important;
+}
+.q-ticket-panel{
+  border-radius:22px;
+  padding:14px;
+  background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(0,0,0,.20));
+  border:1px solid rgba(255,255,255,.10);
+}
+.q-ticket-head{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding-bottom:11px;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08);
+  font-family:'DM Mono',monospace;font-size:.52rem;font-weight:800;letter-spacing:.14em;color:#f4b942;text-transform:uppercase;
+}
+.q-ticket-list{display:grid;gap:8px;}
+.q-ticket-row{
+  display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  padding:8px 9px;border-radius:12px;
+  background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.06);
+}
+.q-ticket-row b{font-family:'Inter',sans-serif;font-size:.68rem;color:#f0ece4;line-height:1.15;}
+.q-ticket-row span{font-family:'DM Mono',monospace;font-size:.58rem;color:#86efac;white-space:nowrap;}
+.q-risk-dial{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08);}
+.q-risk-title{font-family:'DM Mono',monospace;font-size:.5rem;font-weight:800;letter-spacing:.14em;color:rgba(211,231,220,.54);text-transform:uppercase;margin-bottom:8px;}
+.q-risk-track{height:7px;border-radius:999px;background:linear-gradient(90deg,#22c55e,#f4b942,#f87171);position:relative;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);}
+.q-risk-knob{position:absolute;top:50%;left:46%;width:16px;height:16px;border-radius:50%;transform:translate(-50%,-50%);background:#f0ece4;box-shadow:0 0 14px rgba(255,255,255,.35);}
+.q-terminal-footer{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:14px;
+}
+.q-terminal-mini{
+  padding:10px 11px;border-radius:15px;
+  background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.07);
+}
+.q-terminal-mini span{display:block;font-family:'DM Mono',monospace;font-size:.46rem;font-weight:800;letter-spacing:.14em;color:rgba(211,231,220,.46);text-transform:uppercase;margin-bottom:4px;}
+.q-terminal-mini b{display:block;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:900;color:#f0ece4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#mlbContainer .ls-wrap:first-of-type .ls-info{
+  padding:0 24px 24px!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(280px,390px)!important;
+  gap:18px!important;
+  align-items:stretch!important;
+}
+#mlbContainer .ls-wrap:first-of-type .ls-thesis-line{
+  margin:0!important;
+  padding:17px 18px!important;
+  border-radius:18px!important;
+  background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(0,0,0,.18))!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  color:rgba(211,231,220,.72)!important;
+}
+#mlbContainer .ls-wrap:first-of-type .ls-action-row{
+  margin:0!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 150px!important;
+  gap:12px!important;
+}
+#mlbContainer .ls-wrap:first-of-type .ls-mini-disclaimer{grid-column:1/-1!important;}
+#mlbContainer .ls-wrap:first-of-type .ls-odds-panel::before{content:'Q\2019S TICKET'!important;}
+#mlbContainer .ls-wrap:first-of-type .ls-mini-disclaimer::after{content:' · Q\2019s table uses board-derived signals as chips. No sportsbook is endorsed; take the number wherever you already trust.'!important;}
+@media(max-width:1160px){
+  #mlbContainer .ls-wrap:first-of-type .ls-hero-zone{grid-template-columns:1fr!important;}
+  .q-terminal-body{grid-template-columns:1fr!important;}
+  #mlbContainer .ls-wrap:first-of-type .ls-info{grid-template-columns:1fr!important;}
+}
+@media(max-width:680px){
+  #mlbContainer .ls-wrap:first-of-type{padding:14px!important;border-radius:22px!important;}
+  #mlbContainer .ls-wrap:first-of-type::after{display:none;}
+  #mlbContainer .ls-wrap:first-of-type .ls-hero-zone{padding:14px!important;gap:14px!important;}
+  #mlbContainer .ls-wrap:first-of-type .ls-wheel-panel{min-height:340px!important;}
+  .q-terminal-top{flex-direction:column;}
+  .q-chip-drop-zone{grid-template-columns:1fr!important;}
+  .q-terminal-footer{grid-template-columns:1fr!important;}
+  #mlbContainer .ls-wrap:first-of-type .ls-info{padding:0 14px 14px!important;}
+  #mlbContainer .ls-wrap:first-of-type .ls-action-row{grid-template-columns:1fr!important;}
+}
+</style>
+
+<script id="q-closing-table-v2-script">
+(function(){
+  function num(v){
+    if(v===null || v===undefined) return null;
+    var n=parseFloat(String(v).replace(/[^0-9+.-]/g,''));
+    return isNaN(n) ? null : n;
+  }
+  function clamp(v,min,max){ return Math.max(min,Math.min(max,v)); }
+  function implied(odds){
+    var n=num(odds); if(n===null) return 0;
+    return n<0 ? Math.abs(n)/(Math.abs(n)+100) : 100/(n+100);
+  }
+  function fmtOdds(odds){
+    var n=num(odds); if(n===null) return odds || '--';
+    return n>0 ? '+'+n : String(n);
+  }
+  function evNum(v){ var n=num(v); return n===null ? -999 : n; }
+  function setText(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; }
+  function setWidth(id,v){ var el=document.getElementById(id); if(el) el.style.width=clamp(v,0,100).toFixed(0)+'%'; }
+  function edgePrice(g){
+    if(typeof edgeOdds === 'function') return edgeOdds(g);
+    if(!g || !g.edgeType || !g.edgeLabel) return null;
+    var home = g.homeAbbr && g.edgeLabel.indexOf(g.homeAbbr)===0;
+    if(g.edgeType==='ml') return home ? g.mlHome : g.mlAway;
+    if(g.edgeType==='spread') return home ? g.spreadHomeJuice : g.spreadAwayJuice;
+    if(g.edgeType==='total') return /^O/i.test(g.edgeLabel) ? g.totalOverJuice : g.totalUnderJuice;
+    return null;
+  }
+  function derive(games){
+    games=(games||[]).filter(Boolean);
+    var spreadCandidates=[];
+    games.forEach(function(g){
+      if(g.spreadAway && g.spreadAwayJuice) spreadCandidates.push({g:g, side:'away', team:g.awayAbbr, label:g.awayAbbr+' '+g.spreadAway, odds:g.spreadAwayJuice, imp:implied(g.spreadAwayJuice)});
+      if(g.spreadHome && g.spreadHomeJuice) spreadCandidates.push({g:g, side:'home', team:g.homeAbbr, label:g.homeAbbr+' '+g.spreadHome, odds:g.spreadHomeJuice, imp:implied(g.spreadHomeJuice)});
+    });
+    var mostSpread=spreadCandidates.sort(function(a,b){return b.imp-a.imp;})[0] || null;
+    var publicPct=mostSpread ? Math.round(clamp(48 + mostSpread.imp*42,55,84)) : 50;
+    var edges=games.filter(function(g){return g.edgeType && g.edgeType!=='fade' && g.edgeLabel && evNum(g.edgeEV)>-100;});
+    var sortedEdges=edges.slice().sort(function(a,b){return evNum(b.edgeEV)-evNum(a.edgeEV);});
+    var sharp=sortedEdges[0] || games[0] || null;
+    var nextSharp=sortedEdges[1] || sortedEdges[0] || sharp;
+    var totals=games.filter(function(g){return num(g.total)!==null;}).sort(function(a,b){return num(b.total)-num(a.total);});
+    var highTotal=totals[0] || null;
+    var totalOverImp=highTotal ? implied(highTotal.totalOverJuice) : 0;
+    var totalUnderImp=highTotal ? implied(highTotal.totalUnderJuice) : 0;
+    var totalSide=totalOverImp >= totalUnderImp ? 'Over' : 'Under';
+    var totalJuice=highTotal ? (totalOverImp >= totalUnderImp ? highTotal.totalOverJuice : highTotal.totalUnderJuice) : null;
+    var totalPct=highTotal ? Math.round(clamp(Math.max(totalOverImp,totalUnderImp)*100,50,82)) : 50;
+    var dogs=[];
+    games.forEach(function(g){
+      if(num(g.mlAway)>0) dogs.push({g:g, team:g.awayAbbr, label:g.awayAbbr+' '+fmtOdds(g.mlAway)+' ML', odds:g.mlAway, imp:implied(g.mlAway)});
+      if(num(g.mlHome)>0) dogs.push({g:g, team:g.homeAbbr, label:g.homeAbbr+' '+fmtOdds(g.mlHome)+' ML', odds:g.mlHome, imp:implied(g.mlHome)});
+    });
+    var dog=dogs.sort(function(a,b){return num(b.odds)-num(a.odds);})[0] || null;
+    var badge='PUBLIC HEAVY', badgeClass='';
+    if(sharp && evNum(sharp.edgeEV)>=1.8){ badge='SHARP EDGE'; badgeClass='sharp'; }
+    if(highTotal && num(highTotal.total)>=9.5){ badge='TOTAL STEAM'; badgeClass='total'; }
+    if(publicPct<62){ badge='BALANCED BOARD'; badgeClass='balanced'; }
+    return {games:games, mostSpread:mostSpread, publicPct:publicPct, sharp:sharp, nextSharp:nextSharp, highTotal:highTotal, totalSide:totalSide, totalJuice:totalJuice, totalPct:totalPct, dog:dog, badge:badge, badgeClass:badgeClass};
+  }
+  function signalDeck(d){
+    var sig=[];
+    if(d.sharp){
+      sig.push({kind:'BEST EV', name:(d.sharp.edgeLabel||'Model Call')+' '+fmtOdds(edgePrice(d.sharp)), pct:clamp(58+Math.max(0,evNum(d.sharp.edgeEV))*10,58,82), ev:Math.max(.5,evNum(d.sharp.edgeEV)), odds:edgePrice(d.sharp)||'', note:(d.sharp.awayAbbr+' @ '+d.sharp.homeAbbr), short:d.sharp.edgeLabel||'Best EV'});
+    }
+    if(d.nextSharp){
+      sig.push({kind:'SHARP SIDE', name:(d.nextSharp.edgeLabel||'Sharp Side')+' '+fmtOdds(edgePrice(d.nextSharp)), pct:clamp(57+Math.max(0,evNum(d.nextSharp.edgeEV))*9,57,80), ev:Math.max(.4,evNum(d.nextSharp.edgeEV)), odds:edgePrice(d.nextSharp)||'', note:(d.nextSharp.awayAbbr+' @ '+d.nextSharp.homeAbbr), short:d.nextSharp.edgeLabel||'Sharp'});
+    }
+    if(d.mostSpread){
+      sig.push({kind:'PUBLIC FADE', name:d.mostSpread.label+' '+fmtOdds(d.mostSpread.odds), pct:d.publicPct, ev:1.2, odds:d.mostSpread.odds, note:d.mostSpread.g.awayAbbr+' @ '+d.mostSpread.g.homeAbbr, short:d.mostSpread.label});
+    }
+    if(d.highTotal){
+      sig.push({kind:'TOTAL WATCH', name:d.totalSide+' '+d.highTotal.total+' '+d.highTotal.awayAbbr+'/'+d.highTotal.homeAbbr, pct:d.totalPct, ev:1.1, odds:d.totalJuice, note:fmtOdds(d.totalJuice)+' juice · '+(d.highTotal.time||'live'), short:d.totalSide+' '+d.highTotal.total});
+    }
+    if(d.dog){
+      sig.push({kind:'TOP DOG ML', name:d.dog.label, pct:Math.round(clamp(implied(d.dog.odds)*100,25,48)), ev:2.0, odds:d.dog.odds, note:d.dog.g.awayAbbr+' @ '+d.dog.g.homeAbbr, short:d.dog.label});
+    }
+    return sig.slice(0,5);
+  }
+  function refreshHeroAndConsensus(){
+    var games=(typeof MLB_GAMES!=='undefined') ? MLB_GAMES : [];
+    var d=derive(games);
+    setText('qStatGames', String(d.games.length));
+    setText('qStatGamesSub', d.games.length ? 'current MLB cards' : 'waiting on slate');
+    if(d.sharp){
+      setText('qStatBestEV', evNum(d.sharp.edgeEV)>-100 ? ((evNum(d.sharp.edgeEV)>=0?'+':'')+evNum(d.sharp.edgeEV).toFixed(1)+'%') : '--');
+      setText('qStatBestEVSub', d.sharp.edgeLabel || 'shortopen call');
+    }
+    if(d.highTotal){ setText('qStatHighTotal', String(d.highTotal.total)); setText('qStatHighTotalSub', d.highTotal.awayAbbr+' @ '+d.highTotal.homeAbbr); }
+    if(d.dog){ setText('qStatDogML', fmtOdds(d.dog.odds)); setText('qStatDogMLSub', d.dog.team+' moneyline'); }
+    if(d.mostSpread){
+      setText('qMostBetSpread', d.mostSpread.label); setText('qMostBetSpreadSrc', d.mostSpread.g.awayAbbr+' @ '+d.mostSpread.g.homeAbbr+' · '+(d.mostSpread.g.time||'live'));
+      setText('qMostBetPct', d.publicPct+'%'); setText('qMostBetOdds', fmtOdds(d.mostSpread.odds));
+      setWidth('qPublicBar', d.publicPct); setWidth('qSharpPublicBar', 100-d.publicPct);
+      setText('qPublicLabel','Public '+d.publicPct+'%'); setText('qSharpLabel','Sharp '+(100-d.publicPct)+'%');
+    }
+    if(d.sharp){
+      var price=edgePrice(d.sharp); setText('qSharpSide', d.sharp.edgeLabel+(price?' '+fmtOdds(price):''));
+      setText('qSharpSideSrc', d.sharp.awayAbbr+' @ '+d.sharp.homeAbbr+' · '+(d.sharp.time||'live'));
+      setText('qSharpEV', evNum(d.sharp.edgeEV)>-100 ? ((evNum(d.sharp.edgeEV)>=0?'+':'')+evNum(d.sharp.edgeEV).toFixed(1)+'% EV') : '+EV');
+      setWidth('qSharpSignalBar', clamp(52+Math.max(0,evNum(d.sharp.edgeEV))*12,54,90));
+    }
+    if(d.highTotal){
+      setText('qTotalMove', d.totalSide+' '+d.highTotal.total+' ('+d.highTotal.awayAbbr+'/'+d.highTotal.homeAbbr+')');
+      setText('qTotalMoveSrc', fmtOdds(d.totalJuice)+' · '+(d.highTotal.time||'live')+' first pitch');
+      setText('qTotalSteam', d.totalSide==='Over'?'↑ Over Steam':'↓ Under Steam');
+      setWidth('qTotalBar', clamp(d.totalPct,52,86));
+    }
+    if(d.dog){
+      setText('qRLM', d.dog.label); setText('qRLMSrc', d.dog.g.awayAbbr+' @ '+d.dog.g.homeAbbr+' · plus-money watch');
+      setText('qRLMTag', num(d.dog.odds)>=140?'Sharp Dog':'Dog Value'); setWidth('qRLMBar', clamp(48+implied(d.dog.odds)*65,50,82));
+    }
+    var badge=document.getElementById('qConsensusBadge');
+    if(badge){ badge.textContent=d.badge; badge.classList.remove('sharp','total','balanced'); if(d.badgeClass) badge.classList.add(d.badgeClass); }
+    var clock=document.getElementById('qHeroSlateTime');
+    if(clock){ var now=new Date(); clock.textContent='Last scan '+now.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'}); }
+    return d;
+  }
+  function tuneClosingTable(){
+    var games=(typeof MLB_GAMES!=='undefined') ? MLB_GAMES : [];
+    var d=derive(games);
+    var wraps=document.querySelectorAll('#mlbContainer .ls-wrap');
+    wraps.forEach(function(w,i){ if(i>0) w.remove(); });
+    var wrap=document.querySelector('#mlbContainer .ls-wrap');
+    if(!wrap) return;
+    var label=wrap.querySelector('.ls-label'); if(label) label.textContent="Q'S CLOSING TABLE · BEST ODDS CHIP RACK";
+    wrap.querySelectorAll('.ls-q-text').forEach(function(el){
+      if(el.closest('.ls-placard')) el.textContent="Q's TABLE";
+      else if(/Roulette|Casino|Closing/i.test(el.textContent||'')) el.textContent="Q's Closing Table";
+    });
+    var thesis=wrap.querySelector('.ls-thesis-line');
+    if(thesis) thesis.textContent="Dedicated to Q: the roulette wheel stays center stage while the chip rack deals tonight’s best board prices as clickable rectangular casino chips.";
+    var dealer=wrap.querySelector('.ls-dealer-call'); if(dealer) dealer.textContent='Q is loading longshots…';
+    var heroZone=wrap.querySelector('.ls-hero-zone');
+    var wheel=wrap.querySelector('.ls-wheel-panel');
+    if(!heroZone || !wheel) return;
+
+    var propShots=[
+      {player:'Ben Rice', market:'1.5+ Total Bases', odds:'+350', tag:'VALUE', short:'Ben Rice 1.5+ Total Bases'},
+      {player:'Gerrit Cole', market:"8+ K's", odds:'+450', tag:'LONGSHOT', short:"Gerrit Cole 8+ K's"},
+      {player:'Jack Perkins', market:"7+ K's", odds:'+800', tag:'LONGSHOT', short:"Jack Perkins 7+ K's"},
+      {player:'Rafael Devers', market:'1.5+ Total Bases', odds:'+280', tag:'SHARP', short:'Rafael Devers 1.5+ Total Bases'},
+      {player:'Tyler Soderstrom', market:'O 0.5 HR', odds:'+275', tag:'SHARP', short:'Tyler Soderstrom O 0.5 HR'}
+    ];
+
+    var terminal=wrap.querySelector('.q-closing-terminal');
+    if(terminal && terminal.dataset.qRackBuilt === '1'){
+      return;
+    }
+    if(!terminal){
+      terminal=document.createElement('div');
+      terminal.className='q-closing-terminal';
+      heroZone.appendChild(terminal);
+    }
+    var cardCount=propShots.length;
+    terminal.innerHTML='<div class="q-terminal-top">'
+      +'<div><div class="q-terminal-kicker">Q\'S DEALER TERMINAL</div><div class="q-terminal-title">Place the <span>Board Chips</span></div>'
+      +'<div class="q-terminal-sub">Five live prop lines from tonight’s board, each dealt as a chip. Tap any chip to spin a payout preview on the wheel. Take your number and place it at your sportsbook — shortopen doesn’t book bets.</div></div>'
+      +'<div class="q-terminal-badge">● LIVE FELT</div></div>'
+      +'<div class="q-terminal-body"><div class="q-chip-felt"><div class="q-chip-felt-label"><span>Chip Rack</span><span>'+cardCount+' longshots</span></div><div class="q-chip-drop-zone"></div></div>'
+      +'<div class="q-ticket-panel"><div class="q-ticket-head"><span>Q\'s Ticket</span><span id="qTicketCount">'+cardCount+'</span></div><div class="q-ticket-list" id="qTicketList"></div><div class="q-risk-dial"><div class="q-risk-title">Risk Dial · Longshot</div><div class="q-risk-track"><i class="q-risk-knob" style="left:72%"></i></div></div></div></div>'
+      +'<div class="q-terminal-footer"><div class="q-terminal-mini"><span>Longest Shot</span><b id="qMiniLongest">+600</b></div><div class="q-terminal-mini"><span>Board Range</span><b id="qMiniRange">+480 · +600</b></div><div class="q-terminal-mini"><span>Spin Pool</span><b id="qMiniPool">'+cardCount+' board props</b></div></div>';
+
+    var zone=terminal.querySelector('.q-chip-drop-zone');
+    var legs=Array.from(wrap.querySelectorAll('.ls-leg-click'));
+    var usable=Math.min(propShots.length, legs.length || propShots.length);
+    zone.innerHTML='';
+    var used=[];
+    for(var i=0;i<usable;i++){
+      var s=propShots[i];
+      var leg=legs[i];
+      if(!leg) continue;
+      leg.classList.add('ls-prop-chip','q-rect-chip');
+      leg.setAttribute('data-pct', String(12+i));
+      leg.setAttribute('data-ev', '0');
+      leg.setAttribute('data-odds', s.odds);
+      leg.setAttribute('data-name', s.short);
+      leg.setAttribute('data-chip-tag', s.tag || 'LONGSHOT');
+      var n=leg.querySelector('.ls-leg-n b') || leg.querySelector('.ls-leg-n'); if(n) n.textContent=s.tag || String(i+1).padStart(2,'0');
+      var name=leg.querySelector('.ls-leg-name'); if(name) name.textContent=s.player;
+      var suit=leg.querySelector('.ls-leg-suit'); if(suit) suit.textContent=s.market;
+      var odds=leg.querySelector('.ls-leg-odds'); if(odds) odds.textContent=s.odds;
+      zone.appendChild(leg);
+      used.push(s);
+    }
+    legs.slice(usable).forEach(function(el){ if(el.parentNode) el.parentNode.removeChild(el); });
+
+    terminal.dataset.qRackBuilt = '1';
+
+    var ticket=terminal.querySelector('#qTicketList');
+    if(ticket){
+      ticket.innerHTML=used.map(function(s){
+        var n=parseFloat(String(s.odds).replace(/[^0-9+.-]/g,''));
+        var imp=n>0 ? (100/(n+100)*100) : (Math.abs(n)/(Math.abs(n)+100)*100);
+        var impRound=imp.toFixed(1);
+        var barW=Math.min(Math.max(imp*1.8,6),92);
+        var tag=(s.tag||'LONGSHOT').toLowerCase();
+        return '<div class="q-ticket-row q-ticket-tag-'+tag+'">'
+          +'<div class="q-ticket-left">'
+          +'<b>'+s.player+'</b>'
+          +'<em>'+s.market+'</em>'
+          +'<div class="q-ticket-bar-wrap"><div class="q-ticket-bar" style="width:'+barW+'%"></div><span>'+impRound+'% implied</span></div>'
+          +'</div>'
+          +'<div class="q-ticket-odds-badge">'+s.odds+'</div>'
+          +'</div>';
+      }).join('');
+    }
+
+    var longest=terminal.querySelector('#qMiniLongest'); if(longest) longest.textContent='+800';
+    var range=terminal.querySelector('#qMiniRange'); if(range) range.textContent='+275 · +800';
+    var pool=terminal.querySelector('#qMiniPool'); if(pool) pool.textContent=used.length+' board props';
+
+    var oddsPanel=wrap.querySelector('.ls-odds-panel .ls-odds-val'); if(oddsPanel && used[0]) oddsPanel.textContent=used[0].odds;
+    var ret=wrap.querySelector('.ls-return'); if(ret) ret.textContent='Tap a chip to spin the table';
+    var ev=wrap.querySelector('.ls-ev'); if(ev) ev.textContent='Longshot Board';
+
+    // auto-select the first longshot so the center immediately shows a payout preview
+    setTimeout(function(){
+      var first=zone.querySelector('.ls-leg-click');
+      if(first) first.click();
+    }, 180);
+  }
+  function run(){ refreshHeroAndConsensus(); tuneClosingTable(); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', run);
+  else run();
+})();
+</script>
+
+
+<style id="q-final-hero-longshot-refresh">
+body .q-market-title .gold-line{
+  background:linear-gradient(92deg,#f0ece4 0%, #f6d286 16%, #d59a2a 36%, #7e93b8 63%, #32486e 82%, #dfe8f5 100%) !important;
+  background-size:220% auto !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+  color:transparent !important;
+  filter:drop-shadow(0 0 16px rgba(213,154,42,.18)) !important;
+  animation:qGoldNavyFlow 6.2s ease-in-out infinite !important;
+}
+@keyframes qGoldNavyFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+#mlbContainer .q-terminal-sub{max-width:640px;}
+#mlbContainer .q-chip-felt::before{content:'CHIP RACK' !important;font-size:2rem !important;letter-spacing:.14em !important;}
+#mlbContainer .q-chip-felt-label{color:#f3d07b !important;}
+#mlbContainer .q-ticket-head{color:#f5c84a !important;}
+#mlbContainer .q-ticket-row span{color:#b07c10 !important;}
+</style>
+
+
+<style id="q-chip-rack-rectangular-build-20260626">
+/* Q table chip rack — dealer plaque chips + clickable ticket rows */
+#mlbContainer .q-terminal-body{grid-template-columns:minmax(0,1fr) 250px!important;gap:16px!important;align-items:stretch!important;}
+#mlbContainer .q-chip-felt{min-height:390px!important;padding:16px 18px 20px!important;border-radius:22px!important;background:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px),radial-gradient(520px 260px at 50% 18%,rgba(34,197,94,.12),transparent 64%),linear-gradient(180deg,rgba(9,54,27,.30),rgba(2,8,7,.36))!important;background-size:44px 44px,44px 44px,auto,auto!important;border:1px solid rgba(244,185,66,.18)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 0 45px rgba(0,0,0,.22)!important;overflow:hidden!important;}
+#mlbContainer .q-chip-felt::before{content:'SHORTOPEN'!important;top:54%!important;left:50%!important;transform:translate(-50%,-50%) rotate(-8deg)!important;font-size:3.5rem!important;letter-spacing:.12em!important;color:rgba(255,255,255,.020)!important;}
+#mlbContainer .q-chip-felt-label{margin-bottom:16px!important;color:#f4de9b!important;font-size:.52rem!important;letter-spacing:.16em!important;}
+#mlbContainer .q-chip-drop-zone{position:relative!important;display:grid!important;grid-template-columns:repeat(2,minmax(220px,1fr))!important;grid-auto-rows:auto!important;gap:22px 26px!important;align-items:start!important;justify-items:center!important;padding:10px clamp(10px,2.4vw,44px) 18px!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip{width:100%!important;max-width:320px!important;height:94px!important;min-height:94px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:0!important;padding:22px 18px 10px!important;border-radius:15px!important;position:relative!important;isolation:isolate!important;overflow:hidden!important;cursor:pointer!important;background-image:repeating-linear-gradient(180deg,rgba(34,197,94,.36) 0 6px,rgba(2,8,6,.64) 6px 12px),repeating-linear-gradient(180deg,rgba(34,197,94,.36) 0 6px,rgba(2,8,6,.64) 6px 12px),repeating-linear-gradient(90deg,rgba(244,185,66,.44) 0 7px,rgba(255,255,255,.04) 7px 13px,transparent 13px 19px),radial-gradient(ellipse 72% 72% at 50% 66%,rgba(34,197,94,.24),transparent 70%),linear-gradient(180deg,#102118 0%,#06120d 52%,#030907 100%)!important;background-size:12px 100%,12px 100%,calc(100% - 34px) 7px,100% 100%,100% 100%!important;background-position:left center,right center,center 8px,center,center!important;background-repeat:no-repeat!important;border:1px solid rgba(244,213,105,.54)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(0,0,0,.62),0 12px 26px rgba(0,0,0,.48),0 0 0 1px rgba(2,8,5,.80)!important;transform:translateY(0)!important;transition:transform .18s ease,filter .18s ease,border-color .18s ease,box-shadow .18s ease!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip:nth-child(5){grid-column:1 / -1!important;width:clamp(245px,52%,335px)!important;max-width:335px!important;justify-self:center!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip[data-chip-tag="LONGSHOT"]{background-image:repeating-linear-gradient(180deg,rgba(210,62,48,.38) 0 6px,rgba(10,4,4,.66) 6px 12px),repeating-linear-gradient(180deg,rgba(210,62,48,.38) 0 6px,rgba(10,4,4,.66) 6px 12px),repeating-linear-gradient(90deg,rgba(244,185,66,.44) 0 7px,rgba(255,255,255,.04) 7px 13px,transparent 13px 19px),radial-gradient(ellipse 72% 72% at 50% 66%,rgba(140,25,22,.34),transparent 70%),linear-gradient(180deg,#23100d 0%,#130706 52%,#080302 100%)!important;background-size:12px 100%,12px 100%,calc(100% - 34px) 7px,100% 100%,100% 100%!important;background-position:left center,right center,center 8px,center,center!important;background-repeat:no-repeat!important;border-color:rgba(204,82,65,.58)!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip[data-chip-tag="SHARP"]{background-image:repeating-linear-gradient(180deg,rgba(74,120,225,.38) 0 6px,rgba(3,6,17,.66) 6px 12px),repeating-linear-gradient(180deg,rgba(74,120,225,.38) 0 6px,rgba(3,6,17,.66) 6px 12px),repeating-linear-gradient(90deg,rgba(244,185,66,.44) 0 7px,rgba(255,255,255,.04) 7px 13px,transparent 13px 19px),radial-gradient(ellipse 72% 72% at 50% 66%,rgba(42,82,190,.32),transparent 70%),linear-gradient(180deg,#081126 0%,#040918 52%,#020510 100%)!important;background-size:12px 100%,12px 100%,calc(100% - 34px) 7px,100% 100%,100% 100%!important;background-position:left center,right center,center 8px,center,center!important;background-repeat:no-repeat!important;border-color:rgba(86,132,225,.58)!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip[data-chip-tag="VALUE"]{background-image:repeating-linear-gradient(180deg,rgba(36,178,82,.40) 0 6px,rgba(2,10,5,.66) 6px 12px),repeating-linear-gradient(180deg,rgba(36,178,82,.40) 0 6px,rgba(2,10,5,.66) 6px 12px),repeating-linear-gradient(90deg,rgba(244,185,66,.44) 0 7px,rgba(255,255,255,.04) 7px 13px,transparent 13px 19px),radial-gradient(ellipse 72% 72% at 50% 66%,rgba(28,128,58,.28),transparent 70%),linear-gradient(180deg,#0a1d11 0%,#06120a 52%,#030906 100%)!important;background-size:12px 100%,12px 100%,calc(100% - 34px) 7px,100% 100%,100% 100%!important;background-position:left center,right center,center 8px,center,center!important;background-repeat:no-repeat!important;border-color:rgba(52,190,92,.54)!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip::before{content:''!important;position:absolute!important;inset:7px 18px 8px!important;border-radius:10px!important;z-index:0!important;pointer-events:none!important;border:1px solid rgba(244,213,120,.16)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 0 18px rgba(0,0,0,.32)!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip::after{content:''!important;position:absolute!important;inset:0 18px auto!important;height:45%!important;border-radius:0 0 999px 999px / 0 0 60% 60%!important;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.025) 68%,transparent)!important;z-index:1!important;pointer-events:none!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip:hover,#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip.active{transform:translateY(-5px) scale(1.012)!important;filter:brightness(1.08)!important;border-color:rgba(255,229,90,.92)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.30),inset 0 -1px 0 rgba(0,0,0,.48),0 18px 34px rgba(0,0,0,.56),0 0 0 1px rgba(255,215,70,.24),0 0 32px rgba(244,185,66,.12)!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-n{position:absolute!important;top:5px!important;left:50%!important;transform:translateX(-50%)!important;width:auto!important;height:auto!important;min-width:58px!important;padding:3px 10px!important;border-radius:999px!important;display:flex!important;align-items:center!important;justify-content:center!important;background:rgba(4,9,8,.90)!important;border:1px solid rgba(244,213,120,.28)!important;box-shadow:0 1px 6px rgba(0,0,0,.55)!important;z-index:5!important;color:#86efac!important;font-family:'DM Mono',monospace!important;font-size:.38rem!important;font-weight:900!important;letter-spacing:.18em!important;line-height:1!important;text-transform:uppercase!important;white-space:nowrap!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-n b{font:inherit!important;color:inherit!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip[data-chip-tag="LONGSHOT"] .ls-leg-n{color:#fca5a5!important;border-color:rgba(248,113,113,.28)!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip[data-chip-tag="SHARP"] .ls-leg-n{color:#93c5fd!important;border-color:rgba(96,165,250,.30)!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip[data-chip-tag="VALUE"] .ls-leg-n{color:#86efac!important;border-color:rgba(74,222,128,.30)!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-name,#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-suit,#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-odds{position:relative!important;z-index:3!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-name{order:1!important;display:block!important;width:100%!important;margin:0!important;padding:0 14px!important;font-family:'DM Mono',monospace!important;font-size:.83rem!important;font-weight:900!important;line-height:1.08!important;letter-spacing:-.02em!important;color:#f2eddf!important;text-align:center!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;text-shadow:0 1px 5px rgba(0,0,0,.72)!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-name::before,#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-name::after{content:''!important;position:absolute!important;top:50%!important;width:18px!important;height:1px!important;background:linear-gradient(90deg,transparent,rgba(244,185,66,.36))!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-name::before{left:0!important;transform:translateY(-50%)!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-name::after{right:0!important;transform:translateY(-50%) rotate(180deg)!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-suit{order:2!important;display:block!important;width:100%!important;margin:3px 0 0!important;padding:0 16px!important;font-family:'Inter',sans-serif!important;font-size:.60rem!important;font-weight:700!important;line-height:1!important;letter-spacing:.02em!important;color:rgba(211,231,220,.46)!important;text-align:center!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-odds{order:3!important;display:block!important;margin:8px 0 0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;font-family:'DM Mono',monospace!important;font-size:1.08rem!important;font-weight:900!important;line-height:1!important;color:#86efac!important;text-align:center!important;letter-spacing:.02em!important;text-shadow:0 0 20px rgba(34,197,94,.42),0 1px 5px rgba(0,0,0,.72)!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip[data-chip-tag="LONGSHOT"] .ls-leg-odds{color:#fca5a5!important;text-shadow:0 0 20px rgba(248,80,80,.42),0 1px 5px rgba(0,0,0,.72)!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip[data-chip-tag="SHARP"] .ls-leg-odds{color:#93c5fd!important;text-shadow:0 0 20px rgba(96,165,250,.42),0 1px 5px rgba(0,0,0,.72)!important;}
+#mlbContainer .q-ticket-panel{border-radius:15px!important;padding:0!important;background:radial-gradient(220px 80px at 50% 0%,rgba(34,197,94,.055),transparent 68%),linear-gradient(180deg,rgba(12,38,22,.95),rgba(5,14,10,.98))!important;border:1px solid rgba(34,197,94,.14)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 8px 24px rgba(0,0,0,.34)!important;overflow:hidden!important;}
+#mlbContainer .q-ticket-head{display:flex!important;align-items:center!important;justify-content:space-between!important;padding:10px 13px 9px!important;border-bottom:1px solid rgba(34,197,94,.10)!important;color:#f4de9b!important;font-family:'DM Mono',monospace!important;font-size:.50rem!important;font-weight:800!important;letter-spacing:.14em!important;text-transform:uppercase!important;}
+#mlbContainer .q-ticket-head span:last-child{background:rgba(34,197,94,.10)!important;color:#86efac!important;border:1px solid rgba(34,197,94,.20)!important;border-radius:999px!important;padding:2px 7px!important;font-size:.44rem!important;}
+#mlbContainer .q-ticket-list{display:flex!important;flex-direction:column!important;gap:5px!important;padding:8px!important;}
+#mlbContainer .q-ticket-row{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;min-height:51px!important;padding:8px 10px!important;border-radius:10px!important;background:rgba(255,255,255,.030)!important;border:1px solid rgba(255,255,255,.055)!important;cursor:pointer!important;transition:transform .16s ease,border-color .16s ease,background .16s ease,box-shadow .16s ease!important;}
+#mlbContainer .q-ticket-row:hover,#mlbContainer .q-ticket-row.is-active{transform:translateX(-2px)!important;border-color:rgba(244,185,66,.32)!important;background:rgba(244,185,66,.055)!important;box-shadow:0 0 18px rgba(244,185,66,.08)!important;}
+#mlbContainer .q-ticket-row.q-ticket-tag-longshot{border-color:rgba(220,60,60,.17)!important;background:rgba(180,30,30,.052)!important;}
+#mlbContainer .q-ticket-row.q-ticket-tag-sharp{border-color:rgba(60,100,220,.17)!important;background:rgba(30,60,180,.052)!important;}
+#mlbContainer .q-ticket-row.q-ticket-tag-value{border-color:rgba(34,197,94,.17)!important;background:rgba(20,120,50,.052)!important;}
+#mlbContainer .q-ticket-row.q-ticket-tag-dog{border-color:rgba(167,139,250,.18)!important;background:rgba(88,54,165,.052)!important;}
+#mlbContainer .q-ticket-row.q-parlay-row{border-color:rgba(244,185,66,.30)!important;background:rgba(244,185,66,.07)!important;margin-top:2px!important;}
+#mlbContainer .q-ticket-left{display:flex!important;flex-direction:column!important;gap:2px!important;min-width:0!important;flex:1!important;}
+#mlbContainer .q-ticket-left b{font-family:'Inter',sans-serif!important;font-size:.68rem!important;font-weight:800!important;color:#d4e8cf!important;line-height:1.2!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+#mlbContainer .q-ticket-left em{font-style:normal!important;font-family:'DM Sans',sans-serif!important;font-size:.58rem!important;color:rgba(211,231,220,.50)!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+#mlbContainer .q-ticket-bar-wrap{display:flex!important;align-items:center!important;gap:5px!important;margin-top:4px!important;}
+#mlbContainer .q-ticket-bar-wrap>div{height:3px!important;border-radius:99px!important;background:rgba(34,197,94,.48)!important;flex-shrink:0!important;}
+#mlbContainer .q-ticket-tag-longshot .q-ticket-bar-wrap>div{background:rgba(248,100,100,.52)!important;}
+#mlbContainer .q-ticket-tag-sharp .q-ticket-bar-wrap>div{background:rgba(96,165,250,.52)!important;}
+#mlbContainer .q-ticket-tag-dog .q-ticket-bar-wrap>div{background:rgba(167,139,250,.52)!important;}
+#mlbContainer .q-ticket-bar-wrap span{font-family:'DM Mono',monospace!important;font-size:.42rem!important;color:rgba(211,231,220,.38)!important;white-space:nowrap!important;}
+#mlbContainer .q-ticket-odds-badge{font-family:'DM Mono',monospace!important;font-size:.88rem!important;font-weight:900!important;color:#86efac!important;white-space:nowrap!important;flex-shrink:0!important;background:rgba(34,197,94,.09)!important;border:1px solid rgba(34,197,94,.18)!important;border-radius:8px!important;padding:6px 8px!important;text-shadow:0 0 9px rgba(34,197,94,.32)!important;line-height:1!important;pointer-events:auto!important;}
+#mlbContainer .q-ticket-tag-longshot .q-ticket-odds-badge{color:#fca5a5!important;background:rgba(220,50,50,.11)!important;border-color:rgba(220,50,50,.20)!important;text-shadow:0 0 9px rgba(248,80,80,.32)!important;}
+#mlbContainer .q-ticket-tag-sharp .q-ticket-odds-badge{color:#93c5fd!important;background:rgba(50,100,220,.11)!important;border-color:rgba(96,165,250,.20)!important;text-shadow:0 0 9px rgba(96,165,250,.32)!important;}
+#mlbContainer .q-ticket-tag-dog .q-ticket-odds-badge{color:#c4b5fd!important;background:rgba(110,70,210,.11)!important;border-color:rgba(167,139,250,.22)!important;text-shadow:0 0 9px rgba(167,139,250,.32)!important;}
+#mlbContainer .q-parlay-row .q-ticket-left b{color:#f4de9b!important;font-size:.60rem!important;letter-spacing:.04em!important;text-transform:uppercase!important;}
+#mlbContainer .q-parlay-row .q-ticket-left em{color:rgba(244,220,155,.44)!important;font-size:.54rem!important;}
+#mlbContainer .q-parlay-row .q-ticket-odds-badge{color:#f4d060!important;background:rgba(244,185,66,.10)!important;border-color:rgba(244,185,66,.28)!important;text-shadow:0 0 10px rgba(244,185,66,.40)!important;font-size:1rem!important;padding:6px 10px!important;}
+#mlbContainer .q-risk-dial{padding:10px 13px 14px!important;border-top:1px solid rgba(34,197,94,.09)!important;}
+#mlbContainer .q-risk-title{color:rgba(211,231,220,.42)!important;font-size:.44rem!important;margin:0!important;font-family:'DM Mono',monospace!important;letter-spacing:.10em!important;text-transform:uppercase!important;display:block!important;}
+#mlbContainer .q-risk-input{-webkit-appearance:none!important;appearance:none!important;display:block!important;width:100%!important;height:5px!important;border-radius:99px!important;outline:none!important;border:none!important;cursor:pointer!important;background:linear-gradient(90deg,#22c55e 0%,#f4b942 50%,#f87171 100%)!important;margin:8px 0 0!important;padding:0!important;}
+#mlbContainer .q-risk-input::-webkit-slider-thumb{-webkit-appearance:none!important;width:15px!important;height:15px!important;border-radius:50%!important;background:radial-gradient(circle at 35% 35%,#f0ece4,#b0c8c0)!important;cursor:pointer!important;box-shadow:0 0 0 2px rgba(0,0,0,.40),0 0 10px rgba(255,255,255,.28),0 2px 4px rgba(0,0,0,.5)!important;}
+#mlbContainer .q-risk-input::-moz-range-thumb{width:15px!important;height:15px!important;border-radius:50%!important;border:none!important;background:radial-gradient(circle at 35% 35%,#f0ece4,#b0c8c0)!important;cursor:pointer!important;box-shadow:0 0 0 2px rgba(0,0,0,.40),0 0 10px rgba(255,255,255,.28)!important;}
+#mlbContainer .q-risk-dial-labels{display:flex!important;justify-content:space-between!important;margin-top:6px!important;}
+#mlbContainer .q-risk-dial-labels span{font-family:'DM Mono',monospace!important;font-size:.37rem!important;letter-spacing:.06em!important;text-transform:uppercase!important;}
+#mlbContainer .q-terminal-footer{gap:10px!important;}
+#mlbContainer .q-terminal-mini b{color:#f4de9b!important;}
+@media(max-width:1220px){#mlbContainer .q-terminal-body{grid-template-columns:1fr!important;}#mlbContainer .q-chip-drop-zone{max-width:760px!important;margin:0 auto!important;}}
+@media(max-width:760px){#mlbContainer .q-chip-drop-zone{grid-template-columns:1fr!important;padding:6px 0 12px!important;gap:14px!important;}#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip,#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip:nth-child(5){grid-column:auto!important;width:100%!important;max-width:none!important;}}
+</style>
+
+<script id="q-terminal-bet-sync">
+(function(){
+  var PROP_SHOTS=[
+    {name:'Ben Rice',market:'1.5+ Total Bases',odds:'+350',tag:'VALUE'},
+    {name:'Payton Tolle',market:"8+ K's",odds:'+750',tag:'LONGSHOT'},
+    {name:'Walker Buehler',market:"7+ K's",odds:'+800',tag:'LONGSHOT'},
+    {name:'Rafael Devers',market:'O 0.5 HR',odds:'+280',tag:'SHARP'},
+    {name:'Tyler Soderstrom',market:'O 0.5 HR',odds:'+275',tag:'SHARP'}
+  ];
+  function cleanOdds(v){var n=parseInt(String(v||'').replace(/[^0-9+-]/g,''),10);if(isNaN(n))return '+0';return n>0?'+'+n:String(n);}
+  function oddsNum(v){var n=parseInt(String(v||'').replace(/[^0-9+-]/g,''),10);return isNaN(n)?0:n;}
+  function toDecimal(o){var n=oddsNum(o);if(!n)return 1;return n>0?1+n/100:1+100/Math.abs(n);}
+  function toAmerican(d){if(d>=2)return '+'+Math.round((d-1)*100);if(d>1)return '-'+Math.round(100/(d-1));return '+0';}
+  function impliedPct(o){var n=oddsNum(o);if(!n)return 50;return n>0?100/(n+100)*100:Math.abs(n)/(Math.abs(n)+100)*100;}
+  function calcParlay(bets){var dec=bets.reduce(function(a,b){return a*toDecimal(b.odds);},1);return {name:'5-Leg Parlay',market:'Combined odds',odds:toAmerican(dec),tag:'PARLAY',isParlay:true,dec:dec,legs:bets};}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function betKey(b){return (String(b.name||'')+'|'+String(b.market||'')+'|'+cleanOdds(b.odds)).toLowerCase().replace(/[^a-z0-9+|-]+/g,'-');}
+  function normalized(b){return {name:b.name||b.player||'Board Pick',market:b.market||'',odds:cleanOdds(b.odds),tag:(b.tag||'LONGSHOT').toUpperCase()};}
+  function buildPool(){
+    var pool=PROP_SHOTS.map(normalized);
+    if(typeof MLB_LONGSHOTS!=='undefined'&&MLB_LONGSHOTS[0]&&Array.isArray(MLB_LONGSHOTS[0].legs)){
+      MLB_LONGSHOTS[0].legs.forEach(function(l){if(oddsNum(l.odds)>0)pool.push(normalized({name:l.name,market:'Strikeout/Total',odds:l.odds,tag:'LONGSHOT'}));});
+    }
+    if(typeof MLB_GAMES!=='undefined'&&Array.isArray(MLB_GAMES)){
+      MLB_GAMES.forEach(function(g){
+        if(oddsNum(g.mlAway)>0)pool.push(normalized({name:g.away+' ML',market:g.awayAbbr+' @ '+g.homeAbbr,odds:g.mlAway,tag:'DOG'}));
+        if(oddsNum(g.mlHome)>0)pool.push(normalized({name:g.home+' ML',market:g.awayAbbr+' @ '+g.homeAbbr,odds:g.mlHome,tag:'DOG'}));
+      });
+    }
+    pool=pool.filter(function(b){return oddsNum(b.odds)>0;}).sort(function(a,b){return oddsNum(a.odds)-oddsNum(b.odds);});
+    var seen={};return pool.filter(function(b){var k=betKey(b);if(seen[k])return false;seen[k]=true;return true;});
+  }
+  function riskLabel(v){if(v<25)return 'Safe Mix';if(v<50)return 'Moderate Risk';if(v<75)return 'High Risk';return 'All Longshots';}
+  function ticketRowHTML(b){
+    var imp=impliedPct(b.odds),barW=Math.min(Math.max(imp*1.8,6),92),tag=(b.tag||'LONGSHOT').toLowerCase(),cls=b.isParlay?'q-ticket-row q-parlay-row':'q-ticket-row q-ticket-tag-'+tag;
+    return '<div class="'+cls+'" role="button" tabindex="0" data-bet-key="'+esc(betKey(b))+'" data-name="'+esc(b.name)+'" data-market="'+esc(b.market)+'" data-odds="'+esc(b.odds)+'" data-tag="'+esc(b.tag||'LONGSHOT')+'"><div class="q-ticket-left"><b>'+esc(b.name)+'</b><em>'+esc(b.market)+'</em>'+(b.isParlay?'':'<div class="q-ticket-bar-wrap"><div class="q-ticket-bar" style="width:'+barW.toFixed(0)+'%"></div><span>'+imp.toFixed(1)+'% implied</span></div>')+'</div><div class="q-ticket-odds-badge">'+esc(b.odds)+'</div></div>';
+  }
+  function init(){
+    var wrap=document.querySelector('#mlbContainer .ls-wrap');if(!wrap){setTimeout(init,120);return;}
+    var terminal=wrap.querySelector('.q-closing-terminal');if(!terminal||terminal.dataset.qBetSync==='1'){if(!terminal)setTimeout(init,120);return;}
+    var zone=terminal.querySelector('.q-chip-drop-zone'),chips=Array.from(terminal.querySelectorAll('.q-chip-drop-zone .ls-leg.q-rect-chip')),ticketEl=terminal.querySelector('#qTicketList');
+    if(!chips.length||!ticketEl){setTimeout(init,120);return;}
+    var countEl=terminal.querySelector('#qTicketCount'),miniLongest=terminal.querySelector('#qMiniLongest'),miniRange=terminal.querySelector('#qMiniRange'),oddsPanel=wrap.querySelector('.ls-odds-panel'),oddsVal=wrap.querySelector('.ls-odds-val'),retEl=wrap.querySelector('.ls-return'),evEl=wrap.querySelector('.ls-ev'),pctEl=wrap.querySelector('.ls-center-pct'),capEl=wrap.querySelector('.ls-center-cap'),centerEl=wrap.querySelector('.ls-wheel-center'),ballEl=wrap.querySelector('.ls-wheel-ball'),dealerEl=wrap.querySelector('.ls-dealer-call'),wagerVal=wrap.querySelector('.ls-wager-v'),wagerBtns=Array.from(wrap.querySelectorAll('.ls-wager-btn'));
+    var chipBets=chips.map(function(chip,i){var b=normalized(PROP_SHOTS[i]||{name:(chip.querySelector('.ls-leg-name')||{}).textContent||chip.getAttribute('data-name')||'Board Pick',market:(chip.querySelector('.ls-leg-suit')||{}).textContent||'',odds:chip.getAttribute('data-odds')||(chip.querySelector('.ls-leg-odds')||{}).textContent||'+0',tag:chip.getAttribute('data-chip-tag')||'LONGSHOT'});b.key=betKey(b);chip.dataset.betKey=b.key;chip.dataset.odds=b.odds;chip.dataset.name=b.name;chip.dataset.chipTag=b.tag;return b;});
+    var pool=buildPool(),activeBet=null,visibleBets=chipBets.slice(),parlay=calcParlay(visibleBets);
+    function stake(){var raw=wagerVal?wagerVal.textContent:'$10',n=parseInt(String(raw).replace(/[^0-9]/g,''),10);return isNaN(n)||n<1?10:n;}
+    function profitFor(b){return stake()*(toDecimal(b.odds)-1);}
+    function center(amount,animate){var target=Math.max(0,Math.round(amount));if(!pctEl)return;if(!animate){pctEl.textContent='$'+target.toLocaleString();return;}var start=performance.now(),dur=720;function step(now){var k=Math.min(1,(now-start)/dur),ease=1-Math.pow(1-k,3);pctEl.textContent='$'+Math.round(target*ease).toLocaleString();if(k<1)requestAnimationFrame(step);else if(centerEl)centerEl.classList.remove('spinning');}requestAnimationFrame(step);}
+    function syncActive(){chips.forEach(function(chip){chip.classList.toggle('active',!!activeBet&&(activeBet.isParlay||chip.dataset.betKey===activeBet.key));});ticketEl.querySelectorAll('.q-ticket-row').forEach(function(row){row.classList.toggle('is-active',!!activeBet&&row.dataset.betKey===activeBet.key);});}
+    function selectBet(b,opts){opts=opts||{};b=Object.assign({},b,{odds:cleanOdds(b.odds),key:b.key||betKey(b)});activeBet=b;syncActive();var profit=profitFor(b);if(capEl)capEl.textContent=b.isParlay?'full parlay':'you\u2019d win';if(oddsVal)oddsVal.textContent=b.odds;if(retEl)retEl.textContent='$'+stake().toLocaleString()+' wager \u2192 $'+Math.round(profit).toLocaleString()+' profit';if(evEl)evEl.textContent=b.isParlay?'5-Leg Parlay':(b.tag==='DOG'?'Moneyline Pick':'Individual Pick');if(oddsPanel){oddsPanel.classList.remove('ls-pulse');void oddsPanel.offsetWidth;oddsPanel.classList.add('ls-pulse','active');}if(opts.spin){if(centerEl)centerEl.classList.add('spinning');if(dealerEl)dealerEl.textContent=b.isParlay?'Parlay locked':'Ticket selected';if(typeof landRouletteBall==='function')landRouletteBall(ballEl,b.isParlay?9:(Math.abs(oddsNum(b.odds))%7));setTimeout(function(){if(dealerEl)dealerEl.textContent='Place your bets\u2026';},1800);}center(profit,opts.animate!==false);}
+    function renderTicket(){parlay=calcParlay(visibleBets);parlay.key=betKey(parlay);if(typeof MLB_LONGSHOTS!=='undefined'&&MLB_LONGSHOTS[0]){MLB_LONGSHOTS[0].odds=parlay.odds;MLB_LONGSHOTS[0].ret='$10 parlay \u2192 $'+Math.round((parlay.dec-1)*10).toLocaleString();}ticketEl.innerHTML=visibleBets.map(function(b){b.key=betKey(b);return ticketRowHTML(b);}).join('')+ticketRowHTML(parlay);if(countEl)countEl.textContent=visibleBets.length;var maxOdds=Math.max.apply(null,visibleBets.map(function(b){return oddsNum(b.odds);}));if(miniLongest)miniLongest.textContent='+'+maxOdds;if(miniRange)miniRange.textContent=parlay.odds+' parlay';ticketEl.querySelectorAll('.q-ticket-row').forEach(function(row){row.addEventListener('click',function(){selectBet({name:row.dataset.name,market:row.dataset.market,odds:row.dataset.odds,tag:row.dataset.tag,key:row.dataset.betKey,isParlay:row.classList.contains('q-parlay-row')},{spin:true,animate:true});});row.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();row.click();}});});syncActive();}
+    function updateDial(val){if(pool.length>=5){var maxStart=Math.max(0,pool.length-5),start=Math.round((val/100)*maxStart);visibleBets=pool.slice(start,start+5).map(function(b){return Object.assign({},b,{key:betKey(b)});});}else visibleBets=chipBets.slice();renderTicket();var lab=terminal.querySelector('#qRiskLabel');if(lab){lab.textContent=riskLabel(val);lab.style.color=val<30?'#86efac':val<60?'#f4b942':'#fca5a5';}if(!activeBet)selectBet(chipBets[0],{animate:false});}
+    chips.forEach(function(chip,i){chip.addEventListener('click',function(){var b=chipBets[i]||{name:chip.dataset.name,market:'Board Pick',odds:chip.dataset.odds,tag:chip.dataset.chipTag};setTimeout(function(){selectBet(b,{animate:false});},0);});});
+    wagerBtns.forEach(function(btn){btn.addEventListener('click',function(){setTimeout(function(){if(activeBet)selectBet(activeBet,{animate:false});},0);});});
+    if(oddsPanel){oddsPanel.addEventListener('click',function(){setTimeout(function(){selectBet(parlay,{spin:true,animate:true});},0);});}
+    var dialDiv=terminal.querySelector('.q-risk-dial');
+    if(dialDiv){dialDiv.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span class="q-risk-title">Risk Dial</span><span id="qRiskLabel" style="font-family:\'DM Mono\',monospace;font-size:.40rem;color:#86efac;letter-spacing:.08em;text-transform:uppercase;transition:color .2s">Longshot Mix</span></div><input type="range" class="q-risk-input" id="qRiskSlider" min="0" max="100" value="60"><div class="q-risk-dial-labels"><span style="color:rgba(34,197,94,.55)">Safe</span><span style="color:rgba(248,185,66,.55)">Mixed</span><span style="color:rgba(248,113,113,.55)">Longshot</span></div>';var slider=dialDiv.querySelector('#qRiskSlider');if(slider){slider.addEventListener('input',function(){updateDial(+this.value);});updateDial(+slider.value);}else renderTicket();}else renderTicket();
+    terminal.dataset.qBetSync='1';setTimeout(function(){var activeChip=zone&&zone.querySelector('.ls-leg-click.active');if(activeChip){var idx=chips.indexOf(activeChip);if(idx>=0)selectBet(chipBets[idx],{animate:false});}else selectBet(chipBets[0],{animate:false});},80);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(init,260);});else setTimeout(init,260);
+})();
+</script>
 
 </body>
 </html>
