@@ -849,26 +849,26 @@
 
 
   /* ── TICKER STRIP ── */
-  .ticker-strip { background:#04060a; border-bottom:1px solid #232e3c; overflow:hidden; position:relative; }
-  .ticker-strip::before,.ticker-strip::after { content:''; position:absolute; top:0; bottom:0; width:48px; z-index:2; pointer-events:none; }
+  .ticker-strip { background:#04060a; border-bottom:1px solid #0f1c2a; overflow:hidden; position:relative; }
+  .ticker-strip::before,.ticker-strip::after { content:''; position:absolute; top:0; bottom:0; width:64px; z-index:2; pointer-events:none; }
   .ticker-strip::before { left:0; background:linear-gradient(to right,#04060a,transparent); }
   .ticker-strip::after  { right:0; background:linear-gradient(to left,#04060a,transparent); }
-  .ticker-header { display:flex; align-items:center; gap:10px; padding:8px 48px 0; border-bottom:1px solid #1a2030; }
-  .ticker-label { font-size:0.6rem; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); padding:6px 0; white-space:nowrap; }
-  .ticker-divider { width:1px; height:14px; background:#232e3c; }
-  .ticker-count { font-size:0.6rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; }
-  .ticker-scroll-wrap { overflow:hidden; padding:7px 0; }
-  .ticker-inner { display:flex; white-space:nowrap; animation:tickerScroll 30s linear infinite; }
+  .ticker-scroll-wrap { overflow:hidden; padding:6px 0; }
+  .ticker-inner { display:flex; gap:7px; white-space:nowrap; padding:0 64px; animation:tickerScroll 38s linear infinite; will-change:transform; }
   .ticker-inner:hover { animation-play-state:paused; }
   @keyframes tickerScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-  .ticker-item { display:inline-flex; align-items:center; gap:7px; padding:0 22px; border-right:1px solid #161f2e; font-size:0.72rem; }
-  .ticker-abbr { font-family:'DM Mono',monospace; font-weight:500; color:var(--gold); letter-spacing:0.08em; font-size:0.68rem; }
-  .ticker-bet { color:var(--muted); font-size:0.68rem; }
-  .ticker-ev  { font-family:'DM Mono',monospace; font-weight:500; font-size:0.68rem; }
-  .ticker-trend { font-size:0.6rem; margin-right:2px; }
-  .ticker-ev.pos { color:var(--green); }
-  .ticker-ev.neg { color:var(--red); }
-  .ticker-sep-dot { width:3px; height:3px; border-radius:50%; background:#2a2a2a; flex-shrink:0; }
+  .ticker-item { display:inline-flex; align-items:center; gap:7px; padding:4px 10px 4px 6px; border-radius:6px; border:1px solid #1a2535; background:#0b1118; flex-shrink:0; }
+  .ticker-item.ti-sharp { border-color:rgba(139,92,246,.35); background:rgba(139,92,246,.06); }
+  .ticker-item.ti-value { border-color:rgba(244,185,66,.35); background:rgba(244,185,66,.06); }
+  .ticker-item.ti-steam { border-color:rgba(96,165,250,.35); background:rgba(96,165,250,.06); }
+  .ticker-sport-dot { width:20px; height:20px; border-radius:4px; flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:0.5rem; font-weight:800; letter-spacing:0.04em; }
+  .ticker-sport-dot.td-mlb { background:rgba(244,185,66,.15); color:#f4b942; }
+  .ticker-sport-dot.td-nba { background:rgba(96,165,250,.15); color:#60a5fa; }
+  .ticker-matchup { font-size:0.65rem; color:#3a5468; font-family:'DM Mono',monospace; }
+  .ticker-pick { font-size:0.68rem; color:#b0c4d8; font-weight:600; }
+  .ticker-ev { font-family:'DM Mono',monospace; font-size:0.68rem; font-weight:700; }
+  .ticker-ev.pos { color:#22c55e; }
+  .ticker-ev.neg { color:#f87171; }
 
   /* ── PROB BAR ── */
   .prob-row { padding:4px 20px 10px 24px; display:flex; flex-direction:column; gap:4px; }
@@ -1950,19 +1950,6 @@ body::after{
      boards & roulette so the whole page reads as one floor.
      ════════════════════════════════════════════════════════════ */
 
-  /* ── Reusable marquee bulb rail ── */
-  .mq-rail {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 6px; padding: 4px 48px;
-    background: #0a0f18;
-  }
-  .mq-rail.top    { border-bottom: 1px solid rgba(244,185,66,.14); }
-  .mq-rail.bottom { border-top: 1px solid rgba(244,185,66,.14); }
-  .mq-bulb {
-    width: 5px; height: 5px; border-radius: 50%;
-    background: #5a4310; box-shadow: inset 0 0 2px rgba(0,0,0,.7);
-    flex-shrink: 0; animation: bulbChase 1.4s linear infinite;
-  }
 
   /* ── STATUS BAR → pit-boss rail ── */
   .status-bar {
@@ -1975,35 +1962,6 @@ body::after{
   .sb-session-dot { background: #ffe066; box-shadow: 0 0 7px rgba(255,220,80,.9); }
   .sb-quote   { border-right: 1px solid rgba(244,185,66,.10); }
   .sb-right   { border-left:  1px solid rgba(244,185,66,.16); }
-
-  /* ── TICKER STRIP → overhead LED marquee ── */
-  .ticker-strip {
-    background: linear-gradient(180deg,#0b1018,#070b12);
-    border-top: 1px solid rgba(244,185,66,.20);
-    border-bottom: 1px solid rgba(244,185,66,.20);
-    box-shadow: inset 0 0 36px rgba(0,0,0,.45);
-  }
-  .ticker-strip::before { background: linear-gradient(to right,#0b1018,transparent); }
-  .ticker-strip::after  { background: linear-gradient(to left,#0b1018,transparent); }
-  .ticker-header { border-bottom: 1px solid rgba(244,185,66,.12); }
-  .ticker-header .live-dot { background: #ffe066; box-shadow: 0 0 8px rgba(255,220,80,.95); }
-  .ticker-label {
-    font-family: 'Playfair Display', serif; font-weight: 900;
-    font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase;
-    background: linear-gradient(90deg,#fffde0,#f4b942 22%,#ffe066 38%,#c8920a 62%,#fffde0 100%);
-    background-size: 220% auto;
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent; color: transparent;
-    animation: foilShift 5s ease-in-out infinite, neonFlicker 9s step-end infinite;
-  }
-  .ticker-divider { background: rgba(244,185,66,.28); }
-  .ticker-count   { color: #7e6c3c; }
-  .ticker-item    { border-right: 1px solid rgba(244,185,66,.10); }
-  .ticker-abbr    { color: #ffe066; }
-  .ticker-bet     { color: #8a98ac; }
-  .ticker-ev.pos  { color: #5effb0; text-shadow: 0 0 7px rgba(70,255,160,.45); }
-  .ticker-ev.neg  { color: #ff8e86; text-shadow: 0 0 7px rgba(255,92,82,.40); }
-  .ticker-sep-dot { background: #6e5114; box-shadow: 0 0 4px rgba(255,210,80,.5); }
 
   /* ── SPORT TABS → table signage ── */
   .sport-tab.active {
@@ -3411,17 +3369,9 @@ body::after{
 
 <!-- LIVE PICKS TICKER -->
 <div class="ticker-strip" id="tickerStrip">
-  <div class="mq-rail top" id="tkBulbTop"></div>
-  <div class="ticker-header">
-    <div class="live-dot"></div>
-    <span class="ticker-label">Live Picks</span>
-    <div class="ticker-divider"></div>
-    <span class="ticker-count" id="tickerCount"></span>
-  </div>
   <div class="ticker-scroll-wrap">
     <div class="ticker-inner" id="tickerInner"></div>
   </div>
-  <div class="mq-rail bottom" id="tkBulbBot"></div>
 </div>
 
 <!-- SPORT TABS -->
@@ -4522,16 +4472,19 @@ const MLB_PROP_PARLAYS = [
     type: "MLB Props",
     market: "MLB Prop Updates — Strikeouts",
     legs: [
-      { player: "Gerrit Cole",        team: "NYY", stat: "Over 5.5 Strikeouts @ BOS",    odds: "-122", hitRate: 0.57, grade: "B+",  ev: 10.6 },
-      { player: "Framer Valdez",      team: "DET", stat: "Under 5.5 Strikeouts vs HOU",   odds: "-141", hitRate: 0.57, grade: "B-",  ev: 10.4 },
-      { player: "Reid Detmers",       team: "LAA", stat: "Over 5.5 Strikeouts vs ATH",  odds: "-151", hitRate: 0.65, grade: "A",  ev: 9.8 },
-      { player: "Yoshinobu Yamamoto", team: "LAD", stat: "Over 6.5 Strikeouts @ SD",    odds: "-148", hitRate: 0.65, grade: "A",  ev: 9.6 },
-      { player: "Nick Kurtz",         team: "ATH", stat: "Over 0.5 Strikeouts @ LAA",  odds: "-142", hitRate: 0.64, grade: "A",  ev: 9.4 },
-      { player: "Wilson Contreras",   team: "BOS", stat: "Over 1.5 Total Bases vs NYY",  odds: "-132", hitRate: 0.42, grade: "C+",  ev: 8.8 },
-      { player: "Zach Neto",          team: "LAA", stat: "Over 1.5 Total Bases vs ATH",   odds: "-131", hitRate: 0.42, grade: "B",  ev: 8.7 }
+       { player: "Chris Sale",       team: "ATL", stat: "Under 8.5 Strikeouts @ SF",    odds: "-147", hitRate: 0.56, grade: "B+", ev: 59.5 },
+       { player: "Hunter Brown",     team: "HOU", stat: "Under 7.5 Strikeouts @ DET",   odds: "-153", hitRate: 0.57, grade: "A",  ev: 60.5 },
+       { player: "Jesus Luzardo",    team: "PHI", stat: "Over 6.5 Strikeouts @ NYM",    odds: "-156", hitRate: 0.57, grade: "A",  ev: 60.9 },
+       { player: "Gavin Williams",   team: "CLE", stat: "Over 6.5 Strikeouts vs SEA",   odds: "-140", hitRate: 0.55, grade: "B+", ev: 58.3 },
+       { player: "Brandon Woodruff", team: "MIL", stat: "Under 6.5 Strikeouts vs CHC",   odds: "-151", hitRate: 0.57, grade: "A",  ev: 60.2 },
+       { player: "Shane Bieber",     team: "TOR", stat: "Over 4.5 Strikeouts vs TEX",    odds: "-140", hitRate: 0.55, grade: "B+", ev: 58.3 },
+       { player: "Kyle Bradish",     team: "BAL", stat: "Over 5.5 Strikeouts vs WSH",    odds: "-145", hitRate: 0.56, grade: "B+", ev: 59.2 },
+       { player: "Jack Flaherty",    team: "DET", stat: "Over 5.5 Strikeouts vs HOU",    odds: "-113", hitRate: 0.50, grade: "B-", ev: 53.0 },
+       { player: "Sonny Gray",       team: "BOS", stat: "Over 5.5 Strikeouts vs NYY",    odds: "-139", hitRate: 0.55, grade: "B+", ev: 58.2 },
+       { player: "Zach Neto",          team: "LAA", stat: "Over 1.5 Total Bases vs ATH",   odds: "-131", hitRate: 0.42, grade: "B",  ev: 8.7 }
     ],
-    betsPlaced: 1421,
-    edgeNote: "Updated MLB player-prop board: the seven strongest odds favorites ranked into the same selectable EV ticket flow."
+    betsPlaced: 2421,
+    edgeNote: "Updated MLB player-prop board: the strongest odds favorites ranked into the same selectable EV ticket flow."
   }
 ];
 
@@ -4543,21 +4496,21 @@ const MLB_PROP_PARLAYS = [
 //       total is the over/under (e.g. '8.5').
 
 const MLB_GAMES = [
-  {day:"TODAY", time:"1:11 PM ET", away:"Houston Astros", awayAbbr:"HOU", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: K Teng", homePitcher:"P: F Valdez", spreadAway:"+1.5", spreadAwayJuice:"-184", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+152", spreadHomeMove:"", spreadOpen:"", mlAway:"+116", mlHome:"-136", total:"8.5", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"DET ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Valdez positions the Tigers as standard home favorites over Teng across a balanced 8.5 total canvas."},
-  {day:"TODAY", time:"1:11 PM ET", away:"New York Yankees", awayAbbr:"NYY", home:"Boston Red Sox", homeAbbr:"BOS", awayPitcher:"P: G Cole", homePitcher:"P: J Bennett", spreadAway:"-1.5", spreadAwayJuice:"+146", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-178", spreadHomeMove:"", spreadOpen:"", mlAway:"-116", mlHome:"-102", total:"8", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Cole marks the Yankees as tight away priorities over Bennett on a flat 8 line layout drawing over action."},
-  {day:"TODAY", time:"3:08 PM ET", away:"Texas Rangers", awayAbbr:"TEX", home:"Toronto Blue Jays", homeAbbr:"TOR", awayPitcher:"P: C Quantrill", homePitcher:"P: D Cease", spreadAway:"+1.5", spreadAwayJuice:"-142", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+118", spreadHomeMove:"", spreadOpen:"", mlAway:"+154", mlHome:"-184", total:"8", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TOR ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Cease anchors premium home favorite infrastructure for Toronto against Quantrill on an under-shaded flat 8 line."},
-  {day:"TODAY", time:"4:06 PM ET", away:"Cincinnati Reds", awayAbbr:"CIN", home:"Pittsburgh Pirates", homeAbbr:"PIT", awayPitcher:"P: C Burns", homePitcher:"P: J Jones", spreadAway:"-1.5", spreadAwayJuice:"+138", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-166", spreadHomeMove:"", spreadOpen:"", mlAway:"-120", mlHome:"+102", total:"8", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CIN ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Burns establishes stable away favor leverage for Cincinnati over Jones inside an under-pressured flat 8 board framework."},
-  {day:"TODAY", time:"4:11 PM ET", away:"Kansas City Royals", awayAbbr:"KC", home:"Chicago White Sox", homeAbbr:"CWS", awayPitcher:"P: M Wacha", homePitcher:"P: D Martin", spreadAway:"+1.5", spreadAwayJuice:"-210", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+172", spreadHomeMove:"", spreadOpen:"", mlAway:"+104", mlHome:"-122", total:"8", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CWS ML", edgeEV:"-", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"A tight home-shaded match frames Martin and the White Sox against Wacha over an under-pressured flat 8 line layout."},
-  {day:"TODAY", time:"4:11 PM ET", away:"Philadelphia Phillies", awayAbbr:"PHI", home:"New York Mets", homeAbbr:"NYM", awayPitcher:"P: A Rangel", homePitcher:"P: C Scott", spreadAway:"+1.5", spreadAwayJuice:"-196", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+162", spreadHomeMove:"", spreadOpen:"", mlAway:"+112", mlHome:"-132", total:"9", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYM ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Scott secures moderate home preference parameters for the Mets facing Rangel over a flat 9 total pulling under cash."},
-  {day:"TODAY", time:"6:11 PM ET", away:"Arizona Diamondbacks", awayAbbr:"AZ", home:"Tampa Bay Rays", homeAbbr:"TB", awayPitcher:"P: J Cabrera", homePitcher:"P: C Sulser", spreadAway:"+1.5", spreadAwayJuice:"-188", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+155", spreadHomeMove:"", spreadOpen:"", mlAway:"+118", mlHome:"-138", total:"8.5", totalOverJuice:"+102", totalUnderJuice:"-124", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TB ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sulser logs typical home favorites standing for Tampa Bay over Cabrera behind an under-pressured 8.5 total structural line."},
-  {day:"TODAY", time:"7:06 PM ET", away:"Washington Nationals", awayAbbr:"WSH", home:"Baltimore Orioles", homeAbbr:"BAL", awayPitcher:"P: F Griffin", homePitcher:"P: B Young", spreadAway:"-1.5", spreadAwayJuice:"+158", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-192", spreadHomeMove:"", spreadOpen:"", mlAway:"-104", mlHome:"-112", total:"9", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"BAL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Young locks in a micro-home favorite position for Baltimore over Griffin with distinct under pressure tracking the flat 9 canvas."},
-  {day:"TODAY", time:"7:11 PM ET", away:"Seattle Mariners", awayAbbr:"SEA", home:"Cleveland Guardians", homeAbbr:"CLE", awayPitcher:"P: L Gilbert", homePitcher:"P: S Cecconi", spreadAway:"-1.5", spreadAwayJuice:"+115", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-138", spreadHomeMove:"", spreadOpen:"", mlAway:"-148", mlHome:"+126", total:"7.5", totalOverJuice:"-104", totalUnderJuice:"-118", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"SEA ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Gilbert outlines cozy road favoritism indices for the Mariners over Cecconi inside a defensive, under-shaded 7.5 line blueprint loop."},
-  {day:"TODAY", time:"7:11 PM ET", away:"Colorado Rockies", awayAbbr:"COL", home:"Minnesota Twins", homeAbbr:"MIN", awayPitcher:"P: M Lorenzen", homePitcher:"P: M Paredes", spreadAway:"+1.5", spreadAwayJuice:"-170", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+140", spreadMove:"", spreadOpen:"", mlAway:"+122", mlHome:"-144", total:"9.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIN ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Paredes maps steady home preference boundaries for Minnesota against Lorenzen across a wide 9.5 total canvas drawing under cash."},
-  {day:"TODAY", time:"7:11 PM ET", away:"Chicago Cubs", awayAbbr:"CHC", home:"Milwaukee Brewers", homeAbbr:"MIL", awayPitcher:"P: D Peterson", homePitcher:"P: K Harrison", spreadAway:"+1.5", spreadAwayJuice:"-152", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+126", spreadHomeMove:"", spreadOpen:"", mlAway:"+138", mlHome:"-164", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Harrison hooks comfortable home favor priority standing for Milwaukee over Peterson behind a perfectly split flat 8 loop template."},
-  {day:"TODAY", time:"7:16 PM ET", away:"Miami Marlins", awayAbbr:"MIA", home:"St. Louis Cardinals", homeAbbr:"STL", awayPitcher:"P: R Gusto", homePitcher:"P: A Pallante", spreadAway:"+1.5", spreadAwayJuice:"-184", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+152", spreadHomeMove:"", spreadOpen:"", mlAway:"+120", mlHome:"-142", total:"8.5", totalOverJuice:"-120", totalUnderJuice:"-102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"STL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Pallante sets steady home priority metrics for St. Louis facing Gusto over an over-shaded 8.5 total layout structure."},
-  {day:"TODAY", time:"8:41 PM ET", away:"Los Angeles Dodgers", awayAbbr:"LAD", home:"San Diego Padres", homeAbbr:"SD", awayPitcher:"P: Y Yamamoto", homePitcher:"P: R Vasquez", spreadAway:"-1.5", spreadAwayJuice:"-115", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-105", spreadHomeMove:"", spreadOpen:"", mlAway:"-200", mlHome:"+168", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAD ML", edgeEV:"+1.8", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Yamamoto anchors the Dodgers as heavy road chalk, forcing deep line protections down to -115 on the -1.5 spread boundary block."},
-  {day:"TODAY", time:"9:06 PM ET", away:"Atlanta Braves", awayAbbr:"ATL", home:"San Francisco Giants", homeAbbr:"SF", awayPitcher:"P: B Elder", homePitcher:"P: L Webb", spreadAway:"+1.5", spreadAwayJuice:"-205", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+168", spreadHomeMove:"", spreadOpen:"", mlAway:"+112", mlHome:"-132", total:"8", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"SF ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Webb secures standard home favorite posture for the Giants over Elder on a flat 8 timeline carrying steady under pressure."},
-  {day:"TODAY", time:"9:39 PM ET", away:"Athletics", awayAbbr:"OAK", home:"Los Angeles Angels", homeAbbr:"LAA", awayPitcher:"P: J Perkins", homePitcher:"P: R Detmers", spreadAway:"-1.5", spreadAwayJuice:"+158", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-192", spreadHomeMove:"", spreadOpen:"", mlAway:"-106", mlHome:"-110", total:"8.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAA ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Detmers logs narrow home preference status over Perkins inside an under-leaning 8.5 total board layout frame."}
+  {day:"TODAY", time:"1:36 PM ET", away:"Cincinnati Reds", awayAbbr:"CIN", home:"Pittsburgh Pirates", homeAbbr:"PIT", awayPitcher:"P: B Singer", homePitcher:"P: M Keller", spreadAway:"+1.5", spreadAwayJuice:"-182", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+150", spreadHomeMove:"", spreadOpen:"", mlAway:"+116", mlHome:"-134", total:"9", totalOverJuice:"-118", totalUnderJuice:"-104", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PIT ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Keller maps steady home favorite status for the Pirates over Singer inside an over-shaded flat 9 total canvas loop."},
+  {day:"TODAY", time:"1:36 PM ET", away:"Washington Nationals", awayAbbr:"WSH", home:"Baltimore Orioles", homeAbbr:"BAL", awayPitcher:"P: Z Littell", homePitcher:"P: K Bradish", spreadAway:"+1.5", spreadAwayJuice:"-128", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+106", spreadHomeMove:"", spreadOpen:"", mlAway:"+164", mlHome:"-196", total:"9", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"BAL ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Bradish anchors firm home chalk parameter boundaries for Baltimore against Littell across a flat, balanced 9 canvas."},
+  {day:"TODAY", time:"1:38 PM ET", away:"Texas Rangers", awayAbbr:"TEX", home:"Toronto Blue Jays", homeAbbr:"TOR", awayPitcher:"P: K Rocker", homePitcher:"P: S Bieber", spreadAway:"+1.5", spreadAwayJuice:"-194", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+160", spreadHomeMove:"", spreadOpen:"", mlAway:"+110", mlHome:"-130", total:"8.5", totalOverJuice:"-122", totalUnderJuice:"+100", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TOR ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Bieber establishes standard home favor metrics for Toronto facing Rocker on an over-pressured 8.5 baseline structure."},
+  {day:"TODAY", time:"1:41 PM ET", away:"Arizona Diamondbacks", awayAbbr:"AZ", home:"Tampa Bay Rays", homeAbbr:"TB", awayPitcher:"P: M Kelly", homePitcher:"P: D Rasmussen", spreadAway:"+1.5", spreadAwayJuice:"-134", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+112", spreadHomeMove:"", spreadOpen:"", mlAway:"+166", mlHome:"-198", total:"7.5", totalOverJuice:"-120", totalUnderJuice:"-102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TB ML", edgeEV:"+1.8", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Rasmussen secures premium home chalk indices over Kelly, with sharp over action dragging juice on the low 7.5 landscape loop."},
+  {day:"TODAY", time:"1:41 PM ET", away:"Philadelphia Phillies", awayAbbr:"PHI", home:"New York Mets", homeAbbr:"NYM", awayPitcher:"P: J Luzardo", homePitcher:"P: C Perez", spreadAway:"-1.5", spreadAwayJuice:"+106", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-128", spreadHomeMove:"", spreadOpen:"", mlAway:"-158", mlHome:"+134", total:"8.5", totalOverJuice:"-102", totalUnderJuice:"-120", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PHI ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Luzardo sets comfortable away favorite targets for the Phillies against Perez behind an under-pressured 8.5 line layout framework."},
+  {day:"TODAY", time:"1:41 PM ET", away:"Houston Astros", awayAbbr:"HOU", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: H Brown", homePitcher:"P: J Flaherty", spreadAway:"-1.5", spreadAwayJuice:"+140", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-170", spreadHomeMove:"", spreadOpen:"", mlAway:"-122", mlHome:"+104", total:"8.5", totalOverJuice:"+102", totalUnderJuice:"-124", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"HOU ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Brown logs close road favor positions for the Astros over Flaherty across an under-shaded 8.5 blueprint line loop template."},
+  {day:"TODAY", time:"1:41 PM ET", away:"Seattle Mariners", awayAbbr:"SEA", home:"Cleveland Guardians", homeAbbr:"CLE", awayPitcher:"P: E Hancock", homePitcher:"P: G Williams", spreadAway:"-1.5", spreadAwayJuice:"+172", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-210", spreadHomeMove:"", spreadOpen:"", mlAway:"-102", mlHome:"-116", total:"7.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CLE ML", edgeEV:"-", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"A tight home-shaded pick'em tilts minor leverage to Williams and Cleveland against Hancock inside an under-leaning 7.5 layout frame."},
+  {day:"TODAY", time:"2:11 PM ET", away:"Colorado Rockies", awayAbbr:"COL", home:"Minnesota Twins", homeAbbr:"MIN", awayPitcher:"P: R Feltner", homePitcher:"P: C Prielipp", spreadAway:"+1.5", spreadAwayJuice:"-152", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+126", spreadHomeMove:"", spreadOpen:"", mlAway:"+138", mlHome:"-164", total:"9", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIN ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Prielipp outlines steady home favorite boundaries for Minnesota over Feltner over a flat 9 canvas drawing minor under juice pressure."},
+  {day:"TODAY", time:"2:11 PM ET", away:"Chicago Cubs", awayAbbr:"CHC", home:"Milwaukee Brewers", homeAbbr:"MIL", awayPitcher:"P: R Rolison", homePitcher:"P: B Woodruff", spreadAway:"+1.5", spreadAwayJuice:"-156", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+130", spreadHomeMove:"", spreadOpen:"", mlAway:"+140", mlHome:"-166", total:"8.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Woodruff positions the Brewers as comfortable home markers over Rolison behind an under-pressured 8.5 total canvas outline blueprint."},
+  {day:"TODAY", time:"2:11 PM ET", away:"Kansas City Royals", awayAbbr:"KC", home:"Chicago White Sox", homeAbbr:"CWS", awayPitcher:"P: L Avila", homePitcher:"P: A Kay", spreadAway:"+1.5", spreadAwayJuice:"-176", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+120", mlHome:"-142", total:"8.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CWS ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Kay logs standard home priority standing for Chicago facing Avila over a flat, perfectly split 8.5 board line timeline block."},
+  {day:"TODAY", time:"2:16 PM ET", away:"Miami Marlins", awayAbbr:"MIA", home:"St. Louis Cardinals", homeAbbr:"STL", awayPitcher:"P: T Phillips", homePitcher:"P: K Leahy", spreadAway:"+1.5", spreadAwayJuice:"-194", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+162", spreadHomeMove:"", spreadOpen:"", mlAway:"+108", mlHome:"-126", total:"9", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"STL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Leahy secures moderate home favorite boundaries for St. Louis against Phillips behind an over-shaded flat 9 total canvas loop."},
+  {day:"TODAY", time:"3:16 PM ET", away:"Athletics", awayAbbr:"OAK", home:"Los Angeles Angels", homeAbbr:"LAA", awayPitcher:"P: A Civale", homePitcher:"P: S Aldegheri", spreadAway:"-1.5", spreadAwayJuice:"+130", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-160", spreadHomeMove:"", spreadOpen:"", mlAway:"-118", mlHome:"+100", total:"9.5", totalOverJuice:"-122", totalUnderJuice:"+100", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"OAK ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Civale stakes tight away priority indices for the Athletics over Aldegheri over a wide 9.5 total layout pulling significant over money."},
+  {day:"TODAY", time:"4:06 PM ET", away:"Atlanta Braves", awayAbbr:"ATL", home:"San Francisco Giants", homeAbbr:"SF", awayPitcher:"P: C Sale", homePitcher:"P: R Ray", spreadAway:"-1.5", spreadAwayJuice:"+105", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-126", spreadHomeMove:"", spreadOpen:"", mlAway:"-164", mlHome:"+138", total:"7.5", totalOverJuice:"-106", totalUnderJuice:"-114", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ATL ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sale anchors comfortable away favor parameters for Atlanta over Ray across a defensive, under-shaded flat 7.5 total frame landscape."},
+  {day:"TODAY", time:"4:11 PM ET", away:"Los Angeles Dodgers", awayAbbr:"LAD", home:"San Diego Padres", homeAbbr:"SD", awayPitcher:"P: E Sheehan", homePitcher:"P: M King", spreadAway:"-1.5", spreadAwayJuice:"+118", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-142", spreadHomeMove:"", spreadOpen:"", mlAway:"-142", mlHome:"+120", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAD ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sheehan frames cozy road favorite targets for the Dodgers over King behind a perfectly split flat 8 canvas threshold block."},
+  {day:"TODAY", time:"7:21 PM ET", away:"New York Yankees", awayAbbr:"NYY", home:"Boston Red Sox", homeAbbr:"BOS", awayPitcher:"P: C Rodon", homePitcher:"P: S Gray", spreadAway:"-1.5", spreadAwayJuice:"+155", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-188", spreadHomeMove:"", spreadOpen:"", mlAway:"-102", mlHome:"-116", total:"8", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"BOS ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Gray establishes micro-home favor leverage for Boston against Rodon on a flat 8 timeline holding steady under trend pressure parameters."}
 ];
 
 // ── MLB ─────────────────────────────────────────────────────────
@@ -5475,20 +5428,16 @@ function renderTicker() {
   const picks = allGames.filter(g => g.edgeType && g.edgeLabel && g.edgeEV);
   const items = picks.map(g => {
     const n = parseFloat(g.edgeEV);
-    const sign = n >= 0 ? '+' : '';
-    const evColor = n >= 0 ? '#22c55e' : '#f87171';
-    const arrow = n >= 0 ? '▲' : '▼';
+    const evClass = n >= 0 ? 'pos' : 'neg';
+    const arrow = n >= 0 ? '▲ +' : '▼ ';
     const sport = g.awayPitcher !== undefined ? 'MLB' : 'NBA';
-    return `<span class="ticker-item">
-      <span class="ticker-sport">${sport}</span>
-      <span class="ticker-matchup">${g.awayAbbr} @ ${g.homeAbbr}</span>
-      <span class="ticker-edge">${g.edgeLabel}</span>
-      <span class="ticker-trend" style="color:${evColor}">${arrow}</span>
-      <span class="ticker-ev" style="color:${evColor}">${sign}${g.edgeEV}%</span>
-    </span>`;
-  }).join('<span class="ticker-sep">·</span>');
+    const sportClass = 'td-' + sport.toLowerCase();
+    const signalClass = g.edgeType === 'sharp' ? 'ti-sharp' : g.edgeType === 'value' ? 'ti-value' : g.edgeType === 'steam' ? 'ti-steam' : '';
+    return `<span class="ticker-item ${signalClass}"><span class="ticker-sport-dot ${sportClass}">${sport}</span><span class="ticker-matchup">${g.awayAbbr} @ ${g.homeAbbr}</span><span class="ticker-pick">${g.edgeLabel}</span><span class="ticker-ev ${evClass}">${arrow}${g.edgeEV}%</span></span>`;
+  });
   const el = document.getElementById('tickerInner');
-  if (el) el.innerHTML = items + '<span class="ticker-sep">·</span>' + items;
+  const html = items.join('');
+  if (el && html) el.innerHTML = html + html;
 }
 
 function renderTabExtras(){
@@ -6267,7 +6216,7 @@ function landRouletteBall(ballEl, legIndex){
   ballEl.__landTimer = setTimeout(function(){
     ballEl.classList.remove('ls-ball-landing');
     ballEl.style.animation = '';
-  }, 2350);
+  }, 950);
 }
 function initIdleReshuffle(card){
   var legs = card.querySelectorAll('.ls-leg-click');
@@ -6279,9 +6228,9 @@ function initIdleReshuffle(card){
       el.classList.add('ls-idle-lift');
       setTimeout(function(){ el.classList.remove('ls-idle-lift'); }, 900);
     }
-    setTimeout(tick, 30000 + Math.random()*15000);
+    return; // disabled: idle lift timers were adding unnecessary background work
   }
-  setTimeout(tick, 6000 + Math.random()*8000);
+  // disabled: idle lift timers were adding unnecessary background work
 }
 function initGoldDust(card){
   var zone = card.querySelector('.ls-hero-zone');
@@ -6302,8 +6251,8 @@ function wireDealerCall(card, ruid){
   var phrases = ['Place your bets\u2026','Table is open','Picks update live'];
   var idx = 0, ambientTimer = null;
   function setText(t){
-    el.classList.add('fading');
-    setTimeout(function(){ el.textContent = t; el.classList.remove('fading'); }, 180);
+    el.textContent = t;
+    el.classList.remove('fading');
   }
   function startAmbient(){
     clearInterval(ambientTimer);
@@ -6312,12 +6261,12 @@ function wireDealerCall(card, ruid){
       setText(phrases[idx]);
     }, 4500);
   }
-  startAmbient();
+  // ambient copy cycling disabled for faster roulette response
   return {
     onSpin: function(){ clearInterval(ambientTimer); setText('Spinning\u2026'); },
     onLanded: function(){
       setText('No more bets');
-      setTimeout(function(){ idx=0; setText(phrases[0]); startAmbient(); }, 1500);
+      idx=0; setText(phrases[0]);
     }
   };
 }
@@ -6579,7 +6528,8 @@ function renderLongshots(shots, containerId) {
       '<div class="ls-felt-seam"></div>'
       +'<div class="ls-hero-zone">'
       + '<div class="ls-chip-rail left">'+legsLeftHtml+'</div>'
-      + '<div class="ls-wheel-panel">'
+      + '<div class="q-wheel-stack">'
+      + '<div class="ls-wheel-panel q-wheel-has-dock">'
       +  '<div class="ls-bulb-rail">'+Array.from({length:24}).map(function(_,bi){return '<span class="ls-rim-bulb" style="--bi:'+bi+'"></span>';}).join('')+'</div>'
       +  '<div class="ls-dome-shine"></div>'
       +  '<div class="ls-dealer-call" id="'+ruid+'-dealer">Place your bets\u2026</div>'
@@ -6597,28 +6547,31 @@ function renderLongshots(shots, containerId) {
       +  '</div>'
       +  qSpinHistoryHTML(s.headline||s.label)
       + '</div>'
-      + '<div class="ls-chip-rail right">'+legsRightHtml+'</div>'
-      +'</div>'
-      +'<div class="ls-info">'
-      +  '<p class="ls-thesis-line">'+s.thesis+'</p>'
-      +  '<div class="ls-action-row">'
-      +    '<div class="ls-wager" id="'+ruid+'-wager">'
-      +      '<span class="ls-wager-lbl">Your Wager</span>'
-      +      '<div class="ls-wager-core">'
-      +        '<button class="ls-wager-btn" id="'+ruid+'-wdn" type="button" aria-label="Decrease wager">\u2212</button>'
-      +        '<div class="ls-wager-chip"><span class="ls-wager-casino-lbl">CASINO</span><span class="ls-wager-v" id="'+ruid+'-wval">$10</span></div>'
-      +        '<button class="ls-wager-btn" id="'+ruid+'-wup" type="button" aria-label="Increase wager">+</button>'
+      + '<div class="q-wheel-action-dock">'
+      +    '<div class="ls-action-row">'
+      +      '<div class="ls-wager" id="'+ruid+'-wager">'
+      +        '<span class="ls-wager-lbl">Your Wager</span>'
+      +        '<div class="ls-wager-core">'
+      +          '<button class="ls-wager-btn" id="'+ruid+'-wdn" type="button" aria-label="Decrease wager">−</button>'
+      +          '<div class="ls-wager-chip"><span class="ls-wager-casino-lbl">CASINO</span><span class="ls-wager-v" id="'+ruid+'-wval">$10</span></div>'
+      +          '<button class="ls-wager-btn" id="'+ruid+'-wup" type="button" aria-label="Increase wager">+</button>'
+      +        '</div>'
+      +        '<div class="ls-table-limit"><span class="ls-table-limit-tag">◆ Table Limit</span><span class="ls-table-limit-range">$1 — $1,000</span></div>'
       +      '</div>'
-      +      '<div class="ls-table-limit"><span class="ls-table-limit-tag">\u25c6 Table Limit</span><span class="ls-table-limit-range">$1 \u2014 $1,000</span></div>'
-      +    '</div>'
-      +    '<div class="ls-odds-panel">'
-      +      '<div class="ls-odds-lbl">Payout</div>'
-      +      '<div class="ls-odds-val">'+s.odds+'</div>'
-      +      '<div class="ls-return">'+s.ret+'</div>'
-      +      '<div class="ls-ev">'+s.ev+' EV</div>'
-      +      '<div class="ls-odds-hint">tap to select all</div>'
+      +      '<div class="ls-odds-panel">'
+      +        '<div class="ls-odds-lbl">Payout</div>'
+      +        '<div class="ls-odds-val">'+s.odds+'</div>'
+      +        '<div class="ls-return">'+s.ret+'</div>'
+      +        '<div class="ls-ev">'+s.ev+' EV</div>'
+      +        '<div class="ls-odds-hint">tap to select all</div>'
+      +      '</div>'
       +    '</div>'
       +  '</div>'
+      + '</div>'
+      + '<div class="ls-chip-rail right">'+legsRightHtml+'</div>'
+      +'</div>'
+      +'<div class="ls-info q-info-condensed">'
+      +  '<p class="ls-thesis-line">'+s.thesis+'</p>'
       +  '<div class="ls-mini-disclaimer">Payout figures are model estimates, not real-money winnings.</div>'
       +'</div>';
 
@@ -6682,7 +6635,7 @@ function renderLongshots(shots, containerId) {
         if(pct) pct.textContent = '$'+Math.round(target).toLocaleString();
         return;
       }
-      var start=performance.now(), dur=900, from=0;
+      var start=performance.now(), dur=240, from=0;
       function step(now){
         var k=Math.min(1,(now-start)/dur);
         var ease=1-Math.pow(1-k,3);
@@ -6698,15 +6651,16 @@ function renderLongshots(shots, containerId) {
 
     var dealer = wireDealerCall(card, ruid);
     var ballEl = card.querySelector('.ls-wheel-ball');
-    initIdleReshuffle(card);
-    initGoldDust(card);
+    // idle reshuffle and dust disabled for section performance
+    // initIdleReshuffle(card);
+    // initGoldDust(card);
 
     function triggerPickFX(originXPct){
       var wp = card.querySelector('.ls-wheel-panel');
       if(wp){
         wp.classList.add('ls-spin-active');
         clearTimeout(wp.__spinTimer);
-        wp.__spinTimer = setTimeout(function(){ wp.classList.remove('ls-spin-active'); }, 2300);
+        wp.__spinTimer = setTimeout(function(){ wp.classList.remove('ls-spin-active'); }, 700);
       }
       card.classList.remove('ls-pick-flash');
       void card.offsetWidth;
@@ -6729,7 +6683,7 @@ function renderLongshots(shots, containerId) {
         var isLeftRail = !!legEl.closest('.ls-chip-rail.left');
         triggerPickFX(isLeftRail ? 28 : 72);
         showPayout(true);
-        if(dealer) setTimeout(dealer.onLanded, 2300);
+        if(dealer) setTimeout(dealer.onLanded, 650);
       });
       legEl.addEventListener('mouseenter', function(){
         if(legEl.classList.contains('active')) return;
@@ -6760,7 +6714,7 @@ function renderLongshots(shots, containerId) {
         landRouletteBall(ballEl, s.legs.length + 3);
         triggerPickFX(50);
         showPayout(true);
-        if(dealer) setTimeout(dealer.onLanded, 2300);
+        if(dealer) setTimeout(dealer.onLanded, 650);
       });
     }
   });
@@ -6779,18 +6733,8 @@ renderFutures('nbaChampContainer', 'mlbContainer');
 renderLongshots(MLB_LONGSHOTS, 'mlbContainer');
 initSpinFeeds();
 
-// ── Fill the ticker marquee bulb rails ──
-(function fillMarqueeRails() {
-  ['tkBulbTop', 'tkBulbBot'].forEach(id => {
-    const rail = document.getElementById(id);
-    if (!rail) return;
-    let html = '';
-    for (let i = 0; i < 44; i++) {
-      html += `<span class="mq-bulb" style="animation-delay:${((i % 14) * 0.1).toFixed(1)}s"></span>`;
-    }
-    rail.innerHTML = html;
-  });
-})();
+
+
 
 
 
@@ -8542,9 +8486,9 @@ body::after{
     if(dealer) dealer.textContent='Q is dealing…';
   }
   if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', function(){ refresh(); tuneRoulette(); setTimeout(function(){refresh(); tuneRoulette();}, 120); });
+    document.addEventListener('DOMContentLoaded', function(){ refresh(); tuneRoulette(); requestAnimationFrame(function(){refresh(); tuneRoulette();}); });
   }else{
-    refresh(); tuneRoulette(); setTimeout(function(){refresh(); tuneRoulette();}, 120);
+    refresh(); tuneRoulette(); requestAnimationFrame(function(){refresh(); tuneRoulette();});
   }
 })();
 </script>
@@ -8578,7 +8522,7 @@ body::after{
 }
 .q-hero-value-prop{max-width:720px!important;color:rgba(240,236,228,.76)!important;}
 .q-hero-value-prop .hero-value-prop-dot{color:#86efac!important;}
-#mlbContainer .ls-wrap:first-of-type{
+#mlbContainer .ls-wrap{
   position:relative;
   border-radius:30px!important;
   padding:22px!important;
@@ -8591,7 +8535,7 @@ body::after{
   box-shadow:0 34px 100px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,255,255,.08), 0 0 70px rgba(34,197,94,.06)!important;
   overflow:hidden;
 }
-#mlbContainer .ls-wrap:first-of-type::before{
+#mlbContainer .ls-wrap::before{
   content:''!important;
   position:absolute!important;
   inset:0!important;
@@ -8604,7 +8548,7 @@ body::after{
   opacity:.58!important;
   border-radius:inherit!important;
 }
-#mlbContainer .ls-wrap:first-of-type::after{
+#mlbContainer .ls-wrap::after{
   content:'Q\2019S PRIVATE GREEN TABLE';
   position:absolute;
   top:18px;
@@ -8616,7 +8560,7 @@ body::after{
   color:rgba(134,239,172,.46);
   pointer-events:none;
 }
-#mlbContainer .ls-wrap:first-of-type .ls-label-row{
+#mlbContainer .ls-wrap .ls-label-row{
   position:relative;z-index:2;
   margin-bottom:18px!important;
   background:linear-gradient(90deg,rgba(0,0,0,.32),rgba(34,197,94,.08),rgba(0,0,0,.12));
@@ -8624,16 +8568,16 @@ body::after{
   border-radius:18px;
   padding:10px 16px!important;
 }
-#mlbContainer .ls-wrap:first-of-type .ls-label{
+#mlbContainer .ls-wrap .ls-label{
   color:#c9f7d9!important;
   letter-spacing:.18em!important;
 }
-#mlbContainer .ls-wrap:first-of-type .ls-placard{
+#mlbContainer .ls-wrap .ls-placard{
   background:linear-gradient(135deg,rgba(34,197,94,.24),rgba(244,185,66,.16))!important;
   border-color:rgba(134,239,172,.35)!important;
   box-shadow:0 0 26px rgba(34,197,94,.14), inset 0 1px 0 rgba(255,255,255,.16)!important;
 }
-#mlbContainer .ls-wrap:first-of-type .ls-card{
+#mlbContainer .ls-wrap .ls-card{
   position:relative;z-index:2;
   border-radius:26px!important;
   background:
@@ -8642,15 +8586,15 @@ body::after{
   border:1px solid rgba(255,255,255,.10)!important;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.09), 0 22px 58px rgba(0,0,0,.32)!important;
 }
-#mlbContainer .ls-wrap:first-of-type .ls-hero-zone{
+#mlbContainer .ls-wrap .ls-hero-zone{
   display:grid!important;
   grid-template-columns:minmax(310px,430px) minmax(0,1fr)!important;
   gap:24px!important;
   align-items:stretch!important;
   padding:24px!important;
 }
-#mlbContainer .ls-wrap:first-of-type .ls-chip-rail{display:none!important;}
-#mlbContainer .ls-wrap:first-of-type .ls-wheel-panel{
+#mlbContainer .ls-wrap .ls-chip-rail{display:none!important;}
+#mlbContainer .ls-wrap .ls-wheel-panel{
   min-height:430px!important;
   width:100%!important;
   align-self:stretch!important;
@@ -8661,7 +8605,7 @@ body::after{
   border:1px solid rgba(134,239,172,.14)!important;
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.03), 0 18px 56px rgba(0,0,0,.32)!important;
 }
-#mlbContainer .ls-wrap:first-of-type .ls-wheel-track{
+#mlbContainer .ls-wrap .ls-wheel-track{
   filter:drop-shadow(0 28px 34px rgba(0,0,0,.45)) drop-shadow(0 0 28px rgba(34,197,94,.12));
 }
 .q-closing-terminal{
@@ -8882,14 +8826,14 @@ body::after{
 }
 .q-terminal-mini span{display:block;font-family:'DM Mono',monospace;font-size:.46rem;font-weight:800;letter-spacing:.14em;color:rgba(211,231,220,.46);text-transform:uppercase;margin-bottom:4px;}
 .q-terminal-mini b{display:block;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:900;color:#f0ece4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-#mlbContainer .ls-wrap:first-of-type .ls-info{
+#mlbContainer .ls-wrap .ls-info{
   padding:0 24px 24px!important;
   display:grid!important;
   grid-template-columns:minmax(0,1fr) minmax(280px,390px)!important;
   gap:18px!important;
   align-items:stretch!important;
 }
-#mlbContainer .ls-wrap:first-of-type .ls-thesis-line{
+#mlbContainer .ls-wrap .ls-thesis-line{
   margin:0!important;
   padding:17px 18px!important;
   border-radius:18px!important;
@@ -8897,30 +8841,30 @@ body::after{
   border:1px solid rgba(255,255,255,.08)!important;
   color:rgba(211,231,220,.72)!important;
 }
-#mlbContainer .ls-wrap:first-of-type .ls-action-row{
+#mlbContainer .ls-wrap .ls-action-row{
   margin:0!important;
   display:grid!important;
   grid-template-columns:minmax(0,1fr) 150px!important;
   gap:12px!important;
 }
-#mlbContainer .ls-wrap:first-of-type .ls-mini-disclaimer{grid-column:1/-1!important;}
-#mlbContainer .ls-wrap:first-of-type .ls-odds-panel::before{content:'Q\2019S TICKET'!important;}
-#mlbContainer .ls-wrap:first-of-type .ls-mini-disclaimer::after{content:' · Q\2019s table uses board-derived signals as chips. No sportsbook is endorsed; take the number wherever you already trust.'!important;}
+#mlbContainer .ls-wrap .ls-mini-disclaimer{grid-column:1/-1!important;}
+#mlbContainer .ls-wrap .ls-odds-panel::before{content:'Q\2019S TICKET'!important;}
+#mlbContainer .ls-wrap .ls-mini-disclaimer::after{content:' · Q\2019s table uses board-derived signals as chips. No sportsbook is endorsed; take the number wherever you already trust.'!important;}
 @media(max-width:1160px){
-  #mlbContainer .ls-wrap:first-of-type .ls-hero-zone{grid-template-columns:1fr!important;}
+  #mlbContainer .ls-wrap .ls-hero-zone{grid-template-columns:1fr!important;}
   .q-terminal-body{grid-template-columns:1fr!important;}
-  #mlbContainer .ls-wrap:first-of-type .ls-info{grid-template-columns:1fr!important;}
+  #mlbContainer .ls-wrap .ls-info{grid-template-columns:1fr!important;}
 }
 @media(max-width:680px){
-  #mlbContainer .ls-wrap:first-of-type{padding:14px!important;border-radius:22px!important;}
-  #mlbContainer .ls-wrap:first-of-type::after{display:none;}
-  #mlbContainer .ls-wrap:first-of-type .ls-hero-zone{padding:14px!important;gap:14px!important;}
-  #mlbContainer .ls-wrap:first-of-type .ls-wheel-panel{min-height:340px!important;}
+  #mlbContainer .ls-wrap{padding:14px!important;border-radius:22px!important;}
+  #mlbContainer .ls-wrap::after{display:none;}
+  #mlbContainer .ls-wrap .ls-hero-zone{padding:14px!important;gap:14px!important;}
+  #mlbContainer .ls-wrap .ls-wheel-panel{min-height:340px!important;}
   .q-terminal-top{flex-direction:column;}
   .q-chip-drop-zone{grid-template-columns:1fr!important;}
   .q-terminal-footer{grid-template-columns:1fr!important;}
-  #mlbContainer .ls-wrap:first-of-type .ls-info{padding:0 14px 14px!important;}
-  #mlbContainer .ls-wrap:first-of-type .ls-action-row{grid-template-columns:1fr!important;}
+  #mlbContainer .ls-wrap .ls-info{padding:0 14px 14px!important;}
+  #mlbContainer .ls-wrap .ls-action-row{grid-template-columns:1fr!important;}
 }
 </style>
 
@@ -9062,11 +9006,11 @@ body::after{
     if(!heroZone || !wheel) return;
 
     var propShots=[
-      {player:'Ben Rice', market:'1.5+ Total Bases', odds:'+350', tag:'VALUE', short:'Ben Rice 1.5+ Total Bases'},
-      {player:'Gerrit Cole', market:"8+ K's", odds:'+450', tag:'LONGSHOT', short:"Gerrit Cole 8+ K's"},
-      {player:'Jack Perkins', market:"7+ K's", odds:'+800', tag:'LONGSHOT', short:"Jack Perkins 7+ K's"},
-      {player:'Rafael Devers', market:'1.5+ Total Bases', odds:'+280', tag:'SHARP', short:'Rafael Devers 1.5+ Total Bases'},
-      {player:'Tyler Soderstrom', market:'O 0.5 HR', odds:'+275', tag:'SHARP', short:'Tyler Soderstrom O 0.5 HR'}
+      {player:'Ben Rice', market:'2.5+ Total Bases', odds:'+350', tag:'VALUE', short:'Ben Rice 2.5+ Total Bases'},
+      {player:'Sonny Gray', market:"8+ K's", odds:'+450', tag:'LONGSHOT', short:"Sonny Gray 8+ K's"},
+      {player:'Carlos Rodon', market:"9+ K's", odds:'+800', tag:'LONGSHOT', short:"Carlos Rodon 9+ K's"},
+      {player:'Rafael Devers', market:'3.5+ Total Bases', odds:'+280', tag:'SHARP', short:'Rafael Devers 3.5+ Total Bases'},
+      {player:'Konnor Griffin', market:'+ 0.5 HR', odds:'+275', tag:'SHARP', short:'Konnor Griffin + 0.5 HR'}
     ];
 
     var terminal=wrap.querySelector('.q-closing-terminal');
@@ -9140,11 +9084,7 @@ body::after{
     var ret=wrap.querySelector('.ls-return'); if(ret) ret.textContent='Tap a chip to spin the table';
     var ev=wrap.querySelector('.ls-ev'); if(ev) ev.textContent='Longshot Board';
 
-    // auto-select the first longshot so the center immediately shows a payout preview
-    setTimeout(function(){
-      var first=zone.querySelector('.ls-leg-click');
-      if(first) first.click();
-    }, 180);
+    // no auto-click: keeps the table ready immediately without triggering a startup spin
   }
   function run(){ refreshHeroAndConsensus(); tuneClosingTable(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', run);
@@ -9245,11 +9185,11 @@ body .q-market-title .gold-line{
 <script id="q-terminal-bet-sync">
 (function(){
   var PROP_SHOTS=[
-    {name:'Ben Rice',market:'1.5+ Total Bases',odds:'+350',tag:'VALUE'},
-    {name:'Payton Tolle',market:"8+ K's",odds:'+750',tag:'LONGSHOT'},
-    {name:'Walker Buehler',market:"7+ K's",odds:'+800',tag:'LONGSHOT'},
-    {name:'Rafael Devers',market:'O 0.5 HR',odds:'+280',tag:'SHARP'},
-    {name:'Tyler Soderstrom',market:'O 0.5 HR',odds:'+275',tag:'SHARP'}
+    {name:'Jung Hoo Lee',market:'2.5+ Total Bases',odds:'+350',tag:'VALUE'},
+    {name:'Shane Bieber',market:"8+ K's",odds:'+750',tag:'LONGSHOT'},
+    {name:'Gavin Williams',market:"7+ K's",odds:'+800',tag:'LONGSHOT'},
+    {name:'Jazz Chisholm Jr',market:'+ 0.5 HR',odds:'+280',tag:'SHARP'},
+    {name:'Wilyer Abreu',market:'+ 0.5 HR',odds:'+275',tag:'SHARP'}
   ];
   function cleanOdds(v){var n=parseInt(String(v||'').replace(/[^0-9+-]/g,''),10);if(isNaN(n))return '+0';return n>0?'+'+n:String(n);}
   function oddsNum(v){var n=parseInt(String(v||'').replace(/[^0-9+-]/g,''),10);return isNaN(n)?0:n;}
@@ -9280,28 +9220,1914 @@ body .q-market-title .gold-line{
     return '<div class="'+cls+'" role="button" tabindex="0" data-bet-key="'+esc(betKey(b))+'" data-name="'+esc(b.name)+'" data-market="'+esc(b.market)+'" data-odds="'+esc(b.odds)+'" data-tag="'+esc(b.tag||'LONGSHOT')+'"><div class="q-ticket-left"><b>'+esc(b.name)+'</b><em>'+esc(b.market)+'</em>'+(b.isParlay?'':'<div class="q-ticket-bar-wrap"><div class="q-ticket-bar" style="width:'+barW.toFixed(0)+'%"></div><span>'+imp.toFixed(1)+'% implied</span></div>')+'</div><div class="q-ticket-odds-badge">'+esc(b.odds)+'</div></div>';
   }
   function init(){
-    var wrap=document.querySelector('#mlbContainer .ls-wrap');if(!wrap){setTimeout(init,120);return;}
-    var terminal=wrap.querySelector('.q-closing-terminal');if(!terminal||terminal.dataset.qBetSync==='1'){if(!terminal)setTimeout(init,120);return;}
+    var wrap=document.querySelector('#mlbContainer .ls-wrap');if(!wrap){requestAnimationFrame(init);return;}
+    var terminal=wrap.querySelector('.q-closing-terminal');if(!terminal||terminal.dataset.qBetSync==='1'){if(!terminal)requestAnimationFrame(init);return;}
     var zone=terminal.querySelector('.q-chip-drop-zone'),chips=Array.from(terminal.querySelectorAll('.q-chip-drop-zone .ls-leg.q-rect-chip')),ticketEl=terminal.querySelector('#qTicketList');
-    if(!chips.length||!ticketEl){setTimeout(init,120);return;}
+    if(!chips.length||!ticketEl){requestAnimationFrame(init);return;}
     var countEl=terminal.querySelector('#qTicketCount'),miniLongest=terminal.querySelector('#qMiniLongest'),miniRange=terminal.querySelector('#qMiniRange'),oddsPanel=wrap.querySelector('.ls-odds-panel'),oddsVal=wrap.querySelector('.ls-odds-val'),retEl=wrap.querySelector('.ls-return'),evEl=wrap.querySelector('.ls-ev'),pctEl=wrap.querySelector('.ls-center-pct'),capEl=wrap.querySelector('.ls-center-cap'),centerEl=wrap.querySelector('.ls-wheel-center'),ballEl=wrap.querySelector('.ls-wheel-ball'),dealerEl=wrap.querySelector('.ls-dealer-call'),wagerVal=wrap.querySelector('.ls-wager-v'),wagerBtns=Array.from(wrap.querySelectorAll('.ls-wager-btn'));
     var chipBets=chips.map(function(chip,i){var b=normalized(PROP_SHOTS[i]||{name:(chip.querySelector('.ls-leg-name')||{}).textContent||chip.getAttribute('data-name')||'Board Pick',market:(chip.querySelector('.ls-leg-suit')||{}).textContent||'',odds:chip.getAttribute('data-odds')||(chip.querySelector('.ls-leg-odds')||{}).textContent||'+0',tag:chip.getAttribute('data-chip-tag')||'LONGSHOT'});b.key=betKey(b);chip.dataset.betKey=b.key;chip.dataset.odds=b.odds;chip.dataset.name=b.name;chip.dataset.chipTag=b.tag;return b;});
     var pool=buildPool(),activeBet=null,visibleBets=chipBets.slice(),parlay=calcParlay(visibleBets);
     function stake(){var raw=wagerVal?wagerVal.textContent:'$10',n=parseInt(String(raw).replace(/[^0-9]/g,''),10);return isNaN(n)||n<1?10:n;}
     function profitFor(b){return stake()*(toDecimal(b.odds)-1);}
-    function center(amount,animate){var target=Math.max(0,Math.round(amount));if(!pctEl)return;if(!animate){pctEl.textContent='$'+target.toLocaleString();return;}var start=performance.now(),dur=720;function step(now){var k=Math.min(1,(now-start)/dur),ease=1-Math.pow(1-k,3);pctEl.textContent='$'+Math.round(target*ease).toLocaleString();if(k<1)requestAnimationFrame(step);else if(centerEl)centerEl.classList.remove('spinning');}requestAnimationFrame(step);}
+    function center(amount,animate){var target=Math.max(0,Math.round(amount));if(!pctEl)return;if(!animate){pctEl.textContent='$'+target.toLocaleString();return;}var start=performance.now(),dur=220;function step(now){var k=Math.min(1,(now-start)/dur),ease=1-Math.pow(1-k,3);pctEl.textContent='$'+Math.round(target*ease).toLocaleString();if(k<1)requestAnimationFrame(step);else if(centerEl)centerEl.classList.remove('spinning');}requestAnimationFrame(step);}
     function syncActive(){chips.forEach(function(chip){chip.classList.toggle('active',!!activeBet&&(activeBet.isParlay||chip.dataset.betKey===activeBet.key));});ticketEl.querySelectorAll('.q-ticket-row').forEach(function(row){row.classList.toggle('is-active',!!activeBet&&row.dataset.betKey===activeBet.key);});}
-    function selectBet(b,opts){opts=opts||{};b=Object.assign({},b,{odds:cleanOdds(b.odds),key:b.key||betKey(b)});activeBet=b;syncActive();var profit=profitFor(b);if(capEl)capEl.textContent=b.isParlay?'full parlay':'you\u2019d win';if(oddsVal)oddsVal.textContent=b.odds;if(retEl)retEl.textContent='$'+stake().toLocaleString()+' wager \u2192 $'+Math.round(profit).toLocaleString()+' profit';if(evEl)evEl.textContent=b.isParlay?'5-Leg Parlay':(b.tag==='DOG'?'Moneyline Pick':'Individual Pick');if(oddsPanel){oddsPanel.classList.remove('ls-pulse');void oddsPanel.offsetWidth;oddsPanel.classList.add('ls-pulse','active');}if(opts.spin){if(centerEl)centerEl.classList.add('spinning');if(dealerEl)dealerEl.textContent=b.isParlay?'Parlay locked':'Ticket selected';if(typeof landRouletteBall==='function')landRouletteBall(ballEl,b.isParlay?9:(Math.abs(oddsNum(b.odds))%7));setTimeout(function(){if(dealerEl)dealerEl.textContent='Place your bets\u2026';},1800);}center(profit,opts.animate!==false);}
+    function selectBet(b,opts){opts=opts||{};b=Object.assign({},b,{odds:cleanOdds(b.odds),key:b.key||betKey(b)});activeBet=b;syncActive();var profit=profitFor(b);if(capEl)capEl.textContent=b.isParlay?'full parlay':'you\u2019d win';if(oddsVal)oddsVal.textContent=b.odds;if(retEl)retEl.textContent='$'+stake().toLocaleString()+' wager \u2192 $'+Math.round(profit).toLocaleString()+' profit';if(evEl)evEl.textContent=b.isParlay?'5-Leg Parlay':(b.tag==='DOG'?'Moneyline Pick':'Individual Pick');if(oddsPanel){oddsPanel.classList.remove('ls-pulse');void oddsPanel.offsetWidth;oddsPanel.classList.add('ls-pulse','active');}if(opts.spin){if(centerEl)centerEl.classList.add('spinning');if(dealerEl)dealerEl.textContent=b.isParlay?'Parlay locked':'Ticket selected';if(typeof landRouletteBall==='function')landRouletteBall(ballEl,b.isParlay?9:(Math.abs(oddsNum(b.odds))%7));setTimeout(function(){if(dealerEl)dealerEl.textContent='Place your bets\u2026';},600);}center(profit,opts.animate!==false);}
     function renderTicket(){parlay=calcParlay(visibleBets);parlay.key=betKey(parlay);if(typeof MLB_LONGSHOTS!=='undefined'&&MLB_LONGSHOTS[0]){MLB_LONGSHOTS[0].odds=parlay.odds;MLB_LONGSHOTS[0].ret='$10 parlay \u2192 $'+Math.round((parlay.dec-1)*10).toLocaleString();}ticketEl.innerHTML=visibleBets.map(function(b){b.key=betKey(b);return ticketRowHTML(b);}).join('')+ticketRowHTML(parlay);if(countEl)countEl.textContent=visibleBets.length;var maxOdds=Math.max.apply(null,visibleBets.map(function(b){return oddsNum(b.odds);}));if(miniLongest)miniLongest.textContent='+'+maxOdds;if(miniRange)miniRange.textContent=parlay.odds+' parlay';ticketEl.querySelectorAll('.q-ticket-row').forEach(function(row){row.addEventListener('click',function(){selectBet({name:row.dataset.name,market:row.dataset.market,odds:row.dataset.odds,tag:row.dataset.tag,key:row.dataset.betKey,isParlay:row.classList.contains('q-parlay-row')},{spin:true,animate:true});});row.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();row.click();}});});syncActive();}
     function updateDial(val){if(pool.length>=5){var maxStart=Math.max(0,pool.length-5),start=Math.round((val/100)*maxStart);visibleBets=pool.slice(start,start+5).map(function(b){return Object.assign({},b,{key:betKey(b)});});}else visibleBets=chipBets.slice();renderTicket();var lab=terminal.querySelector('#qRiskLabel');if(lab){lab.textContent=riskLabel(val);lab.style.color=val<30?'#86efac':val<60?'#f4b942':'#fca5a5';}if(!activeBet)selectBet(chipBets[0],{animate:false});}
-    chips.forEach(function(chip,i){chip.addEventListener('click',function(){var b=chipBets[i]||{name:chip.dataset.name,market:'Board Pick',odds:chip.dataset.odds,tag:chip.dataset.chipTag};setTimeout(function(){selectBet(b,{animate:false});},0);});});
-    wagerBtns.forEach(function(btn){btn.addEventListener('click',function(){setTimeout(function(){if(activeBet)selectBet(activeBet,{animate:false});},0);});});
-    if(oddsPanel){oddsPanel.addEventListener('click',function(){setTimeout(function(){selectBet(parlay,{spin:true,animate:true});},0);});}
+    chips.forEach(function(chip,i){chip.addEventListener('click',function(){var b=chipBets[i]||{name:chip.dataset.name,market:'Board Pick',odds:chip.dataset.odds,tag:chip.dataset.chipTag};selectBet(b,{animate:false});});});
+    wagerBtns.forEach(function(btn){btn.addEventListener('click',function(){if(activeBet)selectBet(activeBet,{animate:false});});});
+    if(oddsPanel){oddsPanel.addEventListener('click',function(){selectBet(parlay,{spin:true,animate:true});});}
     var dialDiv=terminal.querySelector('.q-risk-dial');
     if(dialDiv){dialDiv.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span class="q-risk-title">Risk Dial</span><span id="qRiskLabel" style="font-family:\'DM Mono\',monospace;font-size:.40rem;color:#86efac;letter-spacing:.08em;text-transform:uppercase;transition:color .2s">Longshot Mix</span></div><input type="range" class="q-risk-input" id="qRiskSlider" min="0" max="100" value="60"><div class="q-risk-dial-labels"><span style="color:rgba(34,197,94,.55)">Safe</span><span style="color:rgba(248,185,66,.55)">Mixed</span><span style="color:rgba(248,113,113,.55)">Longshot</span></div>';var slider=dialDiv.querySelector('#qRiskSlider');if(slider){slider.addEventListener('input',function(){updateDial(+this.value);});updateDial(+slider.value);}else renderTicket();}else renderTicket();
-    terminal.dataset.qBetSync='1';setTimeout(function(){var activeChip=zone&&zone.querySelector('.ls-leg-click.active');if(activeChip){var idx=chips.indexOf(activeChip);if(idx>=0)selectBet(chipBets[idx],{animate:false});}else selectBet(chipBets[0],{animate:false});},80);
+    terminal.dataset.qBetSync='1';requestAnimationFrame(function(){var activeChip=zone&&zone.querySelector('.ls-leg-click.active');if(activeChip){var idx=chips.indexOf(activeChip);if(idx>=0)selectBet(chipBets[idx],{animate:false});}else selectBet(chipBets[0],{animate:false});});
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(init,260);});else setTimeout(init,260);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){requestAnimationFrame(init);});else requestAnimationFrame(init);
+})();
+</script>
+
+
+
+<style id="q-premium-plaque-chip-final-build">
+/* =========================================================
+   Q PREMIUM CHIP BUILD — final visual/interaction skin only.
+   Keeps the existing roulette/wager infrastructure intact.
+========================================================= */
+#mlbContainer .q-closing-terminal{
+  position:relative!important;
+  border-radius:24px!important;
+  background:
+    radial-gradient(720px 260px at 30% 0%,rgba(244,185,66,.10),transparent 62%),
+    radial-gradient(680px 300px at 80% 100%,rgba(34,197,94,.10),transparent 68%),
+    linear-gradient(165deg,rgba(9,36,22,.86),rgba(2,8,7,.92))!important;
+  border:1px solid rgba(244,210,112,.20)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 22px 60px rgba(0,0,0,.42)!important;
+}
+#mlbContainer .q-terminal-top{
+  padding-bottom:16px!important;
+  border-bottom:1px solid rgba(244,210,112,.10)!important;
+}
+#mlbContainer .q-terminal-title span{
+  color:#f2c75d!important;
+  text-shadow:0 0 20px rgba(244,185,66,.18)!important;
+}
+#mlbContainer .q-terminal-sub{
+  color:rgba(218,232,218,.68)!important;
+}
+#mlbContainer .q-terminal-badge{
+  background:rgba(244,185,66,.09)!important;
+  border-color:rgba(244,185,66,.24)!important;
+  color:#f6d78d!important;
+}
+
+/* Felt table: cleaner two-column chip rack + receipt ticket */
+#mlbContainer .q-terminal-body{
+  grid-template-columns:minmax(0,1fr) minmax(250px,300px)!important;
+  gap:18px!important;
+  align-items:stretch!important;
+}
+#mlbContainer .q-chip-felt{
+  min-height:392px!important;
+  padding:17px 18px 20px!important;
+  border-radius:22px!important;
+  overflow:hidden!important;
+  background:
+    linear-gradient(rgba(255,255,255,.020) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px),
+    radial-gradient(600px 280px at 50% 6%,rgba(38,168,85,.16),transparent 66%),
+    radial-gradient(520px 260px at 100% 100%,rgba(244,185,66,.08),transparent 70%),
+    linear-gradient(180deg,rgba(11,59,32,.34),rgba(3,12,9,.50))!important;
+  background-size:42px 42px,42px 42px,auto,auto,auto!important;
+  border:1px solid rgba(244,210,112,.16)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 0 65px rgba(0,0,0,.22)!important;
+}
+#mlbContainer .q-chip-felt::before{
+  content:'CHIP RACK'!important;
+  top:52%!important;
+  left:50%!important;
+  transform:translate(-50%,-50%) rotate(-7deg)!important;
+  font-size:clamp(2.8rem,7vw,5.2rem)!important;
+  letter-spacing:.16em!important;
+  color:rgba(255,255,255,.022)!important;
+  text-shadow:none!important;
+}
+#mlbContainer .q-chip-felt-label{
+  position:relative!important;
+  z-index:2!important;
+  margin-bottom:15px!important;
+  color:#f0d48a!important;
+  letter-spacing:.18em!important;
+}
+#mlbContainer .q-chip-drop-zone{
+  position:relative!important;
+  z-index:2!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(190px,1fr))!important;
+  gap:18px 22px!important;
+  align-items:start!important;
+  justify-items:center!important;
+  padding:8px clamp(6px,2vw,30px) 14px!important;
+}
+
+/* High-roller plaque chip */
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip{
+  --chip-accent:#34d178;
+  --chip-accent-soft:rgba(52,211,120,.20);
+  --chip-deep:#06140d;
+  --chip-ridge:rgba(52,211,120,.42);
+  position:relative!important;
+  width:100%!important;
+  max-width:306px!important;
+  height:104px!important;
+  min-height:104px!important;
+  display:grid!important;
+  grid-template-columns:1fr auto!important;
+  grid-template-rows:auto 1fr auto!important;
+  grid-template-areas:"tag odds" "name name" "brand code"!important;
+  align-items:center!important;
+  gap:2px 10px!important;
+  padding:12px 18px 11px!important;
+  border-radius:18px!important;
+  isolation:isolate!important;
+  overflow:hidden!important;
+  cursor:grab!important;
+  user-select:none!important;
+  touch-action:none!important;
+  background:
+    repeating-linear-gradient(180deg,var(--chip-ridge) 0 5px,rgba(0,0,0,.52) 5px 10px),
+    repeating-linear-gradient(180deg,var(--chip-ridge) 0 5px,rgba(0,0,0,.52) 5px 10px),
+    linear-gradient(90deg,transparent 0 14px,rgba(244,210,112,.50) 14px 15px,transparent 15px calc(100% - 15px),rgba(244,210,112,.50) calc(100% - 15px) calc(100% - 14px),transparent calc(100% - 14px)),
+    radial-gradient(ellipse 86% 82% at 50% 52%,var(--chip-accent-soft),transparent 68%),
+    linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.018) 34%,rgba(0,0,0,.34) 100%),
+    linear-gradient(180deg,var(--chip-deep),#020705 100%)!important;
+  background-size:13px 100%,13px 100%,100% 100%,100% 100%,100% 100%,100% 100%!important;
+  background-position:left center,right center,center,center,center,center!important;
+  background-repeat:no-repeat!important;
+  border:1px solid rgba(244,210,112,.52)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.22),
+    inset 0 -1px 0 rgba(0,0,0,.70),
+    inset 0 0 0 1px rgba(0,0,0,.42),
+    0 14px 26px rgba(0,0,0,.46),
+    0 0 0 1px rgba(3,9,6,.80)!important;
+  transform:translateY(0)!important;
+  transition:transform .18s ease,filter .18s ease,border-color .18s ease,box-shadow .18s ease!important;
+}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip:nth-child(5){
+  grid-column:1/-1!important;
+  width:clamp(246px,52%,330px)!important;
+  justify-self:center!important;
+}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip[data-chip-tag="LONGSHOT"]{
+  --chip-accent:#f87171; --chip-accent-soft:rgba(248,113,113,.22); --chip-deep:#190706; --chip-ridge:rgba(210,62,48,.44);
+  border-color:rgba(248,145,110,.48)!important;
+}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip[data-chip-tag="SHARP"]{
+  --chip-accent:#93c5fd; --chip-accent-soft:rgba(96,165,250,.22); --chip-deep:#050b1c; --chip-ridge:rgba(96,165,250,.44);
+  border-color:rgba(120,170,255,.50)!important;
+}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip[data-chip-tag="VALUE"]{
+  --chip-accent:#86efac; --chip-accent-soft:rgba(74,222,128,.22); --chip-deep:#06140d; --chip-ridge:rgba(52,211,120,.44);
+  border-color:rgba(120,238,162,.46)!important;
+}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip[data-chip-tag="DOG"]{
+  --chip-accent:#c4b5fd; --chip-accent-soft:rgba(167,139,250,.22); --chip-deep:#12091e; --chip-ridge:rgba(167,139,250,.42);
+  border-color:rgba(190,170,255,.48)!important;
+}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip::before{
+  content:''!important;
+  position:absolute!important;
+  inset:9px 18px!important;
+  z-index:0!important;
+  pointer-events:none!important;
+  border-radius:12px!important;
+  border:1px solid rgba(244,210,112,.16)!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.040),transparent 50%,rgba(0,0,0,.18))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 24px rgba(0,0,0,.34)!important;
+}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip::after{
+  content:''!important;
+  position:absolute!important;
+  top:-48%!important;
+  left:-28%!important;
+  width:58%!important;
+  height:190%!important;
+  z-index:5!important;
+  pointer-events:none!important;
+  background:linear-gradient(105deg,transparent,rgba(255,255,255,.20) 46%,transparent 68%)!important;
+  transform:skewX(-16deg)!important;
+  opacity:.70!important;
+  animation:qPlaqueGlint 7.8s ease-in-out infinite!important;
+}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip:nth-child(2)::after{animation-delay:1.4s!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip:nth-child(3)::after{animation-delay:2.8s!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip:nth-child(4)::after{animation-delay:4.2s!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip:nth-child(5)::after{animation-delay:5.6s!important;}
+@keyframes qPlaqueGlint{0%,78%{left:-62%;opacity:0}82%{opacity:.65}94%,100%{left:124%;opacity:0}}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip:hover,
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip.active,
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip.is-dragging-source{
+  transform:translateY(-5px) scale(1.014)!important;
+  filter:brightness(1.08) saturate(1.04)!important;
+  border-color:rgba(255,228,128,.94)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.28),
+    inset 0 -1px 0 rgba(0,0,0,.62),
+    0 20px 38px rgba(0,0,0,.58),
+    0 0 0 1px rgba(255,215,70,.25),
+    0 0 34px rgba(244,185,66,.15)!important;
+}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip.is-dragging-source{opacity:.58!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-n{
+  grid-area:tag!important;
+  position:relative!important;
+  top:auto!important;left:auto!important;transform:none!important;
+  width:auto!important;height:auto!important;min-width:0!important;
+  justify-self:start!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  padding:4px 9px!important;
+  border-radius:999px!important;
+  z-index:3!important;
+  background:rgba(2,7,6,.78)!important;
+  border:1px solid color-mix(in srgb,var(--chip-accent) 38%,transparent)!important;
+  box-shadow:0 1px 8px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06)!important;
+  color:var(--chip-accent)!important;
+  font-family:'DM Mono',monospace!important;
+  font-size:.42rem!important;
+  font-weight:900!important;
+  letter-spacing:.16em!important;
+  line-height:1!important;
+  text-transform:uppercase!important;
+  white-space:nowrap!important;
+}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-n b{font:inherit!important;color:inherit!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-name{
+  grid-area:name!important;
+  position:relative!important;
+  z-index:3!important;
+  width:100%!important;
+  margin:0!important;
+  padding:4px 10px 3px!important;
+  display:block!important;
+  text-align:center!important;
+  font-family:'Inter',sans-serif!important;
+  font-size:.86rem!important;
+  font-weight:900!important;
+  line-height:1.04!important;
+  letter-spacing:-.025em!important;
+  color:#f6f0df!important;
+  background:rgba(0,0,0,.20)!important;
+  border:1px solid rgba(244,210,112,.12)!important;
+  border-radius:8px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  text-shadow:0 1px 5px rgba(0,0,0,.74)!important;
+}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-suit{
+  position:relative!important;
+  z-index:3!important;
+  grid-area:brand!important;
+  justify-self:start!important;
+  display:block!important;
+  margin:0!important;
+  padding:0!important;
+  color:rgba(246,240,223,.46)!important;
+  font-family:'DM Mono',monospace!important;
+  font-size:.48rem!important;
+  font-weight:800!important;
+  line-height:1!important;
+  letter-spacing:.10em!important;
+  text-transform:uppercase!important;
+  max-width:180px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-suit::before{
+  content:'SHORTOPEN · ';
+  color:rgba(244,210,112,.68)!important;
+}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-odds{
+  grid-area:odds!important;
+  position:relative!important;
+  z-index:3!important;
+  justify-self:end!important;
+  align-self:start!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-width:56px!important;
+  margin:0!important;
+  padding:5px 8px!important;
+  border-radius:9px!important;
+  color:#f5d56f!important;
+  background:rgba(0,0,0,.34)!important;
+  border:1px solid rgba(244,210,112,.24)!important;
+  font-family:'DM Mono',monospace!important;
+  font-size:.80rem!important;
+  font-weight:900!important;
+  line-height:1!important;
+  text-shadow:0 0 10px rgba(244,185,66,.28)!important;
+}
+#mlbContainer .q-chip-code{
+  grid-area:code!important;
+  position:relative!important;
+  z-index:3!important;
+  justify-self:end!important;
+  color:rgba(244,210,112,.52)!important;
+  font-family:'DM Mono',monospace!important;
+  font-size:.44rem!important;
+  font-weight:900!important;
+  letter-spacing:.12em!important;
+  line-height:1!important;
+  text-transform:uppercase!important;
+  white-space:nowrap!important;
+}
+
+/* Q's ticket as a cashier receipt */
+#mlbContainer .q-ticket-panel{
+  border-radius:18px!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:
+    linear-gradient(180deg,rgba(245,222,170,.085),rgba(0,0,0,.02) 35%,rgba(0,0,0,.22)),
+    repeating-linear-gradient(180deg,rgba(255,255,255,.022) 0 1px,transparent 1px 7px),
+    linear-gradient(180deg,rgba(15,23,17,.96),rgba(5,12,9,.98))!important;
+  border:1px solid rgba(244,210,112,.18)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.36)!important;
+}
+#mlbContainer .q-ticket-head{
+  padding:12px 14px 10px!important;
+  margin:0!important;
+  border-bottom:1px dashed rgba(244,210,112,.22)!important;
+  background:rgba(244,185,66,.045)!important;
+  color:#f4d789!important;
+}
+#mlbContainer .q-ticket-head span:last-child{
+  background:rgba(244,185,66,.12)!important;
+  color:#f5d56f!important;
+  border:1px solid rgba(244,185,66,.25)!important;
+}
+#mlbContainer .q-ticket-list{
+  position:relative!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:0!important;
+  padding:8px 10px 10px!important;
+}
+#mlbContainer .q-ticket-list::before,
+#mlbContainer .q-ticket-list::after{
+  content:'';
+  position:absolute;left:10px;right:10px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(244,210,112,.22),transparent);
+  pointer-events:none;
+}
+#mlbContainer .q-ticket-list::before{top:4px;}
+#mlbContainer .q-ticket-list::after{bottom:5px;}
+#mlbContainer .q-ticket-row{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:1fr auto!important;
+  gap:8px!important;
+  align-items:center!important;
+  min-height:48px!important;
+  padding:8px 8px 8px 12px!important;
+  border-radius:0!important;
+  background:transparent!important;
+  border:0!important;
+  border-bottom:1px dashed rgba(255,255,255,.075)!important;
+  cursor:pointer!important;
+  transition:background .16s ease,transform .16s ease,box-shadow .16s ease!important;
+}
+#mlbContainer .q-ticket-row:last-child{border-bottom:0!important;}
+#mlbContainer .q-ticket-row::before{
+  content:attr(data-ticket-num);
+  position:absolute;left:0;top:10px;
+  font-family:'DM Mono',monospace;font-size:.42rem;font-weight:900;letter-spacing:.08em;
+  color:rgba(244,210,112,.40);
+}
+#mlbContainer .q-ticket-row:hover,
+#mlbContainer .q-ticket-row.is-active{
+  transform:translateX(-2px)!important;
+  background:linear-gradient(90deg,rgba(244,185,66,.07),rgba(244,185,66,.018),transparent)!important;
+  box-shadow:inset 2px 0 0 rgba(244,185,66,.55)!important;
+}
+#mlbContainer .q-ticket-left{display:flex!important;flex-direction:column!important;gap:2px!important;min-width:0!important;}
+#mlbContainer .q-ticket-left b{
+  color:#eee6d5!important;
+  font-size:.66rem!important;
+  line-height:1.1!important;
+  font-weight:850!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+}
+#mlbContainer .q-ticket-left em{
+  color:rgba(238,230,213,.46)!important;
+  font-size:.53rem!important;
+  line-height:1.1!important;
+}
+#mlbContainer .q-ticket-bar-wrap{margin-top:4px!important;gap:5px!important;}
+#mlbContainer .q-ticket-bar-wrap>div{height:3px!important;background:var(--ticket-accent,#86efac)!important;opacity:.62!important;}
+#mlbContainer .q-ticket-bar-wrap span{font-size:.40rem!important;color:rgba(238,230,213,.34)!important;}
+#mlbContainer .q-ticket-odds-badge{
+  min-width:54px!important;
+  text-align:center!important;
+  color:#f5d56f!important;
+  background:rgba(0,0,0,.25)!important;
+  border:1px solid rgba(244,210,112,.20)!important;
+  border-radius:8px!important;
+  font-size:.78rem!important;
+  padding:5px 7px!important;
+  text-shadow:0 0 9px rgba(244,185,66,.24)!important;
+}
+#mlbContainer .q-ticket-tag-value{--ticket-accent:#86efac;}
+#mlbContainer .q-ticket-tag-sharp{--ticket-accent:#93c5fd;}
+#mlbContainer .q-ticket-tag-longshot{--ticket-accent:#fca5a5;}
+#mlbContainer .q-ticket-tag-dog{--ticket-accent:#c4b5fd;}
+#mlbContainer .q-parlay-row{margin-top:6px!important;border-top:1px solid rgba(244,210,112,.18)!important;background:rgba(244,185,66,.045)!important;border-radius:10px!important;}
+#mlbContainer .q-risk-dial{padding:12px 12px 13px!important;margin-top:0!important;border-top:1px dashed rgba(244,210,112,.18)!important;background:rgba(0,0,0,.16)!important;}
+#mlbContainer .q-risk-input{width:100%;accent-color:#f4b942;cursor:pointer;}
+#mlbContainer .q-risk-dial-labels{display:flex;justify-content:space-between;margin-top:5px;font-family:'DM Mono',monospace;font-size:.38rem;letter-spacing:.08em;text-transform:uppercase;}
+
+/* Drag/drop animation layer */
+.q-chip-drag-clone{
+  position:fixed!important;
+  left:0;top:0;
+  z-index:9999!important;
+  pointer-events:none!important;
+  opacity:.98!important;
+  transform:translate(-50%,-50%) rotate(var(--q-drag-rot,0deg)) scale(1.04)!important;
+  filter:drop-shadow(0 26px 30px rgba(0,0,0,.46)) brightness(1.08)!important;
+  will-change:left,top,transform,opacity!important;
+}
+.q-chip-drag-clone .ls-leg-name,
+.q-chip-drag-clone .ls-leg-suit,
+.q-chip-drag-clone .ls-leg-odds,
+.q-chip-drag-clone .ls-leg-n,
+.q-chip-drag-clone .q-chip-code{pointer-events:none!important;}
+#mlbContainer .ls-wheel-panel.q-wheel-drop-ready{
+  filter:brightness(1.16) saturate(1.08)!important;
+}
+#mlbContainer .ls-wheel-panel.q-wheel-drop-ready::after{
+  content:''!important;
+  position:absolute!important;
+  inset:22px!important;
+  z-index:12!important;
+  pointer-events:none!important;
+  border-radius:50%!important;
+  border:1px dashed rgba(244,210,112,.65)!important;
+  box-shadow:0 0 34px rgba(244,185,66,.28),inset 0 0 28px rgba(34,197,94,.20)!important;
+  animation:qWheelDropPulse .8s ease-in-out infinite!important;
+}
+#mlbContainer .ls-wheel-panel.q-drop-hit::after{
+  content:''!important;
+  position:absolute!important;
+  inset:35px!important;
+  z-index:12!important;
+  pointer-events:none!important;
+  border-radius:50%!important;
+  border:1px solid rgba(244,210,112,.75)!important;
+  box-shadow:0 0 44px rgba(244,185,66,.32),inset 0 0 30px rgba(34,197,94,.16)!important;
+  animation:qWheelHitBurst .65s ease-out forwards!important;
+}
+@keyframes qWheelDropPulse{0%,100%{transform:scale(1);opacity:.72}50%{transform:scale(1.035);opacity:1}}
+@keyframes qWheelHitBurst{0%{transform:scale(.82);opacity:1}100%{transform:scale(1.18);opacity:0}}
+.q-wheel-chip-splash{
+  position:fixed!important;
+  z-index:9998!important;
+  width:18px;height:18px;border-radius:50%;
+  pointer-events:none!important;
+  background:radial-gradient(circle at 35% 30%,#fff6bd,#f4b942 55%,#7d520f)!important;
+  box-shadow:0 0 16px rgba(244,185,66,.65),0 0 36px rgba(34,197,94,.18)!important;
+  animation:qWheelSplash .7s ease-out forwards!important;
+}
+@keyframes qWheelSplash{0%{transform:translate(-50%,-50%) scale(.4);opacity:1}55%{transform:translate(-50%,-50%) scale(1.5);opacity:.85}100%{transform:translate(-50%,-50%) scale(.3);opacity:0}}
+
+@media(max-width:1160px){
+  #mlbContainer .q-terminal-body{grid-template-columns:1fr!important;}
+  #mlbContainer .q-ticket-panel{max-width:none!important;}
+}
+@media(max-width:760px){
+  #mlbContainer .q-chip-felt{min-height:auto!important;padding:14px!important;}
+  #mlbContainer .q-chip-drop-zone{grid-template-columns:1fr!important;gap:12px!important;padding:5px 4px 8px!important;}
+  #mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip,
+  #mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip:nth-child(5){width:100%!important;max-width:none!important;height:92px!important;min-height:92px!important;}
+  #mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-name{font-size:.80rem!important;}
+  #mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-suit{max-width:220px!important;}
+}
+@media (prefers-reduced-motion: reduce){
+  #mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip::after,
+  .q-wheel-chip-splash{animation:none!important;}
+}
+</style>
+
+
+<style id="q-smooth-dealer-toss-polish">
+/* Smooth Dealer Toss — GPU-friendly motion, magnet zone, ticket stamp, and landing sparks. */
+body.q-chip-is-dragging{cursor:grabbing!important;}
+.q-smooth-clone{
+  position:fixed!important;
+  left:0!important;
+  top:0!important;
+  z-index:10050!important;
+  pointer-events:none!important;
+  opacity:.99!important;
+  transform:translate3d(var(--q-x,0px),var(--q-y,0px),0) translate(-50%,-50%) rotate(var(--q-rot,0deg)) scale(var(--q-scale,1))!important;
+  will-change:transform,opacity!important;
+  backface-visibility:hidden!important;
+  contain:layout paint style!important;
+  filter:drop-shadow(0 32px 36px rgba(0,0,0,.52)) brightness(1.10) saturate(1.08)!important;
+}
+.q-smooth-chip-clone{transform-origin:50% 50%!important;}
+.q-smooth-ticket-clone{
+  border-color:rgba(244,210,112,.56)!important;
+  box-shadow:0 24px 42px rgba(0,0,0,.48),0 0 28px rgba(244,185,66,.18)!important;
+  filter:drop-shadow(0 28px 34px rgba(0,0,0,.48)) brightness(1.14)!important;
+}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip.q-smooth-launching,
+#mlbContainer .q-ticket-row.q-smooth-launching{
+  transform:translateY(-6px) scale(1.018)!important;
+  filter:brightness(1.14) saturate(1.05)!important;
+}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip.is-dragging-source{
+  opacity:.50!important;
+  transform:translateY(-3px) scale(.985)!important;
+}
+#mlbContainer .ls-wheel-panel.q-wheel-drop-ready,
+#mlbContainer .ls-wheel-panel.q-wheel-magnet{
+  filter:brightness(1.18) saturate(1.12)!important;
+}
+#mlbContainer .ls-wheel-panel.q-wheel-drop-ready::after,
+#mlbContainer .ls-wheel-panel.q-wheel-magnet::after{
+  content:''!important;
+  position:absolute!important;
+  inset:18px!important;
+  z-index:18!important;
+  pointer-events:none!important;
+  border-radius:50%!important;
+  border:1px dashed rgba(244,221,126,.80)!important;
+  background:radial-gradient(circle,rgba(244,185,66,.08),rgba(34,197,94,.045) 44%,transparent 70%)!important;
+  box-shadow:0 0 44px rgba(244,185,66,.34),inset 0 0 36px rgba(34,197,94,.20)!important;
+  animation:qSmoothWheelMagnet .95s cubic-bezier(.34,1.56,.64,1) infinite!important;
+}
+#mlbContainer .ls-wheel-panel.q-drop-hit::after{
+  content:''!important;
+  position:absolute!important;
+  inset:28px!important;
+  z-index:20!important;
+  pointer-events:none!important;
+  border-radius:50%!important;
+  border:1px solid rgba(255,235,130,.86)!important;
+  background:radial-gradient(circle,rgba(244,185,66,.14),rgba(34,197,94,.055) 54%,transparent 72%)!important;
+  box-shadow:0 0 56px rgba(244,185,66,.40),inset 0 0 38px rgba(34,197,94,.18)!important;
+  animation:qSmoothWheelHit .62s cubic-bezier(.16,1,.3,1) forwards!important;
+}
+@keyframes qSmoothWheelMagnet{
+  0%,100%{transform:scale(.985);opacity:.76;}
+  50%{transform:scale(1.035);opacity:1;}
+}
+@keyframes qSmoothWheelHit{
+  0%{transform:scale(.72);opacity:1;}
+  58%{transform:scale(1.08);opacity:.78;}
+  100%{transform:scale(1.24);opacity:0;}
+}
+.q-chip-landing-burst{
+  position:fixed!important;
+  left:0;top:0;
+  z-index:10049!important;
+  width:1px;height:1px;
+  pointer-events:none!important;
+}
+.q-chip-landing-burst::before{
+  content:''!important;
+  position:absolute!important;
+  left:0;top:0;
+  width:22px;height:22px;
+  margin:-11px 0 0 -11px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff8bd,#f4b942 54%,rgba(244,185,66,.18) 70%,transparent 72%);
+  box-shadow:0 0 18px rgba(244,185,66,.72),0 0 40px rgba(34,197,94,.18);
+  animation:qSmoothBurstCore .70s ease-out forwards!important;
+}
+.q-chip-landing-burst i{
+  position:absolute!important;
+  left:0;top:0;
+  width:4px;height:4px;
+  border-radius:999px;
+  background:#f8d86f;
+  box-shadow:0 0 10px rgba(244,185,66,.75);
+  transform:rotate(var(--q-a)) translateX(0);
+  animation:qSmoothBurstSpark .78s ease-out forwards!important;
+}
+@keyframes qSmoothBurstCore{
+  0%{transform:scale(.35);opacity:1;}
+  48%{transform:scale(1.65);opacity:.86;}
+  100%{transform:scale(.30);opacity:0;}
+}
+@keyframes qSmoothBurstSpark{
+  0%{transform:rotate(var(--q-a)) translateX(0) scale(1);opacity:1;}
+  100%{transform:rotate(var(--q-a)) translateX(var(--q-d)) scale(.25);opacity:0;}
+}
+#mlbContainer .q-ticket-row{overflow:hidden!important;}
+#mlbContainer .q-ticket-row.q-ticket-stamp{
+  border-color:rgba(244,210,112,.48)!important;
+  background:linear-gradient(90deg,rgba(244,185,66,.09),rgba(255,255,255,.035),rgba(244,185,66,.055))!important;
+  box-shadow:0 0 22px rgba(244,185,66,.15),inset 0 0 18px rgba(244,185,66,.045)!important;
+  animation:qTicketRowSettle .78s cubic-bezier(.16,1,.3,1) forwards!important;
+}
+#mlbContainer .q-ticket-row.q-ticket-stamp::before{
+  opacity:1!important;
+  left:112%!important;
+  transition:left .72s cubic-bezier(.16,1,.3,1)!important;
+  background:linear-gradient(90deg,transparent,rgba(255,237,160,.34),transparent)!important;
+}
+#mlbContainer .q-ticket-row.q-ticket-stamp::after{
+  content:'LOCKED'!important;
+  position:absolute!important;
+  right:52px!important;
+  top:50%!important;
+  transform:translateY(-50%) rotate(-8deg) scale(.86)!important;
+  z-index:4!important;
+  padding:3px 7px!important;
+  border-radius:5px!important;
+  border:1px solid rgba(244,210,112,.62)!important;
+  background:rgba(8,10,8,.82)!important;
+  color:#f5d56f!important;
+  font-family:'DM Mono',monospace!important;
+  font-size:.42rem!important;
+  font-weight:900!important;
+  letter-spacing:.16em!important;
+  text-shadow:0 0 10px rgba(244,185,66,.42)!important;
+  opacity:0!important;
+  animation:qTicketStamp .72s cubic-bezier(.34,1.56,.64,1) forwards!important;
+}
+#mlbContainer .q-ticket-row.q-ticket-stamp .q-ticket-odds-badge{
+  animation:qTicketOddsPop .62s cubic-bezier(.34,1.56,.64,1) forwards!important;
+}
+@keyframes qTicketRowSettle{
+  0%{transform:translateX(0) scale(1);}
+  34%{transform:translateX(-5px) scale(1.012);}
+  100%{transform:translateX(-2px) scale(1);}
+}
+@keyframes qTicketStamp{
+  0%{opacity:0;transform:translateY(-50%) rotate(-8deg) scale(.68);}
+  42%{opacity:1;transform:translateY(-50%) rotate(-8deg) scale(1.06);}
+  100%{opacity:.82;transform:translateY(-50%) rotate(-8deg) scale(.94);}
+}
+@keyframes qTicketOddsPop{
+  0%{transform:scale(1);filter:brightness(1);}
+  38%{transform:scale(1.14);filter:brightness(1.25);}
+  100%{transform:scale(1);filter:brightness(1);}
+}
+@media (prefers-reduced-motion: reduce){
+  .q-smooth-clone,
+  .q-chip-landing-burst,
+  .q-chip-landing-burst::before,
+  .q-chip-landing-burst i,
+  #mlbContainer .q-ticket-row.q-ticket-stamp,
+  #mlbContainer .q-ticket-row.q-ticket-stamp::after{animation:none!important;transition:none!important;}
+}
+</style>
+
+<script id="q-smooth-dealer-toss-final-build">
+(function(){
+  'use strict';
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn(); }
+  function qs(root,sel){ return root && root.querySelector ? root.querySelector(sel) : null; }
+  function qsa(root,sel){ return root && root.querySelectorAll ? Array.from(root.querySelectorAll(sel)) : []; }
+  function clamp(v,min,max){ return Math.max(min,Math.min(max,v)); }
+  function rectCenter(r){ return {x:r.left+r.width/2,y:r.top+r.height/2}; }
+  function inRect(x,y,r,pad){ pad=pad||0; return x>=r.left-pad && x<=r.right+pad && y>=r.top-pad && y<=r.bottom+pad; }
+  function easeOutCubic(t){ return 1-Math.pow(1-t,3); }
+  function easeInOutCubic(t){ return t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+  function cubic(p0,p1,p2,p3,t){
+    var mt=1-t;
+    return mt*mt*mt*p0 + 3*mt*mt*t*p1 + 3*mt*t*t*p2 + t*t*t*p3;
+  }
+  function setVars(el,x,y,rot,scale){
+    el.style.setProperty('--q-x',x+'px');
+    el.style.setProperty('--q-y',y+'px');
+    el.style.setProperty('--q-rot',(rot||0)+'deg');
+    el.style.setProperty('--q-scale',(scale==null?1:scale));
+  }
+  function decorateChips(terminal){
+    var chips=qsa(terminal,'.q-chip-drop-zone .ls-leg.q-rect-chip');
+    chips.forEach(function(chip,i){
+      chip.setAttribute('draggable','false');
+      chip.dataset.chipIndex=String(i+1).padStart(2,'0');
+      if(!chip.querySelector('.q-chip-code')){
+        var code=document.createElement('span');
+        code.className='q-chip-code';
+        code.textContent='BOARD '+String(i+1).padStart(2,'0');
+        chip.appendChild(code);
+      }
+      var tag=chip.getAttribute('data-chip-tag') || (qs(chip,'.ls-leg-n')||{}).textContent || chip.dataset.chipTag || 'VALUE';
+      chip.dataset.chipTag=String(tag).toUpperCase().trim();
+      chip.setAttribute('aria-label','Toss '+((chip.dataset.name)||'chip')+' into the roulette wheel');
+    });
+    var ticket=qs(terminal,'#qTicketList');
+    if(ticket){
+      qsa(ticket,'.q-ticket-row').forEach(function(row,i){ row.dataset.ticketNum=String(i+1).padStart(2,'0'); });
+    }
+  }
+  function wheelCenter(wheel){
+    var center=qs(wheel,'.ls-wheel-center');
+    return rectCenter((center||wheel).getBoundingClientRect());
+  }
+  function makeClone(source, extraClass){
+    var r=source.getBoundingClientRect();
+    var clone=source.cloneNode(true);
+    clone.classList.add('q-smooth-clone');
+    if(extraClass) clone.classList.add(extraClass);
+    clone.style.width=r.width+'px';
+    clone.style.height=r.height+'px';
+    clone.style.left='0px';
+    clone.style.top='0px';
+    setVars(clone,r.left+r.width/2,r.top+r.height/2,0,1.035);
+    document.body.appendChild(clone);
+    return clone;
+  }
+  function removeNode(node){ if(node && node.parentNode) node.parentNode.removeChild(node); }
+  function sparkAt(x,y){
+    var burst=document.createElement('span');
+    burst.className='q-chip-landing-burst';
+    burst.style.left=x+'px';
+    burst.style.top=y+'px';
+    for(var i=0;i<8;i++){
+      var p=document.createElement('i');
+      p.style.setProperty('--q-a',(i*45)+'deg');
+      p.style.setProperty('--q-d',(18+(i%3)*7)+'px');
+      burst.appendChild(p);
+    }
+    document.body.appendChild(burst);
+    setTimeout(function(){ removeNode(burst); },360);
+  }
+  function stampTicket(terminal,key){
+    var ticket=qs(terminal,'#qTicketList');
+    if(!ticket) return;
+    var rows=qsa(ticket,'.q-ticket-row');
+    var row=null;
+    if(key) row=rows.find(function(r){ return r.dataset.betKey===key; });
+    if(!row) row=rows.find(function(r){ return r.classList.contains('is-active'); }) || rows[0];
+    if(!row) return;
+    row.classList.remove('q-ticket-stamp');
+    void row.offsetWidth;
+    row.classList.add('q-ticket-stamp');
+    setTimeout(function(){ row.classList.remove('q-ticket-stamp'); },320);
+  }
+  function animateToWheel(source,wheel,opts){
+    opts=opts||{};
+    if(!source || !wheel){ if(opts.onLand) opts.onLand(); return; }
+    var sr=source.getBoundingClientRect();
+    var start=opts.start || {x:sr.left+sr.width/2,y:sr.top+sr.height/2};
+    var end=wheelCenter(wheel);
+    var clone=opts.clone || makeClone(source,opts.ticket?'q-smooth-ticket-clone':'q-smooth-chip-clone');
+    var dx=end.x-start.x;
+    var dir=dx>=0?1:-1;
+    var p0=start;
+    var p1={x:start.x + dx*.20, y:start.y - clamp(Math.abs(dx)*.22,42,145)};
+    var p2={x:end.x - dir*clamp(Math.abs(dx)*.24,64,160), y:end.y - clamp(Math.abs(dx)*.18,72,165)};
+    var p3=end;
+    var duration=opts.duration || (opts.ticket?260:300);
+    var rotBase=opts.ticket?10:22;
+    var rotEnd=opts.ticket?118:705;
+    var landed=false;
+    wheel.classList.add('q-wheel-magnet');
+    source.classList.add('q-smooth-launching');
+    if(opts.ticket) source.classList.add('q-ticket-stamp');
+    setVars(clone,start.x,start.y,rotBase,1.04);
+    var t0=performance.now();
+    function frame(now){
+      var raw=clamp((now-t0)/duration,0,1);
+      var t=easeInOutCubic(raw);
+      var x=cubic(p0.x,p1.x,p2.x,p3.x,t);
+      var y=cubic(p0.y,p1.y,p2.y,p3.y,t);
+      var lift=Math.sin(Math.PI*raw)*18;
+      var scale=raw<.18 ? 1.04+raw*.18 : 1.075 - raw*.66;
+      if(opts.ticket) scale=raw<.20 ? 1.02+raw*.08 : 1.025 - raw*.42;
+      var rot=rotBase+(rotEnd*easeOutCubic(raw));
+      clone.style.opacity=String(raw>.82 ? 1-((raw-.82)/.18)*.72 : .99);
+      setVars(clone,x,y-lift,rot,Math.max(.28,scale));
+      if(raw>.55 && !landed){
+        landed=true;
+        wheel.classList.add('q-drop-hit');
+      }
+      if(raw<1) requestAnimationFrame(frame);
+      else{
+        sparkAt(end.x,end.y);
+        wheel.classList.remove('q-wheel-magnet');
+        setTimeout(function(){ wheel.classList.remove('q-drop-hit'); },180);
+        source.classList.remove('q-smooth-launching');
+        if(opts.ticket) setTimeout(function(){ source.classList.remove('q-ticket-stamp'); },180);
+        removeNode(clone);
+        if(opts.onLand) opts.onLand();
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+  function allowNativeClick(el){
+    if(!el) return;
+    el.dataset.qSmoothAllowClick='1';
+    el.click();
+  }
+  function interceptNativeClick(e,terminal,wheel){
+    var chip=e.target.closest && e.target.closest('.q-chip-drop-zone .ls-leg.q-rect-chip');
+    var ticket=e.target.closest && e.target.closest('.q-ticket-row');
+    if(!chip && !ticket) return;
+    var target=chip||ticket;
+    if(target.dataset.qSmoothAllowClick==='1'){
+      delete target.dataset.qSmoothAllowClick;
+      return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation && e.stopImmediatePropagation();
+    var key=target.dataset.betKey;
+    animateToWheel(target,wheel,{ticket:!!ticket,onLand:function(){
+      stampTicket(terminal,key);
+      allowNativeClick(target);
+    }});
+  }
+  function initSmoothToss(terminal){
+    if(!terminal || terminal.dataset.qSmoothDealerToss==='1') return;
+    var wrap=terminal.closest('.ls-wrap');
+    var wheel=qs(wrap,'.ls-wheel-panel');
+    var chips=qsa(terminal,'.q-chip-drop-zone .ls-leg.q-rect-chip');
+    var ticket=qs(terminal,'#qTicketList');
+    if(!wheel || !chips.length) return;
+    decorateChips(terminal);
+    if(ticket){
+      var mo=new MutationObserver(function(){ decorateChips(terminal); });
+      mo.observe(ticket,{childList:true,subtree:false});
+    }
+    terminal.addEventListener('click',function(e){ interceptNativeClick(e,terminal,wheel); },true);
+    chips.forEach(function(chip){
+      var state=null;
+      function startDragging(e){
+        if(e.button!==undefined && e.button!==0) return;
+        state={
+          pointerId:e.pointerId,
+          startX:e.clientX,startY:e.clientY,
+          targetX:e.clientX,targetY:e.clientY,
+          x:e.clientX,y:e.clientY,
+          lastTargetX:e.clientX,lastTargetY:e.clientY,
+          dragging:false,clone:null,raf:0,over:false,clickSuppress:false
+        };
+        chip.setPointerCapture && chip.setPointerCapture(e.pointerId);
+      }
+      function ensureClone(){
+        if(!state || state.clone) return;
+        var r=chip.getBoundingClientRect();
+        state.x=r.left+r.width/2;
+        state.y=r.top+r.height/2;
+        state.clone=makeClone(chip,'q-smooth-chip-clone');
+        chip.classList.add('is-dragging-source');
+        document.body.classList.add('q-chip-is-dragging');
+        state.raf=requestAnimationFrame(dragFrame);
+      }
+      function dragFrame(){
+        if(!state || !state.clone) return;
+        var follow=.22;
+        state.x += (state.targetX-state.x)*follow;
+        state.y += (state.targetY-state.y)*follow;
+        var lagX=state.targetX-state.x;
+        var moveX=state.targetX-state.lastTargetX;
+        var rot=clamp((lagX*.055)+(moveX*.30),-13,13);
+        var wr=wheel.getBoundingClientRect();
+        var over=inRect(state.targetX,state.targetY,wr,42);
+        state.over=over;
+        wheel.classList.toggle('q-wheel-drop-ready',over);
+        var scale=over?1.075:1.045;
+        setVars(state.clone,state.x,state.y,rot,scale);
+        state.lastTargetX=state.targetX;
+        state.lastTargetY=state.targetY;
+        state.raf=requestAnimationFrame(dragFrame);
+      }
+      function moveDragging(e){
+        if(!state) return;
+        var dx=e.clientX-state.startX, dy=e.clientY-state.startY;
+        if(!state.dragging && Math.hypot(dx,dy)>6){
+          state.dragging=true;
+          ensureClone();
+        }
+        if(state.dragging){
+          e.preventDefault();
+          state.targetX=e.clientX;
+          state.targetY=e.clientY;
+        }
+      }
+      function finishDragging(e){
+        if(!state) return;
+        var s=state;
+        state=null;
+        chip.releasePointerCapture && chip.releasePointerCapture(e.pointerId);
+        if(s.raf) cancelAnimationFrame(s.raf);
+        wheel.classList.remove('q-wheel-drop-ready');
+        document.body.classList.remove('q-chip-is-dragging');
+        chip.classList.remove('is-dragging-source');
+        if(!s.dragging){ return; }
+        e.preventDefault();
+        var suppress=function(ev){
+          ev.preventDefault();
+          ev.stopPropagation();
+          ev.stopImmediatePropagation && ev.stopImmediatePropagation();
+          document.removeEventListener('click',suppress,true);
+        };
+        document.addEventListener('click',suppress,true);
+        setTimeout(function(){ document.removeEventListener('click',suppress,true); },60);
+        if(s.over){
+          animateToWheel(chip,wheel,{clone:s.clone,start:{x:s.x,y:s.y},onLand:function(){
+            stampTicket(terminal,chip.dataset.betKey);
+            allowNativeClick(chip);
+          }});
+        }else if(s.clone){
+          var r=chip.getBoundingClientRect();
+          var p0={x:s.x,y:s.y};
+          var p3={x:r.left+r.width/2,y:r.top+r.height/2};
+          var t0=performance.now(),dur=140;
+          function back(now){
+            var k=clamp((now-t0)/dur,0,1),t=easeOutCubic(k);
+            var x=p0.x+(p3.x-p0.x)*t,y=p0.y+(p3.y-p0.y)*t;
+            setVars(s.clone,x,y,(1-t)*-8,.98-(t*.12));
+            s.clone.style.opacity=String(1-t*.78);
+            if(k<1) requestAnimationFrame(back); else removeNode(s.clone);
+          }
+          requestAnimationFrame(back);
+        }
+      }
+      chip.addEventListener('pointerdown',startDragging);
+      chip.addEventListener('pointermove',moveDragging,{passive:false});
+      chip.addEventListener('pointerup',finishDragging);
+      chip.addEventListener('pointercancel',finishDragging);
+    });
+    terminal.dataset.qSmoothDealerToss='1';
+  }
+  function boot(){
+    var tries=0;
+    function tick(){
+      tries++;
+      var terminal=document.querySelector('#mlbContainer .q-closing-terminal');
+      if(terminal){
+        decorateChips(terminal);
+        initSmoothToss(terminal);
+        if(terminal.dataset.qSmoothDealerToss==='1') return;
+      }
+      if(tries<40) requestAnimationFrame(tick);
+    }
+    tick();
+  }
+  ready(boot);
+})();
+</script>
+
+<style id="q-night-ledger-reward-system">
+#mlbContainer .q-night-ledger{
+  position:relative;
+  margin:0 0 12px;
+  padding:12px 12px 11px;
+  border-radius:16px;
+  background:linear-gradient(180deg,rgba(255,255,255,.048),rgba(0,0,0,.26));
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.18);
+  overflow:hidden;
+}
+#mlbContainer .q-night-ledger::before{
+  content:'';
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(125deg,rgba(255,255,255,.08),rgba(255,255,255,0) 36%,transparent 64%);
+  opacity:.5;
+}
+#mlbContainer .q-night-ledger.q-ledger-flash{
+  animation:qLedgerFlash .7s cubic-bezier(.2,.9,.25,1);
+}
+#mlbContainer .q-night-ledger.q-ledger-complete{
+  border-color:rgba(244,185,66,.34);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 0 0 1px rgba(244,185,66,.14),0 18px 42px rgba(0,0,0,.26),0 0 28px rgba(244,185,66,.14);
+}
+#mlbContainer .q-ledger-head,
+#mlbContainer .q-ledger-foot,
+#mlbContainer .q-ledger-grid{position:relative;z-index:1;}
+#mlbContainer .q-ledger-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
+#mlbContainer .q-ledger-title{font-family:'DM Mono',monospace;font-size:.5rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#f4b942;}
+#mlbContainer .q-ledger-status{font-family:'DM Mono',monospace;font-size:.5rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#86efac;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);padding:4px 8px;border-radius:999px;white-space:nowrap;max-width:62%;overflow:hidden;text-overflow:ellipsis;}
+#mlbContainer .q-ledger-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+#mlbContainer .q-ledger-card{padding:10px 10px 9px;border-radius:13px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.06);}
+#mlbContainer .q-ledger-label{display:block;font-family:'DM Mono',monospace;font-size:.46rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:rgba(211,231,220,.48);margin-bottom:8px;}
+#mlbContainer .q-ledger-slots{display:flex;gap:6px;align-items:center;margin-bottom:7px;}
+#mlbContainer .q-ledger-slot{width:18px;height:10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.05);box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transition:transform .36s cubic-bezier(.2,.9,.25,1),background .36s,border-color .36s,box-shadow .36s;}
+#mlbContainer .q-ledger-slot.is-filled{background:linear-gradient(90deg,#f4b942,#86efac);border-color:rgba(244,185,66,.38);box-shadow:0 0 18px rgba(244,185,66,.18),inset 0 1px 0 rgba(255,255,255,.35);transform:translateY(-1px) scaleX(1.05);}
+#mlbContainer .q-ledger-value{display:block;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:900;color:#f0ece4;line-height:1.08;}
+#mlbContainer .q-ledger-sub{display:block;font-family:'DM Sans',sans-serif;font-size:.59rem;color:#8ca3b8;margin-top:2px;line-height:1.35;}
+#mlbContainer .q-ledger-heat-track{height:8px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden;position:relative;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);margin-bottom:8px;}
+#mlbContainer .q-ledger-heat-fill{position:absolute;left:0;top:0;bottom:0;width:0%;border-radius:inherit;background:linear-gradient(90deg,#22c55e,#f4b942,#f87171);box-shadow:0 0 18px rgba(244,185,66,.26);transition:width .56s cubic-bezier(.22,1,.36,1);}
+#mlbContainer .q-ledger-foot{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+#mlbContainer .q-ledger-mini{padding:8px 9px;border-radius:12px;background:rgba(0,0,0,.14);border:1px solid rgba(255,255,255,.05);}
+#mlbContainer .q-ledger-mini span{display:block;font-family:'DM Mono',monospace;font-size:.45rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(211,231,220,.44);margin-bottom:4px;}
+#mlbContainer .q-ledger-mini b{display:block;font-family:'Inter',sans-serif;font-size:.72rem;font-weight:900;color:#f0ece4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#mlbContainer .q-ledger-mini b.q-best-live{color:#f4b942;}
+#mlbContainer .q-ticket-panel.q-ticket-reward-pulse,
+#mlbContainer .ls-wheel-panel.q-wheel-reward-pulse,
+#mlbContainer .ls-wheel-center.q-center-reward-pulse{animation:qRewardPulse .72s cubic-bezier(.2,.9,.25,1);}
+#mlbContainer .ls-wheel-panel.q-wheel-reward-pulse{box-shadow:0 0 0 1px rgba(244,185,66,.18),0 0 34px rgba(244,185,66,.12)!important;}
+#mlbContainer .q-reward-toast{
+  position:fixed;left:0;top:0;z-index:10065;pointer-events:none;
+  min-width:154px;max-width:220px;padding:9px 11px 8px;border-radius:14px;
+  background:linear-gradient(180deg,rgba(6,10,14,.97),rgba(8,12,18,.92));
+  border:1px solid rgba(244,185,66,.28);
+  box-shadow:0 20px 44px rgba(0,0,0,.42),0 0 22px rgba(244,185,66,.16),inset 0 1px 0 rgba(255,255,255,.08);
+  transform:translate(-50%,-50%);
+  animation:qRewardToastIn 1.35s cubic-bezier(.2,.9,.25,1) forwards;
+}
+#mlbContainer .q-reward-toast b{display:block;font-family:'DM Mono',monospace;font-size:.6rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#f4b942;}
+#mlbContainer .q-reward-toast span{display:block;font-family:'Inter',sans-serif;font-size:.76rem;font-weight:800;line-height:1.14;color:#f0ece4;margin-top:3px;}
+#mlbContainer .q-reward-toast em{display:block;font-style:normal;font-family:'DM Sans',sans-serif;font-size:.58rem;color:#8ca3b8;margin-top:4px;line-height:1.35;}
+@keyframes qRewardToastIn{0%{opacity:0;transform:translate(-50%,-32%) scale(.86)}12%{opacity:1}72%{opacity:1;transform:translate(-50%,-112%) scale(1)}100%{opacity:0;transform:translate(-50%,-136%) scale(.96)}}
+@keyframes qRewardPulse{0%{transform:scale(1)}45%{transform:scale(1.03)}100%{transform:scale(1)}}
+@keyframes qLedgerFlash{0%{box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 0 0 0 rgba(244,185,66,0),0 14px 30px rgba(0,0,0,.18)}42%{box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 0 0 1px rgba(244,185,66,.22),0 0 28px rgba(244,185,66,.18),0 18px 34px rgba(0,0,0,.24)}100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 14px 30px rgba(0,0,0,.18)}}
+@media(max-width:760px){
+  #mlbContainer .q-ledger-grid,
+  #mlbContainer .q-ledger-foot{grid-template-columns:1fr;}
+  #mlbContainer .q-ledger-head{flex-direction:column;align-items:flex-start;}
+  #mlbContainer .q-ledger-status{max-width:none;}
+}
+@media (prefers-reduced-motion: reduce){
+  #mlbContainer .q-night-ledger.q-ledger-flash,
+  #mlbContainer .q-ticket-panel.q-ticket-reward-pulse,
+  #mlbContainer .ls-wheel-panel.q-wheel-reward-pulse,
+  #mlbContainer .ls-wheel-center.q-center-reward-pulse,
+  #mlbContainer .q-reward-toast{animation:none!important;}
+}
+</style>
+<script id="q-night-ledger-reward-script">
+(function(){
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn,{once:true}); else fn(); }
+  function qs(root,sel){ return (root||document).querySelector(sel); }
+  function qsa(root,sel){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+  function clamp(v,min,max){ return Math.max(min,Math.min(max,v)); }
+  function cleanText(v){ return String(v||'').replace(/\s+/g,' ').trim(); }
+  function oddsNum(v){ var n=parseInt(String(v||'').replace(/[^\d+-]/g,''),10); return isNaN(n)?0:n; }
+  function implied(v){ var n=oddsNum(v); if(!n) return 0; return n>0 ? (100/(n+100))*100 : ((-n)/((-n)+100))*100; }
+  function shortName(meta){ var t=cleanText(meta && (meta.name || meta.market || meta.odds || 'Board Pick')); return t.length>28 ? t.slice(0,27)+'…' : t; }
+  function tagWeight(tag){ tag=String(tag||'').toUpperCase(); if(tag.indexOf('LONG')>-1) return 3; if(tag.indexOf('SHARP')>-1) return 2; if(tag.indexOf('DOG')>-1) return 2; if(tag.indexOf('PARLAY')>-1) return 4; return 1; }
+  function statusLabel(count,full){ if(full) return 'Full Ticket Locked'; if(count<=0) return 'Table Open'; if(count===1) return 'Opening Action Logged'; if(count===2) return 'Ticket Warming Up'; if(count===3) return 'Q\'s Table Is Live'; if(count===4) return 'Heavy Exposure Building'; return 'Action Building'; }
+  function heatLabel(heat,count,full){ if(full) return 'Full Send'; if(heat<20) return 'Table Open'; if(heat<40) return 'Action Building'; if(heat<60) return 'Ticket Heating'; if(heat<82) return 'Heavy Exposure'; return 'Red Hot'; }
+  function metaFromEl(el,source){ if(!el) return null; return {
+    key: el.dataset.betKey || '',
+    name: cleanText(el.dataset.name || (qs(el,'b')||{}).textContent || el.getAttribute('data-name') || ''),
+    market: cleanText(el.dataset.market || (qs(el,'.ls-leg-suit')||{}).textContent || ''),
+    odds: cleanText(el.dataset.odds || (qs(el,'.ls-leg-odds')||{}).textContent || ''),
+    tag: cleanText(el.dataset.tag || el.dataset.chipTag || el.getAttribute('data-chip-tag') || ''),
+    source: source || 'chip',
+    isParlay: el.classList ? el.classList.contains('q-parlay-row') : false
+  }; }
+  function ledgerTemplate(max,best){
+    var slots=''; for(var i=0;i<max;i++) slots += '<i class="q-ledger-slot" aria-hidden="true"></i>';
+    return '<div class="q-night-ledger" id="qNightLedger">'
+      + '<div class="q-ledger-head"><div class="q-ledger-title">Q\'s Night Ledger</div><div class="q-ledger-status" id="qLedgerStatus">Table Open</div></div>'
+      + '<div class="q-ledger-grid">'
+      +   '<div class="q-ledger-card"><span class="q-ledger-label">Chips Placed</span><div class="q-ledger-slots" id="qLedgerSlots">'+slots+'</div><b class="q-ledger-value" id="qLedgerCount">0 / '+max+'</b><span class="q-ledger-sub" id="qLedgerCountSub">Build the board one chip at a time.</span></div>'
+      +   '<div class="q-ledger-card"><span class="q-ledger-label">Table Heat</span><div class="q-ledger-heat-track"><i class="q-ledger-heat-fill" id="qLedgerHeatFill"></i></div><b class="q-ledger-value" id="qLedgerHeatLabel">Table Open</b><span class="q-ledger-sub" id="qLedgerHeatSub">Each chip raises the table pressure.</span></div>'
+      + '</div>'
+      + '<div class="q-ledger-foot">'
+      +   '<div class="q-ledger-mini"><span>Best Ticket</span><b class="q-best-live" id="qLedgerBest">'+best+'</b></div>'
+      +   '<div class="q-ledger-mini"><span>Last Chip</span><b id="qLedgerLast">Waiting for action</b></div>'
+      + '</div>'
+      + '</div>';
+  }
+  function ensureLedger(terminal){
+    if(!terminal) return null;
+    var panel=qs(terminal,'.q-ticket-panel'); if(!panel) return null;
+    var max=qsa(terminal,'.q-chip-drop-zone .ls-leg.q-rect-chip').length || 5;
+    var best='+0';
+    qsa(terminal,'.q-chip-drop-zone .ls-leg.q-rect-chip').forEach(function(chip){ var o=cleanText(chip.dataset.odds || (qs(chip,'.ls-leg-odds')||{}).textContent || '+0'); if(oddsNum(o)>oddsNum(best)) best=o; });
+    var ledger=qs(panel,'#qNightLedger');
+    if(!ledger){ panel.insertAdjacentHTML('afterbegin', ledgerTemplate(max,best)); ledger=qs(panel,'#qNightLedger'); }
+    if(!terminal.__qRewardState){ terminal.__qRewardState={ max:max, bestAvailable:best, placedKeys:{}, placed:[], totalTosses:0, pending:null, dropActive:false, heat:0 }; }
+    terminal.__qRewardState.max=max; terminal.__qRewardState.bestAvailable=best;
+    return ledger;
+  }
+  function pulse(el,cls,dur){ if(!el) return; cls=cls||'q-ledger-flash'; dur=dur||720; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(function(){ el.classList.remove(cls); },Math.min(dur,320)); }
+  function showToast(wheel,title,headline,sub){ if(!wheel) return; var r=(qs(wheel,'.ls-wheel-center')||wheel).getBoundingClientRect(); var toast=document.createElement('div'); toast.className='q-reward-toast'; toast.innerHTML='<b>'+title+'</b><span>'+headline+'</span><em>'+sub+'</em>'; toast.style.left=(r.left+r.width/2)+'px'; toast.style.top=(r.top+r.height/2)+'px'; document.body.appendChild(toast); setTimeout(function(){ if(toast.parentNode) toast.parentNode.removeChild(toast); },620); }
+  function updateLedgerUI(terminal,meta,info){
+    var state=terminal.__qRewardState || {}; var ledger=ensureLedger(terminal); if(!ledger) return;
+    var count=state.placed.length, max=state.max||5, full=count>=max;
+    var heatRaw=state.placed.reduce(function(sum,m){ return sum + tagWeight(m.tag); },0);
+    var heatPct=clamp(Math.round((heatRaw/Math.max(max*3,1))*100),0,100);
+    state.heat=heatPct;
+    var status=info && info.status ? info.status : statusLabel(count,full);
+    var heatText=info && info.heatText ? info.heatText : heatLabel(heatPct,count,full);
+    var countEl=qs(ledger,'#qLedgerCount'); if(countEl) countEl.textContent=count+' / '+max;
+    var countSub=qs(ledger,'#qLedgerCountSub'); if(countSub) countSub.textContent=full ? 'All board chips have been logged.' : (count===0 ? 'Build the board one chip at a time.' : (max-count)+' chip'+((max-count)===1?'':'s')+' left to lock the full board.');
+    var statusEl=qs(ledger,'#qLedgerStatus'); if(statusEl) statusEl.textContent=status;
+    var slots=qsa(ledger,'.q-ledger-slot'); slots.forEach(function(slot,i){ slot.classList.toggle('is-filled',i<count); });
+    var heatFill=qs(ledger,'#qLedgerHeatFill'); if(heatFill) heatFill.style.width=heatPct+'%';
+    var heatEl=qs(ledger,'#qLedgerHeatLabel'); if(heatEl) heatEl.textContent=heatText;
+    var heatSub=qs(ledger,'#qLedgerHeatSub'); if(heatSub) heatSub.textContent=heatPct<35 ? 'Low pressure — room to build.' : heatPct<65 ? 'Momentum is climbing at the table.' : 'The board is flashing with live action.';
+    var bestEl=qs(ledger,'#qLedgerBest'); if(bestEl) bestEl.textContent=state.bestPlacedOdds || state.bestAvailable || '+0';
+    var lastEl=qs(ledger,'#qLedgerLast'); if(lastEl) lastEl.textContent=shortName(meta || state.placed[state.placed.length-1] || {name:'Waiting for action'});
+    ledger.classList.toggle('q-ledger-complete',full);
+    pulse(ledger,'q-ledger-flash',760);
+    pulse(qs(terminal,'.q-ticket-panel'),'q-ticket-reward-pulse',720);
+    var wrap=terminal.closest('.ls-wrap');
+    pulse(qs(wrap,'.ls-wheel-panel'),'q-wheel-reward-pulse',720);
+    pulse(qs(wrap,'.ls-wheel-center'),'q-center-reward-pulse',620);
+  }
+  function registerPlacement(terminal){
+    if(!terminal || !terminal.__qRewardState) ensureLedger(terminal);
+    var state=terminal.__qRewardState; if(!state || !state.pending) return;
+    var meta=state.pending; state.pending=null; state.totalTosses=(state.totalTosses||0)+1;
+    var isCountable=!meta.isParlay && !!meta.key;
+    var isNew=isCountable && !state.placedKeys[meta.key];
+    if(isNew){ state.placedKeys[meta.key]=1; state.placed.push(meta); }
+    if(state.placed.length){ state.bestPlacedOdds=state.placed.reduce(function(best,m){ return oddsNum(m.odds)>oddsNum(best)?m.odds:best; }, state.placed[0].odds || '+0'); }
+    var count=state.placed.length, max=state.max||5, full=count>=max;
+    var status = meta.isParlay ? 'Parlay Route Active' : statusLabel(count,full);
+    var heatTxt = meta.isParlay ? 'Ticket Heating' : heatLabel(state.heat || 0,count,full);
+    updateLedgerUI(terminal,meta,{status:status,heatText:heatTxt});
+    var wrap=terminal.closest('.ls-wrap');
+    var wheel=qs(wrap,'.ls-wheel-panel');
+    if(meta.isParlay){
+      showToast(wheel,'Ticket Reward','PARLAY ROUTE LIVE', count ? count+' of '+max+' board chips already logged' : 'Queueing the full board route');
+    }else if(isNew){
+      showToast(wheel,'Chip Reward','+1 CHIP LOGGED', count+' of '+max+' board chips live · '+status);
+    }else{
+      showToast(wheel,'Chip Reward','CHIP RE-SPUN', count+' of '+max+' board chips remain live');
+    }
+  }
+  function init(terminal){
+    if(!terminal || terminal.dataset.qLedgerReady==='1') return;
+    ensureLedger(terminal);
+    var state=terminal.__qRewardState;
+    terminal.addEventListener('pointerdown', function(e){
+      var chip=e.target.closest && e.target.closest('.q-chip-drop-zone .ls-leg.q-rect-chip');
+      var ticket=e.target.closest && e.target.closest('.q-ticket-row');
+      if(chip) state.pending=metaFromEl(chip,'chip');
+      else if(ticket) state.pending=metaFromEl(ticket,'ticket');
+    }, true);
+    terminal.addEventListener('keydown', function(e){
+      if(e.key!=='Enter' && e.key!==' ') return;
+      var t=e.target.closest && e.target.closest('.q-ticket-row, .q-chip-drop-zone .ls-leg.q-rect-chip');
+      if(t) state.pending=metaFromEl(t, t.classList.contains('q-ticket-row')?'ticket':'chip');
+    }, true);
+    var wheel=qs(terminal.closest('.ls-wrap'), '.ls-wheel-panel');
+    if(wheel){
+      var mo=new MutationObserver(function(){
+        var active=wheel.classList.contains('q-drop-hit');
+        if(active && !state.dropActive){ state.dropActive=true; registerPlacement(terminal); }
+        else if(!active && state.dropActive){ state.dropActive=false; }
+      });
+      mo.observe(wheel,{attributes:true,attributeFilter:['class']});
+    }
+    var ticketList=qs(terminal,'#qTicketList');
+    if(ticketList){
+      var mo2=new MutationObserver(function(){ ensureLedger(terminal); });
+      mo2.observe(ticketList,{childList:true,subtree:false});
+    }
+    terminal.dataset.qLedgerReady='1';
+  }
+  function boot(){
+    var tries=0; (function tick(){
+      tries++;
+      var terminal=document.querySelector('#mlbContainer .q-closing-terminal');
+      if(terminal){ init(terminal); return; }
+      if(tries<40) requestAnimationFrame(tick);
+    })();
+  }
+  ready(boot);
+})();
+</script>
+
+
+<style id="q-chip-rack-cohesion-upgrade">
+#mlbContainer .q-chip-felt{
+  display:flex!important;
+  flex-direction:column!important;
+}
+#mlbContainer .q-chip-drop-zone{
+  margin-bottom:12px!important;
+}
+#mlbContainer .q-dealer-tray{
+  position:relative;
+  margin-top:auto;
+  padding:12px;
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(255,255,255,.042),rgba(0,0,0,.22));
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 14px 28px rgba(0,0,0,.18);
+  overflow:hidden;
+}
+#mlbContainer .q-dealer-tray::before{
+  content:'';
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(120deg,rgba(255,255,255,.08),transparent 34%,transparent 68%,rgba(255,255,255,.02));
+  opacity:.5;
+}
+#mlbContainer .q-dealer-tray > *{position:relative;z-index:1;}
+#mlbContainer .q-tray-head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+  margin-bottom:10px;
+}
+#mlbContainer .q-tray-title-wrap span,
+#mlbContainer .q-tray-meta-label,
+#mlbContainer .q-spotlight-eyebrow,
+#mlbContainer .q-tray-mini span{
+  display:block;
+  font-family:'DM Mono',monospace;
+  font-size:.46rem;
+  font-weight:800;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+}
+#mlbContainer .q-tray-title-wrap span{color:#86efac;margin-bottom:4px;}
+#mlbContainer .q-tray-title-wrap b{display:block;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:900;color:#f0ece4;line-height:1.05;}
+#mlbContainer .q-tray-chipcount{
+  padding:5px 9px;border-radius:999px;
+  background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.20);
+  color:#86efac;font-family:'DM Mono',monospace;font-size:.54rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;
+}
+#mlbContainer .q-tray-grid{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:10px;
+  align-items:stretch;
+}
+#mlbContainer .q-tray-card{
+  padding:10px;border-radius:14px;
+  background:rgba(0,0,0,.16);border:1px solid rgba(255,255,255,.06);
+}
+#mlbContainer .q-tray-meta-label{color:rgba(211,231,220,.48);margin-bottom:8px;}
+#mlbContainer .q-tray-slots{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;}
+#mlbContainer .q-tray-slot{
+  min-height:52px;padding:8px 6px;border-radius:12px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.08);
+  transition:transform .28s cubic-bezier(.2,.9,.25,1),background .28s,border-color .28s,box-shadow .28s;
+}
+#mlbContainer .q-tray-slot.is-filled{
+  background:linear-gradient(180deg,rgba(134,239,172,.12),rgba(0,0,0,.18));
+  border-color:rgba(244,185,66,.28);
+  box-shadow:0 0 0 1px rgba(244,185,66,.08),0 10px 20px rgba(0,0,0,.16),0 0 18px rgba(134,239,172,.08);
+  transform:translateY(-1px);
+}
+#mlbContainer .q-tray-slot b{font-family:'Inter',sans-serif;font-size:.62rem;font-weight:900;color:#f0ece4;line-height:1;text-align:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+#mlbContainer .q-tray-slot em{font-style:normal;font-family:'DM Mono',monospace;font-size:.5rem;color:#86efac;line-height:1;}
+#mlbContainer .q-tray-slot i{font-style:normal;font-family:'DM Mono',monospace;font-size:.44rem;color:#58738c;line-height:1;}
+#mlbContainer .q-spotlight-card{
+  position:relative;
+  min-height:124px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  overflow:hidden;
+}
+#mlbContainer .q-spotlight-card::after{
+  content:'';position:absolute;inset:auto -18% 10px auto;width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,rgba(244,185,66,.08),transparent 70%);
+  pointer-events:none;
+}
+#mlbContainer .q-spotlight-eyebrow{color:#f4b942;margin-bottom:6px;}
+#mlbContainer .q-spotlight-name{font-family:'Inter',sans-serif;font-size:.98rem;font-weight:900;color:#f0ece4;line-height:1.04;}
+#mlbContainer .q-spotlight-market{font-family:'DM Sans',sans-serif;font-size:.68rem;color:#9eb0c1;line-height:1.35;margin-top:4px;}
+#mlbContainer .q-spotlight-pillrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;}
+#mlbContainer .q-spotlight-pill{
+  display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:999px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  font-family:'DM Mono',monospace;font-size:.52rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#d9e5ef;
+}
+#mlbContainer .q-spotlight-pill strong{color:#86efac;font-weight:900;}
+#mlbContainer .q-tray-footer{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;
+}
+#mlbContainer .q-tray-mini{
+  padding:9px 10px;border-radius:12px;background:rgba(0,0,0,.14);border:1px solid rgba(255,255,255,.05);
+}
+#mlbContainer .q-tray-mini span{color:rgba(211,231,220,.42);margin-bottom:4px;}
+#mlbContainer .q-tray-mini b{display:block;font-family:'Inter',sans-serif;font-size:.74rem;font-weight:900;color:#f0ece4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#mlbContainer .q-tray-mini b.q-tray-live-status{color:#f4b942;}
+#mlbContainer .q-dealer-tray.q-tray-flash{animation:qTrayFlash .68s cubic-bezier(.2,.9,.25,1);}
+@keyframes qTrayFlash{0%{box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 14px 28px rgba(0,0,0,.18)}45%{box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 0 0 1px rgba(244,185,66,.16),0 0 22px rgba(244,185,66,.14),0 18px 32px rgba(0,0,0,.22)}100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 14px 28px rgba(0,0,0,.18)}}
+@media(max-width:760px){
+  #mlbContainer .q-tray-grid,
+  #mlbContainer .q-tray-footer{grid-template-columns:1fr;}
+  #mlbContainer .q-tray-slots{grid-template-columns:repeat(5,minmax(0,1fr));}
+  #mlbContainer .q-tray-slot{min-height:46px;padding:7px 4px;}
+  #mlbContainer .q-tray-slot b{font-size:.56rem;}
+}
+</style>
+<script id="q-chip-rack-cohesion-upgrade-script">
+(function(){
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn,{once:true}); else fn(); }
+  function qs(root,sel){ return (root||document).querySelector(sel); }
+  function qsa(root,sel){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+  function clean(v){ return String(v||'').replace(/\s+/g,' ').trim(); }
+  function oddsNum(v){ var n=parseInt(String(v||'').replace(/[^\d+-]/g,''),10); return isNaN(n)?0:n; }
+  function pulse(el,cls,dur){ if(!el) return; cls=cls||'q-tray-flash'; dur=dur||700; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(function(){ el.classList.remove(cls); },Math.min(dur,320)); }
+  function shortPlayer(name){ name=clean(name); if(!name) return 'OPEN'; var parts=name.split(' '); var out=parts[parts.length-1] || parts[0]; return out.length>10 ? out.slice(0,10) : out; }
+  function deriveMeta(el){ if(!el) return null; return {
+    key: el.dataset.betKey || '',
+    name: clean(el.dataset.name || (qs(el,'b')||{}).textContent || (qs(el,'.ls-leg-name')||{}).textContent || 'Board Pick'),
+    market: clean(el.dataset.market || (qs(el,'.ls-leg-suit')||{}).textContent || ''),
+    odds: clean(el.dataset.odds || (qs(el,'.ls-leg-odds')||{}).textContent || '+0'),
+    tag: clean(el.dataset.tag || el.dataset.chipTag || el.getAttribute('data-chip-tag') || 'VALUE'),
+    isParlay: el.classList ? el.classList.contains('q-parlay-row') : false
+  }; }
+  function buildTray(max){
+    var slots=''; for(var i=0;i<max;i++) slots += '<div class="q-tray-slot"><b>OPEN</b><em>--</em><i>slot</i></div>';
+    return '<div class="q-dealer-tray" id="qDealerTray">'
+      + '<div class="q-tray-head"><div class="q-tray-title-wrap"><span>Q\'s Dealer Tray</span><b>Board chips waiting on the felt</b></div><div class="q-tray-chipcount" id="qTrayChipCount">0 / '+max+' live</div></div>'
+      + '<div class="q-tray-grid">'
+      +   '<div class="q-tray-card"><div class="q-tray-meta-label">Logged Board Chips</div><div class="q-tray-slots" id="qTraySlots">'+slots+'</div></div>'
+      +   '<div class="q-tray-card q-spotlight-card"><div><div class="q-spotlight-eyebrow">Now on the Felt</div><div class="q-spotlight-name" id="qSpotlightName">Hover a board chip</div><div class="q-spotlight-market" id="qSpotlightMarket">Drag or tap any chip to toss it into the roulette wheel.</div><div class="q-spotlight-pillrow"><div class="q-spotlight-pill">Odds <strong id="qSpotlightOdds">--</strong></div><div class="q-spotlight-pill">Tag <strong id="qSpotlightTag">Board</strong></div></div></div><div class="q-spotlight-market" id="qSpotlightHint">The dealer tray logs each board chip once it lands.</div></div>'
+      + '</div>'
+      + '<div class="q-tray-footer"><div class="q-tray-mini"><span>Last Toss</span><b id="qTrayLast">Waiting for action</b></div><div class="q-tray-mini"><span>Board Status</span><b class="q-tray-live-status" id="qTrayStatus">Table open</b></div></div>'
+      + '</div>';
+  }
+  function ensureTray(terminal){
+    if(!terminal) return null;
+    var felt=qs(terminal,'.q-chip-felt'); if(!felt) return null;
+    var max=qsa(felt,'.q-chip-drop-zone .ls-leg.q-rect-chip').length || 5;
+    var tray=qs(felt,'#qDealerTray');
+    if(!tray){ felt.insertAdjacentHTML('beforeend', buildTray(max)); tray=qs(felt,'#qDealerTray'); }
+    if(!terminal.__qTrayState) terminal.__qTrayState={ max:max, highlight:null, lastCount:0 };
+    terminal.__qTrayState.max=max;
+    return tray;
+  }
+  function setSpotlight(terminal,meta){
+    ensureTray(terminal);
+    if(!meta){
+      meta={name:'Hover a board chip',market:'Drag or tap any chip to toss it into the roulette wheel.',odds:'--',tag:'Board'};
+    }
+    terminal.__qTrayState.highlight=meta;
+    var tray=qs(terminal,'#qDealerTray'); if(!tray) return;
+    var name=qs(tray,'#qSpotlightName'); if(name) name.textContent=meta.name || 'Board Pick';
+    var market=qs(tray,'#qSpotlightMarket'); if(market) market.textContent=meta.market || 'Take your number and place it at your sportsbook.';
+    var odds=qs(tray,'#qSpotlightOdds'); if(odds) odds.textContent=meta.odds || '--';
+    var tag=qs(tray,'#qSpotlightTag'); if(tag) tag.textContent=(meta.isParlay?'Parlay':(meta.tag||'Board'));
+    var hint=qs(tray,'#qSpotlightHint'); if(hint) hint.textContent=meta.isParlay ? 'This route bundles the full board into one payout path.' : 'The dealer tray logs each board chip once it lands.';
+  }
+  function renderTray(terminal){
+    var tray=ensureTray(terminal); if(!tray) return;
+    var state=terminal.__qRewardState || {placed:[],max:(terminal.__qTrayState||{}).max||5};
+    var count=(state.placed||[]).length, max=state.max || (terminal.__qTrayState||{}).max || 5;
+    var slots=qsa(tray,'.q-tray-slot');
+    slots.forEach(function(slot,i){
+      var meta=(state.placed||[])[i];
+      if(meta){
+        slot.classList.add('is-filled');
+        var b=qs(slot,'b'), em=qs(slot,'em'), ii=qs(slot,'i');
+        if(b) b.textContent=shortPlayer(meta.name);
+        if(em) em.textContent=meta.odds || '--';
+        if(ii) ii.textContent=(meta.tag||'LIVE').toUpperCase();
+      }else{
+        slot.classList.remove('is-filled');
+        var b2=qs(slot,'b'), em2=qs(slot,'em'), ii2=qs(slot,'i');
+        if(b2) b2.textContent='OPEN';
+        if(em2) em2.textContent='--';
+        if(ii2) ii2.textContent='slot';
+      }
+    });
+    var chipCount=qs(tray,'#qTrayChipCount'); if(chipCount) chipCount.textContent=count+' / '+max+' live';
+    var last=qs(tray,'#qTrayLast'); if(last) last.textContent=(state.placed && state.placed.length) ? ((state.placed[state.placed.length-1].name||'Board Pick')+' '+(state.placed[state.placed.length-1].odds||'')) : 'Waiting for action';
+    var status=qs(tray,'#qTrayStatus'); if(status) status.textContent=count>=max ? 'Full board locked' : (count===0 ? 'Table open' : count+' of '+max+' chips live');
+    var lastCount=(terminal.__qTrayState && terminal.__qTrayState.lastCount) || 0;
+    if(count!==lastCount){ pulse(tray,'q-tray-flash',760); if(terminal.__qTrayState) terminal.__qTrayState.lastCount=count; }
+    if(!(terminal.__qTrayState && terminal.__qTrayState.highlight)){
+      var activeChip=qs(terminal,'.q-chip-drop-zone .ls-leg.q-rect-chip.active') || qs(terminal,'.q-chip-drop-zone .ls-leg.q-rect-chip');
+      if(activeChip) setSpotlight(terminal, deriveMeta(activeChip));
+    }
+  }
+  function bind(terminal){
+    if(!terminal || terminal.dataset.qTrayBound==='1') return;
+    ensureTray(terminal);
+    terminal.addEventListener('mouseenter', function(e){
+      var chip=e.target.closest && e.target.closest('.q-chip-drop-zone .ls-leg.q-rect-chip, .q-ticket-row');
+      if(chip) setSpotlight(terminal, deriveMeta(chip));
+    }, true);
+    terminal.addEventListener('focusin', function(e){
+      var chip=e.target.closest && e.target.closest('.q-chip-drop-zone .ls-leg.q-rect-chip, .q-ticket-row');
+      if(chip) setSpotlight(terminal, deriveMeta(chip));
+    }, true);
+    terminal.addEventListener('mouseleave', function(e){
+      if(e.target && e.target.closest && e.target.closest('.q-chip-drop-zone .ls-leg.q-rect-chip, .q-ticket-row')){
+        requestAnimationFrame(function(){ renderTray(terminal); });
+      }
+    }, true);
+    var wheel=qs(terminal.closest('.ls-wrap'), '.ls-wheel-panel');
+    if(wheel){
+      var mo=new MutationObserver(function(){ renderTray(terminal); });
+      mo.observe(wheel,{attributes:true,attributeFilter:['class']});
+    }
+    var ticket=qs(terminal,'#qTicketList');
+    if(ticket){
+      var mo2=new MutationObserver(function(){ requestAnimationFrame(function(){ renderTray(terminal); }); });
+      mo2.observe(ticket,{childList:true,subtree:false});
+    }
+    terminal.dataset.qTrayBound='1';
+    renderTray(terminal);
+    renderTray(terminal);
+  }
+  function boot(){
+    var tries=0; (function tick(){
+      tries++;
+      var terminal=document.querySelector('#mlbContainer .q-closing-terminal');
+      if(terminal){ bind(terminal); return; }
+      if(tries<40) requestAnimationFrame(tick);
+    })();
+  }
+  ready(boot);
+})();
+</script>
+
+
+<style id="q-wheel-dock-and-tray-stats-upgrade">
+#mlbContainer .q-tray-footer{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+#mlbContainer .q-tray-mini{
+  min-height:58px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+#mlbContainer .q-tray-mini b{line-height:1.12;white-space:normal;}
+#mlbContainer .q-tray-mini b.q-chip-profile{color:#86efac;}
+#mlbContainer .q-tray-mini b.q-table-cue{color:#f4b942;}
+
+#mlbContainer .ls-wrap .ls-info.q-info-condensed{
+  grid-template-columns:1fr!important;
+  gap:12px!important;
+  padding:0 24px 16px!important;
+}
+
+/* Wheel controls now live in their own dock below the roulette bowl, never on top of it. */
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock{
+  min-height:642px!important;
+  height:642px!important;
+  overflow:visible!important;
+  padding-bottom:0!important;
+}
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-rail,
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-track,
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-hub,
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-center,
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-bulb-rail,
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-dome-shine,
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-ball,
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-ball-trail{
+  top:35.5%!important;
+}
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-dealer-call{
+  top:22px!important;
+}
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-spin-history{
+  left:50%!important;
+  right:auto!important;
+  bottom:202px!important;
+  transform:translateX(-50%)!important;
+  align-items:center!important;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock{
+  position:absolute;
+  left:22px;
+  right:22px;
+  bottom:24px;
+  z-index:26;
+  pointer-events:auto;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row{
+  margin:0!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(126px,154px)!important;
+  gap:12px!important;
+  align-items:stretch!important;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-wager,
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-odds-panel{
+  margin:0!important;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-wager{
+  min-height:112px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(0,0,0,.30))!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 14px 24px rgba(0,0,0,.22)!important;
+  padding:10px 12px!important;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-wager-chip{
+  width:76px!important;
+  height:76px!important;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-wager-chip::before{inset:7px!important;}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-wager-v{font-size:.88rem!important;}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-wager-casino-lbl{font-size:.31rem!important;}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-table-limit{
+  display:flex!important;
+  justify-content:center!important;
+  gap:7px!important;
+  font-size:.44rem!important;
+  margin-top:0!important;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-odds-panel{
+  min-width:0!important;
+  width:auto!important;
+  min-height:112px!important;
+  padding:10px!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.058),rgba(0,0,0,.30))!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 14px 24px rgba(0,0,0,.20)!important;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-odds-panel::before{content:'PAYOUT'!important;}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-odds-val{font-size:1.86rem!important;line-height:1!important;}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-return{font-size:.51rem!important;line-height:1.32!important;}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-ev{font-size:.48rem!important;}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-odds-hint{font-size:.42rem!important;}
+
+@media(max-width:1160px){
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock{min-height:620px!important;height:620px!important;}
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-rail,
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-track,
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-hub,
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-center,
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-bulb-rail,
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-dome-shine,
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-ball,
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-ball-trail{top:35%!important;}
+}
+@media(max-width:760px){
+  #mlbContainer .q-tray-footer{grid-template-columns:1fr!important;}
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock{min-height:700px!important;height:700px!important;}
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-rail,
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-track,
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-hub,
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-center,
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-bulb-rail,
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-dome-shine,
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-ball,
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-ball-trail{top:27%!important;}
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-spin-history{
+    right:50%!important;
+    transform:translateX(50%)!important;
+    bottom:208px!important;
+    display:none!important;
+    align-items:center!important;
+  }
+  #mlbContainer .ls-wrap .q-wheel-action-dock{left:14px;right:14px;bottom:18px;}
+  #mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row{grid-template-columns:1fr!important;gap:10px!important;}
+  #mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-wager,
+  #mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-odds-panel{
+    min-height:92px!important;
+  }
+  #mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-odds-panel{
+    flex-direction:column!important;
+    justify-content:center!important;
+  }
+  #mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-wager-chip{
+    width:60px!important;
+    height:60px!important;
+  }
+  #mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-odds-val{font-size:1.52rem!important;}
+}
+</style>
+<script id="q-wheel-dock-and-tray-stats-upgrade-script">
+(function(){
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn,{once:true}); else fn(); }
+  function qs(root,sel){ return (root||document).querySelector(sel); }
+  function qsa(root,sel){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+  function clean(v){ return String(v||'').replace(/\s+/g,' ').trim(); }
+  function profileLabel(meta){
+    if(!meta) return 'Board Plaque';
+    if(meta.isParlay) return 'Parlay Ticket';
+    var tag=String(meta.tag||'').toUpperCase();
+    if(tag.indexOf('LONG')>-1) return 'Longshot Plaque';
+    if(tag.indexOf('SHARP')>-1) return 'Sharp Plaque';
+    if(tag.indexOf('DOG')>-1) return 'Dog Plaque';
+    return 'Value Plaque';
+  }
+  function cueLabel(count,max,full){
+    if(full) return 'Full board locked';
+    if(count<=0) return 'Drag chip into the wheel';
+    if(count<3) return 'Keep building the board';
+    if(count<max) return 'Table pressure rising';
+    return 'Board is live';
+  }
+  function deriveMeta(el){ if(!el) return null; return { key: el.dataset.betKey || '', name: clean(el.dataset.name || (qs(el,'b')||{}).textContent || (qs(el,'.ls-leg-name')||{}).textContent || 'Board Pick'), market: clean(el.dataset.market || (qs(el,'.ls-leg-suit')||{}).textContent || ''), odds: clean(el.dataset.odds || (qs(el,'.ls-leg-odds')||{}).textContent || ''), tag: clean(el.dataset.tag || el.dataset.chipTag || el.getAttribute('data-chip-tag') || 'VALUE'), isParlay: !!(el.classList && el.classList.contains('q-parlay-row')) }; }
+  function ensureTrayStats(terminal){
+    var footer=qs(terminal,'#qDealerTray .q-tray-footer');
+    if(!footer || footer.dataset.statsUpgraded==='1') return footer;
+    footer.innerHTML=''
+      +'<div class="q-tray-mini"><span>Dealer Action</span><b id="qTrayDealerAction">Awaiting Toss</b></div>'
+      +'<div class="q-tray-mini"><span>Chip Profile</span><b id="qTrayChipProfile" class="q-chip-profile">Board Plaque</b></div>'
+      +'<div class="q-tray-mini"><span>Felt Route</span><b id="qTrayFeltRoute">Rack → Wheel</b></div>'
+      +'<div class="q-tray-mini"><span>Table Cue</span><b id="qTrayTableCue" class="q-table-cue">Drag chip into the wheel</b></div>';
+    footer.dataset.statsUpgraded='1';
+    return footer;
+  }
+  function renderTrayStats(terminal){
+    var tray=qs(terminal,'#qDealerTray'); if(!tray) return;
+    ensureTrayStats(terminal);
+    var state=terminal.__qTrayUX || (terminal.__qTrayUX={ action:'Awaiting Toss', profile:'Board Plaque', route:'Rack → Wheel', cue:'Drag chip into the wheel', lastKey:'' });
+    var reward=terminal.__qRewardState || { placed:[], max:5 };
+    var count=(reward.placed||[]).length, max=reward.max||5, full=count>=max;
+    var cue=state.cue || cueLabel(count,max,full);
+    var a=qs(tray,'#qTrayDealerAction'), p=qs(tray,'#qTrayChipProfile'), r=qs(tray,'#qTrayFeltRoute'), c=qs(tray,'#qTrayTableCue');
+    if(a) a.textContent=state.action;
+    if(p) p.textContent=state.profile;
+    if(r) r.textContent=state.route;
+    if(c) c.textContent=cue;
+  }
+  function setTrayStats(terminal,patch){
+    if(!terminal.__qTrayUX) terminal.__qTrayUX={ action:'Awaiting Toss', profile:'Board Plaque', route:'Rack → Wheel', cue:'Drag chip into the wheel', lastKey:'' };
+    Object.assign(terminal.__qTrayUX, patch||{});
+    renderTrayStats(terminal);
+  }
+  function bindTrayUX(terminal){
+    if(!terminal || terminal.dataset.qTrayUxBound==='1') return;
+    ensureTrayStats(terminal);
+    renderTrayStats(terminal);
+    var down=null;
+    terminal.addEventListener('pointerdown', function(e){
+      var chip=e.target.closest && e.target.closest('.q-chip-drop-zone .ls-leg.q-rect-chip');
+      var ticket=e.target.closest && e.target.closest('.q-ticket-row');
+      if(chip){
+        var meta=deriveMeta(chip); down={x:e.clientX,y:e.clientY,target:chip,drag:false,meta:meta,source:'rack'};
+        setTrayStats(terminal,{ profile:profileLabel(meta), route:'Rack → Wheel', cue:'Release over the wheel' });
+      } else if(ticket){
+        var tmeta=deriveMeta(ticket); down={x:e.clientX,y:e.clientY,target:ticket,drag:false,meta:tmeta,source:'ticket'};
+        setTrayStats(terminal,{ profile:profileLabel(tmeta), route:tmeta.isParlay?'Ticket → Wheel':'Ticket → Wheel', cue:'Dealer toss loading' });
+      }
+    }, true);
+    terminal.addEventListener('pointermove', function(e){
+      if(!down || down.drag || down.source!=='rack') return;
+      if(Math.hypot(e.clientX-down.x,e.clientY-down.y)>6){
+        down.drag=true;
+        var reward=terminal.__qRewardState||{};
+        var respin=!!(reward.placedKeys && reward.placedKeys[down.meta.key]);
+        setTrayStats(terminal,{ action:respin?'Re-Spin':'Manual Drag', profile:profileLabel(down.meta), route:'Rack → Wheel', cue:'Drop chip into the wheel', lastKey:down.meta.key||'' });
+      }
+    }, true);
+    terminal.addEventListener('pointerup', function(){ down=null; }, true);
+    terminal.addEventListener('pointercancel', function(){ down=null; }, true);
+    terminal.addEventListener('click', function(e){
+      var chip=e.target.closest && e.target.closest('.q-chip-drop-zone .ls-leg.q-rect-chip');
+      var ticket=e.target.closest && e.target.closest('.q-ticket-row');
+      if(chip){
+        if(chip.dataset.qSmoothAllowClick==='1') return;
+        var meta=deriveMeta(chip); var reward=terminal.__qRewardState||{}; var respin=!!(reward.placedKeys && reward.placedKeys[meta.key]);
+        if(!(down && down.drag)) setTrayStats(terminal,{ action:respin?'Re-Spin':'Smooth Toss', profile:profileLabel(meta), route:'Rack → Wheel', cue:'Watch the wheel receive it', lastKey:meta.key||'' });
+      } else if(ticket){
+        if(ticket.dataset.qSmoothAllowClick==='1') return;
+        var tmeta=deriveMeta(ticket);
+        setTrayStats(terminal,{ action:tmeta.isParlay?'Parlay Toss':'Ticket Toss', profile:profileLabel(tmeta), route:'Ticket → Wheel', cue:tmeta.isParlay?'Route the full board through the wheel':'Dealer toss loading', lastKey:tmeta.key||'' });
+      }
+    }, true);
+    terminal.addEventListener('mouseenter', function(e){
+      var el=e.target.closest && e.target.closest('.q-chip-drop-zone .ls-leg.q-rect-chip, .q-ticket-row');
+      if(!el) return; var meta=deriveMeta(el);
+      setTrayStats(terminal,{ profile:profileLabel(meta), route:meta.isParlay?'Ticket → Wheel':'Rack → Wheel' });
+    }, true);
+    var wheel=qs(terminal.closest('.ls-wrap'), '.ls-wheel-panel');
+    if(wheel){
+      var mo=new MutationObserver(function(){
+        var active=wheel.classList.contains('q-drop-hit');
+        if(active){
+          var reward=terminal.__qRewardState||{placed:[],max:5,placedKeys:{}};
+          var count=(reward.placed||[]).length, max=reward.max||5, full=count>=max;
+          var st=terminal.__qTrayUX||{};
+          setTrayStats(terminal,{ cue:cueLabel(count,max,full), route:st.route||'Rack → Wheel' });
+        }
+      });
+      mo.observe(wheel,{attributes:true,attributeFilter:['class']});
+    }
+    terminal.dataset.qTrayUxBound='1';
+  }
+  function boot(){
+    var tries=0; (function tick(){
+      tries++;
+      var terminal=document.querySelector('#mlbContainer .q-closing-terminal');
+      if(terminal) bindTrayUX(terminal);
+      if(terminal) return;
+      if(tries<40) requestAnimationFrame(tick);
+    })();
+  }
+  ready(boot);
+})();
+</script>
+
+
+<style id="q-final-wheel-dock-hard-fix">
+#mlbContainer .ls-wrap .ls-info > .ls-action-row{display:none!important;}
+#mlbContainer .ls-wrap .ls-wheel-panel .q-wheel-action-dock .ls-action-row{display:grid!important;}
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .q-wheel-action-dock{display:block!important;}
+#mlbContainer .ls-wrap .ls-info.q-info-condensed .ls-thesis-line{min-height:unset!important;}
+</style>
+
+<style id="q-mobile-performance-trim">
+@media(max-width:760px){
+  .ticker-inner,
+  .sb-ticker-inner{animation-duration:56s!important;}
+  .hero-stat-card::after,
+  .lg-consensus-sheen,
+  .ls-dust,
+  #mlbContainer .q-chip-drop-zone .ls-leg::after,
+  #mlbContainer .q-terminal-orb,
+  #mlbContainer .q-tray-card::after{
+    animation:none!important;
+  }
+  #mlbContainer .q-closing-terminal,
+  #mlbContainer .ls-card,
+  #mlbContainer .ls-wheel-panel{
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+}
+</style>
+
+
+<style id="q-final-wheel-tabs-performance-clean">
+/* Final clean pass: controls are now below the roulette bowl as two premium tabs. */
+#mlbContainer .ls-wrap .ls-hero-zone{
+  align-items:flex-start!important;
+}
+#mlbContainer .ls-wrap .ls-chip-rail{
+  margin-top:92px!important;
+}
+#mlbContainer .ls-wrap .ls-chip-rail.left{margin-right:-22px!important;}
+#mlbContainer .ls-wrap .ls-chip-rail.right{margin-left:-22px!important;}
+#mlbContainer .ls-wrap .q-wheel-stack{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  position:relative!important;
+  z-index:3!important;
+  flex:0 0 auto!important;
+}
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock{
+  width:416px!important;
+  min-height:424px!important;
+  height:424px!important;
+  overflow:hidden!important;
+  padding-bottom:0!important;
+  margin:0!important;
+}
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-rail,
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-track,
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-hub,
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-center,
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-bulb-rail,
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-dome-shine,
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-ball,
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-ball-trail{
+  top:50%!important;
+}
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-spin-history{
+  left:50%!important;
+  right:auto!important;
+  bottom:10px!important;
+  transform:translateX(-50%)!important;
+  display:flex!important;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock{
+  position:relative!important;
+  left:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  top:auto!important;
+  z-index:4!important;
+  width:min(390px,100%)!important;
+  margin:52px auto 0!important;
+  pointer-events:auto!important;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:12px!important;
+  align-items:stretch!important;
+  justify-content:center!important;
+  margin:0!important;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-wager,
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-odds-panel{
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  margin:0!important;
+  border-radius:20px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 18px 34px rgba(0,0,0,.30)!important;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-wager{
+  min-height:128px!important;
+  padding:13px 16px!important;
+  background:
+    radial-gradient(240px 120px at 50% 0%, rgba(134,239,172,.18), transparent 70%),
+    repeating-linear-gradient(135deg, rgba(255,255,255,.018) 0 2px, transparent 2px 7px),
+    linear-gradient(160deg, rgba(11,73,36,.92), rgba(3,31,16,.96))!important;
+  border:1px solid rgba(134,239,172,.36)!important;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-wager::before{
+  content:'WAGER TAB';
+  display:block;
+  font-family:'DM Mono',monospace;
+  font-size:.42rem;
+  font-weight:900;
+  letter-spacing:.18em;
+  color:rgba(190,255,214,.68);
+  text-transform:uppercase;
+  margin-bottom:2px;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-wager-lbl{
+  color:#d8ffe5!important;
+  text-shadow:0 0 12px rgba(134,239,172,.35)!important;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-wager-core{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:12px!important;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-wager-chip{
+  width:78px!important;
+  height:78px!important;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-odds-panel{
+  min-height:112px!important;
+  padding:14px 16px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:4px!important;
+  background:
+    radial-gradient(260px 130px at 50% 0%, rgba(244,185,66,.16), transparent 72%),
+    linear-gradient(160deg, rgba(44,31,10,.88), rgba(6,10,7,.96))!important;
+  border:1.5px dashed rgba(244,185,66,.44)!important;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-odds-panel::before{
+  content:'PAYOUT TAB'!important;
+  position:static!important;
+  display:block!important;
+  transform:none!important;
+  margin:0 0 2px!important;
+  font-family:'DM Mono',monospace!important;
+  font-size:.42rem!important;
+  font-weight:900!important;
+  letter-spacing:.18em!important;
+  color:rgba(255,229,168,.72)!important;
+  text-transform:uppercase!important;
+}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-odds-panel::after{display:none!important;}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-odds-val{font-size:1.72rem!important;line-height:1!important;}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-return{font-size:.54rem!important;line-height:1.35!important;}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-ev{font-size:.50rem!important;}
+#mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-odds-hint{font-size:.40rem!important;}
+
+/* Trim section animations that were producing perceived lag. */
+#mlbContainer .ls-wrap .ls-dust,
+#mlbContainer .ls-wrap .ls-leg::after,
+#mlbContainer .ls-wrap .ls-bulb-rail,
+#mlbContainer .ls-wrap .ls-dome-shine::after{
+  animation:none!important;
+}
+#mlbContainer .ls-wrap .ls-wheel-ball.ls-ball-landing{animation-duration:.9s!important;}
+#mlbContainer .ls-wrap .ls-odds-panel.ls-pulse{animation-duration:.34s!important;}
+#mlbContainer .ls-wrap .ls-card.ls-pick-flash{animation-duration:.45s!important;}
+#mlbContainer .ls-wrap .ls-wheel-panel.ls-spin-active .ls-rim-bulb{animation-duration:.55s!important;}
+
+@media(max-width:1160px){
+  #mlbContainer .ls-wrap .q-wheel-stack{width:100%!important;}
+  #mlbContainer .ls-wrap .ls-chip-rail{margin-top:0!important;}
+  #mlbContainer .ls-wrap .q-wheel-action-dock{margin-top:44px!important;}
+}
+@media(max-width:760px){
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock{
+    width:min(380px,92vw)!important;
+    height:min(388px,92vw)!important;
+    min-height:min(388px,92vw)!important;
+  }
+  #mlbContainer .ls-wrap .q-wheel-action-dock{
+    width:min(360px,100%)!important;
+    margin-top:30px!important;
+  }
+  #mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row{gap:10px!important;}
+  #mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-wager{min-height:112px!important;padding:12px!important;}
+  #mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-odds-panel{min-height:98px!important;padding:12px!important;}
+  #mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-wager-chip{width:62px!important;height:62px!important;}
+  #mlbContainer .ls-wrap .q-wheel-action-dock .ls-action-row .ls-odds-val{font-size:1.45rem!important;}
+}
+</style>
+
+<script id="q-final-delay-depatch">
+(function(){
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn,{once:true}); else fn(); }
+  ready(function(){
+    document.querySelectorAll('#mlbContainer .ls-wrap .q-wheel-action-dock').forEach(function(dock){
+      dock.style.position='relative';
+      dock.style.left='auto';
+      dock.style.right='auto';
+      dock.style.bottom='auto';
+    });
+    document.querySelectorAll('#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock').forEach(function(panel){
+      panel.style.height='';
+      panel.style.minHeight='';
+      panel.style.overflow='hidden';
+    });
+  });
 })();
 </script>
 
