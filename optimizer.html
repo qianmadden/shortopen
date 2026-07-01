@@ -3077,204 +3077,136 @@ function toggleAccessLock(){
 // ── DATA ──────────────────────────────────────────────────────
 // Batters: Player,Salary,Position,Team,Opponent,Projection,Value,Hand,TeamTotal,IPVariance,StackVariance,HR%,K%,Own%
 const MLB_BATTERS = [
-  ["Shohei Ohtani",6600,"1B/OF","LAD","ATH",12.74,1.93,"",6.6,"","",32.8,22.5,16.85],
-  ["Junior Caminero",6300,"3B","TB","KC",10.82,1.72,"",5.4,"","",22,19.1,8.82],
-  ["Fernando Tatis Jr.",4500,"2B/OF","SD","CHC",10.73,2.38,"",5.5,"","",17.8,21.9,17.05],
-  ["Bobby Witt Jr.",6100,"SS","KC","TB",10.58,1.73,"",4.9,"","",17.3,18.2,10.55],
-  ["Jakob Marsee",4700,"OF","MIA","COL",10.54,2.24,"",6.4,"","",6.4,22.4,12.02],
-  ["Kyle Stowers",5000,"1B/OF","MIA","COL",10.52,2.1,"",6.4,"","",19.4,28.5,15.92],
-  ["Andy Pages",5300,"OF","LAD","ATH",10.51,1.98,"",6.6,"","",21,25.1,10.39],
-  ["Seiya Suzuki",4100,"OF","CHC","SD",10.49,2.56,"",6.3,"","",22.2,23.1,18.09],
-  ["Pete Crow-Armstrong",6500,"OF","CHC","SD",10.38,1.6,"",6.3,"","",22,24.2,9.79],
-  ["Yandy Diaz",5400,"1B/3B","TB","KC",9.97,1.85,"",5.4,"","",11.5,15.3,8.15],
-  ["Otto Lopez",5300,"SS","MIA","COL",9.89,1.87,"",6.4,"","",9.7,17.5,12.35],
-  ["Teoscar Hernandez",4300,"OF","LAD","ATH",9.89,2.3,"",6.6,"","",23.7,28.5,13.29],
-  ["Shea Langeliers",5800,"C","ATH","LAD",9.65,1.66,"",5.1,"","",21.5,27.9,8.12],
-  ["Nico Hoerner",3600,"2B","CHC","SD",9.64,2.68,"",6.3,"","",7.5,12.1,15.35],
-  ["Mookie Betts",4800,"SS","LAD","ATH",9.59,2,"",6.6,"","",20.4,12.1,12.59],
-  ["Manny Machado",3900,"3B","SD","CHC",9.58,2.46,"",5.5,"","",20.1,18.7,12.12],
-  ["Corbin Carroll",5300,"OF","ARI","SF",9.49,1.79,"",4.5,"","",9.6,19.5,6.59],
-  ["Kyle Tucker",4900,"OF","LAD","ATH",9.42,1.92,"",6.6,"","",20.8,16.4,9.59],
-  ["Jackson Chourio",5500,"OF","MIL","CIN",9.41,1.71,"",5,"","",17.4,22.1,8.02],
-  ["Xavier Edwards",5100,"2B","MIA","COL",9.4,1.84,"",6.4,"","",3.2,15.5,10.22],
-  ["Alex Bregman",3800,"3B","CHC","SD",9.35,2.46,"",6.3,"","",18.1,13.2,13.32],
-  ["Freddie Freeman",5600,"1B","LAD","ATH",9.35,1.67,"",6.6,"","",16.6,16.4,8.15],
-  ["Christian Yelich",5000,"OF","MIL","CIN",9.29,1.86,"",5,"","",11.8,21.3,6.69],
-  ["Juan Soto",5500,"OF","NYM","TOR",9.28,1.69,"",4.1,"","",20.1,15.3,8.65],
-  ["Elly De La Cruz",5200,"SS","CIN","MIL",9.17,1.76,"",4.1,"","",16.9,29.7,9.12],
-  ["Yordan Alvarez",6000,"OF","HOU","MIN",9.14,1.52,"",4.2,"","",25.1,17.5,7.49],
-  ["Mickey Moniak",5100,"OF","COL","MIA",9.13,1.79,"",5.4,"","",21.5,31.4,7.42],
-  ["Byron Buxton",5900,"OF","MIN","HOU",9.11,1.54,"",4.4,"","",27,28.4,8.95],
-  ["Byron Buxton",6200,"C","COL","MIA",9.07,1.46,"",5.4,"","",24.5,32.1,7.82],
-  ["Jake McCarthy",4600,"OF","COL","MIA",8.98,1.95,"",5.4,"","",9.7,18.2,5.79],
-  ["Jarren Duran",4600,"OF","BOS","WSH",8.94,1.94,"",4.9,"","",7.5,22.6,5.55],
-  ["James Wood",5700,"OF","WSH","BOS",8.92,1.56,"",4.6,"","",16.4,30,5.99],
-  ["Ketel Marte",4800,"2B","ARI","SF",8.87,1.85,"",4.5,"","",10.5,16.2,7.59],
-  ["Nick Kurtz",6400,"1B","ATH","LAD",8.78,1.37,"",5.1,"","",22.6,23,6.25],
-  ["Jonny DeLuca",3700,"OF","TB","KC",8.76,2.37,"",5.4,"","",7.5,19.8,7.45],
-  ["Ceddanne Rafaela",4100,"OF","BOS","WSH",8.7,2.12,"",4.9,"","",8.4,26.8,6.39],
-  ["Brice Turang",5400,"2B","MIL","CIN",8.67,1.61,"",5,"","",6.6,17.8,7.35],
-  ["Heriberto Hernandez",4500,"OF","MIA","COL",8.61,1.91,"",6.4,"","",15.8,26.5,9.59],
-  ["Michael Busch",4000,"1B","CHC","SD",8.57,2.14,"",6.3,"","",16.7,27.4,8.89],
-  ["Ivan Herrera",4100,"C","STL","ATL",8.55,2.09,"",4.6,"","",13.4,20.5,8.35],
-  ["Ian Happ",4300,"OF","CHC","SD",8.54,1.99,"",6.3,"","",17.7,23.9,9.39],
-  ["Wilyer Abreu",4400,"OF","BOS","WSH",8.51,1.93,"",4.9,"","",11.3,27.2,6.12],
-  ["Rafael Devers",3500,"1B","SF","ARI",8.5,2.43,"",4.7,"","",17.7,22.3,6.75],
-  ["Henry Bolte",3500,"OF","ATH","LAD",8.4,2.4,"",5.1,"","",8.4,32,6.72],
-  ["Owen Caissie",3900,"OF","MIA","COL",8.39,2.15,"",6.4,"","",15.1,29.5,7.39],
-  ["Michael Harris II",4300,"OF","ATL","STL",8.39,1.95,"",5.1,"","",14.9,21.5,7.35],
-  ["Julio Rodriguez",4700,"OF","SEA","LAA",8.38,1.78,"",4.1,"","",12.4,26.2,5.75],
-  ["Masataka Yoshida",2900,"OF","BOS","WSH",8.38,2.89,"",4.9,"","",5.2,13.5,6.55],
-  ["Dansby Swanson",3500,"SS","CHC","SD",8.36,2.39,"",6.3,"","",16.9,24.9,12.79],
-  ["Miguel Andujar",2800,"3B/OF","SD","CHC",8.32,2.97,"",5.5,"","",8.9,15.1,11.32],
-  ["Austin Riley",3500,"3B","ATL","STL",8.31,2.37,"",5.1,"","",15.9,23.1,7.85],
-  ["Willson Contreras",5100,"1B","BOS","WSH",8.12,1.59,"",4.9,"","",10.9,21.8,5.39],
-  ["Jackson Merrill",3700,"OF","SD","CHC",8.11,2.19,"",5.5,"","",12.8,17.5,7.25],
-  ["George Springer",3500,"OF","TOR","NYM",8.09,2.31,"",4.1,"","",14.9,19.1,6.19],
-  ["CJ Abrams",5400,"SS","WSH","BOS",8.07,1.49,"",4.6,"","",11.8,20.5,6.29],
-  ["Griffin Conine",4100,"1B/OF","MIA","COL",8.07,1.97,"",6.4,"","",13.3,31,7.69],
-  ["Luis Arraez",3800,"2B","SF","ARI",8.06,2.12,"",4.7,"","",4.4,5.2,5.55],
-  ["Dylan Crews",3600,"OF","WSH","BOS",8.05,2.24,"",4.6,"","",16.2,23.5,5.59],
-  ["Xander Bogaerts",3400,"SS","SD","CHC",8.03,2.36,"",5.5,"","",10.1,16.9,8.75],
-  ["Ozzie Albies",4200,"2B","ATL","STL",7.98,1.9,"",5.1,"","",14.5,18.3,7.69],
-  ["Matt Olson",4900,"1B","ATL","STL",7.95,1.62,"",5.1,"","",20.1,24.5,6.42],
-  ["Carter Jensen",4300,"C","KC","TB",7.94,1.85,"",4.9,"","",14.8,20.2,7.19],
-  ["Geraldo Perdomo",3800,"SS","ARI","SF",7.94,2.09,"",4.5,"","",3,16.8,6.32],
-  ["Jung Hoo Lee",3700,"OF","SF","ARI",7.93,2.14,"",4.7,"","",6.7,8.5,4.95],
-  ["William Contreras",4600,"C","MIL","CIN",7.93,1.72,"",5,"","",11.9,20.8,6.95],
-  ["Carson Kelly",2600,"C","CHC","SD",7.91,3.04,"",6.3,"","",15.4,22.1,14.49],
-  ["Jonathan Aranda",4400,"1B","TB","KC",7.91,1.8,"",5.4,"","",9.2,23.8,4.82],
-  ["Tommy Edman",3700,"2B/OF","LAD","ATH",7.89,2.13,"",6.6,"","",12.5,16.5,10.55],
-  ["Vladimir Guerrero Jr.",4500,"1B","TOR","NYM",7.87,1.75,"",4.1,"","",14.8,14.8,5.19],
-  ["Cal Raleigh",4500,"C","SEA","LAA",7.85,1.74,"",4.1,"","",18.4,29.4,6.72],
-  ["Francisco Lindor",4300,"SS","NYM","TOR",7.79,1.81,"",4.1,"","",16.2,16.8,7.52],
-  ["Zach Neto",4900,"SS","LAA","SEA",7.79,1.59,"",3.3,"","",15.8,23.4,5.32],
-  ["Chandler Simpson",3900,"OF","TB","KC",7.75,1.99,"",5.4,"","",0.4,9.5,5.29],
-  ["Willi Castro",4900,"2B/3B","COL","MIA",7.74,1.58,"",5.4,"","",9.5,24.8,7.62],
-  ["Miguel Rojas",2700,"2B","LAD","ATH",7.7,2.85,"",6.6,"","",8.6,11.8,9.52],
-  ["Jac Caglianone",4600,"1B","KC","TB",7.69,1.67,"",4.9,"","",17.6,18.5,5.45],
-  ["Mauricio Dubon",3200,"OF","ATL","STL",7.66,2.39,"",5.1,"","",11,12.4,6.12],
-  ["Josh Naylor",4200,"1B","SEA","LAA",7.66,1.82,"",4.1,"","",11.6,13.8,4.62],
-  ["Lane Thomas",3300,"OF","KC","TB",7.65,2.32,"",4.9,"","",12,21.8,6.19],
-  ["Graham Pauley",3100,"3B","MIA","COL",7.65,2.47,"",6.4,"","",6.1,26,8.12],
-  ["Cole Carrigg",3900,"OF","COL","MIA",7.59,1.95,"",5.4,"","",11.3,21.5,5.32],
-  ["Andres Chaparro",2300,"1B","WSH","BOS",7.59,3.3,"",4.6,"","",15.5,22,7.22],
-  ["Matt Chapman",3400,"3B","SF","ARI",7.59,2.23,"",4.7,"","",15.5,24.8,5.59],
-  ["Joe Mack",3800,"C","MIA","COL",7.57,1.99,"",6.4,"","",12.9,28.5,9.39],
-  ["Jose Altuve",3600,"2B","HOU","MIN",7.52,2.09,"",4.2,"","",15.2,13.6,5.85],
-  ["Caleb Durbin",2700,"3B","BOS","WSH",7.51,2.78,"",4.9,"","",6.1,11.5,6.29],
-  ["Ty France",2600,"1B","SD","CHC",7.5,2.88,"",5.5,"","",11.2,21.8,7.49],
-  ["Colby Thomas",2800,"OF","ATH","LAD",7.48,2.67,"",5.1,"","",12.8,27.5,5.35],
-  ["Troy Johnston",5000,"OF","COL","MIA",7.46,1.49,"",5.4,"","",4.4,19,4.02],
-  ["Jordan Walker",5100,"OF","STL","ATL",7.45,1.46,"",4.6,"","",13.4,22.4,6.39],
-  ["Samad Taylor",3500,"OF","SD","CHC",7.44,2.13,"",5.5,"","",7,26.5,5.59],
-  ["Drake Baldwin",4800,"C","ATL","STL",7.41,1.54,"",5.1,"","",19.1,19,7.35],
-  ["Ryan Vilade",3200,"OF","TB","KC",7.4,2.31,"",5.4,"","",10.3,21.8,5.49],
-  ["Jake Bauers",4500,"1B/OF","MIL","CIN",7.39,1.64,"",5,"","",12.4,28.7,7.05],
-  ["TJ Rumfield",4800,"1B","COL","MIA",7.39,1.54,"",5.4,"","",15.4,17.5,4.09],
-  ["Daylen Lile",4000,"OF","WSH","BOS",7.38,1.84,"",4.6,"","",8.1,19.5,5.02],
-  ["Kody Clemens",4400,"2B/OF","MIN","HOU",7.36,1.67,"",4.4,"","",21.3,25.8,9.22],
-  ["Eugenio Suarez",4000,"3B","CIN","MIL",7.35,1.84,"",4.1,"","",22.9,29.1,7.29],
-  ["Trevor Larnach",4000,"OF","MIN","HOU",7.32,1.83,"",4.4,"","",13.7,27.1,5.92],
-  ["Casey Schmitt",4200,"OF","SF","ARI",7.31,1.74,"",4.7,"","",15.3,25.6,4.55],
-  ["Ezequiel Tovar",4700,"SS","COL","MIA",7.31,1.56,"",5.4,"","",12.3,27.3,6.19],
-  ["Paul Goldschmidt",4100,"1B","NYY","DET",7.3,1.78,"",3.8,"","",16.6,24.3,4.62],
-  ["Nelson Velazquez",3300,"OF","STL","ATL",7.28,2.21,"",4.6,"","",17.9,29.5,5.89],
-  ["Randy Arozarena",5000,"OF","SEA","LAA",7.27,1.45,"",4.1,"","",8.9,24.2,4.42],
-  ["Salvador Perez",3600,"1B/C","KC","TB",7.27,2.02,"",4.9,"","",17,22,7.29],
-  ["Sal Stewart",4700,"1B/3B","CIN","MIL",7.25,1.54,"",4.1,"","",19,18.5,7.39],
-  ["Riley Greene",4100,"OF","DET","NYY",7.19,1.75,"",3.7,"","",13.1,26.5,5.19],
-  ["Royce Lewis",3600,"1B","MIN","HOU",7.19,2,"",4.4,"","",19.3,24.2,6.25],
-  ["Daulton Varsho",3000,"OF","TOR","NYM",7.12,2.37,"",4.1,"","",14.3,24,5.65],
-  ["David Hamilton",2900,"3B","MIL","CIN",7.12,2.46,"",5,"","",5.7,24.1,6.09],
-  ["Alec Burleson",4300,"1B","STL","ATL",7.1,1.65,"",4.6,"","",11.5,14.2,5.09],
-  ["Lawrence Butler",3100,"OF","ATH","LAD",7.09,2.29,"",5.1,"","",11.6,26.2,5.52],
-  ["JJ Bleday",4500,"OF","CIN","MIL",7.08,1.57,"",4.1,"","",15.9,20.4,6.95],
-  ["Masyn Winn",3500,"SS","STL","ATL",7.08,2.02,"",4.6,"","",7.1,18.4,5.42],
-  ["Garrett Mitchell",3200,"OF","MIL","CIN",7.06,2.21,"",5,"","",8.1,31.5,5.85],
-  ["Jose Caballero",3300,"3B/OF","NYY","DET",7.04,2.13,"",3.8,"","",9.3,27.2,4.75],
-  ["Sal Frelick",3100,"OF","MIL","CIN",7.03,2.27,"",5,"","",4.1,15.6,4.72],
-  ["Joey Meneses",2100,"1B","ATH","LAD",7.01,3.34,"",5.1,"","",8,19.4,5.02],
-  ["Bryce Eldridge",3200,"1B","SF","ARI",7,2.19,"",4.7,"","",14.6,24.5,4.52],
-  ["Eli White",2600,"OF","ATL","STL",6.99,2.69,"",5.1,"","",9.7,29.5,5.09],
-  ["Kevin Alcantara",2000,"OF","CHC","SD",6.96,3.48,"",6.3,"","",8.6,26.8,5.85],
-  ["Heliot Ramos",3600,"OF","SF","ARI",6.94,1.93,"",4.7,"","",12.4,26.5,4.59],
-  ["Ben Rice",5500,"1B","NYY","DET",6.94,1.26,"",3.8,"","",18.9,21.3,4.22],
-  ["Lourdes Gurriel Jr.",2800,"OF","ARI","SF",6.94,2.48,"",4.5,"","",6.8,17.4,5.05],
-  ["Isaac Paredes",3500,"3B","HOU","MIN",6.93,1.98,"",4.2,"","",16,16.1,5.25],
-  ["Taylor Walls",2700,"SS","TB","KC",6.93,2.57,"",5.4,"","",3.9,21.9,6.19],
-  ["JJ Wetherholt",4400,"2B","STL","ATL",6.92,1.57,"",4.6,"","",12.5,16,7.19],
-  ["Kevin McGonigle",4600,"3B/SS","DET","NYY",6.9,1.5,"",3.7,"","",5.2,13.5,5.89],
-  ["Curtis Mead",4500,"3B","WSH","BOS",6.89,1.53,"",4.6,"","",12.7,20.8,5.42],
-  ["Josh Bell",3100,"1B","MIN","HOU",6.89,2.22,"",4.4,"","",16.7,20.1,5.75],
-  ["Christian Walker",3700,"1B","HOU","MIN",6.88,1.86,"",4.2,"","",18.1,22.6,4.69],
-  ["Bo Bichette",4400,"3B/SS","NYM","TOR",6.88,1.56,"",4.1,"","",10.7,18.9,7.92],
-  ["Gabriel Moreno",3900,"C","ARI","SF",6.87,1.76,"",4.5,"","",4.9,14.1,4.92],
-  ["Michael Massey",3500,"2B","KC","TB",6.87,1.96,"",4.9,"","",12,16.2,5.89],
-  ["Ben Williamson",2900,"2B/SS","TB","KC",6.83,2.36,"",5.4,"","",2,21.5,6.29],
-  ["Cody Bellinger",5100,"OF","NYY","DET",6.83,1.34,"",3.8,"","",15.2,16.1,4.19],
-  ["Jasson Dominguez",3400,"OF","NYY","DET",6.76,1.99,"",3.8,"","",12.6,22.9,3.42],
-  ["Amed Rosario",3500,"3B","NYY","DET",6.71,1.92,"",3.8,"","",9.9,17,3.72],
-  ["Dominic Canzone",3700,"OF","SEA","LAA",6.71,1.81,"",4.1,"","",12.3,28.5,5.09],
-  ["Jacob Young",3200,"OF","WSH","BOS",6.69,2.09,"",4.6,"","",5.1,17.5,4.49],
-  ["Freddy Fermin",2000,"C","SD","CHC",6.67,3.33,"",5.5,"","",7.3,16.8,8.69],
-  ["Carson Benge",4000,"OF","NYM","TOR",6.67,1.67,"",4.1,"","",9.9,20.5,5.42],
-  ["Ha-Seong Kim",2000,"SS","ATL","STL",6.65,3.33,"",5.1,"","",7.5,16.4,6.75],
-  ["Nasim Nunez",3600,"2B/SS","WSH","BOS",6.61,1.84,"",4.6,"","",0.4,22,5.99],
-  ["J.P. Crawford",3400,"3B","SEA","LAA",6.58,1.94,"",4.1,"","",6.1,19.8,4.59],
-  ["Yainer Diaz",3000,"C","HOU","MIN",6.57,2.19,"",4.2,"","",16.1,15.8,5.35],
-  ["Joey Bart",2700,"C","ATL","STL",6.52,2.41,"",5.1,"","",11.5,29.8,4.99],
-  ["Kerry Carpenter",3600,"OF","DET","NYY",6.52,1.81,"",3.7,"","",15.2,24.5,4.32],
-  ["Max Muncy",3300,"3B","ATH","LAD",6.49,1.97,"",5.1,"","",12.5,25.8,5.62],
-  ["Nathan Lukes",2600,"OF","TOR","NYM",6.47,2.49,"",4.1,"","",7.7,18,4.09],
-  ["Kazuma Okamoto",3400,"3B","TOR","NYM",6.45,1.9,"",4.1,"","",17.7,21,6.15],
-  ["Luke Keaschall",3300,"2B/OF","MIN","HOU",6.44,1.95,"",4.4,"","",2.3,20,4.95],
-  ["Spencer Steer",4200,"1B/OF","CIN","MIL",6.43,1.53,"",4.1,"","",13.5,20.5,6.25],
-  ["Brooks Lee",3600,"3B","MIN","HOU",6.41,1.78,"",4.4,"","",14.6,18.5,6.35],
-  ["Isaac Collins",2500,"OF","KC","TB",6.38,2.55,"",4.9,"","",4.8,18.2,4.45],
-  ["Jo Adell",3500,"OF","LAA","SEA",6.35,1.81,"",3.3,"","",15,28.9,4.09],
-  ["Max Kepler",2500,"OF","ARI","SF",6.35,2.54,"",4.5,"","",6.6,19.5,4.72],
-  ["Nate Lowe",3400,"1B","CIN","MIL",6.3,1.85,"",4.1,"","",14.8,21.4,5.29],
-  ["A.J. Ewing",3500,"OF","NYM","TOR",6.29,1.8,"",4.1,"","",5.1,22.5,4.42],
-  ["Blaze Jordan",3100,"3B","STL","ATL",6.29,2.03,"",4.6,"","",8.6,17.5,5.15],
-  ["Jake Cronenworth",2000,"2B","SD","CHC",6.28,3.14,"",5.5,"","",8.2,16.8,6.45],
-  ["Victor Caratini",3400,"C","MIN","HOU",6.25,1.84,"",4.4,"","",12.9,19.6,6.75],
-  ["Drew Gilbert",2900,"OF","SF","ARI",6.23,2.15,"",4.7,"","",9.3,23.5,4.09],
-  ["Colt Keith",3000,"3B","DET","NYY",6.23,2.08,"",3.7,"","",7.7,20.2,3.95],
-  ["John Rave",3000,"OF","KC","TB",6.2,2.07,"",4.9,"","",8.3,23.5,4.92],
-  ["Jose Fermin",2300,"2B/3B","STL","ATL",6.17,2.68,"",4.6,"","",5.6,16.5,5.45],
-  ["Anthony Volpe",3900,"SS","NYY","DET",6.14,1.57,"",3.8,"","",8.7,21.8,3.95],
-  ["Nick Fortes",2400,"C","TB","KC",6.08,2.53,"",5.4,"","",5.1,18.5,4.95],
-  ["Alejandro Kirk",3200,"C","TOR","NYM",6.06,1.89,"",4.1,"","",8.2,11.2,4.62],
-  ["Taylor Trammell",2700,"OF","HOU","MIN",6.04,2.24,"",4.2,"","",14.4,28.3,4.39],
-  ["Connor Wong",2700,"C","BOS","WSH",6.03,2.23,"",4.9,"","",4.3,26.2,4.75],
-  ["Nolan Schanuel",3300,"1B","LAA","SEA",6,1.82,"",3.3,"","",6.8,15.4,3.79],
+  ["Bobby Witt Jr.",6100,"SS","KC","TB",10.21,1.67,"",5.1,"","",21.2,18.2,13.21],
+  ["Yandy Diaz",5100,"1B/3B","TB","KC",9.93,1.95,"",5.7,"","",14.41,15.3,14],
+  ["Junior Caminero",6300,"3B","TB","KC",9.77,1.55,"",5.7,"","",26.3,19.1,13.3],
+  ["Jonathan Aranda",4300,"1B","TB","KC",9.77,2.27,"",5.7,"","",18,23.8,10.73],
+  ["Nick Kurtz",6500,"1B","ATH","LAD",9.76,1.5,"",5,"","",24.21,23,6.73],
+  ["Kyle Tucker",5100,"OF","LAD","ATH",9.69,1.9,"",6.3,"","",14,16.4,11.1],
+  ["Yordan Alvarez",6000,"OF","HOU","MIN",9.68,1.61,"",4.5,"","",28.2,17.5,9.87],
+  ["Freddie Freeman",5700,"1B","LAD","ATH",9.62,1.69,"",6.3,"","",13.21,16.4,9.73],
+  ["Chandler Simpson",4000,"OF","TB","KC",9.5,2.38,"",5.7,"","",1.41,9.5,10.3],
+  ["Ketel Marte",4800,"2B","ARI","SF",9.36,1.95,"",4.9,"","",14.7,16.2,11.47],
+  ["Andy Pages",5300,"OF","LAD","ATH",9.33,1.76,"",6.3,"","",16.8,25.1,10.5],
+  ["Jackson Chourio",5600,"OF","MIL","CIN",9.21,1.64,"",5,"","",19.1,22.1,12.33],
+  ["Michael Harris II",4300,"OF","ATL","STL",9.16,2.13,"",4.9,"","",16,21.5,8.37],
+  ["Corbin Carroll",5400,"OF","ARI","SF",9.14,1.69,"",4.9,"","",12.9,19.5,12.13],
+  ["Kyle Stowers",5000,"1B/OF","MIA","COL",9.14,1.83,"",6.3,"","",19.21,28.5,14.6],
+  ["Heriberto Hernandez",4500,"OF","MIA","COL",9.07,2.02,"",6.3,"","",12.31,26.5,13.67],
+  ["Otto Lopez",5500,"SS","MIA","COL",8.97,1.63,"",6.3,"","",10.1,17.5,12.41],
+  ["Cedric Mullins",3200,"OF","TB","KC",8.92,2.79,"",5.7,"","",12.4,22.3,11.37],
+  ["Elly De La Cruz",5200,"SS","CIN","MIL",8.89,1.71,"",4.3,"","",21,29.7,8.93],
+  ["Shea Langeliers",5800,"C","ATH","LAD",8.88,1.53,"",5,"","",21.7,27.9,6.73],
+  ["William Contreras",4700,"C","MIL","CIN",8.84,1.88,"",5,"","",16.8,20.8,7.77],
+  ["Rafael Devers",3500,"1B","SF","ARI",8.82,2.52,"",4.9,"","",16.7,22.3,5.73],
+  ["Matt Olson",4900,"1B","ATL","STL",8.73,1.78,"",4.9,"","",20.3,24.5,8.03],
+  ["Lane Thomas",3200,"OF","KC","TB",8.67,2.71,"",5.1,"","",13.7,21.8,8.13],
+  ["Mickey Moniak",5000,"OF","COL","MIA",8.61,1.72,"",5,"","",18,31.4,8.1],
+  ["Hunter Goodman",6200,"C","COL","MIA",8.55,1.38,"",5,"","",20.4,32.1,8.53],
+  ["Max Muncy",5200,"3B","LAD","ATH",8.52,1.64,"",6.3,"","",22.1,25.8,9.33],
+  ["Mookie Betts",5000,"SS","LAD","ATH",8.52,1.7,"",6.3,"","",14.8,12.1,12.07],
+  ["Jake McCarthy",4500,"OF","COL","MIA",8.51,1.89,"",5,"","",7.4,18.2,6.1],
+  ["Teoscar Hernandez",4500,"OF","LAD","ATH",8.44,1.88,"",6.3,"","",16,28.5,9.2],
+  ["Ivan Herrera",4100,"C","STL","ATL",8.41,2.05,"",4.6,"","",9.5,20.5,7.63],
+  ["Javier Sanoja",3800,"3B","MIA","COL",8.4,2.21,"",6.3,"","",4.5,10.5,11.6],
+  ["Alec Burleson",4100,"1B","STL","ATL",8.38,2.04,"",4.6,"","",14,14.2,6.67],
+  ["Geraldo Perdomo",3800,"SS","ARI","SF",8.36,2.2,"",4.9,"","",4,16.8,8.3],
+  ["Luis Arraez",3900,"2B","SF","ARI",8.36,2.14,"",4.9,"","",4,5.2,5.3],
+  ["Jakob Marsee",4800,"OF","MIA","COL",8.35,1.74,"",6.3,"","",6.5,22.4,7.97],
+  ["Salvador Perez",3400,"1B/C","KC","TB",8.27,2.43,"",5.1,"","",18.8,22,10.2],
+  ["Xavier Edwards",5300,"2B","MIA","COL",8.21,1.55,"",6.3,"","",5.3,15.5,16.43],
+  ["Henry Bolte",3700,"OF","ATH","LAD",8.12,2.19,"",5,"","",7.8,32,4.1],
+  ["Andrew Vaughn",3700,"1B","MIL","CIN",8.04,2.17,"",5,"","",16,20.9,6.43],
+  ["Lawrence Butler",3300,"OF","ATH","LAD",8.04,2.44,"",5,"","",13.9,26.2,4.77],
+  ["Drake Baldwin",4800,"C","ATL","STL",8.04,1.67,"",4.9,"","",18.2,19,7.07],
+  ["Victor Mesa Jr.",3100,"OF","TB","KC",7.98,2.57,"",5.7,"","",11.1,21,7.93],
+  ["Ozzie Albies",4200,"2B","ATL","STL",7.96,1.9,"",4.9,"","",14.5,18.3,7.17],
+  ["Jose Altuve",3600,"2B","HOU","MIN",7.94,2.21,"",4.5,"","",16.2,13.6,6.33],
+  ["Brice Turang",5400,"2B","MIL","CIN",7.93,1.47,"",5,"","",9.1,17.8,6.4],
+  ["Esteury Ruiz",4100,"OF","MIA","COL",7.89,1.92,"",6.3,"","",14.1,24.1,16],
+  ["Jung Hoo Lee",3700,"OF","SF","ARI",7.87,2.13,"",4.9,"","",5.7,8.5,3.8],
+  ["JJ Wetherholt",4500,"2B","STL","ATL",7.78,1.73,"",4.6,"","",11.9,16,8.23],
+  ["Bryce Eldridge",3200,"1B","SF","ARI",7.76,2.42,"",4.9,"","",13.8,24.5,3.47],
+  ["Sal Stewart",4700,"1B/3B","CIN","MIL",7.62,1.62,"",4.3,"","",12.6,18.5,8.87],
+  ["Leo Jimenez",3200,"3B","MIA","COL",7.6,2.37,"",6.3,"","",5.3,18.7,7.4],
+  ["Heliot Ramos",3600,"OF","SF","ARI",7.57,2.1,"",4.9,"","",11.7,26.5,3.97],
+  ["Eugenio Suarez",4000,"3B","CIN","MIL",7.49,1.87,"",4.3,"","",17.7,29.1,6.33],
+  ["Kody Clemens",4400,"2B/OF","MIN","HOU",7.47,1.7,"",4.2,"","",19.2,25.8,7.9],
+  ["Taylor Walls",2700,"SS","TB","KC",7.46,2.76,"",5.7,"","",4.1,21.9,7.47],
+  ["Tommy Edman",3700,"2B/OF","LAD","ATH",7.44,2.01,"",6.3,"","",7.8,16.5,10.6],
+  ["Trevor Larnach",3900,"OF","MIN","HOU",7.43,1.91,"",4.2,"","",12.8,27.1,4.2],
+  ["Starling Marte",2900,"OF","KC","TB",7.43,2.56,"",5.1,"","",6.9,21.6,4.97],
+  ["Gary Sanchez",3900,"C","MIL","CIN",7.42,1.9,"",5,"","",22.5,26.8,6.97],
+  ["Casey Schmitt",4200,"OF","SF","ARI",7.42,1.77,"",4.9,"","",13.2,25.6,4.37],
+  ["Lars Nootbaar",3500,"OF","STL","ATL",7.41,2.12,"",4.6,"","",11.3,19.7,6.07],
+  ["Richie Palacios",3500,"2B","TB","KC",7.39,2.11,"",5.7,"","",4.2,21.2,6.67],
+  ["Willi Castro",4800,"2B/3B","COL","MIA",7.34,1.53,"",5,"","",8.1,24.8,7.83],
+  ["Isaac Paredes",3600,"3B","HOU","MIN",7.33,2.04,"",4.5,"","",16.5,16.1,6.27],
+  ["Lourdes Gurriel Jr.",3000,"OF","ARI","SF",7.31,2.44,"",4.9,"","",7.2,17.4,4.57],
+  ["Austin Riley",3500,"3B","ATL","STL",7.29,2.08,"",4.9,"","",15.3,23.1,6.1],
+  ["Christian Walker",3800,"1B","HOU","MIN",7.26,1.91,"",4.5,"","",19.3,22.6,5.5],
+  ["Gabriel Moreno",4000,"C","ARI","SF",7.24,1.81,"",4.9,"","",5.2,14.1,4.93],
+  ["Cole Carrigg",3900,"OF","COL","MIA",7.2,1.85,"",5,"","",8.8,21.5,4.4],
+  ["Spencer Steer",4000,"1B/OF","CIN","MIL",7.2,1.8,"",4.3,"","",11.6,20.5,7.17],
+  ["Royce Lewis",3600,"1B","MIN","HOU",7.16,1.99,"",4.2,"","",16,24.2,3],
+  ["Jordan Walker",5000,"OF","STL","ATL",7.16,1.43,"",4.6,"","",12.3,22.4,7.23],
+  ["Brooks Lee",3700,"3B","MIN","HOU",7.13,1.93,"",4.2,"","",13.9,18.5,5.77],
+  ["Jac Caglianone",4600,"1B","KC","TB",7.13,1.55,"",5.1,"","",15.9,18.5,3.8],
+  ["Josh Bell",3100,"1B","MIN","HOU",7.13,2.3,"",4.2,"","",14.5,20.1,3.77],
+  ["Noelvi Marte",2700,"OF","CIN","MIL",7.08,2.62,"",4.3,"","",9.8,25.3,4.97],
+  ["Troy Johnston",4900,"OF","COL","MIA",7.06,1.44,"",5,"","",3.2,19,3.17],
+  ["Masyn Winn",3600,"SS","STL","ATL",6.99,1.94,"",4.6,"","",7.1,18.4,4.03],
+  ["Max Muncy",3500,"3B","ATH","LAD",6.97,1.99,"",5,"","",22.1,25.8,1.1],
+  ["TJ Rumfield",4800,"1B","COL","MIA",6.97,1.45,"",5,"","",11.8,17.5,3.6],
+  ["Carlos Cortes",3900,"OF","ATH","LAD",6.96,1.78,"",5,"","",9.3,22.2,2.8],
+  ["Ezequiel Tovar",4600,"SS","COL","MIA",6.89,1.5,"",5,"","",10.3,27.3,5.9],
+  ["Dominic Smith",3200,"OF","ATL","STL",6.8,2.12,"",4.9,"","",9.2,22.1,3.77],
+  ["Dalton Rushing",4300,"C","LAD","ATH",6.78,1.58,"",6.3,"","",13,24.5,6.9],
+  ["Jonah Cox",2200,"OF","SF","ARI",6.77,3.08,"",4.9,"","",4.8,22,2.47],
+  ["Carter Jensen",4500,"C","KC","TB",6.76,1.5,"",5.1,"","",11.3,20.2,3.63],
+  ["Joe Mack",3800,"C","MIA","COL",6.72,1.77,"",6.3,"","",11.6,28.5,7.87],
+  ["Yainer Diaz",3200,"C","HOU","MIN",6.7,2.09,"",4.5,"","",15.6,15.8,3.7],
+  ["Max Kepler",2600,"OF","ARI","SF",6.69,2.57,"",4.9,"","",7.2,19.5,3.87],
+  ["Blake Perkins",2700,"OF","MIL","CIN",6.68,2.47,"",5,"","",6.5,25,2.73],
+  ["Isaac Collins",2500,"OF","KC","TB",6.65,2.66,"",5.1,"","",5.3,18.2,3.13],
+  ["Mike Yastrzemski",2500,"OF","ATL","STL",6.62,2.65,"",4.9,"","",11.9,24.6,3.93],
+  ["Cam Smith",2600,"OF","HOU","MIN",6.59,2.53,"",4.5,"","",10.8,22,4.37],
+  ["Luke Keaschall",3300,"2B/OF","MIN","HOU",6.51,1.97,"",4.2,"","",1.8,20,2.6],
+  ["Victor Caratini",3500,"C","MIN","HOU",6.5,1.86,"",4.2,"","",11.3,19.6,4],
+  ["Sal Frelick",3000,"OF","MIL","CIN",6.5,2.17,"",5,"","",4.8,15.6,2.87],
+  ["Drew Gilbert",2900,"OF","SF","ARI",6.46,2.23,"",4.9,"","",8.8,23.5,2.83],
+  ["Jeff McNeil",2700,"2B","ATH","LAD",6.36,2.36,"",5,"","",7.3,13.5,2.5],
+  ["Joey Ortiz",2500,"3B/SS","MIL","CIN",6.28,2.51,"",5,"","",9.2,19.6,5.77],
+  ["Tyler Stephenson",2900,"C","CIN","MIL",6.27,2.16,"",4.3,"","",10.3,24.3,4.1],
+  ["Nick Loftin",3100,"3B","KC","TB",6.25,2.02,"",5.1,"","",6,16.5,3.7],
+  ["Matt McLain",3200,"2B/SS","CIN","MIL",6.24,1.95,"",4.3,"","",9.9,22.9,5.73],
+  ["Mauricio Dubon",3300,"OF","ATL","STL",6.24,1.89,"",4.9,"","",6.3,12.4,3.07],
+  ["Nolan Arenado",3300,"3B","ARI","SF",6.21,1.88,"",4.9,"","",8.1,15.5,4.9],
+  ["JJ Bleday",4400,"OF","CIN","MIL",6.21,1.41,"",4.3,"","",10,20.4,5.73],
+  ["Ha-Seong Kim",2100,"SS","ATL","STL",6.2,2.95,"",4.9,"","",7.3,16.4,2.7],
+  ["Taylor Trammell",2800,"OF","HOU","MIN",6.2,2.21,"",4.5,"","",13.7,28.3,1.83],
+  ["Bryan Torres",3100,"2B/OF","STL","ATL",6.18,1.99,"",4.6,"","",3.3,15.4,3.67],
+  ["Cooper Pratt",3400,"SS","MIL","CIN",6.07,1.79,"",5,"","",6.3,19.5,3.6],
+  ["Jonah Heim",3300,"C","ATH","LAD",6.06,1.84,"",5,"","",11,17.8,3.07],
+  ["Hunter Feduccia",2200,"C","TB","KC",6.05,2.75,"",5.7,"","",5.9,19,4.67],
+  ["Nathan Church",2800,"OF","STL","ATL",6,2.14,"",4.6,"","",7.9,14,3.23],
 ];
 
 // Pitchers: Player,Salary,Position,Team,Opponent,Projection,Value,Hand,VegasProp,0,ProjK,K%,EV%,Own%
 const MLB_PITCHERS = [
-  ["Cam Schlittler",10500,"SP","NYY","DET",21.11,2.01,"",6.5,0,6.62,29.5,1.8,30.5],
-  ["Bryan Woo",9000,"SP","SEA","LAA",20.99,2.33,"",6.5,0,6.18,26.2,-4.9,40.6],
-  ["Tarik Skubal",10000,"SP","DET","NYY",19.44,1.94,"",6.5,0,6.45,28.1,-0.8,27.8],
-  ["Joe Ryan",9700,"SP","MIN","HOU",17.5,1.8,"",6.5,0,6.02,26.5,-7.4,18.4],
-  ["Connelly Early",8500,"SP","BOS","WSH",15.56,1.83,"",5.5,0,5.12,23.8,-6.9,9.6],
-  ["Kevin Gausman",8700,"SP","TOR","NYM",15.38,1.77,"",5.5,0,5.24,24.2,-4.7,10.1],
-  ["Nolan McLean",9300,"SP","NYM","TOR",15.13,1.63,"",5.5,0,5.38,25,-2.2,9.1],
-  ["Jose Soriano",9500,"SP","LAA","SEA",14.95,1.57,"",5.5,0,5.05,23.1,-8.2,9.4],
-  ["Mike Burrows",6400,"SP","HOU","MIN",14.92,2.33,"",4.5,0,4.48,22.4,-0.4,8.5],
-  ["Landen Roupp",8200,"SP","SF","ARI",14.18,1.73,"",4.5,0,4.52,22.8,0.4,8.5],
-  ["Brandon Sproat",6500,"SP","MIL","CIN",14.15,2.18,"",4.5,0,4.68,24.1,4,8.4],
-  ["Cade Cavalli",6600,"SP","WSH","BOS",12.61,1.91,"",4.5,0,4.15,21.9,-7.8,7.6],
-  ["Eury Perez",7000,"SP","MIA","COL",12.46,1.78,"",5.5,0,5.12,24.6,-6.9,6.5],
-  ["Matt Boyd",7700,"SP","CHC","SD",12.03,1.56,"",4.5,0,3.92,20.2,-12.9,8.7],
-  ["Justin Wrobleski",8000,"SP","LAD","ATH",11.84,1.48,"",4.5,0,4.22,21.5,-6.2,7.9],
-  ["Martin Perez",7200,"SP","ATL","STL",11.65,1.62,"",3.5,0,3.42,18.8,-2.3,5.1],
-  ["Griffin Jax",6700,"SP","TB","KC",11.63,1.74,"",4.5,0,4.38,23,-2.7,6.5],
-  ["Noah Cameron",7500,"SP","KC","TB",11.34,1.51,"",4.5,0,4.02,20.8,-10.7,7.1],
-  ["Matthew Liberatore",5500,"SP","STL","ATL",10.83,1.97,"",3.5,0,3.65,19.5,4.3,5.9],
-  ["Rhett Lowder",5800,"SP","CIN","MIL",10.3,1.78,"",3.5,0,3.82,21,9.1,6.7],
-  ["Brandon Pfaadt",6300,"SP","ARI","SF",9.99,1.59,"",3.5,0,3.74,20.5,6.9,4],
-  ["Jeffrey Springs",6000,"SP","ATH","LAD",9.8,1.63,"",4.5,0,4.18,22.2,-7.1,7],
+  ["Tatsuya Imai",7300,"SP","HOU","MIN",21.2,2.9,"",6.5,0,7.21,27.8,7.2,41.2],
+  ["Max Meyer",8800,"SP","MIA","COL",16.43,1.87,"",4.5,0,4.38,22.4,-2.7,26.2],
+  ["Shohei Ohtani",10500,"SP","LAD","ATH",15.1,1.44,"",6.5,0,7,28.2,3.8,14.4],
+  ["Shane McClanahan",8500,"SP","TB","KC",14.41,1.7,"",5.5,0,6.14,26.5,2.2,16.2],
+  ["Taj Bradley",8300,"SP","MIN","HOU",12.7,1.53,"",5.5,0,5.08,25.1,-6.4,19.7],
+  ["Shane Drohan",7000,"SP","MIL","CIN",12.11,1.73,"",4.5,0,4.42,23.5,-1.8,16.4],
+  ["J.T. Ginn",8000,"SP","ATH","LAD",11.71,1.46,"",4.5,0,4.18,22,-7.1,14.7],
+  ["Andrew Abbott",7500,"SP","CIN","MIL",10.77,1.44,"",4.5,0,4.32,22.8,-4,9.2],
+  ["Zac Gallen",6000,"SP","ARI","SF",9.62,1.6,"",4.5,0,4.05,21.5,-10,8.4],
+  ["Michael McGreevy",7200,"SP","STL","ATL",9.19,1.28,"",3.5,0,3.32,19.2,-5.1,5.4],
+  ["Seth Lugo",7700,"SP","KC","TB",9.06,1.18,"",3.5,0,3.48,19.8,-0.6,9.5],
+  ["Reynaldo Lopez",6500,"SP","ATL","STL",9.04,1.39,"",3.5,0,3.65,21,0.043,4.8],
+  ["Kyle Freeland",5000,"SP","COL","MIA",8.51,1.7,"",3.5,0,3.12,17.5,-10.9,4.8],
 ];
 
 // ── STATE ──────────────────────────────────────────────────────
@@ -5183,26 +5115,94 @@ body{background:radial-gradient(circle at 10% 0%,rgba(244,185,66,.12),transparen
 .so-corr-cell:hover:after{content:attr(title);position:absolute;bottom:calc(100%+4px);left:50%;transform:translateX(-50%);background:rgba(0,0,0,.92);color:var(--kt-text);font-size:.52rem;padding:4px 8px;border-radius:6px;white-space:nowrap;z-index:10;pointer-events:none}
 .so-corr-label{padding:4px 8px;font-family:var(--kt-mono);font-size:.52rem;font-weight:900;color:var(--kt-muted);white-space:nowrap}
 
-/* ── Stack builder terminal ── */
-.so-stack-panel{border:1px solid var(--kt-border);border-radius:20px;overflow:hidden;background:linear-gradient(180deg,rgba(6,14,10,.96),rgba(2,5,8,.98));margin-bottom:12px}
-.so-stack-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--kt-border);font-family:var(--kt-mono);font-size:.54rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--kt-green)}
-.so-stack-picker{padding:10px 12px;border-bottom:1px solid var(--kt-border2);display:flex;align-items:center;gap:8px}
-.so-stack-picker label{font-family:var(--kt-mono);font-size:.52rem;color:var(--kt-muted);letter-spacing:.1em;text-transform:uppercase}
-.so-stack-select{border-radius:8px;border:1px solid var(--kt-border);background:rgba(0,232,124,.06);color:var(--kt-green);font-family:var(--kt-mono);font-size:.66rem;font-weight:700;padding:6px 10px;cursor:pointer;outline:none}
-.so-stack-select option{background:#050a08;color:var(--kt-text)}
-.so-stack-legs{padding:10px 12px;display:grid;gap:6px}
-.so-stack-leg{
-  display:grid;grid-template-columns:28px 1fr 50px 50px 60px;
-  gap:8px;align-items:center;padding:7px 10px;border-radius:10px;
-  border:1px solid var(--kt-border2);background:rgba(255,255,255,.02);
-  font-family:var(--kt-mono);font-size:.62rem;animation:soRevealEnter .35s ease both;
+/* ── Batter vs Pitcher EV% matchup engine (replaces Pitcher Leverage Stack) ── */
+.so-bvp-panel{border:1px solid var(--kt-border);border-radius:20px;overflow:hidden;background:linear-gradient(180deg,rgba(6,14,10,.96),rgba(2,5,8,.98));margin-bottom:12px;display:flex;flex-direction:column;height:560px}
+.so-bvp-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--kt-border);font-family:var(--kt-mono);font-size:.54rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--kt-green);flex:0 0 auto}
+.so-bvp-body{display:flex;flex-direction:column;flex:1 1 auto;min-height:0}
+
+/* Select-Pitcher tab: collapsed trigger row + dropdown list that overlays instead of pushing layout */
+.so-bvp-select-wrap{position:relative;flex:0 0 auto;padding:10px 14px;border-bottom:1px solid var(--kt-border)}
+.so-bvp-trigger{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--kt-border2);border-radius:10px;background:rgba(255,255,255,.02);cursor:pointer;transition:border-color .15s,background .15s}
+.so-bvp-trigger:hover{border-color:var(--kt-green);background:rgba(0,232,124,.04)}
+.so-bvp-trigger-label{font-family:var(--kt-mono);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--kt-muted);flex:0 0 auto}
+.so-bvp-trigger-current{flex:1;min-width:0;font-family:var(--kt-mono);font-size:.72rem;font-weight:700;color:var(--kt-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.so-bvp-trigger-current.placeholder{color:var(--kt-muted);font-weight:500}
+.so-bvp-trigger-current span{color:var(--kt-green)}
+.so-bvp-trigger-caret{flex:0 0 auto;color:var(--kt-muted);font-family:var(--kt-mono);font-size:.6rem;transition:transform .15s}
+.so-bvp-select-wrap.open .so-bvp-trigger-caret{transform:rotate(180deg);color:var(--kt-green)}
+.so-bvp-select-wrap.open .so-bvp-trigger{border-color:var(--kt-green)}
+
+.so-bvp-dropdown{position:absolute;left:14px;right:14px;top:calc(100% - 4px);z-index:30;background:#050a08;border:1px solid var(--kt-green);border-radius:10px;max-height:280px;overflow-y:auto;box-shadow:0 22px 46px rgba(0,0,0,.55);display:none}
+.so-bvp-select-wrap.open .so-bvp-dropdown{display:block}
+.so-bvp-dropdown::-webkit-scrollbar{width:5px}
+.so-bvp-dropdown::-webkit-scrollbar-thumb{background:rgba(0,232,124,.28);border-radius:4px}
+
+.so-bvp-prow{display:flex;align-items:center;gap:7px;padding:8px 10px;cursor:pointer;border-left:2px solid transparent;border-bottom:1px solid rgba(255,255,255,.03);transition:background .15s,border-color .15s}
+.so-bvp-prow:hover{background:rgba(255,255,255,.03)}
+.so-bvp-prow.active{background:rgba(0,232,124,.07);border-left:2px solid var(--kt-green)}
+.so-bvp-pnum{width:16px;height:16px;border-radius:50%;background:var(--kt-green);color:#030a07;font-family:var(--kt-mono);font-size:.5rem;font-weight:950;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.so-bvp-pinfo{min-width:0}
+.so-bvp-pname{font-family:var(--kt-mono);font-size:.62rem;font-weight:700;color:var(--kt-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.so-bvp-prow.active .so-bvp-pname{color:var(--kt-green)}
+.so-bvp-pteam{font-family:var(--kt-mono);font-size:.5rem;color:var(--kt-muted);margin-top:1px}
+.so-bvp-empty-list{padding:16px;text-align:center;font-size:.6rem;color:var(--kt-muted);font-style:italic}
+
+/* Batter table now spans the full panel width */
+.so-bvp-batters{flex:1;min-width:0;display:flex;flex-direction:column;min-height:0}
+.so-bvp-vs-head{padding:10px 14px 11px;border-bottom:1px solid var(--kt-border);flex:0 0 auto}
+.so-bvp-vs-top{display:flex;align-items:center;gap:9px}
+.so-bvp-chip{width:28px;height:28px;border-radius:8px;background:rgba(0,232,124,.1);border:1px solid rgba(0,232,124,.28);display:flex;align-items:center;justify-content:center;font-family:var(--kt-mono);font-size:.58rem;font-weight:900;color:var(--kt-green);flex-shrink:0}
+.so-bvp-vs-title{font-family:var(--kt-mono);font-size:.82rem;font-weight:900;color:var(--kt-text)}
+.so-bvp-vs-title span{color:var(--kt-green)}
+.so-bvp-vs-sub{font-family:var(--kt-mono);font-size:.6rem;color:var(--kt-muted);margin-top:2px}
+.so-bvp-count{margin-left:auto;font-family:var(--kt-mono);font-size:.56rem;color:var(--kt-muted);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--kt-border);border-radius:20px;padding:4px 10px;white-space:nowrap}
+.so-bvp-ctx-row{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+.so-bvp-ctx-chip{font-family:var(--kt-mono);font-size:.58rem;font-weight:700;letter-spacing:.03em;padding:4px 9px;border-radius:6px;border:1px solid var(--kt-border);background:rgba(255,255,255,.02);color:var(--kt-muted);white-space:nowrap}
+.so-bvp-ctx-chip b{color:var(--kt-text);font-weight:900}
+.so-bvp-ctx-high b{color:var(--kt-green)}
+.so-bvp-ctx-mid b{color:#f4b942}
+.so-bvp-ctx-low b{color:#ff4e5c}
+
+.so-bvp-cols,.so-bvp-brow{display:grid;grid-template-columns:24px 1.1fr 58px 48px 56px 52px 52px 70px 58px;gap:14px;align-items:center}
+.so-bvp-cols{padding:9px 16px;font-family:var(--kt-mono);font-size:.56rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#1f8f52;border-bottom:1px solid var(--kt-border);flex:0 0 auto}
+.so-bvp-cols>div:not(:nth-child(2)){text-align:right}
+.so-bvp-cols>div:nth-child(n+3),.so-bvp-brow>div:nth-child(n+3){border-left:1px solid rgba(255,255,255,.055);padding-left:14px}
+.so-bvp-blist{flex:1 1 auto;min-height:0;overflow-y:auto}
+.so-bvp-blist::-webkit-scrollbar{width:5px}
+.so-bvp-blist::-webkit-scrollbar-thumb{background:rgba(0,232,124,.28);border-radius:4px}
+.so-bvp-brow{padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.03);opacity:0;transform:translateY(3px);animation:soBvpRowIn .22s ease forwards}
+.so-bvp-brow:nth-child(even){background:rgba(255,255,255,.014)}
+.so-bvp-brow:hover{background:rgba(255,255,255,.03)}
+@keyframes soBvpRowIn{to{opacity:1;transform:translateY(0)}}
+.so-bvp-brank{font-family:var(--kt-mono);font-size:.7rem;color:var(--kt-muted)}
+.so-bvp-bname-wrap{min-width:0}
+.so-bvp-bname{font-family:var(--kt-mono);font-size:.76rem;font-weight:700;color:var(--kt-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.so-bvp-hand{font-family:var(--kt-mono);font-size:.52rem;font-weight:800;color:#030a07;background:var(--kt-muted);border-radius:3px;padding:0 4px;margin-left:4px}
+.so-bvp-hand.L{background:#38a8ff}
+.so-bvp-hand.R{background:#f4b942}
+.so-bvp-hand.S{background:var(--kt-green)}
+.so-bvp-bteam{font-family:var(--kt-mono);font-size:.56rem;color:var(--kt-muted);margin-top:2px}
+.so-bvp-bstat{font-family:var(--kt-mono);font-size:.86rem;font-weight:900;letter-spacing:-.01em;font-variant-numeric:tabular-nums;text-align:right;color:var(--kt-text)}
+.so-bvp-ev{color:var(--kt-green)}
+.so-bvp-grade{font-family:var(--kt-mono);font-size:.94rem;font-weight:900;letter-spacing:.02em;font-variant-numeric:tabular-nums;text-align:right}
+.so-bvp-grade-a{color:#00e87c}
+.so-bvp-grade-aminus{color:#4ade80}
+.so-bvp-grade-b{color:#f4b942}
+.so-bvp-grade-c{color:var(--kt-muted)}
+
+.so-bvp-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--kt-muted);padding:30px 16px;text-align:center;font-family:var(--kt-mono)}
+.so-bvp-empty-icon{font-size:1.1rem;opacity:.5}
+.so-bvp-empty b{color:var(--kt-text);font-size:.62rem}
+.so-bvp-empty span{font-size:.52rem;max-width:220px}
+
+.so-bvp-foot{padding:8px 14px;border-top:1px solid var(--kt-border);font-family:var(--kt-mono);font-size:.56rem;line-height:1.55;color:var(--kt-muted);flex:0 0 auto}
+.so-bvp-foot b{color:var(--kt-green)}
+
+@media(max-width:1180px){
+  .so-bvp-panel{height:520px}
+  .so-bvp-cols,.so-bvp-brow{grid-template-columns:20px 1fr 50px 42px 48px 44px 44px 60px 50px;gap:10px}
+  .so-bvp-cols>div:nth-child(n+3),.so-bvp-brow>div:nth-child(n+3){padding-left:10px}
 }
-.so-stack-leg-num{width:22px;height:22px;border-radius:50%;background:var(--kt-green);color:#030a07;font-size:.5rem;font-weight:950;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.so-stack-leg-name{color:var(--kt-text);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.so-stack-leg-pos{color:var(--kt-muted);font-size:.52rem}
-.so-stack-leg-own{font-weight:900;text-align:right;color:var(--kt-green)}
-.so-stack-leg-lev{font-weight:900;text-align:right}
-.so-stack-empty{padding:20px;text-align:center;font-size:.7rem;color:var(--kt-muted);font-style:italic}
 
 /* ── Threshold alert row ── */
 .so-alert-panel{border:1px solid rgba(244,185,66,.2);border-radius:16px;background:rgba(244,185,66,.05);padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;animation:ktTapeIn .3s ease both}
@@ -6106,21 +6106,6 @@ body{background:radial-gradient(circle at 10% 0%,rgba(244,185,66,.12),transparen
 /* ── 5. MARKET CALLS center panel (stat cards in Kraken - remove, replaced by pos strip) ── */
 .so-kt-calls { display: none !important; }
 .so-kt-calls-grid { display: none !important; }
-
-/* ── 6. STACK BUILDER enhancements ── */
-.so-stack-leg {
-  grid-template-columns: 22px 1fr 32px 48px 48px 50px 46px !important;
-}
-.so-stack-leg-hr { font-family: 'DM Mono', monospace; font-size: .56rem; font-weight: 800; text-align: right; color: #f4b942; }
-.so-stack-leg-sal { font-family: 'DM Mono', monospace; font-size: .54rem; font-weight: 700; text-align: right; color: #62748c; }
-.so-stack-leg-proj { font-family: 'DM Mono', monospace; font-size: .58rem; font-weight: 900; text-align: right; color: #cfd8e3; }
-.so-stack-header-row {
-  display: grid; grid-template-columns: 22px 1fr 32px 48px 48px 50px 46px;
-  gap: 8px; padding: 4px 10px 6px;
-  font-size: .44rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase;
-  color: #3a4a5a; font-family: 'DM Mono', monospace; border-bottom: 1px solid rgba(255,255,255,.04);
-  margin-bottom: 4px;
-}
 
 @media(max-width:1000px) {
   .so-stat-grid { grid-template-columns: repeat(3,1fr); }
@@ -7869,6 +7854,10 @@ body{background:radial-gradient(circle at 10% 0%,rgba(244,185,66,.12),transparen
   'use strict';
 
   var CORE_OWN_RENDER = window.ownRender;
+  var bvpActiveName = null; // currently selected pitcher in the Batter vs Pitcher panel
+  var bvpDropdownOpen = false; // whether the Select Pitcher dropdown is expanded
+  var bvpLastData = []; // most recent data snapshot, used by the outside-click handler
+  var bvpOutsideClickBound = false;
 
   function el(id){ return document.getElementById(id); }
   function safe(v){ return String(v == null ? '' : v).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
@@ -8081,18 +8070,188 @@ body{background:radial-gradient(circle at 10% 0%,rgba(244,185,66,.12),transparen
     return '<div class="so-corr-panel so-posval-panel"><div class="so-corr-head so-posval-head"><span>Positional Value Board</span><span style="color:var(--kt-muted)">projection · salary · ownership</span></div><div class="so-posval-body"><div class="so-posval-intro"><b>What this means:</b> this grades each roster slot by whether the position gives you projection and salary value without forcing you into the same ownership pocket as the field.</div><div class="so-posval-table"><div class="so-posval-row head"><div>POS</div><div>TOP VALUE</div><div>SIGNAL</div><div>OWN</div><div>VAL</div><div>LEVERAGE</div></div>'+rows+'</div></div></div>';
   }
 
-  function buildStackPanel(data){
-    var pitchers=data.filter(function(p){return p.isPit;}).sort(function(a,b){return num(b.proj)-num(a.proj);}).slice(0,6);
-    var rows=pitchers.map(function(p,i){var t=colorForOwn(p.own), l=num(p.lev); return '<div class="so-stack-leg" style="animation-delay:'+(i*.06)+'s"><div class="so-stack-leg-num">'+(i+1)+'</div><div class="so-stack-leg-name" title="'+safe(p.name)+'">'+safe(p.name)+'</div><div class="so-stack-leg-pos">'+safe(p.raw&&p.raw[3]||p.pos)+'</div><div class="so-stack-leg-own" style="color:'+t.c+'">'+pct(p.own)+'</div><div class="so-stack-leg-lev" style="color:'+levColor(l)+'">'+(l>=0?'+':'')+l.toFixed(1)+'</div></div>';}).join('');
-    return '<div class="so-stack-panel"><div class="so-stack-head"><span>Pitcher Leverage Stack</span><span style="color:var(--kt-muted)">top arms</span></div><div class="so-stack-legs">'+rows+'</div></div>';
+  // ── Batter vs Pitcher EV% matchup engine ──────────────────────
+  // Pulls straight from the real slate data: TeamTotal (raw[8] on batters) and
+  // VegasProp / projected IP (raw[8] on pitchers) drive the EV% math directly —
+  // no separate mock stats. Leverage reuses the same p.lev score used everywhere else.
+  function bvpTopPitchers(){
+    return allRows().filter(function(p){return p.isPit;}).sort(function(a,b){return num(b.proj)-num(a.proj);});
+  }
+
+  function bvpInitials(name){
+    return String(name||'').trim().split(/\s+/).map(function(s){return s[0]||'';}).join('').slice(0,2).toUpperCase();
+  }
+
+  function bvpMatchups(pitcher){
+    if(!pitcher) return [];
+    var oppTeam = (pitcher.raw && pitcher.raw[4]) || '';
+    var vegasIp = rawN(pitcher,8) || 6;
+    return allRows().filter(function(p){ return !p.isPit && (p.raw && p.raw[3]) === oppTeam; }).map(function(b){
+      var teamTotal = rawN(b,8);
+      var totalFactor = teamTotal>=4.5 ? 1.08 : teamTotal>=4.0 ? 1.00 : 0.88;
+      var ipFactor = clamp((vegasIp||6)/6, 0.9, 1.15);
+      var qualityScore = clamp(((num(b.value)-1.4)/2.0)*40, 4, 42);
+      var ev = clamp(qualityScore*totalFactor*ipFactor, 2, 48);
+      return { b:b, ev:ev, teamTotal:teamTotal };
+    }).sort(function(a,b){return b.ev-a.ev;});
+  }
+
+  // Grade is driven by the batter's own projection, not the EV% read:
+  // 10+ = A, 8–9.99 = A-, 6.5–7.99 = B, under 6.5 = C
+  function bvpGrade(proj){
+    proj = num(proj);
+    if(proj >= 10)  return {cls:'a',      label:'A'};
+    if(proj >= 8)   return {cls:'aminus', label:'A-'};
+    if(proj >= 6.5) return {cls:'b',      label:'B'};
+    return              {cls:'c',      label:'C'};
+  }
+
+  function buildBvpBody(data){
+    var pitchers = bvpTopPitchers();
+    if(bvpActiveName && !pitchers.some(function(p){return p.name===bvpActiveName;})) bvpActiveName = null;
+    var active = null;
+    pitchers.forEach(function(p){ if(p.name===bvpActiveName) active=p; });
+
+    var pitcherListHtml = pitchers.map(function(p,i){
+      return '<div class="so-bvp-prow'+(p===active?' active':'')+'" data-bvp-name="'+safe(p.name)+'">'
+        +'<div class="so-bvp-pnum">'+(i+1)+'</div>'
+        +'<div class="so-bvp-pinfo"><div class="so-bvp-pname" title="'+safe(p.name)+'">'+safe(p.name)+'</div><div class="so-bvp-pteam">'+safe(p.raw&&p.raw[3])+' · vs '+safe(p.raw&&p.raw[4])+'</div></div>'
+      +'</div>';
+    }).join('') || '<div class="so-bvp-empty-list">No pitchers loaded</div>';
+
+    var triggerHtml = active
+      ? '<div class="so-bvp-trigger-current"><span>'+safe(active.name)+'</span> · '+safe(active.raw&&active.raw[3])+'</div>'
+      : '<div class="so-bvp-trigger-current placeholder">Choose a starter…</div>';
+
+    var selectHtml = '<div class="so-bvp-select-wrap'+(bvpDropdownOpen?' open':'')+'" id="soBvpSelectWrap">'
+        +'<div class="so-bvp-trigger" id="soBvpTrigger">'
+          +'<div class="so-bvp-trigger-label">Select Pitcher</div>'
+          +triggerHtml
+          +'<div class="so-bvp-trigger-caret">▾</div>'
+        +'</div>'
+        +'<div class="so-bvp-dropdown" id="soBvpPitcherList">'+pitcherListHtml+'</div>'
+      +'</div>';
+
+    var battersHtml;
+    if(!active){
+      battersHtml = '<div class="so-bvp-empty"><div class="so-bvp-empty-icon">⚾</div><b>No pitcher selected</b><span>Tap "Select Pitcher" above to load the opposing lineup.</span></div>';
+    } else {
+      var matches = bvpMatchups(active);
+      var teamTotal = matches.length ? matches[0].teamTotal : null;
+      var vegasIp = rawN(active,8) || 6;
+      var totalCls = teamTotal==null ? 'mid' : teamTotal>=4.5 ? 'high' : teamTotal>=4.0 ? 'mid' : 'low';
+      var pArmEv = rawN(active,12), pK = rawN(active,11), pProjK = rawN(active,10);
+      var rowsHtml = matches.map(function(m,i){
+        var b=m.b, grade=bvpGrade(b.proj), lev=num(b.lev), hand=(b.raw&&b.raw[7])||'', hr=rawN(b,11), bk=rawN(b,12);
+        return '<div class="so-bvp-brow" style="animation-delay:'+(i*30)+'ms">'
+          +'<div class="so-bvp-brank">'+(i+1)+'</div>'
+          +'<div class="so-bvp-bname-wrap"><div class="so-bvp-bname" title="'+safe(b.name)+'">'+safe(b.name)+(hand?' <span class="so-bvp-hand '+safe(hand)+'">'+safe(hand)+'</span>':'')+'</div><div class="so-bvp-bteam">'+safe(b.raw&&b.raw[3])+'</div></div>'
+          +'<div class="so-bvp-bstat so-bvp-ev">'+m.ev.toFixed(1)+'%</div>'
+          +'<div class="so-bvp-bstat">'+num(b.proj).toFixed(1)+'</div>'
+          +'<div class="so-bvp-bstat">'+pct(b.own)+'</div>'
+          +'<div class="so-bvp-bstat">'+pct(hr)+'</div>'
+          +'<div class="so-bvp-bstat">'+pct(bk)+'</div>'
+          +'<div class="so-bvp-bstat" style="color:'+levColor(lev)+'">'+(lev>=0?'+':'')+lev.toFixed(1)+'</div>'
+          +'<div class="so-bvp-grade so-bvp-grade-'+grade.cls+'">'+grade.label+'</div>'
+        +'</div>';
+      }).join('') || '<div class="so-bvp-empty"><div class="so-bvp-empty-icon">⚾</div><b>No batters loaded</b><span>No opposing hitters found for '+safe(active.raw&&active.raw[4])+'.</span></div>';
+
+      battersHtml = '<div class="so-bvp-vs-head">'
+          +'<div class="so-bvp-vs-top">'
+            +'<div class="so-bvp-chip">'+safe(bvpInitials(active.name))+'</div>'
+            +'<div><div class="so-bvp-vs-title">vs <span>'+safe(active.name)+'</span></div><div class="so-bvp-vs-sub">'+safe(active.raw&&active.raw[3])+' · opposing lineup: '+safe(active.raw&&active.raw[4])+'</div></div>'
+            +'<div class="so-bvp-count">'+matches.length+' batters</div>'
+          +'</div>'
+          +'<div class="so-bvp-ctx-row">'
+            +'<div class="so-bvp-ctx-chip so-bvp-ctx-'+totalCls+'">Implied total <b>'+(teamTotal!=null?teamTotal.toFixed(1):'—')+'</b></div>'
+            +'<div class="so-bvp-ctx-chip">Proj IP <b>'+vegasIp.toFixed(1)+'</b> / 9</div>'
+            +'<div class="so-bvp-ctx-chip">~<b>3 PA</b> per batter before the pen</div>'
+          +'</div>'
+          +'<div class="so-bvp-ctx-row">'
+            +'<div class="so-bvp-ctx-chip">Arm Proj <b>'+num(active.proj).toFixed(1)+'</b></div>'
+            +'<div class="so-bvp-ctx-chip">Salary <b>$'+(num(active.salary)?Math.round(num(active.salary)).toLocaleString():'—')+'</b></div>'
+            +'<div class="so-bvp-ctx-chip">Value <b>'+num(active.value).toFixed(2)+'x</b></div>'
+            +'<div class="so-bvp-ctx-chip">Own% <b>'+pct(active.own)+'</b></div>'
+            +'<div class="so-bvp-ctx-chip">Proj K <b>'+pProjK.toFixed(1)+'</b></div>'
+            +'<div class="so-bvp-ctx-chip">K% <b>'+pct(pK)+'</b></div>'
+            +'<div class="so-bvp-ctx-chip">Arm EV <b>'+(pArmEv>=0?'+':'')+pArmEv.toFixed(1)+'</b></div>'
+          +'</div>'
+        +'</div>'
+        +'<div class="so-bvp-cols"><div>#</div><div>Batter</div><div>EV%</div><div>Proj</div><div>Own%</div><div>HR%</div><div>K%</div><div>Leverage</div><div>Grade</div></div>'
+        +'<div class="so-bvp-blist">'+rowsHtml+'</div>';
+    }
+
+    return selectHtml + '<div class="so-bvp-batters" id="soBvpBattersPane">'+battersHtml+'</div>';
+  }
+
+  function bvpFootText(){
+    var pitchers=bvpTopPitchers(), active=null;
+    pitchers.forEach(function(p){ if(p.name===bvpActiveName) active=p; });
+    if(!active) return '<b>EV%</b> = matchup quality scaled by the game\u2019s implied total and the starter\u2019s workload. Click a pitcher to see the breakdown.';
+    var matches = bvpMatchups(active);
+    var teamTotal = matches.length ? matches[0].teamTotal : null;
+    var vegasIp = rawN(active,8) || 6;
+    return '<b>EV%</b> for this matchup = raw quality vs. '+safe(active.name)+', scaled by '+safe(active.raw&&active.raw[4])+'\u2019s '+(teamTotal!=null?teamTotal.toFixed(1):'—')+'-run implied total and '+safe(active.raw&&active.raw[3])+'\u2019s '+vegasIp.toFixed(1)+' IP workload (~3 PA/batter before the pen). <b>Leverage</b> is the same field-adjusted leverage score used across the desk. <b>Grade</b> is projection-based: 10+ A · 8\u20139.99 A- · 6.5\u20137.99 B · under 6.5 C.';
+  }
+
+  function buildBvpPanel(data){
+    return '<div class="so-corr-panel so-bvp-panel" id="soBvpPanel">'
+      +'<div class="so-corr-head so-bvp-head"><span>Batter vs Pitcher</span><span style="color:var(--kt-muted)">EV% matchup engine</span></div>'
+      +'<div class="so-bvp-body" id="soBvpBody">'+buildBvpBody(data)+'</div>'
+      +'<div class="so-bvp-foot" id="soBvpFoot">'+bvpFootText()+'</div>'
+    +'</div>';
+  }
+
+  function bvpRerender(data){
+    var body = el('soBvpBody'); if(body) body.innerHTML = buildBvpBody(data);
+    var foot = el('soBvpFoot'); if(foot) foot.innerHTML = bvpFootText();
+    bvpBindEvents(data);
+  }
+
+  function bvpBindEvents(data){
+    bvpLastData = data;
+
+    var trigger = el('soBvpTrigger');
+    if(trigger){
+      trigger.addEventListener('click', function(e){
+        e.stopPropagation();
+        bvpDropdownOpen = !bvpDropdownOpen;
+        bvpRerender(data);
+      });
+    }
+
+    var list = el('soBvpPitcherList');
+    if(list){
+      list.querySelectorAll('.so-bvp-prow').forEach(function(row){
+        row.addEventListener('click', function(e){
+          e.stopPropagation();
+          bvpActiveName = row.getAttribute('data-bvp-name');
+          bvpDropdownOpen = false;
+          bvpRerender(data);
+        });
+      });
+    }
+
+    if(!bvpOutsideClickBound){
+      bvpOutsideClickBound = true;
+      document.addEventListener('click', function(e){
+        if(!bvpDropdownOpen) return;
+        var wrap = el('soBvpSelectWrap');
+        if(wrap && !wrap.contains(e.target)){
+          bvpDropdownOpen = false;
+          bvpRerender(bvpLastData);
+        }
+      });
+    }
   }
 
   function ensureUpgrades(data){
     var panel=el('mlbOwnershipPanel'); if(!panel) return;
     var old=panel.querySelector('.so-upgrades-wrapper'); if(old) old.remove();
     var wrapper=document.createElement('div'); wrapper.className='so-upgrades-wrapper'; wrapper.style.cssText='position:relative;z-index:3;padding:10px 12px 0;';
-    wrapper.innerHTML='<div style="display:grid;grid-template-columns:1.1fr .9fr;gap:10px;">'+buildPositionalValue(data)+buildStackPanel(data)+'</div>';
+    wrapper.innerHTML='<div style="display:grid;grid-template-columns:1.1fr .9fr;gap:10px;">'+buildPositionalValue(data)+buildBvpPanel(data)+'</div>';
     var depth=el('soFinalDepthBottom'); if(depth && depth.nextSibling) depth.parentNode.insertBefore(wrapper, depth.nextSibling); else panel.appendChild(wrapper);
+    bvpBindEvents(data);
   }
 
   function ensureTicker(data){
