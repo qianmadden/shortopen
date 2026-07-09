@@ -366,6 +366,78 @@
   .dfs-btn-ghost { background: transparent; border: 1px solid var(--border2); color: var(--muted); }
   .dfs-btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
 
+  /* ── SAVED LINEUPS ── */
+  .saved-lineups {
+    background: rgba(13,17,23,0.9);
+    border: 1px solid #1a2535;
+    overflow: hidden;
+  }
+  .saved-lineups-header {
+    padding: 10px 14px;
+    background: rgba(17,24,32,0.8);
+    border-bottom: 1px solid #1a2535;
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .saved-lineups-list { max-height: 260px; overflow-y: auto; }
+  .saved-lineup-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    border-bottom: 1px solid #2e2e2e;
+  }
+  .saved-lineup-row:last-child { border-bottom: none; }
+  .saved-lineup-main { flex: 1; min-width: 0; }
+  .saved-lineup-name {
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--white);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .saved-lineup-meta {
+    font-size: 0.62rem;
+    color: var(--muted);
+    margin-top: 2px;
+    font-family: 'DM Mono', monospace;
+  }
+  .saved-lineup-meta .sl-proj { color: var(--gold); }
+  .saved-lineup-actions { display: flex; gap: 4px; flex-shrink: 0; }
+  .sl-icon-btn {
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.72rem;
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .sl-icon-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .sl-icon-btn.sl-delete:hover { border-color: #c0392b; color: #c0392b; }
+  .saved-lineups-empty {
+    padding: 18px 14px;
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .saved-lineups-footer {
+    padding: 10px 12px;
+    border-top: 1px solid #1a2535;
+    display: flex;
+    gap: 8px;
+  }
+
   /* upload strip */
   .upload-strip {
     max-width: 1400px;
@@ -900,6 +972,17 @@ body > div[style*="max-width:1400px"][style*="padding:10px 48px 0"] > div:nth-ch
   background:linear-gradient(90deg,rgba(244,185,66,.105),rgba(255,255,255,.012)) !important;
 }
 
+.lineup-slot.clickable{
+  cursor:pointer;
+}
+.lineup-slot.clickable:hover{
+  background:linear-gradient(90deg,rgba(192,57,43,.13),rgba(255,255,255,.012)) !important;
+  box-shadow:inset 2px 0 0 rgba(192,57,43,.55);
+}
+.lineup-slot.clickable:hover .slot-remove{
+  color:#e74c3c;
+}
+
 .slot-pos{
   color:var(--quant-gold) !important;
   font-weight:900 !important;
@@ -1341,7 +1424,7 @@ footer{
   <button id="tab-nba" onclick="showNBALock()" style="padding:8px 18px;font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#4d6070;cursor:pointer;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);border-radius:8px;transition:all 0.2s;display:flex;align-items:center;gap:7px;position:relative;overflow:hidden;" onmouseover="this.style.borderColor='rgba(87,167,255,.25)';this.style.color='#57a7ff'" onmouseout="this.style.borderColor='rgba(255,255,255,.06)';this.style.color='#4d6070'">
     <span style="font-size:.8rem">🏀</span>
     NBA
-    <span style="display:inline-flex;align-items:center;gap:4px;font-size:.58rem;background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.28);border-radius:4px;padding:1px 6px;letter-spacing:.06em"><span style="width:5px;height:5px;border-radius:50%;background:#f87171;display:inline-block;animation:livePulse 1.1s ease-in-out infinite;flex-shrink:0"></span>IN SEASON</span>
+    <span style="display:inline-flex;align-items:center;gap:4px;font-size:.58rem;background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.28);border-radius:4px;padding:1px 6px;letter-spacing:.06em"><span style="width:5px;height:5px;border-radius:50%;background:#f87171;display:inline-block;animation:livePulse 1.1s ease-in-out infinite;flex-shrink:0"></span>Currently: Summer League</span>
   </button>
   <!-- NFL — coming soon -->
   <button id="tab-nfl" onclick="showNFLLock()" style="padding:8px 18px;font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#4d6070;cursor:pointer;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);border-radius:8px;transition:all 0.2s;display:flex;align-items:center;gap:7px;" onmouseover="this.style.borderColor='rgba(34,197,94,.2)';this.style.color='#22c55e'" onmouseout="this.style.borderColor='rgba(255,255,255,.06)';this.style.color='#4d6070'">
@@ -2102,56 +2185,64 @@ footer{
         <button class="dfs-btn dfs-btn-primary" onclick="mlbAutoOptimize()">⚡ Auto-Optimize</button>
         <button class="dfs-btn dfs-btn-ghost" onclick="mlbClearLineup()">Clear</button>
       </div>
+      <button class="dfs-btn dfs-btn-ghost" style="width:100%;margin-top:8px;" onclick="mlbSaveLineup()">💾 Save Lineup</button>
+
+      <div class="saved-lineups" style="margin-top:10px;">
+        <div class="saved-lineups-header">
+          <span>Saved Lineups</span>
+          <span id="mlbSavedCount">0 / 10</span>
+        </div>
+        <div class="saved-lineups-list" id="mlbSavedLineupsList"></div>
+        <div class="saved-lineups-footer">
+          <button class="dfs-btn dfs-btn-ghost" style="flex:1;" onclick="mlbExportAllCSV()">⬇ Export All CSV</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- VARIANCE LEGEND -->
-  <div id="mlbVarianceLegend" style="max-width:100%;margin-top:40px;border-top:1px solid rgba(255,255,255,.07);padding-top:28px;">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
-      <span style="display:block;width:18px;height:1px;background:#f4b942"></span>
-      <p style="font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#f4b942;margin:0">Variance Legend</p>
+  <div id="mlbVarianceLegend" style="max-width:100%;margin-top:22px;border-top:1px solid rgba(255,255,255,.05);padding-top:14px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+      <span style="display:block;width:14px;height:1px;background:rgba(244,185,66,.5)"></span>
+      <p style="font-size:0.54rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#8a95a3;margin:0">Variance Legend</p>
     </div>
-    <div style="margin-bottom:12px;font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#738296;">Hitters</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
-      <div style="background:rgba(255,255,255,.03);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px 20px;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#f4b942;opacity:.5"></div>
-        <p style="font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#f0ece4;margin-bottom:10px;">I-P Variance <span style="color:#f4b942;">(Individual-Player)</span></p>
-        <div style="display:flex;gap:8px;margin-bottom:10px;">
-          <span class="ipv-chip ipv-HIGH">High</span><span style="font-size:0.72rem;color:#9dafc2">Proj 7.0+</span>
-          <span class="ipv-chip ipv-moderate" style="margin-left:8px">Neutral</span><span style="font-size:0.72rem;color:#9dafc2">Below 7.0</span>
+    <div style="margin-bottom:6px;font-size:0.56rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#556170;">Hitters</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 20px;margin-bottom:10px;">
+      <div style="border-left:2px solid rgba(244,185,66,.35);background:rgba(255,255,255,.022);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);border-radius:0 10px 10px 0;padding:7px 10px;">
+        <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#b7c0cb;margin-bottom:4px;">I-P Variance <span style="color:#8a7a45;">(Individual-Player)</span></p>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+          <span class="ipv-chip ipv-HIGH" style="font-size:0.56rem;padding:1px 5px;">High</span><span style="font-size:0.58rem;color:#6b7684">Proj 7.0+</span>
+          <span class="ipv-chip ipv-moderate" style="margin-left:6px;font-size:0.56rem;padding:1px 5px;">Neutral</span><span style="font-size:0.58rem;color:#6b7684">Below 7.0</span>
         </div>
-        <p style="font-size:0.8rem;color:#738296;line-height:1.75;margin:0;">A <strong style="color:#f0ece4;">High</strong> I-P player has the power or speed to completely exceed their floor — boom-or-bust. <strong style="color:#f0ece4;">Neutral</strong> players are consistent and reliable. What you see is what you get.</p>
+        <p style="font-size:0.6rem;color:#5c6773;line-height:1.4;margin:0;">A <strong style="color:#96a0ab;">High</strong> I-P player has the power or speed to completely exceed their floor — boom-or-bust. <strong style="color:#96a0ab;">Neutral</strong> players are consistent and reliable.</p>
       </div>
-      <div style="background:rgba(255,255,255,.03);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px 20px;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#22c55e;opacity:.5"></div>
-        <p style="font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#f0ece4;margin-bottom:10px;">Stack Variance <span style="color:#22c55e;">(Team Stack)</span></p>
-        <div style="display:flex;gap:8px;margin-bottom:10px;">
-          <span class="gt-chip gtc-high">High</span><span style="font-size:0.72rem;color:#9dafc2">Team total 4.0+</span>
-          <span class="gt-chip gtc-mid" style="margin-left:8px">Neutral</span><span style="font-size:0.72rem;color:#9dafc2">Below 4.0</span>
+      <div style="border-left:2px solid rgba(34,197,94,.3);background:rgba(255,255,255,.022);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);border-radius:0 10px 10px 0;padding:7px 10px;">
+        <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#b7c0cb;margin-bottom:4px;">Stack Variance <span style="color:#4d8a63;">(Team Stack)</span></p>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+          <span class="gt-chip gtc-high" style="font-size:0.56rem;padding:1px 5px;">High</span><span style="font-size:0.58rem;color:#6b7684">Team total 4.0+</span>
+          <span class="gt-chip gtc-mid" style="margin-left:6px;font-size:0.56rem;padding:1px 5px;">Neutral</span><span style="font-size:0.58rem;color:#6b7684">Below 4.0</span>
         </div>
-        <p style="font-size:0.8rem;color:#738296;line-height:1.75;margin:0;">Stack 5 from the same lineup on a <strong style="color:#f0ece4;">High</strong> variance team and the ceiling is enormous — sequential hitting, power through the order, favorable vegas implied run total. <strong style="color:#f0ece4;">Neutral</strong> is situational.</p>
+        <p style="font-size:0.6rem;color:#5c6773;line-height:1.4;margin:0;">Stack 5 on a <strong style="color:#96a0ab;">High</strong> variance team and the ceiling is enormous — sequential hitting, favorable implied total. <strong style="color:#96a0ab;">Neutral</strong> is situational.</p>
       </div>
     </div>
-    <div style="margin-bottom:12px;font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#738296;">Pitchers</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-      <div style="background:rgba(255,255,255,.03);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px 20px;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#f4b942;opacity:.5"></div>
-        <p style="font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#f0ece4;margin-bottom:10px;">I-P Variance <span style="color:#f4b942;">(Individual-Player)</span></p>
-        <div style="display:flex;gap:8px;margin-bottom:10px;">
-          <span class="ipv-chip ipv-HIGH">High</span><span style="font-size:0.72rem;color:#9dafc2">K% ≥ 25%</span>
-          <span class="ipv-chip ipv-low" style="margin-left:8px">Low</span><span style="font-size:0.72rem;color:#9dafc2">Below 25%</span>
+    <div style="margin-bottom:6px;font-size:0.56rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#556170;">Pitchers</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 20px;">
+      <div style="border-left:2px solid rgba(244,185,66,.35);background:rgba(255,255,255,.022);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);border-radius:0 10px 10px 0;padding:7px 10px;">
+        <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#b7c0cb;margin-bottom:4px;">I-P Variance <span style="color:#8a7a45;">(Individual-Player)</span></p>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+          <span class="ipv-chip ipv-HIGH" style="font-size:0.56rem;padding:1px 5px;">High</span><span style="font-size:0.58rem;color:#6b7684">K% ≥ 25%</span>
+          <span class="ipv-chip ipv-low" style="margin-left:6px;font-size:0.56rem;padding:1px 5px;">Low</span><span style="font-size:0.58rem;color:#6b7684">Below 25%</span>
         </div>
-        <p style="font-size:0.8rem;color:#738296;line-height:1.75;margin:0;">A <strong style="color:#f0ece4;">High</strong> K% pitcher has strikeout upside that can push their score well past projection — every missed bat is a point. A <strong style="color:#f0ece4;">Low</strong> K% arm is more projection-bound; their floor and ceiling are tighter.</p>
+        <p style="font-size:0.6rem;color:#5c6773;line-height:1.4;margin:0;">A <strong style="color:#96a0ab;">High</strong> K% pitcher can push their score well past projection. A <strong style="color:#96a0ab;">Low</strong> K% arm is more projection-bound.</p>
       </div>
-      <div style="background:rgba(255,255,255,.03);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px 20px;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#57a7ff;opacity:.5"></div>
-        <p style="font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#f0ece4;margin-bottom:10px;">Matchup Variance <span style="color:#57a7ff;">(Opponent Context)</span></p>
-        <div style="display:flex;gap:8px;margin-bottom:10px;">
-          <span class="gt-chip gtc-high">Good</span><span style="font-size:0.72rem;color:#9dafc2">Opp total ≤ 3.5</span>
-          <span class="gt-chip gtc-mid" style="margin-left:4px">Neutral</span><span style="font-size:0.72rem;color:#9dafc2">3.6–4.0</span>
-          <span class="gt-chip gtc-low" style="margin-left:4px">Poor</span><span style="font-size:0.72rem;color:#9dafc2">4.1+</span>
+      <div style="border-left:2px solid rgba(87,167,255,.3);background:rgba(255,255,255,.022);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);border-radius:0 10px 10px 0;padding:7px 10px;">
+        <p style="font-size:0.56rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#b7c0cb;margin-bottom:4px;">Matchup Variance <span style="color:#4a76a8;">(Opponent Context)</span></p>
+        <div style="display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap;">
+          <span class="gt-chip gtc-high" style="font-size:0.56rem;padding:1px 5px;">Good</span><span style="font-size:0.58rem;color:#6b7684">≤ 3.5</span>
+          <span class="gt-chip gtc-mid" style="margin-left:3px;font-size:0.56rem;padding:1px 5px;">Neutral</span><span style="font-size:0.58rem;color:#6b7684">3.6–4.0</span>
+          <span class="gt-chip gtc-low" style="margin-left:3px;font-size:0.56rem;padding:1px 5px;">Poor</span><span style="font-size:0.58rem;color:#6b7684">4.1+</span>
         </div>
-        <p style="font-size:0.8rem;color:#738296;line-height:1.75;margin:0;">If the opponent's implied run total is low, Vegas is pricing in a dominant outing — that's a <strong style="color:#f0ece4;">Good</strong> matchup. <strong style="color:#f0ece4;">Neutral</strong> is a coin-flip spot. <strong style="color:#f0ece4;">Poor</strong> means the lineup you're facing is live, and the scoring environment is real.</p>
+        <p style="font-size:0.6rem;color:#5c6773;line-height:1.4;margin:0;">Low opponent total = Vegas pricing a dominant outing (<strong style="color:#96a0ab;">Good</strong>). <strong style="color:#96a0ab;">Poor</strong> means the scoring environment is real.</p>
       </div>
     </div>
   </div>
@@ -2848,9 +2939,11 @@ function renderLineup() {
   SLOTS.forEach((slot, i) => {
     const p = lineup[i];
     const div = document.createElement('div');
-    div.className = 'lineup-slot' + (p ? ' filled' : '');
+    div.className = 'lineup-slot' + (p ? ' filled clickable' : '');
     if (p) {
       totalSal += p[3]; totalProj += p[8]; filled++;
+      div.title = 'Click to remove ' + p[0];
+      div.onclick = () => removeSlot(i);
       div.innerHTML = `
         <span class="slot-pos">${slot.label}</span>
         <span class="slot-player">${p[0]}<br><span style="font-size:0.68rem;color:var(--muted)">${p[2].join('/')} · ${p[1]}</span></span>
@@ -3541,11 +3634,13 @@ function mlbRenderLineup() {
   MLB_SLOTS.forEach((slot, i) => {
     const p = mlbLineup[i];
     const div = document.createElement('div');
-    div.className = 'lineup-slot' + (p ? ' filled' : '');
+    div.className = 'lineup-slot' + (p ? ' filled clickable' : '');
     if (p) {
       const isPit = slot.pos === 'P';
       totalSalary += p[1]; totalProj += p[5]; filled++;
       const ipv = isPit ? p[8] : p[9];
+      div.title = 'Click to remove ' + p[0];
+      div.onclick = () => mlbRemoveSlot(i);
       div.innerHTML = `
         <span class="slot-pos">${slot.label}</span>
         <span class="slot-player">${p[0]}<br><span style="font-size:0.7rem;color:var(--muted)">${p[3]} vs ${p[4]} <span style="color:${varColor(ipv)}">${ipv} Var</span></span></span>
@@ -3594,6 +3689,142 @@ function mlbRemoveSlot(i) {
 function mlbClearLineup() {
   mlbLineup = new Array(10).fill(null);
   mlbRenderLineup(); mlbRenderBatters(); mlbRenderPitchers(); syncMLBHero();
+}
+
+// ── SAVED LINEUPS (max 10, persisted locally) ──────────────────────
+const MLB_SAVED_KEY = 'so_mlb_saved_lineups';
+const MLB_SAVED_MAX = 10;
+
+function mlbGetSavedLineups() {
+  try {
+    const raw = localStorage.getItem(MLB_SAVED_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function mlbSetSavedLineups(list) {
+  try { localStorage.setItem(MLB_SAVED_KEY, JSON.stringify(list)); }
+  catch (e) { /* storage unavailable — saved lineups just won't persist across reloads */ }
+}
+
+function mlbSaveLineup() {
+  const filled = mlbLineup.filter(Boolean).length;
+  if (filled === 0) { alert('Add at least one player before saving a lineup.'); return; }
+
+  const saved = mlbGetSavedLineups();
+  if (saved.length >= MLB_SAVED_MAX) {
+    alert('You already have ' + MLB_SAVED_MAX + ' saved lineups — the max. Delete one before saving another.');
+    return;
+  }
+
+  let totalSalary = 0, totalProj = 0;
+  mlbLineup.forEach(p => { if (p) { totalSalary += p[1]; totalProj += p[5]; } });
+
+  const entry = {
+    id: Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+    name: 'Lineup ' + (saved.length + 1),
+    savedAt: new Date().toISOString(),
+    salary: totalSalary,
+    proj: totalProj,
+    // store just what's needed to rebuild the slot + re-render/export later
+    players: mlbLineup.map(p => p ? { name: p[0], salary: p[1], pos: p[2], team: p[3], opp: p[4], proj: p[5] } : null)
+  };
+  saved.push(entry);
+  mlbSetSavedLineups(saved);
+  mlbRenderSavedLineups();
+}
+
+function mlbRenderSavedLineups() {
+  const list = mlbGetSavedLineups();
+  const countEl = document.getElementById('mlbSavedCount');
+  if (countEl) countEl.textContent = list.length + ' / ' + MLB_SAVED_MAX;
+
+  const container = document.getElementById('mlbSavedLineupsList');
+  if (!container) return;
+  container.innerHTML = '';
+
+  if (!list.length) {
+    container.innerHTML = '<div class="saved-lineups-empty">No saved lineups yet. Build one, then hit Save Lineup.</div>';
+    return;
+  }
+
+  list.forEach(entry => {
+    const filled = entry.players.filter(Boolean).length;
+    const row = document.createElement('div');
+    row.className = 'saved-lineup-row';
+    row.innerHTML = `
+      <div class="saved-lineup-main">
+        <div class="saved-lineup-name">${entry.name}</div>
+        <div class="saved-lineup-meta">${filled}/10 filled &nbsp;·&nbsp; $${entry.salary.toLocaleString()} &nbsp;·&nbsp; <span class="sl-proj">${entry.proj.toFixed(1)} proj</span></div>
+      </div>
+      <div class="saved-lineup-actions">
+        <button class="sl-icon-btn" title="Load into builder" onclick="mlbLoadSavedLineup('${entry.id}')">↩</button>
+        <button class="sl-icon-btn" title="Export this lineup as CSV" onclick="mlbExportLineupCSV('${entry.id}')">⬇</button>
+        <button class="sl-icon-btn sl-delete" title="Delete" onclick="mlbDeleteSavedLineup('${entry.id}')">✕</button>
+      </div>
+    `;
+    container.appendChild(row);
+  });
+}
+
+function mlbLoadSavedLineup(id) {
+  const saved = mlbGetSavedLineups();
+  const entry = saved.find(l => l.id === id);
+  if (!entry) return;
+  // Rebuild slot player references by matching name+team back to the live pool
+  // so proj/salary reflect current data; fall back to the saved snapshot values
+  // if a player isn't found in the current pool (e.g. slate changed).
+  const pool = [...MLB_BATTERS, ...MLB_PITCHERS];
+  mlbLineup = entry.players.map(sp => {
+    if (!sp) return null;
+    const live = pool.find(p => p[0] === sp.name && p[3] === sp.team);
+    if (live) return live;
+    return [sp.name, sp.salary, sp.pos, sp.team, sp.opp, sp.proj, 0, '', 0, 0, 0, 0, 0, 0];
+  });
+  mlbRenderLineup(); mlbRenderBatters(); mlbRenderPitchers(); syncMLBHero();
+}
+
+function mlbDeleteSavedLineup(id) {
+  const saved = mlbGetSavedLineups().filter(l => l.id !== id);
+  mlbSetSavedLineups(saved);
+  mlbRenderSavedLineups();
+}
+
+function mlbLineupToCSVRow(entry) {
+  return MLB_SLOTS.map((slot, i) => {
+    const p = entry.players[i];
+    return p ? '"' + p.name.replace(/"/g, '""') + '"' : '';
+  }).join(',');
+}
+
+function mlbDownloadCSV(filename, csvContent) {
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function mlbExportLineupCSV(id) {
+  const saved = mlbGetSavedLineups();
+  const entry = saved.find(l => l.id === id);
+  if (!entry) return;
+  const header = MLB_SLOTS.map(s => s.label).join(',');
+  const csv = header + '\n' + mlbLineupToCSVRow(entry);
+  mlbDownloadCSV(entry.name.replace(/\s+/g, '_') + '.csv', csv);
+}
+
+function mlbExportAllCSV() {
+  const saved = mlbGetSavedLineups();
+  if (!saved.length) { alert('No saved lineups to export yet.'); return; }
+  const header = MLB_SLOTS.map(s => s.label).join(',');
+  const rows = saved.map(mlbLineupToCSVRow);
+  const csv = [header, ...rows].join('\n');
+  mlbDownloadCSV('shortopen_lineups.csv', csv);
 }
 
 function mlbAutoOptimize() {
@@ -3831,44 +4062,15 @@ function ownRender() {
   if (vpEl) vpEl.textContent = data.filter(p=>p.value>2.5).length;
 
   const start = ownPage * OWN_PAGE;
-  const slice = data.slice(start, start+OWN_PAGE);
+  const total = data.length;
+  // PERF FIX: #ownTable / #ownBody is a hidden (display:none) legacy table
+  // that nothing in the app reads from anymore — the visible ownership UI
+  // is the depth chart + Signal Desk cards built by the newer render pass.
+  // Rebuilding a full <tr> per row (with nested markup, bar widths, and
+  // leverage glyphs) on every filter/sort/tab-switch was pure wasted work
+  // for a table no one can see. Just keep it empty instead.
   const tbody = document.getElementById('ownBody');
-  tbody.innerHTML = '';
-
-  slice.forEach(p => {
-    const tier = ownTierInfo(p.own);
-    const barW = Math.round(Math.min(100,(p.own/45)*100));
-    const vsLabel = p.raw[4] ? `vs ${p.raw[4]}` : '';
-
-    const lev = (typeof p.lev === 'number') ? p.lev : 0;
-    const ld  = lev >= 3 ? 'up' : lev <= -3 ? 'down' : 'flat';
-    const levSign = lev >= 0 ? '+' : '';
-    const levGlyph = ld==='up' ? '▲' : ld==='down' ? '▼' : '●';
-    const levTick = Math.max(4,Math.min(28,Math.round(Math.abs(lev)/10*28)));
-
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td style="min-width:150px;">
-        <div style="display:flex;align-items:center;gap:9px;">
-          <span class="own-pos">${p.pos}</span>
-          <div>
-            <div class="own-player-name">${p.name}</div>
-            <div class="own-matchup">${p.raw[3]||''} ${vsLabel}</div>
-          </div>
-        </div>
-      </td>
-      <td class="own-salary">$${(p.salary/1000).toFixed(1)}K</td>
-      <td class="own-proj-num">${p.proj.toFixed(1)}</td>
-      <td>
-        <div class="own-bar-cell">
-          <div class="own-bar-track"><div class="own-bar-fill" style="width:${barW}%;--bc:${tier.fill};"></div></div>
-          <span class="own-pct" style="color:${tier.color};">${p.own.toFixed(1)}%</span>
-        </div>
-      </td>
-      <td><span class="own-lev"><span class="own-lev-tick" style="height:${levTick}px"></span><span class="own-lev-txt">${levGlyph} ${levSign}${lev.toFixed(1)}</span></span></td>
-    `;
-    tbody.appendChild(tr);
-  });
+  if (tbody) tbody.innerHTML = '';
 
   ['name','salary','proj','own','lev'].forEach(k => {
     const th = document.getElementById('ownTh-'+k);
@@ -3878,7 +4080,6 @@ function ownRender() {
     if (ar) ar.textContent = ownSortKey===k ? (ownSortAsc?' \u2191':' \u2193') : '';
   });
 
-  const total = data.length;
   document.getElementById('ownPageInfo').textContent = `${start+1}–${Math.min(start+OWN_PAGE,total)} of ${total}`;
   document.getElementById('ownPrev').disabled = ownPage===0;
   document.getElementById('ownNext').disabled = ownPage>=Math.ceil(total/OWN_PAGE)-1;
@@ -3889,6 +4090,7 @@ function ownRender() {
 mlbRenderBatters();
 mlbRenderPitchers();
 mlbRenderLineup();
+mlbRenderSavedLineups();
 
 // ─────────────────────────────────────────────────────────────
 // MLB LOCK SCREEN — toggle this one line on/off as needed:
@@ -3927,7 +4129,7 @@ hideAccessLock(); // ← CHANGE THIS LINE TO CONTROL THE ACCESS LOCK
 @keyframes soPricePulse{0%,100%{opacity:.75;filter:drop-shadow(0 0 0 rgba(244,185,66,0))}50%{opacity:1;filter:drop-shadow(0 0 12px rgba(244,185,66,.28))}}
 @keyframes soHeatFlow{to{background-position:200% 0}}
 :root{--trade-orange:#f4b942;--trade-green:#22c55e;--trade-blue:#57a7ff;--trade-purple:#a78bfa;--trade-red:#f87171;--trade-panel:rgba(7,11,18,.92)}
-body{background:radial-gradient(circle at 10% 0%,rgba(244,185,66,.12),transparent 30%),radial-gradient(circle at 92% 10%,rgba(87,167,255,.13),transparent 30%),linear-gradient(180deg,#03060b,#08111b 46%,#03060b)!important}.dfs-wrap:before{content:"MLB TRADING CENTER  ·  ownership flow  ·  batter ceiling  ·  pitcher leverage  ·  short the consensus  ·  MLB TRADING CENTER  ·  ownership flow  ·  batter ceiling  ·  pitcher leverage  ·  short the consensus";display:block;white-space:nowrap;overflow:hidden;margin:0 0 16px;border:1px solid rgba(244,185,66,.15);border-radius:999px;padding:9px 16px;background:rgba(244,185,66,.055);font-size:.62rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;color:#f4b942;animation:soPricePulse 3s ease-in-out infinite}.dfs-header{padding:22px 0!important}.dfs-header-left h2{font-size:1.62rem!important}.dfs-header-left h2:before{content:"LIVE DESK // "!important;color:#22c55e!important}.dfs-header-left p:after{content:"  ·  row click adds to lineup  ·  salary and ownership update live";color:#f4b942}
+body{background:radial-gradient(circle at 10% 0%,rgba(244,185,66,.12),transparent 30%),radial-gradient(circle at 92% 10%,rgba(87,167,255,.13),transparent 30%),linear-gradient(180deg,#03060b,#08111b 46%,#03060b)!important}.dfs-wrap:before{content:"Shortopen DESK  · mlb model  · tournament ownership  ·  batter ceiling  ·  pitcher leverage  · individual player variance  · ";display:block;white-space:nowrap;overflow:hidden;margin:0 0 16px;border:1px solid rgba(244,185,66,.15);border-radius:999px;padding:9px 16px;background:rgba(244,185,66,.055);font-size:.62rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase;color:#f4b942;animation:soPricePulse 3s ease-in-out infinite}.dfs-header{padding:22px 0!important}.dfs-header-left h2{font-size:1.62rem!important}.dfs-header-left h2:before{content:"LIVE DESK // "!important;color:#22c55e!important}.dfs-header-left p:after{content:"  ·  row click adds to lineup  ·  model updated daily (4PM ET)";color:#f4b942}
 #panel-mlb .dfs-layout{gap:20px!important}.dfs-pool{border-radius:28px!important;background:linear-gradient(180deg,rgba(9,14,23,.96),rgba(4,7,12,.94))!important;border:1px solid rgba(255,255,255,.10)!important;box-shadow:0 34px 90px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.06)!important}.dfs-pool:before{height:4px!important;background:linear-gradient(90deg,#f87171,#f4b942,#22c55e,#57a7ff,#a78bfa)!important;background-size:200% 100%;animation:soHeatFlow 5s linear infinite!important}.dfs-pool-header{padding:16px!important;background:linear-gradient(90deg,rgba(244,185,66,.10),rgba(87,167,255,.055),rgba(255,255,255,.025))!important}.dfs-pool-title{font-size:.72rem!important;color:#c9a227!important}.dfs-pool-title:before{content:"◆ ";color:#c9a227}.dfs-search{height:42px!important;border-radius:16px!important;background:rgba(0,0,0,.26)!important;font-weight:700!important}.pos-pill{padding:9px 14px!important;border-radius:999px!important;font-size:.62rem!important}.pool-table-wrap{max-height:640px!important;background:linear-gradient(180deg,rgba(255,255,255,.018),rgba(255,255,255,.004))}.dfs-pool-table{border-spacing:0 4px!important;border-collapse:separate!important;padding:6px 8px!important}.dfs-pool-table thead th{top:0!important;background:linear-gradient(180deg,#111a27,#080d14)!important;border-bottom:1px solid rgba(244,185,66,.35)!important;color:#8fa3ba!important;font-size:.58rem!important;font-weight:950!important;padding:12px 10px!important}.dfs-pool-table tbody tr{border-radius:16px!important;overflow:hidden;animation:soTradeIn .38s ease both}.dfs-pool-table tbody td:first-child{border-radius:16px 0 0 16px}.dfs-pool-table tbody td:last-child{border-radius:0 16px 16px 0}.dfs-pool-table td{background:rgba(255,255,255,.026)!important;border-bottom:1px solid rgba(255,255,255,.035)!important;padding:12px 10px!important}.dfs-pool-table tbody tr:hover td{background:linear-gradient(90deg,rgba(244,185,66,.115),rgba(87,167,255,.04),rgba(255,255,255,.02))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important}.dfs-pool-table tbody tr:hover td:first-child{box-shadow:inset 0 1px 0 rgba(255,255,255,.06),inset 3px 0 0 rgba(244,185,66,.9)!important}.dfs-pool-table tbody tr.in-lineup td{background:linear-gradient(90deg,rgba(34,197,94,.12),rgba(244,185,66,.05))!important}.add-btn-circle{width:28px!important;height:28px!important;border:1px solid rgba(244,185,66,.25)!important;background:rgba(244,185,66,.08)!important;color:#f4b942!important;font-weight:950!important}.add-btn-circle.added{background:#22c55e!important;border-color:#22c55e!important;color:#051008!important}.pos-chip{border-radius:999px!important;padding:4px 8px!important;font-weight:950!important}.ap-bar{height:7px!important;width:70px!important;background:rgba(255,255,255,.08)!important}.ap-fill{background:linear-gradient(90deg,#f4b942,#22c55e,#57a7ff)!important;background-size:200% 100%;animation:soHeatFlow 2.8s linear infinite}.sparkbar-cell{height:28px!important}.sp{width:6px!important;border-radius:4px 4px 0 0!important}.gt-chip,.ipv-chip,.matchup-chip{border-radius:999px!important;padding:4px 8px!important}.pool-mini-legend{background:rgba(3,6,11,.68)!important;border-top:1px solid rgba(255,255,255,.06)!important}.pml-label{color:#f4b942!important;font-weight:950!important}.salary-bar,.lineup-slots{border-radius:28px!important;background:linear-gradient(180deg,rgba(10,15,24,.96),rgba(4,7,12,.94))!important;box-shadow:0 28px 78px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.06)!important}.salary-bar:before,.lineup-slots:before{height:4px!important;background:linear-gradient(90deg,#f4b942,#22c55e,#57a7ff)!important}.salary-nums,.totals-proj{font-family:'DM Mono',monospace!important;color:#c9a227!important}.lineup-slot{min-height:52px!important;background:rgba(255,255,255,.018)!important;border-bottom:1px solid rgba(255,255,255,.045)!important}.lineup-slot.filled{background:linear-gradient(90deg,rgba(244,185,66,.10),rgba(34,197,94,.035))!important}.slot-pos{display:grid;place-items:center;width:42px;height:28px;border-radius:999px;background:rgba(244,185,66,.10);border:1px solid rgba(244,185,66,.20)}.dfs-actions .dfs-btn{border-radius:18px!important;min-height:46px;font-weight:950!important}.dfs-btn-primary{background:linear-gradient(135deg,#f4b942,#ffd166)!important}.dfs-btn-ghost{background:rgba(255,255,255,.025)!important}
 /* Ownership page */
 /* ownership styles moved to header */
@@ -6958,20 +7160,36 @@ body{background:radial-gradient(circle at 10% 0%,rgba(244,185,66,.12),transparen
 #mlbOwnershipPanel .so-contrarian-section{
   margin:10px 0 14px!important;
   border-radius:24px!important;
-  border:1px solid rgba(0,232,124,.18)!important;
+  border:1px solid rgba(255,255,255,.07)!important;
   background:
-    radial-gradient(circle at 4% 0%,rgba(0,232,124,.12),transparent 34%),
-    radial-gradient(circle at 96% 0%,rgba(244,185,66,.08),transparent 34%),
-    linear-gradient(180deg,rgba(3,15,11,.96),rgba(2,6,10,.985))!important;
+    radial-gradient(circle at 4% 0%,rgba(0,232,124,.055),transparent 34%),
+    radial-gradient(circle at 96% 0%,rgba(244,185,66,.055),transparent 34%),
+    linear-gradient(180deg,rgba(8,9,9,.97),rgba(3,4,4,.99))!important;
   box-shadow:0 20px 56px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.045)!important;
   overflow:hidden!important;
 }
 #mlbOwnershipPanel .so-contrarian-head{
   padding:12px 16px!important;
+  position:relative!important;
   background:
-    linear-gradient(90deg,rgba(0,232,124,.07),rgba(244,185,66,.035),transparent),
-    repeating-linear-gradient(90deg,rgba(0,232,124,.028) 0 1px,transparent 1px 38px)!important;
-  border-bottom:1px solid rgba(0,232,124,.12)!important;
+    linear-gradient(90deg,rgba(0,232,124,.035),rgba(244,185,66,.03),transparent),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.014) 0 1px,transparent 1px 38px)!important;
+  border-bottom:1px solid rgba(255,255,255,.06)!important;
+  overflow:hidden!important;
+}
+#mlbOwnershipPanel .so-contrarian-head:after{
+  content:""!important;
+  position:absolute!important;
+  top:0!important; bottom:0!important; left:-60%!important;
+  width:45%!important;
+  background:linear-gradient(90deg,transparent,rgba(244,185,66,.10) 45%,rgba(0,232,124,.10) 65%,transparent)!important;
+  transform:skewX(-18deg)!important;
+  animation:soContrarianShimmer 6s ease-in-out infinite!important;
+  pointer-events:none!important;
+}
+@keyframes soContrarianShimmer{
+  0%{left:-60%;}
+  45%,100%{left:135%;}
 }
 #mlbOwnershipPanel .so-contrarian-kicker{
   color:#00e87c!important;
@@ -6997,40 +7215,63 @@ body{background:radial-gradient(circle at 10% 0%,rgba(244,185,66,.12),transparen
 }
 #mlbOwnershipPanel .so-con-card{
   min-height:126px!important;
-  border:1px solid rgba(255,255,255,.07)!important;
-  border-radius:16px!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+  border-radius:18px!important;
   background:
-    linear-gradient(180deg,rgba(255,255,255,.043),rgba(255,255,255,.014)),
-    radial-gradient(circle at 92% 2%,rgba(0,232,124,.11),transparent 48%)!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 12px 28px rgba(0,0,0,.22)!important;
+    linear-gradient(155deg,rgba(255,255,255,.075),rgba(255,255,255,.012) 42%,rgba(0,0,0,.22) 82%),
+    rgba(8,10,9,.50)!important;
+  backdrop-filter:blur(20px) saturate(150%)!important;
+  -webkit-backdrop-filter:blur(20px) saturate(150%)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.16),
+    inset 0 0 0 1px rgba(255,255,255,.02),
+    0 12px 26px rgba(0,0,0,.38),
+    0 0 24px rgba(244,185,66,.055),
+    0 0 38px rgba(0,232,124,.04)!important;
   padding:12px 12px 13px!important;
   overflow:hidden!important;
-  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease!important;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease,background .18s ease!important;
 }
 #mlbOwnershipPanel .so-con-card:hover{
   transform:translateY(-2px)!important;
-  border-color:rgba(0,232,124,.32)!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 16px 34px rgba(0,0,0,.30),0 0 20px rgba(0,232,124,.09)!important;
+  border-color:rgba(255,255,255,.16)!important;
+  background:
+    linear-gradient(155deg,rgba(255,255,255,.10),rgba(255,255,255,.018) 42%,rgba(0,0,0,.20) 82%),
+    rgba(8,10,9,.46)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.20),
+    inset 0 0 0 1px rgba(255,255,255,.03),
+    0 16px 32px rgba(0,0,0,.44),
+    0 0 30px rgba(244,185,66,.09),
+    0 0 46px rgba(0,232,124,.06)!important;
 }
 #mlbOwnershipPanel .so-con-card:before{
-  height:2px!important;
-  background:linear-gradient(90deg,#00e87c,#f4b942,transparent)!important;
+  height:1px!important;
+  background:linear-gradient(90deg,rgba(255,255,255,.02),rgba(255,255,255,.55) 18%,rgba(255,255,255,.55) 40%,rgba(255,255,255,.02))!important;
 }
 #mlbOwnershipPanel .so-con-card:after{
   content:""!important;
   position:absolute!important;
-  inset:auto 10px 8px 10px!important;
-  height:3px!important;
-  border-radius:999px!important;
-  background:linear-gradient(90deg,#00e87c,rgba(0,232,124,.18),transparent)!important;
-  opacity:.75!important;
+  top:-46px!important;
+  right:-46px!important;
+  left:auto!important;
+  bottom:auto!important;
+  width:110px!important;
+  height:110px!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,rgba(255,255,255,.10),rgba(255,255,255,0) 70%)!important;
+  opacity:.7!important;
+  pointer-events:none!important;
 }
 #mlbOwnershipPanel .so-con-pos{
-  border-radius:999px!important;
+  border-radius:6px!important;
   padding:3px 7px!important;
-  font-size:.46rem!important;
+  font-size:.44rem!important;
   margin-bottom:9px!important;
-  box-shadow:0 0 12px rgba(0,232,124,.09)!important;
+  background:rgba(255,255,255,.03)!important;
+  border:1px solid rgba(0,232,124,.16)!important;
+  color:#5da97e!important;
+  box-shadow:none!important;
 }
 #mlbOwnershipPanel .so-con-name{
   font-size:.82rem!important;
@@ -7038,10 +7279,11 @@ body{background:radial-gradient(circle at 10% 0%,rgba(244,185,66,.12),transparen
   margin-bottom:2px!important;
   letter-spacing:-.02em!important;
   max-width:100%!important;
+  color:#e9ece9!important;
 }
 #mlbOwnershipPanel .so-con-team{
   font-size:.50rem!important;
-  color:#667d94!important;
+  color:#54626b!important;
   margin-top:3px!important;
 }
 #mlbOwnershipPanel .so-con-stats{
@@ -7056,22 +7298,23 @@ body{background:radial-gradient(circle at 10% 0%,rgba(244,185,66,.12),transparen
   align-items:center!important;
   justify-content:center!important;
   min-width:0!important;
-  border-radius:9px!important;
-  border:1px solid rgba(255,255,255,.065)!important;
-  background:rgba(0,0,0,.18)!important;
+  border-radius:8px!important;
+  border:1px solid rgba(255,255,255,.07)!important;
+  background:rgba(0,0,0,.22)!important;
   padding:5px 4px!important;
   white-space:nowrap!important;
   overflow:hidden!important;
   text-overflow:ellipsis!important;
 }
-#mlbOwnershipPanel .so-con-stat-own{color:#00e87c!important;}
-#mlbOwnershipPanel .so-con-stat-proj{color:#f4b942!important;}
+#mlbOwnershipPanel .so-con-stat-own{color:#3fae7c!important;}
+#mlbOwnershipPanel .so-con-stat-proj{color:#c9a24a!important;}
 #mlbOwnershipPanel .so-con-stat-lev{font-weight:950!important;}
 #mlbOwnershipPanel .so-con-empty{
-  border-radius:16px!important;
-  border:1px dashed rgba(0,232,124,.18)!important;
-  background:rgba(0,232,124,.035)!important;
+  border-radius:14px!important;
+  border:1px dashed rgba(255,255,255,.1)!important;
+  background:rgba(255,255,255,.012)!important;
 }
+
 
 @media(max-width:1180px){
   #mlbOwnershipPanel > .own-header,
@@ -8008,12 +8251,17 @@ body{background:radial-gradient(circle at 10% 0%,rgba(244,185,66,.12),transparen
 
   function buildSignal(data){
     data=data&&data.length?data:filteredRows();
-    var sorted=data.slice().sort(function(a,b){return (num(b.proj)*1.15+num(b.lev)*.38-num(b.own)*.22+num(b.value)*1.2)-(num(a.proj)*1.15+num(a.lev)*.38-num(a.own)*.22+num(a.value)*1.2);}).filter(function(p){return num(p.own)<24;}).slice(0,3);
+    // ── BEST PIVOT: always the two highest-projected players under 10% ownership ──
+    var pivots=data.filter(function(p){return num(p.own)<10;}).slice().sort(function(a,b){return num(b.proj)-num(a.proj);}).slice(0,2);
+    var pivotNames={}; pivots.forEach(function(p){pivotNames[p.name]=1;});
+    var restPool=data.filter(function(p){return !pivotNames[p.name];});
+    var restSorted=restPool.slice().sort(function(a,b){return (num(b.proj)*1.15+num(b.lev)*.38-num(b.own)*.22+num(b.value)*1.2)-(num(a.proj)*1.15+num(a.lev)*.38-num(a.own)*.22+num(a.value)*1.2);}).filter(function(p){return num(p.own)<24;}).slice(0,Math.max(0,3-pivots.length));
+    var sorted=pivots.concat(restSorted);
     var total=data.length||1;
     var chalk=Math.round(data.filter(function(p){return num(p.own)>=30;}).length/total*100), mid=Math.round(data.filter(function(p){return num(p.own)>=7&&num(p.own)<30;}).length/total*100), piv=Math.round(data.filter(function(p){return num(p.own)<7;}).length/total*100);
     function exp(lbl,val,c,g){return '<div class="so-v6-exp-row" style="--c:'+c+';--g:'+g+'"><div class="so-v6-exp-label">'+lbl+'</div><div class="so-v6-track"><div class="so-v6-fill" style="width:'+val+'%"></div></div><div class="so-v6-exp-val">'+val+'%</div></div>';}
     var byOwn=data.slice().sort(function(a,b){return num(b.own)-num(a.own);});
-    var tickets=sorted.map(function(p){ var t=colorForOwn(p.own), l=num(p.lev), label=num(p.own)<8?'BEST PIVOT':num(p.value)>=2.5?'VALUE EDGE':'LEVERAGE'; var rank=byOwn.findIndex(function(x){return x.name===p.name;}); var salary=num(p.salary)>0?'$'+(num(p.salary)/1000).toFixed(1)+'K':'—'; return '<div class="so-v6-ticket so-v10-ticket" style="--c:'+t.c+';--g:'+t.g+'"><div class="so-v10-top"><div class="so-v10-left"><div class="so-v10-label">'+safe(label)+'</div><div class="so-v10-name" title="'+safe(p.name)+'">'+safe(p.name)+'</div><div class="so-v10-meta">'+safe(p.pos)+' · '+safe(matchup(p))+' · '+pct(p.own)+' own</div></div><div class="so-v10-tag">LEV '+(l>=0?'+':'')+l.toFixed(1)+'</div></div><div class="so-v10-grid"><div class="so-v10-cell"><span>Proj</span><b>'+num(p.proj).toFixed(1)+'</b></div><div class="so-v10-cell"><span>Own</span><b>'+pct(p.own)+'</b></div><div class="so-v10-cell"><span>Value</span><b>'+num(p.value).toFixed(2)+'x</b></div><div class="so-v10-cell"><span>Rank</span><b>'+(rank>=0?'#'+(rank+1):'—')+'</b></div><div class="so-v10-cell"><span>Tier</span><b style="color:'+t.c+'">'+safe(t.label.toUpperCase())+'</b></div><div class="so-v10-cell"><span>Sal</span><b>'+salary+'</b></div></div><div class="so-v10-reason"><b>Read:</b> '+safe(t.label.toLowerCase())+' ownership, '+(l>=0?'positive':'negative')+' leverage, '+safe(matchup(p))+' matchup context.</div></div>'; }).join('');
+    var tickets=sorted.map(function(p){ var t=colorForOwn(p.own), l=num(p.lev), label=pivotNames[p.name]?'BEST PIVOT':(num(p.value)>=2.5?'VALUE EDGE':'LEVERAGE'); var rank=byOwn.findIndex(function(x){return x.name===p.name;}); var salary=num(p.salary)>0?'$'+(num(p.salary)/1000).toFixed(1)+'K':'—'; return '<div class="so-v6-ticket so-v10-ticket" style="--c:'+t.c+';--g:'+t.g+'"><div class="so-v10-top"><div class="so-v10-left"><div class="so-v10-label">'+safe(label)+'</div><div class="so-v10-name" title="'+safe(p.name)+'">'+safe(p.name)+'</div><div class="so-v10-meta">'+safe(p.pos)+' · '+safe(matchup(p))+' · '+pct(p.own)+' own</div></div><div class="so-v10-tag">LEV '+(l>=0?'+':'')+l.toFixed(1)+'</div></div><div class="so-v10-grid"><div class="so-v10-cell"><span>Proj</span><b>'+num(p.proj).toFixed(1)+'</b></div><div class="so-v10-cell"><span>Own</span><b>'+pct(p.own)+'</b></div><div class="so-v10-cell"><span>Value</span><b>'+num(p.value).toFixed(2)+'x</b></div><div class="so-v10-cell"><span>Rank</span><b>'+(rank>=0?'#'+(rank+1):'—')+'</b></div><div class="so-v10-cell"><span>Tier</span><b style="color:'+t.c+'">'+safe(t.label.toUpperCase())+'</b></div><div class="so-v10-cell"><span>Sal</span><b>'+salary+'</b></div></div><div class="so-v10-reason"><b>Read:</b> '+safe(t.label.toLowerCase())+' ownership, '+(l>=0?'positive':'negative')+' leverage, '+safe(matchup(p))+' matchup context.</div></div>'; }).join('');
     return '<div class="so-v6-signal"><div class="so-v6-head"><span>Signal Desk</span><span>execution ideas · enriched</span></div><div class="so-v6-signal-body">'+tickets+'</div><div class="so-v6-exposure"><div class="so-v6-exp-title">Field Concentration</div>'+exp('Chalk',chalk,'#ff4e5c','rgba(255,78,92,.24)')+exp('Mid',mid,'#f4b942','rgba(244,185,66,.24)')+exp('Pivot',piv,'#00d978','rgba(0,217,120,.22)')+'</div></div>';
   }
 
@@ -8746,9 +8994,6 @@ body{background:radial-gradient(circle at 10% 0%,rgba(244,185,66,.12),transparen
 })();
 </script>
 
-</body>
-</html>
-
 <style id="so-q-20260624-statcards-sleek-dark-gold">
 /* Sleeker player-name treatment only — preserves card size, stack format, labels, and stat/meta lines. */
 #mlbOwnershipPanel .own-stat-cards-inline .own-stat-card .num,
@@ -8803,3 +9048,6 @@ body{background:radial-gradient(circle at 10% 0%,rgba(244,185,66,.12),transparen
   }
 }
 </style>
+
+</body>
+</html>
