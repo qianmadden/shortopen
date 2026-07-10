@@ -831,34 +831,77 @@ nav {
 }
 .wc-game-card .wc-team-block:hover{transform:none;}
 
-/* Flag — wave + glow */
-.wc-team-flag{
-  display:inline-flex;align-items:center;justify-content:center;
-  flex-shrink:0;width:26px;height:19px;border-radius:5px;padding:0;
-  border:1px solid rgba(100,255,140,.20);
-  background:rgba(100,255,140,.04);
-  font-size:.95rem;
-  animation:flagWave 2.6s ease-in-out infinite,flagGlow 2.6s ease-in-out infinite;
-  animation-delay:var(--delay,0s);
+/* Mini player — same construction as the hero kid, in team colors, standing still holding a ball */
+.wc-team-jersey-wrap{
+  display:block;flex-shrink:0;
+  width:34px;height:54px;position:relative;
 }
+.wc-mp-head{
+  position:absolute;top:0;left:11px;width:13px;height:13px;border-radius:50%;
+  background:#b57a45;box-shadow:inset -2px -1px 0 rgba(0,0,0,.15);
+}
+.wc-mp-head::before{
+  content:'';position:absolute;top:-2px;left:-2px;right:-2px;height:54%;
+  border-radius:50% 50% 35% 35%;
+  background:linear-gradient(180deg,#1a0900,#2a1200);
+  box-shadow:0 1px 3px rgba(0,0,0,.45);
+}
+.wc-mp-body{
+  position:absolute;top:15px;left:9px;width:16px;height:20px;
+  border-radius:8px 8px 5px 5px;
+  background:var(--jc,#74acdf);
+  box-shadow:0 0 9px rgba(0,0,0,.3);
+}
+.wc-mp-body::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:5px;
+  border-radius:8px 8px 0 0;
+  background:var(--jc2,#fff);
+}
+.wc-mp-body::after{
+  content:attr(data-num);position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Inter',Arial,sans-serif;font-size:7px;font-weight:900;
+  color:var(--jc2,#fff);line-height:1;text-shadow:0 1px 1px rgba(0,0,0,.2);
+}
+.wc-team-jersey-wrap[style*="--jc:#e6e6e6"] .wc-mp-body::after{color:#1a1a1a;text-shadow:0 1px 1px rgba(255,255,255,.35);}
+.wc-mp-arm{
+  position:absolute;top:16px;left:5px;width:4px;height:15px;border-radius:999px;
+  background:#b57a45;transform-origin:top center;transform:rotate(10deg);
+}
+.wc-mp-ball{
+  position:absolute;top:25px;left:-3px;width:11px;height:11px;border-radius:50%;
+  background:radial-gradient(circle at 32% 28%, #ffffff 0 30%, #ededed 45%, #d4d4d4 100%);
+  box-shadow:0 0 3px rgba(255,255,255,.4),0 2px 3px rgba(0,0,0,.4),inset -1px -1px 2px rgba(0,0,0,.2);
+}
+.wc-mp-ball::before{
+  content:'';position:absolute;top:28%;left:28%;width:44%;height:44%;
+  background:#20201e;
+  clip-path:polygon(50% 0%,100% 38%,82% 100%,18% 100%,0% 38%);
+}
+.wc-mp-ball::after{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:
+    radial-gradient(circle at 50% -18%, transparent 62%, rgba(20,20,18,.55) 63%, transparent 65%),
+    radial-gradient(circle at -14% 74%, transparent 62%, rgba(20,20,18,.5) 63%, transparent 65%),
+    radial-gradient(circle at 114% 74%, transparent 62%, rgba(20,20,18,.5) 63%, transparent 65%);
+}
+.wc-mp-leg{
+  position:absolute;top:33px;left:10px;width:4px;height:17px;border-radius:999px;
+  background:#1e2540;
+}
+.wc-mp-leg.two{left:18px;}
+.wc-mp-foot{position:absolute;bottom:-2px;left:-2px;width:9px;height:3px;border-radius:999px;background:#f0ece4;}
 
-/* Home jersey dots — static filter, opacity pulse */
+/* Home kit watermark — big faint jersey silhouette anchored in the corner, replaces the old dot grid */
 .wc-game-card .wc-team-block:not(.away)::after{
   content:'';position:absolute;
-  width:9px;height:12px;border-radius:3px 3px 2px 2px;
+  width:58px;height:58px;bottom:-14px;left:-10px;
   background:var(--team-accent,rgba(255,255,255,.9));
-  bottom:14px;left:14px;
-  box-shadow:
-    18px -14px 0 0 var(--team-accent,rgba(255,255,255,.9)),
-    36px  -5px 0 0 var(--team-accent,rgba(255,255,255,.9)),
-    18px  11px 0 0 var(--team-accent,rgba(255,255,255,.9)),
-    52px -20px 0 0 var(--team-accent,rgba(255,255,255,.9));
-  filter:drop-shadow(0 0 6px var(--team-accent,rgba(255,255,255,.8)));
-  animation:markerPulse 2.2s ease-in-out infinite;
-  animation-delay:var(--delay,0s);
-  pointer-events:none;z-index:4;
+  clip-path:polygon(35% 0%,50% 16%,65% 0%,80% 0%,100% 26%,81% 38%,81% 100%,19% 100%,19% 38%,0% 26%,20% 0%);
+  opacity:.10;
+  pointer-events:none;z-index:0;
 }
 .wc-game-card .wc-team-block:not(.away)::before{display:none;}
+.wc-game-card .wc-team-block > span{position:relative;z-index:2;}
 
 /* Away half */
 .wc-game-card .wc-team-block.away{
@@ -869,18 +912,11 @@ nav {
 }
 .wc-game-card .wc-team-block.away::after{
   content:'';position:absolute;
-  width:9px;height:12px;border-radius:3px 3px 2px 2px;
+  width:58px;height:58px;bottom:-14px;right:-10px;
   background:var(--away-accent,rgba(255,255,255,.85));
-  bottom:14px;right:14px;
-  box-shadow:
-    -18px -14px 0 0 var(--away-accent,rgba(255,255,255,.85)),
-    -36px  -5px 0 0 var(--away-accent,rgba(255,255,255,.85)),
-    -18px  11px 0 0 var(--away-accent,rgba(255,255,255,.85)),
-    -52px -20px 0 0 var(--away-accent,rgba(255,255,255,.85));
-  filter:drop-shadow(0 0 6px var(--away-accent,rgba(255,255,255,.7)));
-  animation:markerPulseAway 2.2s ease-in-out infinite;
-  animation-delay:calc(var(--delay,0s) + .5s);
-  pointer-events:none;z-index:4;
+  clip-path:polygon(35% 0%,50% 16%,65% 0%,80% 0%,100% 26%,81% 38%,81% 100%,19% 100%,19% 38%,0% 26%,20% 0%);
+  opacity:.10;
+  pointer-events:none;z-index:0;
 }
 .wc-game-card .wc-team-block.away::before{display:none;}
 
@@ -1093,7 +1129,7 @@ nav {
 }
 @media(max-width:520px){
   .wc-prices{grid-template-columns:1fr;}
-  .wc-match-line{grid-template-columns:1fr;gap:8px;}
+  .wc-match-line{grid-template-columns:1fr;gap:8px;height:auto;min-height:176px;padding:10px 0;}
   .wc-vs{margin:auto;}
   .wc-team-block.away{justify-content:flex-start;text-align:left;}
   .wc-awards-grid{grid-template-columns:1fr;}
@@ -1446,6 +1482,12 @@ nav {
 /* ══ AWARD FLAG BADGES — CSS-rendered ══════════════════════ */
 .wc-flag-badge.france{background:linear-gradient(90deg,#002395 0 33%,#fff 33% 67%,#ed2939 67% 100%);}
 .wc-flag-badge.argentina{background:linear-gradient(180deg,#74acdf 0 33%,#fff 33% 67%,#74acdf 67% 100%);}
+.wc-flag-badge.switzerland{
+  background:
+    linear-gradient(90deg,transparent 0 35%,#fff 35% 65%,transparent 65%),
+    linear-gradient(180deg,transparent 0 35%,#fff 35% 65%,transparent 65%),
+    #d52b1e;
+}
 .wc-flag-badge.norway{
   background:
     linear-gradient(90deg,transparent 0 27%,#003087 27% 40%,transparent 40%),
@@ -1578,16 +1620,37 @@ nav {
 }
 @keyframes raceGrow{to{transform:scaleX(1)}}
 .wc-race-ball{
-  position:absolute;top:50%;left:0;
-  transform:translateY(-65%) translateX(0);
+  position:absolute;top:50%;left:0%;
+  transform:translateY(-65%);
   font-size:15px;line-height:1;
-  will-change:transform;
-  animation:ballOscillate 9s ease-in-out infinite;
+  will-change:left,opacity;
+  animation:raceBallTravel 7s cubic-bezier(.45,.05,.55,.95) infinite;
   animation-delay:calc(var(--rd,.0s) + 1.9s);
 }
-@keyframes ballOscillate{
-  0%,100%{transform:translateY(-65%) translateX(0)}
-  50%{transform:translateY(-65%) translateX(calc(var(--rp,80%) - 14px))}
+.wc-race-ping{
+  position:absolute;top:50%;left:var(--rp,80%);
+  width:16px;height:16px;margin-left:-15px;margin-top:0;
+  border-radius:50%;
+  border:2px solid #f8d26a;
+  box-shadow:0 0 10px 2px rgba(248,210,106,.7);
+  pointer-events:none;will-change:transform,opacity;
+  animation:raceGoldPing 7s cubic-bezier(.45,.05,.55,.95) infinite;
+  animation-delay:calc(var(--rd,.0s) + 1.9s);
+}
+@keyframes raceBallTravel{
+  0%{left:0%;opacity:1;}
+  42%{left:calc(var(--rp,80%) - 14px);opacity:1;}
+  50%{left:calc(var(--rp,80%) - 14px);opacity:0;}
+  52%{left:0%;opacity:0;}
+  64%{left:0%;opacity:0;}
+  72%{left:0%;opacity:1;}
+  100%{left:0%;opacity:1;}
+}
+@keyframes raceGoldPing{
+  0%,40%{transform:translateY(-50%) scale(.3);opacity:0;}
+  44%{transform:translateY(-50%) scale(.6);opacity:1;}
+  60%{transform:translateY(-50%) scale(2.3);opacity:0;}
+  100%{transform:translateY(-50%) scale(2.3);opacity:0;}
 }
 @media(max-width:900px){
   .wc-race-lane{grid-template-columns:36px 110px 1fr;gap:7px;}
@@ -2249,15 +2312,15 @@ body::after{
   <div class="wc-top-banner-track">
     <span>⚽ World Cup 2026</span><span class="sep">·</span>
     <em>Group Stage Closed</em><span class="sep">·</span>
-    <span>5 Knockout Cards Live</span><span class="sep">·</span>
-    <span>Argentina -800 · Colombia -164 · France -390 · Spain -330 · England -225</span><span class="sep">·</span>
-    <em>France +175 outright favorite</em><span class="sep">·</span>
+    <span>4 Knockout Cards Live</span><span class="sep">·</span>
+    <span>France advances (2-0 def. Morocco) · Spain -340 vs Belgium · England -230 vs Norway · Argentina -320 vs Switzerland</span><span class="sep">·</span>
+    <em>France +180 outright favorite</em><span class="sep">·</span>
     <span>shortopen World Cup Edition</span><span class="sep">·</span>
     <span>⚽ World Cup 2026</span><span class="sep">·</span>
     <em>Group Stage Closed</em><span class="sep">·</span>
-    <span>5 Knockout Cards Live</span><span class="sep">·</span>
-    <span>Argentina -800 · Colombia -164 · France -390 · Spain -330 · England -225</span><span class="sep">·</span>
-    <em>France +175 outright favorite</em><span class="sep">·</span>
+    <span>4 Knockout Cards Live</span><span class="sep">·</span>
+    <span>France advances (2-0 def. Morocco) · Spain -340 vs Belgium · England -230 vs Norway · Argentina -320 vs Switzerland</span><span class="sep">·</span>
+    <em>France +180 outright favorite</em><span class="sep">·</span>
     <span>shortopen World Cup Edition</span><span class="sep">·</span>
   </div>
 </div>
@@ -2283,9 +2346,9 @@ body::after{
     <div>
       <div class="wc-eyebrow"><span>⚽</span> World Cup Board · Featured</div>
       <h2 class="wc-title">World Cup<br><span>Market Atlas</span></h2>
-      <p class="wc-sub">A dedicated World Cup terminal now shifted from group-stage volume to knockout pressure: five moneyline cards, fewer paths, and a futures board tightening around the teams still alive. <strong>The group stage is closed. The bracket is live.</strong></p>
+      <p class="wc-sub">A dedicated World Cup terminal now shifted from group-stage volume to knockout pressure: four moneyline cards, fewer paths, and a futures board tightening around the teams still alive. <strong>The group stage is closed. The bracket is live.</strong></p>
       <div class="wc-stats">
-        <div class="wc-stat"><small>Matches</small><b>5</b></div>
+        <div class="wc-stat"><small>Matches</small><b>4</b></div>
         <div class="wc-stat"><small>Alive</small><b>8</b></div>
         <div class="wc-stat"><small>Awards</small><b>5</b></div>
         <div class="wc-stat"><small>Markets</small><b>ML</b></div>
@@ -2371,13 +2434,13 @@ body::after{
     </div>
   </div>
   <!-- ══ ODDS MOVEMENT SPARKLINES ══ -->
-  <div class="wc-section-head"><div><span class="wc-section-kicker">Tournament winner board</span><h3>Odds Movement</h3><p>Current outright prices after eliminations. This movement rail now mirrors the tournament-winner market below, so both sections are working from the same futures board.</p></div></div>
+  <div class="wc-section-head"><div><span class="wc-section-kicker">Tournament winner board</span><h3>Odds Movement</h3><p>Current outright prices for the seven teams still alive. Morocco was eliminated by France today and comes off the board.</p></div></div>
   <div class="wc-spark-grid">
 
     <article class="wc-spark-card" data-trend="fl" style="--sd:.00s">
       <div class="wc-spark-top">
         <div class="wc-spark-left"><div class="wc-spark-flag">🇫🇷</div><div><div class="wc-spark-name">France</div><div class="wc-spark-group">No. 1 outright</div></div></div>
-        <div class="wc-spark-right"><span class="wc-spark-odds">+175</span><span class="wc-spark-move fl">→ Current board</span></div>
+        <div class="wc-spark-right"><span class="wc-spark-odds">+180</span><span class="wc-spark-move fl">→ Current board</span></div>
       </div>
       <div class="wc-spark-chart">
         <svg viewBox="0 0 184 52" preserveAspectRatio="none">
@@ -2393,7 +2456,7 @@ body::after{
     <article class="wc-spark-card" data-trend="fl" style="--sd:.06s">
       <div class="wc-spark-top">
         <div class="wc-spark-left"><div class="wc-spark-flag">🇪🇸</div><div><div class="wc-spark-name">Spain</div><div class="wc-spark-group">Second choice</div></div></div>
-        <div class="wc-spark-right"><span class="wc-spark-odds">+340</span><span class="wc-spark-move fl">→ Current board</span></div>
+        <div class="wc-spark-right"><span class="wc-spark-odds">+360</span><span class="wc-spark-move fl">→ Current board</span></div>
       </div>
       <div class="wc-spark-chart">
         <svg viewBox="0 0 184 52" preserveAspectRatio="none">
@@ -2409,7 +2472,7 @@ body::after{
     <article class="wc-spark-card" data-trend="fl" style="--sd:.12s">
       <div class="wc-spark-top">
         <div class="wc-spark-left"><div class="wc-spark-flag">🇦🇷</div><div><div class="wc-spark-name">Argentina</div><div class="wc-spark-group">Knockout favorite tier</div></div></div>
-        <div class="wc-spark-right"><span class="wc-spark-odds">+450</span><span class="wc-spark-move fl">→ Current board</span></div>
+        <div class="wc-spark-right"><span class="wc-spark-odds">+400</span><span class="wc-spark-move fl">→ Current board</span></div>
       </div>
       <div class="wc-spark-chart">
         <svg viewBox="0 0 184 52" preserveAspectRatio="none">
@@ -2424,8 +2487,8 @@ body::after{
 
     <article class="wc-spark-card" data-trend="fl" style="--sd:.18s">
       <div class="wc-spark-top">
-        <div class="wc-spark-left"><div class="wc-spark-flag">🏴</div><div><div class="wc-spark-name">England</div><div class="wc-spark-group">Knockout favorite tier</div></div></div>
-        <div class="wc-spark-right"><span class="wc-spark-odds">+500</span><span class="wc-spark-move fl">→ Current board</span></div>
+        <div class="wc-spark-left"><div class="wc-spark-flag"><span class="wc-flag-badge england" style="width:32px;height:22px;border-radius:6px"></span></div><div><div class="wc-spark-name">England</div><div class="wc-spark-group">Knockout favorite tier</div></div></div>
+        <div class="wc-spark-right"><span class="wc-spark-odds">+460</span><span class="wc-spark-move fl">→ Current board</span></div>
       </div>
       <div class="wc-spark-chart">
         <svg viewBox="0 0 184 52" preserveAspectRatio="none">
@@ -2441,7 +2504,7 @@ body::after{
     <article class="wc-spark-card" data-trend="fl" style="--sd:.24s">
       <div class="wc-spark-top">
         <div class="wc-spark-left"><div class="wc-spark-flag">🇳🇴</div><div><div class="wc-spark-name">Norway</div><div class="wc-spark-group">Longshot alive</div></div></div>
-        <div class="wc-spark-right"><span class="wc-spark-odds">+1700</span><span class="wc-spark-move fl">→ Still alive</span></div>
+        <div class="wc-spark-right"><span class="wc-spark-odds">+1400</span><span class="wc-spark-move fl">→ Still alive</span></div>
       </div>
       <div class="wc-spark-chart">
         <svg viewBox="0 0 184 52" preserveAspectRatio="none">
@@ -2456,8 +2519,8 @@ body::after{
 
     <article class="wc-spark-card" data-trend="fl" style="--sd:.30s">
       <div class="wc-spark-top">
-        <div class="wc-spark-left"><div class="wc-spark-flag">🇨🇴</div><div><div class="wc-spark-name">Colombia</div><div class="wc-spark-group">Longshot alive</div></div></div>
-        <div class="wc-spark-right"><span class="wc-spark-odds">+2500</span><span class="wc-spark-move fl">→ Still alive</span></div>
+        <div class="wc-spark-left"><div class="wc-spark-flag">🇨🇭</div><div><div class="wc-spark-name">Switzerland</div><div class="wc-spark-group">Longshot alive</div></div></div>
+        <div class="wc-spark-right"><span class="wc-spark-odds">+3300</span><span class="wc-spark-move fl">→ Still alive</span></div>
       </div>
       <div class="wc-spark-chart">
         <svg viewBox="0 0 184 52" preserveAspectRatio="none">
@@ -2471,22 +2534,6 @@ body::after{
     </article>
 
     <article class="wc-spark-card" data-trend="fl" style="--sd:.36s">
-      <div class="wc-spark-top">
-        <div class="wc-spark-left"><div class="wc-spark-flag">🇲🇦</div><div><div class="wc-spark-name">Morocco</div><div class="wc-spark-group">Longshot alive</div></div></div>
-        <div class="wc-spark-right"><span class="wc-spark-odds">+3000</span><span class="wc-spark-move fl">→ Still alive</span></div>
-      </div>
-      <div class="wc-spark-chart">
-        <svg viewBox="0 0 184 52" preserveAspectRatio="none">
-          <defs><linearGradient id="sg6" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4ade80" stop-opacity=".25"/><stop offset="100%" stop-color="#4ade80" stop-opacity="0"/></linearGradient></defs>
-          <polygon points="10,46 21,45 32,45 43,44 54,44 65,43 76,42 87,42 98,41 109,41 120,40 131,40 142,39 153,39 164,38 174,38 174,52 10,52" fill="url(#sg6)" class="wc-spark-area green"/>
-          <polyline points="10,46 21,45 32,45 43,44 54,44 65,43 76,42 87,42 98,41 109,41 120,40 131,40 142,39 153,39 164,38 174,38" class="wc-spark-line green" style="--sd:.36s"/>
-          <circle cx="174" cy="38" class="wc-spark-dot green"/>
-        </svg>
-      </div>
-      <div class="wc-spark-foot"><span>Winner futures</span><span>Board: knockout reset</span></div>
-    </article>
-
-    <article class="wc-spark-card" data-trend="fl" style="--sd:.42s">
       <div class="wc-spark-top">
         <div class="wc-spark-left"><div class="wc-spark-flag">🇧🇪</div><div><div class="wc-spark-name">Belgium</div><div class="wc-spark-group">Longshot alive</div></div></div>
         <div class="wc-spark-right"><span class="wc-spark-odds">+3000</span><span class="wc-spark-move fl">→ Still alive</span></div>
@@ -2505,58 +2552,58 @@ body::after{
   </div><!-- /wc-spark-grid -->
 
   <!-- ══ GROUP TABLES ══ -->
-  <div class="wc-section-head"><div><span class="wc-section-kicker">Group stage closed</span><h3>Group Standings</h3><p>Final group-stage snapshot. The tables stay on the page, but the market has moved into knockout mode.</p></div><span class="wc-section-kicker">Final tables</span></div>
+  <div class="wc-section-head"><div><span class="wc-section-kicker">Group stage closed</span><h3>Group Standings</h3><p>Final tables for the groups that produced this year's quarterfinalists. Three games played per team, top two plus the best third-place sides advanced.</p></div><span class="wc-section-kicker">Final tables</span></div>
   <div class="wc-group-lock-note"><span class="wc-group-lock-pill">Group Stage Over</span><strong>Standings are locked — knockout pricing is now the live board.</strong><p>Keeping these charts as the tournament archive gives the page context without pretending the group tables are still moving. Qualified rows remain highlighted; eliminated rows stay muted.</p></div>
   <div class="wc-group-grid">
 
     <div class="wc-group-card" style="--gd:.00s">
-      <div class="wc-group-head"><span class="wc-group-lbl">Group A</span><span class="wc-group-matches">FINAL TABLE</span></div>
+      <div class="wc-group-head"><span class="wc-group-lbl">Group I</span><span class="wc-group-matches">FINAL TABLE</span></div>
       <table class="wc-group-table">
         <thead><tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th></tr></thead>
         <tbody>
-          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇫🇷</span><span class="name">France</span></div></td><td>2</td><td>2</td><td>0</td><td>0</td><td class="pts">6</td></tr>
-          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇲🇦</span><span class="name">Morocco</span></div></td><td>2</td><td>1</td><td>0</td><td>1</td><td class="pts">3</td></tr>
-          <tr><td><div class="wc-group-row-team"><span class="flag">🇨🇦</span><span class="name">Canada</span></div></td><td>2</td><td>1</td><td>0</td><td>1</td><td class="pts">3</td></tr>
-          <tr class="wc-gt-elim"><td><div class="wc-group-row-team"><span class="flag">🇭🇷</span><span class="name">Croatia</span></div></td><td>2</td><td>0</td><td>0</td><td>2</td><td class="pts">0</td></tr>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇫🇷</span><span class="name">France</span></div></td><td>3</td><td>3</td><td>0</td><td>0</td><td class="pts">9</td></tr>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇳🇴</span><span class="name">Norway</span></div></td><td>3</td><td>2</td><td>0</td><td>1</td><td class="pts">6</td></tr>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇸🇳</span><span class="name">Senegal</span></div></td><td>3</td><td>1</td><td>0</td><td>2</td><td class="pts">3</td></tr>
+          <tr class="wc-gt-elim"><td><div class="wc-group-row-team"><span class="flag">🇮🇶</span><span class="name">Iraq</span></div></td><td>3</td><td>0</td><td>0</td><td>3</td><td class="pts">0</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="wc-group-card" style="--gd:.07s">
-      <div class="wc-group-head"><span class="wc-group-lbl">Group B</span><span class="wc-group-matches">FINAL TABLE</span></div>
+      <div class="wc-group-head"><span class="wc-group-lbl">Group L</span><span class="wc-group-matches">FINAL TABLE</span></div>
       <table class="wc-group-table">
         <thead><tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th></tr></thead>
         <tbody>
-          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇧🇷</span><span class="name">Brazil</span></div></td><td>2</td><td>2</td><td>0</td><td>0</td><td class="pts">6</td></tr>
-          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇨🇭</span><span class="name">Switzerland</span></div></td><td>2</td><td>1</td><td>0</td><td>1</td><td class="pts">3</td></tr>
-          <tr><td><div class="wc-group-row-team"><span class="flag">🇪🇨</span><span class="name">Ecuador</span></div></td><td>2</td><td>1</td><td>0</td><td>1</td><td class="pts">3</td></tr>
-          <tr class="wc-gt-elim"><td><div class="wc-group-row-team"><span class="flag">🇸🇳</span><span class="name">Senegal</span></div></td><td>2</td><td>0</td><td>0</td><td>2</td><td class="pts">0</td></tr>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag wc-flag-badge england" style="width:20px;height:14px;flex-shrink:0"></span><span class="name">England</span></div></td><td>3</td><td>2</td><td>1</td><td>0</td><td class="pts">7</td></tr>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇭🇷</span><span class="name">Croatia</span></div></td><td>3</td><td>2</td><td>0</td><td>1</td><td class="pts">6</td></tr>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇬🇭</span><span class="name">Ghana</span></div></td><td>3</td><td>1</td><td>1</td><td>1</td><td class="pts">4</td></tr>
+          <tr class="wc-gt-elim"><td><div class="wc-group-row-team"><span class="flag">🇵🇦</span><span class="name">Panama</span></div></td><td>3</td><td>0</td><td>0</td><td>3</td><td class="pts">0</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="wc-group-card" style="--gd:.14s">
-      <div class="wc-group-head"><span class="wc-group-lbl">Group C</span><span class="wc-group-matches">FINAL TABLE</span></div>
+      <div class="wc-group-head"><span class="wc-group-lbl">Group J</span><span class="wc-group-matches">FINAL TABLE</span></div>
       <table class="wc-group-table">
         <thead><tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th></tr></thead>
         <tbody>
-          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇦🇷</span><span class="name">Argentina</span></div></td><td>1</td><td>1</td><td>0</td><td>0</td><td class="pts">3</td></tr>
-          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇺🇸</span><span class="name">USA</span></div></td><td>1</td><td>1</td><td>0</td><td>0</td><td class="pts">3</td></tr>
-          <tr><td><div class="wc-group-row-team"><span class="flag">🇵🇱</span><span class="name">Poland</span></div></td><td>1</td><td>0</td><td>0</td><td>1</td><td class="pts">0</td></tr>
-          <tr class="wc-gt-elim"><td><div class="wc-group-row-team"><span class="flag">🇸🇦</span><span class="name">Saudi Arabia</span></div></td><td>1</td><td>0</td><td>0</td><td>1</td><td class="pts">0</td></tr>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇦🇷</span><span class="name">Argentina</span></div></td><td>3</td><td>3</td><td>0</td><td>0</td><td class="pts">9</td></tr>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇦🇹</span><span class="name">Austria</span></div></td><td>3</td><td>1</td><td>1</td><td>1</td><td class="pts">4</td></tr>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇩🇿</span><span class="name">Algeria</span></div></td><td>3</td><td>1</td><td>1</td><td>1</td><td class="pts">4</td></tr>
+          <tr class="wc-gt-elim"><td><div class="wc-group-row-team"><span class="flag">🇯🇴</span><span class="name">Jordan</span></div></td><td>3</td><td>0</td><td>0</td><td>3</td><td class="pts">0</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="wc-group-card" style="--gd:.21s">
-      <div class="wc-group-head"><span class="wc-group-lbl">Group D</span><span class="wc-group-matches">FINAL TABLE</span></div>
+      <div class="wc-group-head"><span class="wc-group-lbl">Group H</span><span class="wc-group-matches">FINAL TABLE</span></div>
       <table class="wc-group-table">
         <thead><tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th></tr></thead>
         <tbody>
-          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇪🇸</span><span class="name">Spain</span></div></td><td>2</td><td>2</td><td>0</td><td>0</td><td class="pts">6</td></tr>
-          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇯🇵</span><span class="name">Japan</span></div></td><td>2</td><td>1</td><td>0</td><td>1</td><td class="pts">3</td></tr>
-          <tr><td><div class="wc-group-row-team"><span class="flag">🇩🇪</span><span class="name">Germany</span></div></td><td>2</td><td>1</td><td>0</td><td>1</td><td class="pts">3</td></tr>
-          <tr class="wc-gt-elim"><td><div class="wc-group-row-team"><span class="flag">🇨🇷</span><span class="name">Costa Rica</span></div></td><td>2</td><td>0</td><td>0</td><td>2</td><td class="pts">0</td></tr>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇪🇸</span><span class="name">Spain</span></div></td><td>3</td><td>2</td><td>1</td><td>0</td><td class="pts">7</td></tr>
+          <tr class="wc-gt-q"><td><div class="wc-group-row-team"><span class="flag">🇨🇻</span><span class="name">Cape Verde</span></div></td><td>3</td><td>0</td><td>3</td><td>0</td><td class="pts">3</td></tr>
+          <tr class="wc-gt-elim"><td><div class="wc-group-row-team"><span class="flag">🇺🇾</span><span class="name">Uruguay</span></div></td><td>3</td><td>0</td><td>2</td><td>1</td><td class="pts">2</td></tr>
+          <tr class="wc-gt-elim"><td><div class="wc-group-row-team"><span class="flag">🇸🇦</span><span class="name">Saudi Arabia</span></div></td><td>3</td><td>0</td><td>2</td><td>1</td><td class="pts">2</td></tr>
         </tbody>
       </table>
     </div>
@@ -2603,25 +2650,25 @@ body::after{
         <div class="wc-player-odds-row"><span class="wc-player-odds-label">Golden Boot</span><span class="wc-player-odds-val">+650</span></div>
       </div>
 
-      <div class="wc-player-card" style="--pd:.30s;--kit:rgba(0,100,40,.13)">
-        <div class="wc-player-top"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:34px;height:28px;flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(0,100,40,.30))"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#cc0000"/><path d="M2,2 L6,0 L7,4 L7,18 L5,18 L5,9 L0,7Z" fill="#006600"/><path d="M7,4 Q11,6.5 15,4" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-linecap="round"/><rect x="5" y="12" width="12" height="2" fill="rgba(255,255,200,.3)"/></svg><div class="wc-player-info"><div class="wc-player-name">C. Ronaldo</div><div class="wc-player-role">FW · Portugal</div></div></div>
+      <div class="wc-player-card" style="--pd:.30s;--kit:rgba(196,30,58,.13)">
+        <div class="wc-player-top"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:34px;height:28px;flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(196,30,58,.30))"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#c1272d"/><path d="M11,5 L12.2,8 L15.4,8 L12.8,10 L13.8,13 L11,11.2 L8.2,13 L9.2,10 L6.6,8 L9.8,8Z" fill="#006233"/></svg><div class="wc-player-info"><div class="wc-player-name">Y. En-Nesyri</div><div class="wc-player-role">FW · Morocco</div></div></div>
+        <div class="wc-player-form-label">Last 5 matches</div>
+        <div class="wc-player-form-dots"><span class="wc-pf-dot g">G</span><span class="wc-pf-dot x">–</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot x">–</span><span class="wc-pf-dot a">A</span></div>
+        <div class="wc-player-odds-row"><span class="wc-player-odds-label">Top Scorer</span><span class="wc-player-odds-val">+2000</span></div>
+      </div>
+
+      <div class="wc-player-card" style="--pd:.36s;--kit:rgba(0,0,0,.10)">
+        <div class="wc-player-top"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:34px;height:28px;flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(255,205,0,.30))"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#fcd116"/><path d="M2,2 L6,0 L7,4 L5,9 L0,7Z" fill="#000000"/><path d="M16,0 L20,2 L22,7 L17,9 L15,4Z" fill="#ed2939"/></svg><div class="wc-player-info"><div class="wc-player-name">K. De Bruyne</div><div class="wc-player-role">MF · Belgium</div></div></div>
+        <div class="wc-player-form-label">Last 5 matches</div>
+        <div class="wc-player-form-dots"><span class="wc-pf-dot a">A</span><span class="wc-pf-dot a">A</span><span class="wc-pf-dot x">–</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot a">A</span></div>
+        <div class="wc-player-odds-row"><span class="wc-player-odds-label">Golden Ball</span><span class="wc-player-odds-val">+1400</span></div>
+      </div>
+
+      <div class="wc-player-card" style="--pd:.42s;--kit:rgba(213,43,30,.14)">
+        <div class="wc-player-top"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:34px;height:28px;flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(213,43,30,.32))"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#d52b1e"/><rect x="9.5" y="5" width="3" height="8" fill="#ffffff"/><rect x="7.5" y="7" width="7" height="3" fill="#ffffff"/></svg><div class="wc-player-info"><div class="wc-player-name">B. Embolo</div><div class="wc-player-role">FW · Switzerland</div></div></div>
         <div class="wc-player-form-label">Last 5 matches</div>
         <div class="wc-player-form-dots"><span class="wc-pf-dot g">G</span><span class="wc-pf-dot x">–</span><span class="wc-pf-dot x">–</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot a">A</span></div>
-        <div class="wc-player-odds-row"><span class="wc-player-odds-label">Top Scorer</span><span class="wc-player-odds-val">+850</span></div>
-      </div>
-
-      <div class="wc-player-card" style="--pd:.36s;--kit:rgba(20,20,20,.10)">
-        <div class="wc-player-top"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:34px;height:28px;flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(40,40,40,.40))"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#1a1a1a"/><path d="M2,2 L6,0 L7,4 L5,9 L0,7Z" fill="#c8102e" opacity=".95"/><path d="M16,0 L20,2 L22,7 L17,9 L15,4Z" fill="#c8102e" opacity=".95"/><path d="M7,4 Q11,7 15,4" fill="none" stroke="#f0f0f0" stroke-width="2" opacity=".92" stroke-linecap="round"/><rect x="5" y="14" width="12" height="2" fill="#d4a017" opacity=".7"/></svg><div class="wc-player-info"><div class="wc-player-name">K. Havertz</div><div class="wc-player-role">MF/FW · Germany</div></div></div>
-        <div class="wc-player-form-label">Last 5 matches</div>
-        <div class="wc-player-form-dots"><span class="wc-pf-dot a">A</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot x">–</span><span class="wc-pf-dot a">A</span><span class="wc-pf-dot g">G</span></div>
-        <div class="wc-player-odds-row"><span class="wc-player-odds-label">Golden Boot</span><span class="wc-player-odds-val">+1800</span></div>
-      </div>
-
-      <div class="wc-player-card" style="--pd:.42s;--kit:rgba(0,156,59,.14)">
-        <div class="wc-player-top"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:34px;height:28px;flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(0,156,59,.32))"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#009c3b"/><rect x="5" y="7.5" width="12" height="5" fill="#f0d31e" opacity=".92"/><rect x="5" y="9.5" width="12" height="1.5" fill="#009c3b" opacity=".55"/><path d="M2,2 L6,0 L7,4 L5,9 L0,7Z" fill="rgba(0,39,118,.45)"/><path d="M16,0 L20,2 L22,7 L17,9 L15,4Z" fill="rgba(0,39,118,.45)"/></svg><div class="wc-player-info"><div class="wc-player-name">V. Jr.</div><div class="wc-player-role">FW · Brazil</div></div></div>
-        <div class="wc-player-form-label">Last 5 matches</div>
-        <div class="wc-player-form-dots"><span class="wc-pf-dot g">G</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot x">–</span><span class="wc-pf-dot g">G</span><span class="wc-pf-dot a">A</span></div>
-        <div class="wc-player-odds-row"><span class="wc-player-odds-label">Golden Boot</span><span class="wc-player-odds-val">+900</span></div>
+        <div class="wc-player-odds-row"><span class="wc-player-odds-label">Golden Boot</span><span class="wc-player-odds-val">+3000</span></div>
       </div>
 
     </div><!-- /wc-player-scroll -->
@@ -2668,7 +2715,7 @@ body::after{
     </div>
     <div class="wc-mosaic-grid" id="mosaicGrid"></div>
     <div class="wc-mosaic-legend">
-      <span>🇧🇷</span><span>🇫🇷</span><span>🇦🇷</span><span>🇩🇪</span><span>🇪🇸</span><span>🇵🇹</span><span>🇺🇸</span><span>🏴󠁧󠁢󠁥󠁮󠁧󠁿</span>
+      <span>🇧🇷</span><span>🇫🇷</span><span>🇦🇷</span><span>🇩🇪</span><span>🇪🇸</span><span>🇵🇹</span><span>🇺🇸</span><span><span class="wc-flag-badge england" style="width:18px;height:13px"></span></span>
       <span class="wc-mosaic-legend-desc">Colors shift with tournament energy</span>
     </div>
   </div>
@@ -2724,14 +2771,13 @@ body::after{
         <div class="wc-tb-sub">The futures board has tightened after eliminations: France is now the shortest outright price, with Spain, Argentina, and England still close enough to reshape the market.</div>
       </div>
       <div class="wc-tb-nations">
-        <div class="wc-tb-nation-row" style="--ni:0.05s"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:22px;flex-shrink:0"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#003189"/><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2" fill="none" stroke="#ed2939" stroke-width="1.6" opacity=".9"/><path d="M7,4 Q11,6.5 15,4" fill="none" stroke="#ed2939" stroke-width="1.8" opacity=".92" stroke-linecap="round"/><rect x="5" y="8" width="12" height="3.5" fill="#ed2939" opacity=".38"/></svg><span class="wc-tb-nation-name">France</span><span class="wc-tb-nation-odds">+175</span></div>
-        <div class="wc-tb-nation-row" style="--ni:0.15s"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:22px;flex-shrink:0"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#c60b1e"/><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2" fill="none" stroke="#ffc400" stroke-width="1.6" opacity=".9"/><path d="M7,4 Q11,6.5 15,4" fill="none" stroke="#ffc400" stroke-width="1.8" opacity=".92" stroke-linecap="round"/><rect x="5" y="8" width="12" height="3.5" fill="#ffc400" opacity=".38"/></svg><span class="wc-tb-nation-name">Spain</span><span class="wc-tb-nation-odds">+340</span></div>
-        <div class="wc-tb-nation-row" style="--ni:0.25s"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:22px;flex-shrink:0"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#74acdf"/><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2" fill="none" stroke="#ffffff" stroke-width="1.6" opacity=".9"/><path d="M7,4 Q11,6.5 15,4" fill="none" stroke="#ffffff" stroke-width="1.8" opacity=".92" stroke-linecap="round"/><rect x="5" y="8" width="12" height="3.5" fill="#ffffff" opacity=".38"/></svg><span class="wc-tb-nation-name">Argentina</span><span class="wc-tb-nation-odds">+450</span></div>
-        <div class="wc-tb-nation-row" style="--ni:0.35s"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:22px;flex-shrink:0"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#f5f5f5"/><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2" fill="none" stroke="#c8102e" stroke-width="1.6" opacity=".9"/><path d="M7,4 Q11,6.5 15,4" fill="none" stroke="#c8102e" stroke-width="1.8" opacity=".92" stroke-linecap="round"/><rect x="5" y="8" width="12" height="3.5" fill="#c8102e" opacity=".38"/></svg><span class="wc-tb-nation-name">England</span><span class="wc-tb-nation-odds">+500</span></div>
-        <div class="wc-tb-nation-row" style="--ni:0.45s"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:22px;flex-shrink:0"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#ef2b2d"/><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2" fill="none" stroke="#00205b" stroke-width="1.6" opacity=".9"/><path d="M7,4 Q11,6.5 15,4" fill="none" stroke="#00205b" stroke-width="1.8" opacity=".92" stroke-linecap="round"/><rect x="5" y="8" width="12" height="3.5" fill="#00205b" opacity=".38"/></svg><span class="wc-tb-nation-name">Norway</span><span class="wc-tb-nation-odds">+1700</span></div>
-        <div class="wc-tb-nation-row" style="--ni:0.55s"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:22px;flex-shrink:0"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#fcd116"/><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2" fill="none" stroke="#003893" stroke-width="1.6" opacity=".9"/><path d="M7,4 Q11,6.5 15,4" fill="none" stroke="#003893" stroke-width="1.8" opacity=".92" stroke-linecap="round"/><rect x="5" y="8" width="12" height="3.5" fill="#003893" opacity=".38"/></svg><span class="wc-tb-nation-name">Colombia</span><span class="wc-tb-nation-odds">+2500</span></div>
-        <div class="wc-tb-nation-row" style="--ni:0.65s"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:22px;flex-shrink:0"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#c1272d"/><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2" fill="none" stroke="#006233" stroke-width="1.6" opacity=".9"/><path d="M7,4 Q11,6.5 15,4" fill="none" stroke="#006233" stroke-width="1.8" opacity=".92" stroke-linecap="round"/><rect x="5" y="8" width="12" height="3.5" fill="#006233" opacity=".38"/></svg><span class="wc-tb-nation-name">Morocco</span><span class="wc-tb-nation-odds">+3000</span></div>
-        <div class="wc-tb-nation-row" style="--ni:0.75s"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:22px;flex-shrink:0"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#fdda24"/><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2" fill="none" stroke="#ef3340" stroke-width="1.6" opacity=".9"/><path d="M7,4 Q11,6.5 15,4" fill="none" stroke="#ef3340" stroke-width="1.8" opacity=".92" stroke-linecap="round"/><rect x="5" y="8" width="12" height="3.5" fill="#ef3340" opacity=".38"/></svg><span class="wc-tb-nation-name">Belgium</span><span class="wc-tb-nation-odds">+3000</span></div>
+        <div class="wc-tb-nation-row" style="--ni:0.05s"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:22px;flex-shrink:0"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#003189"/><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2" fill="none" stroke="#ed2939" stroke-width="1.6" opacity=".9"/><path d="M7,4 Q11,6.5 15,4" fill="none" stroke="#ed2939" stroke-width="1.8" opacity=".92" stroke-linecap="round"/><rect x="5" y="8" width="12" height="3.5" fill="#ed2939" opacity=".38"/></svg><span class="wc-tb-nation-name">France</span><span class="wc-tb-nation-odds">+180</span></div>
+        <div class="wc-tb-nation-row" style="--ni:0.15s"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:22px;flex-shrink:0"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#c60b1e"/><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2" fill="none" stroke="#ffc400" stroke-width="1.6" opacity=".9"/><path d="M7,4 Q11,6.5 15,4" fill="none" stroke="#ffc400" stroke-width="1.8" opacity=".92" stroke-linecap="round"/><rect x="5" y="8" width="12" height="3.5" fill="#ffc400" opacity=".38"/></svg><span class="wc-tb-nation-name">Spain</span><span class="wc-tb-nation-odds">+360</span></div>
+        <div class="wc-tb-nation-row" style="--ni:0.25s"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:22px;flex-shrink:0"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#74acdf"/><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2" fill="none" stroke="#ffffff" stroke-width="1.6" opacity=".9"/><path d="M7,4 Q11,6.5 15,4" fill="none" stroke="#ffffff" stroke-width="1.8" opacity=".92" stroke-linecap="round"/><rect x="5" y="8" width="12" height="3.5" fill="#ffffff" opacity=".38"/></svg><span class="wc-tb-nation-name">Argentina</span><span class="wc-tb-nation-odds">+400</span></div>
+        <div class="wc-tb-nation-row" style="--ni:0.35s"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:22px;flex-shrink:0"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#f5f5f5"/><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2" fill="none" stroke="#c8102e" stroke-width="1.6" opacity=".9"/><path d="M7,4 Q11,6.5 15,4" fill="none" stroke="#c8102e" stroke-width="1.8" opacity=".92" stroke-linecap="round"/><rect x="5" y="8" width="12" height="3.5" fill="#c8102e" opacity=".38"/></svg><span class="wc-tb-nation-name">England</span><span class="wc-tb-nation-odds">+460</span></div>
+        <div class="wc-tb-nation-row" style="--ni:0.45s"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:22px;flex-shrink:0"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#ef2b2d"/><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2" fill="none" stroke="#00205b" stroke-width="1.6" opacity=".9"/><path d="M7,4 Q11,6.5 15,4" fill="none" stroke="#00205b" stroke-width="1.8" opacity=".92" stroke-linecap="round"/><rect x="5" y="8" width="12" height="3.5" fill="#00205b" opacity=".38"/></svg><span class="wc-tb-nation-name">Norway</span><span class="wc-tb-nation-odds">+1400</span></div>
+        <div class="wc-tb-nation-row" style="--ni:0.55s"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:22px;flex-shrink:0"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#d52b1e"/><rect x="9.5" y="4" width="3" height="10" fill="#ffffff"/><rect x="7.5" y="7" width="7" height="3" fill="#ffffff"/></svg><span class="wc-tb-nation-name">Switzerland</span><span class="wc-tb-nation-odds">+3300</span></div>
+        <div class="wc-tb-nation-row" style="--ni:0.65s"><svg viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:22px;flex-shrink:0"><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2 L22,7 L17,9 L17,18 L5,18 L5,9 L0,7Z" fill="#fdda24"/><path d="M2,2 L6,0 L7,4 L15,4 L16,0 L20,2" fill="none" stroke="#ef3340" stroke-width="1.6" opacity=".9"/><path d="M7,4 Q11,6.5 15,4" fill="none" stroke="#ef3340" stroke-width="1.8" opacity=".92" stroke-linecap="round"/><rect x="5" y="8" width="12" height="3.5" fill="#ef3340" opacity=".38"/></svg><span class="wc-tb-nation-name">Belgium</span><span class="wc-tb-nation-odds">+3000</span></div>
       </div>
     </div>
   </div>
@@ -2760,7 +2806,7 @@ body::after{
         </div>
         <div class="wc-race-bar-wrap">
           <div class="wc-race-bar" style="--rc:#3b82f6;--rl:#93c5fd;--rd:.1s;--rp:88%"></div>
-          <span class="wc-race-ball" style="--rp:88%;--rd:.1s">⚽</span>
+          <span class="wc-race-ball" style="--rp:88%;--rd:.1s">⚽</span><span class="wc-race-ping" style="--rp:88%;--rd:.1s"></span>
         </div>
       </div>
 
@@ -2773,7 +2819,7 @@ body::after{
         </div>
         <div class="wc-race-bar-wrap">
           <div class="wc-race-bar" style="--rc:#f4b942;--rl:#fde68a;--rd:.35s;--rp:84%"></div>
-          <span class="wc-race-ball" style="--rp:84%;--rd:.35s">⚽</span>
+          <span class="wc-race-ball" style="--rp:84%;--rd:.35s">⚽</span><span class="wc-race-ping" style="--rp:84%;--rd:.35s"></span>
         </div>
       </div>
 
@@ -2786,7 +2832,7 @@ body::after{
         </div>
         <div class="wc-race-bar-wrap">
           <div class="wc-race-bar" style="--rc:#22c55e;--rl:#86efac;--rd:.6s;--rp:62%"></div>
-          <span class="wc-race-ball" style="--rp:62%;--rd:.6s">⚽</span>
+          <span class="wc-race-ball" style="--rp:62%;--rd:.6s">⚽</span><span class="wc-race-ping" style="--rp:62%;--rd:.6s"></span>
         </div>
       </div>
 
@@ -2799,7 +2845,7 @@ body::after{
         </div>
         <div class="wc-race-bar-wrap">
           <div class="wc-race-bar" style="--rc:#f87171;--rl:#fca5a5;--rd:.85s;--rp:52%"></div>
-          <span class="wc-race-ball" style="--rp:52%;--rd:.85s">⚽</span>
+          <span class="wc-race-ball" style="--rp:52%;--rd:.85s">⚽</span><span class="wc-race-ping" style="--rp:52%;--rd:.85s"></span>
         </div>
       </div>
 
@@ -2812,7 +2858,7 @@ body::after{
         </div>
         <div class="wc-race-bar-wrap">
           <div class="wc-race-bar" style="--rc:#a78bfa;--rl:#c4b5fd;--rd:1.1s;--rp:44%"></div>
-          <span class="wc-race-ball" style="--rp:44%;--rd:1.1s">⚽</span>
+          <span class="wc-race-ball" style="--rp:44%;--rd:1.1s">⚽</span><span class="wc-race-ping" style="--rp:44%;--rd:1.1s"></span>
         </div>
       </div>
 
@@ -2823,25 +2869,23 @@ body::after{
   <div class="wc-divider-banner" aria-hidden="true">
     <div class="wc-divider-track">
       <span class="hi">⚽ KNOCKOUT MONEYLINE SLATE</span><span class="sep">·</span>
-      <span class="hi">Argentina vs Egypt</span><span class="sep">·</span>
-      <span>Switzerland vs Colombia</span><span class="sep">·</span>
-      <span class="hi">France vs Morocco</span><span class="sep">·</span>
+      <span class="hi">Argentina vs Switzerland</span><span class="sep">·</span>
+      <span class="hi">France 2-0 Morocco (FT)</span><span class="sep">·</span>
       <span>Spain vs Belgium</span><span class="sep">·</span>
       <span class="hi">Norway vs England</span><span class="sep">·</span>
-      <span class="hi">GROUP STAGE CLOSED</span><span class="sep">·</span>
-      <span>Quarterfinal board is live</span><span class="sep">·</span>
+      <span class="hi">QUARTERFINALS LIVE</span><span class="sep">·</span>
+      <span>France into the semifinals</span><span class="sep">·</span>
       <span class="hi">⚽ KNOCKOUT MONEYLINE SLATE</span><span class="sep">·</span>
-      <span class="hi">Argentina vs Egypt</span><span class="sep">·</span>
-      <span>Switzerland vs Colombia</span><span class="sep">·</span>
-      <span class="hi">France vs Morocco</span><span class="sep">·</span>
+      <span class="hi">Argentina vs Switzerland</span><span class="sep">·</span>
+      <span class="hi">France 2-0 Morocco (FT)</span><span class="sep">·</span>
       <span>Spain vs Belgium</span><span class="sep">·</span>
       <span class="hi">Norway vs England</span><span class="sep">·</span>
-      <span class="hi">GROUP STAGE CLOSED</span><span class="sep">·</span>
-      <span>Quarterfinal board is live</span><span class="sep">·</span>
+      <span class="hi">QUARTERFINALS LIVE</span><span class="sep">·</span>
+      <span>France into the semifinals</span><span class="sep">·</span>
     </div>
   </div>
 
-  <div class="wc-section-head"><div><span class="wc-section-kicker">Knockout slate</span><h3>World Cup Game Cards</h3><p>Group stages are closed. The board is now down to two-way knockout moneylines.</p></div><span class="wc-section-kicker">5 cards</span></div>
+  <div class="wc-section-head"><div><span class="wc-section-kicker">Knockout slate</span><h3>World Cup Game Cards</h3><p>Quarterfinal week. France is through to the semis — three more matchups decide who joins them.</p></div><span class="wc-section-kicker">1 final · 3 live</span></div>
 
   <div class="wc-pass-strip" aria-hidden="true">
     <div class="wc-ps-pitchline"></div>
@@ -2851,74 +2895,64 @@ body::after{
   </div>
 
   <div class="wc-games-grid">
-    <article class="wc-game-card" style="--delay:0.00s;--home-c:rgba(116,172,223,.24);--away-c:rgba(198,16,30,.20);--team-accent:rgba(116,172,223,.92);--team-glow:rgba(255,255,255,.85);--away-accent:rgba(198,16,30,.88)"><div class="wc-card-pitch"></div>
-      <div class="wc-card-top"><span class="wc-card-time">TODAY · 12:00PM ET</span><span class="wc-card-chip">More wagers</span></div>
+    <article class="wc-game-card" style="--delay:0.00s;--home-c:rgba(116,172,223,.24);--away-c:rgba(213,43,30,.20);--team-accent:rgba(116,172,223,.92);--team-glow:rgba(255,255,255,.85);--away-accent:rgba(213,43,30,.88)"><div class="wc-card-pitch"></div>
+      <div class="wc-card-top"><span class="wc-card-time">SAT · JUL 11 · 9:00PM ET</span><span class="wc-card-chip">Kansas City</span></div>
       <div class="wc-match-line"><span class="wc-ps s1">★</span><span class="wc-ps s2">✦</span><span class="wc-ps s3">★</span><span class="wc-ps s4">✦</span>
-        <div class="wc-team-block"><span class="wc-team-flag">🇦🇷</span><span>Argentina</span></div>
+        <div class="wc-team-block"><span class="wc-team-jersey-wrap" style="--jc:#74acdf;--jc2:#ffffff"><span class="wc-mp-head"></span><span class="wc-mp-arm"></span><span class="wc-mp-ball"></span><span class="wc-mp-body" data-num="10"></span><span class="wc-mp-leg one"><span class="wc-mp-foot"></span></span><span class="wc-mp-leg two"><span class="wc-mp-foot"></span></span></span><span>Argentina</span></div>
         <span class="wc-vs">vs</span>
-        <div class="wc-team-block away"><span>Egypt</span><span class="wc-team-flag">🇪🇬</span></div>
+        <div class="wc-team-block away"><span>Switzerland</span><span class="wc-team-jersey-wrap" style="--jc:#d52b1e;--jc2:#ffffff"><span class="wc-mp-head"></span><span class="wc-mp-arm"></span><span class="wc-mp-ball"></span><span class="wc-mp-body" data-num="7"></span><span class="wc-mp-leg one"><span class="wc-mp-foot"></span></span><span class="wc-mp-leg two"><span class="wc-mp-foot"></span></span></span></div>
       </div>
       <div class="wc-prices wc-prices-2">
-        <div class="wc-price wc-favorite"><span class="wc-price-k">HOME</span><span class="wc-price-odds">-800</span></div>
-        <div class="wc-price"><span class="wc-price-k">AWAY</span><span class="wc-price-odds">+520</span></div>
+        <div class="wc-price wc-favorite"><span class="wc-price-k">HOME</span><span class="wc-price-odds">-320</span></div>
+        <div class="wc-price"><span class="wc-price-k">AWAY</span><span class="wc-price-odds">+245</span></div>
       </div>
-      <div class="wc-h2h"><span class="wc-h2h-label">Knockout moneyline</span><div class="wc-h2h-dots"><span class="wc-h2h-dot w">H</span><span class="wc-h2h-dot l">A</span></div><span class="wc-h2h-record">WIN OR GO HOME</span></div>
+      <div class="wc-h2h"><span class="wc-h2h-label">Quarterfinal moneyline</span><div class="wc-h2h-dots"><span class="wc-h2h-dot w">H</span><span class="wc-h2h-dot l">A</span></div><span class="wc-h2h-record">WIN OR GO HOME</span></div>
+      <div class="wc-card-next"><span>Winner plays</span><strong>Norway/England winner</strong><span>· Jul 15, Atlanta</span></div>
       <div class="wc-card-foot"><span>Market lean</span><strong>Argentina</strong></div>
     </article>
-    <article class="wc-game-card" style="--delay:0.05s;--home-c:rgba(218,41,28,.22);--away-c:rgba(252,209,22,.22);--team-accent:rgba(255,255,255,.88);--team-glow:rgba(218,41,28,.85);--away-accent:rgba(0,56,147,.88)"><div class="wc-card-pitch"></div>
-      <div class="wc-card-top"><span class="wc-card-time">TODAY · 4:00PM ET</span><span class="wc-card-chip">More wagers</span></div>
+    <article class="wc-game-card is-final" style="--delay:0.10s;--home-c:rgba(0,35,149,.24);--away-c:rgba(193,39,45,.22);--team-accent:rgba(0,35,149,.90);--team-glow:rgba(237,41,57,.85);--away-accent:rgba(0,98,51,.86)"><div class="wc-card-pitch"></div>
+      <div class="wc-card-top"><span class="wc-card-time">THU · JUL 9 · FULL TIME</span><span class="wc-card-chip is-final-chip">Final</span></div>
       <div class="wc-match-line"><span class="wc-ps s1">★</span><span class="wc-ps s2">✦</span><span class="wc-ps s3">★</span><span class="wc-ps s4">✦</span>
-        <div class="wc-team-block"><span class="wc-team-flag">🇨🇭</span><span>Switzerland</span></div>
-        <span class="wc-vs">vs</span>
-        <div class="wc-team-block away"><span>Colombia</span><span class="wc-team-flag">🇨🇴</span></div>
+        <div class="wc-team-block"><span class="wc-team-jersey-wrap" style="--jc:#002395;--jc2:#ffffff"><span class="wc-mp-head"></span><span class="wc-mp-arm"></span><span class="wc-mp-ball"></span><span class="wc-mp-body" data-num="10"></span><span class="wc-mp-leg one"><span class="wc-mp-foot"></span></span><span class="wc-mp-leg two"><span class="wc-mp-foot"></span></span></span><span>France</span></div>
+        <span class="wc-vs">2–0</span>
+        <div class="wc-team-block away"><span>Morocco</span><span class="wc-team-jersey-wrap" style="--jc:#c1272d;--jc2:#046a38"><span class="wc-mp-head"></span><span class="wc-mp-arm"></span><span class="wc-mp-ball"></span><span class="wc-mp-body" data-num="19"></span><span class="wc-mp-leg one"><span class="wc-mp-foot"></span></span><span class="wc-mp-leg two"><span class="wc-mp-foot"></span></span></span></div>
       </div>
       <div class="wc-prices wc-prices-2">
-        <div class="wc-price"><span class="wc-price-k">HOME</span><span class="wc-price-odds">+134</span></div>
-        <div class="wc-price wc-favorite"><span class="wc-price-k">AWAY</span><span class="wc-price-odds">-164</span></div>
+        <div class="wc-price wc-favorite"><span class="wc-price-k">FT SCORE</span><span class="wc-price-odds">2</span></div>
+        <div class="wc-price"><span class="wc-price-k">FT SCORE</span><span class="wc-price-odds">0</span></div>
       </div>
-      <div class="wc-h2h"><span class="wc-h2h-label">Knockout moneyline</span><div class="wc-h2h-dots"><span class="wc-h2h-dot w">H</span><span class="wc-h2h-dot l">A</span></div><span class="wc-h2h-record">WIN OR GO HOME</span></div>
-      <div class="wc-card-foot"><span>Market lean</span><strong>Colombia</strong></div>
-    </article>
-    <article class="wc-game-card" style="--delay:0.10s;--home-c:rgba(0,35,149,.24);--away-c:rgba(193,39,45,.22);--team-accent:rgba(0,35,149,.90);--team-glow:rgba(237,41,57,.85);--away-accent:rgba(0,98,51,.86)"><div class="wc-card-pitch"></div>
-      <div class="wc-card-top"><span class="wc-card-time">THU · 4:00PM ET</span><span class="wc-card-chip">More wagers</span></div>
-      <div class="wc-match-line"><span class="wc-ps s1">★</span><span class="wc-ps s2">✦</span><span class="wc-ps s3">★</span><span class="wc-ps s4">✦</span>
-        <div class="wc-team-block"><span class="wc-team-flag">🇫🇷</span><span>France</span></div>
-        <span class="wc-vs">vs</span>
-        <div class="wc-team-block away"><span>Morocco</span><span class="wc-team-flag">🇲🇦</span></div>
-      </div>
-      <div class="wc-prices wc-prices-2">
-        <div class="wc-price wc-favorite"><span class="wc-price-k">HOME</span><span class="wc-price-odds">-390</span></div>
-        <div class="wc-price"><span class="wc-price-k">AWAY</span><span class="wc-price-odds">+300</span></div>
-      </div>
-      <div class="wc-h2h"><span class="wc-h2h-label">Knockout moneyline</span><div class="wc-h2h-dots"><span class="wc-h2h-dot w">H</span><span class="wc-h2h-dot l">A</span></div><span class="wc-h2h-record">WIN OR GO HOME</span></div>
-      <div class="wc-card-foot"><span>Market lean</span><strong>France</strong></div>
+      <div class="wc-h2h"><span class="wc-h2h-label">Result</span><div class="wc-h2h-dots"><span class="wc-h2h-dot w">W</span><span class="wc-h2h-dot l">L</span></div><span class="wc-h2h-record">FRANCE ADVANCES</span></div>
+      <div class="wc-card-next"><span>Next</span><strong>Spain/Belgium winner</strong><span>· Jul 14, Dallas</span></div>
+      <div class="wc-card-foot"><span>Result</span><strong>France to semifinal</strong></div>
     </article>
     <article class="wc-game-card" style="--delay:0.15s;--home-c:rgba(198,11,30,.22);--away-c:rgba(250,224,66,.18);--team-accent:rgba(255,196,0,.90);--team-glow:rgba(198,11,30,.85);--away-accent:rgba(239,51,64,.86)"><div class="wc-card-pitch"></div>
-      <div class="wc-card-top"><span class="wc-card-time">FRI · 3:00PM ET</span><span class="wc-card-chip">More wagers</span></div>
+      <div class="wc-card-top"><span class="wc-card-time">FRI · JUL 10 · 3:00PM ET</span><span class="wc-card-chip">Inglewood</span></div>
       <div class="wc-match-line"><span class="wc-ps s1">★</span><span class="wc-ps s2">✦</span><span class="wc-ps s3">★</span><span class="wc-ps s4">✦</span>
-        <div class="wc-team-block"><span class="wc-team-flag">🇪🇸</span><span>Spain</span></div>
+        <div class="wc-team-block"><span class="wc-team-jersey-wrap" style="--jc:#c60b1e;--jc2:#ffc400"><span class="wc-mp-head"></span><span class="wc-mp-arm"></span><span class="wc-mp-ball"></span><span class="wc-mp-body" data-num="9"></span><span class="wc-mp-leg one"><span class="wc-mp-foot"></span></span><span class="wc-mp-leg two"><span class="wc-mp-foot"></span></span></span><span>Spain</span></div>
         <span class="wc-vs">vs</span>
-        <div class="wc-team-block away"><span>Belgium</span><span class="wc-team-flag">🇧🇪</span></div>
+        <div class="wc-team-block away"><span>Belgium</span><span class="wc-team-jersey-wrap" style="--jc:#e30613;--jc2:#000000"><span class="wc-mp-head"></span><span class="wc-mp-arm"></span><span class="wc-mp-ball"></span><span class="wc-mp-body" data-num="7"></span><span class="wc-mp-leg one"><span class="wc-mp-foot"></span></span><span class="wc-mp-leg two"><span class="wc-mp-foot"></span></span></span></div>
       </div>
       <div class="wc-prices wc-prices-2">
-        <div class="wc-price wc-favorite"><span class="wc-price-k">HOME</span><span class="wc-price-odds">-330</span></div>
-        <div class="wc-price"><span class="wc-price-k">AWAY</span><span class="wc-price-odds">+260</span></div>
+        <div class="wc-price wc-favorite"><span class="wc-price-k">HOME</span><span class="wc-price-odds">-340</span></div>
+        <div class="wc-price"><span class="wc-price-k">AWAY</span><span class="wc-price-odds">+265</span></div>
       </div>
-      <div class="wc-h2h"><span class="wc-h2h-label">Knockout moneyline</span><div class="wc-h2h-dots"><span class="wc-h2h-dot w">H</span><span class="wc-h2h-dot l">A</span></div><span class="wc-h2h-record">WIN OR GO HOME</span></div>
+      <div class="wc-h2h"><span class="wc-h2h-label">Quarterfinal moneyline</span><div class="wc-h2h-dots"><span class="wc-h2h-dot w">H</span><span class="wc-h2h-dot l">A</span></div><span class="wc-h2h-record">WIN OR GO HOME</span></div>
+      <div class="wc-card-next"><span>Winner plays</span><strong>France</strong><span>· Jul 14, Dallas</span></div>
       <div class="wc-card-foot"><span>Market lean</span><strong>Spain</strong></div>
     </article>
     <article class="wc-game-card" style="--delay:0.20s;--home-c:rgba(239,43,45,.22);--away-c:rgba(255,255,255,.18);--team-accent:rgba(0,40,104,.88);--team-glow:rgba(239,43,45,.85);--away-accent:rgba(200,16,46,.84)"><div class="wc-card-pitch"></div>
-      <div class="wc-card-top"><span class="wc-card-time">SAT · 5:00PM ET</span><span class="wc-card-chip">More wagers</span></div>
+      <div class="wc-card-top"><span class="wc-card-time">SAT · JUL 11 · 5:00PM ET</span><span class="wc-card-chip">Miami</span></div>
       <div class="wc-match-line"><span class="wc-ps s1">★</span><span class="wc-ps s2">✦</span><span class="wc-ps s3">★</span><span class="wc-ps s4">✦</span>
-        <div class="wc-team-block"><span class="wc-team-flag">🇳🇴</span><span>Norway</span></div>
+        <div class="wc-team-block"><span class="wc-team-jersey-wrap" style="--jc:#ba0c2f;--jc2:#00205b"><span class="wc-mp-head"></span><span class="wc-mp-arm"></span><span class="wc-mp-ball"></span><span class="wc-mp-body" data-num="9"></span><span class="wc-mp-leg one"><span class="wc-mp-foot"></span></span><span class="wc-mp-leg two"><span class="wc-mp-foot"></span></span></span><span>Norway</span></div>
         <span class="wc-vs">vs</span>
-        <div class="wc-team-block away"><span>England</span><span class="wc-team-flag">🏴</span></div>
+        <div class="wc-team-block away"><span>England</span><span class="wc-team-jersey-wrap" style="--jc:#e6e6e6;--jc2:#c8102e"><span class="wc-mp-head"></span><span class="wc-mp-arm"></span><span class="wc-mp-ball"></span><span class="wc-mp-body" data-num="9"></span><span class="wc-mp-leg one"><span class="wc-mp-foot"></span></span><span class="wc-mp-leg two"><span class="wc-mp-foot"></span></span></span></div>
       </div>
       <div class="wc-prices wc-prices-2">
-        <div class="wc-price"><span class="wc-price-k">HOME</span><span class="wc-price-odds">+178</span></div>
-        <div class="wc-price wc-favorite"><span class="wc-price-k">AWAY</span><span class="wc-price-odds">-225</span></div>
+        <div class="wc-price"><span class="wc-price-k">HOME</span><span class="wc-price-odds">+186</span></div>
+        <div class="wc-price wc-favorite"><span class="wc-price-k">AWAY</span><span class="wc-price-odds">-230</span></div>
       </div>
-      <div class="wc-h2h"><span class="wc-h2h-label">Knockout moneyline</span><div class="wc-h2h-dots"><span class="wc-h2h-dot w">H</span><span class="wc-h2h-dot l">A</span></div><span class="wc-h2h-record">WIN OR GO HOME</span></div>
+      <div class="wc-h2h"><span class="wc-h2h-label">Quarterfinal moneyline</span><div class="wc-h2h-dots"><span class="wc-h2h-dot w">H</span><span class="wc-h2h-dot l">A</span></div><span class="wc-h2h-record">WIN OR GO HOME</span></div>
+      <div class="wc-card-next"><span>Winner plays</span><strong>Argentina/Switzerland winner</strong><span>· Jul 15, Atlanta</span></div>
       <div class="wc-card-foot"><span>Market lean</span><strong>England</strong></div>
     </article>
   </div><!-- /wc-games-grid -->
@@ -2927,13 +2961,13 @@ body::after{
   <div class="wc-divider-banner" aria-hidden="true">
     <div class="wc-divider-track">
       <span class="hi">🏆 AWARD FUTURES</span><span class="sep">·</span>
-      <span>Golden Boot · Mbappe +150</span><span class="sep">·</span><span class="hi">Golden Ball · Messi +440</span><span class="sep">·</span>
-      <span>Golden Glove · Martinez +300</span><span class="sep">·</span><span class="hi">Young Player · Yamal +175</span><span class="sep">·</span>
-      <span>Top Scorer · Messi -125</span><span class="sep">·</span>
+      <span>Golden Boot · Mbappe +105</span><span class="sep">·</span><span class="hi">Golden Ball · Messi +200</span><span class="sep">·</span>
+      <span>Golden Glove · Maignan +200</span><span class="sep">·</span><span class="hi">Young Player · Yamal +175</span><span class="sep">·</span>
+      <span>Top Scorer · Messi -150</span><span class="sep">·</span>
       <span class="hi">🏆 AWARD FUTURES</span><span class="sep">·</span>
-      <span>Golden Boot · Mbappe +150</span><span class="sep">·</span><span class="hi">Golden Ball · Messi +440</span><span class="sep">·</span>
-      <span>Golden Glove · Martinez +300</span><span class="sep">·</span><span class="hi">Young Player · Yamal +175</span><span class="sep">·</span>
-      <span>Top Scorer · Messi -125</span><span class="sep">·</span>
+      <span>Golden Boot · Mbappe +105</span><span class="sep">·</span><span class="hi">Golden Ball · Messi +200</span><span class="sep">·</span>
+      <span>Golden Glove · Maignan +200</span><span class="sep">·</span><span class="hi">Young Player · Yamal +175</span><span class="sep">·</span>
+      <span>Top Scorer · Messi -150</span><span class="sep">·</span>
     </div>
   </div>
 
@@ -2962,7 +2996,7 @@ body::after{
         <circle cx="24" cy="37" r="2.2" fill="#7a4800"/>
         <circle cx="32" cy="37" r="2.2" fill="#7a4800"/>
       </svg></div>
-      <div class="wc-award-head"><span class="wc-trophy-icon">🏆</span><div><h4>FIFA Golden Boot</h4><p>Most goals in the tournament</p></div></div><div class="wc-award-row"><span><b class="wc-flag-badge france"></b>Kylian Mbappe <em>France</em></span><strong>+150</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge argentina"></b>Lionel Messi <em>Argentina</em></span><strong>+165</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge norway"></b>Erling Haaland <em>Norway</em></span><strong>+500</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge england"></b>Harry Kane <em>England</em></span><strong>+650</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge spain"></b>Mikel Oyarzabal <em>Spain</em></span><strong>+2500</strong></div><div class="wc-award-time">JUL 19, 6:01PM ET</div>
+      <div class="wc-award-head"><span class="wc-trophy-icon">🏆</span><div><h4>FIFA Golden Boot</h4><p>Most goals in the tournament</p></div></div><div class="wc-award-row"><span><b class="wc-flag-badge france"></b>Kylian Mbappe <em>France</em></span><strong>+105</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge argentina"></b>Lionel Messi <em>Argentina</em></span><strong>+150</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge norway"></b>Erling Haaland <em>Norway</em></span><strong>+850</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge england"></b>Harry Kane <em>England</em></span><strong>+900</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge spain"></b>Mikel Oyarzabal <em>Spain</em></span><strong>+7000</strong></div><div class="wc-award-time">JUL 19, 6:01PM ET</div>
     </article>
     <article class="wc-award-card" style="--delay:0.06s">
       <div class="wc-award-badge ball-badge"><svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
@@ -2980,7 +3014,7 @@ body::after{
         <!-- Bold shine -->
         <ellipse cx="12" cy="12" rx="6" ry="4.5" fill="rgba(255,255,255,.38)"/>
       </svg></div>
-      <div class="wc-award-head"><span class="wc-trophy-icon">🏆</span><div><h4>FIFA Golden Ball</h4><p>Player of the Tournament</p></div></div><div class="wc-award-row"><span><b class="wc-flag-badge argentina"></b>Lionel Messi <em>Argentina</em></span><strong>+440</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge france"></b>Kylian Mbappe <em>France</em></span><strong>+480</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge france"></b>Michael Olise <em>France</em></span><strong>+500</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge norway"></b>Erling Haaland <em>Norway</em></span><strong>+650</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge england"></b>Harry Kane <em>England</em></span><strong>+900</strong></div><div class="wc-award-time">JUL 19, 6:01PM ET</div>
+      <div class="wc-award-head"><span class="wc-trophy-icon">🏆</span><div><h4>FIFA Golden Ball</h4><p>Player of the Tournament</p></div></div><div class="wc-award-row"><span><b class="wc-flag-badge argentina"></b>Lionel Messi <em>Argentina</em></span><strong>+200</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge france"></b>Kylian Mbappe <em>France</em></span><strong>+125</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge france"></b>Michael Olise <em>France</em></span><strong>+1100</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge norway"></b>Erling Haaland <em>Norway</em></span><strong>+1100</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge england"></b>Harry Kane <em>England</em></span><strong>+1200</strong></div><div class="wc-award-time">JUL 19, 6:01PM ET</div>
     </article>
     <article class="wc-award-card" style="--delay:0.12s">
       <div class="wc-award-badge"><svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
@@ -3007,7 +3041,7 @@ body::after{
         <!-- Palm highlight -->
         <ellipse cx="21" cy="24" rx="7" ry="4" fill="rgba(255,255,255,.12)"/>
       </svg></div>
-      <div class="wc-award-head"><span class="wc-trophy-icon">🥅</span><div><h4>FIFA Golden Glove</h4><p>Best goalkeeper of the tournament</p></div></div><div class="wc-award-row"><span><b class="wc-flag-badge argentina"></b>Emiliano Martinez <em>Argentina</em></span><strong>+300</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge spain"></b>Unai Simon <em>Spain</em></span><strong>+390</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge france"></b>Mike Maignan <em>France</em></span><strong>+440</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge brazil"></b>Alisson Becker <em>Brazil</em></span><strong>+750</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge england"></b>Jordan Pickford <em>England</em></span><strong>+1200</strong></div><div class="wc-award-time">JUL 19, 6:01PM ET</div>
+      <div class="wc-award-head"><span class="wc-trophy-icon">🥅</span><div><h4>FIFA Golden Glove</h4><p>Best goalkeeper of the tournament</p></div></div><div class="wc-award-row"><span><b class="wc-flag-badge france"></b>Mike Maignan <em>France</em></span><strong>+200</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge spain"></b>Unai Simon <em>Spain</em></span><strong>+240</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge argentina"></b>Emiliano Martinez <em>Argentina</em></span><strong>+550</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge england"></b>Jordan Pickford <em>England</em></span><strong>+700</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge norway"></b>Orjan Nyland <em>Norway</em></span><strong>+1200</strong></div><div class="wc-award-time">JUL 19, 6:01PM ET</div>
     </article>
     <article class="wc-award-card" style="--delay:0.18s">
       <div class="wc-award-badge"><svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
@@ -3020,7 +3054,7 @@ body::after{
         <line x1="20" y1="32" x2="20" y2="38" stroke="url(#gg4)" stroke-width="2.5" stroke-linecap="round"/>
         <path d="M16.5,34.5 L20,31 L23.5,34.5" fill="none" stroke="url(#gg4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg></div>
-      <div class="wc-award-head"><span class="wc-trophy-icon">⭐</span><div><h4>FIFA Young Player</h4><p>Top eligible young player</p></div></div><div class="wc-award-row"><span><b class="wc-flag-badge spain"></b>Lamine Yamal <em>Spain</em></span><strong>+175</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge morocco"></b>Ayyoub Bouaddi <em>Morocco</em></span><strong>+380</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge ivorycoast"></b>Yan Diomande <em>Ivory Coast</em></span><strong>+650</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge france"></b>Desire Doue <em>France</em></span><strong>+750</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge england"></b>Nico O'Reilly <em>England</em></span><strong>+1400</strong></div><div class="wc-award-time">JUL 19, 6:01PM ET</div>
+      <div class="wc-award-head"><span class="wc-trophy-icon">⭐</span><div><h4>FIFA Young Player</h4><p>Top eligible young player</p></div></div><div class="wc-award-row"><span><b class="wc-flag-badge spain"></b>Lamine Yamal <em>Spain</em></span><strong>+175</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge morocco"></b>Ayyoub Bouaddi <em>Morocco</em></span><strong>+380</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge switzerland"></b>Ruben Vargas <em>Switzerland</em></span><strong>+900</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge france"></b>Desire Doue <em>France</em></span><strong>+750</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge england"></b>Nico O'Reilly <em>England</em></span><strong>+1400</strong></div><div class="wc-award-time">JUL 19, 6:01PM ET</div>
     </article>
     <article class="wc-award-card" style="--delay:0.24s">
       <div class="wc-award-badge"><svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
@@ -3036,7 +3070,7 @@ body::after{
         <!-- Ball in net -->
         <circle cx="20" cy="31.5" r="3.5" fill="rgba(255,255,255,.22)" stroke="rgba(255,255,255,.45)" stroke-width="1.2"/>
       </svg></div>
-      <div class="wc-award-head"><span class="wc-trophy-icon">🥇</span><div><h4>Top Goalscorer</h4><p>Tournament top scoring market</p></div></div><div class="wc-award-row"><span><b class="wc-flag-badge argentina"></b>Lionel Messi <em>Argentina</em></span><strong>-125</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge france"></b>Kylian Mbappe <em>France</em></span><strong>+230</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge england"></b>Harry Kane <em>England</em></span><strong>+480</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge norway"></b>Erling Haaland <em>Norway</em></span><strong>+600</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge spain"></b>Mikel Oyarzabal <em>Spain</em></span><strong>+1500</strong></div><div class="wc-award-time">JUL 19, 5:00PM ET</div>
+      <div class="wc-award-head"><span class="wc-trophy-icon">🥇</span><div><h4>Top Goalscorer</h4><p>Tournament top scoring market</p></div></div><div class="wc-award-row"><span><b class="wc-flag-badge argentina"></b>Lionel Messi <em>Argentina</em></span><strong>-150</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge france"></b>Kylian Mbappe <em>France</em></span><strong>-130</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge norway"></b>Erling Haaland <em>Norway</em></span><strong>+450</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge england"></b>Harry Kane <em>England</em></span><strong>+600</strong></div><div class="wc-award-row"><span><b class="wc-flag-badge spain"></b>Mikel Oyarzabal <em>Spain</em></span><strong>+8000</strong></div><div class="wc-award-time">JUL 19, 5:00PM ET</div>
     </article>
   </div>
 
@@ -3054,10 +3088,10 @@ body::after{
 
   <div class="wc-section-head"><div><span class="wc-section-kicker">Player tickets</span><h3>World Stage Parlays</h3><p>Soccer-themed parlay cards built from the award prices above.</p></div><span class="wc-section-kicker">themed builders</span></div>
   <div class="wc-parlay-grid">
-    <article class="wc-parlay-card" style="--delay:0.00s"><div class="wc-ticket-perf"></div><div class="wc-parlay-top"><span>Goal scorer runway</span><strong>+4685</strong></div><h4>Golden Boot Fireworks</h4><div class="wc-leg-list"><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇫🇷 Kylian Mbappe</strong><small>Golden Boot</small></div><b>+150</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇫🇷 Kylian Mbappe</strong><small>Top Goalscorer</small></div><b>+230</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇫🇷 France</strong><small>Golden Ball path</small></div><b>+480</b></div></div><p>Mbappe-led scoring ticket with France award upside.</p></article>
-    <article class="wc-parlay-card" style="--delay:0.07s"><div class="wc-ticket-perf"></div><div class="wc-parlay-top"><span>Messi awards lane</span><strong>+2476</strong></div><h4>Legacy World Tour</h4><div class="wc-leg-list"><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇦🇷 Lionel Messi</strong><small>Golden Boot</small></div><b>+165</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇦🇷 Lionel Messi</strong><small>Golden Ball</small></div><b>+440</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇦🇷 Lionel Messi</strong><small>Top Goalscorer</small></div><b>-125</b></div></div><p>Legacy-focused card built around Messi winning the award markets.</p></article>
-    <article class="wc-parlay-card" style="--delay:0.14s"><div class="wc-ticket-perf"></div><div class="wc-parlay-top"><span>Future face ticket</span><strong>+92850</strong></div><h4>Young Star Breakout</h4><div class="wc-leg-list"><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇪🇸 Lamine Yamal</strong><small>Young Player</small></div><b>+175</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇪🇸 Lamine Yamal</strong><small>Golden Ball</small></div><b>+1200</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇪🇸 Mikel Oyarzabal</strong><small>Golden Boot</small></div><b>+2500</b></div></div><p>Spain-heavy ceiling card with a youth-award anchor.</p></article>
-    <article class="wc-parlay-card" style="--delay:0.21s"><div class="wc-ticket-perf"></div><div class="wc-parlay-top"><span>Golden Glove split</span><strong>+10484</strong></div><h4>Keeper Wall</h4><div class="wc-leg-list"><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇦🇷 Emiliano Martinez</strong><small>Golden Glove</small></div><b>+300</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇪🇸 Unai Simon</strong><small>Golden Glove</small></div><b>+390</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇫🇷 Mike Maignan</strong><small>Golden Glove</small></div><b>+440</b></div></div><p>A goalkeeper award ladder for clean-sheet tournament paths.</p></article>
+    <article class="wc-parlay-card" style="--delay:0.00s"><div class="wc-ticket-perf"></div><div class="wc-parlay-top"><span>Goal scorer runway</span><strong>+4685</strong></div><h4>Golden Boot Fireworks</h4><div class="wc-leg-list"><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇫🇷 Kylian Mbappe</strong><small>Golden Boot</small></div><b>+105</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇫🇷 Kylian Mbappe</strong><small>Top Goalscorer</small></div><b>-130</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇫🇷 France</strong><small>Golden Ball path</small></div><b>+480</b></div></div><p>Mbappe-led scoring ticket with France award upside.</p></article>
+    <article class="wc-parlay-card" style="--delay:0.07s"><div class="wc-ticket-perf"></div><div class="wc-parlay-top"><span>Messi awards lane</span><strong>+2476</strong></div><h4>Legacy World Tour</h4><div class="wc-leg-list"><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇦🇷 Lionel Messi</strong><small>Golden Boot</small></div><b>+150</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇦🇷 Lionel Messi</strong><small>Golden Ball</small></div><b>+200</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇦🇷 Lionel Messi</strong><small>Top Goalscorer</small></div><b>-150</b></div></div><p>Legacy-focused card built around Messi winning the award markets.</p></article>
+    <article class="wc-parlay-card" style="--delay:0.14s"><div class="wc-ticket-perf"></div><div class="wc-parlay-top"><span>Future face ticket</span><strong>+92850</strong></div><h4>Young Star Breakout</h4><div class="wc-leg-list"><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇪🇸 Lamine Yamal</strong><small>Young Player</small></div><b>+175</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇪🇸 Lamine Yamal</strong><small>Golden Ball</small></div><b>+1200</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇪🇸 Mikel Oyarzabal</strong><small>Golden Boot</small></div><b>+7000</b></div></div><p>Spain-heavy ceiling card with a youth-award anchor.</p></article>
+    <article class="wc-parlay-card" style="--delay:0.21s"><div class="wc-ticket-perf"></div><div class="wc-parlay-top"><span>Golden Glove split</span><strong>+10484</strong></div><h4>Keeper Wall</h4><div class="wc-leg-list"><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇦🇷 Emiliano Martinez</strong><small>Golden Glove</small></div><b>+550</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇪🇸 Unai Simon</strong><small>Golden Glove</small></div><b>+240</b></div><div class="wc-leg"><span class="wc-leg-ball">⚽</span><div><strong>🇫🇷 Mike Maignan</strong><small>Golden Glove</small></div><b>+200</b></div></div><p>A goalkeeper award ladder for clean-sheet tournament paths.</p></article>
   </div>
 
   <div class="wc-note"><strong>Note:</strong> Parlay tickets combine the listed award prices into estimated display odds for the page experience. They are informational display cards, not wagers booked by shortopen.</div>
@@ -3249,7 +3283,7 @@ function toggleMobileMenu(){
     { flag:'🇧🇷', c1:'#f0d31e', c2:'#002776', name:'Brazil' },
     { flag:'🇫🇷', c1:'#003189', c2:'#ed2939', name:'France' },
     { flag:'🇦🇷', c1:'#74acdf', c2:'#FFFFFF', name:'Argentina' },
-    { flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', c1:'#EEEEEE', c2:'#c8102e', name:'England' },
+    { flag:'<span class="wc-flag-badge england" style="width:18px;height:13px;vertical-align:middle"></span>', c1:'#EEEEEE', c2:'#c8102e', name:'England' },
     { flag:'🇩🇪', c1:'#EEEEEE', c2:'#222222', name:'Germany' },
     { flag:'🇪🇸', c1:'#c60b1e', c2:'#ffc400', name:'Spain' },
     { flag:'🇵🇹', c1:'#006600', c2:'#c8102e', name:'Portugal' },
@@ -3440,7 +3474,20 @@ function toggleMobileMenu(){
     }
   }
 
-  setInterval(frame, 120);
+  // PERF FIX: this used to tick every 120ms for the entire life of the
+  // page, even scrolled far off-screen. Now it only runs while the
+  // mosaic is actually visible in the viewport.
+  let mosaicTimer = null;
+  function startMosaic(){ if(mosaicTimer) return; mosaicTimer = setInterval(frame, 120); }
+  function stopMosaic(){ if(!mosaicTimer) return; clearInterval(mosaicTimer); mosaicTimer = null; }
+  if('IntersectionObserver' in window){
+    const mosaicIO = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting) startMosaic(); else stopMosaic(); });
+    }, { rootMargin:'150px 0px 150px 0px', threshold:0 });
+    mosaicIO.observe(grid);
+  } else {
+    startMosaic();
+  }
   // Kick off immediately
   cells.forEach(c => { c.style.backgroundColor = DARK; });
 })();
@@ -3615,6 +3662,355 @@ function toggleMobileMenu(){
           '</animateMotion>'+
         '</circle>'+
       '</svg>';
+  });
+})();
+</script>
+
+<style id="game-card-cohesion-pass">
+/* ═══════════════════════════════════════════════════════════════
+   GAME CARD COHESION PASS
+   The rest of the page (award cards, futures board, hero) all use
+   a dark-glass-with-gold-trim language. The game cards were the one
+   component still running full neon-green tactical-pitch chrome on
+   the outer shell, which read as a different site entirely once you
+   scrolled past them. Green stays exactly where it's earned — the
+   pitch texture inside the match line — but the card's own frame,
+   glow, hover state, and footer now match the gold trim used
+   everywhere else, so the grid reads as one family of cards.
+   ═══════════════════════════════════════════════════════════════ */
+.wc-game-card{
+  border-color:rgba(244,185,66,.20)!important;
+  box-shadow:0 16px 38px rgba(0,0,0,.32),0 0 20px rgba(244,185,66,.05),inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+.wc-game-card::before{
+  background:linear-gradient(108deg,transparent 30%,rgba(244,210,120,.06) 48%,transparent 68%)!important;
+}
+.wc-game-card:hover{
+  border-color:rgba(244,185,66,.42)!important;
+  box-shadow:0 22px 48px rgba(0,0,0,.38),0 0 30px rgba(244,185,66,.10)!important;
+}
+.wc-card-top{
+  background:rgba(0,0,0,.82)!important;
+  border-bottom-color:rgba(244,185,66,.16)!important;
+}
+.wc-card-time{color:rgba(244,210,140,.75)!important;}
+.wc-h2h{
+  background:rgba(9,8,6,.86)!important;
+  border-top-color:rgba(244,185,66,.10)!important;
+}
+.wc-h2h-label,.wc-h2h-record{color:rgba(244,210,140,.42)!important;}
+.wc-card-foot{
+  background:rgba(9,8,6,.80)!important;
+  border-top-color:rgba(244,185,66,.08)!important;
+  color:rgba(244,210,140,.32)!important;
+}
+/* the pitch itself stays green — that part is earned context, not chrome */
+.wc-vs{color:rgba(255,241,199,.62)!important;}
+</style>
+
+<style id="game-card-redesign-v2">
+/* ═══════════════════════════════════════════════════════════════
+   GAME CARD REDESIGN — quarterfinal week refresh
+   Adds a "winner plays next" context line to every card so the
+   knockout bracket reads clearly, plus a distinct completed-match
+   treatment for games that have already finished (green accent,
+   scoreline in place of odds, no more "wagers" language on a dead
+   market).
+   ═══════════════════════════════════════════════════════════════ */
+.wc-card-next{
+  position:relative;display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+  padding:7px 14px;background:rgba(0,0,0,.55);
+  border-top:1px solid rgba(244,185,66,.08);
+  font-size:.5rem;letter-spacing:.06em;text-transform:uppercase;
+  color:rgba(244,210,140,.34);font-family:'DM Mono',monospace;z-index:2;
+}
+.wc-card-next strong{color:rgba(244,210,140,.85);font-weight:700;text-transform:none;letter-spacing:.01em;}
+.wc-card-next span:last-child{color:rgba(244,210,140,.30);text-transform:none;}
+
+.wc-game-card.is-final{border-color:rgba(74,222,128,.28)!important;}
+.wc-game-card.is-final:hover{border-color:rgba(74,222,128,.48)!important;}
+.wc-game-card.is-final .wc-card-time{color:rgba(134,239,172,.85)!important;}
+.wc-card-chip.is-final-chip{
+  color:#86efac!important;background:rgba(74,222,128,.10)!important;
+  border-color:rgba(74,222,128,.30)!important;
+}
+.wc-game-card.is-final .wc-vs{
+  color:rgba(255,255,255,.92)!important;font-size:1.05rem!important;
+  font-weight:900!important;letter-spacing:.02em!important;
+}
+.wc-game-card.is-final .wc-price-k{color:rgba(134,239,172,.45)!important;}
+.wc-game-card.is-final .wc-price.wc-favorite{background:rgba(74,222,128,.08)!important;}
+.wc-game-card.is-final .wc-price.wc-favorite .wc-price-odds{color:#86efac!important;text-shadow:0 0 14px rgba(74,222,128,.4)!important;}
+.wc-game-card.is-final .wc-h2h-dot.w{background:rgba(34,197,94,.22);color:#86efac;}
+.wc-game-card.is-final .wc-card-foot strong{color:#86efac!important;text-shadow:0 0 8px rgba(74,222,128,.32)!important;}
+
+@media(max-width:640px){
+  .wc-card-next{font-size:.48rem;padding:6px 10px;}
+}
+</style>
+
+<style id="mobile-fit-final-pass">
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE FIT — FINAL PASS (phones only, desktop untouched)
+   Existing mobile breakpoints already handle most grid collapsing;
+   this tightens font-sizes/padding on the pieces that were still
+   desktop-scale, and fixes one dead rule (.wc-match-line was never
+   display:grid, so an old grid-template-columns mobile override
+   did nothing — replaced with the real flex property).
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width:640px){
+  .wc-top-banner-track{font-size:.56rem!important;}
+  .wc-title{font-size:clamp(2.2rem,13vw,3.4rem)!important;}
+  .wc-match-line{height:auto!important;min-height:150px!important;}
+  .wc-team-block{font-size:.7rem!important;padding:8px 6px 8px 10px!important;}
+  .wc-game-card .wc-team-block.away{padding:8px 10px 8px 6px!important;}
+  .wc-price-odds{font-size:.9rem!important;}
+  .wc-spark-card{padding:12px!important;}
+  .wc-spark-name{font-size:.78rem!important;}
+  .wc-spark-odds{font-size:.9rem!important;}
+  .wc-tb-nation-row{padding:6px 10px!important;font-size:.72rem!important;}
+  .wc-award-card{padding:14px!important;}
+  .wc-award-row{font-size:.68rem!important;padding:6px 0!important;}
+  .wc-player-card{padding:12px!important;}
+  .wc-player-name{font-size:.76rem!important;}
+  .wc-group-table th{padding:5px 8px 3px!important;}
+  .wc-group-table td{padding:6px 8px!important;font-size:.62rem!important;}
+  .wc-tb-headline{font-size:1.6rem!important;}
+  .wc-tb-sub{font-size:.74rem!important;line-height:1.5!important;}
+}
+@media (max-width:520px){
+  .wc-match-line{flex-direction:column!important;height:auto!important;padding:10px 0!important;}
+  .wc-vs{position:relative!important;left:auto!important;top:auto!important;transform:none!important;margin:2px auto!important;}
+  .wc-game-card .wc-team-block:not(.away)::after,
+  .wc-game-card .wc-team-block.away::after{opacity:.5!important;}
+}
+</style>
+
+<style id="game-card-broadcast-rebuild">
+/* ═══════════════════════════════════════════════════════════════
+   GAME CARD BROADCAST REBUILD
+   - Replaces the tactical-board feeling with a live stadium feel
+   - Adds country-specific flag-inspired kits
+   - Adds crowd, ribbon board, camera flashes, and a live ball
+   - Keeps the clean market/odds hierarchy intact
+   ═══════════════════════════════════════════════════════════════ */
+.wc-card-pitch{display:none!important;opacity:0!important;}
+.wc-games-grid{gap:22px!important;}
+.wc-game-card{
+  background:linear-gradient(180deg,rgba(7,13,10,.96),rgba(4,8,6,.98))!important;
+  overflow:hidden!important;
+}
+.wc-game-card::before{
+  background:linear-gradient(110deg,transparent 26%,rgba(255,240,175,.06) 48%,transparent 70%)!important;
+}
+.wc-match-line{
+  height:214px!important;
+  padding:54px 0 34px!important;
+  align-items:center!important;
+  background:
+    radial-gradient(120px 50px at 50% 50%, rgba(120,255,155,.07), transparent 80%),
+    radial-gradient(300px 140px at 50% 0%, rgba(255,232,160,.08), transparent 80%),
+    radial-gradient(220px 90px at 0% 35%, rgba(116,172,223,.11), transparent 78%),
+    radial-gradient(220px 90px at 100% 35%, rgba(213,43,30,.10), transparent 78%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 55px, rgba(255,255,255,0) 55px 110px),
+    linear-gradient(180deg,#163a22 0%,#0c2616 38%,#07140c 100%)!important;
+}
+.wc-match-line::before{
+  top:26%;bottom:26%;left:0;width:20%!important;
+  border:1px solid rgba(160,255,190,.20)!important;
+  border-left:none!important;border-radius:0 10px 10px 0!important;
+  background:linear-gradient(90deg,rgba(255,255,255,.02),transparent)!important;
+}
+.wc-match-line::after{
+  top:26%;bottom:26%;right:0;width:20%!important;
+  border:1px solid rgba(160,255,190,.20)!important;
+  border-right:none!important;border-radius:10px 0 0 10px!important;
+  background:linear-gradient(270deg,rgba(255,255,255,.02),transparent)!important;
+}
+.wc-match-line .wc-stadium-crowd,
+.wc-match-line .wc-stadium-crowd-bottom,
+.wc-match-line .wc-led-ribbon,
+.wc-match-line .wc-center-circle,
+.wc-match-line .wc-center-circle::before,
+.wc-match-line .wc-crowd-flags,
+.wc-match-line .wc-camera-flash,
+.wc-match-line .wc-flood-beam{pointer-events:none;}
+.wc-stadium-crowd{
+  position:absolute;left:0;right:0;top:0;height:46px;z-index:0;overflow:hidden;
+  background:
+    radial-gradient(circle at 8px 28px, rgba(255,255,255,.28) 0 2px, transparent 2.6px) 0 0/18px 16px,
+    radial-gradient(circle at 4px 18px, rgba(255,214,120,.18) 0 1.6px, transparent 2.4px) 0 0/16px 14px,
+    linear-gradient(180deg, rgba(6,9,8,.98), rgba(7,16,10,.88) 55%, rgba(12,30,19,.45));
+  box-shadow:inset 0 -1px 0 rgba(255,255,255,.04);
+}
+.wc-stadium-crowd::before{
+  content:'';position:absolute;left:-8%;right:-8%;bottom:0;height:14px;
+  background:repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 2px, transparent 2px 18px);
+  opacity:.55;
+}
+.wc-stadium-crowd-bottom{
+  position:absolute;left:0;right:0;bottom:0;height:24px;z-index:0;overflow:hidden;
+  background:
+    radial-gradient(circle at 12px 2px, rgba(255,255,255,.16) 0 1.6px, transparent 2.2px) 0 0/18px 12px,
+    linear-gradient(180deg, rgba(9,25,16,.0), rgba(5,8,6,.88));
+  opacity:.75;
+}
+.wc-led-ribbon{
+  position:absolute;left:0;right:0;top:42px;height:14px;z-index:1;overflow:hidden;
+  border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);
+  background:linear-gradient(90deg, rgba(11,15,12,.72), rgba(24,52,33,.82) 18%, rgba(54,21,8,.78) 50%, rgba(24,52,33,.82) 82%, rgba(11,15,12,.72));
+  box-shadow:0 0 18px rgba(0,0,0,.22), 0 0 10px rgba(255,210,90,.08);
+}
+.wc-led-ribbon span{
+  position:absolute;left:0;top:50%;transform:translateY(-50%);
+  white-space:nowrap;width:max-content;padding-left:100%;
+  font-family:'DM Mono',monospace;font-size:.44rem;font-weight:900;
+  letter-spacing:.18em;text-transform:uppercase;color:rgba(255,238,200,.68);
+  animation:wcLedRun 16s linear infinite;
+}
+@keyframes wcLedRun{from{transform:translate(0,-50%)}to{transform:translate(-55%,-50%)}}
+.wc-center-circle{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:74px;height:74px;border:1px solid rgba(160,255,190,.18);border-radius:50%;z-index:1;
+  box-shadow:0 0 0 12px rgba(140,255,175,.03);
+}
+.wc-center-circle::before{
+  content:'';position:absolute;inset:14px;border:1px dashed rgba(160,255,190,.16);border-radius:50%;
+}
+.wc-crowd-flags{
+  position:absolute;top:10px;left:14px;display:flex;gap:6px;z-index:2;opacity:.9;
+}
+.wc-crowd-flags span{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:24px;height:16px;border-radius:4px;background:rgba(0,0,0,.24);
+  border:1px solid rgba(255,255,255,.14);font-size:.82rem;
+  box-shadow:0 4px 10px rgba(0,0,0,.2);
+  animation:flagWave 2.6s ease-in-out infinite;
+}
+.wc-crowd-flags span:nth-child(2){animation-delay:-1.1s;}
+.wc-camera-flash{
+  position:absolute;width:66px;height:66px;border-radius:50%;z-index:1;
+  background:radial-gradient(circle, rgba(255,255,255,.22) 0, rgba(255,255,255,.08) 20%, transparent 68%);
+  filter:blur(1px);mix-blend-mode:screen;opacity:0;animation:wcFlash 5.5s ease-in-out infinite;
+}
+.wc-camera-flash.f1{top:16px;right:18%;animation-delay:.4s}
+.wc-camera-flash.f2{top:58px;left:20%;animation-delay:2.8s}
+@keyframes wcFlash{0%,82%,100%{opacity:0}84%{opacity:.25}86%{opacity:.12}88%{opacity:.32}92%{opacity:0}}
+.wc-flood-beam{
+  position:absolute;top:0;width:180px;height:108px;z-index:0;opacity:.48;filter:blur(1px);
+  background:linear-gradient(180deg, rgba(255,248,200,.12), transparent 82%);
+  clip-path:polygon(45% 0,55% 0,100% 100%,0 100%);
+}
+.wc-flood-beam.left{left:-28px;transform:rotate(-8deg)}
+.wc-flood-beam.right{right:-28px;transform:rotate(8deg)}
+.wc-team-block,
+.wc-game-card .wc-team-block.away{
+  position:relative;z-index:3!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  gap:8px!important;
+  padding:18px 16px 12px!important;
+  background:linear-gradient(90deg, rgba(255,255,255,.04), transparent 72%)!important;
+}
+.wc-game-card .wc-team-block.away{
+  align-items:flex-end!important;text-align:right!important;
+  background:linear-gradient(270deg, rgba(255,255,255,.04), transparent 72%)!important;
+}
+.wc-team-name{
+  display:flex!important;align-items:center;gap:8px;font-family:'Inter',sans-serif;
+  font-size:1.04rem;font-weight:800;letter-spacing:-.02em;color:#f8faf6;
+  text-shadow:0 2px 8px rgba(0,0,0,.48);
+}
+.wc-team-block.away .wc-team-name{justify-content:flex-end;}
+.wc-team-name.is-away{flex-direction:row-reverse;}
+.wc-team-name-text{display:inline-block;}
+.wc-team-flag-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:28px;height:20px;border-radius:6px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.22);box-shadow:0 5px 10px rgba(0,0,0,.26);
+  font-size:1rem;line-height:1;
+}
+.wc-vs{
+  color:rgba(255,249,223,.92)!important;
+  background:radial-gradient(circle at 50% 50%, rgba(255,250,220,.12), transparent 75%);
+  padding:10px 12px;border-radius:50%;min-width:66px;text-align:center;
+  text-shadow:0 0 14px rgba(255,230,140,.16)!important;
+}
+.wc-game-card.is-final .wc-vs{background:radial-gradient(circle at 50% 50%, rgba(134,239,172,.14), transparent 76%)!important;}
+.wc-game-card[data-home-team="Argentina"] .wc-match-line{background-image:radial-gradient(220px 90px at 0% 35%, rgba(116,172,223,.12), transparent 78%), radial-gradient(220px 90px at 100% 35%, rgba(213,43,30,.10), transparent 78%), repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 55px, rgba(255,255,255,0) 55px 110px), linear-gradient(180deg,#163a22 0%,#0c2616 38%,#07140c 100%)!important;}
+.wc-game-card[data-home-team="France"] .wc-match-line{background-image:radial-gradient(220px 90px at 0% 35%, rgba(0,35,149,.12), transparent 78%), radial-gradient(220px 90px at 100% 35%, rgba(193,39,45,.12), transparent 78%), repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 55px, rgba(255,255,255,0) 55px 110px), linear-gradient(180deg,#163a22 0%,#0c2616 38%,#07140c 100%)!important;}
+.wc-game-card[data-home-team="Spain"] .wc-match-line{background-image:radial-gradient(220px 90px at 0% 35%, rgba(198,11,30,.13), transparent 78%), radial-gradient(220px 90px at 100% 35%, rgba(255,196,0,.12), transparent 78%), repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 55px, rgba(255,255,255,0) 55px 110px), linear-gradient(180deg,#163a22 0%,#0c2616 38%,#07140c 100%)!important;}
+.wc-game-card[data-home-team="Norway"] .wc-match-line{background-image:radial-gradient(220px 90px at 0% 35%, rgba(239,43,45,.12), transparent 78%), radial-gradient(220px 90px at 100% 35%, rgba(255,255,255,.10), transparent 78%), repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 55px, rgba(255,255,255,0) 55px 110px), linear-gradient(180deg,#163a22 0%,#0c2616 38%,#07140c 100%)!important;}
+@media (max-width:760px){
+  .wc-match-line{height:auto!important;min-height:226px!important;padding:56px 0 30px!important;}
+  .wc-team-name{font-size:.92rem!important;}
+}
+@media (max-width:520px){
+  .wc-match-line{padding:56px 0 22px!important;min-height:260px!important;}
+  .wc-team-block,.wc-game-card .wc-team-block.away{align-items:center!important;text-align:center!important;background:transparent!important;}
+  .wc-team-name,.wc-team-block.away .wc-team-name{justify-content:center!important;}
+  .wc-team-name.is-away{flex-direction:row!important;}
+  .wc-led-ribbon span{font-size:.4rem!important;letter-spacing:.14em!important;}
+}
+</style>
+<script id="game-card-broadcast-rebuild-js">
+(function(){
+  const teams={
+    'Argentina':{flag:'🇦🇷',abbr:'ARG',kit:'argentina'},
+    'Switzerland':{flag:'🇨🇭',abbr:'SUI',kit:'switzerland'},
+    'France':{flag:'🇫🇷',abbr:'FRA',kit:'france'},
+    'Morocco':{flag:'🇲🇦',abbr:'MAR',kit:'morocco'},
+    'Spain':{flag:'🇪🇸',abbr:'ESP',kit:'spain'},
+    'Belgium':{flag:'🇧🇪',abbr:'BEL',kit:'belgium'},
+    'Norway':{flag:'🇳🇴',abbr:'NOR',kit:'norway'},
+    'England':{flag:'🏴',abbr:'ENG',kit:'england'}
+  };
+
+  document.querySelectorAll('.wc-game-card').forEach((card,idx)=>{
+    const blocks=[...card.querySelectorAll('.wc-team-block')];
+    let homeName='', awayName='';
+
+    blocks.forEach((block,bIndex)=>{
+      const nameNode=[...block.children].find(el=>el.tagName==='SPAN' && !el.classList.contains('wc-team-jersey-wrap'));
+      if(!nameNode) return;
+      const name=(nameNode.textContent||'').trim();
+      const meta=teams[name];
+      if(!meta) return;
+      if(block.classList.contains('away')) awayName=name; else homeName=name;
+      block.dataset.team=name;
+
+      nameNode.classList.add('wc-team-name');
+      if(block.classList.contains('away')) nameNode.classList.add('is-away');
+      nameNode.innerHTML='<span class="wc-team-flag-badge" aria-hidden="true">'+meta.flag+'</span><span class="wc-team-name-text">'+name+'</span>';
+
+      const jersey=block.querySelector('.wc-team-jersey');
+      if(jersey){
+        jersey.classList.add('kit-'+meta.kit);
+      }
+    });
+
+    if(homeName) card.setAttribute('data-home-team',homeName);
+    if(awayName) card.setAttribute('data-away-team',awayName);
+
+    const matchLine=card.querySelector('.wc-match-line');
+    if(matchLine && !matchLine.querySelector('.wc-stadium-crowd')){
+      const home=teams[homeName]||{flag:'🏳️',abbr:'HOME'};
+      const away=teams[awayName]||{flag:'🏳️',abbr:'AWAY'};
+      const chip=(card.querySelector('.wc-card-chip')?.textContent||'Quarterfinal').trim();
+      const time=(card.querySelector('.wc-card-time')?.textContent||'Matchday').trim();
+      const ticker=(card.classList.contains('is-final') ? 'FINAL · ' : 'QUARTERFINAL · ')+home.abbr+' VS '+away.abbr+' · '+chip.toUpperCase()+' · '+time.toUpperCase()+' · '+home.abbr+' VS '+away.abbr+' · '+chip.toUpperCase();
+      matchLine.insertAdjacentHTML('afterbegin',
+        '<div class="wc-flood-beam left" aria-hidden="true"></div>'+
+        '<div class="wc-flood-beam right" aria-hidden="true"></div>'+
+        '<div class="wc-stadium-crowd" aria-hidden="true"></div>'+
+        '<div class="wc-led-ribbon" aria-hidden="true"><span>'+ticker+'</span></div>'+
+        '<div class="wc-crowd-flags" aria-hidden="true"><span>'+home.flag+'</span><span>'+away.flag+'</span></div>'+
+        '<div class="wc-camera-flash f1" aria-hidden="true"></div>'+
+        '<div class="wc-camera-flash f2" aria-hidden="true"></div>'+
+        '<div class="wc-center-circle" aria-hidden="true"></div>'+
+        '<div class="wc-stadium-crowd-bottom" aria-hidden="true"></div>'
+      );
+    }
   });
 })();
 </script>
