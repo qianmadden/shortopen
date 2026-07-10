@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>shortopen — The Market</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -5483,14 +5483,14 @@ renderTicker();
 
 // ── STATUS BAR CLOCK ──
 function updateClock() {
+  if (document.hidden) return; // PERF: no clock repaint while backgrounded
   const now = new Date();
   const et = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
   const h = String(et.getHours()).padStart(2,'0');
   const m = String(et.getMinutes()).padStart(2,'0');
   const s = String(et.getSeconds()).padStart(2,'0');
-  const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
-  document.getElementById('sbTime').textContent = h + ':' + m + ':' + s + ' ET';
-  document.querySelector('.sb-right').previousElementSibling && null;
+  const sbTime = document.getElementById('sbTime');
+  if (sbTime) sbTime.textContent = h + ':' + m + ':' + s + ' ET';
 }
 setInterval(updateClock, 1000);
 updateClock();
@@ -5514,6 +5514,8 @@ buildSbTicker();
 // ── EV BLINK ENGINE ──
 // Periodically flash the highest-EV pick, then random others
 function flashRandomEv() {
+  if (document.hidden) return; // PERF: skip the DOM scan while backgrounded
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const quotes = document.querySelectorAll('.t-call-ev');
   if (!quotes.length) return;
   let best = null, bestVal = -Infinity;
@@ -12963,6 +12965,150 @@ aftDOM(function(){
   .q-terminal-kicker{font-size:.5rem!important;}
   .q-terminal-title{font-size:1rem!important;}
   .ls-leg{padding:8px 10px!important;}
+}
+</style>
+
+
+<style id="so-iphone-mobile-pass-20260710">
+
+/* Shared iPhone guardrails */
+@media (max-width:640px){
+  html,body{width:100%!important;max-width:100%!important;overflow-x:hidden!important;}
+  body{padding-bottom:max(88px,calc(env(safe-area-inset-bottom) + 72px))!important;}
+  *,*::before,*::after{box-sizing:border-box!important;}
+  img,svg,canvas,video{max-width:100%!important;}
+  input,select,textarea{font-size:16px!important;max-width:100%!important;}
+  nav{max-width:100vw!important;}
+  .mobile-menu{max-width:100vw!important;}
+}
+
+@media (max-width:640px){
+  /* Market shell */
+  .status-bar{height:28px!important;font-size:.52rem!important;letter-spacing:.06em!important;}
+  .sb-clock{padding:0 9px!important;gap:5px!important;}
+  .sb-session{padding:0 9px!important;gap:5px!important;}
+  .sb-right{display:none!important;}
+  nav{top:28px!important;height:62px!important;padding:13px 18px!important;}
+  .nav-logo{font-size:1.18rem!important;}
+  .hamburger{display:flex!important;}
+  .nav-links{display:none!important;}
+
+  .q-hero-market,.hero-grid{grid-template-columns:1fr!important;padding:112px 14px 18px!important;gap:18px!important;}
+  .hero-left{min-width:0!important;}
+  .hero-stat-row,.q-hero-stat-row{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;}
+  .hero-stat-card{min-width:0!important;min-height:118px!important;padding:13px!important;border-radius:18px!important;}
+  .hero-stat-label{font-size:.51rem!important;min-height:auto!important;letter-spacing:.14em!important;}
+  .hero-stat-value{font-size:1.45rem!important;line-height:1.05!important;}
+  .hero-value-prop{max-width:100%!important;margin-top:14px!important;padding:12px 14px!important;border-radius:18px!important;font-size:.78rem!important;line-height:1.45!important;}
+
+  .sport-tabs{padding:0 14px!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;scrollbar-width:none!important;}
+  .sport-tabs::-webkit-scrollbar{display:none!important;}
+  .sport-tab{flex:0 0 auto!important;padding:10px 14px!important;font-size:.66rem!important;}
+  .legend-bar{padding:12px 14px!important;gap:8px!important;overflow-x:auto!important;}
+  .date-divider{padding:18px 14px 8px!important;}
+  .date-divider-label{font-size:1.06rem!important;}
+  .games-list{padding:0 14px 42px!important;max-width:100%!important;}
+  .col-header-row{display:none!important;}
+
+  /* MLB cards: rebuild the desktop table into a true phone card. */
+  #mlbContainer .game-card,
+  #mlbContainer .game-card.has-series{width:100%!important;max-width:100%!important;display:block!important;margin:14px 0!important;border-radius:22px!important;border:1px solid rgba(255,255,255,.08)!important;border-left:3px solid rgba(244,185,66,.35)!important;overflow:hidden!important;min-height:0!important;box-shadow:0 16px 38px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.05)!important;}
+  #mlbContainer .game-card:not(.has-series),
+  #mlbContainer .game-card-inner{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;grid-auto-rows:auto!important;align-items:stretch!important;min-height:0!important;}
+  #mlbContainer .t-matchup{grid-column:1/-1!important;min-width:0!important;padding:16px!important;border-right:0!important;border-bottom:1px solid rgba(255,255,255,.07)!important;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012))!important;}
+  #mlbContainer .t-team-away,#mlbContainer .t-team-home{min-width:0!important;gap:10px!important;}
+  #mlbContainer .t-abbr{min-width:36px!important;font-size:.78rem!important;}
+  #mlbContainer .t-name{font-size:.92rem!important;line-height:1.2!important;max-width:calc(100vw - 108px)!important;}
+  #mlbContainer .t-pitcher{margin-left:46px!important;font-size:.63rem!important;color:#486075!important;}
+  #mlbContainer .t-time{font-size:.65rem!important;margin-top:9px!important;color:#60748a!important;}
+  #mlbContainer .t-prob{grid-column:1/-1!important;padding:12px 16px!important;border-right:0!important;border-bottom:1px solid rgba(255,255,255,.06)!important;background:rgba(0,0,0,.16)!important;}
+  #mlbContainer .t-prob-teams,#mlbContainer .t-prob-nums{font-size:.68rem!important;}
+  #mlbContainer .t-prob-bar{height:7px!important;}
+  #mlbContainer .t-odds{min-width:0!important;padding:11px 10px!important;border-right:0!important;border-bottom:1px solid rgba(255,255,255,.055)!important;background:rgba(0,0,0,.10)!important;}
+  #mlbContainer .t-odds:nth-child(3){border-right:1px solid rgba(255,255,255,.06)!important;}
+  #mlbContainer .t-odds:nth-child(5){grid-column:1/-1!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;padding:12px!important;}
+  #mlbContainer .t-odds-row{min-width:0!important;width:100%!important;gap:6px!important;}
+  #mlbContainer .t-odds-chip{width:100%!important;min-width:0!important;max-width:100%!important;justify-content:center!important;text-align:center!important;border-radius:12px!important;padding:10px 8px!important;font-size:.9rem!important;line-height:1!important;}
+  #mlbContainer .t-odds-juice{font-size:.72rem!important;min-width:38px!important;text-align:right!important;}
+  #mlbContainer .t-edge{grid-column:1/-1!important;min-width:0!important;padding:14px!important;border-top:1px solid rgba(255,255,255,.07)!important;background:linear-gradient(180deg,rgba(87,167,255,.04),rgba(0,0,0,.10))!important;}
+  #mlbContainer .t-call-btn{max-width:100%!important;width:100%!important;min-width:0!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:9px!important;padding:11px 12px!important;border-radius:16px!important;}
+  #mlbContainer .t-call-label{font-size:.82rem!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+  #mlbContainer .t-call-ev{font-size:.74rem!important;padding:5px 8px!important;white-space:nowrap!important;}
+  #mlbContainer .t-edge-note{font-size:.74rem!important;line-height:1.45!important;margin-top:10px!important;color:#6e8298!important;}
+  #mlbContainer .series-banner{height:auto!important;min-height:30px!important;padding:7px 10px!important;overflow:hidden!important;}
+  #mlbContainer .series-ctx{font-size:.43rem!important;margin-right:7px!important;}
+  #mlbContainer .series-leader{font-size:.50rem!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+
+  /* Q roulette: keep the wheel, dock, payout and chip rack inside a 393px viewport. */
+  #mlbContainer .ls-wrap{width:calc(100% - 24px)!important;max-width:calc(100vw - 24px)!important;margin:0 12px 34px!important;padding:12px!important;border-radius:24px!important;overflow:hidden!important;}
+  #mlbContainer .ls-wrap::before{margin:0 6px 12px!important;font-size:.50rem!important;letter-spacing:.12em!important;text-align:center!important;}
+  #mlbContainer .ls-wrap .ls-hero-zone{grid-template-columns:1fr!important;padding:12px!important;gap:14px!important;overflow:hidden!important;}
+  #mlbContainer .ls-wrap .ls-wheel-panel{width:100%!important;max-width:100%!important;height:clamp(300px,88vw,350px)!important;min-height:clamp(300px,88vw,350px)!important;overflow:hidden!important;border-radius:22px!important;}
+  #mlbContainer .ls-wrap .ls-wheel-rail{width:min(312px,78vw)!important;height:min(312px,78vw)!important;max-width:100%!important;max-height:100%!important;}
+  #mlbContainer .ls-wrap .ls-wheel-track{width:min(276px,70vw)!important;height:min(276px,70vw)!important;}
+  #mlbContainer .ls-wheel-panel .ls-spin-history{bottom:5px!important;max-width:88%!important;}
+  #mlbContainer .q-wheel-action-dock{position:relative!important;left:auto!important;right:auto!important;bottom:auto!important;transform:none!important;width:100%!important;max-width:100%!important;margin:12px 0 0!important;}
+  #mlbContainer .q-wheel-action-dock .ls-action-row{grid-template-columns:1fr!important;gap:12px!important;}
+  #mlbContainer .q-wheel-action-dock .ls-wager,
+  #mlbContainer .q-wheel-action-dock .ls-odds-panel{width:100%!important;max-width:100%!important;min-height:auto!important;}
+  #mlbContainer .q-terminal-body{grid-template-columns:1fr!important;gap:12px!important;}
+  #mlbContainer .q-chip-felt{min-height:0!important;padding:14px!important;border-radius:20px!important;}
+  #mlbContainer .q-chip-drop-zone{grid-template-columns:1fr!important;gap:14px!important;padding:4px 0 10px!important;justify-items:center!important;}
+  #mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip{width:min(100%,330px)!important;max-width:330px!important;height:86px!important;min-height:86px!important;padding:18px 14px 9px!important;}
+  #mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-name{font-size:.82rem!important;}
+  #mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip .ls-leg-odds{font-size:.98rem!important;}
+  #mlbContainer .q-ticket-panel{width:100%!important;max-width:100%!important;}
+  #mlbContainer .q-ticket-row{min-height:48px!important;padding:8px 9px!important;}
+  #mlbContainer .q-ticket-left b{font-size:.66rem!important;}
+  #mlbContainer .q-ticket-odds-badge{font-size:.78rem!important;}
+}
+@media (max-width:430px){
+  .hero-stat-row,.q-hero-stat-row{grid-template-columns:1fr!important;}
+  #mlbContainer .t-odds-chip{font-size:.84rem!important;padding:9px 6px!important;}
+}
+
+</style>
+
+<style id="so-mobile-hardening-20260710">
+/* Final iOS/Android hardening pass — shared across all pages */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+@media (max-width:640px){
+  html,body{max-width:100%;overflow-x:hidden;}
+  a,button,[onclick],input,select,textarea,label{touch-action:manipulation;}
+  a,button,[onclick]{-webkit-tap-highlight-color:transparent;}
+  input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px!important;} /* prevents iOS Safari auto-zoom on focus */
+  button,a.btn,[role=button]{min-height:40px;}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}
+}
+/* Pause looping ambient animations in sections scrolled off-screen (big idle-CPU / battery win on phones) */
+.so-anim-offscreen,.so-anim-offscreen *,.so-anim-offscreen *::before,.so-anim-offscreen *::after{animation-play-state:paused!important;}
+</style>
+
+
+<style id="so-second-pass-20260710">
+/* Second phone pass: shrink the roulette block and tighten game cards so the page scrolls in one clean run */
+@media (max-width:640px){
+  #mlbContainer .game-card,#mlbContainer .game-card.has-series{margin:11px 0!important;border-radius:20px!important;}
+  #mlbContainer .t-matchup{padding:13px 14px!important;}
+  #mlbContainer .t-prob{padding:10px 14px!important;}
+  #mlbContainer .t-odds{padding:9px 10px!important;}
+  #mlbContainer .t-edge{padding:12px 14px!important;}
+  #mlbContainer .t-call-btn{padding:10px 12px!important;}
+
+  /* Roulette: cap the wheel well under one screen height */
+  #mlbContainer .ls-wrap{margin:0 10px 26px!important;padding:10px!important;border-radius:20px!important;}
+  #mlbContainer .ls-wrap .ls-hero-zone{padding:10px!important;gap:12px!important;}
+  #mlbContainer .ls-wrap .ls-wheel-panel{height:clamp(250px,72vw,296px)!important;min-height:clamp(250px,72vw,296px)!important;border-radius:18px!important;}
+  #mlbContainer .ls-wrap .ls-wheel-rail{width:min(252px,64vw)!important;height:min(252px,64vw)!important;}
+  #mlbContainer .ls-wrap .ls-wheel-track{width:min(222px,56vw)!important;height:min(222px,56vw)!important;}
+  #mlbContainer .q-wheel-action-dock{margin:10px 0 0!important;}
+  #mlbContainer .q-wheel-action-dock .ls-action-row{gap:10px!important;}
+  #mlbContainer .ls-card{border-radius:20px!important;}
+
+  /* Any internal scroller contains its own momentum instead of hijacking the page */
+  .games-list [style*="overflow"],#mlbContainer [class*="scroll"],.legend-bar,.sport-tabs{overscroll-behavior-x:contain;}
 }
 </style>
 

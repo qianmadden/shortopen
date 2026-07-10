@@ -1062,5 +1062,66 @@ document.querySelectorAll('.glass-liquid').forEach(card => {
   .border-l.border-white\/5.bg-black\/20.p-10{padding:20px!important;}
 }
 </style>
+
+<style id="so-mobile-hardening-20260710">
+/* Final iOS/Android hardening pass — shared across all pages */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+@media (max-width:640px){
+  html,body{max-width:100%;overflow-x:hidden;}
+  a,button,[onclick],input,select,textarea,label{touch-action:manipulation;}
+  a,button,[onclick]{-webkit-tap-highlight-color:transparent;}
+  input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px!important;} /* prevents iOS Safari auto-zoom on focus */
+  button,a.btn,[role=button]{min-height:40px;}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}
+}
+/* Pause looping ambient animations in sections scrolled off-screen (big idle-CPU / battery win on phones) */
+.so-anim-offscreen,.so-anim-offscreen *,.so-anim-offscreen *::before,.so-anim-offscreen *::after{animation-play-state:paused!important;}
+</style>
+
+<script id="so-anim-visibility-gate-20260710">
+(function(){
+  if(!('IntersectionObserver' in window)) return;
+  var targets = document.querySelectorAll('body > section, body > footer, body > main, main > section, body > div:not([class*="menu"]):not([id*="menu"])');
+  if(!targets.length) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting) e.target.classList.remove('so-anim-offscreen');
+      else e.target.classList.add('so-anim-offscreen');
+    });
+  }, {rootMargin:'200px 0px 200px 0px', threshold:0});
+  targets.forEach(function(el){
+    // Never gate fixed/sticky chrome (navs, overlays) — always "visible"
+    var cs = getComputedStyle(el);
+    if(cs.position === 'fixed' || cs.position === 'sticky') return;
+    io.observe(el);
+  });
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden) targets.forEach(function(el){ el.classList.add('so-anim-offscreen'); });
+    // IO re-fires on return to foreground scroll; also clear proactively for visible ones:
+    else targets.forEach(function(el){
+      var r = el.getBoundingClientRect();
+      if(r.bottom > -200 && r.top < innerHeight + 200) el.classList.remove('so-anim-offscreen');
+    });
+  });
+})();
+</script>
+
+
+<style id="so-about-safearea-20260710">
+@media (max-width:640px){ body{padding-bottom:max(24px, env(safe-area-inset-bottom));} }
+</style>
+
+
+<style id="so-second-pass-20260710">
+@media (max-width:640px){
+  .so-name-card{padding:16px!important;}
+  .so-mindset-card{padding:14px!important;}
+  section .p-8{padding:16px!important;}
+  .p-10.xl\:p-14{padding:18px!important;}
+}
+</style>
+
 </body>
 </html>
