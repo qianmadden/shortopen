@@ -1811,6 +1811,20 @@ body{padding-top:62px!important}
   .nav-cta{display:none;}
 }
 </style>
+<style id="so-final-speed-mobile-20260725">
+body>section,main>section,.analysis-layout{
+  content-visibility:auto;contain:layout paint style;contain-intrinsic-size:1px 760px;
+}
+.so-analysis-offscreen,.so-analysis-offscreen *{animation-play-state:paused!important}
+html.so-analysis-hidden *,html.so-analysis-hidden *::before,html.so-analysis-hidden *::after{animation-play-state:paused!important}
+@media(max-width:700px){
+  body::before{display:none!important}
+  .glass,.article-card,.market-card{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .hero-glow,.hero-glow-2,.hero-glow-3{display:none!important}
+  .ed-strip-inner{animation-duration:60s!important}
+  section:not(:first-of-type) *{transition-duration:.14s!important}
+}
+</style>
 </head>
 <body id="top">
 <!-- HERO -->
@@ -4394,5 +4408,19 @@ article.repreview-card.open .repreview-topart{height:170px}
 })();
 </script>
 
+<script id="so-final-speed-mobile-20260725-js">
+(function(){
+  function boot(){
+    var zones=[].slice.call(document.querySelectorAll('body>section,main>section,.analysis-layout,.article-card,.so-community-feature,.latest-articles,.deep-dive-section'));
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(entries){entries.forEach(function(e){e.target.classList.toggle('so-analysis-offscreen',!e.isIntersecting);});},{rootMargin:'420px 0px',threshold:0});
+      zones.forEach(function(z){io.observe(z)});
+    }
+    function vis(){document.documentElement.classList.toggle('so-analysis-hidden',document.hidden)}
+    vis();document.addEventListener('visibilitychange',vis,{passive:true});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
 </body>
 </html>

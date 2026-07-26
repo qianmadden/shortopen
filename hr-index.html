@@ -1864,6 +1864,24 @@ body.so-hr-scrolling #tbody tr,body.so-hr-scrolling #tbody td{transition:none!im
   .nav-cta{display:none;}
 }
 </style>
+<style id="so-final-sticky-speed-20260725">
+#tableWrap{isolation:isolate;overscroll-behavior-x:contain}
+#tableWrap *,#tableWrap *::before,#tableWrap *::after,#tbody tr,#tbody td{animation:none!important}
+#tableWrap th[data-key="name"],#tableWrap td.col-player{position:sticky!important;left:0!important;z-index:12!important;background:#0a0f16!important;background-image:none!important;opacity:1!important;isolation:isolate;box-shadow:10px 0 16px rgba(0,0,0,.26),1px 0 rgba(255,255,255,.08)!important}
+#tableWrap thead th[data-key="name"]{z-index:30!important;background:#111820!important}
+#tableWrap #tbody tr.sel td.col-player{background:#111923!important;background-image:linear-gradient(90deg,rgba(244,185,66,.14),rgba(17,25,35,1))!important;color:#fff!important}
+#tableWrap #tbody tr:hover td.col-player{background:#101720!important}
+#tableWrap #tbody tr.sel:hover td.col-player{background:#15202b!important}
+.layout,.table-wrap,.power-model-wrap,.insights-wrap{content-visibility:auto;contain-intrinsic-size:1px 720px}
+html.so-hr-hidden *,html.so-hr-hidden *::before,html.so-hr-hidden *::after{animation-play-state:paused!important}
+@media(max-width:700px){
+  body::before{display:none!important}
+  .glass-card,.side{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  #tableWrap th[data-key="name"],#tableWrap td.col-player{width:168px!important;min-width:168px!important;max-width:168px!important}
+  body *,body *::before,body *::after{animation:none!important;transition-duration:.12s!important}
+  .ticker-anim,.live-dot,.pad-circle,.pad-seg{animation:none!important}
+}
+</style>
 </head>
 <body>
 <nav>
@@ -2894,5 +2912,16 @@ function toggleHRMenu_OLD(){const m=document.getElementById('hrMobileMenu');m.cl
 })();
 </script>
 
+<script id="so-final-sticky-speed-20260725-js">
+(function(){
+  function boot(){
+    var zones=[].slice.call(document.querySelectorAll('.layout,.table-wrap,.power-model-wrap,.insights-wrap'));
+    if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle('so-hr-offscreen',!e.isIntersecting)});},{rootMargin:'320px 0px'});zones.forEach(function(z){io.observe(z)});}
+    requestAnimationFrame(function(){var table=document.getElementById('tableWrap');if(table)table.getAnimations({subtree:true}).forEach(function(a){a.cancel()})});
+    function vis(){document.documentElement.classList.toggle('so-hr-hidden',document.hidden)}vis();document.addEventListener('visibilitychange',vis,{passive:true});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
 </body>
 </html>

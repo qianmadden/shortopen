@@ -7,7 +7,8 @@
 <meta name="description" content="Live MLB strikeout prop board across DraftKings, FanDuel, BetMGM, BetRivers, Caesars and Hard Rock. Best price highlighting, steam detection, and a bet slip payout calculator.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 <style>
   :root{
     --bg:#06080a;
@@ -393,6 +394,21 @@
   .so-footer .footer-disclaimer{font-size:11px;line-height:1.7;color:var(--text-faint);max-width:1000px;border-top:1px solid var(--border);padding-top:14px;}
   @media(max-width:900px){footer.so-footer{padding:22px 20px 26px;text-align:center;}.so-footer .footer-top{flex-direction:column;gap:10px;}}
 </style>
+<style id="so-final-scroll-speed-20260725">
+.table-frame{overflow:hidden!important;contain:layout paint}
+.table-scroll{overflow-x:scroll!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-x pan-y!important;overscroll-behavior-x:contain;scrollbar-gutter:stable;cursor:grab;max-width:100%}
+.table-scroll.so-dragging{cursor:grabbing;user-select:none}
+.table-scroll table{min-width:1320px!important}
+.market-wrap,.stats-wrap,.clv-wrap{content-visibility:auto;contain-intrinsic-size:1px 620px}
+html.so-k-hidden *,html.so-k-hidden *::before,html.so-k-hidden *::after{animation-play-state:paused!important}
+@media(max-width:700px){
+  nav.site-nav{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .table-scroll{margin-right:0!important;padding-bottom:8px}
+  .table-scroll th.sticky-1,.table-scroll td.sticky-1{left:0!important;min-width:148px!important;width:148px!important;max-width:148px!important;z-index:8!important;background:#0d1113!important;box-shadow:8px 0 14px rgba(0,0,0,.28)}
+  .table-scroll th.sticky-2,.table-scroll td.sticky-2{position:static!important;left:auto!important;min-width:112px!important;width:112px!important;max-width:112px!important;box-shadow:none!important}
+  .ticker-track,.nt-track{animation-duration:70s!important}
+}
+</style>
 </head>
 <body>
 
@@ -617,33 +633,35 @@ const BOOKS = [
 ];
 
 const PROPS_DATA = [
-  {name:"Dylan Cease", team:"TOR", opp:"@BOS", books:{DK:[7.5,-115,-111],FD:[7.5,-115,-111],MGM:[7.5,-125,-105],RIV:[7.5,-115,-115],CZR:[7.5,-120,-109],HR:[7.5,-115,-115]}},
-  {name:"Nathan Eovaldi", team:"TEX", opp:"SEA", books:{DK:[6.5,-136,109],FD:[6.5,-142,112],MGM:[5.5,120,-160],RIV:[6.5,-127,-105],CZR:[6.5,-143,110],HR:[6.5,-145,110]}},
-  {name:"Hunter Greene", team:"CIN", opp:"@STL", books:{DK:[6.5,-113,-113],FD:[6.5,-130,102],MGM:[6.5,-145,105],RIV:[6.5,-124,-108],CZR:[6.5,-122,-110],HR:[6.5,-120,-110]}},
-  {name:"Nolan McLean", team:"NYM", opp:"LAD", books:{DK:[6.5,-150,117],FD:[6.5,-146,114],MGM:[6.5,-155,115],RIV:[6.5,-159,120],CZR:[6.5,-155,118],HR:[6.5,-145,115]}},
-  {name:"Eury Perez", team:"MIA", opp:"SD", books:{DK:[5.5,124,-158],FD:[5.5,124,-142],MGM:[5.5,125,-165],RIV:[6.5,-159,120],CZR:[5.5,121,-159],HR:[5.5,120,-160]}},
-  {name:"Paul Skenes", team:"PIT", opp:"CHC", books:{DK:[6.5,117,-149],FD:[6.5,116,-148],MGM:[6.5,110,-150],RIV:[6.5,112,-150],CZR:[6.5,115,-155],HR:[6.5,115,-155]}},
-  {name:"Ryan Weathers", team:"NYY", opp:"@PHI", books:{DK:[6.5,-159,124],FD:[6.5,-164,128],MGM:[6.5,-165,125],RIV:[5.5,120,-162],CZR:[5.5,121,-165],HR:[5.5,120,-160]}},
-  {name:"Bryan Woo", team:"SEA", opp:"@TEX", books:{DK:[5.5,120,-151],FD:[5.5,112,-142],MGM:[5.5,100,-135],RIV:[6.5,-165,123],CZR:[5.5,111,-145],HR:[5.5,115,-150]}},
-  {name:"Yoshinobu Yamamoto", team:"LAD", opp:"@NYM", books:{DK:[6.5,-136,107],FD:[6.5,-142,112],MGM:[6.5,-155,115],RIV:[6.5,-143,108],CZR:[6.5,-145,111],HR:[6.5,-140,110]}},
-  {name:"Hunter Brown", team:"HOU", opp:"@CWS", books:{DK:[5.5,106,-135],FD:[5.5,104,-132],MGM:[5.5,100,-135],RIV:[5.5,-109,-122],CZR:[5.5,101,-132],HR:[5.5,110,-135]}},
-  {name:"Sean Burke", team:"CWS", opp:"HOU", books:{DK:[5.5,-117,-109],FD:[5.5,-125,-102],MGM:[5.5,-140,105],RIV:[5.5,-124,-108],CZR:[5.5,-138,107],HR:[5.5,-125,-105]}},
-  {name:"Robert Gasser", team:"MIL", opp:"COL", books:{DK:[5.5,-133,104],FD:[5.5,-138,108],MGM:[5.5,-155,115],RIV:[5.5,-141,106],CZR:[5.5,-139,106],HR:[5.5,-135,105]}},
-  {name:"Sonny Gray", team:"BOS", opp:"TOR", books:{DK:[4.5,121,-154],FD:[4.5,102,-130],MGM:[5.5,-150,110],RIV:[4.5,115,-152],CZR:[4.5,108,-141],HR:[4.5,105,-140]}},
-  {name:"Shota Imanaga", team:"CHC", opp:"@PIT", books:{DK:[5.5,-103,-124],FD:[5.5,-108,-118],MGM:[5.5,-115,-115],RIV:[5.5,-120,-112],CZR:[5.5,-111,-115],HR:[5.5,-110,-120]}},
-  {name:"Casey Mize", team:"DET", opp:"KC", books:{DK:[3.5,-130,-105],FD:[3.5,null,-104],MGM:[3.5,-150,110],RIV:[5.5,null,null],CZR:[3.5,-127,-103],HR:[3.5,-110,-130]}},
-  {name:"Robbie Ray", team:"SF", opp:"LAA", books:{DK:[5.5,104,-132],FD:[5.5,102,-130],MGM:[5.5,100,-135],RIV:[5.5,105,-139],CZR:[5.5,-105,-127],HR:[5.5,100,-130]}},
-  {name:"Michael Wacha", team:"KC", opp:"@DET", books:{DK:[5.5,null,null],FD:[5.5,null,null],MGM:[4.5,null,null],RIV:[5.5,null,null],CZR:[5.5,null,null],HR:[5.5,null,null]}},
-  {name:"Tanner Bibee", team:"CLE", opp:"@TB", books:{DK:[4.5,-170,133],FD:[4.5,-170,132],MGM:[3.5,125,-165],RIV:[4.5,-175,128],CZR:[4.5,-180,130],HR:[4.5,-170,130]}},
-  {name:"Bryce Elder", team:"ATL", opp:"@BAL", books:{DK:[4.5,101,-128],FD:[4.5,106,-136],MGM:[4.5,100,-135],RIV:[4.5,104,-137],CZR:[4.5,-102,-130],HR:[4.5,110,-140]}},
-  {name:"Ryan Feltner", team:"COL", opp:"@MIL", books:{DK:[4.5,-159,125],FD:[4.5,-162,126],MGM:[4.5,-165,125],RIV:[4.5,-155,116],CZR:[4.5,-170,127],HR:[4.5,-165,125]}},
-  {name:"Foster Griffin", team:"WSH", opp:"ARI", books:{DK:[4.5,-105,-122],FD:[4.5,100,-128],MGM:[4.5,-105,-125],RIV:[4.5,-107,-125],CZR:[4.5,-108,-121],HR:[4.5,-105,-125]}},
-  {name:"Andre Pallante", team:"STL", opp:"CIN", books:{DK:[4.5,-140,110],FD:[4.5,-150,118],MGM:[4.5,-155,115],RIV:[4.5,-143,107],CZR:[4.5,-160,118],HR:[4.5,-155,115]}},
-  {name:"Brandon Young", team:"BAL", opp:"ATL", books:{DK:[4.5,-141,113],FD:[4.5,-150,118],MGM:[4.5,-150,110],RIV:[4.5,-148,110],CZR:[4.5,-165,120],HR:[4.5,-150,115]}},
-  {name:"Mitch Bratt", team:"ARI", opp:"@WSH", books:{DK:[3.5,-109,-116],FD:[3.5,-113,-113],MGM:[3.5,-125,-105],RIV:[3.5,-120,-112],CZR:[3.5,-122,-110],HR:[3.5,-120,-110]}},
-  {name:"Ryan Johnson", team:"LAA", opp:"@SF", books:{DK:[3.5,110,-139],FD:[3.5,-102,-125],MGM:[3.5,100,-135],RIV:[3.5,100,-132],CZR:[3.5,-105,-127],HR:[3.5,100,-130]}},
-  {name:"Nick Martinez", team:"TB", opp:"CLE", books:{DK:[3.5,-145,114],FD:[3.5,-142,112],MGM:[3.5,-160,120],RIV:[3.5,-148,110],CZR:[3.5,-148,113],HR:[3.5,-145,115]}},
-  {name:"JP Sears", team:"SD", opp:"@MIA", books:{DK:[3.5,null,null],FD:[3.5,null,null],MGM:[3.5,null,null],RIV:[3.5,null,null],CZR:[3.5,null,null],HR:[3.5,null,null]}}
+  {name:"Jacob Misiorowski", team:"MIL", opp:"COL", books:{DK:[8.5,-117,-109],FD:[8.5,-120,-106],MGM:[8.5,-110,-120],RIV:[8.5,-118,-113],CZR:[8.5,-113,-115],HR:[8.5,-115,-115]}},
+  {name:"Drew Rasmussen", team:"TB", opp:"CLE", books:{DK:[7.5,105,-140],FD:[8.5,null,168],MGM:[7.5,null,null],RIV:[5.5,null,null],CZR:[7.5,null,null],HR:[7.5,110,-145]}},
+  {name:"Cristopher Sanchez", team:"PHI", opp:"NYY", books:{DK:[7.5,-123,-104],FD:[7.5,-136,106],MGM:[6.5,130,-175],RIV:[7.5,-130,-103],CZR:[7.5,-137,105],HR:[7.5,-125,-105]}},
+  {name:"Jacob deGrom", team:"TEX", opp:"SEA", books:{DK:[7.5,-142,112],FD:[7.5,-162,126],MGM:[7.5,-155,115],RIV:[7.5,-157,117],CZR:[7.5,-157,119],HR:[7.5,-155,120]}},
+  {name:"Logan Gilbert", team:"SEA", opp:"@TEX", books:{DK:[6.5,-127,100],FD:[6.5,-128,100],MGM:[6.5,-140,105],RIV:[6.5,-143,110],CZR:[6.5,-145,108],HR:[6.5,-130,100]}},
+  {name:"Braxton Ashcraft", team:"PIT", opp:"CHC", books:{DK:[5.5,null,-157],FD:[5.5,102,-130],MGM:[5.5,105,-145],RIV:[5.5,123,-165],CZR:[5.5,113,-160],HR:[5.5,110,-140]}},
+  {name:"Shane Baz", team:"BAL", opp:"ATL", books:{DK:[5.5,-150,117],FD:[5.5,-154,120],MGM:[4.5,110,-150],RIV:[5.5,-175,128],CZR:[5.5,-165,121],HR:[5.5,-155,120]}},
+  {name:"Ronel Blanco", team:"HOU", opp:"@CWS", books:{DK:[4.5,129,-164],FD:[5.5,-170,132],MGM:[4.5,135,-185],RIV:[4.5,125,-167],CZR:[4.5,122,-160],HR:[4.5,125,-165]}},
+  {name:"Kevin Gausman", team:"TOR", opp:"@BOS", books:{DK:[5.5,-128,101],FD:[5.5,-142,112],MGM:[5.5,-135,100],RIV:[5.5,-150,112],CZR:[5.5,-136,105],HR:[5.5,-135,105]}},
+  {name:"Parker Messick", team:"CLE", opp:"@TB", books:{DK:[5.5,null,null],FD:[4.5,null,-122],MGM:[4.5,null,null],RIV:[4.5,null,null],CZR:[5.5,null,null],HR:[4.5,null,null]}},
+  {name:"Freddy Peralta", team:"NYM", opp:"LAD", books:{DK:[5.5,-139,109],FD:[5.5,-138,108],MGM:[4.5,115,-155],RIV:[5.5,-148,112],CZR:[5.5,-160,118],HR:[5.5,-145,110]}},
+  {name:"Emmet Sheehan", team:"LAD", opp:"@NYM", books:{DK:[5.5,118,-151],FD:[5.5,102,-130],MGM:[5.5,-105,-125],RIV:[5.5,100,-132],CZR:[5.5,104,-136],HR:[5.5,105,-135]}},
+  {name:"Jose Soriano", team:"LAA", opp:"@SF", books:{DK:[5.5,-147,115],FD:[4.5,124,-160],MGM:[5.5,-200,150],RIV:[5.5,-152,114],CZR:[4.5,121,-159],HR:[5.5,-165,125]}},
+  {name:"Luinder Avila", team:"KC", opp:"@DET", books:{DK:[4.5,-162,129],FD:[3.5,134,-172],MGM:[3.5,125,-165],RIV:[3.5,115,-152],CZR:[3.5,130,-170],HR:[4.5,-165,125]}},
+  {name:"Walker Buehler", team:"SD", opp:"@MIA", books:{DK:[4.5,-156,124],FD:[4.5,-166,130],MGM:[3.5,120,-160],RIV:[3.5,125,-167],CZR:[4.5,-170,127],HR:[4.5,-170,125]}},
+  {name:"Kyle Freeland", team:"COL", opp:"@MIL", books:{DK:[4.5,-142,111],FD:[4.5,-146,114],MGM:[4.5,-160,120],RIV:[4.5,-150,112],CZR:[4.5,-180,125],HR:[4.5,-150,115]}},
+  {name:"Kyle Leahy", team:"STL", opp:"CIN", books:{DK:[4.5,-120,-106],FD:[4.5,-125,-102],MGM:[4.5,-120,-110],RIV:[4.5,-143,107],CZR:[4.5,-128,-102],HR:[4.5,-120,-110]}},
+  {name:"Reynaldo Lopez", team:"ATL", opp:"@BAL", books:{DK:[4.5,125,-160],FD:[4.5,126,-162],MGM:[4.5,115,-155],RIV:[4.5,120,-162],CZR:[4.5,122,-159],HR:[4.5,120,-165]}},
+  {name:"Connor Prielipp", team:"MIN", opp:"ATH", books:{DK:[4.5,-139,109],FD:[4.5,-142,112],MGM:[4.5,-155,115],RIV:[4.5,-141,106],CZR:[4.5,-141,108],HR:[4.5,-140,105]}},
+  {name:"Jeffrey Springs", team:"ATH", opp:"@MIN", books:{DK:[4.5,-161,126],FD:[3.5,122,-156],MGM:[3.5,115,-155],RIV:[3.5,130,-175],CZR:[3.5,122,-159],HR:[3.5,130,-170]}},
+  {name:"Ranger Suarez", team:"BOS", opp:"TOR", books:{DK:[4.5,-127,100],FD:[4.5,-132,106],MGM:[4.5,-150,110],RIV:[4.5,-139,105],CZR:[4.5,-138,107],HR:[4.5,-130,100]}},
+  {name:"Jameson Taillon", team:"CHC", opp:"@PIT", books:{DK:[4.5,101,-126],FD:[4.5,-104,-122],MGM:[4.5,-115,-115],RIV:[4.5,-121,-110],CZR:[4.5,-108,-121],HR:[4.5,-110,-120]}},
+  {name:"Framber Valdez", team:"DET", opp:"KC", books:{DK:[4.5,116,-148],FD:[4.5,106,-136],MGM:[4.5,100,-135],RIV:[4.5,114,-150],CZR:[4.5,106,-139],HR:[4.5,110,-140]}},
+  {name:"Will Warren", team:"NYY", opp:"@PHI", books:{DK:[4.5,-140,110],FD:[4.5,-140,110],MGM:[4.5,-160,130],RIV:[3.5,125,-167],CZR:[4.5,-140,110],HR:[4.5,-140,110]}},
+  {name:"Carson Whisenhunt", team:"SF", opp:"LAA", books:{DK:[4.5,-123,-103],FD:[4.5,-132,104],MGM:[4.5,-140,105],RIV:[4.5,-124,-107],CZR:[4.5,-121,-104],HR:[4.5,-130,100]}},
+  {name:"Andrew Abbott", team:"CIN", opp:"@STL", books:{DK:[3.5,129,-165],FD:[3.5,120,-154],MGM:[3.5,115,-155],RIV:[3.5,108,-143],CZR:[3.5,117,-152],HR:[3.5,115,-155]}},
+  {name:"Kohl Drake", team:"ARI", opp:"@WSH", books:{DK:[3.5,109,-139],FD:[3.5,114,-146],MGM:[3.5,100,-135],RIV:[3.5,102,-136],CZR:[3.5,107,-137],HR:[3.5,105,-135]}},
+  {name:"Erick Fedde", team:"CWS", opp:"HOU", books:{DK:[3.5,-133,105],FD:[3.5,-142,112],MGM:[3.5,-125,-105],RIV:[3.5,-167,125],CZR:[3.5,-136,103],HR:[3.5,-135,105]}},
+  {name:"Janson Junk", team:"MIA", opp:"SD", books:{DK:[3.5,121,-155],FD:[3.5,124,-158],MGM:[3.5,100,-135],RIV:[3.5,107,-143],CZR:[3.5,114,-150],HR:[3.5,115,-150]}}
 ];
 
 
@@ -668,8 +686,8 @@ function mode(arr){
 }
 
 // enrich each player with computed consensus / best price / steam data
-const ROOKIES = new Set(['Mitch Bratt','Ryan Johnson']);
-const LIVE_NOW = new Set(['Hunter Brown','Mitch Bratt']);
+const ROOKIES = new Set(['Jacob Misiorowski','Connor Prielipp','Carson Whisenhunt']);
+const LIVE_NOW = new Set(['Jacob Misiorowski','Walker Buehler','Shane Baz']);
 const NOTE_POOL = ['Short-hook risk on low pitch count','Opponent lineup missing 2 regulars','Extra rest since last start','Bullpen banged up behind him','Coming off a rain-shortened outing','Facing this lineup for the first time this year'];
 const PARKS = ['Hitter-friendly park','Pitcher-friendly park','Neutral park'];
 const WEATHERS = ['Dome, climate controlled','Wind in 8mph, 71°F','Clear, 82°F, calm','Wind out 6mph, 76°F','Overcast, 68°F'];
@@ -1305,6 +1323,24 @@ renderSignalsRail();
 rerender();
 renderSlip();
 renderCLVTracker();
+</script>
+<script id="so-final-scroll-speed-20260725-js">
+(function(){
+  function boot(){
+    var scroller=document.querySelector('.table-scroll');
+    if(scroller){
+      var down=false,startX=0,startLeft=0,moved=false;
+      scroller.addEventListener('pointerdown',function(e){if(e.pointerType==='touch')return;down=true;moved=false;startX=e.clientX;startLeft=scroller.scrollLeft;scroller.classList.add('so-dragging');scroller.setPointerCapture&&scroller.setPointerCapture(e.pointerId);});
+      scroller.addEventListener('pointermove',function(e){if(!down)return;var dx=e.clientX-startX;if(Math.abs(dx)>4)moved=true;scroller.scrollLeft=startLeft-dx;});
+      function up(){down=false;scroller.classList.remove('so-dragging')}
+      scroller.addEventListener('pointerup',up);scroller.addEventListener('pointercancel',up);scroller.addEventListener('mouseleave',up);
+      scroller.addEventListener('click',function(e){if(moved){e.preventDefault();e.stopPropagation();moved=false;}},true);
+    }
+    function vis(){document.documentElement.classList.toggle('so-k-hidden',document.hidden)}
+    vis();document.addEventListener('visibilitychange',vis,{passive:true});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
 </script>
 </body>
 </html>

@@ -1414,6 +1414,35 @@ html,body{max-width:100%!important;overflow-x:hidden!important}
   .nav-cta{display:none;}
 }
 </style>
+<style id="so-final-speed-mobile-20260725">
+.section-panel{content-visibility:auto;contain:layout paint style;contain-intrinsic-size:1px 680px}
+.section-panel:not(.visible),.section-panel:not(.visible) *{animation-play-state:paused!important}
+.big-draft-card-final.reveal,.ota-card.reveal{animation:none!important;opacity:1!important;transform:none!important}
+.big-draft-card-final .animated-player-stage *, .big-draft-card-final svg *, .big-draft-card-final .card-status-pill::before, .ota-card::before, .roty-row-shine{animation:none!important}
+.so-nfl-offscreen,.so-nfl-offscreen *{animation-play-state:paused!important}
+html.so-nfl-hidden *,html.so-nfl-hidden *::before,html.so-nfl-hidden *::after{animation-play-state:paused!important}
+@media(max-width:700px){
+  body::before{display:none!important}
+  .nfl-hero-grid,.nfl-hero-grid>*{min-width:0!important;max-width:100%!important}
+  .roty-leader-list{display:flex!important;width:100%!important;max-width:100%!important;min-width:0!important;overflow-x:auto!important;overflow-y:hidden!important;gap:10px!important;min-height:0!important;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;padding-bottom:7px!important}
+  .roty-leader-row{flex:0 0 min(84vw,360px)!important;width:min(84vw,360px)!important;scroll-snap-align:start;grid-template-columns:24px minmax(105px,1fr) 52px 56px!important;min-height:66px!important}
+  .roty-leader-spark{display:none!important}
+  .ota-liquid-board{padding-bottom:14px!important}
+  .ota-liquid-grid{display:flex!important;grid-template-columns:none!important;overflow-x:auto!important;overflow-y:hidden!important;gap:10px!important;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;padding:2px 2px 8px!important}
+  .ota-card{flex:0 0 min(84vw,355px)!important;width:min(84vw,355px)!important;scroll-snap-align:start;margin:0!important;animation:none!important}
+  .so-mobile-draft-carousel{display:flex!important;gap:14px!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x mandatory;scroll-padding-left:1px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;padding:2px 1px 12px!important}
+  .so-mobile-draft-carousel>.big-draft-card-final{position:relative;flex:0 0 min(88vw,390px)!important;width:min(88vw,390px)!important;scroll-snap-align:start;max-height:455px!important;overflow:hidden!important;margin:0!important;animation:none!important;transition:max-height .18s ease!important}
+  .so-mobile-draft-carousel>.big-draft-card-final.so-mobile-expanded{max-height:none!important;overflow:visible!important}
+  .so-mobile-card-toggle{position:absolute;z-index:30;left:12px;right:12px;bottom:10px;width:calc(100% - 24px);border:1px solid rgba(244,185,66,.35);background:linear-gradient(180deg,rgba(10,15,23,.84),#090e15 45%);color:#f4b942;border-radius:999px;padding:10px 12px;font:800 .58rem/1 'Inter',sans-serif;letter-spacing:.13em;text-transform:uppercase;box-shadow:0 -18px 30px rgba(5,7,11,.92);cursor:pointer}
+  .so-mobile-draft-carousel>.big-draft-card-final.so-mobile-expanded .so-mobile-card-toggle{position:sticky;bottom:8px;margin-top:10px}
+  #homeCards{overflow:visible!important}
+  .draft-learning-lab{max-height:560px;overflow-y:auto;overscroll-behavior:contain}
+  .section-panel.visible{overflow:visible!important}
+  .roty-leader-list::-webkit-scrollbar,.ota-liquid-grid::-webkit-scrollbar,.so-mobile-draft-carousel::-webkit-scrollbar{height:4px}
+  .reveal,.animate-pulse{animation:none!important;opacity:1!important;transform:none!important}
+  .glass,.panel-card,.big-draft-card-final{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+}
+</style>
 </head>
 <body class="min-h-screen text-white">
 <!-- BG GLOWS -->
@@ -4278,6 +4307,42 @@ document.addEventListener('click',function(e){if(e.target&&e.target.closest&&e.t
     } else start();
     /* dots need the rows to exist; renderRotyLeaderboard runs on load */
     setTimeout(positionDots,1400); setTimeout(positionDots,3000);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
+<script id="so-final-speed-mobile-20260725-js">
+(function(){
+  var mq=matchMedia('(max-width:700px)');
+  function buildCarousel(){
+    var home=document.getElementById('homeCards');if(!home)return;
+    var existing=home.querySelector(':scope>.so-mobile-draft-carousel');
+    if(!mq.matches){
+      if(existing){while(existing.firstChild)home.insertBefore(existing.firstChild,existing);existing.remove();}
+      return;
+    }
+    if(existing)return;
+    var cards=[].slice.call(home.querySelectorAll(':scope>.big-draft-card-final'));if(!cards.length)return;
+    var wrap=document.createElement('div');wrap.className='so-mobile-draft-carousel';home.insertBefore(wrap,cards[0]);
+    cards.forEach(function(card){
+      wrap.appendChild(card);
+      if(!card.querySelector('.so-mobile-card-toggle')){
+        var b=document.createElement('button');b.type='button';b.className='so-mobile-card-toggle';b.textContent='Open player breakdown';
+        b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();var open=card.classList.toggle('so-mobile-expanded');b.textContent=open?'Collapse player breakdown':'Open player breakdown';});
+        card.appendChild(b);
+      }
+    });
+  }
+  function boot(){
+    buildCarousel();
+    var home=document.getElementById('homeCards');
+    if(home&&'MutationObserver' in window&&!home.querySelector(':scope>.so-mobile-draft-carousel')){
+      var mo=new MutationObserver(function(){buildCarousel();if(home.querySelector(':scope>.so-mobile-draft-carousel'))mo.disconnect();});mo.observe(home,{childList:true});setTimeout(function(){mo.disconnect()},4000);
+    }
+    if(mq.addEventListener)mq.addEventListener('change',buildCarousel);else if(mq.addListener)mq.addListener(buildCarousel);
+    var zones=[].slice.call(document.querySelectorAll('.section-panel,.ota-liquid-board,.draft-learning-lab,.big-draft-card-final'));
+    if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle('so-nfl-offscreen',!e.isIntersecting)});},{rootMargin:'400px 0px'});zones.forEach(function(z){io.observe(z)});}
+    function vis(){document.documentElement.classList.toggle('so-nfl-hidden',document.hidden)}vis();document.addEventListener('visibilitychange',vis,{passive:true});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
