@@ -47,58 +47,32 @@ body::after {
 /* ══════════════════════════════════════════
    NAV
 ══════════════════════════════════════════ */
-nav {
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 48px;
-  background:rgba(10,26,16,.97);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(34,197,94,.22);
-  height:62px;
-}
-.nav-logo {
-  font-family:'Inter',sans-serif;font-weight:900;font-size:1.25rem;
-  color:var(--white);letter-spacing:-.02em;text-decoration:none;
-  display:flex;align-items:center;gap:10px;
-}
-.nav-logo-word { color:var(--white); white-space:nowrap; }
-.nav-logo-word .accent { color:var(--green-n); }
+
+
+
+
 /* badge inherits from parent, not targeted by span rule */
-.nav-wc-badge {
-  font-size:.52rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
-  color:#f4b942;background:rgba(244,185,66,.10);
-  border:1px solid rgba(244,185,66,.28);border-radius:999px;padding:3px 9px;
-  white-space:nowrap;
-}
-.nav-links a:hover,.nav-links a.active{color:#f8fafc;}
-.nav-links a[href="worldcup.html"]{color:#f4b942;}
-.hamburger {
-  display:none;flex-direction:column;gap:5px;cursor:pointer;
-  padding:4px;background:transparent;border:none;z-index:300;
-}
-.hamburger span{display:block;width:22px;height:2px;background:var(--white);transition:all .25s;}
-.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-.hamburger.open span:nth-child(2){opacity:0;}
-.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+
+
+
+
+
+
+
 .mobile-menu {
   display:none;position:fixed;top:0;left:0;right:0;bottom:0;
   background:rgba(3,12,7,.98);
   z-index:250;flex-direction:column;align-items:center;justify-content:center;
 }
 .mobile-menu.open{display:flex;}
-.mobile-menu a {
-  font-family:'Inter',sans-serif;color:var(--white);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.07);text-align:center;transition:color .2s;
-}
-.mobile-menu a:hover,.mobile-menu a.active{color:#f8fafc;}
+
+
 .mobile-menu-close {
   position:absolute;top:24px;right:24px;background:transparent;
   border:none;color:#4d6070;font-size:1.4rem;cursor:pointer;padding:8px;
 }
-@media(max-width:640px){
-  nav{padding:14px 20px;}
-  .nav-links{display:none!important;}
-  .hamburger{display:flex;}
-}
+
 
 /* ══════════════════════════════════════════
    TOP SCROLLING BANNER
@@ -1777,14 +1751,14 @@ body::after{
   body{padding-bottom:max(88px,calc(env(safe-area-inset-bottom) + 72px))!important;}
   img,svg,canvas,video{max-width:100%!important;}
   input,select,textarea{font-size:16px!important;max-width:100%!important;}
-  nav{max-width:100vw!important;}
+  
   .mobile-menu{max-width:100vw!important;}
 }
 
 @media (max-width:640px){
-  nav{height:62px!important;padding:13px 18px!important;}
-  .hamburger{display:flex!important;}
-  .nav-links{display:none!important;}
+  
+  
+  
   .wc-page{overflow:hidden!important;}
   .wc-shell{padding:78px 12px 78px!important;max-width:100vw!important;}
   .wc-hero{grid-template-columns:1fr!important;gap:16px!important;padding:18px 16px!important;border-radius:24px!important;overflow:hidden!important;}
@@ -1860,7 +1834,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
 body{position:relative}
 body::before{position:absolute!important;opacity:.56!important}
 body::after{display:none!important}
-nav{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+
 .wc-stage>.so-wc-zone{content-visibility:auto;contain-intrinsic-size:1px 620px}
 .wc-stage>.so-wc-zone.so-wc-offscreen *,
 .wc-stage>.so-wc-zone.so-wc-offscreen::before,
@@ -1963,115 +1937,98 @@ body::before,body::after{position:absolute!important}
 
 
 
-<style id="so-beta-nav-badge">
-/* Prop Board -- green beta tab (all non-Prop-Board pages) */
-.nav-links a.nav-beta-special {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  color: rgba(134,239,172,.95) !important;
-  background: rgba(34,197,94,.09);
-  border: 1px solid rgba(34,197,94,.28);
-  border-radius: 7px;
-  padding: 4px 11px 6px !important;
-  line-height: 1;
-  transition: background .2s, border-color .2s;
+
+
+
+<style id="so-unified-nav-v2">
+/* ================================================================
+   SHORTOPEN — UNIFIED NAV BAR. Single source of truth.
+   Do not add nav overrides elsewhere — edit this block only.
+   ================================================================ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 48px;height:62px;
+  background:rgba(8,10,14,.97);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
 }
-.nav-links a.nav-beta-special::before {
-  content: 'BETA';
-  display: block;
-  font-size: .48rem;
-  font-weight: 900;
-  letter-spacing: .17em;
-  color: #5eff9e;
-  text-shadow: 0 0 8px rgba(34,197,94,.9), 0 0 16px rgba(34,197,94,.55);
-  line-height: 1;
-  white-space: nowrap;
-  animation: soBetaPulse 1.8s ease-in-out infinite;
+.nav-logo{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  font-weight:900;font-size:1.25rem;color:var(--white);
+  letter-spacing:-.02em;text-decoration:none;
 }
-@keyframes soBetaPulse { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
-.nav-links a.nav-beta-special:hover {
-  background: rgba(34,197,94,.16);
-  border-color: rgba(34,197,94,.44);
-  color: #86efac !important;
-}
-.mobile-menu a.nav-beta-special {
-  color: #86efac !important;
-}
-.mobile-menu a.nav-beta-special::after {
-  content: 'BETA';
-  display: block;
-  font-size: .62rem;
-  font-weight: 900;
-  letter-spacing: .18em;
-  color: #5eff9e;
-  text-shadow: 0 0 8px rgba(34,197,94,.9), 0 0 16px rgba(34,197,94,.55);
-  margin-top: 4px;
-  animation: soBetaPulse 1.8s ease-in-out infinite;
-}
-.nav-links a.nav-beta-special.active,
-.mobile-menu a.nav-beta-special.active {
-  color: #f4b942 !important;
-}
-</style>
-<style id="so-unified-nav">
-/* ===== Unified shortopen nav — matches the Prop Board nav exactly =====
-   Logo styling is intentionally NOT touched here; each page keeps its own. */
-.nav-links{display:flex;align-items:center;gap:26px;list-style:none;margin:0;padding:0;}
+.nav-logo span{color:var(--green-n);}
+.nav-links{display:flex;align-items:center;gap:22px;list-style:none;margin:0;padding:0;}
+.nav-links li{position:relative;display:flex;align-items:center;}
 .nav-links a{
   font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
-  font-size:.72rem;
-  font-weight:500;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  color:#8a969c;
-  text-decoration:none;
-  transition:color .2s;
+  font-size:.84rem;font-weight:500;color:#8a969c;text-decoration:none;
+  transition:color .15s;
 }
-.nav-links a:hover{color:#e7edf0;}
-.nav-links a.active{color:#f4b942;}
-
-/* Sleek subscribe pill */
+.nav-links a:hover{color:#c8d0d6;}
+.nav-links a.active:not(.nav-special){
+  color:#f4d484;font-weight:600;
+  padding:5px 11px;margin:-5px -11px;border-radius:7px;
+  background:rgba(244,185,66,.09);
+  border:1px solid rgba(244,185,66,.3);
+}
+.nav-special{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1px;padding:5px 13px 6px;border-radius:9px;
+  text-decoration:none;line-height:1.2;
+}
+.nav-special .eyebrow{font-size:.5rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;}
+.nav-special .title{font-size:.78rem;font-weight:800;letter-spacing:.01em;}
+.nav-special.gold{background:rgba(244,185,66,.08);border:1px solid rgba(244,185,66,.35);}
+.nav-special.gold .eyebrow{color:#c9a24e;}
+.nav-special.gold .title{color:#f4b942;}
+.nav-special.gold.active{background:rgba(244,185,66,.16);border-color:rgba(244,185,66,.55);}
+.nav-special.green{background:rgba(34,217,126,.08);border:1px solid rgba(34,217,126,.35);}
+.nav-special.green .eyebrow{color:#5fae86;}
+.nav-special.green .title{color:#4ade80;}
+.nav-special.green.active{background:rgba(34,217,126,.16);border-color:rgba(34,217,126,.55);}
 .nav-cta{
   display:inline-flex;align-items:center;justify-content:center;
   font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
-  font-size:.62rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
-  color:#c8d0d6;text-decoration:none;white-space:nowrap;line-height:1;
-  padding:8px 18px;
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:4px;
-  background:transparent;
-  transition:color .2s,border-color .2s,background .2s;
+  font-size:.78rem;font-weight:600;color:#9cc6ff;text-decoration:none;white-space:nowrap;
+  padding:9px 18px;border-radius:999px;
+  background:rgba(77,159,255,.08);border:1px solid rgba(77,159,255,.35);
+  box-shadow:0 0 10px 1px rgba(77,159,255,.2);
+  transition:background .15s;
 }
-.nav-cta:hover{color:#f4b942;border-color:rgba(244,185,66,.55);background:rgba(244,185,66,.08);}
-.nav-cta.active{color:#f4b942;border-color:rgba(244,185,66,.5);background:rgba(244,185,66,.06);}
-
-/* Mobile drawer links match the board */
+.nav-cta:hover{background:rgba(77,159,255,.14);}
+.nav-cta.active{background:rgba(77,159,255,.16);}
 .mobile-menu a{font-size:clamp(1.3rem,6vw,1.8rem);font-weight:800;padding:12px 0;width:78%;}
 .mobile-menu a.active{color:#f4b942;}
-
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px;}
+.hamburger span{width:22px;height:2px;background:#f0ece4;border-radius:2px;}
 @media (max-width:900px){
+  nav{padding:14px 20px;}
   .nav-links{display:none;}
-  .hamburger{display:flex;}
   .nav-cta{display:none;}
+  .hamburger{display:flex;}
 }
+
+/* World Cup edition — accent only, structure/font unchanged */
+nav{background:rgba(9,20,14,.97);border-bottom-color:rgba(34,197,94,.22);}
+
 </style>
+
 </head>
 <body>
 <!-- NAV -->
 <nav>
-<a class="nav-logo" href="index.html"><span class="nav-logo-word">short<span class="accent">open</span></span><span class="nav-wc-badge">⚽ World Cup Edition</span></a>
+<a class="nav-logo" href="index.html">short<span>open</span></a>
 <ul class="nav-links">
 <li><a href="analysis.html">Analysis</a></li>
 <li><a href="market.html">Market</a></li>
-<li><a class="active" href="worldcup.html">World Cup</a></li>
+<li><a class="nav-special gold active" href="worldcup.html"><span class="eyebrow">Limited Edition</span><span class="title">World Cup</span></a></li>
 <li><a href="optimizer.html">Optimizer</a></li>
 <li><a href="hr-index.html">HR Index</a></li>
 <li><a href="nfl-draft-market.html">NFL Draft</a></li>
 <li><a href="film-room.html">Film Room</a></li>
-<li><a class="nav-beta-special" href="strikeout-market.html">Prop Board</a></li>
+<li><a class="nav-special green" href="strikeout-market.html"><span class="eyebrow">Beta</span><span class="title">Prop Board</span></a></li>
 <li><a href="about.html">About</a></li>
 </ul>
 <a class="nav-cta" href="subscribe.html">Subscribe</a>
@@ -2088,7 +2045,7 @@ body::before,body::after{position:absolute!important}
 <a href="hr-index.html" onclick="toggleMobileMenu()">HR Index</a>
 <a href="nfl-draft-market.html" onclick="toggleMobileMenu()">NFL Draft</a>
 <a href="film-room.html" onclick="toggleMobileMenu()">Film Room</a>
-<a class="nav-beta-special" href="strikeout-market.html" onclick="toggleMobileMenu()">Prop Board</a>
+<a href="strikeout-market.html" onclick="toggleMobileMenu()">Prop Board</a>
 <a href="about.html" onclick="toggleMobileMenu()">About</a>
 <a href="subscribe.html" onclick="toggleMobileMenu()">Subscribe</a>
 </div>
