@@ -40,19 +40,9 @@ body{font-family:'Inter',sans-serif;background:radial-gradient(circle at top lef
    NAV
    ════════════════════════════════════════════════════════════════ */
 
-
-
-
-
-
-
-
-
-.mobile-menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(5,7,11,0.98);backdrop-filter:blur(20px);z-index:150;flex-direction:column;align-items:center;justify-content:center}
-.mobile-menu.open{display:flex}
-
-
-.mobile-menu-close{position:absolute;top:24px;right:24px;background:transparent;border:none;color:#4d6070;font-size:1.4rem;cursor:pointer;padding:8px}
+.mobile-menu{display:none!important;position:fixed!important;top:0!important;left:0!important;right:0!important;bottom:0!important;background:rgba(6,8,10,.98)!important;backdrop-filter:blur(20px)!important;-webkit-backdrop-filter:blur(20px)!important;z-index:150!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;overflow-y:auto!important;overscroll-behavior:contain!important;}
+.mobile-menu.open{display:flex!important;}
+.mobile-menu-close{position:absolute!important;top:22px!important;right:22px!important;background:transparent!important;border:none!important;color:#4c565b!important;font-size:1.3rem!important;line-height:1!important;cursor:pointer!important;padding:8px!important;}
 
 
 /* ════════════════════════════════════════════════════════════════
@@ -1345,6 +1335,21 @@ html.so-nfl-hidden *,html.so-nfl-hidden *::before,html.so-nfl-hidden *::after{an
   .reveal,.animate-pulse{animation:none!important;opacity:1!important;transform:none!important}
   .glass,.panel-card,.big-draft-card-final{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 }
+
+
+/* SECOND-PASS VERIFIED CORRECTIONS — NFL */
+/* SECOND-PASS VERIFIED CORRECTIONS — pseudo-elements were escaping the earlier animation guard. */
+html,body{margin:0!important;width:100%!important;max-width:100%!important;}
+.animated-player-stage::before{animation:none!important;transform:none!important;opacity:.62!important;will-change:auto!important;}
+.roty-row-shine::before{animation:none!important;transform:none!important;opacity:0!important;will-change:auto!important;}
+.roty-spark-dot{animation:rotyDotIn .28s ease forwards!important;animation-delay:calc(var(--d,0s) + .55s)!important;will-change:auto!important;}
+.roty-live-badge::after{animation:none!important;display:none!important;}
+.quickstat::after{animation:none!important;opacity:.72!important;}
+.nfl-hero-splash{animation:none!important;will-change:auto!important;}
+@media(max-width:700px){
+  .nfl-hero-grid h2 .text-yellow-400{animation:none!important;background-position:50% 0!important;}
+  .roty-leader-row{max-width:calc(100vw - 34px)!important;}
+}
 </style>
 
 <style id="so-unified-nav-v2">
@@ -1406,7 +1411,7 @@ nav{
 }
 .nav-cta:hover{background:rgba(77,159,255,.14);}
 .nav-cta.active{background:rgba(77,159,255,.16);}
-.mobile-menu a{font-size:clamp(1.3rem,6vw,1.8rem);font-weight:800;padding:12px 0;width:78%;}
+.mobile-menu a{display:block;font-size:clamp(1.3rem,6vw,1.8rem);font-weight:800;line-height:1.25;padding:12px 0;width:78%;color:#f0ece4;text-decoration:none;text-align:center;}
 .mobile-menu a.active{color:#f4b942;}
 .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px;}
 .hamburger span{width:22px;height:2px;background:#f0ece4;border-radius:2px;}
@@ -1419,6 +1424,64 @@ nav{
 
 </style>
 
+
+
+<style id="so-targeted-request-fixes-20260728">
+/* The first dashboard is painted immediately instead of waiting for the final inline script. */
+.section-panel.visible{opacity:1!important;transform:none!important;}
+#section-home .reveal,
+#section-home .roty-leader-row{
+  opacity:1!important;transform:none!important;animation:none!important;
+}
+#section-home .roty-spark-line{stroke-dashoffset:0!important;animation:none!important;}
+#section-home .roty-spark-area,#section-home .roty-spark-dot{opacity:1!important;animation:none!important;}
+.roty-live-badge i{animation:none!important;}
+
+/* Actual interface icons for the Draft Learning Layer — no text stand-ins and no phone emoji glyphs. */
+.lab-icon{
+  width:30px!important;height:30px!important;margin:0 0 7px!important;
+  display:grid!important;place-items:center!important;
+  color:#f4b942!important;
+  border:1px solid rgba(244,185,66,.22)!important;
+  border-radius:9px!important;
+  background:linear-gradient(180deg,rgba(244,185,66,.10),rgba(244,185,66,.025))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;
+}
+.lab-icon svg{width:18px;height:18px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.lab-tile:hover .lab-icon{border-color:rgba(244,185,66,.42)!important;background:rgba(244,185,66,.12)!important;}
+
+/* Small custom market-signal mark beside Buzzing/Steady. */
+.market-buzz-icon,.market-steady-icon{
+  position:relative;display:inline-block;vertical-align:-1px;margin-right:5px;flex:0 0 auto;
+}
+.market-buzz-icon{width:13px;height:11px;}
+.market-buzz-icon::before,.market-buzz-icon::after{
+  content:'';position:absolute;border:1.5px solid #22c55e;border-left-color:transparent;border-bottom-color:transparent;border-radius:50%;transform:rotate(-45deg);
+}
+.market-buzz-icon::before{width:10px;height:10px;left:0;top:0;opacity:.9;}
+.market-buzz-icon::after{width:6px;height:6px;left:2px;top:2px;opacity:.65;}
+.market-buzz-icon i{position:absolute;width:3px;height:3px;border-radius:50%;background:#22c55e;left:5px;top:5px;box-shadow:0 0 7px rgba(34,197,94,.55);}
+.market-steady-icon{width:9px;height:9px;border:1px solid #8190a3;border-radius:50%;}
+
+/* Prop Board beta remains a fixed-size navigation tab in every state. */
+.nav-special.green,.nav-special.green.active,.nav-special.green:active,.nav-special.green:focus{
+  transform:none!important;scale:1!important;
+  padding:5px 13px 6px!important;
+  min-width:92px!important;min-height:40px!important;
+  background:rgba(34,217,126,.08)!important;
+  border-color:rgba(34,217,126,.35)!important;
+  outline:none;
+}
+
+nav .nav-special.green,nav .nav-special.green.active,nav .nav-special.green:active,nav .nav-special.green:focus{
+  box-sizing:border-box!important;
+  flex:0 0 97px!important;
+  width:97px!important;min-width:97px!important;max-width:97px!important;
+  height:40px!important;min-height:40px!important;max-height:40px!important;
+  padding:5px 13px 6px!important;margin:0!important;
+  transform:none!important;translate:none!important;scale:1!important;
+}
+</style>
 </head>
 <body class="min-h-screen text-white">
 <!-- BG GLOWS -->
@@ -1575,7 +1638,7 @@ nav{
 <!-- CONTENT -->
 <div class="min-w-0">
 <!-- HOME -->
-<div class="section-panel visible space-y-5" id="section-home">
+<div class="section-panel visible in space-y-5" id="section-home">
 <div class="glass mb-5 rounded-[2rem] p-4"><div class="text-[10px] uppercase tracking-[0.22em] text-zinc-500">2026 Rookies · OTA Intel</div><div class="mt-1 text-2xl font-black">Market Intelligence</div><p class="mt-1 text-xs text-zinc-400 max-w-xl leading-6">Prospects with the best chance at ROTY odds - props updated live through the season.</p></div>
 <div class="space-y-5" id="homeCards"></div>
 </div>
@@ -1596,7 +1659,7 @@ nav{
 <div class="glass rounded-[2rem] overflow-hidden card-hover" onclick="window.location.href='film-room.html'" style="cursor:pointer">
 <div style="height:3px;background:linear-gradient(90deg,#f4b942,#f87171,#a78bfa)"></div>
 <div class="p-10 text-center">
-<div class="text-5xl mb-5">🎬</div>
+<div class="text-5xl mb-5">FILM</div>
 <div class="text-2xl font-black mb-3">Film Room</div>
 <p class="text-zinc-400 text-sm mb-6 max-w-sm mx-auto">32 prospects. One class. The most anticipated draft in years — broken down frame by frame. Featured breakdowns for Manning, Smith &amp; Moore now live.</p>
 <div class="inline-flex items-center gap-2 rounded-full border border-yellow-400/30 bg-yellow-400/10 px-5 py-2.5 text-sm font-bold text-yellow-300">Open Film Room →</div>
@@ -1627,10 +1690,10 @@ nav{
 <div class="mock-reward-preview">
 <div class="mock-reward-title">Achievement board</div>
 <div class="mock-reward-grid">
-<div class="mock-reward-chip"><i>🏆</i><b>Franchise Builder</b><span>Score 90+</span></div>
-<div class="mock-reward-chip"><i>🧠</i><b>BPA Purist</b><span>Steal the top board player</span></div>
-<div class="mock-reward-chip"><i>📞</i><b>Trade Maestro</b><span>Work the phones</span></div>
-<div class="mock-reward-chip"><i>💎</i><b>Draft Heist</b><span>Land a falling blue chip</span></div>
+<div class="mock-reward-chip"><i>AWD</i><b>Franchise Builder</b><span>Score 90+</span></div>
+<div class="mock-reward-chip"><i>BPA</i><b>BPA Purist</b><span>Steal the top board player</span></div>
+<div class="mock-reward-chip"><i>TRD</i><b>Trade Maestro</b><span>Work the phones</span></div>
+<div class="mock-reward-chip"><i>VAL</i><b>Draft Heist</b><span>Land a falling blue chip</span></div>
 </div>
 </div>
 </div>
@@ -1736,11 +1799,11 @@ nav{
 <div class="panel-card glass rounded-[2rem]" id="liveIntelPanel">
 <div class="p-5 border-b border-white/10 flex items-center justify-between"><div><div class="text-xs uppercase tracking-[0.25em] text-zinc-500">Live Intel</div><div class="mt-1 text-2xl font-black">Market Feed</div></div><div class="h-3 w-3 rounded-full bg-emerald-400 animate-pulse"></div></div>
 <div class="p-0">
-<div class="px-5 py-4 border-b border-white/5 text-sm leading-7 text-zinc-300"><span class="text-yellow-400 font-semibold">📋 Mendoza</span> tabbed QB1 in Vegas — Kubiak's track record of elevating QBs amplifies an intriguing season for the Heisman winner.</div>
-<div class="px-5 py-4 border-b border-white/5 text-sm leading-7 text-zinc-300"><span class="text-emerald-400 font-semibold">⬆ Bailey</span> already the closer the Jets were missing — Aaron Glenn calling his get-off the best he's scouted in the class.</div>
-<div class="px-5 py-4 border-b border-white/5 text-sm leading-7 text-zinc-300"><span class="text-yellow-400 font-semibold">🏃 Love</span> drawing Reggie Bush comps — the FO sees a runner-receiver hybrid who can close the NFC West gap on his own.</div>
-<div class="px-5 py-4 border-b border-white/5 text-sm leading-7 text-zinc-300"><span class="text-emerald-400 font-semibold">📈 Tate</span> Cam Ward's new WR1 — Titans staff comparing his route polish and body control to Davante Adams</div>
-<div class="px-5 py-4 text-sm leading-7 text-zinc-300"><span class="text-yellow-400 font-semibold">🛡️ Reese</span> being deployed all over the Giants' front next to Brian Burns — reliable versatility being the separator and intrigue.</div>
+<div class="px-5 py-4 border-b border-white/5 text-sm leading-7 text-zinc-300"><span class="text-yellow-400 font-semibold">QB Mendoza</span> tabbed QB1 in Vegas — Kubiak's track record of elevating QBs amplifies an intriguing season for the Heisman winner.</div>
+<div class="px-5 py-4 border-b border-white/5 text-sm leading-7 text-zinc-300"><span class="text-emerald-400 font-semibold">UP Bailey</span> already the closer the Jets were missing — Aaron Glenn calling his get-off the best he's scouted in the class.</div>
+<div class="px-5 py-4 border-b border-white/5 text-sm leading-7 text-zinc-300"><span class="text-yellow-400 font-semibold">RB Love</span> drawing Reggie Bush comps — the FO sees a runner-receiver hybrid who can close the NFC West gap on his own.</div>
+<div class="px-5 py-4 border-b border-white/5 text-sm leading-7 text-zinc-300"><span class="text-emerald-400 font-semibold">UP Tate</span> Cam Ward's new WR1 — Titans staff comparing his route polish and body control to Davante Adams</div>
+<div class="px-5 py-4 text-sm leading-7 text-zinc-300"><span class="text-yellow-400 font-semibold">DEF Reese</span> being deployed all over the Giants' front next to Brian Burns — reliable versatility being the separator and intrigue.</div>
 </div>
 </div>
 <div class="panel-card glass rounded-[2rem]" id="marketSignalPanel">
@@ -1751,7 +1814,7 @@ nav{
 <div class="text-xs uppercase tracking-[0.25em] text-zinc-500">Premium Features</div>
 <div class="mt-2 text-xl font-black">Unlock Simulations &amp; Betting Models</div>
 <p class="mt-2 text-sm text-zinc-400 leading-6">Access advanced mock draft simulations, sharp betting movement analysis, DFS leverage models, and AI-generated war room projections.</p>
-<div class="mt-4 flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3"><span>🔒</span><span class="text-xs uppercase tracking-[0.15em] text-zinc-500 font-semibold">Coming Soon</span></div>
+<div class="mt-4 flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3"><span>LOCK</span><span class="text-xs uppercase tracking-[0.15em] text-zinc-500 font-semibold">Coming Soon</span></div>
 </div>
 </aside>
 </section>
@@ -2077,6 +2140,7 @@ function buildBigCard(p,i){
   const traits=(p.traits||[]).map(t=>`<div><small>Trait</small><b>${esc(t)}</b></div>`).join('');
   const attrs=(p.attrs||[]).map(attrRow).join('');
   const trend=p.up?'Buzzing':'Steady';
+  const trendMarkup=p.up?'<span class="market-buzz-icon" aria-hidden="true"><i></i></span>Buzzing':'<span class="market-steady-icon" aria-hidden="true"></span>Steady';
   const trendColor=p.up?'#22c55e':'#95a3b8';
   const fit=Math.max(0,Math.min(100,Number(p.fit&&p.fit.pct)||0));
   return `<div class="big-draft-card-final reveal" style="--posGlow:${glow};animation-delay:${Math.min(i*.06,.4)}s" onclick="this.classList.toggle('expanded')">
@@ -2100,7 +2164,7 @@ function buildBigCard(p,i){
         <div class="scout-note-final"><small>Scouting summary</small><p>${esc(p.scout)}</p></div>
       </div>
       <div class="right-stack-final">
-        <div class="market-cell"><small>ROTY Market</small><div class="odds-number-final" style="color:${p.ot==='neg'?'#f4b942':'#22c55e'}">${esc(p.odds)}</div><div style="margin-top:6px;font-size:.68rem;color:#77899f">Top-5 odds &middot; ${trend}</div></div>
+        <div class="market-cell"><small>ROTY Market</small><div class="odds-number-final" style="color:${p.ot==='neg'?'#f4b942':'#22c55e'}">${esc(p.odds)}</div><div style="margin-top:6px;font-size:.68rem;color:#77899f">Top-5 odds &middot; ${trendMarkup}</div></div>
         <div class="market-cell"><small>Team fit</small><div class="fit-score-row"><span style="color:#8ea1b8;font-size:.72rem">Scheme match</span><strong>${fit}%</strong></div><div class="meter-final"><span style="width:${fit}%"></span></div><p style="margin-top:8px;font-size:.68rem;line-height:1.55;color:#8192a7">${esc(p.fit&&p.fit.desc)}</p></div>
         <div class="market-cell"><small>Weakness flag</small><div class="weakness-final">${esc(p.weakness)}</div></div>
       </div>
@@ -2129,10 +2193,10 @@ document.addEventListener('click', function(e){
 
 function learningLab(){
   return `<div class="draft-learning-lab"><div class="lab-head"><div><div class="lab-kicker">Draft learning layer</div><div class="lab-title">Click the market, then go deeper</div><p class="lab-copy">Use the board to scan movement, open scouting notes, then jump into quarterback rankings, betting intel, and the simulator.</p></div><div class="lab-live">Interactive</div></div><div class="lab-grid">
-    <div class="lab-tile" onclick="labFastRead()"><div class="lab-icon">📈</div><b>Fast read</b><p>Instantly see which rookies are gaining traction.</p><div class="lab-tile-cta">Jump to tracker →</div></div>
-    <div class="lab-tile" onclick="labProspectDNA()"><div class="lab-icon">🧬</div><b>Prospect DNA</b><p>Traits, fit, and weaknesses explain how each player wins.</p><div class="lab-tile-cta">Open a scouting card →</div></div>
-    <div class="lab-tile" onclick="labBoardContext()"><div class="lab-icon">🗂️</div><b>Board context</b><p>Consensus and QB tabs make the page a draft study tool.</p><div class="lab-tile-cta">Open consensus board →</div></div>
-    <div class="lab-tile" onclick="labDecisionMode()"><div class="lab-icon">🎯</div><b>Decision mode</b><p>Mock the board and test team needs.</p><div class="lab-tile-cta">Launch simulator →</div></div>
+    <div class="lab-tile" onclick="labFastRead()"><div class="lab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 19V5M6.5 10.5 12 5l5.5 5.5"/></svg></div><b>Fast read</b><p>Instantly see which rookies are gaining traction.</p><div class="lab-tile-cta">Jump to tracker →</div></div>
+    <div class="lab-tile" onclick="labProspectDNA()"><div class="lab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4c8 4 2 12 10 16M17 4C9 8 15 16 7 20M9 7h6M8 12h8M9 17h6"/></svg></div><b>Prospect DNA</b><p>Traits, fit, and weaknesses explain how each player wins.</p><div class="lab-tile-cta">Open a scouting card →</div></div>
+    <div class="lab-tile" onclick="labBoardContext()"><div class="lab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="4.5" width="14" height="15.5" rx="2"/><path d="M9 4.5V3h6v1.5M8.5 9h7M8.5 13h7M8.5 17h4"/></svg></div><b>Board context</b><p>Consensus and QB tabs make the page a draft study tool.</p><div class="lab-tile-cta">Open consensus board →</div></div>
+    <div class="lab-tile" onclick="labDecisionMode()"><div class="lab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h4.5L12 11l3.5-5H20M12 11v9M8.5 16.5 12 20l3.5-3.5"/></svg></div><b>Decision mode</b><p>Mock the board and test team needs.</p><div class="lab-tile-cta">Launch simulator →</div></div>
   </div></div>`;
 }
 function labFastRead(){
@@ -2200,7 +2264,7 @@ function renderHome(){
         <div class="ota-expand-wrap"><div class="ota-expand-inner">
           ${p.proComp?`<div class="ota-expand-row"><small>Pro comp</small><b>${esc(p.proComp)}</b></div>`:''}
           ${scoutSnippet?`<p class="ota-expand-scout">${scoutSnippet}</p>`:''}
-          ${p.weakness?`<div class="ota-expand-weak">⚠ ${esc(p.weakness)}</div>`:''}
+          ${p.weakness?`<div class="ota-expand-weak">! ${esc(p.weakness)}</div>`:''}
         </div></div>
         <div class="ota-expand-hint">Scouting notes <span class="expand-arrow">⌄</span></div>
       </div>
@@ -2914,14 +2978,14 @@ function computeMockAchievements(score, picks, myTeam){
   const firstPick=picks[0];
   const heist = picks.some(p=>p.rank && p.slot && (p.rank+8)<=p.slot && p.grade>=6.75) || (mockState.stats&&mockState.stats.heists>0);
   return [
-    {icon:'🏆',title:'Franchise Builder',desc:'Score 90+ overall',unlocked:score>=90},
-    {icon:'🧠',title:'BPA Purist',desc:'Drafted the top board player',unlocked:(mockState.stats&&mockState.stats.bpa>0)},
-    {icon:'📞',title:'Trade Maestro',desc:'Completed a trade up or down',unlocked:(mockState.trades&&mockState.trades.length>0)},
-    {icon:'💎',title:'Draft Heist',desc:'Landed a falling blue chip',unlocked:heist},
-    {icon:'🛡️',title:'Need Surgeon',desc:'Filled every priority need',unlocked:allNeeds},
-    {icon:'🏦',title:'Capital King',desc:'Banked positive draft capital',unlocked:mockState.capital>0},
-    {icon:'🚫',title:'No Reach Zone',desc:'Avoided reach-tagged picks',unlocked:picks.length>0 && mockState.stats && mockState.stats.reach===0},
-    {icon:'⭐',title:'Blue Chip Collector',desc:'Averaged 6.90+ grade',unlocked:avg>=6.9}
+    {icon:'AWD',title:'Franchise Builder',desc:'Score 90+ overall',unlocked:score>=90},
+    {icon:'BPA',title:'BPA Purist',desc:'Drafted the top board player',unlocked:(mockState.stats&&mockState.stats.bpa>0)},
+    {icon:'TRD',title:'Trade Maestro',desc:'Completed a trade up or down',unlocked:(mockState.trades&&mockState.trades.length>0)},
+    {icon:'VAL',title:'Draft Heist',desc:'Landed a falling blue chip',unlocked:heist},
+    {icon:'DEF',title:'Need Surgeon',desc:'Filled every priority need',unlocked:allNeeds},
+    {icon:'CAP',title:'Capital King',desc:'Banked positive draft capital',unlocked:mockState.capital>0},
+    {icon:'NO',title:'No Reach Zone',desc:'Avoided reach-tagged picks',unlocked:picks.length>0 && mockState.stats && mockState.stats.reach===0},
+    {icon:'TOP',title:'Blue Chip Collector',desc:'Averaged 6.90+ grade',unlocked:avg>=6.9}
   ];
 }
 function renderAchievementPanel(score,picks,myTeam){
@@ -2951,10 +3015,10 @@ function addRewardFeed(label,detail,color){
 function renderLiveAchievementDeck(){
   const el=document.getElementById('mockLiveBadges'); if(!el||!mockState) return;
   const live=[
-    {key:'bpa',icon:'🧠',label:'BPA picks',val:mockState.stats.bpa,color:'#a78bfa',note:'Rewards board discipline when the top available player is secured.'},
-    {key:'need',icon:'🎯',label:'Needs filled',val:mockState.stats.need,color:'#22c55e',note:'Tracks roster holes closed against your team objectives.'},
-    {key:'trades',icon:'📞',label:'Trades',val:mockState.trades.length,color:'#60a5fa',note:'Counts trade-up and trade-down activity from the war room phones.'},
-    {key:'heists',icon:'💎',label:'Heists',val:mockState.stats.heists,color:'#f4b942',note:'Unlocks when a blue-chip value falls well past board rank.'}
+    {key:'bpa',icon:'BPA',label:'BPA picks',val:mockState.stats.bpa,color:'#a78bfa',note:'Rewards board discipline when the top available player is secured.'},
+    {key:'need',icon:'FIT',label:'Needs filled',val:mockState.stats.need,color:'#22c55e',note:'Tracks roster holes closed against your team objectives.'},
+    {key:'trades',icon:'TRD',label:'Trades',val:mockState.trades.length,color:'#60a5fa',note:'Counts trade-up and trade-down activity from the war room phones.'},
+    {key:'heists',icon:'VAL',label:'Heists',val:mockState.stats.heists,color:'#f4b942',note:'Unlocks when a blue-chip value falls well past board rank.'}
   ];
   const rows=live.map(x=>{const tier=rewardTier(x.key,x.val);const pulse=mockState.lastRewardKey===x.key?' pulse':'';return `<div class="mock-live-reward ${tier.unlocked?'unlocked':''}${pulse}" style="--rw:${x.color}">
     <div class="mock-live-reward-top"><i>${x.icon}</i><div><div class="mock-live-reward-name">${esc(x.label)}</div><div class="mock-live-reward-tier">${esc(tier.current)} → ${esc(tier.nextLabel)}</div></div><div class="mock-live-reward-count">${x.val}/${tier.nextAt}</div></div>
@@ -3208,7 +3272,7 @@ function showCpuPicking(teamEntry){
       cost = pickValue(teamEntry.slot) - pickValue(mockState.queue[nextOwned].slot);
       if(cost>0 && cost<=mockState.capital+MORTGAGE_CEILING){
         zone.style.display='block';
-        zone.innerHTML=`<button class="mock-trade-btn" onclick="executeTradeUp(${myIdx},${nextOwned})">⚡ Trade up to #${teamEntry.slot} <span>cost ${cost} cap</span></button>`;
+        zone.innerHTML=`<button class="mock-trade-btn" onclick="executeTradeUp(${myIdx},${nextOwned})">LIVE Trade up to #${teamEntry.slot} <span>cost ${cost} cap</span></button>`;
       } else { zone.style.display='none'; zone.innerHTML=''; }
     } else { zone.style.display='none'; zone.innerHTML=''; }
   }
@@ -3727,7 +3791,7 @@ document.addEventListener('DOMContentLoaded', function(){
   if(mockPickSection){
     const alert = document.createElement('div');
     alert.id='mockPosRunAlert';
-    alert.innerHTML='<div class="pos-run-icon">⚡</div><div><div class="pos-run-text" id="posRunText"></div><div class="pos-run-sub" id="posRunSub"></div></div><button class="pos-run-close" onclick="document.getElementById(\'mockPosRunAlert\').classList.remove(\'visible\')">✕</button>';
+    alert.innerHTML='<div class="pos-run-icon">LIVE</div><div><div class="pos-run-text" id="posRunText"></div><div class="pos-run-sub" id="posRunSub"></div></div><button class="pos-run-close" onclick="document.getElementById(\'mockPosRunAlert\').classList.remove(\'visible\')">✕</button>';
     mockPickSection.insertBefore(alert, mockPickSection.firstChild);
   }
 

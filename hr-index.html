@@ -16,42 +16,21 @@ function toggleMobileMenu(){
 }
 
 function animateCounters() {
-  var els = document.querySelectorAll('.sbv-num[data-val]');
-  for (var i = 0; i < els.length; i++) {
-    (function(el, delay) {
-      var target = parseFloat(el.getAttribute('data-val'));
-      var fmt    = el.getAttribute('data-fmt') || '';
-      var dec    = parseInt(el.getAttribute('data-dec') || '0');
-      var clr    = el.getAttribute('data-color') || '';
-      if (clr) el.style.color = clr;
-      setTimeout(function() {
-        var start = Date.now(), dur = 460;
-        var timer = setInterval(function() {
-          var p = Math.min((Date.now() - start) / dur, 1);
-          var e = 1 - Math.pow(1 - p, 3);
-          el.textContent = (target * e).toFixed(dec) + fmt;
-          if (p >= 1) clearInterval(timer);
-        }, 14);
-      }, delay);
-    })(els[i], i * 60);
-  }
+  document.querySelectorAll('.sbv-num[data-val]').forEach(function(el){
+    var target=parseFloat(el.getAttribute('data-val'));
+    var fmt=el.getAttribute('data-fmt')||'';
+    var dec=parseInt(el.getAttribute('data-dec')||'0',10);
+    var clr=el.getAttribute('data-color')||'';
+    if(clr) el.style.color=clr;
+    el.textContent=target.toFixed(dec)+fmt;
+  });
 }
 
 window.addEventListener('DOMContentLoaded', function() {
-  var el  = document.getElementById('live-text');
-  var cur = document.querySelector('.hr-cursor');
-  if (!el) return;
-  var text = 'HR Index · MLB Home Run Prop Research · Power Model Active';
-  var i = 0;
-  function type() {
-    if (i < text.length) {
-      el.textContent += text[i++];
-      setTimeout(type, 30);
-    } else if (cur) {
-      setTimeout(function(){ cur.style.display='none'; }, 900);
-    }
-  }
-  setTimeout(type, 500);
+  var el=document.getElementById('live-text');
+  var cur=document.querySelector('.hr-cursor');
+  if(el) el.textContent='HR Index · MLB Home Run Prop Research · Power Model Active';
+  if(cur) cur.style.display='none';
 });
 
 </script>
@@ -146,34 +125,10 @@ input[type=range]{width:90px;}
 @media(max-width:900px){.layout{display:block}.side{display:none}.main{width:100%;padding:14px}table{min-width:700px}}
 
   /* ── NAV (matches market.html exactly) ── */
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  .mobile-menu {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(5,7,11,0.98);
-    backdrop-filter: blur(20px);
-    z-index: 250;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  .mobile-menu.open { display: flex; }
-  
-  
-  .mobile-menu-close {
-    position: absolute; top: 24px; right: 24px;
-    background: transparent; border: none; color: #4d6070;
-    font-size: 1.4rem; cursor: pointer; padding: 8px;
-  }
+
+.mobile-menu{display:none!important;position:fixed!important;top:0!important;left:0!important;right:0!important;bottom:0!important;background:rgba(6,8,10,.98)!important;backdrop-filter:blur(20px)!important;-webkit-backdrop-filter:blur(20px)!important;z-index:150!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;overflow-y:auto!important;overscroll-behavior:contain!important;}
+.mobile-menu.open{display:flex!important;}
+.mobile-menu-close{position:absolute!important;top:22px!important;right:22px!important;background:transparent!important;border:none!important;color:#4c565b!important;font-size:1.3rem!important;line-height:1!important;cursor:pointer!important;padding:8px!important;}
   
 
 /* ═══════════════════════════════════════
@@ -1773,7 +1728,7 @@ nav{
 }
 .nav-cta:hover{background:rgba(77,159,255,.14);}
 .nav-cta.active{background:rgba(77,159,255,.16);}
-.mobile-menu a{font-size:clamp(1.3rem,6vw,1.8rem);font-weight:800;padding:12px 0;width:78%;}
+.mobile-menu a{display:block;font-size:clamp(1.3rem,6vw,1.8rem);font-weight:800;line-height:1.25;padding:12px 0;width:78%;color:#f0ece4;text-decoration:none;text-align:center;}
 .mobile-menu a.active{color:#f4b942;}
 .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px;}
 .hamburger span{width:22px;height:2px;background:#f0ece4;border-radius:2px;}
@@ -1786,6 +1741,32 @@ nav{
 
 </style>
 
+
+
+<style id="so-targeted-request-fixes-20260728">
+/* Initial data should read as loaded, not animate up from zero. */
+#live-text{min-height:1em;}
+#tbody tr,.cmd-card,.market-movers,.hr-live{animation:none!important;}
+
+/* Prop Board beta remains a fixed-size navigation tab in every state. */
+.nav-special.green,.nav-special.green.active,.nav-special.green:active,.nav-special.green:focus{
+  transform:none!important;scale:1!important;
+  padding:5px 13px 6px!important;
+  min-width:92px!important;min-height:40px!important;
+  background:rgba(34,217,126,.08)!important;
+  border-color:rgba(34,217,126,.35)!important;
+  outline:none;
+}
+
+nav .nav-special.green,nav .nav-special.green.active,nav .nav-special.green:active,nav .nav-special.green:focus{
+  box-sizing:border-box!important;
+  flex:0 0 97px!important;
+  width:97px!important;min-width:97px!important;max-width:97px!important;
+  height:40px!important;min-height:40px!important;max-height:40px!important;
+  padding:5px 13px 6px!important;margin:0!important;
+  transform:none!important;translate:none!important;scale:1!important;
+}
+</style>
 </head>
 <body>
 <nav>
@@ -2751,7 +2732,13 @@ function buildRowHTML(p,i){
   return '<tr data-idx="'+p._i+'" onclick="handleRowClick('+p._i+')" onpointerenter="showTip(event,'+p._i+')" onpointermove="moveTip(event)" onpointerleave="hideTip()" style="'+eliteStyle+'" class="'+(selIdx===p._i?'sel ':'')+(compareList.indexOf(p._i)>=0?'compare-pick ':'')+tc+'">'+tds+'</tr>';
 }
 function renderWindow(){hideTip();var tw=document.getElementById('tableWrap');var tb=document.getElementById('tbody');if(!tw||!tb)return;var total=currentRows.length;var viewportH=tw.clientHeight||600;var scrollTop=tw.scrollTop;var buffer=6;var visibleCount=Math.ceil(viewportH/ROW_H)+buffer*2;var startIdx=Math.max(0,Math.floor(scrollTop/ROW_H)-buffer);var endIdx=Math.min(total,startIdx+visibleCount);if(rowHMeasured&&startIdx===lastWindowStart&&endIdx===lastWindowEnd&&total===lastWindowTotal)return;lastWindowStart=startIdx;lastWindowEnd=endIdx;lastWindowTotal=total;var topH=startIdx*ROW_H;var botH=Math.max(0,(total-endIdx)*ROW_H);var html='';if(topH>0)html+='<tr class="vrow-spacer" style="height:'+topH+'px"><td colspan="11" style="padding:0;border:0;background:transparent"></td></tr>';for(var i=startIdx;i<endIdx;i++){html+=buildRowHTML(currentRows[i],i);}if(botH>0)html+='<tr class="vrow-spacer" style="height:'+botH+'px"><td colspan="11" style="padding:0;border:0;background:transparent"></td></tr>';tb.innerHTML=html;if(!rowHMeasured){var sampleRows=tb.querySelectorAll('tr[data-idx]');if(sampleRows.length>=2){var pitch=sampleRows[1].getBoundingClientRect().top-sampleRows[0].getBoundingClientRect().top;rowHMeasured=true;if(pitch>20&&Math.abs(pitch-ROW_H)>4){ROW_H=pitch;lastWindowStart=lastWindowEnd=lastWindowTotal=-1;renderWindow();return;}}else if(sampleRows.length===1){var h=sampleRows[0].getBoundingClientRect().height+8;rowHMeasured=true;if(h>20&&Math.abs(h-ROW_H)>4){ROW_H=h;lastWindowStart=lastWindowEnd=lastWindowTotal=-1;renderWindow();return;}}}}
-function render(){var rows=getFiltered();currentRows=rows;lastWindowStart=lastWindowEnd=lastWindowTotal=-1;document.getElementById('cnt-badge').textContent=rows.length+' players';document.getElementById('rcnt').textContent=rows.length+' shown';updateCommand(rows);var tw=document.getElementById('tableWrap');if(tw)tw.scrollTop=0;renderWindow();updateComparePanel();if(viewMode==='heat')renderPowerMap();renderHistogram();renderTierDonut();renderTeamPower();}
+var hrSecondaryRenderJob=0;
+function scheduleHRSecondaryRenders(){
+  var job=++hrSecondaryRenderJob;
+  var run=function(){if(job!==hrSecondaryRenderJob)return;if(viewMode==='heat')renderPowerMap();renderHistogram();renderTierDonut();renderTeamPower();};
+  if('requestIdleCallback' in window)requestIdleCallback(run,{timeout:180});else setTimeout(run,0);
+}
+function render(){var rows=getFiltered();currentRows=rows;lastWindowStart=lastWindowEnd=lastWindowTotal=-1;document.getElementById('cnt-badge').textContent=rows.length+' players';document.getElementById('rcnt').textContent=rows.length+' shown';updateCommand(rows);var tw=document.getElementById('tableWrap');if(tw)tw.scrollTop=0;renderWindow();updateComparePanel();scheduleHRSecondaryRenders();}
 function selectP(idx){var prev=selIdx;selIdx=idx;document.querySelectorAll('#tbody tr[data-idx]').forEach(function(tr){var i=parseInt(tr.getAttribute('data-idx'),10);tr.classList.toggle('sel',i===idx);});updateSide();}
 function updateAll(){render();updateSide();}
 function updateSide(){if(selIdx===null)return;var p=PLAYERS[selIdx];var cv=getCV(),pa=getPA();var c=hrCalc(p,pa,cv);var pct=c.hrg*100;var col=bcolor(pct);var t=tier(pct);var v=variance(p);var mw=Math.min(pct/50*100,100).toFixed(1);var chain='<div class="pad-row">';for(var i=0;i<pa;i++){var cum=(1-Math.pow(1-c.hrpa,i+1))*100;var inten=Math.min(cum/35,1);var ndBg='rgba(255,'+Math.round(188+inten*42)+','+Math.round(74+inten*30)+','+(0.12+inten*0.5).toFixed(2)+')';var ndBc='rgba(244,185,66,'+(0.2+inten*0.5).toFixed(2)+')';var ndCol=inten>.4?'#ffe7a6':'#7e6c3c';var ndShadow=inten>.45?'0 0 12px rgba(255,210,90,'+(inten*0.55).toFixed(2)+')':'none';var nd=(i*0.5).toFixed(2);if(i>0){var cd=((i*0.5)-0.25).toFixed(2);chain+='<div class="pad-seg" style="animation-delay:'+cd+'s"></div>';}chain+='<div class="pad-node-wrap"><div class="pad-circle" style="--nd-bg:'+ndBg+';--nd-bc:'+ndBc+';--nd-col:'+ndCol+';--nd-shadow:'+ndShadow+';animation-delay:'+nd+'s">'+cum.toFixed(0)+'%</div><div class="pad-node-lbl" style="animation-delay:'+nd+'s">PA'+(i+1)+'</div></div>';}chain+='</div>';document.getElementById('side-content').innerHTML='<div class="pc"><div class="pcn">'+p.name+'</div><div class="pct2">'+p.team+' · '+p.pa+' PA sample</div><div class="pc-big" style="color:'+col+'">'+pct.toFixed(1)+'%</div><div class="pc-lbl">HR probability per game  <span class="pill '+t[1]+'">'+t[0]+'</span> <span class="pill '+v[1]+'">Variance: '+v[0]+'</span></div><div class="mw"><div class="mbar" style="width:'+mw+'%;background:linear-gradient(90deg,'+col+','+col+'88)"></div></div><div class="mlbls"><span>0%</span><span>25%</span><span>50%</span></div><div class="pad-lbl" style="margin-top:11px">Cumulative across '+pa+' plate appearances</div><div class="pad-chain">'+chain+'</div></div><div class="sg"><div class="sb2" style="animation-delay:.00s;border-top-color:rgba(244,185,66,.45)"><div class="sbl">In-play rate</div><div class="sbv"><span class="sbv-num" data-val="'+(c.ip*100).toFixed(1)+'" data-fmt="%" data-dec="1">0%</span></div></div><div class="sb2" style="animation-delay:.07s;border-top-color:rgba(244,185,66,.3)"><div class="sbl">Contact quality</div><div class="sbv"><span class="sbv-num" data-val="'+(c.cq*100).toFixed(1)+'" data-fmt="%" data-dec="1">0%</span></div></div><div class="sb2" style="animation-delay:.14s;border-top-color:rgba(200,100,50,.5)"><div class="sbl">HR chance/PA</div><div class="sbv"><span class="sbv-num" data-val="'+(c.hrpa*100).toFixed(2)+'" data-fmt="%" data-dec="2" data-color="'+col+'">0%</span></div></div><div class="sb2" style="animation-delay:.21s;border-top-color:rgba(34,197,94,.5)"><div class="sbl">Barrel %</div><div class="sbv"><span class="sbv-num" data-val="'+p.barrel+'" data-fmt="%" data-dec="1" data-color="#22c55e">0%</span></div></div><div class="sb2" style="animation-delay:.28s;border-top-color:rgba(96,165,250,.5)"><div class="sbl">Hard Hit %</div><div class="sbv"><span class="sbv-num" data-val="'+p.hh+'" data-fmt="%" data-dec="1" data-color="#57a7ff">0%</span></div></div><div class="sb2" style="animation-delay:.35s;border-top-color:rgba(244,185,66,.25)"><div class="sbl">Contact Score</div><div class="sbv"><span class="sbv-num" data-val="'+contactScore(p)+'" data-fmt="" data-dec="0">0</span></div></div></div'+radarSVG(p)+'<div class="model-note"><div class="model-note-title">Model Note</div><div class="model-note-copy">'+modelNote(p,c,pct)+'</div></div><div class="fb"><div class="ft">Formula — 2yr PA-weighted avg</div><div class="fl2"><code>in_play</code> = 1−('+p.k+'+'+p.bb+')/100 = <strong style="color:var(--text)">'+(c.ip*100).toFixed(1)+'%</strong></div><div class="fl2"><code>contact_quality</code> = ('+p.barrel+'×0.65+'+p.hh+'×0.35)/100 = <strong style="color:var(--text)">'+(c.cq*100).toFixed(1)+'%</strong></div><div class="fl2"><code>hr_per_pa</code> = '+(c.ip*100).toFixed(1)+'%×'+(c.cq*100).toFixed(1)+'%×'+cv.toFixed(2)+' = <strong style="color:var(--text)">'+(c.hrpa*100).toFixed(2)+'%</strong></div><div class="fl2"><code>hr_per_game</code> = 1−(1−'+(c.hrpa*100).toFixed(2)+'%)^'+pa+' = <strong style="color:'+col+'">'+pct.toFixed(1)+'%</strong></div></div>';animateCounters();}

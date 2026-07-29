@@ -658,30 +658,10 @@
     max-width:980px; border-top:1px solid rgba(255,255,255,.06); padding-top:14px; }
 
   /* HAMBURGER */
-  
-  
-  
-  
-  
-  .mobile-menu {
-   display: none;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(5,7,11,0.98);
-    backdrop-filter:none;
-    z-index: 250;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  .mobile-menu.open { display: flex; }
-  
-  
-  .mobile-menu-close {
-    position: absolute; top: 24px; right: 24px;
-    background: transparent; border: none; color: #4d6070;
-    font-size: 1.4rem; cursor: pointer; padding: 8px;
-  }
+
+.mobile-menu{display:none!important;position:fixed!important;top:0!important;left:0!important;right:0!important;bottom:0!important;background:rgba(6,8,10,.98)!important;backdrop-filter:blur(20px)!important;-webkit-backdrop-filter:blur(20px)!important;z-index:150!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;overflow-y:auto!important;overscroll-behavior:contain!important;}
+.mobile-menu.open{display:flex!important;}
+.mobile-menu-close{position:absolute!important;top:22px!important;right:22px!important;background:transparent!important;border:none!important;color:#4c565b!important;font-size:1.3rem!important;line-height:1!important;cursor:pointer!important;padding:8px!important;}
   @media (max-width: 1100px) {
     .game-card, .col-header-row { grid-template-columns: 180px 70px 110px 110px 110px 1fr; }
     .hero-grid { grid-template-columns: 1fr; }
@@ -7956,7 +7936,7 @@ html,body{overflow-x:clip}
 #mlbContainer>.prop-list,#mlbContainer>.ls-wrap{
   content-visibility:auto;contain:layout paint style;contain-intrinsic-size:1px 760px;
 }
-.so-perf-offscreen:not(.ls-wrap),.so-perf-offscreen:not(.ls-wrap) *{animation-play-state:paused!important}
+.so-perf-offscreen,.so-perf-offscreen *,.so-perf-offscreen *::before,.so-perf-offscreen *::after{animation-play-state:paused!important}
 html.so-page-hidden *,html.so-page-hidden *::before,html.so-page-hidden *::after{animation-play-state:paused!important}
 @media(max-width:700px){
   body{background-attachment:scroll!important}
@@ -7968,19 +7948,83 @@ html.so-page-hidden *,html.so-page-hidden *::before,html.so-page-hidden *::after
     width:100%!important;max-width:none!important;padding:0 16px 22px!important;scroll-snap-type:x mandatory;scroll-padding-left:16px;
     -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x pan-y;
   }
-  #mlbContainer>.games-list>.game-card{flex:0 0 min(78vw,340px)!important;width:min(78vw,340px)!important;scroll-snap-align:start;scroll-snap-stop:normal;margin:0!important}
+  #mlbContainer>.games-list>.game-card{flex:0 0 min(64vw,252px)!important;width:min(64vw,252px)!important;scroll-snap-align:start;scroll-snap-stop:normal;margin:0!important}
   #mlbContainer>.games-list::-webkit-scrollbar,#mlbContainer>.futures-list::-webkit-scrollbar{height:4px}
   #mlbContainer>.futures-list{
     display:flex!important;grid-template-columns:none!important;gap:12px!important;overflow-x:auto!important;overflow-y:hidden!important;
     max-width:none!important;padding:0 16px 24px!important;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;
   }
-  #mlbContainer>.futures-list>*{flex:0 0 min(78vw,340px)!important;scroll-snap-align:start}
+  #mlbContainer>.futures-list>*{flex:0 0 min(70vw,296px)!important;scroll-snap-align:start}
+  #mlbContainer .game-card:not(.has-series) .t-matchup,
+  #mlbContainer .game-card-inner .t-matchup{padding:8px 10px!important;}
+  #mlbContainer .game-card:not(.has-series) .t-prob,
+  #mlbContainer .game-card-inner .t-prob,
+  #mlbContainer .game-card:not(.has-series) .t-odds,
+  #mlbContainer .game-card-inner .t-odds{padding:7px 8px!important;font-size:.78rem!important;}
+  #mlbContainer .game-card:not(.has-series) .t-edge,
+  #mlbContainer .game-card-inner .t-edge{padding:8px 10px!important;font-size:.7rem!important;line-height:1.35!important;}
   #mlbContainer>.prop-list{max-height:min(74vh,720px)!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;padding:0 12px 18px!important;scrollbar-gutter:stable}
   #mlbContainer>.ls-wrap{max-height:min(88vh,920px)!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;padding-left:12px!important;padding-right:12px!important;scrollbar-gutter:stable}
   .so-market-mobile-nav{position:sticky;top:62px;z-index:75;display:flex;gap:7px;overflow-x:auto;padding:9px 12px;background:rgba(5,7,11,.96);border-bottom:1px solid rgba(255,255,255,.07);-webkit-overflow-scrolling:touch;scrollbar-width:none}
   .so-market-mobile-nav::-webkit-scrollbar{display:none}
   .so-market-mobile-nav button{flex:0 0 auto;border:1px solid rgba(255,255,255,.1);background:#0d131b;color:#9dafc2;border-radius:999px;padding:7px 11px;font:700 .58rem/1 'Inter',sans-serif;letter-spacing:.12em;text-transform:uppercase}
   #mlbContainer>*:not(.ls-wrap) *,header *,nav *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.14s!important}
+}
+
+
+/* SECOND-PASS VERIFIED CORRECTIONS — MARKET */
+/* SECOND-PASS VERIFIED CORRECTIONS — one scoped source of truth. */
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-rim-bulb{
+  animation:none!important;opacity:.64!important;will-change:auto!important;
+}
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-rim-bulb:nth-child(3n+1){
+  opacity:1!important;box-shadow:0 0 7px rgba(244,200,96,.82),inset 0 0 2px rgba(255,255,255,.46)!important;
+}
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-medallion-gem::after{
+  animation:none!important;opacity:.72!important;transform:none!important;
+}
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-track{
+  animation:none!important;transform:translate(-50%,-50%) rotate(0deg)!important;
+  backface-visibility:hidden;transform-style:flat;will-change:auto!important;
+}
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-wheel-ball:not(.ls-ball-landing){
+  animation:none!important;
+  transform:translate(-50%,-50%) rotate(-18deg) translateY(var(--qsg-ball-radius))!important;
+  backface-visibility:hidden;will-change:auto!important;
+}
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-center-ring,
+#mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock .ls-spin-live-dot{
+  animation:none!important;will-change:auto!important;
+}
+@media(max-width:700px){
+  #mlbContainer>.games-list{gap:11px!important;padding-bottom:16px!important;}
+  #mlbContainer>.games-list>.game-card{border-radius:16px!important;box-shadow:0 10px 24px rgba(0,0,0,.24)!important;}
+  #mlbContainer .game-card:not(.has-series),
+  #mlbContainer .game-card-inner{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;}
+  #mlbContainer .game-card:not(.has-series) .t-matchup,
+  #mlbContainer .game-card-inner .t-matchup{padding:7px 8px!important;}
+  #mlbContainer .t-team-away,#mlbContainer .t-team-home{gap:6px!important;}
+  #mlbContainer .t-abbr{min-width:29px!important;font-size:.68rem!important;}
+  #mlbContainer .t-name{font-size:.76rem!important;line-height:1.1!important;}
+  #mlbContainer .t-pitcher{margin-left:35px!important;font-size:.51rem!important;line-height:1.2!important;}
+  #mlbContainer .t-time{font-size:.52rem!important;margin-top:4px!important;}
+  #mlbContainer .game-card:not(.has-series) .t-prob,
+  #mlbContainer .game-card-inner .t-prob{padding:6px 8px!important;}
+  #mlbContainer .t-prob-teams,#mlbContainer .t-prob-nums{font-size:.56rem!important;}
+  #mlbContainer .t-prob-bar{height:5px!important;margin:4px 0!important;}
+  #mlbContainer .game-card:not(.has-series) .t-odds,
+  #mlbContainer .game-card-inner .t-odds{padding:5px 6px!important;gap:3px!important;}
+  #mlbContainer .t-odds-row{gap:3px!important;}
+  #mlbContainer .t-odds-chip{padding:6px 4px!important;border-radius:9px!important;font-size:.69rem!important;}
+  #mlbContainer .t-odds-juice{font-size:.54rem!important;min-width:28px!important;}
+  #mlbContainer .t-odds:nth-child(5){padding:6px!important;gap:4px!important;}
+  #mlbContainer .game-card:not(.has-series) .t-edge,
+  #mlbContainer .game-card-inner .t-edge{padding:7px 8px!important;}
+  #mlbContainer .t-call-btn{padding:7px 8px!important;border-radius:11px!important;gap:5px!important;}
+  #mlbContainer .t-call-label{font-size:.66rem!important;}
+  #mlbContainer .t-call-ev{font-size:.58rem!important;padding:4px 5px!important;}
+  #mlbContainer .t-edge-note{font-size:.58rem!important;line-height:1.3!important;margin-top:6px!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  #mlbContainer .series-banner{min-height:24px!important;padding:5px 7px!important;}
 }
 </style>
 
@@ -8043,7 +8087,7 @@ nav{
 }
 .nav-cta:hover{background:rgba(77,159,255,.14);}
 .nav-cta.active{background:rgba(77,159,255,.16);}
-.mobile-menu a{font-size:clamp(1.3rem,6vw,1.8rem);font-weight:800;padding:12px 0;width:78%;}
+.mobile-menu a{display:block;font-size:clamp(1.3rem,6vw,1.8rem);font-weight:800;line-height:1.25;padding:12px 0;width:78%;color:#f0ece4;text-decoration:none;text-align:center;}
 .mobile-menu a.active{color:#f4b942;}
 .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px;}
 .hamburger span{width:22px;height:2px;background:#f0ece4;border-radius:2px;}
@@ -8063,8 +8107,8 @@ nav{
 @media (max-width:900px){
   #mlbContainer .ls-wrap.ls-wrap{padding:12px!important;}
   #mlbContainer .ls-hero-zone.ls-hero-zone{padding:10px!important;gap:10px!important;}
-  #mlbContainer .ls-wrap .ls-wheel-panel.ls-wheel-panel{width:min(76vw,270px)!important;min-height:min(76vw,270px)!important;height:auto!important;}
-  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock.q-wheel-has-dock{width:min(76vw,270px)!important;min-height:min(76vw,270px)!important;height:auto!important;}
+  #mlbContainer .ls-wrap .ls-wheel-panel.ls-wheel-panel{width:min(76vw,270px)!important;min-height:min(76vw,270px)!important;height:auto!important;justify-self:center!important;margin:0 auto!important;}
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock.q-wheel-has-dock{width:min(76vw,270px)!important;min-height:min(76vw,270px)!important;height:auto!important;justify-self:center!important;margin:0 auto!important;background:radial-gradient(circle at 50% 30%,rgba(0,0,0,.62),rgba(0,0,0,.86))!important;}
   #mlbContainer .ls-wrap .ls-wheel-rail.ls-wheel-rail{width:min(64vw,220px)!important;height:min(64vw,220px)!important;}
   #mlbContainer .ls-wrap .ls-wheel-track.ls-wheel-track{width:min(58vw,198px)!important;height:min(58vw,198px)!important;}
   #mlbContainer .ls-wrap .ls-wheel-center.ls-wheel-center{width:88px!important;height:88px!important;margin:-44px 0 0 -44px!important;}
@@ -8072,6 +8116,197 @@ nav{
   #mlbContainer .ls-wrap .ls-wheel-hub.ls-wheel-hub{width:16px!important;height:16px!important;}
   #mlbContainer .ls-wrap .ls-wheel-ball.ls-wheel-ball{width:8px!important;height:8px!important;}
 }
+</style>
+
+
+<style id="so-targeted-request-fixes-20260728">
+/* Keep the Prop Board's right ticket color running to the same bottom edge as the ranked prop board. */
+@media (min-width:981px){
+  #mlbContainer .pp2-shell{
+    align-items:stretch!important;
+    background:linear-gradient(90deg,
+      transparent 0,
+      transparent calc(100% - 340px),
+      rgba(23,15,39,.94) calc(100% - 340px),
+      rgba(8,7,15,.98) 100%)!important;
+  }
+  #mlbContainer .pp2-ticket{
+    min-height:100%!important;
+    align-self:stretch!important;
+  }
+}
+@media (max-width:980px){
+  #mlbContainer .pp2-shell{background:none!important;}
+}
+
+/* Roulette: preserve the chip drop, but remove the hard bounce and oversized circular flares. */
+#mlbContainer .ls-wrap .q-poker-chip.q-chip-big.q-chip-big-drop{
+  animation:qChipBigDropSmooth .56s cubic-bezier(.22,.82,.24,1) forwards!important;
+  will-change:transform,opacity;
+}
+@keyframes qChipBigDropSmooth{
+  0%{opacity:0;transform:translateY(-118px) rotate(-16deg) scale(.82)}
+  12%{opacity:1}
+  68%{opacity:1;transform:translateY(4px) rotate(4deg) scale(1.025)}
+  86%{transform:translateY(-2px) rotate(-1.5deg) scale(.992)}
+  100%{opacity:1;transform:translateY(0) rotate(0) scale(1)}
+}
+#mlbContainer .ls-wrap .q-poker-chip.q-chip-big.q-chip-big-settle{
+  animation:qChipBigSettleSmooth .38s ease-out forwards!important;
+}
+@keyframes qChipBigSettleSmooth{
+  0%{opacity:1;transform:translateY(0) scale(1);filter:brightness(1)}
+  42%{opacity:1;transform:translateY(-1px) scale(1.015);filter:brightness(1.16)}
+  100%{opacity:0;transform:translateY(-7px) scale(.94);filter:brightness(1)}
+}
+#mlbContainer .ls-wheel-panel.ls-spinning-fast .q-wheel-fx-ring::before{
+  box-shadow:0 0 0 2px rgba(244,213,105,.34),0 0 18px rgba(244,185,66,.24)!important;
+  animation:qSpinHaloSmooth .64s ease-out 1!important;
+}
+@keyframes qSpinHaloSmooth{
+  0%{opacity:0;transform:scale(.94)}
+  36%{opacity:.72;transform:scale(1)}
+  100%{opacity:0;transform:scale(1.035)}
+}
+#mlbContainer .ls-wheel-panel.ls-win-flash .q-wheel-fx-ring::after{
+  background:radial-gradient(circle,rgba(244,210,120,.22),rgba(52,211,153,.09) 38%,transparent 62%)!important;
+  animation:qWinFlareSmooth .62s cubic-bezier(.2,.72,.3,1) forwards!important;
+}
+@keyframes qWinFlareSmooth{
+  0%{opacity:0;transform:scale(.88)}
+  28%{opacity:.7}
+  100%{opacity:0;transform:scale(1.035)}
+}
+.q-chip-landing-burst::before{
+  width:14px!important;height:14px!important;margin:-7px 0 0 -7px!important;
+  box-shadow:0 0 12px rgba(244,185,66,.5),0 0 22px rgba(34,197,94,.10)!important;
+  animation:qChipBurstCoreSmooth .42s ease-out forwards!important;
+}
+.q-chip-landing-burst i{
+  width:3px!important;height:3px!important;opacity:.72!important;
+  animation:qChipBurstSparkSmooth .46s ease-out forwards!important;
+}
+@keyframes qChipBurstCoreSmooth{
+  0%{transform:scale(.55);opacity:.9}
+  48%{transform:scale(1.16);opacity:.62}
+  100%{transform:scale(.76);opacity:0}
+}
+@keyframes qChipBurstSparkSmooth{
+  0%{transform:rotate(var(--q-a)) translateX(0) scale(.8);opacity:.72}
+  100%{transform:rotate(var(--q-a)) translateX(var(--q-d)) scale(.2);opacity:0}
+}
+@keyframes qRewardPulse{0%{transform:scale(1)}45%{transform:scale(1.012)}100%{transform:scale(1)}}
+@keyframes qCenterRewardPulse{0%{transform:translate(-50%,-50%) scale(1)}45%{transform:translate(-50%,-50%) scale(1.014)}100%{transform:translate(-50%,-50%) scale(1)}}
+
+/* Cleaner phone layout: no nested roulette scroller, centered square wheel, compact controls. */
+@media (max-width:700px){
+  #mlbContainer>.ls-wrap{
+    max-height:none!important;
+    overflow:visible!important;
+    padding:10px!important;
+    border-radius:22px!important;
+  }
+  #mlbContainer .ls-wrap .ls-card{padding:10px!important;border-radius:20px!important;}
+  #mlbContainer .ls-wrap .ls-hero-zone{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:12px!important;
+    padding:0!important;
+  }
+  #mlbContainer .ls-wrap .ls-wheel-panel.q-wheel-has-dock{
+    width:min(100%,340px)!important;
+    min-height:342px!important;
+    height:342px!important;
+    margin:0 auto!important;
+    transform:none!important;
+  }
+  #mlbContainer .ls-wrap .q-wheel-action-dock{
+    width:min(100%,340px)!important;
+    margin:8px auto 0!important;
+  }
+  #mlbContainer .ls-wrap .q-closing-terminal{
+    min-height:0!important;
+    padding:12px!important;
+    border-radius:20px!important;
+  }
+  #mlbContainer .ls-wrap .q-terminal-top{gap:10px!important;margin-bottom:10px!important;padding-bottom:10px!important;}
+  #mlbContainer .ls-wrap .q-terminal-title{font-size:1.04rem!important;}
+  #mlbContainer .ls-wrap .q-terminal-sub{font-size:.68rem!important;line-height:1.48!important;}
+}
+
+/* Prop Board beta stays the same physical tab before, during and after activation. */
+.nav-special.green,.nav-special.green.active,.nav-special.green:active,.nav-special.green:focus{
+  transform:none!important;scale:1!important;
+  padding:5px 13px 6px!important;
+  min-width:92px!important;min-height:40px!important;
+  background:rgba(34,217,126,.08)!important;
+  border-color:rgba(34,217,126,.35)!important;
+  outline:none;
+}
+
+nav .nav-special.green,nav .nav-special.green.active,nav .nav-special.green:active,nav .nav-special.green:focus{
+  box-sizing:border-box!important;
+  flex:0 0 97px!important;
+  width:97px!important;min-width:97px!important;max-width:97px!important;
+  height:40px!important;min-height:40px!important;max-height:40px!important;
+  padding:5px 13px 6px!important;margin:0!important;
+  transform:none!important;translate:none!important;scale:1!important;
+}
+
+/* Keep the roulette response focused on the moving chip, wheel and result.
+   Static ambient glints previously competed with the click animation. */
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip{animation:none!important;}
+#mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip::after,
+#mlbContainer .q-chip-drop-zone .q-chip-shine,
+#mlbContainer .q-smooth-chip-clone .q-chip-shine{animation:none!important;}
+#mlbContainer .q-terminal::before,
+#mlbContainer .ls-spin-live-dot,
+#mlbContainer .ls-odds-val,
+#mlbContainer .ls-action-spin:not(.is-spinning),
+#mlbContainer .ls-action-spin:not(.is-spinning) .ls-action-spin-sheen,
+#mlbContainer .ls-action-spin-txt,
+#mlbContainer .ls-action-spin-sub{animation:none!important;}
+#mlbContainer .ls-action-spin-txt{background-position:42% 0!important;}
+
+/* One clean brand illumination instead of dozens of independent bulb/text loops. */
+#mlbContainer .q-wheel-brand-bulbs .ls-bulb,
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb{
+  animation:none!important;transition:none!important;
+}
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb{
+  opacity:1!important;filter:brightness(1.7) drop-shadow(0 0 3px currentColor)!important;
+}
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-title span{
+  animation:none!important;-webkit-text-fill-color:#f4d37d!important;
+  text-shadow:0 0 7px rgba(244,185,66,.38)!important;
+}
+
+/* Six composited chase points are visually sufficient; animating every rim bulb was costly. */
+#mlbContainer .ls-wrap .ls-rim-bulb,
+#mlbContainer .ls-wrap .ls-wheel-panel.ls-spin-active .ls-rim-bulb{
+  animation:none!important;opacity:.46!important;
+}
+#mlbContainer .ls-wrap .ls-wheel-panel.ls-spin-active .ls-rim-bulb:nth-child(4n+1){
+  animation:lsBulbChase 1.05s linear infinite!important;opacity:1!important;
+}
+@media (max-width:700px){
+  #mlbContainer .ls-wrap .ls-wheel-panel.ls-spin-active .ls-rim-bulb:nth-child(4n+1){
+    animation-duration:1.2s!important;
+  }
+}
+
+/* Decorative loops that remained active while the roulette was on screen. */
+#mlbContainer .q-closing-terminal::before,
+#mlbContainer .ls-hero-zone::before,
+#mlbContainer .ls-q-text,
+#mlbContainer .q-poker-chip.q-chip-idle,
+.hero-left.q-hero-left,
+.gold-line,
+.q-hero-command-rail,
+.q-consensus-scan{animation:none!important;}
+
+.q-hero-left::after,.q-hero-command-rail::after{animation:none!important;}
+body .q-market-title .gold-line{animation:none!important;background-position:42% 50%!important;}
 </style>
 </head>
 
@@ -8114,7 +8349,7 @@ nav{
 <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
 <a href="index.html" onclick="toggleMobileMenu()">Home</a>
 <a href="analysis.html" onclick="toggleMobileMenu()">Analysis</a>
-<a href="market.html" onclick="toggleMobileMenu()">Market</a>
+<a class="active" href="market.html" onclick="toggleMobileMenu()">Market</a>
 <a href="worldcup.html" onclick="toggleMobileMenu()">World Cup</a>
 <a href="optimizer.html" onclick="toggleMobileMenu()">Optimizer</a>
 <a href="hr-index.html" onclick="toggleMobileMenu()">HR Index</a>
@@ -8212,7 +8447,7 @@ nav{
 <div class="sport-tabs">
 <button class="sport-tab active" onclick="switchSport('mlb', this)">MLB<span class="sport-tab-count" id="mlbTabCount"></span></button>
 <button class="sport-tab" onclick="switchSport('nba', this)" style="position:relative">NBA<span class="season-done-badge">Season Done</span></button>
-<button class="sport-tab nfl-locked-tab" onclick="showNFLLock()" style="position:relative">NFL <span class="nfl-lock-icon">🔒</span><span class="nfl-countdown" id="nflCountdown"></span></button>
+<button class="sport-tab nfl-locked-tab" onclick="showNFLLock()" style="position:relative">NFL <span class="nfl-lock-icon">LOCK</span><span class="nfl-countdown" id="nflCountdown"></span></button>
 </div>
 <!-- LEGEND (shared) -->
 <div class="legend-bar">
@@ -8320,7 +8555,7 @@ nav{
 <div class="nfl-lock-eyebrow">Coming Soon</div>
 <h2 class="nfl-lock-headline">Minicamp<br/><span class="nfl-lock-gold">Starts Soon</span></h2>
 <p class="nfl-lock-sub">Week 1 lines, player props, sharp signals, and our full NFL betting suite drop before kickoff. Be first in.</p>
-<p class="nfl-lock-promo">🎟️ Glad you enjoyed the free NBA-season tools — we'll keep dropping <strong>promo codes</strong> all season long. Sign up below to get notified for weekly drops.</p>
+<p class="nfl-lock-promo">Glad you enjoyed the free NBA-season tools — we'll keep dropping <strong>promo codes</strong> all season long. Sign up below to get notified for weekly drops.</p>
 <div class="nfl-lock-card">
 <div class="nfl-lock-card-head">
 <span style="width:6px;height:6px;border-radius:50%;background:#f4b942;box-shadow:0 0 8px #f4b942;flex-shrink:0"></span>
@@ -8333,10 +8568,10 @@ nav{
 <div id="nflEmailConfirm" style="display:none;font-size:.65rem;color:#22c55e;margin-top:8px">✓ You're on the list. We'll hit you before Week 1.</div>
 </div>
 <div class="nfl-lock-features">
-<div class="nfl-lock-feat"><span>📊</span>Week 1 Lines</div>
-<div class="nfl-lock-feat"><span>⚡</span>Player Props</div>
-<div class="nfl-lock-feat"><span>🎯</span>Sharp Signals</div>
-<div class="nfl-lock-feat"><span>📈</span>ATS Trends</div>
+<div class="nfl-lock-feat"><span>W1</span>Week 1 Lines</div>
+<div class="nfl-lock-feat"><span>PROP</span>Player Props</div>
+<div class="nfl-lock-feat"><span>EDGE</span>Sharp Signals</div>
+<div class="nfl-lock-feat"><span>ATS</span>ATS Trends</div>
 </div>
 <div class="nfl-lock-footnote">
 <span class="nfl-foot-dot"></span>
@@ -10498,7 +10733,7 @@ function landRouletteBall(ballEl, legIndex){
     void bigChip.offsetWidth;
     bigChip.classList.add('q-chip-big-drop');
     clearTimeout(bigChip.__settleT);
-    bigChip.__settleT = setTimeout(function(){ bigChip.classList.add('q-chip-big-settle'); }, 780);
+    bigChip.__settleT = setTimeout(function(){ bigChip.classList.add('q-chip-big-settle'); }, 560);
     clearTimeout(bigChip.__clearT);
     bigChip.__clearT = setTimeout(function(){
       bigChip.classList.remove('q-chip-big-drop','q-chip-big-settle');
@@ -11568,10 +11803,10 @@ initSpinFeeds();
     burst.className='q-chip-landing-burst';
     burst.style.left=x+'px';
     burst.style.top=y+'px';
-    for(var i=0;i<8;i++){
+    for(var i=0;i<5;i++){
       var p=document.createElement('i');
-      p.style.setProperty('--q-a',(i*45)+'deg');
-      p.style.setProperty('--q-d',(18+(i%3)*7)+'px');
+      p.style.setProperty('--q-a',(i*72)+'deg');
+      p.style.setProperty('--q-d',(11+(i%3)*4)+'px');
       burst.appendChild(p);
     }
     document.body.appendChild(burst);
@@ -11580,7 +11815,7 @@ initSpinFeeds();
   function coinBurstAt(x,y,wheel){
     if(!wheel) return;
     var wr=wheel.getBoundingClientRect();
-    var n=11;
+    var n=window.matchMedia('(max-width:700px)').matches?3:5;
     for(var i=0;i<n;i++){
       var coin=document.createElement('i');
       coin.className='q-coin';
@@ -11595,9 +11830,9 @@ initSpinFeeds();
       coin.style.setProperty('--q-scale',(0.7+Math.random()*0.5).toFixed(2));
       coin.style.setProperty('--q-spin',(360+Math.random()*360)+'deg');
       coin.style.animationDelay=(Math.random()*260)+'ms';
-      coin.style.animationDuration=(950+Math.random()*350)+'ms';
+      coin.style.animationDuration=(620+Math.random()*260)+'ms';
       document.body.appendChild(coin);
-      (function(node){ setTimeout(function(){ removeNode(node); },1700); })(coin);
+      (function(node){ setTimeout(function(){ removeNode(node); },1100); })(coin);
     }
   }
   var brandLitT=null;
@@ -11606,7 +11841,7 @@ initSpinFeeds();
     if(!brand) return;
     brand.classList.add('q-brand-lit');
     clearTimeout(brandLitT);
-    brandLitT=setTimeout(function(){ brand.classList.remove('q-brand-lit'); },4500);
+    brandLitT=setTimeout(function(){ brand.classList.remove('q-brand-lit'); },1100);
   }
   function stampTicket(terminal,key){
     var ticket=qs(terminal,'#qTicketList');
@@ -11635,8 +11870,8 @@ initSpinFeeds();
     var p2={x:end.x - dir*clamp(Math.abs(dx)*.24,64,160), y:end.y - clamp(Math.abs(dx)*.18,72,165)};
     var p3=end;
     var duration=opts.duration || (opts.ticket?480:560);
-    var rotBase=opts.ticket?10:22;
-    var rotEnd=opts.ticket?118:705;
+    var rotBase=0;
+    var rotEnd=opts.ticket?45:120;
     var landed=false;
     wheel.classList.add('q-wheel-magnet');
     source.classList.add('q-smooth-launching');
@@ -11648,7 +11883,7 @@ initSpinFeeds();
       var t=easeInOutCubic(raw);
       var x=cubic(p0.x,p1.x,p2.x,p3.x,t);
       var y=cubic(p0.y,p1.y,p2.y,p3.y,t);
-      var lift=Math.sin(Math.PI*raw)*18;
+      var lift=Math.sin(Math.PI*raw)*10;
       var scale=raw<.18 ? 1.04+raw*.18 : 1.075 - raw*.66;
       if(opts.ticket) scale=raw<.20 ? 1.02+raw*.08 : 1.025 - raw*.42;
       var rot=rotBase+(rotEnd*easeOutCubic(raw));
@@ -12289,8 +12524,8 @@ aftDOM(function(){
       bar.innerHTML =
           '<span class="q-filter-label">Filter</span>'
         + '<button class="q-filter-pill active" data-f="all">All</button>'
-        + '<button class="q-filter-pill" data-f="k">⚾ Strikeouts</button>'
-        + '<button class="q-filter-pill" data-f="hr">💥 HR</button>'
+        + '<button class="q-filter-pill" data-f="k">K · Strikeouts</button>'
+        + '<button class="q-filter-pill" data-f="hr">HR</button>'
         + '<div class="q-filter-sep"></div>'
         + '<button class="q-filter-pill" data-f="over">Over</button>'
         + '<button class="q-filter-pill" data-f="under">Under</button>';
@@ -12542,7 +12777,7 @@ aftDOM(function(){
     });
     mo.observe(qsgRoot, {childList:true, subtree:true});
     window.__qsgObserver=mo;
-    setTimeout(function(){ if(window.__qsgObserver) window.__qsgObserver.disconnect(); }, 20000);
+    setTimeout(function(){ if(window.__qsgObserver) window.__qsgObserver.disconnect(); }, 5000);
   }
 })();
 </script>
