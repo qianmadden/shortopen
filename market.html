@@ -7945,7 +7945,7 @@ html.so-page-hidden *,html.so-page-hidden *::before,html.so-page-hidden *::after
   #mlbContainer>.date-divider{padding-left:16px!important;padding-right:16px!important}
   #mlbContainer>.games-list{
     display:flex!important;grid-template-columns:none!important;gap:14px!important;overflow-x:auto!important;overflow-y:hidden!important;
-    width:100%!important;max-width:none!important;padding:0 16px 22px!important;scroll-snap-type:x mandatory;scroll-padding-left:16px;
+    width:100%!important;max-width:none!important;padding:0 16px 22px!important;scroll-snap-type:x proximity;scroll-padding-left:16px;
     -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x pan-y;
   }
   #mlbContainer>.games-list>.game-card{flex:0 0 min(64vw,252px)!important;width:min(64vw,252px)!important;scroll-snap-align:start;scroll-snap-stop:normal;margin:0!important}
@@ -8307,6 +8307,148 @@ nav .nav-special.green,nav .nav-special.green.active,nav .nav-special.green:acti
 
 .q-hero-left::after,.q-hero-command-rail::after{animation:none!important;}
 body .q-market-title .gold-line{animation:none!important;background-position:42% 50%!important;}
+
+/* 2026-07-29 mobile composition: header-safe section navigation, compact hero, and a swipeable casino deck. */
+@keyframes soStatusTickerMobile{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+@keyframes soBoardTickerMobile{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+@media (max-width:700px){
+  /* The fixed stack is 28px status + 62px nav. The section shortcuts must sit below both. */
+  .so-market-mobile-nav{
+    position:fixed!important;left:0!important;right:0!important;top:90px!important;z-index:260!important;min-height:48px!important;
+    opacity:0!important;transform:translate3d(0,-112%,0)!important;pointer-events:none!important;
+    transition:opacity .18s ease,transform .22s ease!important;
+    padding:10px 12px 9px!important;overflow-x:auto!important;overflow-y:hidden!important;
+    box-shadow:0 8px 18px rgba(0,0,0,.22)!important;
+  }
+  .so-market-mobile-nav.so-nav-visible{opacity:1!important;transform:translate3d(0,0,0)!important;pointer-events:auto!important;}
+  #mlbContainer>.games-list,
+  #mlbContainer>.prop-list,
+  #mlbContainer>.futures-list,
+  #mlbContainer>.ls-wrap{scroll-margin-top:148px!important;}
+  .hero-left.q-hero-left{overflow:hidden!important;max-width:100%!important;}
+  #mlbContainer>.games-list{
+    padding:11px 16px 22px!important;
+    overflow-x:auto!important;overflow-y:hidden!important;
+    scroll-snap-type:x proximity!important;scroll-padding-inline:16px!important;
+    -webkit-overflow-scrolling:touch!important;overscroll-behavior-x:contain!important;
+    scrollbar-width:none!important;touch-action:pan-x pan-y!important;
+  }
+  #mlbContainer>.games-list::-webkit-scrollbar{display:none!important;}
+  #mlbContainer>.games-list>.game-card{margin-top:0!important;scroll-snap-align:start!important;scroll-snap-stop:normal!important;}
+
+  /* Keep both market ribbons composited and moving on iOS after the performance pass. */
+  .sb-ticker-inner{
+    animation:soStatusTickerMobile 30s linear infinite!important;
+    animation-play-state:running!important;will-change:transform!important;
+    transform:translate3d(0,0,0);backface-visibility:hidden;
+  }
+  .ticker-inner{
+    animation:soBoardTickerMobile 40s linear infinite!important;
+    animation-play-state:running!important;will-change:transform!important;
+    transform:translate3d(0,0,0);backface-visibility:hidden;
+  }
+
+  /* Compact the four market-summary cards into a true 2 x 2 instrument row. */
+  .hero-stat-row,.q-hero-stat-row{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:7px!important;margin-top:14px!important;
+  }
+  .hero-stat-card,.q-hero-stat-card{
+    min-height:72px!important;padding:9px 10px!important;border-radius:14px!important;
+  }
+  .hero-stat-label{font-size:.45rem!important;letter-spacing:.12em!important;}
+  .hero-stat-value,.q-hero-stat-card .hero-stat-value{font-size:1.15rem!important;line-height:1!important;}
+  .q-stat-sub{font-size:.41rem!important;line-height:1.25!important;margin-top:4px!important;}
+
+  /* Consensus Board: same information, less vertical weight. */
+  .q-consensus-board{
+    min-height:0!important;border-radius:22px!important;margin-top:7px!important;
+  }
+  .q-consensus-inner{padding:12px 12px 13px!important;}
+  .q-consensus-header{padding-bottom:8px!important;margin-bottom:1px!important;gap:8px!important;}
+  .q-consensus-kicker{font-size:.48rem!important;letter-spacing:.16em!important;}
+  .q-consensus-title{font-size:1.38rem!important;}
+  .q-consensus-sub{font-size:.61rem!important;line-height:1.4!important;margin-top:5px!important;}
+  .q-board-badge{font-size:.48rem!important;padding:6px 8px!important;border-radius:9px!important;}
+  .q-board-row{min-height:56px!important;margin:0 -5px!important;padding:7px 7px!important;gap:7px!important;}
+  .q-board-row .lg-meta{font-size:.46rem!important;letter-spacing:.13em!important;margin-bottom:3px!important;}
+  .q-board-row .lg-val{font-size:.84rem!important;line-height:1.08!important;}
+  .q-source{font-size:.40rem!important;margin-top:2px!important;max-width:205px!important;line-height:1.25!important;}
+  .q-row-metric{gap:3px!important;}
+  .q-row-metric .lg-pct{font-size:1.34rem!important;}
+  .q-row-odds{font-size:.50rem!important;padding:2px 5px!important;}
+  .q-splitbar,.q-signalbar{height:4px!important;margin:-2px 0 4px!important;}
+  .q-split-labels{font-size:.46rem!important;margin-bottom:4px!important;}
+  .q-ev-pill{font-size:.62rem!important;padding:6px 8px!important;}
+  .q-steam-tag,.q-sharp-tag{font-size:.90rem!important;}
+
+  /* Four casino instruments become one horizontal deck directly below the wheel. */
+  #mlbContainer .ls-wrap .ls-hero-zone{
+    grid-template-columns:minmax(0,1fr)!important;justify-content:stretch!important;justify-items:stretch!important;
+    min-width:0!important;max-width:100%!important;
+  }
+  #mlbContainer .ls-wrap .q-wheel-stack{min-width:0!important;max-width:100%!important;}
+  #mlbContainer .q-closing-terminal.q-mobile-casino-ready{
+    width:100%!important;max-width:100%!important;min-width:0!important;min-height:0!important;
+    padding:0!important;margin:8px 0 0!important;border:0!important;border-radius:0!important;
+    background:none!important;box-shadow:none!important;overflow:visible!important;
+  }
+  #mlbContainer .q-closing-terminal.q-mobile-casino-ready::before{display:none!important;}
+  #mlbContainer .q-mobile-casino-deck{
+    display:flex!important;gap:12px!important;width:100%!important;max-width:100%!important;min-width:0!important;
+    overflow-x:auto!important;overflow-y:hidden!important;
+    scroll-snap-type:x proximity!important;scroll-padding-left:1px!important;
+    -webkit-overflow-scrolling:touch!important;overscroll-behavior-x:contain!important;
+    padding:2px 1px 14px!important;scrollbar-width:none!important;
+  }
+  #mlbContainer .q-mobile-casino-deck::-webkit-scrollbar{display:none!important;}
+  #mlbContainer .q-mobile-casino-panel{
+    box-sizing:border-box!important;flex:0 0 100%!important;
+    width:100%!important;max-width:none!important;height:min(64vh,480px)!important;
+    scroll-snap-align:start!important;scroll-snap-stop:always!important;
+    overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;
+    border:1px solid rgba(134,239,172,.20)!important;border-radius:22px!important;
+    background:radial-gradient(circle at 12% 0%,rgba(134,239,172,.09),transparent 38%),linear-gradient(180deg,rgba(13,35,25,.94),rgba(5,13,11,.98))!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 16px 36px rgba(0,0,0,.28)!important;
+    padding:14px!important;
+  }
+  #mlbContainer .q-terminal-top.q-mobile-casino-panel{
+    display:flex!important;flex-direction:column!important;align-items:flex-start!important;
+    justify-content:flex-start!important;gap:12px!important;margin:0!important;
+  }
+  #mlbContainer .q-terminal-top.q-mobile-casino-panel>div:first-child{width:100%!important;}
+  #mlbContainer .q-terminal-badge{align-self:flex-start!important;}
+  #mlbContainer .q-mobile-dealer-grid{display:grid;gap:9px;width:100%;margin-top:auto;}
+  #mlbContainer .q-mobile-dealer-row{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:11px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.07);
+    background:rgba(0,0,0,.18);font-family:'DM Mono',monospace;
+  }
+  #mlbContainer .q-mobile-dealer-row span{font-size:.46rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(211,231,220,.48);}
+  #mlbContainer .q-mobile-dealer-row b{font-size:.66rem;color:#f4de9b;text-align:right;}
+
+  #mlbContainer .q-chip-felt.q-mobile-casino-panel{min-height:0!important;}
+  #mlbContainer .q-chip-felt.q-mobile-casino-panel .q-chip-drop-zone{
+    display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;padding:10px 0 2px!important;align-items:stretch!important;
+  }
+  #mlbContainer .q-chip-felt.q-mobile-casino-panel .ls-leg.q-rect-chip{
+    width:100%!important;max-width:none!important;height:78px!important;min-height:78px!important;
+    padding:14px 9px 7px!important;margin:0!important;
+  }
+  #mlbContainer .q-chip-felt.q-mobile-casino-panel .ls-leg-name{font-size:.66rem!important;}
+  #mlbContainer .q-chip-felt.q-mobile-casino-panel .ls-leg-odds{font-size:.82rem!important;}
+
+  #mlbContainer .q-night-ledger.q-mobile-casino-panel{margin:0!important;}
+  #mlbContainer .q-ledger-grid{grid-template-columns:1fr!important;}
+  #mlbContainer .q-ticket-panel.q-mobile-casino-panel{margin:0!important;width:100%!important;max-width:none!important;}
+  #mlbContainer .q-ticket-panel.q-mobile-casino-panel .q-ticket-list{gap:6px!important;}
+  #mlbContainer .q-ticket-panel.q-mobile-casino-panel .q-ticket-row{min-height:44px!important;padding:7px 8px!important;}
+  #mlbContainer .q-ticket-panel.q-mobile-casino-panel .q-ticket-left b{font-size:.61rem!important;}
+  #mlbContainer .q-ticket-panel.q-mobile-casino-panel .q-ticket-left em{font-size:.50rem!important;}
+  #mlbContainer .q-ticket-panel.q-mobile-casino-panel .q-ticket-odds-badge{font-size:.70rem!important;}
+  #mlbContainer .q-terminal-body.q-mobile-casino-source{display:none!important;}
+}
 </style>
 </head>
 
@@ -12817,12 +12959,66 @@ aftDOM(function(){
     if(!matchMedia('(max-width:700px)').matches) return;
     var root=document.getElementById('mlbContainer'); if(!root||document.querySelector('.so-market-mobile-nav')) return;
     var games=root.querySelector('.games-list'), props=root.querySelector('.prop-list'), futures=root.querySelector('.futures-list'), roulette=root.querySelector('.ls-wrap');
+    var gamesAnchor=(games&&games.previousElementSibling&&games.previousElementSibling.classList.contains('date-divider'))?games.previousElementSibling:games;
     var nav=document.createElement('div');nav.className='so-market-mobile-nav';nav.setAttribute('aria-label','Market section shortcuts');
-    [['Games',games],['Props',props],['Futures',futures],['Roulette',roulette]].forEach(function(pair){if(!pair[1])return;var b=document.createElement('button');b.type='button';b.textContent=pair[0];b.addEventListener('click',function(){pair[1].scrollIntoView({behavior:'smooth',block:'start'});});nav.appendChild(b);});
-    root.parentNode.insertBefore(nav,root);
+    [['Games',gamesAnchor],['Props',props],['Futures',futures],['Roulette',roulette]].forEach(function(pair){if(!pair[1])return;var b=document.createElement('button');b.type='button';b.textContent=pair[0];b.addEventListener('click',function(){var y=pair[1].getBoundingClientRect().top+window.scrollY-148;window.scrollTo({top:Math.max(0,y),behavior:'smooth'});});nav.appendChild(b);});
+    document.body.appendChild(nav);
+    var queued=false;
+    function syncNav(){queued=false;var rr=root.getBoundingClientRect();nav.classList.toggle('so-nav-visible',rr.top<=176&&rr.bottom>138);}
+    function onScroll(){if(queued)return;queued=true;requestAnimationFrame(syncNav);}
+    syncNav();window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll,{passive:true});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
 </script>
+
+<script id="so-mobile-casino-deck-20260729">
+(function(){
+  var mq=window.matchMedia('(max-width:700px)');
+  function build(){
+    if(!mq.matches)return;
+    var terminal=document.querySelector('#mlbContainer .q-closing-terminal');
+    if(!terminal||terminal.classList.contains('q-mobile-casino-ready'))return;
+    var top=terminal.querySelector('.q-terminal-top');
+    var body=terminal.querySelector('.q-terminal-body');
+    var chip=terminal.querySelector('.q-chip-felt');
+    var ticket=terminal.querySelector('.q-ticket-panel');
+    var ledger=terminal.querySelector('.q-night-ledger');
+    if(!top||!body||!chip||!ticket||!ledger)return;
+    var deck=document.createElement('div');
+    deck.className='q-mobile-casino-deck';
+    deck.setAttribute('aria-label','Roulette table panels');
+    top.classList.add('q-mobile-casino-panel','q-mobile-dealer-panel');
+    chip.classList.add('q-mobile-casino-panel');
+    ledger.classList.add('q-mobile-casino-panel');
+    ticket.classList.add('q-mobile-casino-panel');
+    if(!top.querySelector('.q-mobile-dealer-grid')){
+      var grid=document.createElement('div');
+      grid.className='q-mobile-dealer-grid';
+      grid.innerHTML='<div class="q-mobile-dealer-row"><span>Table mode</span><b>Live board</b></div><div class="q-mobile-dealer-row"><span>Chip action</span><b>Tap or drag</b></div><div class="q-mobile-dealer-row"><span>Result</span><b>Payout preview</b></div>';
+      top.appendChild(grid);
+    }
+    deck.appendChild(chip);
+    deck.appendChild(ledger);
+    deck.appendChild(top);
+    deck.appendChild(ticket);
+    body.classList.add('q-mobile-casino-source');
+    terminal.appendChild(deck);
+    terminal.classList.add('q-mobile-casino-ready');
+  }
+  function boot(){
+    build();
+    var root=document.querySelector('#mlbContainer .ls-wrap');
+    if(root&&'MutationObserver' in window){
+      var observer=new MutationObserver(function(){build();if(document.querySelector('.q-mobile-casino-ready'))observer.disconnect();});
+      observer.observe(root,{childList:true,subtree:true});
+      setTimeout(function(){observer.disconnect();},5000);
+    }
+    [250,700,1500,2800].forEach(function(t){setTimeout(build,t)});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
+
 </body>
 </html>
