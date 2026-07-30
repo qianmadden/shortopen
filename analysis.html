@@ -1790,6 +1790,45 @@ nav{
   }
 }
 </style>
+
+<style id="so-analysis-unified-paint-shelves-20260730">
+/* Primary page regions are present at first paint instead of revealing section-by-section. */
+.so-analysis-hero,.analysis-layout,#section-allsports,.sport-block-label,
+#nba-grid,#mlb-grid,#nfl-grid,#universal-cards-main,
+#featuredArticleBanner,.so-community-panel,.so-analysis-deepdive,.so-analysis-fan{
+  opacity:1!important;visibility:visible!important;transform:none!important;
+  animation-delay:0s!important;
+}
+@media (max-width:700px){
+  /* Full-bleed, low-contrast shelf surface behind each horizontal article deck. */
+  #section-allsports .so-mobile-article-shelf{
+    position:relative;width:100vw!important;max-width:none!important;
+    margin:0 0 28px calc(50% - 50vw)!important;padding:22px 0 12px!important;
+    overflow:hidden!important;border-top:1px solid rgba(255,255,255,.035)!important;
+    border-bottom:1px solid rgba(255,255,255,.035)!important;
+    background:linear-gradient(90deg,rgba(5,10,18,.18),rgba(9,18,29,.30) 48%,rgba(5,10,18,.15))!important;
+  }
+  #section-allsports .so-mobile-article-shelf::before{
+    content:'';position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);
+    background-size:54px 54px;opacity:.55;
+  }
+  #section-allsports .so-mobile-article-shelf>.sport-block-label{position:relative;z-index:2;margin:0 auto 16px!important;padding:0 18px!important;}
+  #section-allsports .so-mobile-article-shelf>#nba-grid,
+  #section-allsports .so-mobile-article-shelf>#mlb-grid,
+  #section-allsports .so-mobile-article-shelf>#nfl-grid,
+  #section-allsports .so-mobile-article-shelf>#universal-cards-main{
+    position:relative;z-index:2;margin-left:14px!important;width:calc(100vw - 14px)!important;
+    padding-right:18px!important;background:transparent!important;
+  }
+  /* Preserve interaction motion, remove only entrance/reveal motion. */
+  #section-allsports>.so-mobile-article-shelf,
+  #section-allsports>.so-mobile-article-shelf>.sport-block-label,
+  #section-allsports>.so-mobile-article-shelf>div[id$="grid"],
+  #section-allsports>.so-mobile-article-shelf>#universal-cards-main{animation:none!important;transition:none!important;}
+}
+</style>
+
 </head>
 <body id="top">
 <!-- HERO -->
@@ -4442,5 +4481,24 @@ article.repreview-card.open .repreview-topart{height:170px}
   }
 }
 </style>
+
+<script id="so-analysis-mobile-shelf-wrapper-20260730">
+(function(){
+  function build(){
+    if(!matchMedia('(max-width:700px)').matches)return;
+    var root=document.getElementById('section-allsports');if(!root)return;
+    [['nba-grid','lbl-nba'],['mlb-grid','lbl-mlb'],['nfl-grid','lbl-nfl'],['universal-cards-main','lbl-uni']].forEach(function(pair){
+      var grid=document.getElementById(pair[0]);
+      var label=root.querySelector('.sport-block-label.'+pair[1]);
+      if(!grid||!label||grid.parentElement.classList.contains('so-mobile-article-shelf'))return;
+      var wrap=document.createElement('section');wrap.className='so-mobile-article-shelf';
+      label.parentNode.insertBefore(wrap,label);wrap.appendChild(label);wrap.appendChild(grid);
+    });
+    requestAnimationFrame(function(){document.documentElement.classList.add('so-analysis-painted');});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build,{once:true});else build();
+})();
+</script>
+
 </body>
 </html>
