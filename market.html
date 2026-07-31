@@ -8665,7 +8665,20 @@ nav .nav-special.green:focus{
  content-visibility:visible!important;contain:none!important;opacity:1!important;visibility:visible!important;
 }
 .so-offscreen,.so-perf-offscreen{content-visibility:visible!important;opacity:1!important;visibility:visible!important;}
-</style></head>
+</style>
+<style id="so-market-mobile-tray-and-chip-motion-20260731">
+@media(max-width:700px){
+ #mlbContainer .q-tray-title-wrap b{font-size:.72rem!important;line-height:1.12!important;letter-spacing:-.01em!important;max-width:190px!important;}
+ #mlbContainer .q-tray-title-wrap span{font-size:.46rem!important;margin-bottom:2px!important;}
+ #mlbContainer .q-tray-chipcount{font-size:.58rem!important;padding:8px 10px!important;}
+ #mlbContainer .q-chip-drop-zone .ls-leg.q-rect-chip{touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important;}
+}
+.q-smooth-chip-clone{min-width:84px!important;min-height:52px!important;filter:drop-shadow(0 10px 18px rgba(0,0,0,.55)) drop-shadow(0 0 12px rgba(244,185,66,.26))!important;z-index:9999!important;}
+.q-rim-chip-echo{opacity:.5!important;}
+.q-jackpot-chip{width:clamp(19px,var(--s),30px)!important;height:clamp(19px,var(--s),30px)!important;}
+@media(max-width:700px){.q-smooth-chip-clone{min-width:92px!important;min-height:56px!important;transform-origin:center!important;}}
+</style>
+</head>
 <body>
 <!-- SCANLINES -->
 <div class="scanlines"></div>
@@ -12229,7 +12242,7 @@ initSpinFeeds();
     var radius=Math.max(42,Math.min(wr.width,wr.height)*.34);
     var rimStart={x:center.x,y:center.y-radius};
     var clone=opts.clone || makeClone(source,opts.ticket?'q-smooth-ticket-clone':'q-smooth-chip-clone');
-    var duration=opts.duration || (opts.ticket?900:1120);
+    var duration=opts.duration || (opts.ticket?620:680);
     var history=[];
     var echoes=[];
     var echoCount=opts.ticket?3:6;
@@ -12267,9 +12280,9 @@ initSpinFeeds();
     function frame(now){
       var raw=clamp((now-t0)/duration,0,1);
       var x,y,rot,scale,alpha=1;
-      if(raw<.42){
+      if(raw<.30){
         // Dealer flick: short press, shallow curved launch, one controlled flip.
-        var k=easeInOutCubic(raw/.42);
+        var k=easeOutCubic(raw/.30);
         var dx=rimStart.x-start.x;
         var p0=start;
         var p1={x:start.x+dx*.24,y:start.y-clamp(Math.abs(dx)*.10,24,72)};
@@ -12277,25 +12290,25 @@ initSpinFeeds();
         x=cubic(p0.x,p1.x,p2.x,rimStart.x,k);
         y=cubic(p0.y,p1.y,p2.y,rimStart.y,k)-Math.sin(Math.PI*k)*9;
         rot=-8+382*easeOutCubic(k);
-        scale=1.03-(k*.42);
-      }else if(raw<.84){
+        scale=1.16-(k*.28);
+      }else if(raw<.70){
         // Rim ride: one elegant orbit instead of free-spinning or a coin shower.
-        var k2=easeInOutCubic((raw-.42)/.42);
+        var k2=easeInOutCubic((raw-.30)/.40);
         var angle=(-Math.PI/2)+(Math.PI*1.72*k2);
         x=center.x+Math.cos(angle)*radius;
         y=center.y+Math.sin(angle)*radius*.92;
         rot=374+(285*k2);
-        scale=.61-(k2*.12);
+        scale=.88-(k2*.18);
         wheel.classList.add('q-wheel-rim-ride');
       }else{
         // Controlled inward drop and felt compression.
-        var k3=easeOutCubic((raw-.84)/.16);
+        var k3=easeOutCubic((raw-.70)/.30);
         var endAngle=Math.PI*1.22;
         var r=radius*(1-k3);
         x=center.x+Math.cos(endAngle)*r;
         y=center.y+Math.sin(endAngle)*r*.92;
         rot=659+(72*k3);
-        scale=.49-(k3*.18);
+        scale=.70-(k3*.20);
         alpha=1-k3*.35;
         if(!landed && k3>.54){landed=true;wheel.classList.add('q-drop-hit');}
       }

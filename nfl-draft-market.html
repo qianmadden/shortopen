@@ -1636,7 +1636,28 @@ main>section,main>div,.ota-liquid-board,.draft-learning-lab,.so-final-shell,.moc
 .so-nfl-offscreen,.so-nfl-zone{content-visibility:visible!important;opacity:1!important;visibility:visible!important;}
 /* Preserve intentional tab state and expandable content. */
 .section-panel:not(.visible),.ota-expand-wrap:not(.is-open),.scout-expanded.hidden{visibility:hidden;}
-</style></head>
+</style>
+<style id="so-nfl-market-feed-content-fix-20260731">
+#liveIntelPanel .market-feed-list{display:flex;flex-direction:column;}
+#liveIntelPanel .market-feed-item{display:grid;grid-template-columns:minmax(120px,.72fr) minmax(0,1.55fr) auto;align-items:center;gap:14px;padding:15px 18px;border-bottom:1px solid rgba(255,255,255,.055);}
+#liveIntelPanel .market-feed-item:last-child{border-bottom:0;}
+#liveIntelPanel .market-feed-player{min-width:0;}
+#liveIntelPanel .market-feed-player b{display:block;font-size:.88rem;line-height:1.2;color:#f5f1e8;}
+#liveIntelPanel .market-feed-player span{display:block;margin-top:4px;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:#64748b;}
+#liveIntelPanel .market-feed-item p{margin:0;min-width:0;font-size:.78rem;line-height:1.45;color:#aeb9c8;}
+#liveIntelPanel .market-feed-trend{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;border-radius:999px;padding:6px 9px;font-size:.62rem;font-weight:800;letter-spacing:.04em;}
+#liveIntelPanel .market-feed-trend.bullish{color:#4ade80;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.24);}
+#liveIntelPanel .market-feed-trend.neutral{color:#f4b942;background:rgba(244,185,66,.09);border:1px solid rgba(244,185,66,.22);}
+@media(max-width:700px){
+ #liveIntelPanel .market-feed-list{display:flex!important;flex-direction:row!important;gap:10px!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;padding:12px!important;-webkit-overflow-scrolling:touch!important;}
+ #liveIntelPanel .market-feed-list::-webkit-scrollbar{display:none!important;}
+ #liveIntelPanel .market-feed-item{flex:0 0 calc(100% - 26px)!important;display:grid!important;grid-template-columns:1fr auto!important;grid-template-areas:'player trend' 'copy copy'!important;gap:9px 12px!important;align-content:center!important;min-height:136px!important;padding:14px!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:18px!important;scroll-snap-align:start!important;background:rgba(7,15,25,.72)!important;}
+ #liveIntelPanel .market-feed-player{grid-area:player!important;}
+ #liveIntelPanel .market-feed-item p{grid-area:copy!important;font-size:.76rem!important;line-height:1.45!important;display:-webkit-box!important;-webkit-line-clamp:3!important;-webkit-box-orient:vertical!important;overflow:hidden!important;}
+ #liveIntelPanel .market-feed-trend{grid-area:trend!important;align-self:start!important;}
+}
+</style>
+</head>
 <body class="min-h-screen text-white">
 <!-- BG GLOWS -->
 <div class="fixed inset-0 opacity-20 pointer-events-none z-0">
@@ -1952,12 +1973,12 @@ main>section,main>div,.ota-liquid-board,.draft-learning-lab,.so-final-shell,.moc
 <aside class="space-y-4">
 <div class="panel-card glass rounded-[2rem]" id="liveIntelPanel">
 <div class="p-5 border-b border-white/10 flex items-center justify-between"><div><div class="text-xs uppercase tracking-[0.25em] text-zinc-500">Live Intel</div><div class="mt-1 text-2xl font-black">Market Feed</div></div><div class="h-3 w-3 rounded-full bg-emerald-400 animate-pulse"></div></div>
-<div class="p-0">
-<div class="px-5 py-4 border-b border-white/5 text-sm leading-7 text-zinc-300"><span class="text-yellow-400 font-semibold">QB Mendoza</span> tabbed QB1 in Vegas — Kubiak's track record of elevating QBs amplifies an intriguing season for the Heisman winner.</div>
-<div class="px-5 py-4 border-b border-white/5 text-sm leading-7 text-zinc-300"><span class="text-emerald-400 font-semibold">UP Bailey</span> already the closer the Jets were missing — Aaron Glenn calling his get-off the best he's scouted in the class.</div>
-<div class="px-5 py-4 border-b border-white/5 text-sm leading-7 text-zinc-300"><span class="text-yellow-400 font-semibold">RB Love</span> drawing Reggie Bush comps — the FO sees a runner-receiver hybrid who can close the NFC West gap on his own.</div>
-<div class="px-5 py-4 border-b border-white/5 text-sm leading-7 text-zinc-300"><span class="text-emerald-400 font-semibold">UP Tate</span> Cam Ward's new WR1 — Titans staff comparing his route polish and body control to Davante Adams</div>
-<div class="px-5 py-4 text-sm leading-7 text-zinc-300"><span class="text-yellow-400 font-semibold">DEF Reese</span> being deployed all over the Giants' front next to Brian Burns — reliable versatility being the separator and intrigue.</div>
+<div class="market-feed-list">
+<div class="market-feed-item"><div class="market-feed-player"><b>Fernando Mendoza</b><span>QB · Raiders</span></div><p>Tabbed QB1 in Vegas. Kubiak's track record with quarterbacks strengthens the early Heisman-winner case.</p><span class="market-feed-trend bullish">↗ Bullish</span></div>
+<div class="market-feed-item"><div class="market-feed-player"><b>Arvell Reese</b><span>EDGE · Jets</span></div><p>Aaron Glenn called his get-off the best he has scouted in the class, raising closer expectations immediately.</p><span class="market-feed-trend bullish">↗ Bullish</span></div>
+<div class="market-feed-item"><div class="market-feed-player"><b>Jeremiyah Love</b><span>RB · 49ers</span></div><p>Reggie Bush comparisons are building around a runner-receiver profile designed to stress the NFC West.</p><span class="market-feed-trend bullish">↗ Bullish</span></div>
+<div class="market-feed-item"><div class="market-feed-player"><b>Jordyn Tyson</b><span>WR · Titans</span></div><p>Route polish and body control have him trending toward Cam Ward's immediate top target.</p><span class="market-feed-trend bullish">↗ Bullish</span></div>
+<div class="market-feed-item"><div class="market-feed-player"><b>David Bailey</b><span>EDGE · Giants</span></div><p>Versatility next to Brian Burns is creating early interest, though role clarity remains the key variable.</p><span class="market-feed-trend neutral">→ Watch</span></div>
 </div>
 </div>
 <div class="panel-card glass rounded-[2rem]" id="marketSignalPanel">
