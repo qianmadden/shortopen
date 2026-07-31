@@ -1,7 +1,25 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<head>
+<head><script id="so-unified-dom-ready-bootstrap">
+(function(){
+  if(document.readyState!=="loading")return;
+  var nativeAdd=document.addEventListener.bind(document);
+  var queue=[];
+  document.addEventListener=function(type,handler,options){
+    if(type==="DOMContentLoaded"&&typeof handler==="function"){queue.push([handler,options]);return;}
+    return nativeAdd(type,handler,options);
+  };
+  nativeAdd("DOMContentLoaded",function(event){
+    document.addEventListener=nativeAdd;
+    requestAnimationFrame(function(){
+      queue.forEach(function(item){try{item[0].call(document,event);}catch(err){setTimeout(function(){throw err;},0);}});
+      queue.length=0;
+      document.documentElement.classList.add("so-unified-interactive");
+    });
+  },{once:true});
+})();
+</script><script id="so-market-prepaint">document.documentElement.classList.add("so-market-painted","so-unified-first-paint");</script>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>shortopen — The Market</title>
@@ -7686,44 +7704,7 @@ html.so-tab-hidden *,html.so-tab-hidden *::before,html.so-tab-hidden *::after{an
 @media(max-width:900px){.hero-grid::before{inset:70px 10px 8px}.hero-grid{padding-bottom:42px!important}.page-title{font-size:clamp(42px,12vw,72px)!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
 </style>
-
-
 <!-- Body-level style blocks moved into head to prevent mobile first-paint layout flash. -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <style id="so-market-cohesion-pass">
 /*  ═══ MARKET COHESION PASS ═══
     Derives one shared "card shell" from the game-card the user loves and
@@ -7934,7 +7915,7 @@ html.so-tab-hidden *,html.so-tab-hidden *::before,html.so-tab-hidden *::after{an
 /* Final performance/mobile pass: additive and deliberately scoped so desktop artwork and roulette behavior remain intact. */
 html,body{overflow-x:clip}
 #mlbContainer>.prop-list,#mlbContainer>.ls-wrap{
-  content-visibility:auto;contain:layout paint style;contain-intrinsic-size:1px 760px;
+  content-visibility:visible;contain:layout paint style;contain-intrinsic-size:1px 760px;
 }
 .so-perf-offscreen,.so-perf-offscreen *,.so-perf-offscreen *::before,.so-perf-offscreen *::after{animation-play-state:paused!important}
 html.so-page-hidden *,html.so-page-hidden *::before,html.so-page-hidden *::after{animation-play-state:paused!important}
@@ -8027,7 +8008,6 @@ html.so-page-hidden *,html.so-page-hidden *::before,html.so-page-hidden *::after
   #mlbContainer .series-banner{min-height:24px!important;padding:5px 7px!important;}
 }
 </style>
-
 <style id="so-unified-nav-v2">
 /* ================================================================
    SHORTOPEN — UNIFIED NAV BAR. Single source of truth.
@@ -8099,7 +8079,6 @@ nav{
 }
 
 </style>
-
 <style id="so-market-nav-offset">nav{top:28px;}</style>
 <style id="so-roulette-mobile-final">
 /* Final, single mobile sizing pass for the roulette section — overrides
@@ -8117,8 +8096,6 @@ nav{
   #mlbContainer .ls-wrap .ls-wheel-ball.ls-wheel-ball{width:8px!important;height:8px!important;}
 }
 </style>
-
-
 <style id="so-targeted-request-fixes-20260728">
 /* Keep the Prop Board's right ticket color running to the same bottom edge as the ranked prop board. */
 @media (min-width:981px){
@@ -8450,7 +8427,6 @@ body .q-market-title .gold-line{animation:none!important;background-position:42%
   #mlbContainer .q-terminal-body.q-mobile-casino-source{display:none!important;}
 }
 </style>
-
 <style id="so-mobile-refinement-final-20260729">
 /* Final mobile source of truth for the sport banners, compact betting modules,
    and roulette interaction. Desktop geometry is untouched. */
@@ -8562,9 +8538,9 @@ body .q-market-title .gold-line{animation:none!important;background-position:42%
   #mlbContainer .q-chip-felt.q-mobile-casino-panel .ls-leg.q-rect-chip:nth-child(5){grid-column:1/-1!important;width:calc(50% - 4px)!important;justify-self:center!important;}
   #mlbContainer .q-chip-felt.q-mobile-casino-panel .ls-leg-n{font-size:.35rem!important;padding:2px 5px!important;}
   #mlbContainer .q-chip-felt.q-mobile-casino-panel .ls-leg-name{font-size:.57rem!important;line-height:1.08!important;}
-  #mlbContainer .q-chip-felt.q-mobile-casino-panel .ls-leg-suit{font-size:.37rem!important;}
+  #mlbContainer .q-chip-felt.q-mobile-casino-panel .ls-leg.q-rect-chip .ls-leg-suit{font-size:.37rem!important;}
   #mlbContainer .q-chip-felt.q-mobile-casino-panel .ls-leg-odds{font-size:.69rem!important;}
-  #mlbContainer .q-chip-felt.q-mobile-casino-panel .q-chip-code{font-size:.30rem!important;}
+  #mlbContainer .q-chip-felt.q-mobile-casino-panel .ls-leg.q-rect-chip .q-chip-code{font-size:.30rem!important;}
   #mlbContainer .q-ticket-panel.q-mobile-casino-panel .q-ticket-row{min-height:39px!important;padding:6px 7px!important;}
   #mlbContainer .q-ticket-panel.q-mobile-casino-panel .q-ticket-left b{font-size:.56rem!important;}
   #mlbContainer .q-ticket-panel.q-mobile-casino-panel .q-ticket-left em{font-size:.44rem!important;}
@@ -8580,7 +8556,6 @@ body .q-market-title .gold-line{animation:none!important;background-position:42%
   100%{transform:translate3d(var(--q-fx),var(--q-fy),0) scale(calc(var(--q-scale,1)*.72)) rotateX(360deg) rotateZ(var(--q-spin));opacity:0;}
 }
 </style>
-
 <style id="so-approved-final-market-pass-20260730">
 /* Natural Prop Board tab geometry: active state changes color only. */
 nav .nav-special.green,
@@ -8644,9 +8619,53 @@ nav .nav-special.green:focus{
   #mlbContainer .q-mobile-casino-panel{height:min(58vh,438px)!important;}
 }
 </style>
-
-</head>
-
+<style id="so-market-mobile-detail-polish-20260730">
+/* Decouple the current rail ride from the legacy casino-coin effect. */
+.q-coin{display:none!important;animation:none!important;}
+@media(max-width:700px){
+  /* Normalize all three swipe panels to the same measured box. */
+  #mlbContainer .q-mobile-casino-deck{gap:10px!important;padding-inline:1px!important;}
+  #mlbContainer .q-mobile-casino-panel{
+    flex:0 0 100%!important;width:100%!important;max-width:100%!important;
+    height:min(58vh,438px)!important;min-height:0!important;
+    padding:12px!important;box-sizing:border-box!important;
+  }
+  /* Q's Ticket: reserve a real number gutter so 01–05 never overlap names. */
+  #mlbContainer .q-ticket-panel.q-mobile-casino-panel .q-ticket-list{padding:7px 8px 9px!important;gap:0!important;}
+  #mlbContainer .q-ticket-panel.q-mobile-casino-panel .q-ticket-row{
+    grid-template-columns:minmax(0,1fr) 56px!important;gap:6px!important;
+    min-height:39px!important;padding:6px 5px 6px 17px!important;
+  }
+  #mlbContainer .q-ticket-panel.q-mobile-casino-panel .q-ticket-row::before{left:2px!important;top:8px!important;font-size:.36rem!important;}
+  #mlbContainer .q-ticket-panel.q-mobile-casino-panel .q-ticket-left b{font-size:.54rem!important;line-height:1.08!important;}
+  #mlbContainer .q-ticket-panel.q-mobile-casino-panel .q-ticket-left em{font-size:.42rem!important;line-height:1.08!important;}
+  #mlbContainer .q-ticket-panel.q-mobile-casino-panel .q-ticket-bar-wrap span{font-size:.35rem!important;}
+  #mlbContainer .q-ticket-panel.q-mobile-casino-panel .q-ticket-odds-badge{min-width:52px!important;font-size:.60rem!important;padding:4px 5px!important;}
+  /* Chip plaque footer copy: smaller and clipped inside its own safe line. */
+  #mlbContainer .q-chip-felt.q-mobile-casino-panel .ls-leg.q-rect-chip{
+    grid-template-areas:"tag odds" "name name" "brand brand"!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+  }
+  #mlbContainer .q-chip-felt.q-mobile-casino-panel .ls-leg-suit{
+    display:block!important;justify-self:stretch!important;width:auto!important;max-width:none!important;
+    padding-right:30px!important;margin:0!important;font-size:.30rem!important;line-height:1.08!important;
+    white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  }
+  #mlbContainer .q-chip-felt.q-mobile-casino-panel .q-chip-code{
+    position:absolute!important;right:6px!important;bottom:4px!important;
+    font-size:.25rem!important;line-height:1!important;
+  }
+}
+</style>
+<style id="so-market-unified-first-paint-v2">
+#mlbContainer>.date-divider,#mlbContainer>.games-list,#mlbContainer>.prop-section-header,
+#mlbContainer>.prop-list,#mlbContainer>.futures-list,#mlbContainer>.ls-wrap,
+#mlbContainer .consensus-wrap,#mlbContainer .championship-section,#mlbContainer .ct-wrap,
+#mlbContainer .hero-stat-card,#mlbContainer .lg-consensus{
+ content-visibility:visible!important;contain:none!important;opacity:1!important;visibility:visible!important;
+}
+.so-offscreen,.so-perf-offscreen{content-visibility:visible!important;opacity:1!important;visibility:visible!important;}
+</style></head>
 <body>
 <!-- SCANLINES -->
 <div class="scanlines"></div>
@@ -12305,9 +12324,8 @@ initSpinFeeds();
   }
   function interceptNativeClick(e,terminal,wheel){
     var chip=e.target.closest && e.target.closest('.q-chip-drop-zone .ls-leg.q-rect-chip');
-    var ticket=e.target.closest && e.target.closest('.q-ticket-row');
-    if(!chip && !ticket) return;
-    var target=chip||ticket;
+    if(!chip) return;
+    var target=chip;
     if(target.dataset.qSmoothAllowClick==='1'){
       delete target.dataset.qSmoothAllowClick;
       return;
@@ -12316,7 +12334,7 @@ initSpinFeeds();
     e.stopPropagation();
     e.stopImmediatePropagation && e.stopImmediatePropagation();
     var key=target.dataset.betKey;
-    animateToWheel(target,wheel,{ticket:!!ticket,onLand:function(){
+    animateToWheel(target,wheel,{ticket:false,onLand:function(){
       stampTicket(terminal,key);
       allowNativeClick(target);
     }});
@@ -13171,39 +13189,9 @@ aftDOM(function(){
   }
 })();
 </script>
-<script id="so-market-viewport-performance-controller">
-(function(){
-  var zones=new WeakSet(),io=null,scrollTimer=0;
-  function ensureIO(){
-    if(io||!('IntersectionObserver' in window))return;
-    io=new IntersectionObserver(function(entries){entries.forEach(function(e){e.target.classList.toggle('so-offscreen',!e.isIntersecting);});},{rootMargin:'260px 0px 260px 0px',threshold:0});
-  }
-  function scan(){
-    var root=document.getElementById('mlbContainer');if(!root)return;
-    ensureIO();
-    var sels='.games-list,.gm-slip-panel,.prop-list,.futures-list,.ls-wrap,.consensus-wrap,.championship-section,.ct-wrap,.hero-stat-card,.lg-consensus,.pp2-row,.q-closing-terminal,.ls-card,.date-divider,.prop-section-header,.futures-section-header';
-    root.querySelectorAll(sels).forEach(function(el){
-      if(zones.has(el))return;zones.add(el);el.classList.add('so-perf-zone');if(io)io.observe(el);
-    });
-  }
-  function onScroll(){
-    document.body.classList.add('so-market-scrolling');
-    clearTimeout(scrollTimer);scrollTimer=setTimeout(function(){document.body.classList.remove('so-market-scrolling');},110);
-  }
-  function boot(){scan();setTimeout(scan,350);setTimeout(scan,1200);document.documentElement.classList.toggle('so-tab-hidden',document.hidden);document.addEventListener('visibilitychange',function(){document.documentElement.classList.toggle('so-tab-hidden',document.hidden);},{passive:true});window.addEventListener('scroll',onScroll,{passive:true});}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
-})();
-</script>
 <script id="so-final-speed-mobile-20260725-js">
 (function(){
   function boot(){
-    var zones=[].slice.call(document.querySelectorAll('#mlbContainer>.date-divider,#mlbContainer>.games-list,#mlbContainer>.prop-section-header,#mlbContainer>.prop-list,#mlbContainer>.futures-list,#mlbContainer>.ls-wrap'));
-    if('IntersectionObserver' in window){
-      var io=new IntersectionObserver(function(entries){entries.forEach(function(e){e.target.classList.toggle('so-perf-offscreen',!e.isIntersecting);});},{rootMargin:'360px 0px',threshold:0});
-      zones.forEach(function(z){io.observe(z);});
-    }
-    function vis(){document.documentElement.classList.toggle('so-page-hidden',document.hidden)}
-    vis();document.addEventListener('visibilitychange',vis,{passive:true});
     if(!matchMedia('(max-width:700px)').matches) return;
     var root=document.getElementById('mlbContainer'); if(!root||document.querySelector('.so-market-mobile-nav')) return;
     var games=root.querySelector('.games-list'), props=root.querySelector('.prop-list'), futures=root.querySelector('.futures-list'), roulette=root.querySelector('.ls-wrap');
@@ -13219,7 +13207,6 @@ aftDOM(function(){
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
 </script>
-
 <script id="so-mobile-casino-deck-20260730">
 (function(){
   var mq=window.matchMedia('(max-width:700px)');
@@ -13281,8 +13268,6 @@ aftDOM(function(){
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
 </script>
-
-
 <script id="so-approved-final-market-controller-20260730">
 (function(){
   function boot(){
@@ -13299,6 +13284,115 @@ aftDOM(function(){
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
 </script>
-
+<style id="so-final-market-celebration-and-paint-20260730">
+/* Uniform first paint: keep the page measurable and visible from the initial render. */
+#mlbContainer>.date-divider,
+#mlbContainer>.games-list,
+#mlbContainer>.prop-section-header,
+#mlbContainer>.prop-list,
+#mlbContainer>.futures-section-header,
+#mlbContainer>.futures-list,
+#mlbContainer>.championship-section,
+#mlbContainer>.ls-wrap,
+#mlbContainer>.consensus-wrap,
+#mlbContainer>.hero-stat-card{
+  content-visibility:visible!important;
+  contain:none!important;
+  contain-intrinsic-size:none!important;
+  opacity:1!important;
+  visibility:visible!important;
+}
+/* Celebration layer stays inside the roulette wheel panel. */
+#mlbContainer .ls-wheel-panel{isolation:isolate;overflow:hidden!important;}
+.q-jackpot-canopy{
+  position:absolute;inset:0;z-index:90;pointer-events:none;overflow:hidden;
+  contain:layout paint style;
+}
+.q-jackpot-canopy::before{
+  content:"";position:absolute;inset:12% 12% 10%;border-radius:50%;
+  background:radial-gradient(circle,rgba(244,185,66,.22),rgba(34,197,94,.08) 42%,transparent 72%);
+  opacity:0;animation:qJackpotPulse 1.15s ease-out both;
+}
+.q-jackpot-chip{
+  position:absolute;left:var(--x);top:-18%;width:var(--s);height:var(--s);border-radius:50%;
+  border:2px dashed rgba(255,241,177,.86);
+  background:
+    radial-gradient(circle at 50% 50%,rgba(4,18,13,.92) 0 31%,transparent 32%),
+    repeating-conic-gradient(from 10deg,#f4b942 0 12deg,#0c5d38 12deg 28deg,#f0e7bd 28deg 35deg,#082b20 35deg 55deg);
+  box-shadow:0 4px 10px rgba(0,0,0,.48),inset 0 0 0 3px rgba(6,20,15,.78),inset 0 0 0 5px rgba(244,185,66,.28);
+  opacity:0;will-change:transform,opacity;
+  animation:qJackpotFall var(--dur) cubic-bezier(.18,.72,.26,1) var(--delay) both;
+}
+.q-jackpot-chip::after{
+  content:"";position:absolute;inset:29%;border-radius:50%;border:1px solid rgba(255,244,190,.62);
+}
+@keyframes qJackpotFall{
+  0%{opacity:0;transform:translate3d(0,-30px,0) rotateX(0deg) rotateZ(0deg) scale(.72)}
+  12%{opacity:.96}
+  72%{opacity:1;transform:translate3d(var(--drift),68vh,0) rotateX(620deg) rotateZ(var(--spin)) scale(1)}
+  88%{opacity:.92;transform:translate3d(calc(var(--drift) * .94),73vh,0) rotateX(700deg) rotateZ(var(--spin)) scale(.94)}
+  100%{opacity:0;transform:translate3d(calc(var(--drift) * .9),76vh,0) rotateX(760deg) rotateZ(var(--spin)) scale(.86)}
+}
+@keyframes qJackpotPulse{0%{opacity:0;transform:scale(.72)}22%{opacity:.8}100%{opacity:0;transform:scale(1.18)}}
+@media(max-width:700px){
+  .q-jackpot-chip{filter:none;}
+}
+@media(prefers-reduced-motion:reduce){
+  .q-jackpot-canopy,.q-jackpot-chip{animation:none!important;display:none!important;}
+}
+</style>
+<script id="so-final-market-jackpot-canopy-20260730">
+(function(){
+  'use strict';
+  function makeCanopy(panel){
+    if(!panel || panel.querySelector('.q-jackpot-canopy')) return;
+    var layer=document.createElement('div');
+    layer.className='q-jackpot-canopy';
+    var specs=[
+      [8,20,-18,760,0],[16,16,22,820,70],[25,22,-12,900,120],[34,17,18,780,160],
+      [43,21,-24,940,210],[52,15,16,800,260],[61,20,-14,870,300],[70,17,22,830,350],
+      [79,22,-18,920,390],[88,16,12,790,430],[30,14,28,860,500],[66,14,-26,880,540]
+    ];
+    specs.forEach(function(v,i){
+      var c=document.createElement('i');c.className='q-jackpot-chip';
+      c.style.setProperty('--x',v[0]+'%');
+      c.style.setProperty('--s',v[1]+'px');
+      c.style.setProperty('--drift',v[2]+'px');
+      c.style.setProperty('--dur',v[3]+'ms');
+      c.style.setProperty('--delay',v[4]+'ms');
+      c.style.setProperty('--spin',(i%2?'-':'')+(420+i*37)+'deg');
+      layer.appendChild(c);
+    });
+    panel.appendChild(layer);
+    setTimeout(function(){layer.remove();},1550);
+  }
+  function bind(panel){
+    if(!panel || panel.dataset.qCanopyBound==='1') return;
+    panel.dataset.qCanopyBound='1';
+    var wasHit=panel.classList.contains('q-drop-hit');
+    var mo=new MutationObserver(function(){
+      var hit=panel.classList.contains('q-drop-hit');
+      if(hit && !wasHit) makeCanopy(panel);
+      wasHit=hit;
+    });
+    mo.observe(panel,{attributes:true,attributeFilter:['class']});
+  }
+  function boot(){
+    document.querySelectorAll('#mlbContainer .ls-wheel-panel').forEach(bind);
+    var root=document.getElementById('mlbContainer');
+    if(root && 'MutationObserver' in window){
+      var pending=false;
+      var mo=new MutationObserver(function(){
+        if(pending)return;pending=true;
+        requestAnimationFrame(function(){pending=false;document.querySelectorAll('#mlbContainer .ls-wheel-panel').forEach(bind);});
+      });
+      mo.observe(root,{childList:true,subtree:true});
+      setTimeout(function(){mo.disconnect();document.querySelectorAll('#mlbContainer .ls-wheel-panel').forEach(bind);},5000);
+    }
+    document.documentElement.classList.add('so-market-painted');
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
 </body>
 </html>
