@@ -372,7 +372,7 @@
 .table-scroll{overflow-x:scroll!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-x pan-y!important;overscroll-behavior-x:contain;scrollbar-gutter:stable;cursor:grab;max-width:100%}
 .table-scroll.so-dragging{cursor:grabbing;user-select:none}
 .table-scroll table{min-width:1320px!important}
-.market-wrap,.stats-wrap,.clv-wrap{content-visibility:auto;contain-intrinsic-size:1px 620px}
+.market-wrap,.stats-wrap,.clv-wrap{content-visibility:visible;contain:none}
 html.so-k-hidden *,html.so-k-hidden *::before,html.so-k-hidden *::after{animation-play-state:paused!important}
 @media(max-width:700px){
   nav.site-nav{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
@@ -415,12 +415,13 @@ nav{
   border:1px solid rgba(244,185,66,.3);
 }
 .nav-special{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:1px;padding:5px 13px 6px;border-radius:9px;
-  text-decoration:none;line-height:1.2;
+  display:flex;flex:0 0 auto;flex-direction:column;align-items:center;justify-content:center;
+  width:auto;min-width:0;height:auto;min-height:0;
+  gap:0;padding:3px 8px 4px;border-radius:6px;
+  text-decoration:none;line-height:1;
 }
-.nav-special .eyebrow{font-size:.5rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;}
-.nav-special .title{font-size:.78rem;font-weight:800;letter-spacing:.01em;}
+.nav-special .eyebrow{display:block;margin:0;padding:0;gap:0;font-size:.43rem;font-weight:800;line-height:1;letter-spacing:.11em;text-transform:uppercase;}
+.nav-special .title{font-size:.72rem;font-weight:800;line-height:1.05;letter-spacing:0;}
 .nav-special.gold{background:rgba(244,185,66,.08);border:1px solid rgba(244,185,66,.35);}
 .nav-special.gold .eyebrow{color:#c9a24e;}
 .nav-special.gold .title{color:#f4b942;}
@@ -454,28 +455,6 @@ nav{
 /* Prop Board — accent only, structure/font unchanged. Logo stays as-is. */
 nav{background:rgba(7,14,11,.97);border-bottom-color:rgba(34,217,126,.2);}
 
-</style>
-
-
-
-<style id="so-targeted-request-fixes-20260728">
-/* Keep both special nav tabs compact and naturally sized. Active state changes color only. */
-nav .nav-special.gold,
-nav .nav-special.gold.active,
-nav .nav-special.gold:active,
-nav .nav-special.gold:focus,
-nav .nav-special.green,
-nav .nav-special.green.active,
-nav .nav-special.green:active,
-nav .nav-special.green:focus{
-  box-sizing:border-box!important;
-  flex:0 0 auto!important;
-  width:auto!important;min-width:0!important;max-width:none!important;
-  height:auto!important;min-height:0!important;max-height:none!important;
-  padding:5px 11px 6px!important;margin:0!important;
-  transform:none!important;translate:none!important;scale:1!important;
-  outline:none;
-}
 </style>
 </head>
 <body>
@@ -701,35 +680,34 @@ const BOOKS = [
 ];
 
 const PROPS_DATA = [
-  {name:"Chris Sale", team:"ATL", opp:"@NYM", books:{DK:[7.5,null,null],FD:[7.5,null,null],MGM:[7.5,null,null],RIV:[7.5,null,null],CZR:[7.5,null,null],HR:[7.5,null,null]}},
-  {name:"Gavin Williams", team:"CLE", opp:"@CIN", books:{DK:null,FD:[7.5,-106,-120],MGM:null,RIV:null,CZR:null,HR:[7.5,-105,-125]}},
-  {name:"Taj Bradley", team:"MIN", opp:"KC", books:{DK:[6.5,-126,-101],FD:[6.5,-125,-102],MGM:[6.5,null,null],RIV:[6.5,-122,-108],CZR:[6.5,-125,-104],HR:[6.5,-125,-105]}},
-  {name:"Chase Burns", team:"CIN", opp:"CLE", books:{DK:[6.5,-132,104],FD:[6.5,-132,104],MGM:[6.5,-155,115],RIV:[6.5,-139,104],CZR:[6.5,-135,100],HR:[6.5,-130,100]}},
-  {name:"Gerrit Cole", team:"NYY", opp:"@CWS", books:{DK:[6.5,-132,106],FD:[6.5,-140,110],MGM:[6.5,null,null],RIV:[6.5,-139,105],CZR:[6.5,-140,108],HR:[6.5,-140,105]}},
-  {name:"Reid Detmers", team:"LAA", opp:"HOU", books:{DK:[6.5,-148,116],FD:[6.5,-138,108],MGM:[6.5,-150,110],RIV:[6.5,-137,104],CZR:[6.5,-155,111],HR:[6.5,-140,110]}},
-  {name:"Sandy Alcantara", team:"MIA", opp:"PHI", books:{DK:[5.5,-145,115],FD:[5.5,-148,116],MGM:[5.5,-150,110],RIV:[5.5,-159,120],CZR:[5.5,-148,112],HR:[5.5,-150,115]}},
-  {name:"Logan Henderson", team:"MIL", opp:"@SF", books:{DK:[5.5,-153,120],FD:[5.5,-156,122],MGM:[4.5,135,-185],RIV:[5.5,-141,106],CZR:[5.5,-148,113],HR:[5.5,-145,115]}},
-  {name:"Griffin Jax", team:"TB", opp:"TEX", books:{DK:[5.5,-127,-101],FD:[5.5,-130,102],MGM:[5.5,-125,-105],RIV:[5.5,-141,106],CZR:[5.5,-137,105],HR:[5.5,-130,100]}},
-  {name:"Gage Jump", team:"ATH", opp:"BOS", books:{DK:[5.5,-148,116],FD:[5.5,-140,110],MGM:[5.5,null,130],RIV:[5.5,-134,100],CZR:[5.5,-150,110],HR:[5.5,-140,105]}},
-  {name:"Michael King", team:"SD", opp:"COL", books:{DK:[5.5,-138,108],FD:[5.5,-142,112],MGM:[5.5,null,null],RIV:[5.5,-141,107],CZR:[5.5,-150,108],HR:[5.5,-140,105]}},
-  {name:"Peter Lambert", team:"HOU", opp:"@LAA", books:{DK:[5.5,-145,114],FD:[5.5,-128,100],MGM:[5.5,null,null],RIV:[5.5,-130,-103],CZR:[5.5,-140,107],HR:[5.5,-135,105]}},
-  {name:"Troy Melton", team:"DET", opp:"BAL", books:{DK:[5.5,111,-142],FD:[5.5,102,-130],MGM:[5.5,100,-135],RIV:null,CZR:[5.5,107,-134],HR:[5.5,105,-135]}},
-  {name:"Aaron Nola", team:"PHI", opp:"@MIA", books:{DK:[5.5,-161,128],FD:[5.5,-162,126],MGM:[4.5,105,-140],RIV:[5.5,-162,120],CZR:[4.5,115,-150],HR:[4.5,120,-155]}},
-  {name:"Landen Roupp", team:"SF", opp:"MIL", books:{DK:[5.5,-106,-121],FD:[5.5,-106,-120],MGM:[5.5,-110,-120],RIV:[5.5,100,-132],CZR:[5.5,-108,-121],HR:[5.5,-110,-120]}},
-  {name:"Christian Scott", team:"NYM", opp:"ATL", books:{DK:[5.5,null,null],FD:[5.5,null,null],MGM:[4.5,null,null],RIV:[5.5,null,null],CZR:[5.5,null,null],HR:[5.5,null,null]}},
-  {name:"Shane Bieber", team:"TOR", opp:"@WSH", books:{DK:[4.5,-159,128],FD:[4.5,-166,130],MGM:[4.5,null,120],RIV:[4.5,-175,128],CZR:[4.5,-170,125],HR:[4.5,-170,125]}},
-  {name:"Luis Castillo", team:"SEA", opp:"@LAD", books:{DK:[4.5,-130,102],FD:[4.5,-125,-102],MGM:[4.5,-120,-110],RIV:[4.5,-106,-125],CZR:[4.5,-135,105],HR:[4.5,-125,-105]}},
-  {name:"Cade Cavalli", team:"WSH", opp:"TOR", books:{DK:[4.5,-144,113],FD:[4.5,-154,120],MGM:[4.5,-135,100],RIV:[4.5,-157,118],CZR:[4.5,-148,114],HR:[4.5,-150,115]}},
-  {name:"Slade Cecconi", team:"CLE", opp:"@CIN", books:{DK:[4.5,-112,-114],FD:[4.5,-113,-113],MGM:[4.5,-120,-110],RIV:[4.5,-121,-110],CZR:[4.5,-122,-110],HR:[4.5,-115,-115]}},
-  {name:"Bubba Chandler", team:"PIT", opp:"ARI", books:{DK:[3.5,129,-164],FD:[3.5,124,-158],MGM:[4.5,null,null],RIV:[4.5,-165,123],CZR:[3.5,121,-159],HR:[3.5,125,-170]}},
-  {name:"Anthony Kay", team:"CWS", opp:"NYY", books:{DK:[4.5,102,-130],FD:[4.5,100,-128],MGM:[4.5,-110,-120],RIV:[4.5,102,-136],CZR:[4.5,-107,-125],HR:[4.5,-105,-125]}},
-  {name:"Dean Kremer", team:"BAL", opp:"@DET", books:{DK:[4.5,123,-157],FD:[4.5,120,-154],MGM:[4.5,105,-140],RIV:null,CZR:[4.5,121,-154],HR:[4.5,115,-150]}},
-  {name:"Seth Lugo", team:"KC", opp:"@MIN", books:{DK:[3.5,129,-165],FD:[4.5,-158,124],MGM:[4.5,-160,120],RIV:[3.5,132,-177],CZR:[4.5,-175,127],HR:[4.5,-160,120]}},
-  {name:"Brandon Pfaadt", team:"ARI", opp:"@PIT", books:{DK:[3.5,122,-156],FD:[3.5,126,-162],MGM:[3.5,125,-165],RIV:[4.5,-175,130],CZR:[3.5,121,-155],HR:[3.5,120,-155]}},
-  {name:"Jake Bennett", team:"BOS", opp:"@ATH", books:{DK:[3.5,124,-158],FD:[3.5,116,-148],MGM:[3.5,110,-150],RIV:[3.5,114,-152],CZR:[3.5,118,-150],HR:[3.5,115,-155]}},
-  {name:"Michael Lorenzen", team:"COL", opp:"@SD", books:{DK:[3.5,-114,-112],FD:[3.5,-108,-118],MGM:[3.5,-120,-105],RIV:[3.5,-113,-118],CZR:[3.5,-112,-117],HR:[3.5,-115,-115]}},
-  {name:"Colin Rea", team:"CHC", opp:"@STL", books:{DK:[3.5,-130,102],FD:[3.5,-128,100],MGM:[3.5,-150,110],RIV:[3.5,-118,-113],CZR:[3.5,-145,110],HR:[3.5,-130,100]}},
-  {name:"Cal Quantrill", team:"TEX", opp:"@TB", books:{DK:[2.5,121,-152],FD:[2.5,122,-156],MGM:null,RIV:null,CZR:[2.5,119,-157],HR:[2.5,120,-155]}}
+  {name:"Paul Skenes", team:"PIT", opp:"@CIN", books:{DK:[7.5,120,-152],FD:[7.5,108,-138],MGM:[7.5,110,-150],RIV:[8.5,-162,120],CZR:[7.5,112,-150],HR:[7.5,115,-150]}},
+  {name:"Dylan Cease", team:"TOR", opp:"STL", books:{DK:[7.5,-102,-125],FD:[7.5,100,-128],MGM:[7.5,-110,-120],RIV:[7.5,100,-132],CZR:[7.5,102,-135],HR:[7.5,100,-130]}},
+  {name:"Hunter Greene", team:"CIN", opp:"PIT", books:{DK:[7.5,-143,112],FD:[7.5,-154,120],MGM:[7.5,-140,105],RIV:[7.5,-162,120],CZR:[7.5,-152,115],HR:[7.5,-150,115]}},
+  {name:"Hunter Brown", team:"HOU", opp:"TEX", books:{DK:[6.5,-154,120],FD:[5.5,124,-158],MGM:[6.5,-155,115],RIV:[5.5,116,-155],CZR:[6.5,-154,118],HR:[6.5,-150,115]}},
+  {name:"Nathan Eovaldi", team:"TEX", opp:"@HOU", books:{DK:[6.5,-156,122],FD:[5.5,124,-160],MGM:[6.5,-150,110],RIV:[5.5,110,-148],CZR:[6.5,-145,114],HR:[6.5,-160,120]}},
+  {name:"Shota Imanaga", team:"CHC", opp:"NYY", books:{DK:[5.5,103,-129],FD:[5.5,102,-130],MGM:[6.5,-155,115],RIV:[5.5,102,-136],CZR:[5.5,104,-136],HR:[5.5,105,-135]}},
+  {name:"Shane Drohan", team:"MIL", opp:"@LAA", books:{DK:[5.5,100,-124],FD:[5.5,100,-128],MGM:[5.5,100,-135],RIV:[5.5,118,-159],CZR:[5.5,105,-138],HR:[5.5,105,-135]}},
+  {name:"Foster Griffin", team:"WSH", opp:"@ATL", books:{DK:[4.5,119,-152],FD:[4.5,116,-148],MGM:[5.5,-155,115],RIV:[4.5,116,-155],CZR:[4.5,117,-154],HR:[4.5,115,-155]}},
+  {name:"Bryce Miller", team:"SEA", opp:"MIN", books:{DK:[5.5,-129,101],FD:[5.5,-128,100],MGM:[5.5,-135,100],RIV:[5.5,-134,100],CZR:[5.5,-127,-105],HR:[5.5,-135,100]}},
+  {name:"Freddy Peralta", team:"NYM", opp:"MIA", books:{DK:[5.5,-138,108],FD:[5.5,-146,114],MGM:[5.5,-155,115],RIV:[5.5,-150,112],CZR:[5.5,-150,113],HR:[5.5,-150,115]}},
+  {name:"Ranger Suarez", team:"BOS", opp:"@LAD", books:{DK:[4.5,-101,-127],FD:[4.5,102,-130],MGM:[5.5,-200,145],RIV:[4.5,-110,-121],CZR:[4.5,-105,-128],HR:[4.5,100,-130]}},
+  {name:"Tanner Bibee", team:"CLE", opp:"ARI", books:{DK:[4.5,-137,107],FD:[4.5,-130,102],MGM:[4.5,-120,-110],RIV:[4.5,-130,-103],CZR:[4.5,-132,101],HR:[4.5,-130,100]}},
+  {name:"Bryce Elder", team:"ATL", opp:"WSH", books:{DK:[4.5,-149,117],FD:[4.5,-136,106],MGM:[4.5,-155,115],RIV:[4.5,-155,116],CZR:[4.5,-145,111],HR:[4.5,-145,110]}},
+  {name:"Ryan Johnson", team:"LAA", opp:"MIL", books:{DK:[4.5,-162,127],FD:[4.5,-146,114],MGM:[4.5,-150,110],RIV:[4.5,-167,125],CZR:[4.5,-160,118],HR:[4.5,-150,115]}},
+  {name:"Kyle Leahy", team:"STL", opp:"@TOR", books:{DK:[3.5,127,-162],FD:[3.5,116,-148],MGM:[4.5,-165,125],RIV:[4.5,-167,125],CZR:[3.5,120,-157],HR:[3.5,125,-165]}},
+  {name:"Nick Martinez", team:"TB", opp:"CWS", books:{DK:[4.5,-137,107],FD:[4.5,-148,116],MGM:[3.5,130,-175],RIV:null,CZR:[4.5,-150,114],HR:[4.5,-150,115]}},
+  {name:"Zebby Matthews", team:"MIN", opp:"@SEA", books:{DK:[4.5,105,-133],FD:[4.5,100,-128],MGM:[4.5,105,-140],RIV:[4.5,102,-136],CZR:[4.5,-105,-128],HR:[4.5,100,-130]}},
+  {name:"Casey Mize", team:"DET", opp:"@ATH", books:{DK:[4.5,null,null],FD:[4.5,null,null],MGM:[4.5,null,null],RIV:[4.5,null,null],CZR:[4.5,null,null],HR:[4.5,null,null]}},
+  {name:"Jeffrey Springs", team:"ATH", opp:"DET", books:{DK:[4.5,-155,121],FD:[4.5,-160,124],MGM:[3.5,115,-155],RIV:[4.5,-167,125],CZR:[4.5,-162,124],HR:[4.5,-165,125]}},
+  {name:"Michael Wacha", team:"KC", opp:"@COL", books:{DK:[4.5,-131,103],FD:[4.5,-120,-106],MGM:[4.5,-110,-120],RIV:[4.5,-136,102],CZR:[4.5,-125,-105],HR:[4.5,-125,-105]}},
+  {name:"Will Warren", team:"NYY", opp:"@CHC", books:{DK:[4.5,-107,-119],FD:[4.5,-102,-125],MGM:[4.5,100,-135],RIV:[4.5,-103,-130],CZR:[4.5,-106,-124],HR:[4.5,-105,-125]}},
+  {name:"Brandon Young", team:"BAL", opp:"PHI", books:{DK:[4.5,113,-144],FD:[4.5,106,-136],MGM:[4.5,120,-160],RIV:[4.5,112,-150],CZR:[4.5,105,-138],HR:[4.5,110,-140]}},
+  {name:"Mitch Bratt", team:"ARI", opp:"@CLE", books:{DK:[3.5,112,-143],FD:[3.5,120,-154],MGM:[3.5,-105,-125],RIV:[3.5,110,-148],CZR:[3.5,113,-148],HR:[3.5,115,-155]}},
+  {name:"Erick Fedde", team:"CWS", opp:"@TB", books:{DK:[3.5,-157,123],FD:[3.5,-166,130],MGM:[3.5,-155,115],RIV:null,CZR:[3.5,-175,127],HR:[3.5,-160,120]}},
+  {name:"Janson Junk", team:"MIA", opp:"@NYM", books:{DK:[3.5,123,-156],FD:[3.5,126,-162],MGM:[3.5,125,-165],RIV:[3.5,128,-175],CZR:[3.5,120,-157],HR:[3.5,120,-160]}},
+  {name:"Andrew Painter", team:"PHI", opp:"@BAL", books:{DK:[3.5,123,-157],FD:null,MGM:null,RIV:null,CZR:[3.5,120,-157],HR:null}},
+  {name:"Tomoyuki Sugano", team:"COL", opp:"KC", books:{DK:[3.5,-125,-102],FD:[3.5,-125,-102],MGM:[3.5,-150,110],RIV:[3.5,-125,-107],CZR:[3.5,-129,-102],HR:[3.5,-125,-105]}},
+  {name:"Carson Whisenhunt", team:"SF", opp:"@SD", books:{DK:[3.5,119,-152],FD:[3.5,120,-154],MGM:[3.5,105,-140],RIV:[3.5,117,-157],CZR:[3.5,115,-152],HR:[3.5,120,-155]}}
 ];
 
 
@@ -754,8 +732,8 @@ function mode(arr){
 }
 
 // enrich each player with computed consensus / best price / steam data
-const ROOKIES = new Set([]);
-const LIVE_NOW = new Set(['Troy Melton','Aaron Nola']);
+const ROOKIES = new Set(["Andrew Painter","Mitch Bratt","Carson Whisenhunt"]);
+const LIVE_NOW = new Set(['Paul Skenes','Dylan Cease']);
 const NOTE_POOL = ['Short-hook risk on low pitch count','Opponent lineup missing 2 regulars','Extra rest since last start','Bullpen banged up behind him','Coming off a rain-shortened outing','Facing this lineup for the first time this year'];
 const PARKS = ['Hitter-friendly park','Pitcher-friendly park','Neutral park'];
 const WEATHERS = ['Dome, climate controlled','Wind in 8mph, 71°F','Clear, 82°F, calm','Wind out 6mph, 76°F','Overcast, 68°F'];
