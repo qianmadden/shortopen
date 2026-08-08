@@ -8293,26 +8293,7 @@ nav .nav-special.green,nav .nav-special.green.active,nav .nav-special.green:acti
 .q-consensus-scan{animation:none!important;}
 
 .q-hero-left::after,.q-hero-command-rail::after{animation:none!important;}
-body .q-market-title .gold-line{
-  display:block!important;
-  background:linear-gradient(100deg,
-    #c89235 8%,
-    #f4b942 28%,
-    #ffe9a8 39%,
-    #fffdf0 47%,
-    #ffe29a 54%,
-    #e0ad49 66%,
-    #aab9cc 94%)!important;
-  background-size:220% 100%!important;
-  -webkit-background-clip:text!important;
-  background-clip:text!important;
-  -webkit-text-fill-color:transparent!important;
-  color:transparent!important;
-  filter:drop-shadow(0 0 17px rgba(244,185,66,.20))!important;
-  animation:qMarketHeroTextSheen 8.6s linear infinite!important;
-  will-change:background-position;
-}
-@keyframes qMarketHeroTextSheen{0%{background-position:0% 50%}100%{background-position:220% 50%}}
+body .q-market-title .gold-line{animation:none!important;background-position:42% 50%!important;}
 
 /* 2026-07-29 mobile composition: header-safe section navigation, compact hero, and a swipeable casino deck. */
 @keyframes soStatusTickerMobile{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
@@ -8808,12 +8789,14 @@ body.q-chip-is-dragging #mlbContainer .q-wheel-brand *{animation-play-state:paus
 
 /* Chips now hit an end line, rebound and scatter instead of tracing one straight vector. */
 @keyframes qChipRainFall{
-  0%{transform:translate3d(0,-12px,0) rotate(0deg) scale(.70);opacity:0;}
+  0%{transform:translate3d(0,0,0) rotate(0deg) scale(.72);opacity:0;}
   7%{opacity:1;}
-  42%{transform:translate3d(var(--mx),var(--my),0) rotate(var(--r48)) scale(.96);opacity:1;}
-  76%{transform:translate3d(var(--ix),var(--iy),0) rotate(var(--r82)) scale(.92);opacity:1;}
-  92%{opacity:.92;}
-  100%{transform:translate3d(var(--rx),var(--ry),0) rotate(var(--rrot)) scale(.86);opacity:0;}
+  55%{transform:translate3d(var(--mx),var(--my),0) rotate(var(--r48)) scale(.96);opacity:1;}
+  67%{transform:translate3d(var(--ix),var(--iy),0) rotate(var(--r66)) scaleY(.78) scaleX(1.08);opacity:1;}
+  78%{transform:translate3d(var(--bx),var(--by),0) rotate(var(--r82)) scale(.94);opacity:1;}
+  88%{transform:translate3d(var(--fx),var(--fy),0) rotate(var(--rrot)) scaleY(.84) scaleX(1.05);opacity:.96;}
+  94%{transform:translate3d(var(--sx),var(--sy),0) rotate(var(--r108)) scale(.92);opacity:.72;}
+  100%{transform:translate3d(var(--fx),var(--fy),0) rotate(var(--r114)) scale(.88);opacity:0;}
 }
 @keyframes qChipBurstFly{
   0%{transform:translate3d(0,0,0) rotate(0deg) scale(.35);opacity:0;}
@@ -8824,65 +8807,74 @@ body.q-chip-is-dragging #mlbContainer .q-wheel-brand *{animation-play-state:paus
   100%{transform:translate3d(var(--fx),var(--fy),0) rotate(var(--rrot)) scale(.78);opacity:0;}
 }
 
-/* Q's Table: Hollywood marquee ignition + a warm Broadway accent wash.
-   Event-driven only: no new idle loop and no wheel geometry changes. */
-#mlbContainer .q-wheel-brand{position:relative!important;isolation:isolate!important;}
-#mlbContainer .q-wheel-brand::before,
-#mlbContainer .q-wheel-brand::after{
-  content:'';position:absolute;pointer-events:none;opacity:0;z-index:-1;
-}
-#mlbContainer .q-wheel-brand::before{
-  inset:-18px -46px;border-radius:50%;
-  background:radial-gradient(ellipse at center,rgba(255,242,184,.48) 0%,rgba(244,185,66,.25) 30%,rgba(34,197,94,.10) 49%,transparent 72%);
-  filter:blur(11px);transform:scale(.72,.68);
-}
-#mlbContainer .q-wheel-brand::after{
-  top:-14px;bottom:-14px;left:-42%;width:34%;
-  background:linear-gradient(90deg,transparent,rgba(255,248,210,.16),rgba(255,232,139,.56),rgba(244,185,66,.22),transparent);
-  filter:blur(8px);transform:skewX(-12deg) translateX(0);
-}
-#mlbContainer .q-wheel-brand.q-brand-lit::before{animation:qBroadwayMarqueeWash 2.72s ease-out both!important;}
-#mlbContainer .q-wheel-brand.q-brand-lit::after{animation:qBroadwayMarqueeBeam 2.72s cubic-bezier(.18,.72,.24,1) both!important;}
-@keyframes qBroadwayMarqueeWash{
-  0%,4%,100%{opacity:0;transform:scale(.72,.68);}6%{opacity:.20;}9%{opacity:.04;}13%{opacity:.58;}16%{opacity:.16;}
-  21%{opacity:.94;transform:scale(1.03,.92);}36%{opacity:.46;}48%{opacity:.88;}66%{opacity:.38;}78%{opacity:.78;transform:scale(1.08,.96);}
-}
-@keyframes qBroadwayMarqueeBeam{
-  0%,10%{opacity:0;transform:skewX(-12deg) translateX(0);}18%{opacity:.32;}34%{opacity:.82;}72%{opacity:.48;}
-  88%,100%{opacity:0;transform:skewX(-12deg) translateX(520%);}
-}
+/* Q's Table: irregular marquee ignition, then a clean left-to-right chase. */
 #mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-title span{
-  animation:qBrandLetterFlicker 1.22s steps(1,end) 2 both!important;
-  animation-delay:calc(var(--q-brand-i,0)*56ms)!important;
+  animation:qBrandLetterFlicker 1.18s steps(1,end) 2 both!important;
+  animation-delay:calc(var(--q-brand-i,0)*54ms)!important;
 }
 @keyframes qBrandLetterFlicker{
-  0%,6%,15%,100%{-webkit-text-fill-color:transparent;opacity:.70;text-shadow:0 1px 0 rgba(0,0,0,.5);}
-  7%,9%{-webkit-text-fill-color:#ffe07a;opacity:1;text-shadow:0 0 8px rgba(255,218,96,.9),0 0 18px rgba(244,185,66,.38);}
-  10%,11%{-webkit-text-fill-color:transparent;opacity:.48;text-shadow:none;}
-  12%,14%{-webkit-text-fill-color:#fff8da;opacity:1;text-shadow:0 0 12px rgba(255,239,171,1),0 0 25px rgba(244,185,66,.60);}
-  16%,19%{-webkit-text-fill-color:transparent;opacity:.62;text-shadow:none;}
-  20%,32%{-webkit-text-fill-color:#fff4bd;opacity:1;text-shadow:0 0 11px rgba(255,231,137,.98),0 0 24px rgba(244,185,66,.50);}
-  33%,44%{-webkit-text-fill-color:#e8b34a;opacity:.92;text-shadow:0 0 6px rgba(244,185,66,.58);}
-  45%{-webkit-text-fill-color:transparent;opacity:.70;text-shadow:0 1px 0 rgba(0,0,0,.5);}
+  0%,8%,19%,100%{-webkit-text-fill-color:transparent;opacity:.70;text-shadow:0 1px 0 rgba(0,0,0,.5);}
+  9%,12%{-webkit-text-fill-color:#ffe07a;opacity:1;text-shadow:0 0 7px rgba(255,218,96,.82);}
+  13%,15%{-webkit-text-fill-color:transparent;opacity:.62;text-shadow:none;}
+  16%,28%{-webkit-text-fill-color:#fff4bd;opacity:1;text-shadow:0 0 9px rgba(255,231,137,.92),0 0 18px rgba(244,185,66,.42);}
+  29%,42%{-webkit-text-fill-color:#e8b34a;opacity:.88;text-shadow:0 0 4px rgba(244,185,66,.48);}
+  43%{-webkit-text-fill-color:transparent;opacity:.70;text-shadow:0 1px 0 rgba(0,0,0,.5);}
 }
 #mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb{
-  animation:qBrandBulbFlicker 1.02s steps(1,end) 2 both!important;
-  animation-delay:calc(var(--q-brand-i,0)*44ms)!important;
+  animation:qBrandBulbFlicker .96s steps(1,end) 2 both!important;
+  animation-delay:calc(var(--q-brand-i,0)*42ms)!important;
 }
-#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb:nth-child(even){animation-duration:1.08s!important;}
-#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb:nth-child(3n){animation-delay:calc(var(--q-brand-i,0)*48ms + 22ms)!important;}
 @keyframes qBrandBulbFlicker{
-  0%,5%,13%,100%{opacity:.48;transform:scale(.92);filter:brightness(.92);box-shadow:none;}
-  6%,8%{opacity:1;transform:scale(1.24);filter:brightness(2.45) saturate(1.42);box-shadow:0 0 13px currentColor,0 0 28px currentColor;}
-  9%,10%{opacity:.24;transform:scale(.86);filter:brightness(.72);box-shadow:none;}
-  11%,12%{opacity:1;transform:scale(1.36);filter:brightness(2.9) saturate(1.55);box-shadow:0 0 17px currentColor,0 0 34px currentColor;}
-  14%,17%{opacity:.44;transform:scale(.94);filter:brightness(.96);box-shadow:0 0 2px currentColor;}
-  18%,30%{opacity:1;transform:scale(1.30);filter:brightness(2.55) saturate(1.48);box-shadow:0 0 15px currentColor,0 0 30px currentColor;}
-  31%,43%{opacity:.94;transform:scale(1.09);filter:brightness(1.62);box-shadow:0 0 9px currentColor;}
-  44%{opacity:.48;transform:scale(.92);filter:brightness(.92);box-shadow:none;}
+  0%,7%,15%,100%{opacity:.42;transform:scale(.92);filter:none;box-shadow:none;}
+  8%,10%{opacity:1;transform:scale(1.18);filter:none;box-shadow:0 0 7px currentColor;}
+  11%,12%{opacity:.30;transform:scale(.88);filter:none;box-shadow:none;}
+  13%,26%{opacity:1;transform:scale(1.25);filter:none;box-shadow:0 0 9px currentColor;}
+  27%,38%{opacity:.74;transform:scale(1.03);filter:none;box-shadow:0 0 3px currentColor;}
+  39%{opacity:.42;transform:scale(.92);filter:none;box-shadow:none;}
 }
 @media(max-width:700px){.q-drag-proxy{padding:6px 8px!important;gap:5px!important;}.q-drag-proxy strong{font-size:.56rem;}}
-@media(prefers-reduced-motion:reduce){.q-rain-chip,.q-rain-coin{display:none!important;}}
+@media(prefers-reduced-motion:reduce){.q-rain-chip,.q-rain-coin{display:none!important;}.q-wheel-brand.q-brand-lit *{animation:none!important;}}
+</style>
+
+<style id="so-final-market-motion-sync-20260808">
+/* Visible concentrated hero sheen, matched to the World Cup / NFL reference treatment. */
+@keyframes qMarketHeroTextSweepFinal{
+  0%{background-position:0% 50%;}
+  100%{background-position:240% 50%;}
+}
+body #mlbContainer .q-market-title .gold-line{
+  background:linear-gradient(100deg,
+    #a96f19 0%,#c88923 24%,#e4a433 36%,
+    #f8d36d 43%,#fff1b6 47%,#fffdf0 50%,#ffe9a1 53%,
+    #efb443 60%,#cc8c25 72%,#9b6518 100%)!important;
+  background-size:240% 100%!important;
+  background-position:0% 50%;
+  -webkit-background-clip:text!important;
+  background-clip:text!important;
+  -webkit-text-fill-color:transparent!important;
+  color:transparent!important;
+  animation:qMarketHeroTextSweepFinal 6.5s linear infinite!important;
+  filter:drop-shadow(0 0 14px rgba(244,185,66,.16))!important;
+  will-change:background-position;
+}
+
+/* Chip celebration now reads as a smooth top-to-bottom curtain, not a bounce/scatter. */
+.q-rain-chip,.q-rain-coin{animation-timing-function:cubic-bezier(.18,.50,.30,1)!important;}
+@keyframes qChipRainFall{
+  0%{transform:translate3d(0,-18px,0) rotate(0deg) scale(.76);opacity:0;}
+  7%{opacity:1;}
+  43%{transform:translate3d(var(--mx),var(--my),0) rotate(var(--r48)) scale(.94);opacity:1;}
+  77%{transform:translate3d(var(--ix),var(--iy),0) rotate(var(--r82)) scale(.94);opacity:1;}
+  91%{opacity:.94;}
+  100%{transform:translate3d(var(--rx),var(--ry),0) rotate(var(--rrot)) scale(.88);opacity:0;}
+}
+
+/* Keep drag transforms on the compositor; no visual filters added during pointer movement. */
+.q-drag-proxy,.q-smooth-clone{will-change:transform!important;backface-visibility:hidden;-webkit-backface-visibility:hidden;}
+
+@media(max-width:700px){
+  body #mlbContainer .q-market-title .gold-line{animation-duration:7.4s!important;}
+}
 </style>
 </head>
 <body>
@@ -12313,7 +12305,7 @@ initSpinFeeds();
       var midDrift=drift*.36+(Math.random()-.5)*20;
       var lateDrift=drift*.72+(Math.random()-.5)*24;
       var rot=(Math.random()<.5?-1:1)*(420+Math.random()*620);
-      var dur=(mobile?1420:1580)+Math.random()*(mobile?360:520);
+      var dur=(mobile?1540:1700)+Math.random()*(mobile?360:500);
       var delay=i*(mobile?36:28)+Math.random()*90;
       var size=(mobile?18:20)+Math.random()*(mobile?9:13);
       chip.style.left=x+'px';chip.style.top=startY+'px';chip.style.width=size+'px';chip.style.height=size+'px';
@@ -12332,7 +12324,7 @@ initSpinFeeds();
     void brand.offsetWidth;
     brand.classList.add('q-brand-lit');
     clearTimeout(brand.__qBrandTimer);
-    brand.__qBrandTimer=setTimeout(function(){brand.classList.remove('q-brand-lit');},2860);
+    brand.__qBrandTimer=setTimeout(function(){brand.classList.remove('q-brand-lit');},2520);
   }
   function stampTicket(terminal,key){
     var ticket=qs(terminal,'#qTicketList'); if(!ticket) return;
@@ -12348,8 +12340,8 @@ initSpinFeeds();
     var center=wheelCenter(wheel), radius=Math.max(42,Math.min(wr.width,wr.height)*.34);
     var rimStart={x:center.x,y:center.y-radius};
     var clone=opts.clone||makeClone(source,opts.ticket?'q-smooth-ticket-clone':'q-smooth-chip-clone');
-    var duration=opts.duration||(opts.ticket?780:860), history=[], echoes=[];
-    var rimTurns=opts.ticket?1.25:1.55, rimSweep=Math.PI*2*rimTurns;
+    var duration=opts.duration||(opts.ticket?820:920), history=[], echoes=[];
+    var rimTurns=opts.ticket?1.0:1.25, rimSweep=Math.PI*2*rimTurns;
     var echoCount=opts.ticket?1:2;
     for(var i=0;i<echoCount;i++){var echo=document.createElement('i');echo.className='q-rim-chip-echo';document.body.appendChild(echo);echoes.push(echo);}
     function clearEchoes(){echoes.forEach(removeNode);}
@@ -12414,13 +12406,13 @@ initSpinFeeds();
       function paint(){
         if(!state||!state.clone)return;state.raf=0;
         state.over=inRect(state.lastX,state.lastY,state.wheelRect,36);
-        var follow=state.over?.54:.66;
+        var follow=state.over?.48:.58;
         state.renderX+=(state.lastX-state.renderX)*follow;
         state.renderY+=(state.lastY-state.renderY)*follow;
         var moveX=state.renderX-state.prevRenderX;state.prevRenderX=state.renderX;
-        var targetRot=clamp(moveX*.48,-9,9);state.rot+=(targetRot-state.rot)*.38;
+        var targetRot=clamp(moveX*.30,-7,7);state.rot+=(targetRot-state.rot)*.26;
         wheel.classList.toggle('q-wheel-drop-ready',state.over);
-        setVars(state.clone,state.renderX,state.renderY,state.rot,state.over?1.05:1.02,1,1);
+        setVars(state.clone,state.renderX,state.renderY,state.rot,state.over?1.04:1.018,1,1);
         if(Math.abs(state.lastX-state.renderX)>.35||Math.abs(state.lastY-state.renderY)>.35)state.raf=requestAnimationFrame(paint);
       }
       function queuePaint(){if(state&&!state.raf)state.raf=requestAnimationFrame(paint);}
@@ -12428,7 +12420,7 @@ initSpinFeeds();
         if(!state||state.clone)return;
         state.clone=makeDragProxy(chip);
         chip.classList.add('is-dragging-source');document.body.classList.add('q-chip-is-dragging');
-        setVars(state.clone,state.lastX,state.lastY,0,1.025,1,1);
+        setVars(state.clone,state.lastX,state.lastY,0,1.018,1,1);
       }
       function move(e){
         if(!state||e.pointerId!==state.pointerId)return;
@@ -12453,7 +12445,7 @@ initSpinFeeds();
           animateToWheel(chip,wheel,{clone:st.clone,start:{x:st.renderX||st.lastX,y:st.renderY||st.lastY},onLand:function(){stampTicket(terminal,chip.dataset.betKey);allowNativeClick(chip);}});
         }else if(st.clone){
           var r=chip.getBoundingClientRect(),p0={x:st.renderX||st.lastX,y:st.renderY||st.lastY},p3={x:r.left+r.width/2,y:r.top+r.height/2},t0=performance.now();
-          (function back(now){var k=clamp((now-t0)/190,0,1),t=easeOutCubic(k);setVars(st.clone,p0.x+(p3.x-p0.x)*t,p0.y+(p3.y-p0.y)*t,(1-t)*-7,.98-(t*.10),1,1);st.clone.style.opacity=String(1-t*.72);if(k<1)requestAnimationFrame(back);else removeNode(st.clone);})(performance.now());
+          (function back(now){var k=clamp((now-t0)/220,0,1),t=easeOutCubic(k);setVars(st.clone,p0.x+(p3.x-p0.x)*t,p0.y+(p3.y-p0.y)*t,(1-t)*-7,.98-(t*.10),1,1);st.clone.style.opacity=String(1-t*.72);if(k<1)requestAnimationFrame(back);else removeNode(st.clone);})(performance.now());
         }
       }
       chip.addEventListener('pointerdown',start,{passive:true});chip.addEventListener('pointermove',move,{passive:false});chip.addEventListener('pointerup',finish);chip.addEventListener('pointercancel',finish);
