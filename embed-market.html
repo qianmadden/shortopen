@@ -5,6 +5,10 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>shortopen — The Market</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg?v=20260810"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=20260810"/>
+<link rel="shortcut icon" href="favicon.ico?v=20260810"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20260810"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&amp;family=DM+Sans:wght@300;400;500&amp;family=DM+Mono:wght@400;500&amp;display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
@@ -4668,7 +4672,7 @@ body::after{
 #mlbContainer .q-wheel-brand-bulbs .ls-bulb{
   animation:none!important;
   border-radius:50%!important;
-  opacity:.52!important;
+  opacity:.52;
   filter:brightness(.92) drop-shadow(0 0 0 transparent);
   transition:none!important;
 }
@@ -4683,13 +4687,13 @@ body::after{
 #mlbContainer .q-wheel-brand-bulbs .ls-bulb:nth-child(odd){
   background:radial-gradient(circle at 35% 30%,#e6c483 0%,#a9884a 55%,#6e5528 100%)!important;
   border:1px solid rgba(40,28,10,.55)!important;
-  box-shadow:none!important;
+  box-shadow:none;
   color:#ffe9a8;
 }
 #mlbContainer .q-wheel-brand-bulbs .ls-bulb:nth-child(even){
   background:radial-gradient(circle at 35% 30%,#7fcc9e 0%,#3e8560 55%,#1e4530 100%)!important;
   border:1px solid rgba(10,30,20,.55)!important;
-  box-shadow:none!important;
+  box-shadow:none;
   color:#a8f7c4;
 }
 @keyframes qBrandBulbSweep{
@@ -8293,7 +8297,7 @@ nav .nav-special.green,nav .nav-special.green.active,nav .nav-special.green:acti
 .q-consensus-scan{animation:none!important;}
 
 .q-hero-left::after,.q-hero-command-rail::after{animation:none!important;}
-body .q-market-title .gold-line{animation:none!important;background-position:42% 50%!important;}
+body .q-market-title .gold-line{animation:none!important;background-position:42% 50%;}
 
 /* 2026-07-29 mobile composition: header-safe section navigation, compact hero, and a swipeable casino deck. */
 @keyframes soStatusTickerMobile{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
@@ -8876,6 +8880,265 @@ body #mlbContainer .q-market-title .gold-line{
   body #mlbContainer .q-market-title .gold-line{animation-duration:7.4s!important;}
 }
 </style>
+
+<style id="so-market-final-visible-sweep-marquee-20260808">
+/* HERO: stable base gold + a real moving masked light beam. The beam lives on
+   a pseudo-element, so older animation:none performance rules cannot flatten it. */
+body #mlbContainer .q-market-title .gold-line{
+  position:relative!important;
+  display:inline-block!important;
+  background:linear-gradient(100deg,#a96f19 0%,#d7992e 28%,#f4b942 56%,#e2ad4c 78%,#aebdce 100%)!important;
+  -webkit-background-clip:text!important;background-clip:text!important;
+  -webkit-text-fill-color:transparent!important;color:transparent!important;
+  animation:none!important;
+  filter:drop-shadow(0 0 13px rgba(244,185,66,.14))!important;
+  isolation:isolate;
+}
+body #mlbContainer .q-market-title .gold-line::after{
+  content:attr(data-text);
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  color:#fff8d6!important;-webkit-text-fill-color:#fff8d6!important;
+  text-shadow:0 0 8px rgba(255,249,218,.95),0 0 18px rgba(244,185,66,.56);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 34%,#000 66%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0%,#000 34%,#000 66%,transparent 100%);
+  -webkit-mask-size:34% 100%;mask-size:34% 100%;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-position:-52% 0;mask-position:-52% 0;
+  opacity:0;
+  animation:qMarketVisibleBeam 4.9s cubic-bezier(.22,.70,.20,1) infinite!important;
+  will-change:opacity,-webkit-mask-position,mask-position;
+}
+@keyframes qMarketVisibleBeam{
+  0%,18%{opacity:0;-webkit-mask-position:-52% 0;mask-position:-52% 0;}
+  22%{opacity:.95;}
+  64%{opacity:1;-webkit-mask-position:148% 0;mask-position:148% 0;}
+  70%,100%{opacity:0;-webkit-mask-position:148% 0;mask-position:148% 0;}
+}
+
+/* Q'S TABLE: title and bulbs ignite on the same clock, flicker through the full
+   cycle, then repeat exactly once. No stagger that can make one read as "off". */
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-title span{
+  animation:qMarqueeTitleTwoPass 1.12s steps(1,end) 2 both!important;
+  animation-delay:0ms!important;
+}
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb,
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb:nth-child(even),
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb:nth-child(3n){
+  animation:qMarqueeBulbTwoPass 1.12s steps(1,end) 2 both!important;
+  animation-delay:0ms!important;
+  animation-duration:1.12s!important;
+}
+#mlbContainer .q-wheel-brand.q-brand-lit::before{animation:qBroadwayMarqueeWash 2.38s steps(1,end) both!important;}
+#mlbContainer .q-wheel-brand.q-brand-lit::after{animation:qBroadwayMarqueeBeam 2.38s cubic-bezier(.18,.72,.24,1) both!important;}
+@keyframes qMarqueeTitleTwoPass{
+  0%{-webkit-text-fill-color:transparent;opacity:.58;text-shadow:0 1px 0 rgba(0,0,0,.5)}
+  7%{-webkit-text-fill-color:#fff5bd;opacity:1;text-shadow:0 0 10px rgba(255,232,130,.95),0 0 24px rgba(244,185,66,.58)}
+  15%{-webkit-text-fill-color:transparent;opacity:.35;text-shadow:none}
+  23%{-webkit-text-fill-color:#ffe37f;opacity:1;text-shadow:0 0 8px rgba(255,221,106,.94),0 0 21px rgba(244,185,66,.52)}
+  34%{-webkit-text-fill-color:#fffbe7;opacity:1;text-shadow:0 0 13px rgba(255,246,193,1),0 0 30px rgba(244,185,66,.68)}
+  44%{-webkit-text-fill-color:transparent;opacity:.48;text-shadow:none}
+  53%{-webkit-text-fill-color:#f4b942;opacity:.96;text-shadow:0 0 7px rgba(244,185,66,.75)}
+  62%{-webkit-text-fill-color:transparent;opacity:.42;text-shadow:none}
+  70%{-webkit-text-fill-color:#fff7ce;opacity:1;text-shadow:0 0 11px rgba(255,237,158,.98),0 0 26px rgba(244,185,66,.62)}
+  82%{-webkit-text-fill-color:#e8b34a;opacity:.94;text-shadow:0 0 7px rgba(244,185,66,.66)}
+  91%{-webkit-text-fill-color:#fffdf0;opacity:1;text-shadow:0 0 14px rgba(255,247,205,1),0 0 32px rgba(244,185,66,.72)}
+  100%{-webkit-text-fill-color:transparent;opacity:.62;text-shadow:0 1px 0 rgba(0,0,0,.5)}
+}
+@keyframes qMarqueeBulbTwoPass{
+  0%{opacity:.42;transform:scale(.90);filter:brightness(.82);box-shadow:none}
+  7%{opacity:1;transform:scale(1.28);filter:brightness(2.7) saturate(1.5);box-shadow:0 0 14px currentColor,0 0 30px currentColor}
+  15%{opacity:.20;transform:scale(.84);filter:brightness(.68);box-shadow:none}
+  23%{opacity:1;transform:scale(1.20);filter:brightness(2.25) saturate(1.4);box-shadow:0 0 11px currentColor,0 0 25px currentColor}
+  34%{opacity:1;transform:scale(1.36);filter:brightness(3) saturate(1.6);box-shadow:0 0 18px currentColor,0 0 38px currentColor}
+  44%{opacity:.32;transform:scale(.89);filter:brightness(.78);box-shadow:none}
+  53%{opacity:.94;transform:scale(1.12);filter:brightness(1.75);box-shadow:0 0 8px currentColor,0 0 18px currentColor}
+  62%{opacity:.27;transform:scale(.86);filter:brightness(.72);box-shadow:none}
+  70%{opacity:1;transform:scale(1.28);filter:brightness(2.62) saturate(1.48);box-shadow:0 0 15px currentColor,0 0 31px currentColor}
+  82%{opacity:.88;transform:scale(1.08);filter:brightness(1.48);box-shadow:0 0 7px currentColor}
+  91%{opacity:1;transform:scale(1.38);filter:brightness(3.1) saturate(1.62);box-shadow:0 0 19px currentColor,0 0 40px currentColor}
+  100%{opacity:.48;transform:scale(.92);filter:brightness(.90);box-shadow:none}
+}
+@media(max-width:700px){body #mlbContainer .q-market-title .gold-line::after{animation-duration:5.5s!important;}}
+</style>
+
+<style id="so-q-brand-verified-bulb-sync-20260809">
+/* Verification fix: the global .ls-bulb glow is !important, so keep the Q's Table
+   idle bulb glow deliberately low and let the synchronized animation create the
+   visible marquee flare through brightness + drop-shadow on the same title clock. */
+#mlbContainer .q-wheel-brand-bulbs .ls-bulb{
+  box-shadow:0 0 2px rgba(244,185,66,.16)!important;
+}
+@keyframes qMarqueeBulbTwoPass{
+  0%{opacity:.58;transform:scale(.90);filter:brightness(.82) saturate(1) drop-shadow(0 0 0 transparent)}
+  7%{opacity:1;transform:scale(1.28);filter:brightness(2.7) saturate(1.5) drop-shadow(0 0 9px currentColor)}
+  15%{opacity:.35;transform:scale(.84);filter:brightness(.68) saturate(1) drop-shadow(0 0 0 transparent)}
+  23%{opacity:1;transform:scale(1.20);filter:brightness(2.25) saturate(1.4) drop-shadow(0 0 7px currentColor)}
+  34%{opacity:1;transform:scale(1.36);filter:brightness(3) saturate(1.6) drop-shadow(0 0 12px currentColor)}
+  44%{opacity:.48;transform:scale(.89);filter:brightness(.78) saturate(1) drop-shadow(0 0 0 transparent)}
+  53%{opacity:.96;transform:scale(1.12);filter:brightness(1.75) saturate(1) drop-shadow(0 0 5px currentColor)}
+  62%{opacity:.42;transform:scale(.86);filter:brightness(.72) saturate(1) drop-shadow(0 0 0 transparent)}
+  70%{opacity:1;transform:scale(1.28);filter:brightness(2.62) saturate(1.48) drop-shadow(0 0 10px currentColor)}
+  82%{opacity:.94;transform:scale(1.08);filter:brightness(1.48) saturate(1) drop-shadow(0 0 4px currentColor)}
+  91%{opacity:1;transform:scale(1.38);filter:brightness(3.1) saturate(1.62) drop-shadow(0 0 13px currentColor)}
+  100%{opacity:.62;transform:scale(.92);filter:brightness(.90) saturate(1) drop-shadow(0 0 0 transparent)}
+}
+</style>
+
+<style id="so-market-reference-sweep-bulb-chase-20260809">
+/* Market hero: use the same mechanism as the World Cup/NFL hero text —
+   a clipped oversized gradient whose background position travels left to right. */
+body #mlbContainer .q-market-title .gold-line{
+  position:relative!important;
+  display:inline-block!important;
+  background:linear-gradient(90deg,
+    #a96f19 0%,#d18c24 18%,#f4b942 34%,#ffe9a8 48%,
+    #fff9dc 55%,#f4b942 66%,#c88624 82%,#93a8c2 100%)!important;
+  background-size:240% 100%!important;
+  background-position:0% 50%;
+  -webkit-background-clip:text!important;
+  background-clip:text!important;
+  -webkit-text-fill-color:transparent!important;
+  color:transparent!important;
+  animation:qMarketReferenceTextSweep 6.5s linear infinite!important;
+  filter:drop-shadow(0 0 12px rgba(244,185,66,.14))!important;
+  text-shadow:none!important;
+  will-change:background-position!important;
+}
+body #mlbContainer .q-market-title .gold-line::after{
+  content:none!important;display:none!important;animation:none!important;
+}
+@keyframes qMarketReferenceTextSweep{
+  0%{background-position:0% 50%}
+  100%{background-position:240% 50%}
+}
+
+/* Q'S TABLE: each top/bottom bulb pair shares the same index. The title keeps
+   its approved two-pass flicker; the bulbs chase left-to-right twice on that
+   same 1.12s pass clock. */
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb,
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb:nth-child(even),
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb:nth-child(3n){
+  animation:qMarqueeBulbLeftToRight 1.12s steps(1,end) 2 both!important;
+  animation-delay:calc(var(--q-brand-i,0) * 64ms)!important;
+  animation-duration:1.12s!important;
+  animation-iteration-count:2!important;
+}
+@keyframes qMarqueeBulbLeftToRight{
+  0%,4%{opacity:.26;transform:scale(.88);filter:brightness(.68) saturate(1) drop-shadow(0 0 0 transparent)}
+  5%,9%{opacity:1;transform:scale(1.34);filter:brightness(3.15) saturate(1.65) drop-shadow(0 0 13px currentColor)}
+  10%,13%{opacity:.72;transform:scale(1.10);filter:brightness(1.55) saturate(1.15) drop-shadow(0 0 5px currentColor)}
+  14%,100%{opacity:.28;transform:scale(.90);filter:brightness(.72) saturate(1) drop-shadow(0 0 0 transparent)}
+}
+@media(max-width:700px){
+  body #mlbContainer .q-market-title .gold-line{animation-duration:7.2s!important;}
+  #mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb,
+  #mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb:nth-child(even),
+  #mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb:nth-child(3n){
+    animation-delay:calc(var(--q-brand-i,0) * 58ms)!important;
+  }
+}
+</style>
+
+
+<style id="so-q-brand-hollywood-chase-final-20260809">
+/* Q'S TABLE — keep the approved left-to-right pair chase, but give each bulb
+   a Hollywood marquee ignition: quick misfire, white-hot flash, gold sustain,
+   then a small starburst/fleck pop. Event-driven only while q-brand-lit exists. */
+#mlbContainer .q-wheel-brand-bulbs .ls-bulb{
+  position:relative!important;
+  overflow:visible!important;
+  transform-origin:center!important;
+}
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb,
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb:nth-child(even),
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb:nth-child(3n){
+  animation:qHollywoodBulbChase 1.18s steps(1,end) 2 both!important;
+  animation-delay:calc(var(--q-brand-i,0) * 66ms)!important;
+  animation-duration:1.18s!important;
+  animation-iteration-count:2!important;
+}
+@keyframes qHollywoodBulbChase{
+  0%,3%{opacity:.22;transform:scale(.84);filter:brightness(.62) saturate(.92) drop-shadow(0 0 0 transparent)}
+  4%,5%{opacity:.82;transform:scale(1.10);filter:brightness(1.75) saturate(1.25) drop-shadow(0 0 4px rgba(244,185,66,.72))}
+  6%{opacity:.18;transform:scale(.80);filter:brightness(.52) drop-shadow(0 0 0 transparent)}
+  7%,9%{opacity:1;transform:scale(1.42);filter:brightness(4.2) saturate(.78) contrast(1.08) drop-shadow(0 0 8px rgba(255,255,244,1)) drop-shadow(0 0 17px rgba(255,215,92,.98))}
+  10%{opacity:.42;transform:scale(.92);filter:brightness(.86) drop-shadow(0 0 2px rgba(244,185,66,.30))}
+  11%,13%{opacity:1;transform:scale(1.30);filter:brightness(3.15) saturate(1.22) drop-shadow(0 0 7px rgba(255,249,222,.95)) drop-shadow(0 0 15px rgba(244,185,66,.92))}
+  14%,18%{opacity:.96;transform:scale(1.14);filter:brightness(1.86) saturate(1.35) drop-shadow(0 0 7px rgba(244,185,66,.76))}
+  19%,100%{opacity:.26;transform:scale(.88);filter:brightness(.68) saturate(1) drop-shadow(0 0 0 transparent)}
+}
+/* White/yellow star flare directly under each active bulb. */
+#mlbContainer .q-wheel-brand-bulbs .ls-bulb::before{
+  content:'';position:absolute;left:50%;top:50%;width:24px;height:24px;
+  transform:translate(-50%,-50%) scale(.25);opacity:0;pointer-events:none;z-index:-1;
+  background:
+    linear-gradient(90deg,transparent 43%,rgba(255,255,247,.92) 49%,rgba(255,255,247,.92) 51%,transparent 57%),
+    linear-gradient(0deg,transparent 43%,rgba(255,242,177,.86) 49%,rgba(255,242,177,.86) 51%,transparent 57%),
+    radial-gradient(circle,rgba(255,255,248,.96) 0 8%,rgba(255,218,94,.50) 18%,transparent 52%);
+  filter:drop-shadow(0 0 5px rgba(255,241,173,.92));
+}
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb::before{
+  animation:qHollywoodBulbStar 1.18s steps(1,end) 2 both!important;
+  animation-delay:calc(var(--q-brand-i,0) * 66ms)!important;
+}
+@keyframes qHollywoodBulbStar{
+  0%,5%,19%,100%{opacity:0;transform:translate(-50%,-50%) scale(.20) rotate(0deg)}
+  7%,9%{opacity:1;transform:translate(-50%,-50%) scale(1.05) rotate(0deg)}
+  10%{opacity:.12;transform:translate(-50%,-50%) scale(.58) rotate(12deg)}
+  11%,13%{opacity:.88;transform:translate(-50%,-50%) scale(.86) rotate(22deg)}
+  14%,18%{opacity:.22;transform:translate(-50%,-50%) scale(1.28) rotate(34deg)}
+}
+/* Tiny celebratory flecks: only the upper bulb row emits them, keeping the effect
+   local to the Q's Table marquee instead of filling the whole roulette panel. */
+#mlbContainer .q-wheel-brand-bulbs:first-child .ls-bulb::after{
+  content:'';position:absolute;left:50%;top:50%;width:2px;height:2px;border-radius:50%;
+  background:#fff8d8;opacity:0;pointer-events:none;z-index:-2;
+  box-shadow:-7px -4px 0 #ffe278,6px -7px 0 #fffdf2,10px 1px 0 #f4b942,-3px -11px 0 #fff4b7;
+  transform:translate(-50%,-50%) scale(.3);
+}
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs:first-child .ls-bulb::after{
+  animation:qHollywoodFleckPop 1.18s cubic-bezier(.18,.72,.24,1) 2 both!important;
+  animation-delay:calc(var(--q-brand-i,0) * 66ms)!important;
+}
+@keyframes qHollywoodFleckPop{
+  0%,6%,100%{opacity:0;transform:translate(-50%,-50%) scale(.25)}
+  8%{opacity:.95;transform:translate(-50%,-72%) scale(.70)}
+  13%{opacity:.72;transform:translate(-50%,-135%) scale(1)}
+  20%{opacity:0;transform:translate(-50%,-210%) scale(.70)}
+  21%,99%{opacity:0}
+}
+@media(max-width:700px){
+  #mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb,
+  #mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb:nth-child(even),
+  #mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb:nth-child(3n),
+  #mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb::before,
+  #mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs:first-child .ls-bulb::after{
+    animation-delay:calc(var(--q-brand-i,0) * 58ms)!important;
+  }
+}
+</style>
+
+<style id="so-market-date-label-refine-20260810">
+/* Match the game-board day label to the restrained terminal language used in
+   Player Prop Parlays: small mono label, wide tracking, no serif/foil treatment. */
+.date-divider-label{
+  font-family:'DM Mono',monospace!important;
+  font-size:.68rem!important;
+  font-weight:500!important;
+  line-height:1!important;
+  letter-spacing:.22em!important;
+  text-transform:uppercase!important;
+  color:#c9a862!important;
+  background:none!important;
+  -webkit-background-clip:initial!important;
+  background-clip:initial!important;
+  -webkit-text-fill-color:currentColor!important;
+  text-shadow:0 0 10px rgba(240,184,64,.12)!important;
+  animation:none!important;
+}
+.date-divider-line{background:linear-gradient(to right,rgba(240,184,64,.32),transparent)!important}
+@media(max-width:700px){.date-divider-label{font-size:.64rem!important;letter-spacing:.20em!important}}
+</style>
 </head>
 <body>
 <!-- SCANLINES -->
@@ -8900,7 +9163,7 @@ body #mlbContainer .q-market-title .gold-line{
 <!-- LEFT -->
 <div class="hero-left q-hero-left">
 <div class="live-badge q-market-badge" style="margin-bottom:20px"><div class="live-dot"></div>MLB Market Board</div>
-<h1 class="page-title q-market-title">The Open<br/><span class="gold-line">Before the Crowd.</span></h1>
+<h1 class="page-title q-market-title">The Open<br/><span class="gold-line" data-text="Before the Crowd.">Before the Crowd.</span></h1>
 <p class="page-sub q-market-sub">A live MLB command center that reads the slate — runline pressure, model calls, total climate, and plus-money movement.</p>
 <div class="q-hero-command-rail">
 <span class="q-rail-dot"></span>
@@ -12318,13 +12581,15 @@ initSpinFeeds();
     }
   }
   function lightUpBrand(wheel){
-    var brand=wheel && wheel.parentNode && wheel.parentNode.querySelector('.q-wheel-brand'); if(!brand) return;
-    // Restart from the first bulb/letter so both complete left-to-right passes run.
+    var root=document.getElementById('mlbContainer')||document;
+    var liveWheel=(wheel&&wheel.isConnected)?wheel:root.querySelector('.ls-wheel-panel');
+    var brand=(liveWheel&&liveWheel.parentNode&&liveWheel.parentNode.querySelector('.q-wheel-brand'))||root.querySelector('.q-wheel-brand');
+    if(!brand) return;
     brand.classList.remove('q-brand-lit');
     void brand.offsetWidth;
     brand.classList.add('q-brand-lit');
     clearTimeout(brand.__qBrandTimer);
-    brand.__qBrandTimer=setTimeout(function(){brand.classList.remove('q-brand-lit');},2520);
+    brand.__qBrandTimer=setTimeout(function(){brand.classList.remove('q-brand-lit');},3300);
   }
   function stampTicket(terminal,key){
     var ticket=qs(terminal,'#qTicketList'); if(!ticket) return;
@@ -12374,10 +12639,10 @@ initSpinFeeds();
       }
       clone.style.opacity=String(alpha); setVars(clone,x,y,rot,Math.max(.30,scale),sx,sy); positionEchoes(x,y,rot,scale,alpha);
       if(raw<1) requestAnimationFrame(frame); else {
-        landingFx(center.x,center.y); lightUpBrand(wheel); spawnChipRain(wheel);
+        landingFx(center.x,center.y); spawnChipRain(wheel);
         wheel.classList.remove('q-wheel-magnet','q-wheel-rim-ride','q-dealer-flick-live');
         setTimeout(function(){wheel.classList.remove('q-drop-hit');},460);
-        source.classList.remove('q-smooth-launching','q-chip-press'); removeNode(clone); clearEchoes(); if(opts.onLand)opts.onLand();
+        source.classList.remove('q-smooth-launching','q-chip-press'); removeNode(clone); clearEchoes(); if(opts.onLand)opts.onLand(); setTimeout(function(){lightUpBrand(wheel);},90);
       }
     }
     requestAnimationFrame(frame);
