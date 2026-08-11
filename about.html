@@ -477,6 +477,30 @@ section:nth-of-type(n+2),footer{content-visibility:auto;contain-intrinsic-size:6
 <style id="so-about-mobile-subscribe-accent-20260809">
 .so-mobile-menu a[href="subscribe.html"]{border-color:rgba(74,105,145,.34);background:rgba(16,31,54,.55);color:#9bb6d6}
 </style>
+
+<style id="so-about-mobile-horizontal-shelves-20260810">
+@media(max-width:700px){
+  .so-about-why-card-grid{
+    display:flex!important;grid-template-columns:none!important;gap:12px!important;
+    overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x mandatory!important;
+    -webkit-overflow-scrolling:touch!important;overscroll-behavior-x:contain!important;scrollbar-width:none!important;
+    padding:2px 2px 12px!important;
+  }
+  .so-about-why-card-grid::-webkit-scrollbar{display:none!important;}
+  .so-about-why-card-grid > .glass-liquid{flex:0 0 min(84vw,350px)!important;width:min(84vw,350px)!important;scroll-snap-align:start!important;scroll-snap-stop:always!important;}
+  .so-about-pillars{overflow:visible!important;background:transparent!important;border:0!important;}
+  .so-about-pillars > .grid{
+    display:flex!important;grid-template-columns:none!important;gap:12px!important;
+    overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x mandatory!important;
+    -webkit-overflow-scrolling:touch!important;overscroll-behavior-x:contain!important;scrollbar-width:none!important;padding-bottom:12px!important;
+  }
+  .so-about-pillars > .grid::-webkit-scrollbar{display:none!important;}
+  .so-about-pillar{
+    flex:0 0 min(84vw,350px)!important;width:min(84vw,350px)!important;scroll-snap-align:start!important;scroll-snap-stop:always!important;
+    border:1px solid rgba(255,255,255,.07)!important;border-radius:22px!important;background:rgba(7,13,22,.72)!important;
+  }
+}
+</style>
 </head>
 <body>
 <!-- HERO -->
@@ -648,15 +672,15 @@ section:nth-of-type(n+2),footer{content-visibility:auto;contain-intrinsic-size:6
 <p class="text-3xl md:text-[2.75rem] font-black text-white leading-[1.15] mb-6">Crowds move stock prices the same way they <span style="background:linear-gradient(90deg,#f4b942,#fde68a);-webkit-background-clip:text;background-clip:text;color:transparent">move betting lines.</span></p>
 <p class="text-sm text-zinc-400 leading-7 max-w-xl">Public money load up on favorites, star players, and national narrative. That demand moves the line — it is not new information, just more people betting the same side.</p>
 </div>
-<div class="glass-liquid rounded-[26px] p-7 reveal">
+<div class="glass-liquid rounded-[26px] p-7 reveal so-about-gap-card">
 <div class="text-xs uppercase tracking-[.22em] text-zinc-500 mb-2">gap and gut</div>
 <div class="text-2xl font-black text-emerald-400 mb-4">G&amp;G</div>
 <p class="text-sm text-zinc-400 leading-7">We check every number against the open, it's normal to use instincts, but trust the gap — it is the same process every time, no matter who's playing.</p>
 </div>
 </div>
 <!-- Reality, now paired with a real companion card instead of sitting alone -->
-<div class="grid md:grid-cols-2 gap-5">
-<div class="glass-liquid rounded-[26px] p-7 reveal">
+<div class="grid md:grid-cols-2 gap-5 so-about-why-card-grid">
+<div class="glass-liquid rounded-[26px] p-7 reveal so-about-reality-card">
 <div class="text-xs uppercase tracking-[.22em] text-zinc-500 mb-2">The Reality</div>
 <div class="text-2xl font-black mb-5">Lines move for two reasons.</div>
 <div class="tug-wrap mb-4"><div class="tug-l"></div><div class="tug-r"></div></div>
@@ -671,7 +695,7 @@ section:nth-of-type(n+2),footer{content-visibility:auto;contain-intrinsic-size:6
 </div>
 </div>
 </div>
-<div class="glass-liquid rounded-[26px] p-7 reveal">
+<div class="glass-liquid rounded-[26px] p-7 reveal so-about-watch-card">
 <div class="text-xs uppercase tracking-[.22em] text-zinc-500 mb-2">What We Watch</div>
 <div class="text-2xl font-black mb-5">Three things before the number.</div>
 <div class="space-y-4">
@@ -775,6 +799,23 @@ document.querySelectorAll('.reveal, .flow-line').forEach((el, i) => {
   var closeBtn=menu.querySelector('.so-mobile-close');
   if(closeBtn)closeBtn.addEventListener('click',function(){setMenu(false);});
   menu.addEventListener('click',function(e){if(e.target.closest('a'))setMenu(false);});
+})();
+</script>
+
+<script id="so-about-mobile-shelf-controller-20260810">
+(function(){
+  const mq=matchMedia('(max-width:700px)');
+  const gap=document.querySelector('.so-about-gap-card');
+  const shelf=document.querySelector('.so-about-why-card-grid');
+  if(!gap||!shelf)return;
+  const marker=document.createComment('so-gap-original-position');
+  gap.parentNode.insertBefore(marker,gap);
+  function sync(){
+    if(mq.matches){if(gap.parentNode!==shelf)shelf.insertBefore(gap,shelf.firstChild);}
+    else if(marker.parentNode && gap.previousSibling!==marker)marker.parentNode.insertBefore(gap,marker.nextSibling);
+  }
+  sync();
+  if(mq.addEventListener)mq.addEventListener('change',sync);else mq.addListener(sync);
 })();
 </script>
 </body>

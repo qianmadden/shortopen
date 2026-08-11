@@ -49,7 +49,7 @@ window.addEventListener('DOMContentLoaded', function() {
 *{box-sizing:border-box;margin:0;padding:0}
 body{padding-top:0;background:radial-gradient(circle at top left,rgba(244,185,66,.05),transparent 28%),radial-gradient(circle at bottom right,rgba(59,130,246,.06),transparent 30%),var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;min-height:100vh;}
 /* Slight overall proportion reduction to fit the MLB hub's slimmer command bar format */
-body{zoom:0.93}
+body{zoom:1}
 /* The radar (player comparison) chart got shrunk too much by the page-wide zoom above — counteract it here. */
 .radar-wrap{zoom:1.075}
 
@@ -1790,6 +1790,23 @@ nav .nav-special.green:focus{
 }
 </style>
 
+
+<style id="so-hr-published-scale-mobile-scroll-20260810">
+/* The old 0.93 body zoom was the exact ~7% shrink visible after publish.
+   Body is now true 100%; radar keeps its existing local emphasis. */
+@media(max-width:640px){
+  #tableWrap,.table-wrap{
+    height:min(62vh,520px)!important;
+    overflow-x:auto!important;overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    touch-action:pan-x pan-y!important;
+    overscroll-behavior-x:contain!important;
+    overscroll-behavior-y:auto!important;
+    scroll-behavior:auto!important;
+  }
+  #tableWrap th[data-key="name"],#tableWrap td.col-player{width:152px!important;min-width:152px!important;max-width:152px!important;}
+}
+</style>
 </head>
 <body>
 <section aria-label="MLB HR Index introduction" class="hr-power-hero">
