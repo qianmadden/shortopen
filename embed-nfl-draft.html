@@ -1,25 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<head><script id="so-unified-dom-ready-bootstrap">
-(function(){
-  if(document.readyState!=="loading")return;
-  var nativeAdd=document.addEventListener.bind(document);
-  var queue=[];
-  document.addEventListener=function(type,handler,options){
-    if(type==="DOMContentLoaded"&&typeof handler==="function"){queue.push([handler,options]);return;}
-    return nativeAdd(type,handler,options);
-  };
-  nativeAdd("DOMContentLoaded",function(event){
-    document.addEventListener=nativeAdd;
-    requestAnimationFrame(function(){
-      queue.forEach(function(item){try{item[0].call(document,event);}catch(err){setTimeout(function(){throw err;},0);}});
-      queue.length=0;
-      document.documentElement.classList.add("so-unified-interactive");
-    });
-  },{once:true});
-})();
-</script><script id="so-nfl-prepaint">document.documentElement.classList.add("so-nfl-painted","so-unified-first-paint");</script>
+<head><script id="so-nfl-prepaint">document.documentElement.classList.add("so-nfl-painted","so-unified-first-paint");</script>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>NFL Draft Market Intelligence — shortopen</title>
@@ -31,7 +13,7 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Sans:wght@300;400;500&amp;family=DM+Mono:wght@400;500&amp;display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
-<noscript><link all'"="" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Sans:wght@300;400;500&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/></noscript>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Sans:wght@300;400;500&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/></noscript>
 <style>
 /* ════════════════════════════════════════════════════════════════
    BASE
@@ -1663,6 +1645,24 @@ main>section,main>div,.ota-liquid-board,.draft-learning-lab,.so-final-shell,.moc
 .roty-strip{border-bottom-color:rgba(100,199,255,.20)!important;box-shadow:0 4px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(139,214,255,.08)!important}.roty-strip-bg{background:linear-gradient(90deg,rgba(70,184,255,.15),transparent 30%,transparent 72%,rgba(100,199,255,.09))!important}.roty-strip-lbl{color:#69caff!important;text-shadow:0 0 14px rgba(80,190,255,.58)!important}.roty-item{border-right-color:rgba(100,199,255,.11)!important}.roty-name{color:#deefff!important}.roty-pos{color:#79ceff!important;background:rgba(70,184,255,.08)!important}.roty-odds{color:#72ceff!important}
 main>.border-b.bg-black\/40{border-color:rgba(100,199,255,.13)!important;background:linear-gradient(90deg,rgba(8,24,38,.75),rgba(3,7,12,.72),rgba(8,24,38,.75))!important}.marquee .text-yellow-400,.marquee .text-emerald-400{color:#68c8ff!important}.marquee span:not(.text-yellow-400):not(.text-emerald-400){color:#7f94aa!important}
 .betting-card{border-color:rgba(100,199,255,.10)!important}.betting-card:hover{border-color:rgba(100,199,255,.24)!important;box-shadow:0 18px 44px rgba(0,0,0,.25),0 0 0 1px rgba(100,199,255,.05)!important}
+</style>
+
+<style id="so-runtime-performance-core-20260811">
+/* Runtime-only performance guardrails. Visible design is unchanged. */
+html.so-perf-hidden .so-perf-anim-target,
+html.so-perf-hidden .so-perf-anim-target::before,
+html.so-perf-hidden .so-perf-anim-target::after,
+html.so-perf-scrolling .so-perf-anim-target,
+html.so-perf-scrolling .so-perf-anim-target::before,
+html.so-perf-scrolling .so-perf-anim-target::after,
+.so-perf-offscreen-anim,
+.so-perf-offscreen-anim::before,
+.so-perf-offscreen-anim::after{animation-play-state:paused!important;}
+.so-perf-offscreen-anim{will-change:auto!important;}
+@media(max-width:760px){
+  .so-nav,.so-nav-shell,.site-nav,.site-header,.mobile-nav,.hub-nav{backface-visibility:hidden;transform:translateZ(0);}
+}
+@media(pointer:coarse){button,a,[role="button"]{touch-action:manipulation;}}
 </style>
 </head>
 <body class="min-h-screen text-white">
@@ -4471,7 +4471,7 @@ document.addEventListener('click',function(e){if(e.target&&e.target.closest&&e.t
       move.className='roty-leader-move roty-live-move '+(up?'up':'dn');
       move.textContent=(up?'\u25B2 ':'\u25BC ')+pct+'%';
     }
-    function start(){ if(!timer) timer=setInterval(function(){ if(!document.hidden&&visible) tick(); },2600); }
+    function start(){ if(!timer) timer=setInterval(function(){ if(!document.hidden&&visible&&!document.documentElement.classList.contains('so-perf-scrolling')) tick(); },2600); }
     function stop(){ if(timer){clearInterval(timer);timer=null;} }
     if('IntersectionObserver' in window){
       new IntersectionObserver(function(es){es.forEach(function(e){visible=e.isIntersecting; visible?start():stop();});},{threshold:0}).observe(list);
@@ -4657,6 +4657,77 @@ document.addEventListener('click',function(e){if(e.target&&e.target.closest&&e.t
   .nfl-hero-grid .quickstat-strip{margin-top:18px!important;padding-top:14px!important;}
   .roty-panel-shell{margin-top:0!important;width:100%!important;max-width:100%!important;}
 }
+</style>
+
+<script id="so-runtime-performance-core-js-20260811">
+(function(){
+  'use strict';
+  var root=document.documentElement, seen=new WeakSet(), io=null, scrollTimer=0, scrollRAF=0;
+  function syncHidden(){root.classList.toggle('so-perf-hidden',document.hidden);}
+  document.addEventListener('visibilitychange',syncHidden,{passive:true});
+  window.addEventListener('pagehide',function(){root.classList.add('so-perf-hidden');},{passive:true});
+  window.addEventListener('pageshow',function(){syncHidden(); scheduleScan();},{passive:true});
+  syncHidden();
+  if('IntersectionObserver' in window){
+    io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){e.target.classList.toggle('so-perf-offscreen-anim',!e.isIntersecting);});
+    },{rootMargin:'280px 0px 280px 0px',threshold:0});
+  }
+  function scanAnimations(){
+    if(!document.getAnimations)return;
+    var list=document.getAnimations();
+    for(var i=0;i<list.length;i++){
+      var eff=list[i].effect, t=eff&&eff.target;
+      if(!t||t.nodeType!==1||seen.has(t))continue;
+      /* Only long-lived ambient loops belong in the offscreen pause system.
+         Finite entrance/reveal animations must be allowed to finish once so
+         cards and table rows cannot remain frozen in an opacity:0 start state. */
+      var timing=(eff&&eff.getTiming)?eff.getTiming():null;
+      if(!timing||timing.iterations!==Infinity)continue;
+      seen.add(t);t.classList.add('so-perf-anim-target');
+      if(io)io.observe(t);
+    }
+  }
+  function scheduleScan(){
+    if('requestIdleCallback' in window)requestIdleCallback(scanAnimations,{timeout:650});
+    else setTimeout(scanAnimations,120);
+  }
+  function markScrolling(){
+    if(!scrollRAF){
+      scrollRAF=requestAnimationFrame(function(){
+        scrollRAF=0;root.classList.add('so-perf-scrolling');
+      });
+    }
+    clearTimeout(scrollTimer);
+    scrollTimer=setTimeout(function(){root.classList.remove('so-perf-scrolling');},115);
+  }
+  /* capture:true catches nested horizontal/vertical scrollers too. */
+  document.addEventListener('scroll',markScrolling,{passive:true,capture:true});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scheduleScan,{once:true});else scheduleScan();
+  window.addEventListener('load',function(){setTimeout(scanAnimations,80);setTimeout(scanAnimations,900);},{once:true,passive:true});
+})();
+</script>
+
+<style id="so-global-mobile-menu-polish-20260811b">
+#hamburgerBtn,.so-hamburger,.hamburger{
+  min-width:44px!important;
+  min-height:44px!important;
+  width:44px!important;
+  height:44px!important;
+  padding:11px!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+#hamburgerBtn span,.so-hamburger span,.hamburger span{margin:4px 0!important;}
+.so-mobile-close,.mobile-menu-close{
+  min-width:44px!important;
+  min-height:44px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  touch-action:manipulation!important;
+}
+#mobileMenu a,.so-mobile-menu a,.mobile-menu a{min-height:48px!important;}
 </style>
 </body>
 </html>

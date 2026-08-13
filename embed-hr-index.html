@@ -40,10 +40,8 @@ window.addEventListener('DOMContentLoaded', function() {
 </script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Sans:wght@300;400;500&amp;display=optional" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link all'"="" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Sans:wght@300;400;500&amp;display=optional" rel="stylesheet"/></noscript>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&amp;family=DM+Mono:wght@400;500&amp;display=optional" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link all'"="" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&amp;family=DM+Mono:wght@400;500&amp;display=optional" rel="stylesheet"/></noscript>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=DM+Sans:wght@300;400;500&amp;family=Inter:wght@400;500;600;700;800;900&amp;family=Playfair+Display:wght@700;800;900&amp;display=optional" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=DM+Sans:wght@300;400;500&amp;family=Inter:wght@400;500;600;700;800;900&amp;family=Playfair+Display:wght@700;800;900&amp;display=optional" rel="stylesheet"/></noscript>
 <style>
 :root{--bg:#05070b;--bg2:#0d1117;--bg3:#111820;--border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.1);--gold:#f4b942;--green:#22c55e;--red:#ef4444;--blue:#57a7ff;--muted:#738296;--text:#e8edf5;--gl:#5DCAA5;--gd:rgba(29,158,117,.12);}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -1807,6 +1805,51 @@ nav .nav-special.green:focus{
   #tableWrap th[data-key="name"],#tableWrap td.col-player{width:152px!important;min-width:152px!important;max-width:152px!important;}
 }
 </style>
+
+<style id="so-hr-mobile-horizontal-scroll-performance-20260811">
+@media(max-width:700px){
+  #tableWrap{scroll-behavior:auto!important;contain:layout paint!important;}
+  #tableWrap table{transform:translateZ(0);}
+  #tableWrap tbody tr,#tableWrap tbody td,#tableWrap tbody td *,#tableWrap thead th{
+    animation:none!important;transition:none!important;filter:none!important;
+  }
+  #tableWrap th[data-key="name"],#tableWrap td.col-player{
+    box-shadow:1px 0 rgba(255,255,255,.08)!important;
+  }
+}
+</style>
+
+<style id="so-hr-release-scroll-performance-20260811">
+/* Keep interactive zones painted; offscreen observer now only pauses motion. */
+.layout,.table-wrap,.power-model-wrap,.insights-wrap,.so-hr-zone,.hr-insights,.hr-power-guide{content-visibility:visible!important;contain-intrinsic-size:auto!important;}
+#tableWrap tbody *,#tableWrap thead *{animation:none!important;}
+@media(max-width:700px){
+  /* Safari repaints sticky cells across the full 1720px board on every x-scroll.
+     Let the player column travel with the table on phones for a much smoother pan. */
+  #tableWrap th[data-key="name"],#tableWrap td.col-player{position:static!important;left:auto!important;box-shadow:none!important;}
+  #tableWrap table{transform:none!important;will-change:auto!important;}
+  #tableWrap{transform:none!important;will-change:scroll-position;}
+  .player-tooltip{display:none!important;}
+}
+</style>
+
+<style id="so-runtime-performance-core-20260811">
+/* Runtime-only performance guardrails. Visible design is unchanged. */
+html.so-perf-hidden .so-perf-anim-target,
+html.so-perf-hidden .so-perf-anim-target::before,
+html.so-perf-hidden .so-perf-anim-target::after,
+html.so-perf-scrolling .so-perf-anim-target,
+html.so-perf-scrolling .so-perf-anim-target::before,
+html.so-perf-scrolling .so-perf-anim-target::after,
+.so-perf-offscreen-anim,
+.so-perf-offscreen-anim::before,
+.so-perf-offscreen-anim::after{animation-play-state:paused!important;}
+.so-perf-offscreen-anim{will-change:auto!important;}
+@media(max-width:760px){
+  .so-nav,.so-nav-shell,.site-nav,.site-header,.mobile-nav,.hub-nav{backface-visibility:hidden;transform:translateZ(0);}
+}
+@media(pointer:coarse){button,a,[role="button"]{touch-action:manipulation;}}
+</style>
 </head>
 <body>
 <section aria-label="MLB HR Index introduction" class="hr-power-hero">
@@ -2407,7 +2450,8 @@ function renderPowerMap(){
     var cx=px(chart.xVal(p)),cy=py(chart.yVal(p));
     var r=3.5+(contactScore(p)/maxContact)*7;
     var isSel=selIdx===p._i;
-    return '<circle class="pm-dot'+(isSel?' pm-sel':'')+'" data-idx="'+p._i+'" cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="'+r.toFixed(1)+'" fill="'+pr.col+'" fill-opacity="'+(isSel?0.95:0.72)+'" onpointerenter="showTip(event,'+p._i+')" onpointermove="moveTip(event)" onpointerleave="hideTip()" onclick="handleRowClick('+p._i+')"></circle>';
+    var hoverAttrs=HR_COARSE_POINTER?'':' onpointerenter="showTip(event,'+p._i+')" onpointermove="moveTip(event)" onpointerleave="hideTip()"';
+    return '<circle class="pm-dot'+(isSel?' pm-sel':'')+'" data-idx="'+p._i+'" cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="'+r.toFixed(1)+'" fill="'+pr.col+'" fill-opacity="'+(isSel?0.95:0.72)+'"'+hoverAttrs+' onclick="handleRowClick('+p._i+')"></circle>';
   }).join('');
   wrap.innerHTML=
     '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block;">'+
@@ -2563,8 +2607,10 @@ function radarSVG(p){
 }
 
 function modelNote(p,c,pct){var pr=profileInfo(p),sig=deskSignal(Object.assign({},p,{hrg:pct/100})),v=variance(p)[0];var s=p.name+' grades as a '+sig.tag+' because the '+pr.title.toLowerCase()+' profile is driven by '+p.barrel.toFixed(1)+'% barrel rate and '+p.hh.toFixed(1)+'% hard-hit contact.';s+=v==='High'?' Strikeout and whiff risk widen the outcome band, which makes the ceiling attractive but less stable.':' The profile carries a cleaner floor because the whiff and strikeout drag are less extreme.';s+=p.bb>=10?' The walk rate also cushions the profile by protecting plate-discipline quality.':' The walk rate is not doing much cushioning, so contact quality has to carry the signal.';return s;}
+var HR_COARSE_POINTER=!!(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);
 var activeTipIdx=null;
 function showTip(evt,idx){
+  if(HR_COARSE_POINTER)return;
   var tip=document.getElementById('playerTooltip');if(!tip||!PLAYERS[idx])return;
   activeTipIdx=idx;
   var base=PLAYERS[idx],c=hrCalc(base,getPA(),getCV()),p=Object.assign({},base,c),pr=profileInfo(base),sig=deskSignal(p);
@@ -2572,6 +2618,7 @@ function showTip(evt,idx){
   tip.style.display='block';tip.setAttribute('aria-hidden','false');moveTip(evt);
 }
 function moveTip(evt){
+  if(HR_COARSE_POINTER)return;
   var tip=document.getElementById('playerTooltip');if(!tip||tip.style.display==='none'||!evt)return;
   var w=tip.offsetWidth||270,h=tip.offsetHeight||210,pad=12;
   var left=evt.clientX+16,top=evt.clientY+16;
@@ -2739,7 +2786,8 @@ function buildRowHTML(p,i){
   var order=getColumnOrder();
   var tds='';
   for(var oi=0;oi<order.length;oi++){tds+=cells[order[oi]];}
-  return '<tr data-idx="'+p._i+'" onclick="handleRowClick('+p._i+')" onpointerenter="showTip(event,'+p._i+')" onpointermove="moveTip(event)" onpointerleave="hideTip()" style="'+eliteStyle+'" class="'+(selIdx===p._i?'sel ':'')+(compareList.indexOf(p._i)>=0?'compare-pick ':'')+tc+'">'+tds+'</tr>';
+  var hoverAttrs=HR_COARSE_POINTER?'':' onpointerenter="showTip(event,'+p._i+')" onpointermove="moveTip(event)" onpointerleave="hideTip()"';
+  return '<tr data-idx="'+p._i+'" onclick="handleRowClick('+p._i+')"'+hoverAttrs+' style="'+eliteStyle+'" class="'+(selIdx===p._i?'sel ':'')+(compareList.indexOf(p._i)>=0?'compare-pick ':'')+tc+'">'+tds+'</tr>';
 }
 function renderWindow(){hideTip();var tw=document.getElementById('tableWrap');var tb=document.getElementById('tbody');if(!tw||!tb)return;var total=currentRows.length;var viewportH=tw.clientHeight||600;var scrollTop=tw.scrollTop;var buffer=6;var visibleCount=Math.ceil(viewportH/ROW_H)+buffer*2;var startIdx=Math.max(0,Math.floor(scrollTop/ROW_H)-buffer);var endIdx=Math.min(total,startIdx+visibleCount);if(rowHMeasured&&startIdx===lastWindowStart&&endIdx===lastWindowEnd&&total===lastWindowTotal)return;lastWindowStart=startIdx;lastWindowEnd=endIdx;lastWindowTotal=total;var topH=startIdx*ROW_H;var botH=Math.max(0,(total-endIdx)*ROW_H);var html='';if(topH>0)html+='<tr class="vrow-spacer" style="height:'+topH+'px"><td colspan="11" style="padding:0;border:0;background:transparent"></td></tr>';for(var i=startIdx;i<endIdx;i++){html+=buildRowHTML(currentRows[i],i);}if(botH>0)html+='<tr class="vrow-spacer" style="height:'+botH+'px"><td colspan="11" style="padding:0;border:0;background:transparent"></td></tr>';tb.innerHTML=html;if(!rowHMeasured){var sampleRows=tb.querySelectorAll('tr[data-idx]');if(sampleRows.length>=2){var pitch=sampleRows[1].getBoundingClientRect().top-sampleRows[0].getBoundingClientRect().top;rowHMeasured=true;if(pitch>20&&Math.abs(pitch-ROW_H)>4){ROW_H=pitch;lastWindowStart=lastWindowEnd=lastWindowTotal=-1;renderWindow();return;}}else if(sampleRows.length===1){var h=sampleRows[0].getBoundingClientRect().height+8;rowHMeasured=true;if(h>20&&Math.abs(h-ROW_H)>4){ROW_H=h;lastWindowStart=lastWindowEnd=lastWindowTotal=-1;renderWindow();return;}}}}
 var hrSecondaryRenderJob=0;
@@ -2753,7 +2801,7 @@ function selectP(idx){var prev=selIdx;selIdx=idx;document.querySelectorAll('#tbo
 function updateAll(){render();updateSide();}
 function updateSide(){if(selIdx===null)return;var p=PLAYERS[selIdx];var cv=getCV(),pa=getPA();var c=hrCalc(p,pa,cv);var pct=c.hrg*100;var col=bcolor(pct);var t=tier(pct);var v=variance(p);var mw=Math.min(pct/50*100,100).toFixed(1);var chain='<div class="pad-row">';for(var i=0;i<pa;i++){var cum=(1-Math.pow(1-c.hrpa,i+1))*100;var inten=Math.min(cum/35,1);var ndBg='rgba(255,'+Math.round(188+inten*42)+','+Math.round(74+inten*30)+','+(0.12+inten*0.5).toFixed(2)+')';var ndBc='rgba(244,185,66,'+(0.2+inten*0.5).toFixed(2)+')';var ndCol=inten>.4?'#ffe7a6':'#7e6c3c';var ndShadow=inten>.45?'0 0 12px rgba(255,210,90,'+(inten*0.55).toFixed(2)+')':'none';var nd=(i*0.5).toFixed(2);if(i>0){var cd=((i*0.5)-0.25).toFixed(2);chain+='<div class="pad-seg" style="animation-delay:'+cd+'s"></div>';}chain+='<div class="pad-node-wrap"><div class="pad-circle" style="--nd-bg:'+ndBg+';--nd-bc:'+ndBc+';--nd-col:'+ndCol+';--nd-shadow:'+ndShadow+';animation-delay:'+nd+'s">'+cum.toFixed(0)+'%</div><div class="pad-node-lbl" style="animation-delay:'+nd+'s">PA'+(i+1)+'</div></div>';}chain+='</div>';document.getElementById('side-content').innerHTML='<div class="pc"><div class="pcn">'+p.name+'</div><div class="pct2">'+p.team+' · '+p.pa+' PA sample</div><div class="pc-big" style="color:'+col+'">'+pct.toFixed(1)+'%</div><div class="pc-lbl">HR probability per game  <span class="pill '+t[1]+'">'+t[0]+'</span> <span class="pill '+v[1]+'">Variance: '+v[0]+'</span></div><div class="mw"><div class="mbar" style="width:'+mw+'%;background:linear-gradient(90deg,'+col+','+col+'88)"></div></div><div class="mlbls"><span>0%</span><span>25%</span><span>50%</span></div><div class="pad-lbl" style="margin-top:11px">Cumulative across '+pa+' plate appearances</div><div class="pad-chain">'+chain+'</div></div><div class="sg"><div class="sb2" style="animation-delay:.00s;border-top-color:rgba(244,185,66,.45)"><div class="sbl">In-play rate</div><div class="sbv"><span class="sbv-num" data-val="'+(c.ip*100).toFixed(1)+'" data-fmt="%" data-dec="1">0%</span></div></div><div class="sb2" style="animation-delay:.07s;border-top-color:rgba(244,185,66,.3)"><div class="sbl">Contact quality</div><div class="sbv"><span class="sbv-num" data-val="'+(c.cq*100).toFixed(1)+'" data-fmt="%" data-dec="1">0%</span></div></div><div class="sb2" style="animation-delay:.14s;border-top-color:rgba(200,100,50,.5)"><div class="sbl">HR chance/PA</div><div class="sbv"><span class="sbv-num" data-val="'+(c.hrpa*100).toFixed(2)+'" data-fmt="%" data-dec="2" data-color="'+col+'">0%</span></div></div><div class="sb2" style="animation-delay:.21s;border-top-color:rgba(34,197,94,.5)"><div class="sbl">Barrel %</div><div class="sbv"><span class="sbv-num" data-val="'+p.barrel+'" data-fmt="%" data-dec="1" data-color="#22c55e">0%</span></div></div><div class="sb2" style="animation-delay:.28s;border-top-color:rgba(96,165,250,.5)"><div class="sbl">Hard Hit %</div><div class="sbv"><span class="sbv-num" data-val="'+p.hh+'" data-fmt="%" data-dec="1" data-color="#57a7ff">0%</span></div></div><div class="sb2" style="animation-delay:.35s;border-top-color:rgba(244,185,66,.25)"><div class="sbl">Contact Score</div><div class="sbv"><span class="sbv-num" data-val="'+contactScore(p)+'" data-fmt="" data-dec="0">0</span></div></div></div'+radarSVG(p)+'<div class="model-note"><div class="model-note-title">Model Note</div><div class="model-note-copy">'+modelNote(p,c,pct)+'</div></div><div class="fb"><div class="ft">Formula — 2yr PA-weighted avg</div><div class="fl2"><code>in_play</code> = 1−('+p.k+'+'+p.bb+')/100 = <strong style="color:var(--text)">'+(c.ip*100).toFixed(1)+'%</strong></div><div class="fl2"><code>contact_quality</code> = ('+p.barrel+'×0.65+'+p.hh+'×0.35)/100 = <strong style="color:var(--text)">'+(c.cq*100).toFixed(1)+'%</strong></div><div class="fl2"><code>hr_per_pa</code> = '+(c.ip*100).toFixed(1)+'%×'+(c.cq*100).toFixed(1)+'%×'+cv.toFixed(2)+' = <strong style="color:var(--text)">'+(c.hrpa*100).toFixed(2)+'%</strong></div><div class="fl2"><code>hr_per_game</code> = 1−(1−'+(c.hrpa*100).toFixed(2)+'%)^'+pa+' = <strong style="color:'+col+'">'+pct.toFixed(1)+'%</strong></div></div>';animateCounters();}
 render();updateHeaders();reorderHeaderDOM();updateParkLabel();renderFormulaWalkthrough();
-(function(){var tw=document.getElementById('tableWrap');if(!tw)return;var ticking=false;tw.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(function(){renderWindow();ticking=false;});}},{passive:true});window.addEventListener('resize',function(){if(!ticking){ticking=true;requestAnimationFrame(function(){renderWindow();ticking=false;});}},{passive:true});})();
+(function(){var tw=document.getElementById('tableWrap');if(!tw)return;var ticking=false,lastTop=tw.scrollTop;tw.addEventListener('scroll',function(){var top=tw.scrollTop;if(Math.abs(top-lastTop)<1)return;lastTop=top;if(!ticking){ticking=true;requestAnimationFrame(function(){renderWindow();ticking=false;});}},{passive:true});window.addEventListener('resize',function(){if(!ticking){ticking=true;requestAnimationFrame(function(){renderWindow();ticking=false;});}},{passive:true});})();
 document.addEventListener('click',function(e){if(ch2SwapSlot===null)return;if(e.target.closest('.ch2-swap-pop')||e.target.closest('.ch2-swap-btn'))return;ch2CloseSwap();});
 var yIdx=0;for(var i=0;i<PLAYERS.length;i++){if(PLAYERS[i].name==='Yordan Alvarez'){yIdx=i;break;}}selectP(yIdx);
 (function(){var r=document.getElementById('hrBulbs');if(!r)return;var h='';for(var i=0;i<40;i++){h+='<span class="mq-bulb" style="animation-delay:'+((i%14)*0.1).toFixed(1)+'s"></span>';}r.innerHTML=h;})();
@@ -2768,10 +2816,10 @@ function toggleHRMenu_OLD(){const m=document.getElementById('hrMobileMenu');m.cl
 </footer>
 <script id="so-tooltip-cleanup-and-scroll-guard">
 (function(){
-  function clean(){ if(typeof hideTip==='function') hideTip(); }
+  function clean(){ if(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches)return; if(typeof activeTipIdx!=='undefined'&&activeTipIdx===null)return; if(typeof hideTip==='function') hideTip(); }
   function bind(){
     var tw=document.getElementById('tableWrap');
-    if(tw){tw.addEventListener('scroll',clean,{passive:true});tw.addEventListener('pointerleave',clean,{passive:true});}
+    if(tw){if(!(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches))tw.addEventListener('scroll',clean,{passive:true});tw.addEventListener('pointerleave',clean,{passive:true});}
     window.addEventListener('blur',clean,{passive:true});
     window.addEventListener('resize',clean,{passive:true});
     document.addEventListener('visibilitychange',function(){if(document.hidden)clean();},{passive:true});
@@ -2809,20 +2857,95 @@ function toggleHRMenu_OLD(){const m=document.getElementById('hrMobileMenu');m.cl
   }
   window.addEventListener('scroll',mark,{passive:true});
   var tw=document.getElementById('tableWrap');
-  if(tw)tw.addEventListener('scroll',mark,{passive:true});
+  if(tw && !(window.matchMedia&&window.matchMedia('(max-width:700px)').matches))tw.addEventListener('scroll',mark,{passive:true});
 })();
 </script>
 
 <script id="so-final-sticky-speed-20260725-js">
 (function(){
   function boot(){
-    var zones=[].slice.call(document.querySelectorAll('.layout,.table-wrap,.power-model-wrap,.insights-wrap'));
-    if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle('so-hr-offscreen',!e.isIntersecting)});},{rootMargin:'320px 0px'});zones.forEach(function(z){io.observe(z)});}
-    requestAnimationFrame(function(){var table=document.getElementById('tableWrap');if(table)table.getAnimations({subtree:true}).forEach(function(a){a.cancel()})});
     function vis(){document.documentElement.classList.toggle('so-hr-hidden',document.hidden)}vis();document.addEventListener('visibilitychange',vis,{passive:true});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
 </script>
+
+<script id="so-runtime-performance-core-js-20260811">
+(function(){
+  'use strict';
+  var root=document.documentElement, seen=new WeakSet(), io=null, scrollTimer=0, scrollRAF=0;
+  function syncHidden(){root.classList.toggle('so-perf-hidden',document.hidden);}
+  document.addEventListener('visibilitychange',syncHidden,{passive:true});
+  window.addEventListener('pagehide',function(){root.classList.add('so-perf-hidden');},{passive:true});
+  window.addEventListener('pageshow',function(){syncHidden(); scheduleScan();},{passive:true});
+  syncHidden();
+  if('IntersectionObserver' in window){
+    io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){e.target.classList.toggle('so-perf-offscreen-anim',!e.isIntersecting);});
+    },{rootMargin:'280px 0px 280px 0px',threshold:0});
+  }
+  function scanAnimations(){
+    if(!document.getAnimations)return;
+    var list=document.getAnimations();
+    for(var i=0;i<list.length;i++){
+      var eff=list[i].effect, t=eff&&eff.target;
+      if(!t||t.nodeType!==1||seen.has(t))continue;
+      /* Only long-lived ambient loops belong in the offscreen pause system.
+         Finite entrance/reveal animations must be allowed to finish once so
+         cards and table rows cannot remain frozen in an opacity:0 start state. */
+      var timing=(eff&&eff.getTiming)?eff.getTiming():null;
+      if(!timing||timing.iterations!==Infinity)continue;
+      seen.add(t);t.classList.add('so-perf-anim-target');
+      if(io)io.observe(t);
+    }
+  }
+  function scheduleScan(){
+    if('requestIdleCallback' in window)requestIdleCallback(scanAnimations,{timeout:650});
+    else setTimeout(scanAnimations,120);
+  }
+  function markScrolling(){
+    if(!scrollRAF){
+      scrollRAF=requestAnimationFrame(function(){
+        scrollRAF=0;root.classList.add('so-perf-scrolling');
+      });
+    }
+    clearTimeout(scrollTimer);
+    scrollTimer=setTimeout(function(){root.classList.remove('so-perf-scrolling');},115);
+  }
+  /* capture:true catches nested horizontal/vertical scrollers too. */
+  document.addEventListener('scroll',markScrolling,{passive:true,capture:true});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scheduleScan,{once:true});else scheduleScan();
+  window.addEventListener('load',function(){setTimeout(scanAnimations,80);setTimeout(scanAnimations,900);},{once:true,passive:true});
+})();
+</script>
+
+<style id="so-global-mobile-menu-polish-20260811b">
+#hamburgerBtn,.so-hamburger,.hamburger{
+  min-width:44px!important;
+  min-height:44px!important;
+  width:44px!important;
+  height:44px!important;
+  padding:11px!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+#hamburgerBtn span,.so-hamburger span,.hamburger span{margin:4px 0!important;}
+.so-mobile-close,.mobile-menu-close{
+  min-width:44px!important;
+  min-height:44px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  touch-action:manipulation!important;
+}
+#mobileMenu a,.so-mobile-menu a,.mobile-menu a{min-height:48px!important;}
+</style>
+
+<style id="so-hr-mobile-native-scroll-performance-20260811">
+@media(max-width:700px){
+  .table-wrap{touch-action:pan-x pan-y!important;transform:translateZ(0);backface-visibility:hidden;}
+  .player-tooltip{display:none!important;}
+}
+</style>
 </body>
 </html>

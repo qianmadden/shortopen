@@ -3,7 +3,7 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg?v=20260810"/>
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=20260810"/>
 <link rel="shortcut icon" href="favicon.ico?v=20260810"/>
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20260810"/><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>:root{--accent:#a78bfa;--accent-border:rgba(167,139,250,.40);--accent-soft:rgba(167,139,250,.095);--accent-glow:rgba(167,139,250,.42);--ambient-a:rgba(167,139,250,.075);--ambient-b:rgba(87,167,255,.055);}
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20260810"/><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'" rel="stylesheet"><noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript><style>:root{--accent:#a78bfa;--accent-border:rgba(167,139,250,.40);--accent-soft:rgba(167,139,250,.095);--accent-glow:rgba(167,139,250,.42);--ambient-a:rgba(167,139,250,.075);--ambient-b:rgba(87,167,255,.055);}
 :root{
   --bg:#05070b;--bg2:#07101a;--panel:#0a111b;--panel2:#0d1724;
   --line:rgba(255,255,255,.085);--line2:rgba(255,255,255,.14);
@@ -101,7 +101,37 @@ button{font:inherit}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 .so-mobile-menu a[href="subscribe.html"]{border-color:rgba(167,139,250,.32);background:rgba(167,139,250,.07);color:#d8ccff}
-</style></head>
+</style>
+<style id="so-mobile-menu-tap-reliability-20260811">
+.so-hamburger{position:relative!important;z-index:1002!important;pointer-events:auto!important;touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important;}
+.so-mobile-menu{pointer-events:auto!important;}
+</style>
+
+<style id="so-release-menu-reliability-20260811">
+@media(max-width:900px){
+  #hamburgerBtn,.so-hamburger,.hamburger{position:relative!important;z-index:1200!important;pointer-events:auto!important;touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important;}
+  #mobileMenu,.so-mobile-menu,.mobile-menu{z-index:1190!important;pointer-events:auto!important;}
+}
+</style>
+
+<style id="so-runtime-performance-core-20260811">
+/* Runtime-only performance guardrails. Visible design is unchanged. */
+html.so-perf-hidden .so-perf-anim-target,
+html.so-perf-hidden .so-perf-anim-target::before,
+html.so-perf-hidden .so-perf-anim-target::after,
+html.so-perf-scrolling .so-perf-anim-target,
+html.so-perf-scrolling .so-perf-anim-target::before,
+html.so-perf-scrolling .so-perf-anim-target::after,
+.so-perf-offscreen-anim,
+.so-perf-offscreen-anim::before,
+.so-perf-offscreen-anim::after{animation-play-state:paused!important;}
+.so-perf-offscreen-anim{will-change:auto!important;}
+@media(max-width:760px){
+  .so-nav,.so-nav-shell,.site-nav,.site-header,.mobile-nav,.hub-nav{backface-visibility:hidden;transform:translateZ(0);}
+}
+@media(pointer:coarse){button,a,[role="button"]{touch-action:manipulation;}}
+</style>
+</head>
 <body><div class="so-nav-shell"><nav class="so-nav" aria-label="Primary navigation">
   <a class="so-nav-brand" href="index.html" aria-label="Short Open home"><span>short<b>open</b></span></a>
   <div class="so-nav-center">
@@ -167,9 +197,77 @@ button{font:inherit}
   tabs.forEach(btn=>{btn.addEventListener('click',()=>choose(btn.dataset.key,false));btn.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();let i=tabs.indexOf(btn);if(e.key==='ArrowRight')i=(i+1)%tabs.length;if(e.key==='ArrowLeft')i=(i-1+tabs.length)%tabs.length;if(e.key==='Home')i=0;if(e.key==='End')i=tabs.length-1;tabs[i].focus();choose(tabs[i].dataset.key,false);});});
   picks.forEach(btn=>btn.addEventListener('click',()=>choose(btn.dataset.key,false)));
   frame.addEventListener('load',()=>loader.classList.add('hidden'));window.addEventListener('hashchange',()=>choose(location.hash.slice(1),true));
-  function setMenu(open){menu.classList.toggle('open',open);menu.setAttribute('aria-hidden',String(!open));burger.setAttribute('aria-expanded',String(open));}
-  burger.addEventListener('click',()=>setMenu(!menu.classList.contains('open')));menu.querySelector('.mobile-close').addEventListener('click',()=>setMenu(false));menu.addEventListener('click',e=>{if(e.target.closest('a'))setMenu(false);});
+  function setMenu(open){menu.classList.toggle('open',open);menu.setAttribute('aria-hidden',String(!open));burger.setAttribute('aria-expanded',String(open));document.body.style.overflow=open?'hidden':'';}
+  burger.addEventListener('click',()=>setMenu(!menu.classList.contains('open')));const closeBtn=menu.querySelector('.so-mobile-close,.mobile-close');if(closeBtn)closeBtn.addEventListener('click',()=>setMenu(false));menu.addEventListener('click',e=>{if(e.target.closest('a'))setMenu(false);});
   const initialKey=location.hash.slice(1);
   if(initialKey){choose(initialKey,true);}else{pickScreen.classList.remove('hidden');}
 })();
-</script></body></html>
+</script>
+<script id="so-runtime-performance-core-js-20260811">
+(function(){
+  'use strict';
+  var root=document.documentElement, seen=new WeakSet(), io=null, scrollTimer=0, scrollRAF=0;
+  function syncHidden(){root.classList.toggle('so-perf-hidden',document.hidden);}
+  document.addEventListener('visibilitychange',syncHidden,{passive:true});
+  window.addEventListener('pagehide',function(){root.classList.add('so-perf-hidden');},{passive:true});
+  window.addEventListener('pageshow',function(){syncHidden(); scheduleScan();},{passive:true});
+  syncHidden();
+  if('IntersectionObserver' in window){
+    io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){e.target.classList.toggle('so-perf-offscreen-anim',!e.isIntersecting);});
+    },{rootMargin:'280px 0px 280px 0px',threshold:0});
+  }
+  function scanAnimations(){
+    if(!document.getAnimations)return;
+    var list=document.getAnimations();
+    for(var i=0;i<list.length;i++){
+      var eff=list[i].effect, t=eff&&eff.target;
+      if(!t||t.nodeType!==1||seen.has(t))continue;
+      /* Only long-lived ambient loops belong in the offscreen pause system.
+         Finite entrance/reveal animations must be allowed to finish once so
+         cards and table rows cannot remain frozen in an opacity:0 start state. */
+      var timing=(eff&&eff.getTiming)?eff.getTiming():null;
+      if(!timing||timing.iterations!==Infinity)continue;
+      seen.add(t);t.classList.add('so-perf-anim-target');
+      if(io)io.observe(t);
+    }
+  }
+  function scheduleScan(){
+    if('requestIdleCallback' in window)requestIdleCallback(scanAnimations,{timeout:650});
+    else setTimeout(scanAnimations,120);
+  }
+  function markScrolling(){
+    if(!scrollRAF){
+      scrollRAF=requestAnimationFrame(function(){scrollRAF=0;root.classList.add('so-perf-scrolling');});
+    }
+    clearTimeout(scrollTimer);
+    scrollTimer=setTimeout(function(){root.classList.remove('so-perf-scrolling');},115);
+  }
+  document.addEventListener('scroll',markScrolling,{passive:true,capture:true});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scheduleScan,{once:true});else scheduleScan();
+  window.addEventListener('load',function(){setTimeout(scanAnimations,80);setTimeout(scanAnimations,900);},{once:true,passive:true});
+})();
+</script>
+
+<style id="so-global-mobile-menu-polish-20260811b">
+#hamburgerBtn,.so-hamburger,.hamburger{
+  min-width:44px!important;
+  min-height:44px!important;
+  width:44px!important;
+  height:44px!important;
+  padding:11px!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+#hamburgerBtn span,.so-hamburger span,.hamburger span{margin:4px 0!important;}
+.so-mobile-close,.mobile-menu-close{
+  min-width:44px!important;
+  min-height:44px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  touch-action:manipulation!important;
+}
+#mobileMenu a,.so-mobile-menu a,.mobile-menu a{min-height:48px!important;}
+</style>
+</body></html>

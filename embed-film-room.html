@@ -11,7 +11,8 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20260810"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" rel="stylesheet"/></noscript>
 <style id="so-consolidated-styles-20260720">
 :root{--bg:#05070b;--gold:#f4b942;}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -290,18 +291,44 @@ nav{
   .hamburger{display:flex;}
 }
 
+/* Mobile image + compositor hardening: keep the cinematic design while avoiding
+   fixed blurred layers and multiple live backdrop blurs on iOS Safari. */
+@media(max-width:700px){
+  .film-ambient-glows{display:none!important;}
+  .film-tag,.hero-content [style*="backdrop-filter"]{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+  .hero-img{transform:none!important;filter:none!important;}
+}
+
 </style>
 
+
+<style id="so-runtime-performance-core-20260811">
+/* Runtime-only performance guardrails. Visible design is unchanged. */
+html.so-perf-hidden .so-perf-anim-target,
+html.so-perf-hidden .so-perf-anim-target::before,
+html.so-perf-hidden .so-perf-anim-target::after,
+html.so-perf-scrolling .so-perf-anim-target,
+html.so-perf-scrolling .so-perf-anim-target::before,
+html.so-perf-scrolling .so-perf-anim-target::after,
+.so-perf-offscreen-anim,
+.so-perf-offscreen-anim::before,
+.so-perf-offscreen-anim::after{animation-play-state:paused!important;}
+.so-perf-offscreen-anim{will-change:auto!important;}
+@media(max-width:760px){
+  .so-nav,.so-nav-shell,.site-nav,.site-header,.mobile-nav,.hub-nav{backface-visibility:hidden;transform:translateZ(0);}
+}
+@media(pointer:coarse){button,a,[role="button"]{touch-action:manipulation;}}
+</style>
 </head>
 <body>
 <!-- board background glows -->
-<div style="position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden">
+<div class="film-ambient-glows" style="position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden">
 <div style="position:absolute;width:600px;height:600px;top:-200px;left:-100px;background:radial-gradient(circle,rgba(244,185,66,.07),transparent 65%);border-radius:50%;filter:blur(60px)"></div>
 <div style="position:absolute;width:500px;height:500px;bottom:-150px;right:-100px;background:radial-gradient(circle,rgba(87,167,255,.08),transparent 65%);border-radius:50%;filter:blur(60px)"></div>
 <div style="position:absolute;width:400px;height:400px;top:40%;left:30%;background:radial-gradient(circle,rgba(34,197,94,.04),transparent 65%);border-radius:50%;filter:blur(80px)"></div>
 </div>
 <section class="hero" style="position:relative;z-index:1">
-<img alt="2027 NFL Draft Class — 32 Prospects" class="hero-img" decoding="async" fetchpriority="high" src="assets/film-room-hero.jpg"/>
+<img alt="2027 NFL Draft Class — 32 Prospects" class="hero-img" decoding="async" fetchpriority="high" src="assets/film-room-hero.jpg" srcset="assets/film-room-hero-mobile.jpg 960w, assets/film-room-hero.jpg 1536w" sizes="100vw" width="1536" height="1024"/>
 <div class="hero-gradient"></div>
 <div class="hero-sides"></div>
 <div class="film-tag top-left">QB PROCESSING</div>
@@ -335,7 +362,7 @@ nav{
 <!-- FEATURED BREAKDOWNS -->
 <main class="fr-preview">
 <section class="fr-intro">
-<div><div class="fr-kicker">Short Open Film Breakdown</div><h2>See the play.<br>Read the player.</br></h2></div>
+<div><div class="fr-kicker">Short Open Film Breakdown</div><h2>See the play.<br>Read the player.</h2></div>
 <p>Film Room will turn prospect tape into a repeatable viewing process. Each breakdown follows the same sequence: <strong>identify the structure, track the decision, grade the response, and translate the trait.</strong> This page is the preview of how Short Open will show its work.</p>
 </section>
 <section aria-label="Featured film breakdown preview" class="fr-feature">
@@ -372,5 +399,83 @@ nav{
 <script>
 function toggleMobileMenu(){const m=document.getElementById('mobileMenu');const b=document.getElementById('hamburgerBtn');m.classList.toggle('open');if(b)b.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':'';}
 </script>
+
+<script id="so-runtime-performance-core-js-20260811">
+(function(){
+  'use strict';
+  var root=document.documentElement, seen=new WeakSet(), io=null, scrollTimer=0, scrollRAF=0;
+  function syncHidden(){root.classList.toggle('so-perf-hidden',document.hidden);}
+  document.addEventListener('visibilitychange',syncHidden,{passive:true});
+  window.addEventListener('pagehide',function(){root.classList.add('so-perf-hidden');},{passive:true});
+  window.addEventListener('pageshow',function(){syncHidden(); scheduleScan();},{passive:true});
+  syncHidden();
+  if('IntersectionObserver' in window){
+    io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){e.target.classList.toggle('so-perf-offscreen-anim',!e.isIntersecting);});
+    },{rootMargin:'280px 0px 280px 0px',threshold:0});
+  }
+  function scanAnimations(){
+    if(!document.getAnimations)return;
+    var list=document.getAnimations();
+    for(var i=0;i<list.length;i++){
+      var eff=list[i].effect, t=eff&&eff.target;
+      if(!t||t.nodeType!==1||seen.has(t))continue;
+      /* Only long-lived ambient loops belong in the offscreen pause system.
+         Finite entrance/reveal animations must be allowed to finish once so
+         cards and table rows cannot remain frozen in an opacity:0 start state. */
+      var timing=(eff&&eff.getTiming)?eff.getTiming():null;
+      if(!timing||timing.iterations!==Infinity)continue;
+      seen.add(t);t.classList.add('so-perf-anim-target');
+      if(io)io.observe(t);
+    }
+  }
+  function scheduleScan(){
+    if('requestIdleCallback' in window)requestIdleCallback(scanAnimations,{timeout:650});
+    else setTimeout(scanAnimations,120);
+  }
+  function markScrolling(){
+    if(!scrollRAF){
+      scrollRAF=requestAnimationFrame(function(){
+        scrollRAF=0;root.classList.add('so-perf-scrolling');
+      });
+    }
+    clearTimeout(scrollTimer);
+    scrollTimer=setTimeout(function(){root.classList.remove('so-perf-scrolling');},115);
+  }
+  /* capture:true catches nested horizontal/vertical scrollers too. */
+  document.addEventListener('scroll',markScrolling,{passive:true,capture:true});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scheduleScan,{once:true});else scheduleScan();
+  window.addEventListener('load',function(){setTimeout(scanAnimations,80);setTimeout(scanAnimations,900);},{once:true,passive:true});
+})();
+</script>
+
+<style id="so-global-mobile-menu-polish-20260811b">
+#hamburgerBtn,.so-hamburger,.hamburger{
+  min-width:44px!important;
+  min-height:44px!important;
+  width:44px!important;
+  height:44px!important;
+  padding:11px!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+#hamburgerBtn span,.so-hamburger span,.hamburger span{margin:4px 0!important;}
+.so-mobile-close,.mobile-menu-close{
+  min-width:44px!important;
+  min-height:44px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  touch-action:manipulation!important;
+}
+#mobileMenu a,.so-mobile-menu a,.mobile-menu a{min-height:48px!important;}
+</style>
+
+<style id="so-film-fixed-layer-performance-20260811">
+/* Keep the ambient board glow identical, but isolate it into a single compositor
+   layer so the three blurred gradients do not get repainted with page content. */
+.film-ambient-glows{contain:strict!important;transform:translateZ(0);backface-visibility:hidden;isolation:isolate;}
+.hero{contain:layout paint style;}
+</style>
 </body>
 </html>

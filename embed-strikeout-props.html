@@ -466,6 +466,24 @@ nav{background:rgba(7,14,11,.97);border-bottom-color:rgba(34,217,126,.2);}
    Keep phone geometry at native scale to avoid introducing horizontal clipping. */
 @media(min-width:901px){body{zoom:1.06;}}
 </style>
+
+<style id="so-runtime-performance-core-20260811">
+/* Runtime-only performance guardrails. Visible design is unchanged. */
+html.so-perf-hidden .so-perf-anim-target,
+html.so-perf-hidden .so-perf-anim-target::before,
+html.so-perf-hidden .so-perf-anim-target::after,
+html.so-perf-scrolling .so-perf-anim-target,
+html.so-perf-scrolling .so-perf-anim-target::before,
+html.so-perf-scrolling .so-perf-anim-target::after,
+.so-perf-offscreen-anim,
+.so-perf-offscreen-anim::before,
+.so-perf-offscreen-anim::after{animation-play-state:paused!important;}
+.so-perf-offscreen-anim{will-change:auto!important;}
+@media(max-width:760px){
+  .so-nav,.so-nav-shell,.site-nav,.site-header,.mobile-nav,.hub-nav{backface-visibility:hidden;transform:translateZ(0);}
+}
+@media(pointer:coarse){button,a,[role="button"]{touch-action:manipulation;}}
+</style>
 </head>
 <body>
 
@@ -660,36 +678,24 @@ const BOOKS = [
 ];
 
 const PROPS_DATA = [
-  {name:"Dylan Cease", team:"TOR", opp:"BOS", books:{DK:[7.5,115,-147],FD:[7.5,112,-142],MGM:[7.5,105,-140],RIV:[7.5,110,-148],CZR:[7.5,112,-148],HR:[7.5,115,-150]}},
-  {name:"Sean Burke", team:"CWS", opp:"CIN", books:{DK:[7.5,-141,111],FD:[7.5,-142,112],MGM:[6.5,115,-155],RIV:[7.5,-159,120],CZR:[7.5,-155,115],HR:[7.5,-150,115]}},
-  {name:"Hunter Brown", team:"HOU", opp:"@SF", books:{DK:[6.5,-158,123],FD:[5.5,116,-148],MGM:[5.5,115,-155],RIV:[5.5,-103,-130],CZR:[5.5,112,-154],HR:[5.5,115,-150]}},
-  {name:"Nolan McLean", team:"NYM", opp:"@ATL", books:{DK:[6.5,-159,125],FD:[5.5,128,-162],MGM:[5.5,115,-155],RIV:[5.5,120,-159],CZR:[5.5,117,-154],HR:[5.5,120,-160]}},
-  {name:"Eury Perez", team:"MIA", opp:"PIT", books:{DK:[6.5,-123,-102],FD:[6.5,-128,100],MGM:[6.5,-120,-110],RIV:[6.5,-129,-104],CZR:[6.5,-129,-102],HR:[6.5,-125,-105]}},
-  {name:"Paul Skenes", team:"PIT", opp:"@MIA", books:{DK:[6.5,118,-151],FD:[6.5,116,-148],MGM:[6.5,105,-140],RIV:[6.5,115,-152],CZR:[6.5,115,-155],HR:[6.5,120,-155]}},
-  {name:"Blake Snell", team:"LAD", opp:"KC", books:{DK:[6.5,-161,126],FD:[6.5,-158,124],MGM:[6.5,-155,115],RIV:[6.5,-155,116],CZR:[6.5,-160,118],HR:[6.5,-160,120]}},
-  {name:"Ryan Weathers", team:"NYY", opp:"SEA", books:{DK:[6.5,-153,120],FD:[6.5,-158,124],MGM:[6.5,-155,115],RIV:[6.5,-155,116],CZR:[6.5,-170,127],HR:[5.5,120,-160]}},
-  {name:"Bryan Woo", team:"SEA", opp:"@NYY", books:{DK:[5.5,115,-147],FD:[6.5,-154,120],MGM:[6.5,-135,100],RIV:[6.5,-155,116],CZR:[6.5,-165,120],HR:[6.5,-160,120]}},
-  {name:"Cody Bradford", team:"TEX", opp:"@LAA", books:{DK:[4.5,120,-153],FD:[4.5,116,-148],MGM:[5.5,-160,120],RIV:[4.5,108,-143],CZR:[4.5,120,-165],HR:[4.5,115,-150]}},
-  {name:"Kyle Harrison", team:"MIL", opp:"@SD", books:{DK:[5.5,-148,117],FD:[5.5,-146,114],MGM:[5.5,-155,115],RIV:[5.5,-150,112],CZR:[5.5,-145,111],HR:[5.5,-145,110]}},
-  {name:"Shota Imanaga", team:"CHC", opp:"@WSH", books:{DK:[5.5,-125,-102],FD:[5.5,-146,114],MGM:[5.5,-150,110],RIV:[5.5,null,-132],CZR:[5.5,-155,112],HR:[5.5,-135,105]}},
-  {name:"Cristopher Sanchez", team:"PHI", opp:"@STL", books:{DK:[5.5,115,-143],FD:[5.5,114,-146],MGM:[5.5,125,-165],RIV:[5.5,114,-152],CZR:[5.5,112,-150],HR:[5.5,120,-155]}},
-  {name:"Tanner Bibee", team:"CLE", opp:"@DET", books:{DK:[4.5,-108,-117],FD:[4.5,-115,-111],MGM:[4.5,-120,-110],RIV:[4.5,null,-117],CZR:[4.5,-115,-113],HR:[4.5,-115,-115]}},
-  {name:"Mitch Bratt", team:"ARI", opp:"COL", books:{DK:[4.5,-122,-105],FD:[4.5,-136,106],MGM:[4.5,-150,120],RIV:[4.5,-162,120],CZR:[4.5,null,null],HR:[4.5,-135,105]}},
-  {name:"Walker Buehler", team:"SD", opp:"MIL", books:{DK:[4.5,-151,118],FD:[4.5,-154,120],MGM:[4.5,-160,120],RIV:[3.5,125,-167],CZR:[4.5,-165,120],HR:[4.5,-150,115]}},
-  {name:"Jake Irvin", team:"WSH", opp:"CHC", books:{DK:[4.5,-165,130],FD:[4.5,-166,130],MGM:[4.5,-155,115],RIV:[4.5,null,138],CZR:[4.5,-162,124],HR:[4.5,-165,125]}},
-  {name:"Ryan Johnson", team:"LAA", opp:"TEX", books:{DK:[4.5,-168,131],FD:[4.5,-166,130],MGM:[4.5,-160,120],RIV:[3.5,120,-159],CZR:[4.5,-170,126],HR:[4.5,-165,125]}},
-  {name:"Nick Lodolo", team:"CIN", opp:"@CWS", books:{DK:[4.5,-108,-118],FD:[4.5,-113,-113],MGM:[4.5,-105,-125],RIV:[4.5,-115,-115],CZR:[4.5,-113,-118],HR:[4.5,-115,-115]}},
-  {name:"Bailey Ober", team:"MIN", opp:"BAL", books:{DK:[4.5,-130,102],FD:[4.5,-146,114],MGM:[4.5,-160,120],RIV:[4.5,-125,-106],CZR:[4.5,-143,110],HR:[4.5,-145,110]}},
-  {name:"Patrick Sandoval", team:"BOS", opp:"@TOR", books:{DK:[4.5,-145,113],FD:[4.5,-160,124],MGM:[4.5,-155,115],RIV:[4.5,-143,108],CZR:[4.5,-152,117],HR:[4.5,-155,120]}},
-  {name:"Michael Wacha", team:"KC", opp:"@LAD", books:{DK:[4.5,-142,111],FD:[4.5,-128,100],MGM:[4.5,-135,100],RIV:[4.5,-139,104],CZR:[4.5,-128,-102],HR:[4.5,-130,100]}},
-  {name:"Brandon Young", team:"BAL", opp:"@MIN", books:{DK:[4.5,-152,119],FD:[4.5,-162,126],MGM:[3.5,125,-165],RIV:[4.5,-157,117],CZR:[4.5,-162,123],HR:[4.5,-165,125]}},
-  {name:"Drew Anderson", team:"DET", opp:"CLE", books:{DK:[3.5,-157,123],FD:[3.5,-142,112],MGM:[3.5,-155,115],RIV:[3.5,null,102],CZR:[3.5,-148,113],HR:[3.5,-150,115]}},
-  {name:"Mason Barnett", team:"ATH", opp:"TB", books:{DK:[3.5,-129,101],FD:[3.5,-132,104],MGM:[3.5,-155,115],RIV:[3.5,-124,-107],CZR:[3.5,-137,105],HR:[3.5,-135,105]}},
-  {name:"Nick Martinez", team:"TB", opp:"@ATH", books:{DK:[3.5,-155,121],FD:[3.5,-148,116],MGM:[3.5,-150,110],RIV:[3.5,-141,106],CZR:[3.5,-160,120],HR:[3.5,-155,120]}},
-  {name:"Andre Pallante", team:"STL", opp:"PHI", books:{DK:[3.5,-116,-109],FD:[3.5,-128,100],MGM:[3.5,-125,-105],RIV:[3.5,-132,100],CZR:[3.5,-129,-103],HR:[3.5,-130,100]}},
-  {name:"Martin Perez", team:"ATL", opp:"NYM", books:{DK:[3.5,114,-146],FD:[3.5,112,-142],MGM:[3.5,105,-140],RIV:[3.5,null,-150],CZR:[3.5,113,-148],HR:[3.5,115,-150]}},
-  {name:"Carson Whisenhunt", team:"SF", opp:"HOU", books:{DK:[3.5,107,-137],FD:null,MGM:[3.5,-155,115],RIV:[3.5,109,-141],CZR:[3.5,110,-145],HR:[3.5,110,-145]}},
-  {name:"Tomoyuki Sugano", team:"COL", opp:"@ARI", books:{DK:[2.5,108,-138],FD:[2.5,102,-130],MGM:[2.5,100,-135],RIV:[2.5,102,-136],CZR:[2.5,104,-136],HR:[2.5,105,-135]}}
+  {name:"Logan Gilbert", team:"SEA", opp:"@NYY", books:{DK:[6.5,117,-149],FD:[6.5,114,-146],MGM:[6.5,115,-155],RIV:[7.5,null,115],CZR:[6.5,113,-148],HR:[6.5,115,-150]}},
+  {name:"Jacob deGrom", team:"TEX", opp:"@LAA", books:{DK:[6.5,-103,-123],FD:[6.5,-106,-120],MGM:[7.5,-190,140],RIV:[6.5,100,-132],CZR:[6.5,101,-132],HR:[6.5,100,-130]}},
+  {name:"Max Fried", team:"NYY", opp:"SEA", books:{DK:[5.5,103,-129],FD:[5.5,114,-146],MGM:[5.5,105,-140],RIV:[6.5,null,102],CZR:[5.5,109,-141],HR:[5.5,110,-145]}},
+  {name:"Braxton Ashcraft", team:"PIT", opp:"@MIA", books:{DK:[5.5,-110,-115],FD:[5.5,-102,-125],MGM:[5.5,100,-135],RIV:[5.5,null,-134],CZR:[5.5,-104,-127],HR:[5.5,-105,-125]}},
+  {name:"Taj Bradley", team:"MIN", opp:"PHI", books:{DK:[5.5,111,-142],FD:[5.5,-102,-125],MGM:[5.5,100,-135],RIV:[5.5,102,-136],CZR:[5.5,107,-138],HR:[5.5,105,-135]}},
+  {name:"Cade Cavalli", team:"WSH", opp:"CHC", books:{DK:[5.5,-140,110],FD:[5.5,-148,116],MGM:[5.5,-140,105],RIV:[5.5,-157,118],CZR:[5.5,-145,111],HR:[5.5,-150,115]}},
+  {name:"Parker Messick", team:"CLE", opp:"@DET", books:{DK:[5.5,-130,102],FD:[5.5,-130,102],MGM:[5.5,-135,100],RIV:[5.5,null,102],CZR:[5.5,-128,-105],HR:[5.5,-130,100]}},
+  {name:"Aaron Nola", team:"PHI", opp:"@MIN", books:{DK:[5.5,-161,126],FD:[5.5,-162,126],MGM:[5.5,-175,130],RIV:[5.5,-152,114],CZR:[5.5,-170,125],HR:[5.5,-160,120]}},
+  {name:"Roki Sasaki", team:"LAD", opp:"MIL", books:{DK:[5.5,105,-132],FD:[5.5,104,-132],MGM:[5.5,-105,-130],RIV:[5.5,107,-141],CZR:[5.5,100,-130],HR:[5.5,100,-130]}},
+  {name:"Payton Tolle", team:"BOS", opp:"@TOR", books:{DK:[5.5,103,-130],FD:[5.5,100,-128],MGM:[5.5,-105,-125],RIV:[5.5,-120,-112],CZR:[5.5,102,-132],HR:[5.5,-105,-125]}},
+  {name:"Walbert Urena", team:"LAA", opp:"TEX", books:{DK:[5.5,-163,128],FD:[4.5,112,-142],MGM:[5.5,-185,135],RIV:[4.5,110,-148],CZR:[4.5,114,-150],HR:[4.5,115,-150]}},
+  {name:"Andrew Abbott", team:"CIN", opp:"@CWS", books:{DK:[4.5,-121,-104],FD:[4.5,-122,-104],MGM:[4.5,-120,-110],RIV:[4.5,-110,-121],CZR:[4.5,-120,-109],HR:[4.5,-120,-110]}},
+  {name:"Shane Drohan", team:"MIL", opp:"@LAD", books:{DK:[4.5,-120,-106],FD:[4.5,-128,100],MGM:[4.5,-110,-120],RIV:[4.5,-136,102],CZR:[4.5,-124,-106],HR:[4.5,-125,-105]}},
+  {name:"Kevin Gausman", team:"CHC", opp:"@WSH", books:{DK:[4.5,124,-158],FD:[4.5,118,-150],MGM:[4.5,115,-155],RIV:[4.5,118,-157],CZR:[4.5,117,-154],HR:[4.5,120,-155]}},
+  {name:"Davis Martin", team:"CWS", opp:"CIN", books:{DK:[4.5,-107,-119],FD:[4.5,-102,-125],MGM:[4.5,105,-140],RIV:[4.5,-107,-125],CZR:[4.5,100,-130],HR:[4.5,100,-130]}},
+  {name:"Tyler Phillips", team:"MIA", opp:"PIT", books:{DK:[3.5,119,-151],FD:[3.5,112,-142],MGM:[3.5,120,-160],RIV:[4.5,null,117],CZR:[3.5,111,-140],HR:[3.5,120,-155]}},
+  {name:"Max Scherzer", team:"TOR", opp:"BOS", books:{DK:[4.5,-165,129],FD:[4.5,-166,130],MGM:[4.5,-160,120],RIV:[3.5,116,-155],CZR:[4.5,-170,128],HR:[4.5,-175,130]}},
+  {name:"Keider Montero", team:"DET", opp:"CLE", books:{DK:[2.5,132,-169],FD:[2.5,134,-172],MGM:[2.5,135,-185],RIV:[3.5,null,118],CZR:[2.5,137,-179],HR:[3.5,null,130]}}
 ];
 
 
@@ -714,8 +720,8 @@ function mode(arr){
 }
 
 // enrich each player with computed consensus / best price / steam data
-const ROOKIES = new Set(["Mitch Bratt","Carson Whisenhunt","Nolan McLean"]);
-const LIVE_NOW = new Set(['Paul Skenes','Dylan Cease']);
+const ROOKIES = new Set(["Payton Tolle"]);
+const LIVE_NOW = new Set(['Jacob deGrom','Roki Sasaki']);
 const NOTE_POOL = ['Short-hook risk on low pitch count','Opponent lineup missing 2 regulars','Extra rest since last start','Bullpen banged up behind him','Coming off a rain-shortened outing','Facing this lineup for the first time this year'];
 const PARKS = ['Hitter-friendly park','Pitcher-friendly park','Neutral park'];
 const WEATHERS = ['Dome, climate controlled','Wind in 8mph, 71°F','Clear, 82°F, calm','Wind out 6mph, 76°F','Overcast, 68°F'];
@@ -1332,7 +1338,8 @@ function tickClock(){
   const ss = String(et.getSeconds()).padStart(2,'0');
   document.getElementById('clockET').textContent = `${hh}:${mm}:${ss} ET`;
 }
-setInterval(tickClock,1000); tickClock();
+setInterval(function(){if(!document.hidden)tickClock();},1000); tickClock();
+document.addEventListener('visibilitychange',function(){if(!document.hidden)tickClock();},{passive:true});
 
 /* ===================== Mobile menu ===================== */
 function toggleMobileMenu(){
@@ -1357,10 +1364,10 @@ renderCLVTracker();
   function boot(){
     var scroller=document.querySelector('.table-scroll');
     if(scroller){
-      var down=false,startX=0,startLeft=0,moved=false,pid=null;
-      scroller.addEventListener('pointerdown',function(e){if(e.pointerType==='touch')return;down=true;moved=false;startX=e.clientX;startLeft=scroller.scrollLeft;pid=e.pointerId;});
-      scroller.addEventListener('pointermove',function(e){if(!down)return;var dx=e.clientX-startX;if(Math.abs(dx)>4){if(!moved){moved=true;scroller.classList.add('so-dragging');scroller.setPointerCapture&&scroller.setPointerCapture(pid);}scroller.scrollLeft=startLeft-dx;}});
-      function up(){down=false;scroller.classList.remove('so-dragging')}
+      var down=false,startX=0,startLeft=0,moved=false,pid=null,dragRAF=0,targetLeft=0;
+      scroller.addEventListener('pointerdown',function(e){if(e.pointerType==='touch')return;down=true;moved=false;startX=e.clientX;startLeft=scroller.scrollLeft;targetLeft=startLeft;pid=e.pointerId;});
+      scroller.addEventListener('pointermove',function(e){if(!down)return;var dx=e.clientX-startX;if(Math.abs(dx)>4){if(!moved){moved=true;scroller.classList.add('so-dragging');scroller.setPointerCapture&&scroller.setPointerCapture(pid);}targetLeft=startLeft-dx;if(!dragRAF)dragRAF=requestAnimationFrame(function(){dragRAF=0;scroller.scrollLeft=targetLeft;});}});
+      function up(){down=false;if(dragRAF){cancelAnimationFrame(dragRAF);dragRAF=0;scroller.scrollLeft=targetLeft;}scroller.classList.remove('so-dragging')}
       scroller.addEventListener('pointerup',up);scroller.addEventListener('pointercancel',up);scroller.addEventListener('mouseleave',up);
       scroller.addEventListener('click',function(e){if(moved){e.preventDefault();e.stopPropagation();moved=false;}},true);
     }
@@ -1370,5 +1377,76 @@ renderCLVTracker();
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
 </script>
+
+<script id="so-runtime-performance-core-js-20260811">
+(function(){
+  'use strict';
+  var root=document.documentElement, seen=new WeakSet(), io=null, scrollTimer=0, scrollRAF=0;
+  function syncHidden(){root.classList.toggle('so-perf-hidden',document.hidden);}
+  document.addEventListener('visibilitychange',syncHidden,{passive:true});
+  window.addEventListener('pagehide',function(){root.classList.add('so-perf-hidden');},{passive:true});
+  window.addEventListener('pageshow',function(){syncHidden(); scheduleScan();},{passive:true});
+  syncHidden();
+  if('IntersectionObserver' in window){
+    io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){e.target.classList.toggle('so-perf-offscreen-anim',!e.isIntersecting);});
+    },{rootMargin:'280px 0px 280px 0px',threshold:0});
+  }
+  function scanAnimations(){
+    if(!document.getAnimations)return;
+    var list=document.getAnimations();
+    for(var i=0;i<list.length;i++){
+      var eff=list[i].effect, t=eff&&eff.target;
+      if(!t||t.nodeType!==1||seen.has(t))continue;
+      /* Only long-lived ambient loops belong in the offscreen pause system.
+         Finite entrance/reveal animations must be allowed to finish once so
+         cards and table rows cannot remain frozen in an opacity:0 start state. */
+      var timing=(eff&&eff.getTiming)?eff.getTiming():null;
+      if(!timing||timing.iterations!==Infinity)continue;
+      seen.add(t);t.classList.add('so-perf-anim-target');
+      if(io)io.observe(t);
+    }
+  }
+  function scheduleScan(){
+    if('requestIdleCallback' in window)requestIdleCallback(scanAnimations,{timeout:650});
+    else setTimeout(scanAnimations,120);
+  }
+  function markScrolling(){
+    if(!scrollRAF){
+      scrollRAF=requestAnimationFrame(function(){
+        scrollRAF=0;root.classList.add('so-perf-scrolling');
+      });
+    }
+    clearTimeout(scrollTimer);
+    scrollTimer=setTimeout(function(){root.classList.remove('so-perf-scrolling');},115);
+  }
+  /* capture:true catches nested horizontal/vertical scrollers too. */
+  document.addEventListener('scroll',markScrolling,{passive:true,capture:true});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scheduleScan,{once:true});else scheduleScan();
+  window.addEventListener('load',function(){setTimeout(scanAnimations,80);setTimeout(scanAnimations,900);},{once:true,passive:true});
+})();
+</script>
+
+<style id="so-global-mobile-menu-polish-20260811b">
+#hamburgerBtn,.so-hamburger,.hamburger{
+  min-width:44px!important;
+  min-height:44px!important;
+  width:44px!important;
+  height:44px!important;
+  padding:11px!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+#hamburgerBtn span,.so-hamburger span,.hamburger span{margin:4px 0!important;}
+.so-mobile-close,.mobile-menu-close{
+  min-width:44px!important;
+  min-height:44px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  touch-action:manipulation!important;
+}
+#mobileMenu a,.so-mobile-menu a,.mobile-menu a{min-height:48px!important;}
+</style>
 </body>
 </html>

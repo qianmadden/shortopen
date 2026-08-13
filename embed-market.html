@@ -354,7 +354,7 @@
     grid-template-columns: 230px 100px 160px 160px 160px 1fr;
     align-items: stretch;
     background: #0b1118;
-    animation: fadeIn 0.2s ease both;
+    opacity: 1;
     min-height: 100px;
   }
   .game-card::before{inset:0;pointer-events:none;z-index:0}
@@ -366,7 +366,6 @@
   .game-card.edge-strong { border-left-color: #2ddf6e; box-shadow: inset 3px 0 12px rgba(34,197,94,0.08); }
   .game-card.edge-fade   { border-left-color: #2a1515; }
 
-  @keyframes fadeIn { from{opacity:0;transform:translateY(3px)} to{opacity:1;transform:none} }
 
   /* ── MATCHUP ── */
   .t-matchup {
@@ -8686,7 +8685,7 @@ nav .nav-special.green:focus{
 </style>
 <style id="so-market-performance-consolidated-20260731">
 /* Stable first paint: render the hero now and reserve exact space for long below-fold sections. */
-#mlbContainer>.date-divider,#mlbContainer>.games-list,#mlbContainer>.prop-section-header,
+#mlbContainer>.date-divider,#mlbContainer>.prop-section-header,
 #mlbContainer>.prop-list,#mlbContainer>.futures-section-header,#mlbContainer>.futures-list,
 #mlbContainer>.championship-section,#mlbContainer>.ls-wrap,#mlbContainer>.consensus-wrap{
   content-visibility:auto!important;
@@ -9320,6 +9319,45 @@ body #mlbContainer .q-market-title .gold-line::after{
 }
 </style>
 
+
+<style id="so-market-mobile-dealer-tray-final-fit-20260811">
+@media(max-width:700px){
+  #mlbContainer .q-mobile-chip-dealer-panel{height:min(66vh,500px)!important;max-height:500px!important;}
+  #mlbContainer .q-dealer-tray{margin-top:6px!important;padding:7px!important;}
+  #mlbContainer .q-tray-head{margin-bottom:5px!important;}
+  #mlbContainer .q-tray-grid{gap:5px!important;}
+  #mlbContainer .q-tray-card{padding:6px!important;}
+  #mlbContainer .q-tray-slot{min-height:34px!important;padding:4px 3px!important;}
+  #mlbContainer .q-spotlight-card{min-height:78px!important;}
+  #mlbContainer .q-tray-footer{margin-top:5px!important;gap:5px!important;}
+  #mlbContainer .q-tray-mini{padding:5px 6px!important;}
+}
+</style>
+
+<style id="so-market-mobile-tray-release-fit-20260811">
+@media(max-width:700px){
+  #mlbContainer .q-mobile-chip-dealer-panel{height:auto!important;max-height:none!important;overflow-y:visible!important;padding-bottom:10px!important;}
+  #mlbContainer .q-mobile-casino-deck{align-items:flex-start!important;overflow-y:visible!important;}
+}
+</style>
+
+<style id="so-runtime-performance-core-20260811">
+/* Runtime-only performance guardrails. Visible design is unchanged. */
+html.so-perf-hidden .so-perf-anim-target,
+html.so-perf-hidden .so-perf-anim-target::before,
+html.so-perf-hidden .so-perf-anim-target::after,
+html.so-perf-scrolling .so-perf-anim-target,
+html.so-perf-scrolling .so-perf-anim-target::before,
+html.so-perf-scrolling .so-perf-anim-target::after,
+.so-perf-offscreen-anim,
+.so-perf-offscreen-anim::before,
+.so-perf-offscreen-anim::after{animation-play-state:paused!important;}
+.so-perf-offscreen-anim{will-change:auto!important;}
+@media(max-width:760px){
+  .so-nav,.so-nav-shell,.site-nav,.site-header,.mobile-nav,.hub-nav{backface-visibility:hidden;transform:translateZ(0);}
+}
+@media(pointer:coarse){button,a,[role="button"]{touch-action:manipulation;}}
+</style>
 </head>
 <body>
 <!-- SCANLINES -->
@@ -9879,15 +9917,15 @@ const MLB_PROP_PARLAYS = [
     type: "MLB Props",
     market: "MLB Prop Board — Strikeouts & Total Bases",
     legs: [
-      { player: "Shohei Ohtani", team: "LAD", stat: "Over 2.5 Total Bases vs KC", odds: "+130", hitRate: 0.43 },
-      { player: "Blake Snell", team: "LAD", stat: "Over 6.5 Strikeouts vs KC", odds: "+126", hitRate: 0.44 },
-      { player: "Ronald Acuna", team: "ATL", stat: "Over 1.5 Total Bases vs NYM", odds: "+125", hitRate: 0.44 },
-      { player: "Junior Caminero", team: "TB", stat: "Over 2.5 Total Bases @ATH", odds: "+125", hitRate: 0.44 },
-      { player: "Nolan McLean", team: "NYM", stat: "Over 6.5 Strikeouts @ATL", odds: "+125", hitRate: 0.44 },
-      { player: "Ryan Weathers", team: "NYY", stat: "Over 6.5 Strikeouts vs SEA", odds: "+124", hitRate: 0.45 },
-      { player: "Hunter Brown", team: "HOU", stat: "Over 6.5 Strikeouts @SF", odds: "+123", hitRate: 0.45 }
+      { player: "Travis Bazzana", team: "CLE", stat: "Over 1.5 Total Bases @DET", odds: "+149", hitRate: 0.40 },
+      { player: "Jo Adell", team: "CLE", stat: "Over 1.5 Total Bases @DET", odds: "+145", hitRate: 0.41 },
+      { player: "Mookie Betts", team: "LAD", stat: "Over 1.5 Total Bases vs MIL", odds: "+140", hitRate: 0.42 },
+      { player: "JJ Bleday", team: "CIN", stat: "Over 1.5 Total Bases @CWS", odds: "+138", hitRate: 0.42 },
+      { player: "Josh Bell", team: "MIN", stat: "Over 1.5 Total Bases vs PHI", odds: "+130", hitRate: 0.43 },
+      { player: "Walbert Urena", team: "LAA", stat: "Over 5.5 Strikeouts vs TEX", odds: "+128", hitRate: 0.44 },
+      { player: "Aaron Nola", team: "PHI", stat: "Over 5.5 Strikeouts @MIN", odds: "+126", hitRate: 0.44 }
     ],
-    betsPlaced: 3042,
+    betsPlaced: 3164,
     edgeNote: "Seven distinct props sourced directly from the posted strikeout and total-bases boards, using the better displayed side price for each chosen line."
   }
 ];
@@ -9900,21 +9938,15 @@ const MLB_PROP_PARLAYS = [
 //       total is the over/under (e.g. '8.5').
 
 const MLB_GAMES = [
-  {day:"TODAY", time:"6:41 PM ET", away:"Cleveland Guardians", awayAbbr:"CLE", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: T Bibee", homePitcher:"P: D Anderson", spreadAway:"+1.5", spreadAwayJuice:"-196", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+162", spreadHomeMove:"", spreadOpen:"", mlAway:"+114", mlHome:"-122", total:"8", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"DET ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Anderson establishes Detroit as slight home favorites over Bibee inside an over-leaning flat 8 line layout."},
-  {day:"TODAY", time:"6:41 PM ET", away:"Pittsburgh Pirates", awayAbbr:"PIT", home:"Miami Marlins", homeAbbr:"MIA", awayPitcher:"P: P Skenes", homePitcher:"P: E Perez", spreadAway:"-1.5", spreadAwayJuice:"+152", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-184", spreadHomeMove:"", spreadOpen:"", mlAway:"-112", mlHome:"+104", total:"7", totalOverJuice:"-102", totalUnderJuice:"-120", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PIT ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Skenes gives Pittsburgh a modest road favorite edge over Perez on a low flat 7 total heavily shaded to the under."},
-  {day:"TODAY", time:"6:46 PM ET", away:"Chicago Cubs", awayAbbr:"CHC", home:"Washington Nationals", homeAbbr:"WSH", awayPitcher:"P: S Imanaga", homePitcher:"P: J Irvin", spreadAway:"-1.5", spreadAwayJuice:"-113", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-106", spreadHomeMove:"", spreadOpen:"", mlAway:"-178", mlHome:"+162", total:"9", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CHC ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Imanaga commands clear road favorite status for Chicago over Irvin across a perfectly balanced flat 9 total canvas."},
-  {day:"TODAY", time:"7:06 PM ET", away:"Seattle Mariners", awayAbbr:"SEA", home:"New York Yankees", homeAbbr:"NYY", awayPitcher:"P: B Woo", homePitcher:"P: R Weathers", spreadAway:"+1.5", spreadAwayJuice:"-194", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+160", spreadHomeMove:"", spreadOpen:"", mlAway:"+118", mlHome:"-126", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Weathers secures narrow home favorite standing for New York against Woo over a flat 8 total line layout."},
-  {day:"TODAY", time:"7:08 PM ET", away:"Boston Red Sox", awayAbbr:"BOS", home:"Toronto Blue Jays", homeAbbr:"TOR", awayPitcher:"P: P Sandoval", homePitcher:"P: D Cease", spreadAway:"+1.5", spreadAwayJuice:"-196", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+162", spreadHomeMove:"", spreadOpen:"", mlAway:"+126", mlHome:"-136", total:"7", totalOverJuice:"-104", totalUnderJuice:"-118", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TOR ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Cease anchors steady home favorite metrics for Toronto against Sandoval across an under-shaded low flat 7 total frame."},
-  {day:"TODAY", time:"7:16 PM ET", away:"New York Mets", awayAbbr:"NYM", home:"Atlanta Braves", homeAbbr:"ATL", awayPitcher:"P: N McLean", homePitcher:"P: M Perez", spreadAway:"+1.5", spreadAwayJuice:"-178", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+118", mlHome:"-126", total:"8.5", totalOverJuice:"-106", totalUnderJuice:"-114", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ATL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Perez registers standard home preference marks for Atlanta over McLean behind an under-leaning 8.5 total canvas."},
-  {day:"TODAY", time:"7:41 PM ET", away:"Cincinnati Reds", awayAbbr:"CIN", home:"Chicago White Sox", homeAbbr:"CWS", awayPitcher:"P: N Lodolo", homePitcher:"P: S Burke", spreadAway:"+1.5", spreadAwayJuice:"-162", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+134", spreadHomeMove:"", spreadOpen:"", mlAway:"+142", mlHome:"-154", total:"7.5", totalOverJuice:"-118", totalUnderJuice:"-104", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CWS ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Burke sets solid home favorite parameters for Chicago over Lodolo over an over-shaded 7.5 total line canvas."},
-  {day:"TODAY", time:"7:41 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Minnesota Twins", homeAbbr:"MIN", awayPitcher:"P: B Young", homePitcher:"P: B Ober", spreadAway:"-1.5", spreadAwayJuice:"+158", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-192", spreadHomeMove:"", spreadOpen:"", mlAway:"+102", mlHome:"-110", total:"9", totalOverJuice:"-118", totalUnderJuice:"-104", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIN ML", edgeEV:"-", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Ober sets up a narrow home-shaded pick'em against Young over a flat 9 total carrying over action."},
-  {day:"TODAY", time:"7:46 PM ET", away:"Philadelphia Phillies", awayAbbr:"PHI", home:"St. Louis Cardinals", homeAbbr:"STL", awayPitcher:"P: C Sanchez", homePitcher:"P: A Pallante", spreadAway:"-1.5", spreadAwayJuice:"+100", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-120", spreadHomeMove:"", spreadOpen:"", mlAway:"-160", mlHome:"+148", total:"7.5", totalOverJuice:"-120", totalUnderJuice:"-102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PHI ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sanchez locks comfortable road choice metrics for Philadelphia over Pallante on an over-shaded 7.5 total board."},
-  {day:"TODAY", time:"9:39 PM ET", away:"Texas Rangers", awayAbbr:"TEX", home:"Los Angeles Angels", homeAbbr:"LAA", awayPitcher:"P: C Bradford", homePitcher:"P: R Johnson", spreadAway:"-1.5", spreadAwayJuice:"+100", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-120", spreadHomeMove:"", spreadOpen:"", mlAway:"-148", mlHome:"+138", total:"9", totalOverJuice:"-118", totalUnderJuice:"-104", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TEX ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Bradford frames steady road preference for Texas over Johnson on an over-shaded flat 9 total line layout."},
-  {day:"TODAY", time:"9:41 PM ET", away:"Milwaukee Brewers", awayAbbr:"MIL", home:"San Diego Padres", homeAbbr:"SD", awayPitcher:"P: K Harrison", homePitcher:"P: W Buehler", spreadAway:"-1.5", spreadAwayJuice:"+134", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-162", spreadHomeMove:"", spreadOpen:"", mlAway:"-120", mlHome:"+110", total:"7.5", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Harrison outlines narrow road favor for Milwaukee facing Buehler over an under-leaning 7.5 baseline framework."},
-  {day:"TODAY", time:"9:41 PM ET", away:"Colorado Rockies", awayAbbr:"COL", home:"Arizona Diamondbacks", homeAbbr:"AZ", awayPitcher:"P: T Sugano", homePitcher:"P: M Bratt", spreadAway:"+1.5", spreadAwayJuice:"-144", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+120", spreadHomeMove:"", spreadOpen:"", mlAway:"+158", mlHome:"-172", total:"9.5", totalOverJuice:"+102", totalUnderJuice:"-124", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"AZ ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Bratt commands solid home favorite standing for Arizona over Sugano across an under-pressured 9.5 canvas."},
-  {day:"TODAY", time:"9:41 PM ET", away:"Tampa Bay Rays", awayAbbr:"TB", home:"Athletics", homeAbbr:"OAK", awayPitcher:"P: N Martinez", homePitcher:"P: M Barnett", spreadAway:"-1.5", spreadAwayJuice:"-115", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-105", spreadHomeMove:"", spreadOpen:"", mlAway:"-172", mlHome:"+158", total:"10", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TB ML", edgeEV:"+1.6", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Martinez establishes strong road choice status for Tampa Bay, forcing spread protection down to -115 on the -1.5 line."},
-  {day:"TODAY", time:"9:46 PM ET", away:"Houston Astros", awayAbbr:"HOU", home:"San Francisco Giants", homeAbbr:"SF", awayPitcher:"P: H Brown", homePitcher:"P: C Whisenhunt", spreadAway:"-1.5", spreadAwayJuice:"-105", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-114", spreadHomeMove:"", spreadOpen:"", mlAway:"-180", mlHome:"+166", total:"8", totalOverJuice:"-106", totalUnderJuice:"-114", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"HOU ML", edgeEV:"+1.7", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Brown anchors clear road favorite status for Houston over Whisenhunt, pushing run line protection down to -105."},
-  {day:"TODAY", time:"10:11 PM ET", away:"Kansas City Royals", awayAbbr:"KC", home:"Los Angeles Dodgers", homeAbbr:"LAD", awayPitcher:"P: M Wacha", homePitcher:"P: B Snell", spreadAway:"+1.5", spreadAwayJuice:"+100", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"-120", spreadHomeMove:"", spreadOpen:"", mlAway:"+230", mlHome:"-250", total:"8.5", totalOverJuice:"-104", totalUnderJuice:"-118", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAD ML", edgeEV:"+1.8", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Snell anchors massive home chalk parameters for the Dodgers over Wacha across an under-leaning 8.5 total line layout."}
+  {day:"TODAY", time:"1:11 PM ET", away:"Cincinnati Reds", awayAbbr:"CIN", home:"Chicago White Sox", homeAbbr:"CWS", awayPitcher:"P: A Abbott", homePitcher:"P: D Martin", spreadAway:"+1.5", spreadAwayJuice:"-188", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+155", spreadHomeMove:"", spreadOpen:"", mlAway:"+116", mlHome:"-126", total:"8.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CWS ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Martin positions Chicago as slight home favorites over Abbott across an under-shaded 8.5 total canvas layout."},
+  {day:"TODAY", time:"1:11 PM ET", away:"Pittsburgh Pirates", awayAbbr:"PIT", home:"Miami Marlins", homeAbbr:"MIA", awayPitcher:"P: B Ashcraft", homePitcher:"P: T Phillips", spreadAway:"-1.5", spreadAwayJuice:"+130", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-156", spreadHomeMove:"", spreadOpen:"", mlAway:"-122", mlHome:"+112", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"PIT ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Ashcraft sets modest road choice parameters for Pittsburgh over Phillips over a perfectly balanced flat 8 total line layout."},
+  {day:"TODAY", time:"1:11 PM ET", away:"Cleveland Guardians", awayAbbr:"CLE", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: P Messick", homePitcher:"P: K Montero", spreadAway:"-1.5", spreadAwayJuice:"+146", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-178", spreadHomeMove:"", spreadOpen:"", mlAway:"-108", mlHome:"+100", total:"8", totalOverJuice:"-118", totalUnderJuice:"-104", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CLE ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Messick holds tight road favor metrics for Cleveland over Montero on an over-leaning flat 8 total frame."},
+  {day:"TODAY", time:"1:36 PM ET", away:"Seattle Mariners", awayAbbr:"SEA", home:"New York Yankees", homeAbbr:"NYY", awayPitcher:"P: L Gilbert", homePitcher:"P: M Fried", spreadAway:"+1.5", spreadAwayJuice:"-154", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+128", spreadHomeMove:"", spreadOpen:"", mlAway:"+146", mlHome:"-158", total:"7.5", totalOverJuice:"-118", totalUnderJuice:"-104", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Fried commands strong home favorite standing for New York over Gilbert over an over-leaning 7.5 line canvas."},
+  {day:"TODAY", time:"3:08 PM ET", away:"Boston Red Sox", awayAbbr:"BOS", home:"Toronto Blue Jays", homeAbbr:"TOR", awayPitcher:"P: P Tolle", homePitcher:"P: M Scherzer", spreadAway:"-1.5", spreadAwayJuice:"+118", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-142", spreadHomeMove:"", spreadOpen:"", mlAway:"-138", mlHome:"+128", total:"8", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"BOS ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Tolle outlines clear road choice indices for Boston against Scherzer inside a flat 8 total blueprint structure."},
+  {day:"TODAY", time:"4:06 PM ET", away:"Chicago Cubs", awayAbbr:"CHC", home:"Washington Nationals", homeAbbr:"WSH", awayPitcher:"P: K Gausman", homePitcher:"P: C Cavalli", spreadAway:"-1.5", spreadAwayJuice:"+110", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-132", spreadHomeMove:"", spreadOpen:"", mlAway:"-146", mlHome:"+136", total:"8.5", totalOverJuice:"-118", totalUnderJuice:"-104", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CHC ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Gausman establishes clear away preference for Chicago facing Cavalli across an over-shaded 8.5 line canvas."},
+  {day:"TODAY", time:"7:31 PM ET", away:"Philadelphia Phillies", awayAbbr:"PHI", home:"Minnesota Twins", homeAbbr:"MIN", awayPitcher:"P: A Nola", homePitcher:"P: T Bradley", spreadAway:"-1.5", spreadAwayJuice:"+158", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-192", spreadHomeMove:"", spreadOpen:"", mlAway:"+100", mlHome:"-108", total:"8.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"MIN ML", edgeEV:"-", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Bradley sets up a razor-thin home-shaded pick'em against Nola over a flat 8.5 total line layout."},
+  {day:"TODAY", time:"10:08 PM ET", away:"Texas Rangers", awayAbbr:"TEX", home:"Los Angeles Angels", homeAbbr:"LAA", awayPitcher:"P: J deGrom", homePitcher:"P: W Urena", spreadAway:"-1.5", spreadAwayJuice:"+106", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-128", spreadHomeMove:"", spreadOpen:"", mlAway:"-148", mlHome:"+138", total:"7.5", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TEX ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"deGrom locks in firm road choice metrics for Texas facing Urena over an under-shaded 7.5 baseline frame."},
+  {day:"TODAY", time:"10:11 PM ET", away:"Milwaukee Brewers", awayAbbr:"MIL", home:"Los Angeles Dodgers", homeAbbr:"LAD", awayPitcher:"P: S Drohan", homePitcher:"P: R Sasaki", spreadAway:"+1.5", spreadAwayJuice:"-178", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+128", mlHome:"-138", total:"8.5", totalOverJuice:"-105", totalUnderJuice:"-115", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAD ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sasaki secures steady home favorite status for Los Angeles against Drohan across an under-leaning 8.5 total line."}
 ];
 
 // ── MLB ─────────────────────────────────────────────────────────
@@ -10616,7 +10648,6 @@ function renderGames(games, containerId) {
 
     dayMap[day].forEach((g, i) => {
       const card = buildCard(g);
-      card.style.animationDelay = (i * 0.04) + 's';
       list.appendChild(card);
     });
     container.appendChild(list);
@@ -11390,6 +11421,12 @@ function buildPropRows(parlay, terminal) {
     // the life of the page.
     let rafId = null;
     function tick(){
+      /* Preserve the approved live-meter animation at full fidelity, but skip
+         its DOM paints during active scrolling so it cannot compete with scroll. */
+      if(document.documentElement.classList.contains('so-perf-scrolling')){
+        rafId = requestAnimationFrame(tick);
+        return;
+      }
       display += (target.joint - display) * 0.10;
       pulse *= 0.92;
       const wob = (target.n ? 1 : 0) * Math.sin(performance.now()/420) * Math.min(0.5, target.joint*0.02);
@@ -11568,19 +11605,19 @@ const MLB_LONGSHOTS = [
     label:"Q'S CLOSING TABLE · LIVE MLB CHIPS", badge:"LONGSHOT TABLE",
     kicker:"GREEN FELT · LIVE BOARD SIGNALS",
     headline:"Shortopen Closing Lines",
-    thesis:"The five highest positive prices on the posted prop boards: Acuna, Adames, Diaz, Adell, and Alvarez. Every chip preserves the exact total-bases market and line shown in the source.",
+    thesis:"The five highest positive prices on the posted prop boards: Acuna, Antonacci, Amaya, Ballesteros, and Bauers. Every chip preserves the exact total-bases market and line shown in the source.",
     legs:[
-      {n:"01", name:"Luisangel Acuna Over 1.5 TB vs CIN", pct:30, ev:0, odds:"+239"},
-      {n:"02", name:"Willy Adames Over 1.5 TB vs HOU", pct:36, ev:0, odds:"+177"},
-      {n:"03", name:"Yandy Diaz Over 2.5 TB @ATH", pct:40, ev:0, odds:"+150"},
-      {n:"04", name:"Jo Adell Over 1.5 TB @DET", pct:40, ev:0, odds:"+149"},
-      {n:"05", name:"Francisco Alvarez Over 1.5 TB @ATL", pct:41, ev:0, odds:"+145"}
+      {n:"01", name:"Luisangel Acuna Over 1.5 TB vs CIN", pct:29, ev:0, odds:"+244"},
+      {n:"02", name:"Sam Antonacci Over 1.5 TB vs CIN", pct:30, ev:0, odds:"+229"},
+      {n:"03", name:"Miguel Amaya Over 1.5 TB @WSH", pct:31, ev:0, odds:"+221"},
+      {n:"04", name:"Moises Ballesteros Over 1.5 TB vs TEX", pct:31, ev:0, odds:"+219"},
+      {n:"05", name:"Jake Bauers Over 1.5 TB @LAD", pct:36, ev:0, odds:"+180"}
     ],
-    odds:"+14221", ret:"$10 to $1422", ev:"Longshot Board",
+    odds:"+32350", ret:"$10 to $3235", ev:"Longshot Board",
     metrics:[
       {lbl:"PUBLIC EXP", val:"—", cls:"red"},
-      {lbl:"AVG IMPLIED", val:"37.3%", cls:""},
-      {lbl:"BOARD PRICE", val:"+14221", cls:"accent"},
+      {lbl:"AVG IMPLIED", val:"31.5%", cls:""},
+      {lbl:"BOARD PRICE", val:"+32350", cls:"accent"},
       {lbl:"MODEL EDGE", val:"N/A", cls:"green"}
     ],
     warn:"Q's Green Table — Pick a chip, spin the wheel"
@@ -11590,18 +11627,18 @@ const MLB_LONGSHOTS = [
     kicker:"NEXT-BEST PRICES · HIGH VARIANCE",
     headline:"MLB Longshot Prop Roulette",
     theme:"risk",
-    thesis:"The next four best remaining board prices: Albies, Carroll, Crow-Armstrong, and Abrams, preserving the exact total-bases line displayed for each player.",
+    thesis:"The next four best remaining board prices: Baez, Bateman, Bohm, and Arozarena, preserving the exact total-bases line displayed for each player.",
     legs:[
-      {n:"01", name:"Ozzie Albies Over 1.5 TB vs NYM", pct:41, ev:0, odds:"+143"},
-      {n:"02", name:"Corbin Carroll Over 2.5 TB vs COL", pct:43, ev:0, odds:"+135"},
-      {n:"03", name:"Pete Crow-Armstrong Over 2.5 TB @WSH", pct:43, ev:0, odds:"+135"},
-      {n:"04", name:"CJ Abrams Over 1.5 TB vs CHC", pct:43, ev:0, odds:"+131"}
+      {n:"01", name:"Javier Baez Over 1.5 TB vs CLE", pct:36, ev:0, odds:"+175"},
+      {n:"02", name:"Brett Bateman Over 1.5 TB vs BOS", pct:37, ev:0, odds:"+168"},
+      {n:"03", name:"Alec Bohm Over 1.5 TB @MIN", pct:38, ev:0, odds:"+161"},
+      {n:"04", name:"Randy Arozarena Over 1.5 TB @NYY", pct:40, ev:0, odds:"+149"}
     ],
-    odds:"+3000", ret:"$10 to $300", ev:"Price-Sorted Board",
+    odds:"+4690", ret:"$10 to $469", ev:"Price-Sorted Board",
     metrics:[
       {lbl:"PUBLIC EXP", val:"—", cls:"red"},
-      {lbl:"AVG IMPLIED", val:"42.4%", cls:""},
-      {lbl:"BOARD PRICE", val:"+3000", cls:"accent"},
+      {lbl:"AVG IMPLIED", val:"38.0%", cls:""},
+      {lbl:"BOARD PRICE", val:"+4690", cls:"accent"},
       {lbl:"MODEL EDGE", val:"N/A", cls:"green"}
     ],
     warn:"Longshot — High Variance Outcome"
@@ -11765,9 +11802,9 @@ function initSpinFeeds(){
     // roulette wheel was scrolled off-screen or the browser tab was in
     // the background. Now it only runs while the strip is actually
     // visible on screen and the tab is in the foreground.
-    var trickleTimer=null;
+    var trickleTimer=null, spinVisible=false;
     function startTrickle(){
-      if(trickleTimer) return;
+      if(trickleTimer || document.hidden || !spinVisible) return;
       trickleTimer=setInterval(tickOnce, tickDelay);
     }
     function stopTrickle(){
@@ -11778,18 +11815,20 @@ function initSpinFeeds(){
     if('IntersectionObserver' in window){
       var spinIO=new IntersectionObserver(function(entries){
         entries.forEach(function(e){
-          if(e.isIntersecting && !document.hidden) startTrickle();
+          spinVisible=!!e.isIntersecting;
+          if(spinVisible && !document.hidden) startTrickle();
           else stopTrickle();
         });
       }, {rootMargin:'150px 0px 150px 0px', threshold:0});
       spinIO.observe(el);
     } else {
+      spinVisible=true;
       startTrickle();
     }
     document.addEventListener('visibilitychange', function(){
       if(document.hidden) stopTrickle();
-      else if(el.isConnected) startTrickle();
-    });
+      else if(el.isConnected && spinVisible) startTrickle();
+    },{passive:true});
   });
 }
 function spawnHitBurst(container, chipEl){
@@ -12472,11 +12511,11 @@ initSpinFeeds();
     }
 
     var propShots=[
-      {player:"Luisangel Acuna", market:"Over 1.5 TB vs CIN", odds:"+239", tag:"LONGSHOT", short:"Luisangel Acuna Over 1.5 TB vs CIN"},
-      {player:"Willy Adames", market:"Over 1.5 TB vs HOU", odds:"+177", tag:"LONGSHOT", short:"Willy Adames Over 1.5 TB vs HOU"},
-      {player:"Yandy Diaz", market:"Over 2.5 TB @ATH", odds:"+150", tag:"SHARP", short:"Yandy Diaz Over 2.5 TB @ATH"},
-      {player:"Jo Adell", market:"Over 1.5 TB @DET", odds:"+149", tag:"VALUE", short:"Jo Adell Over 1.5 TB @DET"},
-      {player:"Francisco Alvarez", market:"Over 1.5 TB @ATL", odds:"+145", tag:"VALUE", short:"Francisco Alvarez Over 1.5 TB @ATL"}
+      {player:"Luisangel Acuna", market:"Over 1.5 TB vs CIN", odds:"+244", tag:"LONGSHOT", short:"Luisangel Acuna Over 1.5 TB vs CIN"},
+      {player:"Sam Antonacci", market:"Over 1.5 TB vs CIN", odds:"+229", tag:"LONGSHOT", short:"Sam Antonacci Over 1.5 TB vs CIN"},
+      {player:"Miguel Amaya", market:"Over 1.5 TB @WSH", odds:"+221", tag:"SHARP", short:"Miguel Amaya Over 1.5 TB @WSH"},
+      {player:"Moises Ballesteros", market:"Over 1.5 TB vs TEX", odds:"+219", tag:"VALUE", short:"Moises Ballesteros Over 1.5 TB vs TEX"},
+      {player:"Jake Bauers", market:"Over 1.5 TB @LAD", odds:"+180", tag:"VALUE", short:"Jake Bauers Over 1.5 TB @LAD"}
     ];
 
     var terminal=wrap.querySelector('.q-closing-terminal');
@@ -12559,11 +12598,11 @@ initSpinFeeds();
 <script id="q-terminal-bet-sync">
 (function(){
   var PROP_SHOTS=[
-    {name:"Luisangel Acuna",market:"Over 1.5 TB vs CIN",odds:"+239",tag:"LONGSHOT"},
-    {name:"Willy Adames",market:"Over 1.5 TB vs HOU",odds:"+177",tag:"LONGSHOT"},
-    {name:"Yandy Diaz",market:"Over 2.5 TB @ATH",odds:"+150",tag:"SHARP"},
-    {name:"Jo Adell",market:"Over 1.5 TB @DET",odds:"+149",tag:"VALUE"},
-    {name:"Francisco Alvarez",market:"Over 1.5 TB @ATL",odds:"+145",tag:"VALUE"}
+    {name:"Luisangel Acuna",market:"Over 1.5 TB vs CIN",odds:"+244",tag:"LONGSHOT"},
+    {name:"Sam Antonacci",market:"Over 1.5 TB vs CIN",odds:"+229",tag:"LONGSHOT"},
+    {name:"Miguel Amaya",market:"Over 1.5 TB @WSH",odds:"+221",tag:"SHARP"},
+    {name:"Moises Ballesteros",market:"Over 1.5 TB vs TEX",odds:"+219",tag:"VALUE"},
+    {name:"Jake Bauers",market:"Over 1.5 TB @LAD",odds:"+180",tag:"VALUE"}
   ];
   function cleanOdds(v){var n=parseInt(String(v||'').replace(/[^0-9+-]/g,''),10);if(isNaN(n))return '+0';return n>0?'+'+n:String(n);}
   function oddsNum(v){var n=parseInt(String(v||'').replace(/[^0-9+-]/g,''),10);return isNaN(n)?0:n;}
@@ -12738,7 +12777,7 @@ initSpinFeeds();
     var fall=Math.max(360,bottomY-startY);
     var colorways=['gold-black','black-purple','green-gold','green-black'];
     var mobile=window.matchMedia&&window.matchMedia('(max-width:700px)').matches;
-    var count=mobile?9:16;
+    var count=mobile?7:12;
     for(var i=0;i<count;i++){
       var chip=document.createElement('i');
       chip.className='q-rain-chip '+colorways[i%colorways.length];
@@ -12814,9 +12853,9 @@ initSpinFeeds();
     var center=wheelCenter(wheel), radius=Math.max(42,Math.min(wr.width,wr.height)*.34);
     var rimStart={x:center.x,y:center.y-radius};
     var clone=opts.clone||makeClone(source,opts.ticket?'q-smooth-ticket-clone':'q-smooth-chip-clone');
-    var duration=opts.duration||(opts.ticket?820:920), history=[], echoes=[];
-    var rimTurns=opts.ticket?1.0:1.25, rimSweep=Math.PI*2*rimTurns;
-    var echoCount=opts.ticket?1:2;
+    var duration=opts.duration||(opts.ticket?740:820), history=[], echoes=[];
+    var rimTurns=opts.ticket?1.0:1.18, rimSweep=Math.PI*2*rimTurns;
+    var echoCount=1;
     for(var i=0;i<echoCount;i++){var echo=document.createElement('i');echo.className='q-rim-chip-echo';document.body.appendChild(echo);echoes.push(echo);}
     function clearEchoes(){echoes.forEach(removeNode);}
     function positionEchoes(x,y,rot,scale,opacity){
@@ -13172,7 +13211,7 @@ initSpinFeeds();
         var respin=!!(reward.placedKeys && reward.placedKeys[down.meta.key]);
         setTrayStats(terminal,{ action:respin?'Re-Spin':'Manual Drag', profile:profileLabel(down.meta), route:'Rack → Wheel', cue:'Drop chip into the wheel', lastKey:down.meta.key||'' });
       }
-    }, true);
+    }, {capture:true,passive:true});
     terminal.addEventListener('pointerup', function(){ down=null; }, true);
     terminal.addEventListener('pointercancel', function(){ down=null; }, true);
     terminal.addEventListener('click', function(e){
@@ -13639,5 +13678,177 @@ aftDOM(function(){
 </script>
 
 <script id="so-page-visibility-state-20260803">(function(){function sync(){document.documentElement.classList.toggle('so-page-hidden',document.hidden);}document.addEventListener('visibilitychange',sync,{passive:true});sync();})();</script>
+
+<script id="so-runtime-performance-core-js-20260811">
+(function(){
+  'use strict';
+  var root=document.documentElement, seen=new WeakSet(), io=null, scrollTimer=0, scrollRAF=0;
+  function syncHidden(){root.classList.toggle('so-perf-hidden',document.hidden);}
+  document.addEventListener('visibilitychange',syncHidden,{passive:true});
+  window.addEventListener('pagehide',function(){root.classList.add('so-perf-hidden');},{passive:true});
+  window.addEventListener('pageshow',function(){syncHidden(); scheduleScan();},{passive:true});
+  syncHidden();
+  if('IntersectionObserver' in window){
+    io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){e.target.classList.toggle('so-perf-offscreen-anim',!e.isIntersecting);});
+    },{rootMargin:'280px 0px 280px 0px',threshold:0});
+  }
+  function scanAnimations(){
+    if(!document.getAnimations)return;
+    var list=document.getAnimations();
+    for(var i=0;i<list.length;i++){
+      var eff=list[i].effect, t=eff&&eff.target;
+      if(!t||t.nodeType!==1||seen.has(t))continue;
+      /* Only long-lived ambient loops belong in the offscreen pause system.
+         Finite entrance/reveal animations must be allowed to finish once so
+         cards and table rows cannot remain frozen in an opacity:0 start state. */
+      var timing=(eff&&eff.getTiming)?eff.getTiming():null;
+      if(!timing||timing.iterations!==Infinity)continue;
+      seen.add(t);t.classList.add('so-perf-anim-target');
+      if(io)io.observe(t);
+    }
+  }
+  function scheduleScan(){
+    if('requestIdleCallback' in window)requestIdleCallback(scanAnimations,{timeout:650});
+    else setTimeout(scanAnimations,120);
+  }
+  function markScrolling(){
+    if(!scrollRAF){
+      scrollRAF=requestAnimationFrame(function(){
+        scrollRAF=0;root.classList.add('so-perf-scrolling');
+      });
+    }
+    clearTimeout(scrollTimer);
+    scrollTimer=setTimeout(function(){root.classList.remove('so-perf-scrolling');},115);
+  }
+  /* capture:true catches nested horizontal/vertical scrollers too. */
+  document.addEventListener('scroll',markScrolling,{passive:true,capture:true});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scheduleScan,{once:true});else scheduleScan();
+  window.addEventListener('load',function(){setTimeout(scanAnimations,80);setTimeout(scanAnimations,900);},{once:true,passive:true});
+})();
+</script>
+
+<script id="so-market-scroll-state-20260811">
+(function(){
+  var t=0,raf=0;
+  function mark(){
+    if(!raf)raf=requestAnimationFrame(function(){raf=0;document.body.classList.add('so-market-scrolling');});
+    clearTimeout(t);t=setTimeout(function(){document.body.classList.remove('so-market-scrolling');},105);
+  }
+  document.addEventListener('scroll',mark,{passive:true,capture:true});
+})();
+</script>
+
+
+<style id="so-global-mobile-menu-polish-20260811b">
+#hamburgerBtn,.so-hamburger,.hamburger{
+  min-width:44px!important;
+  min-height:44px!important;
+  width:44px!important;
+  height:44px!important;
+  padding:11px!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+#hamburgerBtn span,.so-hamburger span,.hamburger span{margin:4px 0!important;}
+.so-mobile-close,.mobile-menu-close{
+  min-width:44px!important;
+  min-height:44px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  touch-action:manipulation!important;
+}
+#mobileMenu a,.so-mobile-menu a,.mobile-menu a{min-height:48px!important;}
+</style>
+<style id="so-market-celebration-perf-exception-20260811">
+/* Never let the generic scroll guard delay an actively-triggered Q's Table celebration. */
+html.so-perf-scrolling #mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-title span,
+html.so-perf-scrolling #mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb,
+html.so-perf-scrolling #mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb::before{animation-play-state:running!important;}
+</style>
+
+<style id="so-market-qtable-brightness-pass-20260811">
+/* Keep the approved sequence intact, but raise the visible intensity about 10%
+   and add one extra electrical flutter so Q's Table feels livelier without
+   reintroducing heavy paint costs. */
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-title span{
+  animation-name:qHollywoodLetterChaseBoost!important;
+  animation-duration:1.62s!important;
+}
+@keyframes qHollywoodLetterChaseBoost{
+  0%,3.5%{-webkit-text-fill-color:transparent;opacity:.34;text-shadow:0 1px 0 rgba(0,0,0,.48)}
+  4.5%,6.2%{-webkit-text-fill-color:#fffef4;opacity:1;text-shadow:0 0 15px rgba(255,251,220,1),0 0 34px rgba(244,185,66,.84)}
+  7%{-webkit-text-fill-color:transparent;opacity:.22;text-shadow:none}
+  8.2%,10%{-webkit-text-fill-color:#ffe899;opacity:1;text-shadow:0 0 12px rgba(255,237,166,1),0 0 28px rgba(244,185,66,.71)}
+  11%{-webkit-text-fill-color:transparent;opacity:.26;text-shadow:none}
+  12%,15%{-webkit-text-fill-color:#fff8d7;opacity:1;text-shadow:0 0 12px rgba(255,245,193,.98),0 0 26px rgba(244,185,66,.64)}
+  16%,21%{-webkit-text-fill-color:#fff3be;opacity:1;text-shadow:0 0 10px rgba(255,239,175,.90),0 0 22px rgba(244,185,66,.56)}
+  22%,100%{-webkit-text-fill-color:transparent;opacity:.38;text-shadow:0 1px 0 rgba(0,0,0,.48)}
+}
+#mlbContainer .q-wheel-brand-bulbs .ls-bulb{box-shadow:0 0 3px rgba(244,185,66,.24)!important;}
+#mlbContainer .q-wheel-brand-bulbs .ls-bulb::before{width:20px!important;height:20px!important;}
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb,
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb:nth-child(even),
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb:nth-child(3n){
+  animation-name:qChristmasBulbTwinkleBoost!important;
+  animation-duration:1.52s!important;
+}
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb::before{
+  animation-name:qChristmasBulbHaloBoost!important;
+  animation-duration:1.52s!important;
+}
+@keyframes qChristmasBulbTwinkleBoost{
+  0%,4%{opacity:.30;transform:translateZ(0) scale(.90)}
+  7%{opacity:.82;transform:translateZ(0) scale(1.07)}
+  10%{opacity:.50;transform:translateZ(0) scale(.98)}
+  13%{opacity:1;transform:translateZ(0) scale(1.20)}
+  17%{opacity:.76;transform:translateZ(0) scale(1.08)}
+  20%{opacity:.60;transform:translateZ(0) scale(.99)}
+  23%{opacity:1;transform:translateZ(0) scale(1.16)}
+  30%{opacity:.92;transform:translateZ(0) scale(1.10)}
+  38%{opacity:1;transform:translateZ(0) scale(1.14)}
+  52%{opacity:.86;transform:translateZ(0) scale(1.07)}
+  66%{opacity:.68;transform:translateZ(0) scale(1.01)}
+  80%,100%{opacity:.32;transform:translateZ(0) scale(.92)}
+}
+@keyframes qChristmasBulbHaloBoost{
+  0%,5%{opacity:0;transform:translate(-50%,-50%) scale(.46)}
+  8%{opacity:.48;transform:translate(-50%,-50%) scale(.76)}
+  13%{opacity:1;transform:translate(-50%,-50%) scale(1.16)}
+  17%{opacity:.40;transform:translate(-50%,-50%) scale(.84)}
+  20%{opacity:.22;transform:translate(-50%,-50%) scale(.66)}
+  23%{opacity:.88;transform:translate(-50%,-50%) scale(1.06)}
+  34%{opacity:.56;transform:translate(-50%,-50%) scale(.95)}
+  42%{opacity:.76;transform:translate(-50%,-50%) scale(1.02)}
+  58%{opacity:.32;transform:translate(-50%,-50%) scale(.84)}
+  74%,100%{opacity:0;transform:translate(-50%,-50%) scale(.58)}
+}
+</style>
+<style id="so-market-eager-board-and-roulette-20260812">
+/* The game board and roulette stay painted after first load. Heavy lower research
+   sections can remain deferred, but these two high-interaction zones should not
+   visibly reconstruct when the user scrolls back to them. */
+#mlbContainer>.games-list,
+#mlbContainer>.ls-wrap{
+  content-visibility:visible!important;
+  contain:layout paint style!important;
+  contain-intrinsic-size:none!important;
+}
+#mlbContainer .game-card{content-visibility:visible!important;contain:layout style!important;}
+/* Moving chip proxy: compositor-only shadow cost kept minimal during drag. */
+#mlbContainer .q-smooth-chip-clone,
+.q-smooth-chip-clone{
+  filter:none!important;
+  box-shadow:0 10px 20px rgba(0,0,0,.42),0 0 8px rgba(244,185,66,.18)!important;
+}
+/* Same approved chase, with a stronger luminous envelope. */
+#mlbContainer .q-wheel-brand-bulbs .ls-bulb{box-shadow:0 0 5px rgba(244,185,66,.34)!important;}
+#mlbContainer .q-wheel-brand-bulbs .ls-bulb::before{width:22px!important;height:22px!important;}
+#mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-title span{
+  text-shadow:0 0 14px rgba(255,251,220,.95),0 0 31px rgba(244,185,66,.72);
+}
+</style>
+
 </body>
 </html>

@@ -9,8 +9,10 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=20260810"/>
 <link rel="shortcut icon" href="favicon.ico?v=20260810"/>
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20260810"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Sans:wght@300;400;500&amp;family=DM+Mono:wght@400;500&amp;display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
-<noscript><link all'"="" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Sans:wght@300;400;500&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/></noscript>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Sans:wght@300;400;500&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/></noscript>
 <style id="so-consolidated-styles-20260720">
 /* ── ROOT TOKENS ── */
 :root {
@@ -1997,6 +1999,36 @@ body::before,body::after{position:absolute!important}
 <style id="so-worldcup-mobile-subscribe-accent-20260809">
 .so-mobile-menu a[href="subscribe.html"]{border-color:rgba(67,255,151,.42);background:rgba(24,96,59,.26);color:#69ffad}
 </style>
+
+<style id="so-mobile-menu-tap-reliability-20260811">
+.so-hamburger{position:relative!important;z-index:1002!important;pointer-events:auto!important;touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important;}
+.so-mobile-menu{pointer-events:auto!important;}
+</style>
+
+<style id="so-release-menu-reliability-20260811">
+@media(max-width:900px){
+  #hamburgerBtn,.so-hamburger,.hamburger{position:relative!important;z-index:1200!important;pointer-events:auto!important;touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important;}
+  #mobileMenu,.so-mobile-menu,.mobile-menu{z-index:1190!important;pointer-events:auto!important;}
+}
+</style>
+
+<style id="so-runtime-performance-core-20260811">
+/* Runtime-only performance guardrails. Visible design is unchanged. */
+html.so-perf-hidden .so-perf-anim-target,
+html.so-perf-hidden .so-perf-anim-target::before,
+html.so-perf-hidden .so-perf-anim-target::after,
+html.so-perf-scrolling .so-perf-anim-target,
+html.so-perf-scrolling .so-perf-anim-target::before,
+html.so-perf-scrolling .so-perf-anim-target::after,
+.so-perf-offscreen-anim,
+.so-perf-offscreen-anim::before,
+.so-perf-offscreen-anim::after{animation-play-state:paused!important;}
+.so-perf-offscreen-anim{will-change:auto!important;}
+@media(max-width:760px){
+  .so-nav,.so-nav-shell,.site-nav,.site-header,.mobile-nav,.hub-nav{backface-visibility:hidden;transform:translateZ(0);}
+}
+@media(pointer:coarse){button,a,[role="button"]{touch-action:manipulation;}}
+</style>
 </head>
 <body>
 <!-- NAV -->
@@ -2311,13 +2343,6 @@ body::before,body::after{position:absolute!important}
 </footer>
 </div>
 <script>
-function toggleMobileMenu(){
-  const m=document.getElementById('mobileMenu');
-  const b=document.getElementById('hamburgerBtn');
-  m.classList.toggle('open');
-  if(b)b.classList.toggle('open');
-  document.body.style.overflow=m.classList.contains('open')?'hidden':'';
-}
 
 /* ════════════════════════════════════════════════════
    NATIONS TERRACE — SVG stadium bowl (Idea A)
@@ -2662,17 +2687,26 @@ function toggleMobileMenu(){
   // PERF FIX: this used to tick every 120ms for the entire life of the
   // page, even scrolled far off-screen. Now it only runs while the
   // mosaic is actually visible in the viewport.
-  let mosaicTimer = null;
-  function startMosaic(){ if(mosaicTimer) return; mosaicTimer = setInterval(frame, 120); }
+  let mosaicTimer = null, mosaicVisible = false;
+  function startMosaic(){ if(mosaicTimer || document.hidden || !mosaicVisible) return; mosaicTimer = setInterval(frame, 120); }
   function stopMosaic(){ if(!mosaicTimer) return; clearInterval(mosaicTimer); mosaicTimer = null; }
   if('IntersectionObserver' in window){
     const mosaicIO = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){ if(e.isIntersecting) startMosaic(); else stopMosaic(); });
+      entries.forEach(function(e){ mosaicVisible=!!e.isIntersecting; if(mosaicVisible && !document.hidden) startMosaic(); else stopMosaic(); });
     }, { rootMargin:'150px 0px 150px 0px', threshold:0 });
     mosaicIO.observe(grid);
   } else {
+    mosaicVisible = true;
     startMosaic();
   }
+  document.addEventListener('visibilitychange',function(){ if(document.hidden) stopMosaic(); else if(mosaicVisible) startMosaic(); },{passive:true});
+  var mosaicResumeTimer=0;
+  document.addEventListener('scroll',function(){
+    if(!mosaicVisible)return;
+    stopMosaic();
+    clearTimeout(mosaicResumeTimer);
+    mosaicResumeTimer=setTimeout(function(){if(mosaicVisible&&!document.hidden)startMosaic();},150);
+  },{passive:true,capture:true});
   // Kick off immediately
   cells.forEach(c => { c.style.backgroundColor = DARK; });
 })();
@@ -2792,12 +2826,83 @@ function toggleMobileMenu(){
 (function(){
   var menu=document.getElementById('mobileMenu'),burger=document.getElementById('hamburgerBtn');
   if(!menu||!burger)return;
-  function setMenu(open){menu.classList.toggle('open',open);menu.setAttribute('aria-hidden',String(!open));burger.setAttribute('aria-expanded',String(open));}
+  function setMenu(open){menu.classList.toggle('open',open);menu.setAttribute('aria-hidden',String(!open));burger.setAttribute('aria-expanded',String(open));document.body.style.overflow=open?'hidden':'';}
   burger.addEventListener('click',function(){setMenu(!menu.classList.contains('open'));});
   var closeBtn=menu.querySelector('.so-mobile-close');
   if(closeBtn)closeBtn.addEventListener('click',function(){setMenu(false);});
   menu.addEventListener('click',function(e){if(e.target.closest('a'))setMenu(false);});
 })();
 </script>
+
+<script id="so-runtime-performance-core-js-20260811">
+(function(){
+  'use strict';
+  var root=document.documentElement, seen=new WeakSet(), io=null, scrollTimer=0, scrollRAF=0;
+  function syncHidden(){root.classList.toggle('so-perf-hidden',document.hidden);}
+  document.addEventListener('visibilitychange',syncHidden,{passive:true});
+  window.addEventListener('pagehide',function(){root.classList.add('so-perf-hidden');},{passive:true});
+  window.addEventListener('pageshow',function(){syncHidden(); scheduleScan();},{passive:true});
+  syncHidden();
+  if('IntersectionObserver' in window){
+    io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){e.target.classList.toggle('so-perf-offscreen-anim',!e.isIntersecting);});
+    },{rootMargin:'280px 0px 280px 0px',threshold:0});
+  }
+  function scanAnimations(){
+    if(!document.getAnimations)return;
+    var list=document.getAnimations();
+    for(var i=0;i<list.length;i++){
+      var eff=list[i].effect, t=eff&&eff.target;
+      if(!t||t.nodeType!==1||seen.has(t))continue;
+      /* Only long-lived ambient loops belong in the offscreen pause system.
+         Finite entrance/reveal animations must be allowed to finish once so
+         cards and table rows cannot remain frozen in an opacity:0 start state. */
+      var timing=(eff&&eff.getTiming)?eff.getTiming():null;
+      if(!timing||timing.iterations!==Infinity)continue;
+      seen.add(t);t.classList.add('so-perf-anim-target');
+      if(io)io.observe(t);
+    }
+  }
+  function scheduleScan(){
+    if('requestIdleCallback' in window)requestIdleCallback(scanAnimations,{timeout:650});
+    else setTimeout(scanAnimations,120);
+  }
+  function markScrolling(){
+    if(!scrollRAF){
+      scrollRAF=requestAnimationFrame(function(){
+        scrollRAF=0;root.classList.add('so-perf-scrolling');
+      });
+    }
+    clearTimeout(scrollTimer);
+    scrollTimer=setTimeout(function(){root.classList.remove('so-perf-scrolling');},115);
+  }
+  /* capture:true catches nested horizontal/vertical scrollers too. */
+  document.addEventListener('scroll',markScrolling,{passive:true,capture:true});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scheduleScan,{once:true});else scheduleScan();
+  window.addEventListener('load',function(){setTimeout(scanAnimations,80);setTimeout(scanAnimations,900);},{once:true,passive:true});
+})();
+</script>
+
+<style id="so-global-mobile-menu-polish-20260811b">
+#hamburgerBtn,.so-hamburger,.hamburger{
+  min-width:44px!important;
+  min-height:44px!important;
+  width:44px!important;
+  height:44px!important;
+  padding:11px!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+#hamburgerBtn span,.so-hamburger span,.hamburger span{margin:4px 0!important;}
+.so-mobile-close,.mobile-menu-close{
+  min-width:44px!important;
+  min-height:44px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  touch-action:manipulation!important;
+}
+#mobileMenu a,.so-mobile-menu a,.mobile-menu a{min-height:48px!important;}
+</style>
 </body>
 </html>
