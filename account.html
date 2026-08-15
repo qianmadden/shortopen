@@ -152,7 +152,8 @@
 
   const $=id=>document.getElementById(id);
   const loading=$('authLoading'),guest=$('authGuest'),dashboard=$('authDashboard'),recovery=$('panel-recovery');
-  let client=null,currentUser=null,recoveryMode=false;
+  let client=null,currentUser=null,currentProfile=null,recoveryMode=false;
+  const beehiivSyncedUsers=new Set();
 
   function notice(el,type,message){el.className='notice show '+type;el.textContent=message}
   function clearNotice(el){el.className='notice';el.textContent=''}
@@ -164,13 +165,45 @@
 
   function showGuest(){loading.style.display='none';dashboard.classList.remove('active');recovery.classList.remove('active');guest.hidden=false;switchPanel('signin')}
   function showRecovery(){loading.style.display='none';guest.hidden=true;dashboard.classList.remove('active');recovery.classList.add('active')}
+  function renderNewsletterStatus(profile,checking=false){
+    const el=$('newsletterStatus');
+    if(!el)return;
+    if(checking){el.textContent='Checking…';return}
+    const status=String((profile&&profile.newsletter_status)||'').trim().toLowerCase();
+    if(profile&&profile.newsletter_member){el.textContent='Subscriber';return}
+    if(['active','subscribed','subscriber','linked'].includes(status)){el.textContent='Subscriber';return}
+    if(['unsubscribed','inactive','removed'].includes(status)){el.textContent='Not subscribed';return}
+    el.textContent='Not linked yet';
+  }
+
+  async function refreshProfile(userId){
+    const result=await client.from('profiles').select('email,display_name,access_level,newsletter_member,newsletter_status,beehiiv_subscription_id,terminal_access,created_at').eq('id',userId).maybeSingle();
+    if(result.error){console.warn('[Short Open Account] profile:',result.error.message);return null}
+    currentProfile=result.data||null;
+    return currentProfile;
+  }
+
+  async function syncBeehiivProfile(user){
+    if(!client||!user||beehiivSyncedUsers.has(user.id))return;
+    beehiivSyncedUsers.add(user.id);
+    renderNewsletterStatus(currentProfile,true);
+    try{
+      const {error}=await client.functions.invoke('sync-beehiiv',{body:{}});
+      if(error)throw error;
+      const fresh=await refreshProfile(user.id);
+      renderNewsletterStatus(fresh||currentProfile,false);
+    }catch(error){
+      console.warn('[Short Open Account] Beehiiv sync:',error&&error.message?error.message:error);
+      renderNewsletterStatus(currentProfile,false);
+    }
+  }
+
   async function showDashboard(user){loading.style.display='none';guest.hidden=true;recovery.classList.remove('active');dashboard.classList.add('active');currentUser=user;$('profileEmail').textContent=user.email||'—';
-    let profile=null;
-    const result=await client.from('profiles').select('email,display_name,access_level,newsletter_member,terminal_access,created_at').eq('id',user.id).maybeSingle();
-    if(result.error){console.warn('[Short Open Account] profile:',result.error.message)} else {profile=result.data}
+    const profile=await refreshProfile(user.id);
     const name=(profile&&profile.display_name)||(user.user_metadata&&user.user_metadata.display_name)||'';
-    $('profileName').textContent=name?name:'No display name set';$('displayNameInput').value=name;$('accessLevel').textContent=((profile&&profile.access_level)||'free').replace(/\b\w/g,c=>c.toUpperCase());$('newsletterStatus').textContent=profile&&profile.newsletter_member?'Linked':'Not linked yet';$('terminalStatus').textContent=profile&&profile.terminal_access?'Enabled':'Beta access';
+    $('profileName').textContent=name?name:'No display name set';$('displayNameInput').value=name;$('accessLevel').textContent=((profile&&profile.access_level)||'free').replace(/\b\w/g,c=>c.toUpperCase());renderNewsletterStatus(profile,false);$('terminalStatus').textContent=profile&&profile.terminal_access?'Enabled':'Beta access';
     const created=(profile&&profile.created_at)||user.created_at;if(created){try{$('memberSince').textContent='Member since '+new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric',year:'numeric'}).format(new Date(created))}catch(e){}}
+    syncBeehiivProfile(user);
   }
 
   $('signinForm').addEventListener('submit',async e=>{e.preventDefault();clearNotice($('signinNotice'));busy(e.currentTarget,true);const email=$('signinEmail').value.trim();const password=$('signinPassword').value;const {error}=await client.auth.signInWithPassword({email,password});busy(e.currentTarget,false);if(error)notice($('signinNotice'),'error',error.message);else notice($('signinNotice'),'success','Signed in. Loading your account…')});
@@ -181,7 +214,7 @@
 
   $('recoveryForm').addEventListener('submit',async e=>{e.preventDefault();clearNotice($('recoveryNotice'));const password=$('recoveryPassword').value;const confirm=$('recoveryConfirm').value;if(password!==confirm){notice($('recoveryNotice'),'error','The passwords do not match.');return}if(password.length<8){notice($('recoveryNotice'),'error','Use at least 8 characters for your password.');return}busy(e.currentTarget,true);const {error}=await client.auth.updateUser({password});busy(e.currentTarget,false);if(error)notice($('recoveryNotice'),'error',error.message);else{notice($('recoveryNotice'),'success','Password updated. Your account is ready.');recoveryMode=false;setTimeout(async()=>{const {data}=await client.auth.getUser();if(data&&data.user)showDashboard(data.user)},650)}});
 
-  $('saveNameBtn').addEventListener('click',async()=>{if(!currentUser)return;clearNotice($('dashboardNotice'));const display_name=$('displayNameInput').value.trim();$('saveNameBtn').disabled=true;const {error}=await client.from('profiles').update({display_name}).eq('id',currentUser.id);$('saveNameBtn').disabled=false;if(error)notice($('dashboardNotice'),'error',error.message);else{notice($('dashboardNotice'),'success','Display name saved.');$('profileName').textContent=display_name||'No display name set'}});
+  $('saveNameBtn').addEventListener('click',async()=>{if(!currentUser)return;clearNotice($('dashboardNotice'));const display_name=$('displayNameInput').value.trim();$('saveNameBtn').disabled=true;const {error}=await client.from('profiles').update({display_name}).eq('id',currentUser.id);$('saveNameBtn').disabled=false;if(error)notice($('dashboardNotice'),'error',error.message);else{if(currentProfile)currentProfile.display_name=display_name;notice($('dashboardNotice'),'success','Display name saved.');$('profileName').textContent=display_name||'No display name set'}});
   $('signOutBtn').addEventListener('click',async()=>{await client.auth.signOut();location.href='account.html'});
 
   window.addEventListener('shortopen:authchange',async e=>{const detail=e.detail||{};if(detail.event==='PASSWORD_RECOVERY'){recoveryMode=true;showRecovery();return}if(recoveryMode)return;if(detail.session&&detail.session.user)showDashboard(detail.session.user);else showGuest()});
