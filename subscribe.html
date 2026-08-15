@@ -489,16 +489,14 @@ html.so-perf-scrolling .so-perf-anim-target::after,
         <div><span>Free Now</span><b>HR Index + K Market</b><small>Open in the MLB desk.</small></div>
         <div><span>Beta Now</span><b>The Terminal</b><small>Market + Optimizer + Ownership.</small></div>
       </div>
-      <form data-netlify="true" id="subscribeForm" method="POST" name="shortopen-subscribers" netlify-honeypot="bot-field" onsubmit="handleSubmit(event)">
-        <input name="form-name" type="hidden" value="shortopen-subscribers"/>
-        <p style="display:none"><input name="bot-field"/></p>
+      <form id="subscribeForm" onsubmit="handleSubmit(event)">
         <div class="form-grid">
           <div class="field"><label class="label" for="full-name">Full Name</label><input class="form-input" id="full-name" name="full-name" placeholder="Your full name" required type="text"/></div>
           <div class="field"><label class="label" for="email">Email Address</label><input class="form-input" id="email" name="email" placeholder="your@email.com" required type="email"/></div>
           <div class="field full"><label class="label" for="referral">How did you hear about us?</label><select class="form-select" id="referral" name="referral" required><option disabled selected value="">Select one</option><option value="twitter-x">Twitter / X</option><option value="instagram">Instagram</option><option value="reddit">Reddit</option><option value="tiktok">TikTok</option><option value="friend-referral">Friend or referral</option><option value="google">Google search</option><option value="podcast">Podcast</option><option value="other">Other</option></select></div>
         </div>
         <button class="submit-btn" type="submit">Join Market Notes — Free</button>
-        <p class="form-foot">Free to start. Unsubscribe anytime.</p>
+        <p class="form-foot" id="formStatus" aria-live="polite">Free to start. Unsubscribe anytime.</p>
       </form>
       <div class="form-success" id="formSuccess"><b>You're in.</b><p>Welcome to Market Notes. First drop hits your inbox soon.</p></div>
     </div>
@@ -614,13 +612,38 @@ html.so-perf-scrolling .so-perf-anim-target::after,
     if(!wasOpen)item.classList.add('open');
   }));
 })();
-function handleSubmit(e){
+async function handleSubmit(e){
   e.preventDefault();
   const form=document.getElementById('subscribeForm');
   const success=document.getElementById('formSuccess');
-  fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(form)).toString()})
-    .then(()=>{form.style.display='none';success.classList.add('show')})
-    .catch(()=>{form.style.display='none';success.classList.add('show')});
+  const status=document.getElementById('formStatus');
+  const button=form.querySelector('button[type="submit"]');
+  const fullName=document.getElementById('full-name').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const referral=document.getElementById('referral').value;
+
+  if(button){button.disabled=true;button.textContent='Joining…';}
+  if(status)status.textContent='Connecting you to Market Notes…';
+
+  try{
+    const response=await fetch('https://tltfpencvpnhghoruiwb.supabase.co/functions/v1/subscribe-beehiiv',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email,full_name:fullName,referral})
+    });
+
+    let result=null;
+    try{result=await response.json();}catch(_error){}
+    if(!response.ok||!result||result.success!==true){
+      throw new Error((result&&result.error)||'Could not subscribe right now. Please try again.');
+    }
+
+    form.style.display='none';
+    success.classList.add('show');
+  }catch(error){
+    if(status)status.textContent=(error&&error.message)?error.message:'Could not subscribe right now. Please try again.';
+    if(button){button.disabled=false;button.textContent='Join Market Notes — Free';}
+  }
 }
 </script>
 
