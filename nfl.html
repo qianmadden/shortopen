@@ -135,6 +135,19 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 <!-- Short Open account layer: non-blocking Supabase auth -->
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script defer src="auth.js?v=20260814"></script>
+
+<style id="so-hub-uniform-20260818">
+.pick-grid{max-width:1060px!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important;align-items:stretch!important}
+.pick-card{min-height:520px!important;display:grid!important;grid-template-rows:220px 1fr!important;border-radius:22px!important;background:linear-gradient(158deg,rgba(255,255,255,.035),rgba(4,9,15,.88))!important}
+.pick-art{height:220px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-bottom:1px solid rgba(255,255,255,.075)!important;background:radial-gradient(240px 180px at 50% 45%,var(--accent-soft),rgba(255,255,255,.018) 55%,transparent 72%)!important}
+.pick-art svg{width:92px!important;height:92px!important;display:block!important}
+.pick-body{min-height:0!important;padding:28px 28px 26px!important;display:flex!important;flex-direction:column!important}
+.pick-name{display:flex!important;align-items:center!important;gap:7px!important;min-height:48px!important;font-size:1.2rem!important;line-height:1.08!important;letter-spacing:-.035em!important}
+.pick-desc{margin-top:12px!important;font-size:.79rem!important;line-height:1.68!important;min-height:150px!important}
+.pick-go{margin-top:auto!important;padding-top:16px!important}
+@media(max-width:1000px){.pick-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.pick-card{min-height:460px!important}}
+@media(max-width:640px){.pick-grid{grid-template-columns:1fr!important}.pick-card{min-height:0!important;grid-template-rows:148px auto!important}.pick-art{height:148px!important}.pick-desc{min-height:0!important}.pick-name{min-height:0!important}}
+</style>
 </head>
 <body><div class="so-nav-shell"><nav class="so-nav" aria-label="Primary navigation">
   <a class="so-nav-brand" href="index.html" aria-label="Short Open home"><span>short<b>open</b></span></a>
@@ -162,10 +175,15 @@ html.so-perf-scrolling .so-perf-anim-target::after,
   <h1 class="sr-only">NFL Intelligence</h1>
 <header class="hub-bar">
   <div class="hub-active"><span class="hub-dot"></span><strong id="activeTitle"></strong><span id="activeDesc"></span><span id="hubIdle">Command Center</span></div>
-  <div class="hub-switch" role="tablist" aria-label="NFL Intelligence sections"><button class="hub-tab" role="tab" type="button" data-key="draft" aria-selected="false" title="Prospects, boards and mock simulator"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/><path d="m16 16 1.3 1.3L20 14.6"/></svg><span>NFL Draft Market</span></button><button class="hub-tab" role="tab" type="button" data-key="film-room" aria-selected="false" title="Traits, clips and player evaluation"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="14" height="12" rx="2"/><path d="m17 10 4-2v8l-4-2z"/><path d="m9 10 4 2-4 2z"/></svg><span>Film Room</span></button></div>
+  <div class="hub-switch" role="tablist" aria-label="NFL Intelligence sections">
+<button class="hub-tab" role="tab" type="button" data-key="draft" aria-selected="false" title="Prospects, boards and mock simulator"><span>NFL Draft Market</span></button>
+<button class="hub-tab" role="tab" type="button" data-key="film-room" aria-selected="false" title="Traits, clips and player evaluation"><span>Film Room</span></button>
+<button class="hub-tab" role="tab" type="button" data-key="grade-book" aria-selected="false" title="Player grades, camp intel and fantasy lens"><span>Grade Book</span><span style="color:#f4b942;font-size:.44rem">PREMIUM</span></button>
+<button class="hub-tab" role="tab" type="button" data-key="player-props" aria-selected="false" title="Role, matchup and player-prop research"><span>NFL Player Props</span><span style="color:#f4b942;font-size:.44rem">PREMIUM</span></button>
+</div>
   <span class="hub-count" id="sectionCount"></span>
 </header>
-<section class="workspace" aria-live="polite"><div class="frame-stage"><div class="hub-pick" id="hubPick"><div class="pick-grid" style="--pick-count:2"><button class="pick-card" type="button" data-key="draft"><span class="pick-art" aria-hidden="true"><svg viewBox="0 0 64 64">
+<section class="workspace" aria-live="polite"><div class="frame-stage"><div class="hub-pick" id="hubPick"><div class="pick-grid" style="--pick-count:4"><button class="pick-card" type="button" data-key="draft"><span class="pick-art" aria-hidden="true"><svg viewBox="0 0 64 64">
 <path d="M13 48 L51 48 L44 27 L20 27 Z"/>
 <path d="M13 48v3h38v-3" stroke-width="1.3"/>
 <rect x="26" y="12" width="12" height="15" rx="1.6"/>
@@ -184,9 +202,9 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 <rect x="37" y="7" width="20" height="10" rx="5" stroke-width="1.2"/>
 <text x="47" y="13.7" font-size="4.6" font-weight="800" text-anchor="middle" stroke="none" fill="currentColor" font-family="sans-serif" letter-spacing="0.3">SOON</text>
 <path d="M45 17v4" stroke-width="1.1"/>
-</svg></span><span class="pick-body"><span class="pick-name">Film Room</span><span class="pick-desc">Tape-first player evaluation — traits, clips, and Short Open's own grading of how a prospect actually plays, not just where they're ranked.</span><span class="pick-go">Open &rarr;</span></span></button></div></div><div class="frame-loader hidden" id="frameLoader"><div class="loader-card"><span class="loader-ring"></span><span id="loaderText">Loading selected workspace</span></div></div><iframe class="tool-frame" id="toolFrame" title="Short Open tool" referrerpolicy="same-origin"></iframe></div></section>
+</svg></span><span class="pick-body"><span class="pick-name">Film Room</span><span class="pick-desc">Tape-first player evaluation — traits, clips, and Short Open's own grading of how a prospect actually plays, not just where they're ranked.</span><span class="pick-go">Open &rarr;</span></span></button><button class="pick-card" type="button" data-key="grade-book"><span class="pick-art" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M14 12h36v40H14z"/><path d="M22 22h20M22 30h14M22 38h18"/><path d="m42 42 4 4 7-9"/></svg></span><span class="pick-body"><span class="pick-name">Grade Book <span style="color:#f4b942;font-size:.48rem">PREMIUM</span></span><span class="pick-desc">Position-by-position NFL player grades with camp intel, fantasy draft context and deeper player reads.</span><span class="pick-go">Open &rarr;</span></span></button><button class="pick-card" type="button" data-key="player-props"><span class="pick-art" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M13 46h38M17 42V22h30v20"/><path d="M22 34h7M35 29h7M35 36h7"/><circle cx="26" cy="18" r="6"/></svg></span><span class="pick-body"><span class="pick-name">NFL Player Props <span style="color:#f4b942;font-size:.48rem">PREMIUM</span></span><span class="pick-desc">Player-first prop research connecting Grade Book quality to role, matchup and the markets worth checking.</span><span class="pick-go">Open &rarr;</span></span></button></div></div><div class="frame-loader hidden" id="frameLoader"><div class="loader-card"><span class="loader-ring"></span><span id="loaderText">Loading selected workspace</span></div></div><iframe class="tool-frame" id="toolFrame" title="Short Open tool" referrerpolicy="same-origin"></iframe></div></section>
 </main>
-<script type="application/json" id="hubConfig">{"title":"NFL Intelligence","tabs":[{"key":"draft","label":"Market","title":"NFL Draft Market","desc":"Prospects, boards and mock simulator","src":"embed-nfl-draft.html"},{"key":"film-room","label":"Tape","title":"Film Room","desc":"Traits, clips and player evaluation","src":"embed-film-room.html"}]}</script><script>
+<script type="application/json" id="hubConfig">{"title":"NFL Intelligence","tabs":[{"key":"draft","label":"Draft","title":"NFL Draft Market","desc":"Prospects, ADP and live draft intelligence","src":"embed-nfl-draft.html"},{"key":"film-room","label":"Film","title":"Film Room","desc":"Tape-first player evaluation","src":"embed-film-room.html"},{"key":"grade-book","label":"Grades","title":"Grade Book","desc":"NFL player grades, camp intel and fantasy lens","src":"embed-grade-book.html"},{"key":"player-props","label":"Props","title":"NFL Player Props","desc":"Role, matchup and player-prop research","src":"embed-nfl-player-props.html"}]}</script><script>
 (function(){
   'use strict';
   const config=JSON.parse(document.getElementById('hubConfig').textContent),frame=document.getElementById('toolFrame'),loader=document.getElementById('frameLoader'),loaderText=document.getElementById('loaderText'),tabs=[...document.querySelectorAll('.hub-tab')],picks=[...document.querySelectorAll('.pick-card')],pickScreen=document.getElementById('hubPick'),activeTitle=document.getElementById('activeTitle'),activeDesc=document.getElementById('activeDesc'),sectionCount=document.getElementById('sectionCount'),hubIdle=document.getElementById('hubIdle'),menu=document.getElementById('mobileMenu'),burger=document.getElementById('hamburgerBtn');

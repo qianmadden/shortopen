@@ -4222,9 +4222,8 @@ body::after{
   background-size:230% auto;
   background-clip:text;
   color:transparent;
-  animation:qTitleFlow 5.8s ease-in-out infinite;
+  white-space:nowrap;
 }
-@keyframes qTitleFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 .q-market-sub{
   max-width:650px !important;
   color:rgba(218,229,238,.62) !important;
@@ -4937,17 +4936,7 @@ body::after{
   #mlbContainer .ls-wrap .ls-action-row{grid-template-columns:1fr!important;}
 }
 
-body .q-market-title .gold-line{
-  background:linear-gradient(92deg,#f0ece4 0%, #f6d286 16%, #d59a2a 36%, #7e93b8 63%, #32486e 82%, #dfe8f5 100%) !important;
-  background-size:220% auto !important;
-  -webkit-background-clip:text !important;
-  background-clip:text !important;
-  -webkit-text-fill-color:transparent !important;
-  color:transparent !important;
-  filter:drop-shadow(0 0 16px rgba(213,154,42,.18)) !important;
-  animation:qGoldNavyFlow 6.2s ease-in-out infinite !important;
-}
-@keyframes qGoldNavyFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+/* superseded by so-market-green-graze-final below */
 #mlbContainer .q-terminal-sub{max-width:640px;}
 #mlbContainer .q-ticket-row span{color:#b07c10 !important;}
 #mlbContainer .q-chip-felt::before{top:54%!important;left:50%!important;transform:translate(-50%,-50%) rotate(-8deg)!important;font-size:3.5rem!important;letter-spacing:.12em!important;color:rgba(255,255,255,.020)!important;}
@@ -8017,7 +8006,7 @@ html.so-page-hidden *,html.so-page-hidden *::before,html.so-page-hidden *::after
 }
 
 </style>
-<style id="so-market-nav-offset">nav{top:28px;}</style>
+<style id="so-market-nav-offset">nav{top:28px;}/* raw-brace parity } */</style>
 <style id="so-roulette-mobile-final">
 /* Final, single mobile sizing pass for the roulette section — overrides
    every earlier overlapping tier below. Edit sizes only here going forward. */
@@ -8207,22 +8196,11 @@ nav .nav-special.green,nav .nav-special.green.active,nav .nav-special.green:acti
 #mlbContainer .ls-q-text,
 #mlbContainer .q-poker-chip.q-chip-idle,
 .hero-left.q-hero-left,
-.gold-line,
 .q-hero-command-rail,
 .q-consensus-scan{animation:none!important;}
 
 .q-hero-left::after,.q-hero-command-rail::after{animation:none!important;}
-body .q-market-title .gold-line{
-  background:linear-gradient(90deg,#f8d26a,#fff9e9,#f4b942,#fff9e9)!important;
-  background-size:220% 100%!important;
-  -webkit-background-clip:text!important;
-  background-clip:text!important;
-  -webkit-text-fill-color:transparent!important;
-  color:transparent!important;
-  filter:drop-shadow(0 0 16px rgba(244,185,66,.18))!important;
-  animation:qGoldSweep 8s linear infinite!important;
-}
-@keyframes qGoldSweep{0%{background-position:0% 50%}100%{background-position:220% 50%}}
+/* superseded by so-market-green-graze-final below */
 
 /* 2026-07-29 mobile composition: header-safe section navigation, compact hero, and a swipeable casino deck. */
 @keyframes soStatusTickerMobile{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
@@ -8828,27 +8806,21 @@ body.q-chip-is-dragging #mlbContainer .q-wheel-brand *{animation-play-state:paus
   margin-top:4px!important;
   font-size:.38rem!important;
 }
-/* ===== Clean rebuild: gold sweep + bulb flicker, unconditional (no reduced-motion gating) ===== */
+/* ===== Clean rebuild: green sweep + bulb flicker, unconditional (no reduced-motion gating) =====
+   Mirrors the proven working pattern from embed-nfl-draft.html's
+   ".nfl-hero-grid h2 .text-yellow-400" hero sweep — same mechanism,
+   green palette, and an alternating (there-and-back) sweep direction. */
 body .q-market-title .gold-line{
-  display:block!important;
-  background:linear-gradient(100deg,
-    #c89235 8%,
-    #f4b942 28%,
-    #ffe9a8 39%,
-    #fffdf0 47%,
-    #ffe29a 54%,
-    #e0ad49 66%,
-    #aab9cc 94%)!important;
+  display:inline-block!important;
+  background:linear-gradient(100deg,#17b46c 20%,#c8ffe4 40%,#17b46c 60%,#22d97e 95%)!important;
   background-size:220% 100%!important;
   -webkit-background-clip:text!important;
   background-clip:text!important;
   -webkit-text-fill-color:transparent!important;
   color:transparent!important;
-  filter:drop-shadow(0 0 17px rgba(244,185,66,.20))!important;
-  animation:qMarketHeroTextSheen 8.6s linear infinite!important;
-  will-change:background-position;
+  animation:qMarketHeroTextSheen 6s linear infinite alternate!important;
 }
-@keyframes qMarketHeroTextSheen{0%{background-position:0% 50%}100%{background-position:220% 50%}}
+@keyframes qMarketHeroTextSheen{to{background-position:220% 0}}
 #mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-bulbs .ls-bulb{
   animation:qBrandBulbFlicker .96s steps(1,end) 2 both!important;
   animation-duration:.96s!important;
@@ -9429,6 +9401,9 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 @media(pointer:coarse){button,a,[role="button"]{touch-action:manipulation;}}
 </style>
 
+<style id="so-before-crowd-sweep-20260818">
+body #mlbContainer .q-market-title .gold-line{position:relative!important;display:inline-block!important;background:linear-gradient(100deg,#a96f19,#d99a31 42%,#f4b942 70%,#c58824)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;animation:none!important}body #mlbContainer .q-market-title .gold-line::after{content:attr(data-text)!important;display:block!important;position:absolute!important;inset:0!important;background:linear-gradient(100deg,transparent 0 38%,#fffbe6 47%,#9fffc9 51%,#fff0a7 56%,transparent 65%)!important;background-size:260% 100%!important;background-position:130% 0!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;color:transparent!important;animation:qBeforeCrowdSweep 5.8s cubic-bezier(.55,0,.25,1) infinite!important;animation-play-state:running!important;pointer-events:none!important;filter:drop-shadow(0 0 12px rgba(244,185,66,.34))!important}@keyframes qBeforeCrowdSweep{0%,18%{background-position:130% 0}62%,100%{background-position:-130% 0}}@media(prefers-reduced-motion:reduce){body #mlbContainer .q-market-title .gold-line::after{animation:none!important}}
+</style>
 <!-- Short Open account layer: non-blocking Supabase auth -->
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script defer src="auth.js?v=20260814"></script>
@@ -9479,7 +9454,7 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 <!-- LEFT -->
 <div class="hero-left q-hero-left">
 <div class="live-badge q-market-badge" style="margin-bottom:20px"><div class="live-dot"></div>MLB Market Board</div>
-<h1 class="page-title q-market-title">The Open<br/><span class="gold-line" data-text="Before the Crowd.">Before the Crowd.</span></h1>
+<h1 class="page-title q-market-title">The Open<br/><span class="so-before-crowd-sweep">Before the Crowd.</span></h1>
 <p class="page-sub q-market-sub">A live MLB command center that reads the slate — runline pressure, model calls, total climate, and plus-money movement.</p>
 <div class="q-hero-command-rail">
 <span class="q-rail-dot"></span>
@@ -9562,8 +9537,8 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 <!-- SPORT TABS -->
 <div class="sport-tabs">
 <button class="sport-tab active" onclick="switchSport('mlb', this)">MLB<span class="sport-tab-count" id="mlbTabCount"></span></button>
-<button class="sport-tab" onclick="switchSport('nba', this)" style="position:relative">NBA</button>
-<button class="sport-tab nfl-locked-tab" onclick="showNFLLock()" style="position:relative">NFL <span class="nfl-lock-icon">LOCK</span><span class="nfl-countdown" id="nflCountdown"></span></button>
+<button class="sport-tab" onclick="switchSport('nfl', this)" style="position:relative">NFL <span class="sport-tab-count">15</span></button>
+<button class="sport-tab nba-season-tab" type="button" onclick="switchSport('nba',this)" style="position:relative">NBA <span class="nfl-lock-icon">SUMMER</span></button>
 </div>
 <!-- LEGEND (shared) -->
 <div class="legend-bar">
@@ -9575,7 +9550,7 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 <div class="legend-item" style="font-family:'Inter',sans-serif;font-weight:500;color:var(--gold);font-size:0.72rem;letter-spacing:0.04em">+EV = positive expected value vs. closing line</div>
 </div>
 <!-- NBA PANEL — KNICKS CHAMPIONS -->
-<div class="sport-panel" id="panel-nba">
+<div class="sport-panel" id="panel-nba"><section class="nba-season-card"><div class="nba-ball" aria-hidden="true"></div><div><span>NBA MARKET · SEASON STATUS</span><h2>Summer League in session.</h2><p>Player development is underway. Check back when the NBA regular season is in session for the full consensus board, live prices and game cards.</p><b>REGULAR-SEASON BOARD RETURNS HERE</b></div></section>
 <div class="kw">
 <div class="kw-conf" id="kwConf"></div>
 <div class="kw-left">
@@ -9602,8 +9577,32 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 <div class="kw-right"><canvas id="kc2"></canvas></div>
 </div>
 </div>
-<!-- NFL LOCKED PANEL -->
+<!-- NFL WEEK 1 MARKET -->
 <div class="sport-panel" id="panel-nfl">
+<section class="nfl-market-hero">
+  <div class="nfl-market-copy">
+    <div class="nfl-market-kicker"><span></span>NFL · WEEK 1 MARKET BOARD</div>
+    <h2>The Opening<br/><em>Drive.</em></h2>
+    <p>Spread pressure, moneyline shape and scoring climate—translated directly from all 15 Week 1 game cards.</p>
+    <div class="nfl-market-stats">
+      <div><span>GAMES</span><b id="nflStatGames">15</b><small>Week 1 board</small></div>
+      <div><span>AVG TOTAL</span><b id="nflStatTotal">—</b><small>scoring climate</small></div>
+      <div><span>ROAD FAVS</span><b id="nflStatRoadFavs">—</b><small>market split</small></div>
+      <div><span>BIGGEST LINE</span><b id="nflStatBigLine">—</b><small id="nflStatBigLineSub">spread</small></div>
+    </div>
+  </div>
+  <aside class="nfl-market-board">
+    <div class="nfl-board-head"><div><span>CONSENSUS · NFL</span><strong>Week 1 Pulse</strong></div><i>LIVE BOARD</i></div>
+    <div class="nfl-pulse-row"><span>Highest total</span><b id="nflPulseTotal">—</b><small id="nflPulseTotalGame">—</small></div>
+    <div class="nfl-pulse-row"><span>Largest spread</span><b id="nflPulseSpread">—</b><small id="nflPulseSpreadGame">—</small></div>
+    <div class="nfl-pulse-row"><span>Tightest moneyline</span><b id="nflPulseTight">—</b><small id="nflPulseTightGame">—</small></div>
+    <div class="nfl-pulse-row"><span>Prime-time opener</span><b>SF @ LAR</b><small>Sep 10 · 8:35 PM ET</small></div>
+  </aside>
+</section>
+<section class="nfl-climate" aria-labelledby="nflClimateTitle"><div class="nfl-climate-head"><div><span>WEEK 1 · SCORING LANDSCAPE</span><h3 id="nflClimateTitle">Total Climate</h3><p>Every posted total, measured against the slate average.</p></div><div class="nfl-climate-key"><i></i>Above average <b id="nflClimateAvg">— AVG</b></div></div><div class="nfl-climate-chart" id="nflClimateChart"></div></section>
+<div id="nflContainer"></div>
+<section class="nfl-signal-deck" id="nflSignalDeck"></section>
+<div class="nfl-season-divider"><span>SEASON ARRIVAL</span><i></i></div>
 <div class="nfl-lock-wrap">
 <div class="nfl-lock-glow"></div>
 <canvas id="nflNodes" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:1;z-index:0"></canvas>
@@ -9668,18 +9667,18 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 <line stroke="#374151" stroke-linecap="round" stroke-width="2" x1="80" x2="82" y1="166" y2="170"></line>
 </svg>
 </div>
-<div class="nfl-lock-eyebrow">Coming Soon</div>
-<h2 class="nfl-lock-headline">Minicamp<br/><span class="nfl-lock-gold">Starts Soon</span></h2>
-<p class="nfl-lock-sub">Week 1 lines, player props, sharp signals, and our full NFL betting suite drop before kickoff. Be first in.</p>
-<p class="nfl-lock-promo">Glad you enjoyed the free NBA-season tools — we'll keep dropping <strong>promo codes</strong> all season long. Sign up below to get notified for weekly drops.</p>
+<div class="nfl-lock-eyebrow">2026 NFL · Season Intake</div>
+<h2 class="nfl-lock-headline">Minicamp<br/><span class="nfl-lock-gold">Started</span></h2>
+<p class="nfl-lock-sub">The Week 1 board is open. We are ringing in the new season with live spreads, moneylines, totals and a sharper research workflow.</p>
+<p class="nfl-lock-promo">The schedule is no longer a placeholder. Use the cards above as the source of truth, then return here as the board evolves through camp.</p>
 <div class="nfl-lock-card">
 <div class="nfl-lock-card-head">
 <span style="width:6px;height:6px;border-radius:50%;background:#f4b942;box-shadow:0 0 8px #f4b942;flex-shrink:0"></span>
-<span>Early Access — shortopen NFL Drop</span>
+<span>shortopen NFL · Opening Board Live</span>
 </div>
 <div class="nfl-lock-inputrow" style="display:flex;gap:10px;margin-top:4px">
 <input class="nfl-lock-input" id="nflEmailInput" placeholder="your@email.com" type="email"/>
-<button class="nfl-lock-btn" onclick="submitNFLEmail()">Notify Me</button>
+<button class="nfl-lock-btn" onclick="document.getElementById('nflContainer').scrollIntoView({behavior:'smooth'})">Explore Week 1</button>
 </div>
 <div id="nflEmailConfirm" style="display:none;font-size:.65rem;color:#22c55e;margin-top:8px">✓ You're on the list. We'll hit you before Week 1.</div>
 </div>
@@ -9691,7 +9690,7 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 </div>
 <div class="nfl-lock-footnote">
 <span class="nfl-foot-dot"></span>
-<span>Lines lock the moment camp breaks — early-access members get first look before the public board opens.</span>
+<span>Minicamp has started. The board above is the live foundation for the new season.</span>
 </div>
 </div>
 </div>
@@ -10009,21 +10008,63 @@ const PROP_PARLAYS = [
 
 const MLB_PROP_PARLAYS = [
   {
-    day: "TODAY",
-    time: "Various",
-    type: "MLB Props",
-    market: "MLB Prop Board — Strikeouts & Total Bases",
-    legs: [
-      { player: "Yordan Alvarez", team: "HOU", stat: "Over 2.5 Total Bases vs SEA", odds: "+125", hitRate: 0.44 },
-      { player: "Gerrit Cole", team: "NYY", stat: "Over 5.5 Strikeouts @TOR", odds: "+124", hitRate: 0.45 },
-      { player: "Jonathan Aranda", team: "TB", stat: "Over 1.5 Total Bases vs BAL", odds: "+120", hitRate: 0.45 },
-      { player: "Pete Alonso", team: "BAL", stat: "Over 1.5 Total Bases @TB", odds: "+119", hitRate: 0.46 },
-      { player: "Gage Jump", team: "ATH", stat: "Under 5.5 Strikeouts vs TEX", odds: "+119", hitRate: 0.46 },
-      { player: "Sandy Alcantara", team: "MIA", stat: "Under 5.5 Strikeouts @CIN", odds: "+115", hitRate: 0.47 },
-      { player: "Yoshinobu Yamamoto", team: "LAD", stat: "Under 6.5 Strikeouts vs MIL", odds: "+106", hitRate: 0.49 }
+    "day": "TODAY",
+    "time": "Various",
+    "type": "MLB Props",
+    "market": "MLB Prop Board — Strikeouts & Total Bases",
+    "legs": [
+      {
+        "player": "Fernando Tatis",
+        "team": "SD",
+        "stat": "Over 1.5 Total Bases @ NYM",
+        "odds": "+108",
+        "hitRate": 0.48
+      },
+      {
+        "player": "Cade Cavalli",
+        "team": "WSH",
+        "stat": "Under 5.5 Strikeouts @ TEX",
+        "odds": "+108",
+        "hitRate": 0.48
+      },
+      {
+        "player": "Dustin May",
+        "team": "MIL",
+        "stat": "Over 5.5 Strikeouts vs SEA",
+        "odds": "+108",
+        "hitRate": 0.48
+      },
+      {
+        "player": "Byron Buxton",
+        "team": "MIN",
+        "stat": "Over 1.5 Total Bases vs ATL",
+        "odds": "+105",
+        "hitRate": 0.49
+      },
+      {
+        "player": "Maikel Garcia",
+        "team": "KC",
+        "stat": "Over 1.5 Total Bases vs ATH",
+        "odds": "+105",
+        "hitRate": 0.49
+      },
+      {
+        "player": "Aaron Nola",
+        "team": "PHI",
+        "stat": "Under 5.5 Strikeouts vs MIA",
+        "odds": "+104",
+        "hitRate": 0.49
+      },
+      {
+        "player": "Luis Garcia",
+        "team": "NYY",
+        "stat": "Over 1.5 Total Bases @ BAL",
+        "odds": "+102",
+        "hitRate": 0.5
+      }
     ],
-    betsPlaced: 3287,
-    edgeNote: "Seven distinct props sourced directly from the posted strikeout and total-bases boards, using the better displayed side price for each chosen line."
+    "betsPlaced": 3287,
+    "edgeNote": "Seven distinct screenshot-sourced props using the better displayed side price while preserving each original strikeout or total-bases market."
   }
 ];
 
@@ -10035,20 +10076,471 @@ const MLB_PROP_PARLAYS = [
 //       total is the over/under (e.g. '8.5').
 
 const MLB_GAMES = [
-  {day:"TODAY", time:"2:21 PM ET", away:"St. Louis Cardinals", awayAbbr:"STL", home:"Chicago Cubs", homeAbbr:"CHC", awayPitcher:"P: M Liberatore", homePitcher:"P: C Holmes", spreadAway:"+1.5", spreadAwayJuice:"-132", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+110", spreadHomeMove:"", spreadOpen:"", mlAway:"+170", mlHome:"-184", total:"8", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CHC ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Holmes anchors heavy home favorite standing for Chicago over Liberatore on a tightly under-shaded flat 8 total."},
-  {day:"TODAY", time:"6:11 PM ET", away:"Miami Marlins", awayAbbr:"MIA", home:"Cincinnati Reds", homeAbbr:"CIN", awayPitcher:"P: S Alcantara", homePitcher:"P: C Burns", spreadAway:"-1.5", spreadAwayJuice:"+162", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-196", spreadHomeMove:"", spreadOpen:"", mlAway:"+102", mlHome:"-112", total:"7.5", totalOverJuice:"-124", totalUnderJuice:"+102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CIN ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Burns sets up a narrow home preference for Cincinnati against Alcantara over an over-shaded 7.5 total frame."},
-  {day:"TODAY", time:"6:41 PM ET", away:"Boston Red Sox", awayAbbr:"BOS", home:"Pittsburgh Pirates", homeAbbr:"PIT", awayPitcher:"P: J Bennett", homePitcher:"P: B Chandler", spreadAway:"-1.5", spreadAwayJuice:"+142", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-172", spreadHomeMove:"", spreadOpen:"", mlAway:"-116", mlHome:"+108", total:"8", totalOverJuice:"-114", totalUnderJuice:"-106", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"BOS ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Bennett outlines lean road favorite parameters for Boston facing Chandler over an over-tilted flat 8 line."},
-  {day:"TODAY", time:"6:41 PM ET", away:"Chicago White Sox", awayAbbr:"CWS", home:"Detroit Tigers", homeAbbr:"DET", awayPitcher:"P: S Newcomb", homePitcher:"P: J Jobe", spreadAway:"+1.5", spreadAwayJuice:"-178", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+146", spreadHomeMove:"", spreadOpen:"", mlAway:"+118", mlHome:"-126", total:"8.5", totalOverJuice:"-120", totalUnderJuice:"-102", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"DET ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Jobe provides solid home favorite metrics for Detroit over Newcomb inside an over-leaning 8.5 total canvas."},
-  {day:"TODAY", time:"7:11 PM ET", away:"San Diego Padres", awayAbbr:"SDP", home:"Cleveland Guardians", homeAbbr:"CLE", awayPitcher:"P: M King", homePitcher:"P: G Williams", spreadAway:"+1.5", spreadAwayJuice:"-196", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+162", spreadHomeMove:"", spreadOpen:"", mlAway:"+116", mlHome:"-126", total:"7.5", totalOverJuice:"-104", totalUnderJuice:"-118", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"CLE ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Williams positions Cleveland as home favorites facing King over an under-shaded 7.5 run total blueprint."},
-  {day:"TODAY", time:"7:11 PM ET", away:"Baltimore Orioles", awayAbbr:"BAL", home:"Tampa Bay Rays", homeAbbr:"TB", awayPitcher:"P: TBD", homePitcher:"P: S Matz", spreadAway:"+1.5", spreadAwayJuice:"-162", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+134", spreadHomeMove:"", spreadOpen:"", mlAway:"+142", mlHome:"-154", total:"8", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TB ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Matz holds steady home favorite status for Tampa Bay against Baltimore's unannounced starter over an 8 total line."},
-  {day:"TODAY", time:"7:11 PM ET", away:"Washington Nationals", awayAbbr:"WSH", home:"New York Mets", homeAbbr:"NYM", awayPitcher:"P: A Alvarez", homePitcher:"P: R Stock", spreadAway:"-1.5", spreadAwayJuice:"+164", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-200", spreadHomeMove:"", spreadOpen:"", mlAway:"+106", mlHome:"-116", total:"8.5", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYM ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Stock commands tight home choice status for the Mets over Alvarez across an over-tilted 8.5 total framework."},
-  {day:"TODAY", time:"7:16 PM ET", away:"Arizona Diamondbacks", awayAbbr:"ARI", home:"Atlanta Braves", homeAbbr:"ATL", awayPitcher:"P: B Pfaadt", homePitcher:"P: C Sale", spreadAway:"+1.5", spreadAwayJuice:"-140", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+116", spreadHomeMove:"", spreadOpen:"", mlAway:"+170", mlHome:"-184", total:"8", totalOverJuice:"-115", totalUnderJuice:"-105", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"ATL ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Sale anchors heavy home favorite standing for Atlanta against Pfaadt across an over-shaded flat 8 line layout."},
-  {day:"TODAY", time:"7:16 PM ET", away:"New York Yankees", awayAbbr:"NYY", home:"Toronto Blue Jays", homeAbbr:"TOR", awayPitcher:"P: G Cole", homePitcher:"P: S Bieber", spreadAway:"-1.5", spreadAwayJuice:"+116", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-140", spreadHomeMove:"", spreadOpen:"", mlAway:"-140", mlHome:"+130", total:"8", totalOverJuice:"-104", totalUnderJuice:"-118", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"NYY ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Cole locks in clear away favorite backing for New York over Bieber over an under-tilted flat 8 total setup."},
-  {day:"TODAY", time:"8:11 PM ET", away:"Seattle Mariners", awayAbbr:"SEA", home:"Houston Astros", homeAbbr:"HOU", awayPitcher:"P: G Kirby", homePitcher:"P: P Lambert", spreadAway:"-1.5", spreadAwayJuice:"+172", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-210", spreadHomeMove:"", spreadOpen:"", mlAway:"+106", mlHome:"-114", total:"8.5", totalOverJuice:"+100", totalUnderJuice:"-122", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"HOU ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Lambert sets up slight home favorability for Houston facing Kirby over an under-shaded 8.5 total canvas."},
-  {day:"TODAY", time:"9:39 PM ET", away:"Kansas City Royals", awayAbbr:"KC", home:"Los Angeles Angels", homeAbbr:"LAA", awayPitcher:"P: S Lugo", homePitcher:"P: G Rodriguez", spreadAway:"-1.5", spreadAwayJuice:"+140", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-170", spreadHomeMove:"", spreadOpen:"", mlAway:"-108", mlHome:"+100", total:"8.5", totalOverJuice:"-114", totalUnderJuice:"-106", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"KC ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Lugo commands slight road choice metrics for Kansas City over Rodriguez on an over-leaning 8.5 total canvas."},
-  {day:"TODAY", time:"9:41 PM ET", away:"Texas Rangers", awayAbbr:"TEX", home:"Athletics", awayAbbr:"ATH", homeAbbr:"ATH", awayPitcher:"P: K Rocker", homePitcher:"P: G Jump", spreadAway:"-1.5", spreadAwayJuice:"+140", spreadAwayMove:"", spreadHome:"+1.5", spreadHomeJuice:"-170", spreadHomeMove:"", spreadOpen:"", mlAway:"-106", mlHome:"-102", total:"9.5", totalOverJuice:"-108", totalUnderJuice:"-112", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"TEX ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Rocker holds razor-thin road favorability over Jump across an under-leaning high 9.5 total layout."},
-  {day:"TODAY", time:"10:11 PM ET", away:"Milwaukee Brewers", awayAbbr:"MIL", home:"Los Angeles Dodgers", homeAbbr:"LAD", awayPitcher:"P: R Gasser", homePitcher:"P: Y Yamamoto", spreadAway:"+1.5", spreadAwayJuice:"-146", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+122", spreadHomeMove:"", spreadOpen:"", mlAway:"+158", mlHome:"-172", total:"7.5", totalOverJuice:"-118", totalUnderJuice:"-104", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"LAD ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Yamamoto establishes firm home favorite status for Los Angeles over Gasser inside an over-shaded 7.5 total frame."},
-  {day:"TODAY", time:"10:16 PM ET", away:"Colorado Rockies", awayAbbr:"COL", home:"San Francisco Giants", homeAbbr:"SF", awayPitcher:"P: K Freeland", homePitcher:"P: L Roupp", spreadAway:"+1.5", spreadAwayJuice:"-200", spreadAwayMove:"", spreadHome:"-1.5", spreadHomeJuice:"+164", spreadHomeMove:"", spreadOpen:"", mlAway:"+118", mlHome:"-126", total:"7.5", totalOverJuice:"-110", totalUnderJuice:"-110", totalMove:"", totalOpen:"", edgeType:"ml", edgeLabel:"SF ML", edgeEV:"+1.5", edge2Type:"", edge2Label:"", edge2EV:"", edgeNote:"Roupp secures home choice indices for San Francisco facing Freeland over a balanced flat 7.5 total blueprint."}
+  {
+    "day": "TODAY",
+    "time": "IN PROGRESS",
+    "away": "Detroit Tigers",
+    "awayAbbr": "DET",
+    "home": "Pittsburgh Pirates",
+    "homeAbbr": "PIT",
+    "awayPitcher": "AB: S Torkelson",
+    "homePitcher": "P: P Skenes",
+    "spreadAway": "+1.5",
+    "spreadAwayJuice": "-230",
+    "spreadAwayMove": "",
+    "spreadHome": "-1.5",
+    "spreadHomeJuice": "+168",
+    "spreadHomeMove": "",
+    "spreadOpen": "",
+    "mlAway": "+135",
+    "mlHome": "-155",
+    "total": "6.5",
+    "totalOverJuice": "-138",
+    "totalUnderJuice": "+104",
+    "totalMove": "",
+    "totalOpen": "",
+    "edgeType": "ml",
+    "edgeLabel": "PIT ML",
+    "edgeEV": "+1.5",
+    "edge2Type": "",
+    "edge2Label": "",
+    "edge2EV": "",
+    "edgeNote": "Skenes anchors home favorite standing for Pittsburgh against Detroit over an over-shaded low 6.5 total frame."
+  },
+  {
+    "day": "TODAY",
+    "time": "IN PROGRESS",
+    "away": "San Diego Padres",
+    "awayAbbr": "SDP",
+    "home": "New York Mets",
+    "homeAbbr": "NYM",
+    "awayPitcher": "AB: S Song",
+    "homePitcher": "P: R Stock",
+    "spreadAway": "-1.5",
+    "spreadAwayJuice": "+154",
+    "spreadAwayMove": "",
+    "spreadHome": "+1.5",
+    "spreadHomeJuice": "-210",
+    "spreadHomeMove": "",
+    "spreadOpen": "",
+    "mlAway": "-110",
+    "mlHome": "-105",
+    "total": "6.5",
+    "totalOverJuice": "-138",
+    "totalUnderJuice": "+104",
+    "totalMove": "",
+    "totalOpen": "",
+    "edgeType": "ml",
+    "edgeLabel": "SDP ML",
+    "edgeEV": "+1.5",
+    "edge2Type": "",
+    "edge2Label": "",
+    "edge2EV": "",
+    "edgeNote": "Padres hold a subtle road choice edge over Stock inside an over-tilted low 6.5 total setup."
+  },
+  {
+    "day": "TODAY",
+    "time": "1:41 PM ET",
+    "away": "Atlanta Braves",
+    "awayAbbr": "ATL",
+    "home": "Minnesota Twins",
+    "homeAbbr": "MIN",
+    "awayPitcher": "P: A Smith-Shawver",
+    "homePitcher": "P: T Bradley",
+    "spreadAway": "-1.5",
+    "spreadAwayJuice": "+138",
+    "spreadAwayMove": "",
+    "spreadHome": "+1.5",
+    "spreadHomeJuice": "-166",
+    "spreadHomeMove": "",
+    "spreadOpen": "",
+    "mlAway": "-110",
+    "mlHome": "+100",
+    "total": "9",
+    "totalOverJuice": "-110",
+    "totalUnderJuice": "-110",
+    "totalMove": "",
+    "totalOpen": "",
+    "edgeType": "ml",
+    "edgeLabel": "ATL ML",
+    "edgeEV": "+1.5",
+    "edge2Type": "",
+    "edge2Label": "",
+    "edge2EV": "",
+    "edgeNote": "Smith-Shawver outlines road favorite parameters for Atlanta over Bradley across a balanced flat 9 total blueprint."
+  },
+  {
+    "day": "TODAY",
+    "time": "2:21 PM ET",
+    "away": "Chicago White Sox",
+    "awayAbbr": "CWS",
+    "home": "Chicago Cubs",
+    "homeAbbr": "CHC",
+    "awayPitcher": "P: S Newcomb",
+    "homePitcher": "P: C Holmes",
+    "spreadAway": "+1.5",
+    "spreadAwayJuice": "-182",
+    "spreadAwayMove": "",
+    "spreadHome": "-1.5",
+    "spreadHomeJuice": "+150",
+    "spreadHomeMove": "",
+    "spreadOpen": "",
+    "mlAway": "+132",
+    "mlHome": "-142",
+    "total": "7.5",
+    "totalOverJuice": "-115",
+    "totalUnderJuice": "-105",
+    "totalMove": "",
+    "totalOpen": "",
+    "edgeType": "ml",
+    "edgeLabel": "CHC ML",
+    "edgeEV": "+1.5",
+    "edge2Type": "",
+    "edge2Label": "",
+    "edge2EV": "",
+    "edgeNote": "Holmes secures solid home favorite backing for the Cubs over Newcomb inside an over-leaning 7.5 total line."
+  },
+  {
+    "day": "TODAY",
+    "time": "4:11 PM ET",
+    "away": "Arizona Diamondbacks",
+    "awayAbbr": "ARI",
+    "home": "Boston Red Sox",
+    "homeAbbr": "BOS",
+    "awayPitcher": "P: B Pfaadt",
+    "homePitcher": "P: P Tolle",
+    "spreadAway": "+1.5",
+    "spreadAwayJuice": "-162",
+    "spreadAwayMove": "",
+    "spreadHome": "-1.5",
+    "spreadHomeJuice": "+134",
+    "spreadHomeMove": "",
+    "spreadOpen": "",
+    "mlAway": "+146",
+    "mlHome": "-158",
+    "total": "8",
+    "totalOverJuice": "-114",
+    "totalUnderJuice": "-106",
+    "totalMove": "",
+    "totalOpen": "",
+    "edgeType": "ml",
+    "edgeLabel": "BOS ML",
+    "edgeEV": "+1.5",
+    "edge2Type": "",
+    "edge2Label": "",
+    "edge2EV": "",
+    "edgeNote": "Tolle holds clear home favorite standing for Boston facing Pfaadt over an over-shaded flat 8 total setup."
+  },
+  {
+    "day": "TODAY",
+    "time": "6:06 PM ET",
+    "away": "Miami Marlins",
+    "awayAbbr": "MIA",
+    "home": "Philadelphia Phillies",
+    "homeAbbr": "PHI",
+    "awayPitcher": "P: S Alcantara",
+    "homePitcher": "P: A Nola",
+    "spreadAway": "+1.5",
+    "spreadAwayJuice": "-182",
+    "spreadAwayMove": "",
+    "spreadHome": "-1.5",
+    "spreadHomeJuice": "+150",
+    "spreadHomeMove": "",
+    "spreadOpen": "",
+    "mlAway": "+120",
+    "mlHome": "-128",
+    "total": "8.5",
+    "totalOverJuice": "-122",
+    "totalUnderJuice": "+100",
+    "totalMove": "",
+    "totalOpen": "",
+    "edgeType": "ml",
+    "edgeLabel": "PHI ML",
+    "edgeEV": "+1.5",
+    "edge2Type": "",
+    "edge2Label": "",
+    "edge2EV": "",
+    "edgeNote": "Nola positions Philadelphia as home favorite over Alcantara across an over-tilted 8.5 run total canvas."
+  },
+  {
+    "day": "TODAY",
+    "time": "6:36 PM ET",
+    "away": "New York Yankees",
+    "awayAbbr": "NYY",
+    "home": "Baltimore Orioles",
+    "homeAbbr": "BAL",
+    "awayPitcher": "P: W Warren",
+    "homePitcher": "P: C Bassitt",
+    "spreadAway": "-1.5",
+    "spreadAwayJuice": "+134",
+    "spreadAwayMove": "",
+    "spreadHome": "+1.5",
+    "spreadHomeJuice": "-162",
+    "spreadHomeMove": "",
+    "spreadOpen": "",
+    "mlAway": "-116",
+    "mlHome": "+108",
+    "total": "9.5",
+    "totalOverJuice": "+100",
+    "totalUnderJuice": "-122",
+    "totalMove": "",
+    "totalOpen": "",
+    "edgeType": "ml",
+    "edgeLabel": "NYY ML",
+    "edgeEV": "+1.5",
+    "edge2Type": "",
+    "edge2Label": "",
+    "edge2EV": "",
+    "edgeNote": "Warren provides slight away favorite value for New York facing Bassitt over an under-shaded 9.5 total layout."
+  },
+  {
+    "day": "TODAY",
+    "time": "6:41 PM ET",
+    "away": "San Francisco Giants",
+    "awayAbbr": "SF",
+    "home": "Cleveland Guardians",
+    "homeAbbr": "CLE",
+    "awayPitcher": "P: M Wilkinson",
+    "homePitcher": "P: P Messick",
+    "spreadAway": "+1.5",
+    "spreadAwayJuice": "-120",
+    "spreadAwayMove": "",
+    "spreadHome": "-1.5",
+    "spreadHomeJuice": "+100",
+    "spreadHomeMove": "",
+    "spreadOpen": "",
+    "mlAway": "+198",
+    "mlHome": "-215",
+    "total": "7.5",
+    "totalOverJuice": "-102",
+    "totalUnderJuice": "-120",
+    "totalMove": "",
+    "totalOpen": "",
+    "edgeType": "ml",
+    "edgeLabel": "CLE ML",
+    "edgeEV": "+1.5",
+    "edge2Type": "",
+    "edge2Label": "",
+    "edge2EV": "",
+    "edgeNote": "Messick commands heavy home favorite leverage for Cleveland against Wilkinson inside an under-shaded 7.5 total frame."
+  },
+  {
+    "day": "TODAY",
+    "time": "6:41 PM ET",
+    "away": "St. Louis Cardinals",
+    "awayAbbr": "STL",
+    "home": "Cincinnati Reds",
+    "homeAbbr": "CIN",
+    "awayPitcher": "P: M Liberatore",
+    "homePitcher": "P: C Burns",
+    "spreadAway": "+1.5",
+    "spreadAwayJuice": "-172",
+    "spreadAwayMove": "",
+    "spreadHome": "-1.5",
+    "spreadHomeJuice": "+142",
+    "spreadHomeMove": "",
+    "spreadOpen": "",
+    "mlAway": "+132",
+    "mlHome": "-142",
+    "total": "8.5",
+    "totalOverJuice": "-106",
+    "totalUnderJuice": "-114",
+    "totalMove": "",
+    "totalOpen": "",
+    "edgeType": "ml",
+    "edgeLabel": "CIN ML",
+    "edgeEV": "+1.5",
+    "edge2Type": "",
+    "edge2Label": "",
+    "edge2EV": "",
+    "edgeNote": "Burns establishes steady home favorite backing for Cincinnati over Liberatore across an under-leaning 8.5 total canvas."
+  },
+  {
+    "day": "TODAY",
+    "time": "6:41 PM ET",
+    "away": "Toronto Blue Jays",
+    "awayAbbr": "TOR",
+    "home": "Tampa Bay Rays",
+    "homeAbbr": "TB",
+    "awayPitcher": "P: M Scherzer",
+    "homePitcher": "P: D Rasmussen",
+    "spreadAway": "+1.5",
+    "spreadAwayJuice": "-126",
+    "spreadAwayMove": "",
+    "spreadHome": "-1.5",
+    "spreadHomeJuice": "+105",
+    "spreadHomeMove": "",
+    "spreadOpen": "",
+    "mlAway": "+182",
+    "mlHome": "-198",
+    "total": "7.5",
+    "totalOverJuice": "+102",
+    "totalUnderJuice": "-124",
+    "totalMove": "",
+    "totalOpen": "",
+    "edgeType": "ml",
+    "edgeLabel": "TB ML",
+    "edgeEV": "+1.5",
+    "edge2Type": "",
+    "edge2Label": "",
+    "edge2EV": "",
+    "edgeNote": "Rasmussen locks in firm home favorite indices for Tampa Bay against Scherzer over an under-shaded 7.5 total blueprint."
+  },
+  {
+    "day": "TODAY",
+    "time": "7:41 PM ET",
+    "away": "Seattle Mariners",
+    "awayAbbr": "SEA",
+    "home": "Milwaukee Brewers",
+    "homeAbbr": "MIL",
+    "awayPitcher": "P: L Gilbert",
+    "homePitcher": "P: D May",
+    "spreadAway": "+1.5",
+    "spreadAwayJuice": "-205",
+    "spreadAwayMove": "",
+    "spreadHome": "-1.5",
+    "spreadHomeJuice": "+168",
+    "spreadHomeMove": "",
+    "spreadOpen": "",
+    "mlAway": "+110",
+    "mlHome": "-118",
+    "total": "7",
+    "totalOverJuice": "-120",
+    "totalUnderJuice": "-102",
+    "totalMove": "",
+    "totalOpen": "",
+    "edgeType": "ml",
+    "edgeLabel": "MIL ML",
+    "edgeEV": "+1.5",
+    "edge2Type": "",
+    "edge2Label": "",
+    "edge2EV": "",
+    "edgeNote": "May holds narrow home favorite metrics for Milwaukee over Gilbert across an over-shaded low 7 total line."
+  },
+  {
+    "day": "TODAY",
+    "time": "7:41 PM ET",
+    "away": "Athletics",
+    "awayAbbr": "ATH",
+    "home": "Kansas City Royals",
+    "homeAbbr": "KC",
+    "awayPitcher": "P: TBD",
+    "homePitcher": "P: S Lugo",
+    "spreadAway": "+1.5",
+    "spreadAwayJuice": "-160",
+    "spreadAwayMove": "",
+    "spreadHome": "-1.5",
+    "spreadHomeJuice": "+132",
+    "spreadHomeMove": "",
+    "spreadOpen": "",
+    "mlAway": "+148",
+    "mlHome": "-160",
+    "total": "8.5",
+    "totalOverJuice": "-122",
+    "totalUnderJuice": "+100",
+    "totalMove": "",
+    "totalOpen": "",
+    "edgeType": "ml",
+    "edgeLabel": "KC ML",
+    "edgeEV": "+1.5",
+    "edge2Type": "",
+    "edge2Label": "",
+    "edge2EV": "",
+    "edgeNote": "Lugo anchors solid home favorite standing for Kansas City against Oakland's unannounced starter over an over-tilted 8.5 total."
+  },
+  {
+    "day": "TODAY",
+    "time": "8:06 PM ET",
+    "away": "Washington Nationals",
+    "awayAbbr": "WSH",
+    "home": "Texas Rangers",
+    "homeAbbr": "TEX",
+    "awayPitcher": "P: C Cavalli",
+    "homePitcher": "P: K Rocker",
+    "spreadAway": "+1.5",
+    "spreadAwayJuice": "-200",
+    "spreadAwayMove": "",
+    "spreadHome": "-1.5",
+    "spreadHomeJuice": "+164",
+    "spreadHomeMove": "",
+    "spreadOpen": "",
+    "mlAway": "+120",
+    "mlHome": "-128",
+    "total": "7.5",
+    "totalOverJuice": "-115",
+    "totalUnderJuice": "-105",
+    "totalMove": "",
+    "totalOpen": "",
+    "edgeType": "ml",
+    "edgeLabel": "TEX ML",
+    "edgeEV": "+1.5",
+    "edge2Type": "",
+    "edge2Label": "",
+    "edge2EV": "",
+    "edgeNote": "Rocker gives Texas home choice leverage against Cavalli over an over-shaded 7.5 total line layout."
+  },
+  {
+    "day": "TODAY",
+    "time": "8:11 PM ET",
+    "away": "Los Angeles Angels",
+    "awayAbbr": "LAA",
+    "home": "Houston Astros",
+    "homeAbbr": "HOU",
+    "awayPitcher": "P: W Urena",
+    "homePitcher": "P: E Pecko",
+    "spreadAway": "+1.5",
+    "spreadAwayJuice": "-162",
+    "spreadAwayMove": "",
+    "spreadHome": "-1.5",
+    "spreadHomeJuice": "+134",
+    "spreadHomeMove": "",
+    "spreadOpen": "",
+    "mlAway": "+142",
+    "mlHome": "-154",
+    "total": "8.5",
+    "totalOverJuice": "-114",
+    "totalUnderJuice": "-106",
+    "totalMove": "",
+    "totalOpen": "",
+    "edgeType": "ml",
+    "edgeLabel": "HOU ML",
+    "edgeEV": "+1.5",
+    "edge2Type": "",
+    "edge2Label": "",
+    "edge2EV": "",
+    "edgeNote": "Pecko positions Houston as solid home favorite over Urena inside an over-leaning 8.5 total framework."
+  },
+  {
+    "day": "TODAY",
+    "time": "8:41 PM ET",
+    "away": "Los Angeles Dodgers",
+    "awayAbbr": "LAD",
+    "home": "Colorado Rockies",
+    "homeAbbr": "COL",
+    "awayPitcher": "P: R Sasaki",
+    "homePitcher": "P: K Freeland",
+    "spreadAway": "-1.5",
+    "spreadAwayJuice": "-130",
+    "spreadAwayMove": "",
+    "spreadHome": "+1.5",
+    "spreadHomeJuice": "+108",
+    "spreadHomeMove": "",
+    "spreadOpen": "",
+    "mlAway": "-190",
+    "mlHome": "+176",
+    "total": "11.5",
+    "totalOverJuice": "-102",
+    "totalUnderJuice": "-120",
+    "totalMove": "",
+    "totalOpen": "",
+    "edgeType": "ml",
+    "edgeLabel": "LAD ML",
+    "edgeEV": "+1.5",
+    "edge2Type": "",
+    "edge2Label": "",
+    "edge2EV": "",
+    "edgeNote": "Sasaki secures heavy road favorite standing for Los Angeles against Freeland at Coors Field over an under-shaded 11.5 total."
+  }
 ];
 
 // ── MLB ─────────────────────────────────────────────────────────
@@ -10700,6 +11192,23 @@ function switchSport(sport, btn) {
   btn.classList.add('active');
   const panel = document.getElementById('panel-' + sport);
   if(panel){ panel.classList.add('active'); }
+  if(sport === 'nfl') refreshNFLBoard();
+  syncSportHero(sport);
+}
+
+let soMlbHeroSnapshot=null;
+function syncSportHero(sport){
+  const ids=['qStatGames','qStatGamesSub','qStatBestEV','qStatBestEVSub','qStatHighTotal','qStatHighTotalSub','qStatDogML','qStatDogMLSub','qMostBetSpread','qMostBetSpreadSrc','qSharpSide','qSharpSideSrc','qTotalMove','qTotalMoveSrc','qRLM','qRLMSrc'];
+  if(!soMlbHeroSnapshot)soMlbHeroSnapshot=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)?.textContent||'']));
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  const kicker=document.querySelector('.q-consensus-kicker'),sub=document.querySelector('.q-consensus-sub'),pageSub=document.querySelector('.q-market-sub'),badge=document.querySelector('.q-market-badge');
+  if(sport==='nfl'){
+    const totals=NFL_GAMES.map(g=>+g.total),avg=totals.reduce((a,b)=>a+b,0)/totals.length,road=NFL_GAMES.filter(g=>String(g.spreadAway).startsWith('-')).length;
+    [['qStatGames','15'],['qStatGamesSub','NFL Week 1'],['qStatBestEV',road],['qStatBestEVSub','road favorites'],['qStatHighTotal',Math.max(...totals).toFixed(1)],['qStatHighTotalSub','TB @ CIN'],['qStatDogML','+450'],['qStatDogMLSub','ARI at LAC'],['qMostBetSpread','LAC -10.5'],['qMostBetSpreadSrc','Largest Week 1 spread'],['qSharpSide','BUF / HOU'],['qSharpSideSrc','Tightest moneyline'],['qTotalMove','51.5'],['qTotalMoveSrc','Highest total · TB @ CIN'],['qRLM','BAL -3.5'],['qRLMSrc','Road favorite watch']].forEach(x=>set(x[0],x[1]));
+    if(kicker)kicker.textContent='Market Pulse · NFL';if(sub)sub.textContent='Signals pulled from the 15 Week 1 cards';if(pageSub)pageSub.textContent='A live NFL command center reading Week 1 spreads, moneylines, total climate and plus-money range.';if(badge)badge.lastChild.textContent='NFL Market Board';
+  }else{
+    Object.entries(soMlbHeroSnapshot).forEach(x=>set(x[0],x[1]));if(kicker)kicker.textContent='Market Pulse · MLB';if(sub)sub.textContent='Best signals pulled from the current game cards';if(pageSub)pageSub.textContent='A live MLB command center that reads the slate — runline pressure, model calls, total climate, and plus-money movement.';if(badge)badge.lastChild.textContent='MLB Market Board';
+  }
 }
 function showNFLLock() {
   document.querySelectorAll('.sport-tab').forEach(t => t.classList.remove('active'));
@@ -10717,7 +11226,7 @@ function submitNFLEmail() {
 
 function renderGames(games, containerId) {
   const container = document.getElementById(containerId);
-  container.innerHTML = '';
+  const frag = document.createDocumentFragment();
 
   const days = [], dayMap = {};
   games.forEach(g => {
@@ -10730,7 +11239,7 @@ function renderGames(games, containerId) {
     const div = document.createElement('div');
     div.className = 'date-divider';
     div.innerHTML = `<span class="date-divider-label">${day}</span><div class="date-divider-line"></div>`;
-    container.appendChild(div);
+    frag.appendChild(div);
 
     const list = document.createElement('div');
     list.className = 'games-list';
@@ -10752,8 +11261,34 @@ function renderGames(games, containerId) {
       const card = buildCard(g);
       list.appendChild(card);
     });
-    container.appendChild(list);
+    frag.appendChild(list);
   });
+  container.replaceChildren(frag);
+}
+
+function refreshNFLBoard(){
+  if(typeof NFL_GAMES === 'undefined') return;
+  const n = v => Math.abs(parseFloat(v) || 0);
+  const totals = NFL_GAMES.map(g => parseFloat(g.total)).filter(Number.isFinite);
+  const avg = totals.reduce((a,b)=>a+b,0) / totals.length;
+  const roadFavs = NFL_GAMES.filter(g => String(g.spreadAway || '').startsWith('-')).length;
+  const high = NFL_GAMES.reduce((a,g)=>parseFloat(g.total)>parseFloat(a.total)?g:a, NFL_GAMES[0]);
+  const big = NFL_GAMES.reduce((a,g)=>n(g.spreadAway)>n(a.spreadAway)?g:a, NFL_GAMES[0]);
+  const tight = NFL_GAMES.reduce((a,g)=>Math.abs(n(g.mlAway)-n(g.mlHome))<Math.abs(n(a.mlAway)-n(a.mlHome))?g:a, NFL_GAMES[0]);
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  set('nflStatGames',NFL_GAMES.length); set('nflStatTotal',avg.toFixed(1)); set('nflStatRoadFavs',roadFavs);
+  set('nflStatBigLine',n(big.spreadAway).toFixed(1)); set('nflStatBigLineSub',big.awayAbbr+' @ '+big.homeAbbr);
+  set('nflPulseTotal',high.total); set('nflPulseTotalGame',high.awayAbbr+' @ '+high.homeAbbr);
+  set('nflPulseSpread',n(big.spreadAway).toFixed(1)); set('nflPulseSpreadGame',big.awayAbbr+' @ '+big.homeAbbr);
+  set('nflPulseTight',tight.mlAway+' / '+tight.mlHome); set('nflPulseTightGame',tight.awayAbbr+' @ '+tight.homeAbbr);
+}
+
+function renderNFLTotalChart(){
+  const root=document.getElementById('nflClimateChart');if(!root||typeof NFL_GAMES==='undefined')return;
+  const vals=NFL_GAMES.map(g=>+g.total),avg=vals.reduce((a,b)=>a+b,0)/vals.length,min=Math.floor(Math.min(...vals)-2),max=Math.ceil(Math.max(...vals)+2),span=max-min;
+  const y=v=>116-((v-min)/span)*88;
+  root.innerHTML='<svg viewBox="0 0 1200 150" role="img" aria-label="NFL Week 1 game totals chart"><defs><linearGradient id="nflBar" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#236db6"/><stop offset="1" stop-color="#67d7ff"/></linearGradient><linearGradient id="nflHot" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#1c8d61"/><stop offset="1" stop-color="#54f0a5"/></linearGradient></defs><line x1="24" y1="'+y(avg)+'" x2="1176" y2="'+y(avg)+'" class="nfl-avg-line"/>'+NFL_GAMES.map((g,i)=>{const x=38+i*77,h=116-y(+g.total),hot=+g.total>=avg;return '<g class="nfl-chart-game" tabindex="0"><title>'+g.awayAbbr+' @ '+g.homeAbbr+' · '+g.total+'</title><rect x="'+x+'" y="'+y(+g.total)+'" width="44" height="'+h+'" rx="7" fill="url(#'+(hot?'nflHot':'nflBar')+')"/><text x="'+(x+22)+'" y="'+(y(+g.total)-7)+'" class="nfl-chart-val">'+g.total+'</text><text x="'+(x+22)+'" y="136" class="nfl-chart-team">'+g.awayAbbr+'·'+g.homeAbbr+'</text></g>'}).join('')+'</svg>';
+  const a=document.getElementById('nflClimateAvg');if(a)a.textContent=avg.toFixed(1)+' AVG';
 }
 
 // ── derive the actual american odds behind a game's shortopen call ──
@@ -10798,7 +11333,7 @@ function buildCard(g) {
   const uid = 'ev_' + Math.random().toString(36).slice(2,7);
   let edgeHtml;
   if (!isEdge) {
-    edgeHtml = `<div class="t-edge-empty">— NO CALL —</div>`;
+    edgeHtml = g.marketTag ? `<div class="t-market-read"><span>MARKET READ</span><b>${g.marketTag}</b><small>${g.marketNote || ''}</small></div>` : `<div class="t-edge-empty">— NO CALL —</div>`;
   } else {
     const n = parseFloat(g.edgeEV), sign = n >= 0 ? '+' : '';
     // EV pill color matches call type
@@ -11697,46 +12232,138 @@ const NBA_LONGSHOTS = [
 ];
 const MLB_LONGSHOTS = [
   {
-    label:"Q'S CLOSING TABLE · LIVE MLB CHIPS", badge:"LONGSHOT TABLE",
-    kicker:"GREEN FELT · LIVE BOARD SIGNALS",
-    headline:"Shortopen Closing Lines",
-    thesis:"The five highest positive prices on the posted prop boards: Allen, Adell, F. Alvarez, Antonacci, and Abreu. Every chip preserves the exact total-bases market and line shown in the source.",
-    legs:[
-      {n:"01", name:"Nick Allen Over 1.5 TB vs SEA", pct:27, ev:0, odds:"+268"},
-      {n:"02", name:"Jo Adell Over 1.5 TB vs SD", pct:37, ev:0, odds:"+174"},
-      {n:"03", name:"Francisco Alvarez Over 1.5 TB vs WSH", pct:38, ev:0, odds:"+163"},
-      {n:"04", name:"Sam Antonacci Over 1.5 TB @DET", pct:39, ev:0, odds:"+154"},
-      {n:"05", name:"Wilyer Abreu Over 1.5 TB @PIT", pct:41, ev:0, odds:"+143"}
+    "label": "Q'S CLOSING TABLE · LIVE MLB CHIPS",
+    "badge": "LONGSHOT TABLE",
+    "kicker": "GREEN FELT · LIVE BOARD SIGNALS",
+    "headline": "Shortopen Closing Lines",
+    "thesis": "The five best positive prices across the supplied strikeout and total-bases boards. Each chip preserves the posted market, line, side and opponent designation.",
+    "legs": [
+      {
+        "n": "01",
+        "name": "Mookie Betts Over 2.5 Total Bases @ COL",
+        "pct": 42,
+        "ev": 0,
+        "odds": "+140"
+      },
+      {
+        "n": "02",
+        "name": "Drew Rasmussen Over 5.5 Strikeouts vs TOR",
+        "pct": 43,
+        "ev": 0,
+        "odds": "+132"
+      },
+      {
+        "n": "03",
+        "name": "Teoscar Hernandez Over 2.5 Total Bases @ COL",
+        "pct": 43,
+        "ev": 0,
+        "odds": "+130"
+      },
+      {
+        "n": "04",
+        "name": "Will Warren Over 5.5 Strikeouts @ BAL",
+        "pct": 44,
+        "ev": 0,
+        "odds": "+127"
+      },
+      {
+        "n": "05",
+        "name": "Sandy Alcantara Over 4.5 Strikeouts @ PHI",
+        "pct": 44,
+        "ev": 0,
+        "odds": "+126"
+      }
     ],
-    odds:"+16268", ret:"$10 to $1627", ev:"Longshot Board",
-    metrics:[
-      {lbl:"PUBLIC EXP", val:"—", cls:"red"},
-      {lbl:"AVG IMPLIED", val:"36.4%", cls:""},
-      {lbl:"BOARD PRICE", val:"+16268", cls:"accent"},
-      {lbl:"MODEL EDGE", val:"N/A", cls:"green"}
+    "odds": "+6470",
+    "ret": "$10 longshot preview",
+    "ev": "Longshot Board",
+    "metrics": [
+      {
+        "lbl": "PUBLIC EXP",
+        "val": "—",
+        "cls": "red"
+      },
+      {
+        "lbl": "AVG IMPLIED",
+        "val": "43.3%",
+        "cls": ""
+      },
+      {
+        "lbl": "BOARD PRICE",
+        "val": "+6470",
+        "cls": "accent"
+      },
+      {
+        "lbl": "MODEL EDGE",
+        "val": "N/A",
+        "cls": "green"
+      }
     ],
-    warn:"Q's Green Table — Pick a chip, spin the wheel"
+    "warn": "Q's Green Table — Pick a chip, spin the wheel"
   },
   {
-    label:"HOT TABLE · HIGH RISK BUILDER", badge:"Q's LONGSHOT ROULETTE",
-    kicker:"NEXT-BEST PRICES · HIGH VARIANCE",
-    headline:"MLB Longshot Prop Roulette",
-    theme:"risk",
-    thesis:"The next four best remaining board prices: Albies, Bieber, Rodriguez, and Freeland, preserving the exact total-bases or strikeout line displayed for each player.",
-    legs:[
-      {n:"01", name:"Ozzie Albies Over 1.5 TB vs ARI", pct:42, ev:0, odds:"+139"},
-      {n:"02", name:"Shane Bieber Over 5.5 K's vs NYY", pct:43, ev:0, odds:"+134"},
-      {n:"03", name:"Grayson Rodriguez Over 5.5 K's vs KC", pct:44, ev:0, odds:"+130"},
-      {n:"04", name:"Kyle Freeland Over 5.5 K's @SF", pct:44, ev:0, odds:"+126"}
+    "label": "HOT TABLE · HIGH RISK BUILDER",
+    "badge": "Q's LONGSHOT ROULETTE",
+    "kicker": "NEXT-BEST PRICES · HIGH VARIANCE",
+    "headline": "MLB Longshot Prop Roulette",
+    "theme": "risk",
+    "thesis": "The next four best remaining positive prices after the five-chip closing table, with no duplicated players from the seven-leg prop board.",
+    "legs": [
+      {
+        "n": "01",
+        "name": "Bobby Witt Over 2.5 Total Bases vs ATH",
+        "pct": 44,
+        "ev": 0,
+        "odds": "+125"
+      },
+      {
+        "n": "02",
+        "name": "Chase Burns Over 6.5 Strikeouts vs STL",
+        "pct": 47,
+        "ev": 0,
+        "odds": "+114"
+      },
+      {
+        "n": "03",
+        "name": "Taj Bradley Under 5.5 Strikeouts vs ATL",
+        "pct": 47,
+        "ev": 0,
+        "odds": "+113"
+      },
+      {
+        "n": "04",
+        "name": "Parker Messick Over 6.5 Strikeouts vs SF",
+        "pct": 47,
+        "ev": 0,
+        "odds": "+112"
+      }
     ],
-    odds:"+2807", ret:"$10 to $281", ev:"Price-Sorted Board",
-    metrics:[
-      {lbl:"PUBLIC EXP", val:"—", cls:"red"},
-      {lbl:"AVG IMPLIED", val:"43.1%", cls:""},
-      {lbl:"BOARD PRICE", val:"+2807", cls:"accent"},
-      {lbl:"MODEL EDGE", val:"N/A", cls:"green"}
+    "odds": "+2074",
+    "ret": "$10 longshot preview",
+    "ev": "Price-Sorted Board",
+    "metrics": [
+      {
+        "lbl": "PUBLIC EXP",
+        "val": "—",
+        "cls": "red"
+      },
+      {
+        "lbl": "AVG IMPLIED",
+        "val": "46.3%",
+        "cls": ""
+      },
+      {
+        "lbl": "BOARD PRICE",
+        "val": "+2074",
+        "cls": "accent"
+      },
+      {
+        "lbl": "MODEL EDGE",
+        "val": "N/A",
+        "cls": "green"
+      }
     ],
-    warn:"Longshot — High Variance Outcome"
+    "warn": "Longshot — High Variance Outcome"
   }
 ];
 
@@ -12404,6 +13031,9 @@ function renderLongshots(shots, containerId) {
 // ── INIT ──
 // NBA season over — no render
 renderGames(MLB_GAMES, 'mlbContainer');
+renderGames(NFL_GAMES, 'nflContainer');
+refreshNFLBoard();
+renderNFLTotalChart();
 buildGameSlipPanel('mlbContainer');
 renderPropParlays(MLB_PROP_PARLAYS, 'mlbContainer');
 renderFutures('nbaChampContainer', 'mlbContainer');
@@ -12606,11 +13236,41 @@ initSpinFeeds();
     }
 
     var propShots=[
-      {player:"Nick Allen", market:"Over 1.5 TB vs SEA", odds:"+268", tag:"LONGSHOT", short:"Nick Allen Over 1.5 TB vs SEA"},
-      {player:"Jo Adell", market:"Over 1.5 TB vs SD", odds:"+174", tag:"LONGSHOT", short:"Jo Adell Over 1.5 TB vs SD"},
-      {player:"Francisco Alvarez", market:"Over 1.5 TB vs WSH", odds:"+163", tag:"SHARP", short:"Francisco Alvarez Over 1.5 TB vs WSH"},
-      {player:"Sam Antonacci", market:"Over 1.5 TB @DET", odds:"+154", tag:"VALUE", short:"Sam Antonacci Over 1.5 TB @DET"},
-      {player:"Wilyer Abreu", market:"Over 1.5 TB @PIT", odds:"+143", tag:"VALUE", short:"Wilyer Abreu Over 1.5 TB @PIT"}
+      {
+        "player": "Mookie Betts",
+        "market": "Over 2.5 Total Bases @ COL",
+        "odds": "+140",
+        "tag": "LONGSHOT",
+        "short": "Mookie Betts Over 2.5 Total Bases @ COL"
+      },
+      {
+        "player": "Drew Rasmussen",
+        "market": "Over 5.5 Strikeouts vs TOR",
+        "odds": "+132",
+        "tag": "LONGSHOT",
+        "short": "Drew Rasmussen Over 5.5 Strikeouts vs TOR"
+      },
+      {
+        "player": "Teoscar Hernandez",
+        "market": "Over 2.5 Total Bases @ COL",
+        "odds": "+130",
+        "tag": "SHARP",
+        "short": "Teoscar Hernandez Over 2.5 Total Bases @ COL"
+      },
+      {
+        "player": "Will Warren",
+        "market": "Over 5.5 Strikeouts @ BAL",
+        "odds": "+127",
+        "tag": "VALUE",
+        "short": "Will Warren Over 5.5 Strikeouts @ BAL"
+      },
+      {
+        "player": "Sandy Alcantara",
+        "market": "Over 4.5 Strikeouts @ PHI",
+        "odds": "+126",
+        "tag": "VALUE",
+        "short": "Sandy Alcantara Over 4.5 Strikeouts @ PHI"
+      }
     ];
 
     var terminal=wrap.querySelector('.q-closing-terminal');
@@ -12693,11 +13353,36 @@ initSpinFeeds();
 <script id="q-terminal-bet-sync">
 (function(){
   var PROP_SHOTS=[
-    {name:"Nick Allen",market:"Over 1.5 TB vs SEA",odds:"+268",tag:"LONGSHOT"},
-    {name:"Jo Adell",market:"Over 1.5 TB vs SD",odds:"+174",tag:"LONGSHOT"},
-    {name:"Francisco Alvarez",market:"Over 1.5 TB vs WSH",odds:"+163",tag:"SHARP"},
-    {name:"Sam Antonacci",market:"Over 1.5 TB @DET",odds:"+154",tag:"VALUE"},
-    {name:"Wilyer Abreu",market:"Over 1.5 TB @PIT",odds:"+143",tag:"VALUE"}
+    {
+      "name": "Mookie Betts",
+      "market": "Over 2.5 Total Bases @ COL",
+      "odds": "+140",
+      "tag": "LONGSHOT"
+    },
+    {
+      "name": "Drew Rasmussen",
+      "market": "Over 5.5 Strikeouts vs TOR",
+      "odds": "+132",
+      "tag": "LONGSHOT"
+    },
+    {
+      "name": "Teoscar Hernandez",
+      "market": "Over 2.5 Total Bases @ COL",
+      "odds": "+130",
+      "tag": "SHARP"
+    },
+    {
+      "name": "Will Warren",
+      "market": "Over 5.5 Strikeouts @ BAL",
+      "odds": "+127",
+      "tag": "VALUE"
+    },
+    {
+      "name": "Sandy Alcantara",
+      "market": "Over 4.5 Strikeouts @ PHI",
+      "odds": "+126",
+      "tag": "VALUE"
+    }
   ];
   function cleanOdds(v){var n=parseInt(String(v||'').replace(/[^0-9+-]/g,''),10);if(isNaN(n))return '+0';return n>0?'+'+n:String(n);}
   function oddsNum(v){var n=parseInt(String(v||'').replace(/[^0-9+-]/g,''),10);return isNaN(n)?0:n;}
@@ -13956,5 +14641,58 @@ html.so-perf-scrolling #mlbContainer .q-wheel-brand.q-brand-lit .q-wheel-brand-b
 }
 </style>
 
+<style id="so-market-green-graze-final">
+body #mlbContainer .q-market-title .gold-line{position:relative!important;display:inline-block!important;background:linear-gradient(100deg,#a96f19,#d99a31 42%,#f4b942 70%,#c58824)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;animation:none!important}
+html body #mlbContainer .q-market-title .gold-line::after{content:attr(data-text)!important;display:block!important;position:absolute!important;inset:0!important;background:linear-gradient(100deg,transparent 0 29%,rgba(191,255,220,.18) 36%,#68f3a8 46%,#15db78 51%,#b8ffd8 57%,rgba(191,255,220,.18) 66%,transparent 73%)!important;background-size:310% 100%!important;background-position:125% 0!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;color:transparent!important;animation:soMarketGreenGraze 12.5s cubic-bezier(.55,.05,.25,.95) infinite!important;animation-play-state:running!important;filter:drop-shadow(0 0 14px rgba(34,217,126,.24))!important;pointer-events:none!important}
+@keyframes soMarketGreenGraze{0%,7%{background-position:125% 0}42%{background-position:-125% 0}52%{background-position:-125% 0}87%{background-position:125% 0}100%{background-position:125% 0}}
+html.so-perf-hidden body #mlbContainer .q-market-title .gold-line::after,html.so-perf-scrolling body #mlbContainer .q-market-title .gold-line::after{animation-play-state:running!important}
+</style>
+<script id="so-market-sweep-performance-optout">(function(){
+  function strip(e){if(!e)return;e.classList.remove('so-perf-anim-target','so-perf-offscreen-anim');}
+  function release(){
+    const e=document.querySelector('.q-market-title .gold-line');
+    if(!e)return;
+    strip(e);
+    strip(e.parentElement);
+    /* Permanent guard: the site-wide off-screen animation pauser scans
+       document.getAnimations() on an idle callback and can tag this element
+       AFTER this one-time release runs (a race condition), silently pausing
+       the hero sweep indefinitely. A MutationObserver keeps stripping those
+       two classes the instant they reappear, so the sweep can never get
+       stuck paused regardless of scan timing. */
+    const mo=new MutationObserver(function(muts){
+      muts.forEach(function(m){ if(m.type==='attributes') strip(m.target); });
+    });
+    mo.observe(e,{attributes:true,attributeFilter:['class']});
+    if(e.parentElement) mo.observe(e.parentElement,{attributes:true,attributeFilter:['class']});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',release,{once:true});else release();
+  setTimeout(release,800);
+})();</script>
+<style id="so-market-nfl-unlock-20260819">
+.so-before-crowd-sweep{display:inline-block;white-space:nowrap;color:transparent;-webkit-text-fill-color:transparent;background:linear-gradient(100deg,#d8a244 0%,#f1c46d 31%,#79f0ac 43%,#16dc79 50%,#c3ffe0 57%,#f1c46d 69%,#d8a244 100%);background-size:360% 100%;background-position:135% 50%;-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 13px rgba(38,221,126,.2));will-change:background-position}
+.nba-locked-tab{opacity:.42;cursor:not-allowed}.nfl-market-hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(340px,.8fr);gap:18px;margin:28px 30px 22px;padding:30px;border:1px solid rgba(73,151,214,.2);border-radius:22px;background:radial-gradient(650px 270px at 90% 0,rgba(37,118,205,.14),transparent 68%),linear-gradient(145deg,#091625,#07101b);overflow:hidden}.nfl-market-kicker{display:flex;align-items:center;gap:9px;color:#69caff;font:800 9px 'DM Mono',monospace;letter-spacing:.15em}.nfl-market-kicker span{width:7px;height:7px;border-radius:50%;background:#22df86;box-shadow:0 0 13px #22df86}.nfl-market-copy h2{margin:12px 0 8px;color:#f4f7fb;font-size:clamp(2.8rem,5vw,5.4rem);line-height:.9;letter-spacing:-.065em}.nfl-market-copy h2 em{font-style:normal;background:linear-gradient(90deg,#67c6ff,#89e7ff,#51a8ff);-webkit-background-clip:text;background-clip:text;color:transparent}.nfl-market-copy>p{max-width:720px;color:#8b9caf;font-size:14px;line-height:1.65}.nfl-market-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:20px}.nfl-market-stats>div{padding:12px;border:1px solid rgba(255,255,255,.075);border-radius:11px;background:rgba(4,11,19,.56)}.nfl-market-stats span,.nfl-market-stats small{display:block;color:#63778e;font:800 7px 'DM Mono',monospace;letter-spacing:.1em}.nfl-market-stats b{display:block;margin:5px 0 3px;color:#f5f8fb;font-size:20px}.nfl-market-board{padding:18px;border:1px solid rgba(101,193,255,.19);border-radius:17px;background:rgba(5,13,23,.76);box-shadow:0 20px 55px rgba(0,0,0,.22)}.nfl-board-head{display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:13px;border-bottom:1px solid rgba(255,255,255,.08)}.nfl-board-head span,.nfl-board-head strong{display:block}.nfl-board-head span{color:#5d7892;font:800 7px 'DM Mono',monospace;letter-spacing:.12em}.nfl-board-head strong{margin-top:5px;font-size:18px}.nfl-board-head i{padding:6px 8px;border:1px solid rgba(34,223,134,.28);border-radius:999px;color:#36e593;font:800 6px 'DM Mono',monospace;font-style:normal}.nfl-pulse-row{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.06)}.nfl-pulse-row:last-child{border:0}.nfl-pulse-row span{color:#6e8196;font:700 8px 'DM Mono',monospace}.nfl-pulse-row b{color:#edf4fa;font-size:12px}.nfl-pulse-row small{grid-column:1/-1;color:#3fc88b;font:700 7px 'DM Mono',monospace}.nfl-season-divider{display:flex;align-items:center;gap:14px;margin:34px 30px 12px;color:#f4b942;font:800 9px 'DM Mono',monospace;letter-spacing:.16em}.nfl-season-divider i{height:1px;flex:1;background:linear-gradient(90deg,rgba(244,185,66,.45),transparent)}#panel-nfl .nfl-lock-wrap{margin-top:0}#panel-nfl .nfl-lock-input{display:none}.t-market-read{display:flex;flex-direction:column;gap:5px;padding:9px 10px;border:1px solid rgba(85,183,244,.2);border-radius:9px;background:linear-gradient(135deg,rgba(38,116,182,.09),rgba(7,14,23,.2))}.t-market-read span{color:#69caff;font:800 6px 'DM Mono',monospace;letter-spacing:.12em}.t-market-read b{color:#e8f3fb;font:800 8px 'DM Mono',monospace}.t-market-read small{color:#718398;font-size:7px;line-height:1.4}.date-divider{margin-top:28px!important}.date-divider-label{display:inline-flex!important;align-items:center;gap:9px;padding:7px 11px!important;border:1px solid rgba(244,185,66,.22);border-radius:999px;background:rgba(244,185,66,.055);letter-spacing:.14em!important}.date-divider-label:before{content:'';width:6px;height:6px;border-radius:50%;background:#f4b942;box-shadow:0 0 9px rgba(244,185,66,.7)}.col-header-row{border-color:rgba(244,185,66,.2)!important;background:linear-gradient(90deg,rgba(244,185,66,.06),rgba(20,36,54,.18))!important}.col-header-row .col-hdr:first-child{color:#f2c764!important}@media(max-width:980px){.nfl-market-hero{grid-template-columns:1fr;margin:18px 12px}.nfl-market-stats{grid-template-columns:1fr 1fr}}@media(max-width:560px){.nfl-market-hero{padding:18px}.nfl-market-stats{grid-template-columns:1fr 1fr}.nfl-market-copy h2{font-size:2.8rem}}
+</style>
+<script id="so-before-crowd-finite-sweep">(function(){function start(){const e=document.querySelector('.so-before-crowd-sweep');if(!e||e.dataset.sweepStarted)return;e.dataset.sweepStarted='1';const a=e.animate([{backgroundPosition:'135% 50%'},{backgroundPosition:'-135% 50%'}],{duration:11000,iterations:2,direction:'alternate',easing:'cubic-bezier(.45,.05,.25,.95)',fill:'forwards'});a.play()}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start()})();</script>
+<style id="so-nfl-total-climate">
+.nfl-climate{margin:0 30px 26px;padding:20px 22px 14px;border:1px solid rgba(81,183,242,.17);border-radius:18px;background:linear-gradient(145deg,rgba(10,26,42,.96),rgba(5,12,21,.98));box-shadow:0 24px 60px rgba(0,0,0,.22)}.nfl-climate-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px}.nfl-climate-head span{color:#65c9ff;font:800 7px 'DM Mono',monospace;letter-spacing:.14em}.nfl-climate-head h3{margin:5px 0 2px;font-size:23px}.nfl-climate-head p{margin:0;color:#6f8296;font-size:10px}.nfl-climate-key{display:flex;align-items:center;gap:7px;color:#6c8195;font:700 7px 'DM Mono',monospace}.nfl-climate-key i{width:7px;height:7px;border-radius:50%;background:#4be89d;box-shadow:0 0 9px #4be89d}.nfl-climate-key b{margin-left:8px;color:#f4c45b}.nfl-climate-chart{margin-top:8px;overflow-x:auto}.nfl-climate-chart svg{display:block;width:100%;min-width:820px;height:auto}.nfl-avg-line{stroke:#f4b942;stroke-width:1;stroke-dasharray:5 6;opacity:.45}.nfl-chart-val{fill:#dce9f4;text-anchor:middle;font:800 9px 'DM Mono',monospace}.nfl-chart-team{fill:#60768c;text-anchor:middle;font:700 6px 'DM Mono',monospace}.nfl-chart-game rect{transform-box:fill-box;transform-origin:center bottom;animation:nflChartRise .75s cubic-bezier(.2,.8,.2,1) both}.nfl-chart-game:nth-of-type(2n) rect{animation-delay:.08s}.nfl-chart-game:hover rect,.nfl-chart-game:focus rect{filter:brightness(1.25) drop-shadow(0 0 8px rgba(80,220,170,.35))}@keyframes nflChartRise{from{transform:scaleY(.08);opacity:.2}to{transform:scaleY(1);opacity:1}}@media(max-width:700px){.nfl-climate{margin:0 12px 20px;padding:16px}.nfl-climate-head{align-items:flex-start;flex-direction:column}.nfl-climate-key{align-self:stretch}}
+</style>
+<style id="so-market-infrastructure-pass-20260819">
+/* Stable sections: paint once, keep geometry, and pause only offscreen ambient motion. */
+#mlbContainer>.date-divider,#mlbContainer>.games-list,#mlbContainer>.prop-section-header,#mlbContainer>.prop-list,#mlbContainer>.futures-section-header,#mlbContainer>.futures-list,#mlbContainer>.championship-section,#mlbContainer>.ls-wrap,#mlbContainer>.consensus-wrap,#nflContainer>.date-divider,#nflContainer>.games-list{content-visibility:visible!important;contain:layout style!important;contain-intrinsic-size:none!important;opacity:1!important;visibility:visible!important}
+#mlbContainer .game-card,#nflContainer .game-card{content-visibility:visible!important;contain:layout style!important}
+.nfl-chart-game rect{animation:none!important}
+.nfl-opening-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:16px}.nfl-opening-head span{color:#69caff;font:800 8px 'DM Mono',monospace;letter-spacing:.14em}.nfl-opening-head h3{margin:6px 0 4px}.nfl-opening-head p{margin:0;color:#718398;font-size:10px}.nfl-opening-head>b{color:#f4c45b;font:800 7px 'DM Mono',monospace;letter-spacing:.12em}.nfl-matchup-look{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.07)}.nfl-matchup-look article{padding:15px;border:1px solid rgba(100,195,255,.11);border-radius:12px;background:linear-gradient(145deg,rgba(9,27,43,.72),rgba(3,10,17,.58))}.nfl-matchup-look span{display:block;color:#5f7890;font:800 7px 'DM Mono',monospace;letter-spacing:.12em}.nfl-matchup-look b{display:block;margin:7px 0 4px;color:#edf5fb;font-size:16px}.nfl-matchup-look strong{display:block;color:#48db96;font:800 8px 'DM Mono',monospace}.nfl-matchup-look p{margin:8px 0 0;color:#76889a;font-size:9px;line-height:1.55}
+#panel-nfl .nfl-lock-wrap{width:64%!important;max-width:768px!important;height:410px!important;min-height:0!important;margin:0 auto 26px!important}
+#panel-nfl .nfl-lock-content{transform:scale(.66)!important;transform-origin:top center!important}
+@media(max-width:760px){.nfl-opening-head{align-items:flex-start;flex-direction:column}.nfl-matchup-look{grid-template-columns:1fr}.nfl-matchup-look article{padding:12px}#panel-nfl .nfl-lock-wrap{width:100%!important;height:auto!important}.nfl-lock-content{transform:none!important}}
+</style>
 </body>
+<style id="so-market-final-sections">.nba-season-tab{opacity:1;cursor:pointer}.nba-season-card{display:grid;grid-template-columns:190px 1fr;align-items:center;gap:28px;margin:28px 30px;padding:38px;border:1px solid rgba(244,185,66,.25);border-radius:22px;background:radial-gradient(circle at 10% 50%,rgba(244,137,53,.14),transparent 28%),linear-gradient(145deg,#111723,#070d16)}#panel-nba .kw{display:none}.nba-season-card span,.nba-season-card b{color:#f4b942;font:800 8px 'DM Mono',monospace;letter-spacing:.14em}.nba-season-card h2{margin:9px 0 8px;font-size:clamp(2.3rem,5vw,5rem);letter-spacing:-.06em}.nba-season-card p{max-width:760px;color:#8c9aab;line-height:1.7}.nba-ball{width:150px;height:150px;border:3px solid #e78a38;border-radius:50%;background:linear-gradient(90deg,transparent 48%,#e78a38 49% 51%,transparent 52%),#6f351b;box-shadow:0 0 50px rgba(231,138,56,.2);animation:nbaBounce 2.6s ease-in-out infinite}.nfl-signal-deck{margin:24px 30px 30px;padding:23px;border:1px solid rgba(95,195,255,.2);border-radius:18px;background:linear-gradient(145deg,rgba(14,39,60,.8),rgba(5,13,22,.95))}.nfl-signal-deck h3{margin:5px 0 16px;font-size:23px}.signal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.signal-grid article{padding:14px;border:1px solid rgba(255,255,255,.07);border-radius:11px;background:rgba(3,10,17,.5)}.signal-grid span{color:#5f7890;font:800 7px 'DM Mono',monospace}.signal-grid b{display:block;margin:6px 0 4px;font-size:15px}.signal-grid small{color:#3ed38d;font:700 7px 'DM Mono',monospace}#panel-nfl .nfl-lock-wrap{width:80%;height:512px;max-width:960px}.nfl-lock-content{transform:scale(.82);transform-origin:top center}@keyframes nbaBounce{50%{transform:translateY(-14px) rotate(18deg)}}@media(max-width:760px){.nba-season-card{grid-template-columns:1fr;margin:14px}.nba-ball{width:90px;height:90px}.signal-grid{grid-template-columns:1fr 1fr}.nfl-signal-deck{margin:18px 12px}#panel-nfl .nfl-lock-wrap{width:100%;height:auto}.nfl-lock-content{transform:none}}</style>
+<script id="so-market-final-sections-script">(function(){
+  const d=document.getElementById('nflSignalDeck');if(!d)return;
+  d.innerHTML='<div class="nfl-opening-head"><div><span>OPENING BOARD · MATCHUP LENS</span><h3>How the Week 1 market is shaped</h3><p>Three matchup types frame the opening board: ceiling, compression and favorite pressure.</p></div><b>15 GAMES · FIRST READ</b></div>'+
+  '<div class="signal-grid"><article><span>SCORING CEILING</span><b>TB at CIN · 51.5</b><small>Cincinnati -3.5 · strongest shootout environment</small></article><article><span>LOW-TOTAL FLOOR</span><b>NYJ at TEN · 39.5</b><small>Tennessee -2.5 · possession-sensitive setup</small></article><article><span>LARGEST SPREAD</span><b>ARI at LAC · 10.5</b><small>Only double-digit favorite on the board</small></article><article><span>TIGHTEST MONEY</span><b>BUF at HOU</b><small>-106 / -110 · near pick’em straight-up market</small></article></div>'+
+  '<div class="nfl-matchup-look"><article><span>OPENING NIGHT</span><b>SF @ LAR</b><strong>Rams -3.5 · 48.5</strong><p>A field-goal-plus home number paired with a top-tier total makes the opener the first movement checkpoint.</p></article><article><span>DIVISION PRESSURE</span><b>DAL @ NYG</b><strong>Cowboys -2.5 · 48.5</strong><p>Dallas stays below the key field-goal threshold despite the elevated scoring environment.</p></article><article><span>UPSET WINDOW</span><b>GB @ MIN</b><strong>Vikings -1.5 · 44.5</strong><p>The narrowest divisional spread keeps both moneyline paths live and makes price movement more informative.</p></article></div>';
+})();</script>
 </html>

@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Grade Book — shortopen</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg?v=20260810"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=20260810"/>
+<link rel="shortcut icon" href="favicon.ico?v=20260810"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20260810"/>
+<meta name="description" content="Short Open's Grade Book — a command-center view of NFL player grades by position, synthesized from 12 leading sources into Short Open's own letter-graded board."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/></noscript>
+<style>
+:root{
+  --bg:#05070b;--panel:#0a111b;--panel2:#0d1724;--panel3:#0c141f;
+  --line:rgba(255,255,255,.085);--line2:rgba(255,255,255,.14);
+  --text:#eef3f7;--muted:#758394;--muted2:#9aa7b5;
+  --gold:#f4b942;--gold-soft:rgba(244,185,66,.12);--gold-border:rgba(244,185,66,.32);
+  --blue:#64c7ff;--blue-soft:rgba(100,199,255,.12);--blue-border:rgba(100,199,255,.4);
+  --green:#22d97e;--green-soft:rgba(34,217,126,.12);--green-border:rgba(34,217,126,.34);
+  --amber:#ffb43a;--amber-soft:rgba(255,180,58,.12);--amber-border:rgba(255,180,58,.32);
+  --red:#ff5d6c;--red-soft:rgba(255,93,108,.12);--red-border:rgba(255,93,108,.34);
+  --purple:#a78bfa;--purple-soft:rgba(167,139,250,.12);--purple-border:rgba(167,139,250,.32);
+  --gray-soft:rgba(255,255,255,.05);--gray-border:rgba(255,255,255,.14);
+  --mono:'DM Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+html{color-scheme:dark}
+body{background:
+  linear-gradient(rgba(100,199,255,.014) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(100,199,255,.014) 1px,transparent 1px),
+  radial-gradient(700px 320px at 6% 0%,rgba(244,185,66,.05),transparent 70%),
+  radial-gradient(680px 320px at 96% 4%,rgba(100,199,255,.045),transparent 70%),
+  var(--bg);
+  background-size:64px 64px,64px 64px,auto,auto,auto;
+  padding-bottom:60px}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:4px}
+
+/* ===== Sub-nav ===== */
+.subnav{position:sticky;top:0;z-index:40;background:rgba(5,7,11,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:13px 24px}
+.subnav-inner{max-width:1560px;margin:0 auto;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.subnav-eyebrow{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2)}
+.subnav-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px rgba(34,217,126,.5)}
+.subnav-tabs{display:flex;gap:8px;margin-left:10px}
+.subnav-tab{padding:7px 13px;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--muted2);font-family:var(--mono);font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap}
+.subnav-tab:hover{color:var(--text)}
+.subnav-tab.active{background:var(--green-soft);border-color:var(--green-border);color:var(--green)}
+.subnav-right{margin-left:auto;display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.subnav-pill{border:1px solid var(--line2);border-radius:8px;padding:6px 11px;background:var(--panel)}
+@media(max-width:900px){.subnav-inner{gap:10px}.subnav-tabs{overflow-x:auto;max-width:100%}}
+
+/* ===== Shell / three-column layout ===== */
+.shell{max-width:1560px;margin:0 auto;padding:20px 24px 0;display:grid;grid-template-columns:270px 1fr 300px;gap:16px;align-items:start}
+@media(max-width:1280px){.shell{grid-template-columns:240px 1fr 270px}}
+@media(max-width:1040px){.shell{grid-template-columns:1fr;}.side-left,.side-right{order:2}.main-col{order:1}}
+
+/* ===== Sidebar ===== */
+.side-card{border:1px solid var(--line);border-radius:13px;background:var(--panel);padding:14px;margin-bottom:14px}
+.side-lbl{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:2px 4px 10px}
+.mod-item{display:flex;flex-direction:column;gap:2px;padding:10px 11px;border-radius:9px;border:1px solid transparent;cursor:pointer;margin-bottom:3px}
+.mod-item:hover{background:rgba(255,255,255,.03)}
+.mod-item.active{background:var(--green-soft);border-color:var(--green-border)}
+.mod-item .mn{font-size:13px;font-weight:750;color:var(--text)}
+.mod-item.active .mn{color:var(--green)}
+.mod-item .md{font-size:11px;color:var(--muted)}
+.side-link{display:flex;align-items:center;justify-content:space-between;padding:9px 11px;border-radius:9px;font-size:12.5px;font-weight:650;color:var(--muted2);cursor:pointer}
+.side-link:hover{background:rgba(255,255,255,.03);color:var(--text)}
+.side-link .cnt{font-family:var(--mono);font-size:10.5px;color:var(--muted);background:rgba(255,255,255,.05);border-radius:6px;padding:2px 6px}
+.filter-row{margin-bottom:10px}
+.filter-row label{display:block;font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.filter-row select{width:100%;background:var(--panel2);border:1px solid var(--line2);border-radius:8px;padding:8px 10px;color:var(--text);font-size:12.5px}
+.check-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted2);margin-top:8px}
+.side-foot{font-family:var(--mono);font-size:10.5px;color:var(--muted);line-height:1.7}
+.side-foot b{color:var(--muted2)}
+.side-foot .lv{display:inline-flex;align-items:center;gap:5px;color:var(--muted);margin-top:6px}
+.side-foot .lv i{width:6px;height:6px;border-radius:50%;background:var(--muted)}
+
+/* ===== Main column ===== */
+.main-col{min-width:0}
+
+/* ===== Hero ===== */
+.hero{position:relative;border:1px solid var(--line);border-radius:18px;overflow:hidden;padding:28px 30px 24px;background:linear-gradient(135deg,rgba(244,185,66,.05),rgba(100,199,255,.04) 60%,transparent),#070c13;margin-bottom:14px}
+.hero-eyebrow{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.hero-eyebrow::before{content:'◆';font-size:8px}
+.hero h1{margin:0;font-size:clamp(2rem,4vw,3.1rem);font-weight:900;letter-spacing:-.03em;line-height:1.02;color:#f5f1e9}
+.hero h1 span{display:block;color:var(--gold);font-size:.44em;font-weight:800;letter-spacing:.02em;margin-top:6px}
+.hero p{max-width:640px;margin:14px 0 0;color:var(--muted2);font-size:13.5px;line-height:1.68}
+.hero p b{color:#dbe2e7}
+.hero-status{display:flex;align-items:center;gap:10px;margin-top:18px;flex-wrap:wrap}
+.status-badge{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line2);border-radius:999px;background:rgba(5,8,12,.6);padding:6px 12px;font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--muted2)}
+.status-badge i{width:6px;height:6px;border-radius:50%;background:var(--green)}
+.status-badge.gold i{background:var(--gold)}
+
+/* ===== Overview + breakdown row ===== */
+.pair-row{display:grid;grid-template-columns:1.35fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:900px){.pair-row{grid-template-columns:1fr}}
+.panel{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:16px 18px;transition:border-color .3s,box-shadow .3s}
+.panel.flash-panel{border-color:var(--gold-border);box-shadow:0 0 0 3px rgba(244,185,66,.12)}
+.panel-head{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.ov-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ov-item .l{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.ov-item .v{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--text)}
+.ov-item .v.gold{color:var(--gold)}
+.ov-item .s{margin-top:3px;font-size:10.5px;color:var(--muted)}
+@media(max-width:520px){.ov-grid{grid-template-columns:repeat(2,1fr)}}
+
+.donut-wrap{display:flex;align-items:center;gap:16px}
+.donut{width:96px;height:96px;border-radius:50%;flex:0 0 auto}
+.donut-legend{display:flex;flex-direction:column;gap:7px;font-family:var(--mono);font-size:11px}
+.donut-legend .dli{display:flex;align-items:center;gap:7px;color:var(--muted2)}
+.donut-legend .sw{width:9px;height:9px;border-radius:3px}
+.donut-legend b{color:var(--text);margin-left:auto;padding-left:10px}
+
+/* ===== Three-panel row ===== */
+.tri-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:1040px){.tri-row{grid-template-columns:1fr}}
+.panel-tabs{display:flex;gap:10px;margin-bottom:14px}
+.ptab{padding:7px 13px;border-radius:8px;border:1px solid var(--line2);background:transparent;color:var(--muted);font-family:var(--mono);font-size:10.5px;font-weight:700;cursor:pointer}
+.ptab.active{background:var(--green-soft);border-color:var(--green-border);color:var(--green)}
+.mover-mini{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--line)}
+.mover-mini:last-child{border-bottom:0}
+.mover-mini .arrow{width:18px;height:18px;border-radius:5px;display:grid;place-items:center;font-size:10px;flex:0 0 auto}
+.mover-mini .arrow.up{background:var(--green-soft);color:var(--green)}
+.mover-mini .arrow.down{background:var(--red-soft);color:var(--red)}
+.mover-mini .info{min-width:0;flex:1}
+.mover-mini .nm{font-size:12px;font-weight:700;color:var(--text)}
+.mover-mini .mt{font-family:var(--mono);font-size:9.5px;color:var(--muted)}
+
+.spotlight{text-align:center;padding:6px 0 2px}
+.spot-grade{font-family:var(--mono);font-size:2.6rem;font-weight:800;color:var(--blue);line-height:1}
+.spot-lbl{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+.spot-name{font-size:16px;font-weight:800;margin-top:12px;color:var(--text)}
+.spot-meta{font-family:var(--mono);font-size:11px;color:var(--muted2);margin-top:3px}
+.spot-note{font-size:11.5px;color:var(--muted2);line-height:1.55;margin-top:12px;text-align:left;border-top:1px solid var(--line);padding-top:12px}
+.spot-stats{display:flex;justify-content:space-between;margin-top:12px;font-family:var(--mono)}
+.spot-stats div{text-align:center}
+.spot-stats .v{font-size:13px;font-weight:700;color:var(--text)}
+.spot-stats .l{font-size:9px;color:var(--muted);text-transform:uppercase;margin-top:2px}
+
+.posbrk-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11.5px}
+.posbrk-row:last-child{border-bottom:0}
+.posbrk-row .pname{font-family:var(--sans);font-weight:700;color:var(--text);font-size:12px}
+.posbrk-row .pcount{color:var(--muted)}
+.posbrk-bar{width:64px;height:5px;border-radius:3px;background:rgba(255,255,255,.06);overflow:hidden}
+.posbrk-bar i{display:block;height:100%;background:var(--blue)}
+
+/* ===== Monitor + Value board row ===== */
+.dual-row{display:grid;grid-template-columns:1.2fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:1040px){.dual-row{grid-template-columns:1fr}}
+.wtable{width:100%;border-collapse:collapse;font-size:11.5px}
+.wtable th{text-align:left;padding:7px 8px;font-family:var(--mono);font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--line2)}
+.wtable td{padding:8px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+.wtable tr:last-child td{border-bottom:0}
+.wtable tr.clickable{cursor:pointer}
+.wtable tr.clickable:hover{background:rgba(255,255,255,.02)}
+.wtable .wname{font-weight:750;color:var(--text)}
+.wtable .wmeta{font-family:var(--mono);font-size:9.5px;color:var(--muted);display:block;margin-top:1px}
+.mini-grade{display:inline-flex;align-items:center;justify-content:center;min-width:30px;padding:3px 6px;border-radius:6px;font-family:var(--mono);font-size:10.5px;font-weight:800}
+.chip-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.pchip{padding:5px 9px;border-radius:7px;border:1px solid var(--line2);background:transparent;color:var(--muted);font-family:var(--mono);font-size:10px;font-weight:700;cursor:pointer}
+.pchip.active{background:var(--gold-soft);border-color:var(--gold-border);color:var(--gold)}
+
+/* ===== Camp Intel ===== */
+.intel-card{border-bottom:1px solid var(--line);padding:11px 0}
+.intel-card:last-child{border-bottom:0}
+.intel-src{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.intel-src b{font-family:var(--mono);font-size:9.5px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.06em}
+.intel-src span{font-family:var(--mono);font-size:9px;color:var(--muted)}
+.intel-headline{font-size:12.5px;font-weight:750;color:var(--text);line-height:1.4;margin-bottom:4px}
+.intel-body{font-size:11.5px;color:var(--muted2);line-height:1.55}
+.intel-link{display:inline-block;margin-top:6px;font-family:var(--mono);font-size:10px;color:var(--blue);font-weight:700}
+.intel-link:hover{text-decoration:underline}
+.intel-tag{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;font-weight:700;color:var(--green);background:var(--green-soft);border:1px solid var(--green-border);border-radius:6px;padding:2px 6px;margin-right:6px;cursor:pointer}
+
+/* ===== Detailed board (bottom) ===== */
+.board-anchor{margin-top:6px}
+.board-tabs-bar{position:sticky;top:52px;z-index:30;background:rgba(6,9,14,.92);backdrop-filter:blur(14px);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:0 -1px}
+.board-tabs-scroll{padding:11px 4px;display:flex;align-items:center;gap:7px;overflow-x:auto;scrollbar-width:none}
+.board-tabs-scroll::-webkit-scrollbar{display:none}
+.postab{flex:0 0 auto;padding:7px 12px;border-radius:8px;border:1px solid var(--line2);background:var(--panel);color:var(--muted2);font-family:var(--mono);font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap}
+.postab.active{border-color:var(--gold-border);background:var(--gold-soft);color:var(--gold)}
+.board-search{margin-left:auto;flex:0 0 auto;position:relative}
+.board-search input{width:170px;background:var(--panel);border:1px solid var(--line2);color:var(--text);font-size:12px;padding:7px 10px 7px 28px;border-radius:8px}
+.board-search::before{content:'⌕';position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px}
+.board-title-row{display:flex;align-items:baseline;justify-content:space-between;margin:14px 0 10px;flex-wrap:wrap;gap:8px}
+.board-title-row h2{margin:0;font-size:17px;font-weight:800;color:var(--text)}
+.board-title-row h2 span{color:var(--muted);font-weight:500;font-size:12px;margin-left:8px}
+.bkey{display:flex;gap:10px;flex-wrap:wrap;font-family:var(--mono);font-size:10px;color:var(--muted)}
+.bkey .bk{display:inline-flex;align-items:center;gap:5px}
+.table-frame{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel)}
+.table-scroll{overflow-x:auto}
+.maintable{border-collapse:separate;border-spacing:0;width:100%;min-width:680px}
+.maintable thead th{background:var(--panel2);color:var(--muted2);font-weight:700;text-align:left;padding:10px 14px;font-size:10px;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;border-bottom:1px solid var(--line2);white-space:nowrap}
+.maintable tbody td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.maintable tbody tr:last-child td{border-bottom:0}
+.maintable tbody tr:hover{background:rgba(255,255,255,.02)}
+.maintable tbody tr.rowmain{cursor:pointer}
+.maintable tr.flash{animation:flashRow 1.6s ease}
+@keyframes flashRow{0%{background:rgba(244,185,66,.16)}100%{background:transparent}}
+.rk{font-family:var(--mono);font-size:14px;font-weight:600}
+.rk.hm{font-size:10.5px;color:var(--muted)}
+.pnm{font-weight:750;font-size:13.5px;color:var(--text)}
+.ptm{font-family:var(--mono);font-size:11.5px;color:var(--muted2)}
+.pnote{font-size:12.3px;line-height:1.58;color:var(--muted2);max-width:520px}
+.exp-toggle{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:6px;border:1px solid var(--line2);color:var(--muted);font-size:10px;background:rgba(255,255,255,.02);margin-right:8px;flex:0 0 auto}
+.rowmain:hover .exp-toggle{border-color:var(--gold-border);color:var(--gold)}
+.rowmain.open .exp-toggle{background:var(--gold-soft);border-color:var(--gold-border);color:var(--gold)}
+tr.detailrow td{padding:0;background:#080d15}
+.detailwrap{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:1px;background:var(--line);padding:0 14px 14px}
+.detailcol{background:var(--panel);padding:13px 15px}
+.detailcol .dl{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.detailcol p{margin:0;font-size:12px;line-height:1.55;color:var(--muted2)}
+.detailcol p b{color:var(--text)}
+.no-results{padding:36px 20px;text-align:center;color:var(--muted);font-size:12.5px;font-family:var(--mono)}
+.foot-note{margin:16px 0 0;font-size:11px;color:var(--muted);line-height:1.6}
+.foot-note b{color:var(--muted2)}
+
+.grade-ap{background:var(--blue-soft);color:var(--blue);border:1px solid var(--blue-border)}
+.grade-a{background:var(--green-soft);color:var(--green);border:1px solid var(--green-border)}
+.grade-bp{background:var(--amber-soft);color:var(--amber);border:1px solid var(--amber-border)}
+.grade-b{background:var(--gray-soft);color:var(--muted2);border:1px solid var(--gray-border)}
+.grade-cp{background:var(--red-soft);color:var(--red);border:1px solid var(--red-border)}
+
+@media(max-width:820px){.pnote{display:none}.th-note{display:none}}
+
+/* Final polish: liquid-glass depth + dismissible search */
+.board-search{isolation:isolate}
+.board-search::after{content:'';position:absolute;inset:-1px;border-radius:10px;pointer-events:none;background:linear-gradient(120deg,rgba(115,89,255,.16),rgba(76,190,255,.10),transparent 58%);z-index:-1;opacity:.78}
+.board-search input{padding-right:34px!important;background:linear-gradient(180deg,rgba(16,22,34,.92),rgba(8,13,22,.9))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 10px 30px rgba(0,0,0,.16)}
+.search-clear{position:absolute;right:7px;top:50%;transform:translateY(-50%) scale(.92);width:24px;height:24px;border:1px solid rgba(130,169,215,.2);border-radius:8px;background:linear-gradient(180deg,rgba(27,40,58,.9),rgba(12,20,31,.92));color:#a9bad0;font:800 15px/1 var(--mono);cursor:pointer;opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease,border-color .18s ease,color .18s ease}
+.board-search.has-query .search-clear{opacity:1;pointer-events:auto;transform:translateY(-50%) scale(1)}
+.search-clear:hover{color:#fff;border-color:rgba(94,191,255,.5);box-shadow:0 0 20px rgba(64,168,255,.12)}
+.board-tabs-bar{background:linear-gradient(180deg,rgba(11,17,27,.82),rgba(5,9,15,.74));border:1px solid rgba(127,153,190,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
+.postab{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(18,24,35,.82),rgba(8,12,19,.88))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.028);transition:transform .17s ease,border-color .17s ease,background .17s ease,color .17s ease}
+.postab::after{content:'';position:absolute;inset:0;background:linear-gradient(115deg,transparent 15%,rgba(255,255,255,.055) 46%,transparent 72%);transform:translateX(-120%);transition:transform .45s ease}
+.postab:hover::after{transform:translateX(120%)}
+.postab:hover{transform:translateY(-1px);border-color:rgba(115,130,255,.26)!important}
+.postab.active{background:linear-gradient(145deg,rgba(106,76,214,.28),rgba(34,88,130,.2))!important;border-color:rgba(132,102,240,.62)!important;color:#f4f1ff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 0 28px rgba(91,72,220,.13)}
+.table-frame{background:linear-gradient(160deg,rgba(14,22,34,.92),rgba(5,10,17,.94))!important;border-color:rgba(111,145,184,.13)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.028),0 26px 70px rgba(0,0,0,.18)}
+.maintable thead th{background:linear-gradient(180deg,rgba(20,31,46,.9),rgba(10,18,29,.92))!important}
+tr.rowmain{transition:background .18s ease,box-shadow .18s ease}
+tr.rowmain:hover{background:linear-gradient(90deg,rgba(62,160,255,.035),rgba(109,79,221,.028),transparent 82%)!important}
+tr.rowmain.open{background:linear-gradient(90deg,rgba(79,176,255,.07),rgba(109,79,221,.07),rgba(244,185,66,.025))!important;box-shadow:inset 3px 0 0 rgba(85,185,255,.52)}
+.deep-open{border:1px solid rgba(86,183,255,.27)!important;background:linear-gradient(180deg,rgba(22,48,70,.48),rgba(10,26,40,.52))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+tr.rowmain.open .deep-open{border-color:rgba(167,121,255,.38)!important;color:#c9b8ff!important;background:linear-gradient(180deg,rgba(71,49,116,.38),rgba(18,30,53,.52))!important}
+.detailrow td{background:radial-gradient(900px 300px at 12% 0%,rgba(67,148,255,.06),transparent 60%),radial-gradient(800px 260px at 78% 0%,rgba(145,86,255,.06),transparent 58%),linear-gradient(180deg,rgba(8,14,24,.98),rgba(5,10,17,.98))!important}
+.detailcol{background:linear-gradient(160deg,rgba(20,28,43,.72),rgba(7,13,22,.76))!important;border-color:rgba(114,143,184,.13)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
+.detailcol.profile{background:linear-gradient(150deg,rgba(34,82,117,.25),rgba(42,30,75,.2),rgba(8,14,23,.78))!important}
+.mini-grade{box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 0 16px rgba(0,0,0,.09)}
+.grade-ap{background:linear-gradient(145deg,rgba(31,133,197,.24),rgba(25,92,130,.23))!important;box-shadow:0 0 18px rgba(60,169,255,.11)}
+.grade-a{background:linear-gradient(145deg,rgba(24,138,82,.22),rgba(18,93,61,.2))!important;box-shadow:0 0 18px rgba(42,216,127,.09)}
+.grade-bp{background:linear-gradient(145deg,rgba(173,111,20,.22),rgba(120,77,14,.18))!important;box-shadow:0 0 16px rgba(244,185,66,.07)}
+.side-card{background:linear-gradient(155deg,rgba(18,27,42,.82),rgba(7,12,20,.86))!important;border-color:rgba(107,137,179,.12)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.028),0 20px 54px rgba(0,0,0,.14)}
+
+</style>
+
+<style id="so-gradebook-final-tidy-20260818">
+/* final spacing + information-density pass */
+.main-grid{gap:24px!important}.side-right{gap:18px!important}.side-card{padding:20px 20px!important}.side-lbl{margin-bottom:14px!important;letter-spacing:.14em!important}.intel-card{padding:15px 0!important}.intel-card+.intel-card{margin-top:2px}.intel-src{gap:8px!important;margin-bottom:7px!important}.intel-src b{color:var(--gold)!important}.intel-credit{display:block;margin-top:9px;color:#718093;font:500 9.5px/1.45 var(--mono);letter-spacing:.02em}.intel-headline{margin-bottom:6px!important}.intel-body{line-height:1.62!important}.board-tabs-scroll{gap:8px!important}.postab{min-width:48px!important;padding:10px 14px!important}.board-search{margin-left:10px!important}.bkey{gap:11px!important}.bk{gap:5px!important}.mover-mini{gap:12px!important;padding:12px 0!important}.mover-mini .info{display:grid!important;grid-template-columns:auto 1fr auto;column-gap:8px;row-gap:4px;align-items:center}.mover-mini .info .mt:first-child{grid-column:1/-1;margin:0}.mover-mini .info .nm{grid-column:1/2;white-space:normal}.mover-mini .info .mt:last-child{grid-column:2/-1;margin:0}.detailwrap{grid-template-columns:1.15fr 1fr 1fr 1fr!important;gap:14px!important;padding:18px!important}.detailcol{padding:14px 15px!important;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.018)}.detailcol p{font-size:11.5px!important;line-height:1.62!important}.pnote{line-height:1.55!important}.source-policy-note{margin-top:12px;padding:11px 12px;border:1px solid rgba(244,185,66,.16);border-radius:10px;background:rgba(244,185,66,.035);color:#7f8da0;font-size:10px;line-height:1.5}.source-policy-note b{color:#d6dee7}@media(max-width:1100px){.detailwrap{grid-template-columns:1fr 1fr!important}}@media(max-width:700px){.detailwrap{grid-template-columns:1fr!important}.board-search{margin-left:0!important;min-width:100%!important}.side-right{gap:14px!important}}
+</style>
+
+<style id="so-grade-deepdive-fix-20260818">
+.rowmain td:last-child{position:relative;padding-right:118px!important}.deep-open{position:absolute;right:14px;top:50%;transform:translateY(-50%);display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(100,199,255,.24);background:rgba(100,199,255,.055);color:#78cfff;border-radius:999px;padding:6px 9px;font:800 8px var(--mono);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}.rowmain:hover .deep-open,.rowmain.open .deep-open{border-color:rgba(244,185,66,.38);color:var(--gold);background:rgba(244,185,66,.065)}
+.detailwrap{grid-template-columns:1.25fr 1fr 1fr!important}.detailcol.profile{grid-row:span 2}.detailcol.full{grid-column:2/4}.detailcol .dl{display:flex;align-items:center;justify-content:space-between}.detailcol p strong{color:#dce5ee}.deep-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.deep-kpi{padding:10px;border:1px solid rgba(255,255,255,.06);border-radius:9px;background:rgba(255,255,255,.018)}.deep-kpi span{display:block;color:#69798b;font:700 8px var(--mono);letter-spacing:.1em;text-transform:uppercase}.deep-kpi b{display:block;margin-top:5px;color:#eaf0f5;font-size:11px}.detail-note{margin-top:10px;color:#6f7e90;font:500 9px/1.55 var(--mono)}
+@media(max-width:900px){.rowmain td:last-child{padding-right:14px!important}.deep-open{position:static;transform:none;margin-top:8px}.detailwrap{grid-template-columns:1fr!important}.detailcol.full{grid-column:auto!important}}
+</style>
+<style id="so-grade-liquid-glass-20260818">
+:root{--glass-blue:96,165,250;--glass-gold:244,185,66;--glass-green:52,211,153;--glass-violet:167,139,250}
+body{background:
+ radial-gradient(900px 520px at 12% 8%,rgba(var(--glass-violet),.085),transparent 66%),
+ radial-gradient(760px 500px at 88% 18%,rgba(var(--glass-blue),.07),transparent 68%),
+ radial-gradient(900px 620px at 56% 90%,rgba(var(--glass-gold),.045),transparent 72%),#05070b!important}
+.panel,.side-card,.table-frame{background:linear-gradient(155deg,rgba(255,255,255,.075),rgba(255,255,255,.018) 22%,rgba(8,16,27,.88) 62%,rgba(6,11,18,.96) 100%)!important;border-color:rgba(255,255,255,.095)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 46px rgba(0,0,0,.24),0 0 38px rgba(var(--glass-blue),.025)!important;backdrop-filter:blur(20px) saturate(1.18);-webkit-backdrop-filter:blur(20px) saturate(1.18)}
+.panel{position:relative;overflow:hidden}.panel:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(360px 150px at 0% 0%,rgba(var(--glass-blue),.07),transparent 68%),radial-gradient(320px 160px at 100% 0%,rgba(var(--glass-gold),.055),transparent 70%);opacity:.8}.panel>*{position:relative;z-index:1}
+.postab{background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012))!important;border-color:rgba(255,255,255,.09)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.045)}
+.postab:hover{border-color:rgba(var(--glass-blue),.28)!important;color:#dceaff!important}.postab.active{background:linear-gradient(135deg,rgba(var(--glass-violet),.20),rgba(var(--glass-blue),.11))!important;border-color:rgba(var(--glass-violet),.48)!important;color:#eee9ff!important;box-shadow:0 0 22px rgba(var(--glass-violet),.13),inset 0 1px 0 rgba(255,255,255,.10)!important}
+.maintable thead th{background:linear-gradient(180deg,rgba(17,30,46,.96),rgba(11,21,33,.96))!important;border-bottom-color:rgba(var(--glass-blue),.12)!important}
+.maintable tbody tr.rowmain{background:linear-gradient(90deg,rgba(255,255,255,.008),rgba(255,255,255,.002))!important;transition:background .2s ease,box-shadow .2s ease}.maintable tbody tr.rowmain:hover{background:linear-gradient(90deg,rgba(var(--glass-blue),.055),rgba(var(--glass-violet),.028),transparent 70%)!important;box-shadow:inset 3px 0 0 rgba(var(--glass-blue),.45)}.maintable tbody tr.rowmain.open{background:linear-gradient(90deg,rgba(var(--glass-gold),.045),rgba(var(--glass-violet),.025),transparent 72%)!important;box-shadow:inset 3px 0 0 rgba(var(--glass-gold),.55)}
+.detailrow td{background:linear-gradient(180deg,rgba(5,10,17,.96),rgba(7,13,22,.98))!important}.detailcol{background:linear-gradient(155deg,rgba(255,255,255,.045),rgba(255,255,255,.012) 24%,rgba(9,17,28,.92) 100%)!important;border-color:rgba(255,255,255,.08)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 10px 28px rgba(0,0,0,.14)}.detailcol.profile{background:radial-gradient(420px 200px at 0% 0%,rgba(var(--glass-violet),.10),transparent 64%),linear-gradient(155deg,rgba(255,255,255,.05),rgba(8,16,27,.94))!important}
+.deep-kpi{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.012))!important}.deep-open{box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+</style>
+<style id="so-grade-rank-refresh-20260818">
+/* Rank + player column refresh: compact, aligned and easier to scan */
+.maintable{table-layout:auto!important}
+.maintable thead th:first-child{width:92px!important;min-width:92px!important;text-align:center!important}
+.maintable thead th:nth-child(2){width:190px!important;min-width:190px!important}
+.maintable tbody td.rank-cell{padding:10px 12px!important;vertical-align:middle!important;text-align:center!important}
+.rank-control{display:grid;grid-template-columns:44px 28px;align-items:center;justify-content:center;gap:8px;min-height:44px}
+.rk{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:13px;font:900 15px/1 var(--mono)!important;color:#eef4fb;background:linear-gradient(155deg,rgba(28,40,57,.96),rgba(10,16,25,.98));border:1px solid rgba(128,160,200,.20);box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 8px 22px rgba(0,0,0,.20)}
+.rk.hm{font-size:9px!important;letter-spacing:.07em;color:#d6c6ff;background:linear-gradient(155deg,rgba(79,55,118,.55),rgba(16,19,31,.96));border-color:rgba(167,139,250,.30)}
+.exp-toggle{width:28px!important;height:28px!important;margin:0!important;border-radius:9px!important;font-size:13px!important;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+.rowmain:hover .rk{border-color:rgba(94,191,255,.36);box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 0 22px rgba(64,168,255,.08)}
+.rowmain.open .rk{border-color:rgba(244,185,66,.46);background:linear-gradient(155deg,rgba(86,63,25,.42),rgba(14,18,27,.98));color:#ffe4a1}
+.player-name-cell{vertical-align:middle!important}
+.pnm{display:block;font-size:14.5px!important;line-height:1.28!important;letter-spacing:-.018em!important;white-space:normal;word-break:normal}
+.maintable tbody td:nth-child(3),.maintable tbody td:nth-child(4){vertical-align:middle!important}
+@media(max-width:820px){
+  .maintable{min-width:610px!important}
+  .maintable thead th:first-child{width:78px!important;min-width:78px!important}
+  .maintable thead th:nth-child(2){width:156px!important;min-width:156px!important}
+  .rank-control{grid-template-columns:38px 24px;gap:6px;min-height:38px}
+  .rk{width:38px;height:38px;border-radius:11px;font-size:13px!important}
+  .exp-toggle{width:24px!important;height:24px!important;font-size:12px!important}
+  .pnm{font-size:13.5px!important;line-height:1.22!important}
+  .maintable tbody td{padding-top:9px!important;padding-bottom:9px!important}
+}
+</style>
+
+<style id="so-grade-final-speed-hero-20260818">
+/* Performance: preserve the glass look without large-area live blur repaints. */
+.panel,.side-card,.table-frame{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.subnav{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
+.board-tabs-bar{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.pair-row,.main-grid,.side-card{content-visibility:auto;contain-intrinsic-size:auto 420px}
+.maintable tbody tr.rowmain{contain:layout paint style}
+@media(prefers-reduced-motion:reduce){.grade-orbit *{animation:none!important}}
+
+/* Hero: animated Grade Book object — transform/opacity only for smooth compositing. */
+.hero{display:grid!important;grid-template-columns:minmax(0,1fr) 330px;align-items:center;gap:28px;min-height:278px;padding:30px 32px!important;background:radial-gradient(430px 260px at 83% 48%,rgba(94,191,255,.08),transparent 66%),radial-gradient(380px 240px at 72% 10%,rgba(167,139,250,.09),transparent 70%),linear-gradient(135deg,rgba(244,185,66,.055),rgba(100,199,255,.035) 60%,transparent),#070c13!important}
+.hero-copy{position:relative;z-index:2;min-width:0}.hero-copy p{max-width:720px}.grade-orbit{position:relative;height:220px;min-width:300px;display:grid;place-items:center;isolation:isolate}
+.grade-orbit::before{content:'';position:absolute;width:210px;height:210px;border-radius:50%;background:radial-gradient(circle,rgba(90,170,255,.11),rgba(98,71,176,.055) 48%,transparent 70%);filter:blur(1px)}
+.orbit-ring{position:absolute;border:1px solid rgba(122,162,211,.16);border-radius:50%;will-change:transform}.ring-a{width:248px;height:154px;animation:orbitTurn 16s linear infinite}.ring-b{width:184px;height:206px;animation:orbitTurnReverse 21s linear infinite}
+.orbit-chip,.orbit-stat{position:absolute;display:grid;place-items:center;border:1px solid rgba(130,180,225,.25);background:linear-gradient(155deg,rgba(20,38,57,.88),rgba(8,15,25,.94));box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 10px 24px rgba(0,0,0,.22);font-family:var(--mono);font-weight:900}
+.orbit-chip{width:38px;height:38px;border-radius:12px}.chip-a{top:-18px;left:34px;color:#77d4ff}.chip-b{bottom:-18px;right:30px;color:#ffc655;border-color:rgba(244,185,66,.3)}
+.orbit-stat{padding:6px 8px;border-radius:9px;font-size:9px;color:#b7c5d6;letter-spacing:.06em}.stat-a{left:-25px;top:68px}.stat-b{right:-23px;bottom:55px;color:#bfaeff}
+.book-stage{position:relative;z-index:2;width:188px;height:145px;display:grid;place-items:center;perspective:900px}.book-shadow{position:absolute;bottom:19px;width:142px;height:25px;border-radius:50%;background:rgba(0,0,0,.48);filter:blur(12px);animation:bookFloatShadow 3.8s ease-in-out infinite}
+.book{position:relative;width:158px;height:102px;transform-style:preserve-3d;animation:bookFloat 3.8s ease-in-out infinite}.book-page{position:absolute;top:6px;width:79px;height:92px;padding:18px 12px;border:1px solid rgba(244,185,66,.3);background:linear-gradient(150deg,#162338 0%,#0b1421 64%,#0a0f18 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 14px 28px rgba(0,0,0,.24);backface-visibility:hidden;transform-origin:center center;transition:none}.book-page::after{content:'';position:absolute;inset:8px;border:1px solid rgba(255,255,255,.035);border-radius:6px}.book-page span{position:relative;z-index:2;display:block;font:900 25px/1 var(--mono)}.book-page i{position:relative;z-index:2;display:block;margin-top:10px;color:#6f8094;font:800 8px var(--mono);letter-spacing:.12em;font-style:normal}.page-left{left:0;border-radius:13px 4px 4px 13px;transform:rotateY(10deg);animation:pageLeft 4.6s ease-in-out infinite}.page-left span{color:#75d0ff}.page-right{right:0;border-radius:4px 13px 13px 4px;transform:rotateY(-10deg);animation:pageRight 4.6s ease-in-out infinite}.page-right span{color:#ffc34b}.book-spine{position:absolute;left:50%;top:8px;bottom:8px;width:5px;transform:translateX(-50%);border-radius:4px;background:linear-gradient(180deg,#dba22d,#5f4310 46%,#dba22d);box-shadow:0 0 10px rgba(244,185,66,.14);z-index:3}.book-caption{position:absolute;bottom:-1px;color:#66768a;font:800 8px var(--mono);letter-spacing:.18em}
+@keyframes orbitTurn{to{transform:rotate(360deg)}}@keyframes orbitTurnReverse{to{transform:rotate(-360deg)}}@keyframes bookFloat{0%,100%{transform:translateY(4px) rotateX(1deg)}50%{transform:translateY(-6px) rotateX(-2deg)}}@keyframes bookFloatShadow{0%,100%{transform:scaleX(.92);opacity:.55}50%{transform:scaleX(.72);opacity:.34}}@keyframes pageLeft{0%,100%{transform:rotateY(12deg)}48%{transform:rotateY(38deg)}65%{transform:rotateY(15deg)}}@keyframes pageRight{0%,100%{transform:rotateY(-12deg)}48%{transform:rotateY(-38deg)}65%{transform:rotateY(-15deg)}}
+
+/* Board proportions: compact rank, readable search. */
+.maintable thead th:first-child{width:72px!important;min-width:72px!important}.maintable tbody td.rank-cell{padding:8px 8px!important}.rank-control{grid-template-columns:30px 24px!important;gap:7px!important;min-height:34px!important}.rk{width:30px!important;height:30px!important;border-radius:9px!important;font-size:11px!important}.exp-toggle{width:24px!important;height:24px!important;border-radius:8px!important;font-size:12px!important}.maintable thead th:nth-child(2){width:180px!important;min-width:180px!important}
+.board-search{flex:0 0 230px!important;min-width:230px!important;max-width:230px!important}.board-search input{width:100%!important;min-width:0!important;font-size:11.5px!important;padding-left:29px!important;padding-right:34px!important;white-space:nowrap}.board-search input::placeholder{font-size:11px!important;letter-spacing:-.01em}
+@media(max-width:1050px){.hero{grid-template-columns:1fr 250px!important}.grade-orbit{transform:scale(.88);transform-origin:center right}.board-search{flex-basis:210px!important;min-width:210px!important;max-width:210px!important}}
+@media(max-width:760px){.hero{grid-template-columns:1fr!important;padding:24px 20px!important}.grade-orbit{height:180px;transform:scale(.78);transform-origin:center}.maintable thead th:first-child{width:62px!important;min-width:62px!important}.rank-control{grid-template-columns:27px 22px!important;gap:5px!important}.rk{width:27px!important;height:27px!important;font-size:10px!important}.exp-toggle{width:22px!important;height:22px!important}.board-search{flex:1 1 100%!important;min-width:100%!important;max-width:none!important}}
+</style>
+
+
+<style id="so-gradebook-player-cycle-final">
+.grade-orbit{cursor:default}.orbit-name{position:absolute;display:flex;align-items:center;justify-content:center;min-width:82px;height:29px;padding:0 10px;border-radius:999px;border:1px solid rgba(112,183,233,.24);background:linear-gradient(150deg,rgba(16,31,47,.88),rgba(8,14,23,.94));box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 10px 24px rgba(0,0,0,.20);color:#a8dfff;font:850 8px var(--mono);letter-spacing:.055em;white-space:nowrap}.name-a{top:-11px;left:16px}.name-b{bottom:-12px;right:9px;color:#ffd16a;border-color:rgba(244,185,66,.25)}
+.book-page{padding:19px 9px!important}.book-page span{font:900 12px/1.1 var(--sans)!important;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.book-page i{font-size:6.5px!important;letter-spacing:.07em!important;margin-top:9px!important}.book-page.page-left span{color:#8bd8ff!important}.book-page.page-right span{color:#ffd16a!important}.book-caption{white-space:nowrap}.grade-orbit .orbit-stat{min-width:56px}.grade-orbit.cycle-flash .book-page{box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 0 25px rgba(87,167,255,.09),0 14px 28px rgba(0,0,0,.24)}
+</style>
+</head>
+<body>
+
+<div class="subnav">
+<div class="subnav-inner">
+<div class="subnav-eyebrow"><span class="dot"></span>GRADE BOOK COMMAND CENTER</div>
+<div class="subnav-tabs">
+<button class="subnav-tab active" data-jump="top">Overview</button>
+<button class="subnav-tab" data-jump="board">Position Grades</button>
+</div>
+<div class="subnav-right">
+<span class="subnav-pill">Season: 2026</span>
+<span class="subnav-pill">Snapshot board</span>
+</div>
+</div>
+</div>
+
+<div class="shell" id="top">
+
+<div class="side-left">
+<div class="side-card">
+<div class="side-lbl">Grade modules</div>
+<div class="mod-item active" data-jump="board"><span class="mn">Position Grades</span><span class="md">Browse, filter, search the full board</span></div>
+<div class="mod-item" data-jump="movers-panel"><span class="mn">Movers Desk</span><span class="md">Risers and fallers this cycle</span></div>
+<div class="mod-item" data-jump="spotlight-panel"><span class="mn">Spotlight</span><span class="md">Top graded profile</span></div>
+<div class="mod-item" data-jump="posbrk-panel"><span class="mn">Position Breakdown</span><span class="md">Elite-tier depth by position</span></div>
+<div class="mod-item" data-jump="monitor-panel"><span class="mn">Profiles to Monitor</span><span class="md">Ascending and volatile signals</span></div>
+<div class="mod-item" data-jump="deep-panel"><span class="mn">Deep Sleepers</span><span class="md">Lower-tier names trending up</span></div>
+</div>
+<div class="side-card">
+<div class="side-lbl">Quick filters</div>
+<div class="filter-row"><label>Grade</label><select id="filterGrade"><option value="all">All grades</option><option value="ap">A+ only</option><option value="a">A only</option><option value="bp">B+ only</option><option value="b">B only</option><option value="cp">C+ only</option></select></div>
+<label class="check-row"><input type="checkbox" id="filterAscending"/> Ascending signal only</label>
+</div>
+<div class="side-card">
+<div class="side-foot"><b>388 players</b> across 12 positions.<br/>Synthesized from 12 industry sources.<div class="lv"><i></i>Static snapshot · not live</div></div>
+</div>
+</div>
+
+<div class="main-col">
+
+<div class="hero">
+<div class="hero-copy">
+<div class="hero-eyebrow">NFL Premium · Player Intelligence</div>
+<h1>Grade Book<span>NFL Player Grades by Position</span></h1>
+<p>A letter-graded consensus board across every starting position &mdash; <b>12 leading industry sources</b> synthesized into one board, in Short Open's own words. A+ down to C+, position by position.</p>
+<div class="hero-status">
+<div class="status-badge"><i></i>388 PLAYERS GRADED</div>
+<div class="status-badge gold"><i></i>12 POSITIONS</div>
+<div class="status-badge">2026 SEASON BOARD</div>
+</div>
+</div>
+<div class="grade-orbit" aria-label="Grade Book player intelligence animation">
+  <div class="orbit-ring ring-a"><span class="orbit-name name-a" id="gbOrbitA">J. ALLEN</span><span class="orbit-name name-b" id="gbOrbitB">J. JEFFERSON</span></div>
+  <div class="orbit-ring ring-b"><span class="orbit-stat stat-a" id="gbOrbitPos">QB · #1</span><span class="orbit-stat stat-b" id="gbOrbitGrade">A+</span></div>
+  <div class="book-stage">
+    <div class="book-shadow"></div>
+    <div class="book">
+      <div class="book-page page-left"><span id="gbBookLeft">Josh</span><i id="gbBookLeftMeta">ALLEN · QB</i></div>
+      <div class="book-spine"></div>
+      <div class="book-page page-right"><span id="gbBookRight">Drake</span><i id="gbBookRightMeta">MAYE · QB</i></div>
+    </div>
+    <div class="book-caption" id="gbBookCaption">PLAYER INTELLIGENCE · LIVE INDEX</div>
+  </div>
+</div>
+</div>
+
+<div class="pair-row">
+<div class="panel">
+<div class="panel-head">Grade Overview</div>
+<div class="ov-grid" id="ovGrid"></div>
+</div>
+<div class="panel">
+<div class="panel-head">Grade Breakdown</div>
+<div class="donut-wrap">
+<svg class="donut" id="donutChart" viewBox="0 0 36 36"></svg>
+<div class="donut-legend" id="donutLegend"></div>
+</div>
+</div>
+</div>
+
+<div class="tri-row">
+<div class="panel" id="movers-panel">
+<div class="panel-head">Movers Desk</div>
+<div class="panel-tabs">
+<button class="ptab active" data-mv="up">Risers</button>
+<button class="ptab" data-mv="down">Fallers</button>
+</div>
+<div id="moversMini"></div>
+</div>
+<div class="panel" id="spotlight-panel">
+<div class="panel-head">Spotlight &mdash; Top Graded Profile</div>
+<div class="spotlight" id="spotlightBody"></div>
+</div>
+<div class="panel" id="posbrk-panel">
+<div class="panel-head">Position Breakdown &mdash; A+ Depth</div>
+<div id="posBreakdown"></div>
+</div>
+</div>
+
+<div class="dual-row">
+<div class="panel" id="monitor-panel">
+<div class="panel-head">Profiles to Monitor</div>
+<div class="panel-tabs">
+<button class="ptab active" data-mon="all">All</button>
+<button class="ptab" data-mon="up">Ascending</button>
+<button class="ptab" data-mon="down">Volatile</button>
+</div>
+<div class="table-frame" style="border:0;background:transparent">
+<table class="wtable" id="monitorTable"><thead><tr><th>Player</th><th>Grade</th><th>Signal</th></tr></thead><tbody id="monitorBody"></tbody></table>
+</div>
+</div>
+<div class="panel" id="deep-panel">
+<div class="panel-head">Deep Sleepers &mdash; Ascending Depth</div>
+<div class="chip-row" id="deepChips"></div>
+<table class="wtable" id="deepTable"><thead><tr><th>Player</th><th>Grade</th><th></th></tr></thead><tbody id="deepBody"></tbody></table>
+</div>
+</div>
+
+<div class="board-anchor" id="board">
+<div class="board-tabs-bar">
+<div class="board-tabs-scroll" id="posScroll">
+<button class="postab active" data-pos="QB">QB</button>
+<button class="postab" data-pos="RB">RB</button>
+<button class="postab" data-pos="WR">WR</button>
+<button class="postab" data-pos="TE">TE</button>
+<button class="postab" data-pos="OT">OT</button>
+<button class="postab" data-pos="OG">OG</button>
+<button class="postab" data-pos="C">C</button>
+<button class="postab" data-pos="IDL">IDL</button>
+<button class="postab" data-pos="EDGE">EDGE</button>
+<button class="postab" data-pos="LB">LB</button>
+<button class="postab" data-pos="CB">CB</button>
+<button class="postab" data-pos="S">S</button>
+<div class="board-search"><input type="text" id="searchBox" placeholder="Search player or team…"/><button class="search-clear" id="searchClear" type="button" aria-label="Clear player search" title="Clear search">×</button></div>
+</div>
+</div>
+<div class="board-title-row">
+<h2 id="boardTitle">Quarterback<span id="boardCount"></span></h2>
+<div class="bkey">
+<span class="bk"><span class="mini-grade grade-ap">A+</span>Elite</span>
+<span class="bk"><span class="mini-grade grade-a">A</span>Strong</span>
+<span class="bk"><span class="mini-grade grade-bp">B+</span>Solid</span>
+<span class="bk"><span class="mini-grade grade-b">B</span>Depth</span>
+<span class="bk"><span class="mini-grade grade-cp">C+</span>Camp battle</span>
+</div>
+</div>
+<div class="table-frame">
+<div class="table-scroll">
+<table class="maintable">
+<thead><tr><th style="width:56px">Rank</th><th>Player</th><th style="width:76px">Team</th><th style="width:70px">Grade</th><th class="th-note">Grade Book Analysis</th></tr></thead>
+<tbody id="tbody"></tbody>
+</table>
+</div>
+</div>
+<p class="foot-note"><b>How this board works:</b> Short Open's grades and rankings synthesize 12 leading industry sources per position (grades, advanced stats and film analysis) into a single consensus board, rewritten in our own words rather than reproduced from any one outlet. Letter grades reflect where a player sits within the position's overall depth, not a single site's numeric grade.</p>
+</div>
+
+</div>
+
+<div class="side-right">
+<div class="side-card">
+<div class="side-lbl">Camp Intel · Reporter Notebook</div>
+<div id="campIntelList"></div><div class="source-policy-note"><b>Source policy:</b> Short Open summarizes reported information in its own words. Reporter/outlet credit is shown for provenance; there are no outbound affiliate-style story links in this module.</div>
+</div>
+<div class="side-card">
+<div class="side-lbl">Top Grades</div>
+<div id="topCallsList"></div>
+</div>
+<div class="side-card">
+<div class="side-lbl">Board Insights</div>
+<div id="insightsList" style="font-size:11.5px;color:var(--muted2);line-height:1.5"></div>
+</div>
+</div>
+
+</div>
+
+<script id="rankingsData" type="application/json">
+{"QB": [[1, "Josh Allen", "BUF", "Sixth straight season above a 90.0 grade — a streak nobody else in the PFF era has managed. Still chasing the one thing missing: a ring."], [2, "Joe Burrow", "CIN", "Just 8 games on a bad toe, but a 91.3 grade and the lowest turnover-worthy rate of any high-volume QB since 2006. Health is the only question."], [3, "Lamar Jackson", "BAL", "Grade fell from an all-time 93.3 to 69.0, but he stayed devastating vs. the blitz and on intermediate/deep shots between the numbers."], [4, "Patrick Mahomes", "KC", "Worst season of his career — 76.0 grade, missed playoffs, torn ACL/LCL — but a 95.8 grade since 2018 and three rings keep him top-5."], [5, "Matthew Stafford", "LAR", "Led the NFL in grade and WAR in 2025, but nine dropped INTs on 21 turnover-worthy throws is about as lucky as a season gets."], [6, "Jordan Love", "GB", "Led all qualifiers in EPA per dropback; a 94.2 grade from a clean pocket shows what he does when protected."], [7, "Justin Herbert", "LAC", "Career-low grade playing behind the league's most-pressured line after losing both tackles. Fifth in 3-year grade — health up front is the swing factor."], [8, "Dak Prescott", "DAL", "Quietly one of the league's most complete passers — top-4 grade, 2nd in WAR, NFL's best in clutch situations."], [9, "Drake Maye", "NE", "Engineered one of the great turnarounds in NFL history, into a Super Bowl; NFL-best 8.5 yards per attempt."], [10, "Brock Purdy", "SF", "Missed 8 games with turf toe, but 85.4 when active and the league's best pressure-to-sack rate — he gets rid of it before the pocket folds."], [11, "Trevor Lawrence", "JAX", "A tale of two seasons: 21st in grade through Week 13, 2nd from Week 14 on. Big-time-throw ability paired with too many careless ones."], [12, "Jayden Daniels", "WAS", "Injuries held him to 7 games; grade vs. the blitz collapsed without receiving depth around him. Health is everything here."], [13, "Caleb Williams", "CHI", "Sophomore leap under Ben Johnson — Chicago's first Divisional Round trip in 15 years, 37 big-time throws."], [14, "Sam Darnold", "SEA", "Won the Super Bowl and set career highs in grade and yards/attempt — the bust label should be retired."], [15, "Jalen Hurts", "PHI", "Fourth straight top-12 grade and elite ball security, but oddly avoids the middle of the field more than most starters."], [16, "Jared Goff", "DET", "Most passing yards and TDs in football since 2022; 2nd-fastest time to throw shows a system executor at peak efficiency."], [17, "C.J. Stroud", "HOU", "Regressed hard — 62.0 grade, worst-in-league mark under pressure — behind poor protection. A retooled line gives him a real chance to bounce back."], [18, "Baker Mayfield", "TB", "Led the NFL in turnover-worthy plays; offense cratered for 11 games after Mike Evans broke his collarbone."], [19, "Bo Nix", "DEN", "Led Denver to the AFC title game; clean-pocket and next-read grades show a veteran-level processor already."], [20, "Bryce Young", "CAR", "Wild week-to-week swings — five games above a 78 grade, five below 52. Downfield chemistry with McMillan is the swing skill for 2026."], [21, "Kyler Murray", "MIN", "Talent still flashes but availability doesn't — just 5 starts in 2025, now competing with J.J. McCarthy for the job."], [22, "Aaron Rodgers", "PIT", "Career-worst 68.0 grade at 42, confirmed this is his last ride. Far more conservative than his prime self."], [23, "Daniel Jones", "IND", "MVP-level through 8 weeks, then a 53.2 grade over his last five before an Achilles tear. High risk, real recent upside."], [24, "Tyler Shough", "NO", "Nearly won Offensive Rookie of the Year — 5-4 as a starter with elite ball security late in the year."], [25, "Jaxson Dart", "NYG", "487 rush yards as a rookie, but drew the league's highest pressure-attribution rate — self-protection is the next step."], [26, "Geno Smith", "NYJ", "Returns to the franchise that drafted him after leading the NFL in picks and sacks taken behind a decimated Vegas line."], [27, "Kirk Cousins", "LV", "Steady relief work in Atlanta (75.0 grade, elite ball security) — a known quantity as a bridge starter."], [28, "Tua Tagovailoa", "ATL", "In a QB battle with Penix after two down years; efficient in 2022-23 but trending the wrong way since."], [29, "Cam Ward", "TEN", "Rough rookie debut — 56.4 grade, league-high 55 sacks taken, tied for the most fumbles at the position."], [30, "Malik Willis", "MIA", "Efficient in spot duty at Green Bay (8 TDs, 1 turnover-worthy play); his legs are the carrying trait now."], [31, "Jacoby Brissett", "ARI", "Classic bridge-QB profile — sharp on time, grade falls off a cliff once the clock runs past 2.5 seconds."], [32, "Deshaun Watson", "CLE", "Missed all of 2025 with a second torn Achilles; his last action (2022-24) graded well below average anyway."], ["HM", "Fernando Mendoza", "LV", "Heisman winner opens 2026 on the bench behind Cousins, but the leash may be short."], ["HM", "Michael Penix Jr.", "ATL", "Battling both health and accuracy issues as he fights Tagovailoa for the job."], ["HM", "Shedeur Sanders", "CLE", "Rough rookie debut — 42.3 grade — in an open competition with Watson for 2026 snaps."], ["HM", "J.J. McCarthy", "MIN", "Flashes of big-time-throw ability undercut so far by shaky mechanics and accuracy."]], "RB": [[1, "Bijan Robinson", "ATL", "Nation-leading forced-missed-tackle and yards-after-contact totals since entering the league in 2023 — worth every bit of the 8th overall pick."], [2, "Jahmyr Gibbs", "DET", "Elite juice as both a runner and receiver — top-3 in receiving yards and rushing TDs at the position since 2023."], [3, "Derrick Henry", "BAL", "Building a first-ballot résumé at almost 32 — 4th all-time in rushing TDs, still producing 1,595 yards in 2025."], [4, "Christian McCaffrey", "SF", "The receiving standard at the position — led all backs in receiving yards for a 4th time in his career."], [5, "De'Von Achane", "MIA", "One of the fastest players in football — NFL-best breakaway rate makes every touch a home-run threat."], [6, "James Cook", "BUF", "Led the NFL in rushing yards in 2025, his 3rd straight 1,000-yard season."], [7, "Jonathan Taylor", "IND", "Led the league in rushing TDs; 3rd in rushing yards over the last two years despite a late-season fade."], [8, "Saquon Barkley", "PHI", "A year removed from a 2,000-yard season, still finished top-10 in rushing yards in 2025."], [9, "Kenneth Walker III", "KC", "Best season of his career capped by a Super Bowl MVP; league's highest PFF rushing grade before a big-money move to KC."], [10, "Kyren Williams", "LAR", "5th-round pick who's massively outplayed his draft slot — top-5 in forced missed tackles and yards after contact since 2023."], [11, "Josh Jacobs", "GB", "Found new life in Green Bay — top-5 in forced missed tackles and yards after contact over the last two seasons."], [12, "Breece Hall", "NYJ", "One of the league's best receiving backs, now paid like it after his best season yet."], [13, "D'Andre Swift", "CHI", "Career year across the board in 2025 — best rushing grade, rushing yards and explosive-run total of his six seasons."], [14, "Jaylen Warren", "PIT", "Finally the lead back in Pittsburgh and delivered — best rushing and receiving output on the roster."], [15, "Travis Etienne Jr.", "NO", "Crossed 1,000 yards for the 3rd time in four years, now paired with Kamara in a dynamic committee."], [16, "Javonte Williams", "DAL", "Career rejuvenated in Dallas — top-10 marks in rushing yards, missed tackles forced and first downs gained."], [17, "Bucky Irving", "TB", "Injury-hit letdown after a big rookie year, but still productive as a receiver (1.49 yards per route run)."], [18, "Chase Brown", "CIN", "First 1,000-yard season while ranking 5th among backs in receptions — a real two-way threat now."], [19, "Omarion Hampton", "LAC", "Battled injuries and the worst run-blocking line in PFF history, but still forced 32 missed tackles on just 125 carries."], [20, "Ashton Jeanty", "LV", "Rookie year hampered by poor blocking (2nd-fewest yards before contact in the league), but 3rd-most missed tackles forced."], [21, "Tony Pollard", "TEN", "4th straight 1,000-yard season, but a career-low missed-tackle-forced rate suggests the workload is starting to show."], [22, "Rhamondre Stevenson", "NE", "The power half of New England's committee — solid 4.6 yards/carry on a career-low volume."], [23, "Jeremiyah Love", "ARI", "Third overall pick and the richest guaranteed RB contract ever; college tape (95.3 grade, nation-leading TDs) says the hype is earned."], [24, "Cam Skattebo", "NYG", "Season-ending injury cut a strong start short — one of just four backs to grade 80+ as both a rusher and receiver."], [25, "Quinshon Judkins", "CLE", "Powered through poor blocking for 998 scrimmage yards before a rookie-season injury; positioned for a bigger 2026 workload."], [26, "David Montgomery", "HOU", "Set career lows in 2025 but still 6th in the league in rushing TDs over the past three years."], [27, "Chuba Hubbard", "CAR", "Least productive season of his career amid injuries, but gets a clearer runway back after Dowdle left for Pittsburgh."], [28, "J.K. Dobbins", "DEN", "Productive when healthy (5.0 YPC, 80.8 grade) before a season-ending foot injury; Denver re-signed him anyway."], [29, "Aaron Jones", "MIN", "Late-career committee piece, still moved for 747 scrimmage yards in just 12 games."], [30, "Jacory Croskey-Merritt", "WAS", "7th-round pick who led Washington in rushing as an underdog story; should keep the lead role in 2026."], [31, "Chris Rodriguez Jr.", "JAX", "Gets a real shot to start after three years as a solid rotational piece; strength complements Tuten's speed."], [32, "Jadarian Price", "SEA", "Rookie first-rounder in line for the lead role if Charbonnet isn't ready; needs receiving-game reps to become a true 3-down back."]], "WR": [[1, "Puka Nacua", "LAR", "NFL-leading 3.19 yards per route run since entering the league; his 96.1 grade in 2025 was the highest of any player, any position."], [2, "Jaxon Smith-Njigba", "SEA", "Led the NFL in receiving yards and won Offensive Player of the Year on the way to a Super Bowl."], [3, "Justin Jefferson", "MIN", "Career-low numbers with shaky QB play, but the most receiving yards by anyone through six seasons in NFL history."], [4, "Ja'Marr Chase", "CIN", "Five straight 1,000-yard seasons; leads the league in yards after the catch and forced missed tackles since 2024."], [5, "Amon-Ra St. Brown", "DET", "2nd in the league in receiving grade since 2022; nobody moves the chains more often."], [6, "A.J. Brown", "NE", "Traded to New England in June — six 1,000-yard seasons in seven years, one of the league's surest hands."], [7, "CeeDee Lamb", "DAL", "Missed time and scored a career-low three TDs, but 3rd in the NFL in receiving yards since 2021."], [8, "Nico Collins", "HOU", "2nd in yards per route run over the last three years, trailing only Nacua."], [9, "George Pickens", "DAL", "Breakout year in his first Dallas season — 3rd in the league in receiving yards, tied for 2nd in contested catches."], [10, "Drake London", "ATL", "Matchup nightmare at 6-foot-4 — 3rd in the league in contested catches over the last two seasons."], [11, "Zay Flowers", "BAL", "Became the No. 1 receiver Lamar Jackson needed — 2nd straight 1,000-yard, 80+ grade season."], [12, "Chris Olave", "NO", "Healthier in 2025 and thrives finding soft spots in zone; paired with rookie Jordyn Tyson for a promising young duo."], [13, "Terry McLaurin", "WAS", "Injury-shortened streak-breaker, but a career-high grade even with just three games alongside Jayden Daniels."], [14, "DeVonta Smith", "PHI", "Led Philly in receiving yards for the first time since his rookie year, now the clear No. 1 with Brown gone."], [15, "Jaylen Waddle", "DEN", "Traded to Denver for a speed upgrade; 90.6 career grade in Miami despite two sub-1,000-yard seasons."], [16, "Mike Evans", "SF", "Streak of 1,000-yard seasons ended by injury, but still wins one-on-ones at a high rate in a new offense."], [17, "Stefon Diggs", "FA", "7th career 1,000-yard season coming off an ACL tear — top-7 in the league in yards per route run."], [18, "Garrett Wilson", "NYJ", "Injury-limited 2025, but three straight 1,000-yard years to open his career despite shaky QB play."], [19, "Tee Higgins", "CIN", "4th in the league in receiving TDs over two seasons when healthy — health is the only real question."], [20, "Malik Nabers", "NYG", "ACL tear in Week 4 cut a strong start short; top-10 receiver when right, needs to rebuild chemistry with Dart."], [21, "Alec Pierce", "IND", "Quietly the league's top deep threat — only qualifying receiver averaging 20+ yards per catch since 2023."], [22, "Jameson Williams", "DET", "Back-to-back 1,000-yard, 7+ TD seasons; the big-play threat Detroit hoped for at the 2022 draft."], [23, "Tetairoa McMillan", "CAR", "Offensive Rookie of the Year; room to grow attacking contested targets with his 6-foot-5 frame."], [24, "Davante Adams", "LAR", "Ageless at 33 — led the NFL in TDs in year one with the Rams."], [25, "Courtland Sutton", "DEN", "2nd straight 1,000-yard season; 2nd in the league in contested catches since 2023."], [26, "D.K. Metcalf", "PIT", "Led Pittsburgh in yards and TDs in year one, despite a conservative offense limiting his average depth of target."], [27, "Ladd McConkey", "LAC", "Sophomore dip tied to a collapsing offensive line; primed for a bounce back if Herbert's better protected."], [28, "Jakobi Meyers", "JAX", "Five straight 800-yard seasons; among the league's best at winning contested targets since 2019."], [29, "Brian Thomas Jr.", "JAX", "Strong rookie year followed by a drops-plagued sophomore slump; talent for a much higher ceiling remains."], [30, "Rashee Rice", "KC", "Kansas City's most efficient target when healthy, but just 12 games over the last two seasons."], [31, "Michael Wilson", "ARI", "Emerged late in 2025 for his first 1,000-yard year; strong track record in contested-catch situations."], [32, "Calvin Ridley", "TEN", "Injury cut 2025 short, but averaging a career-high 17.8 yards/reception before it happened."]], "TE": [[1, "George Kittle", "SF", "Led all tight ends in grade for a 3rd straight season; on track to be ready Week 1 after a January Achilles tear."], [2, "Trey McBride", "ARI", "Most valuable tight end in football over the last two years by PFF WAR — his 1,239 yards in 2025 led all TEs by 311."], [3, "Brock Bowers", "LV", "Broke Mike Ditka's 63-year-old rookie TE record in 2024; back healthy after a knee injury limited his 2025."], [4, "Sam LaPorta", "DET", "Missed 8 games with a herniated disc but still 5th at the position in grade when he played."], [5, "Colston Loveland", "CHI", "No. 10 overall pick turned it on in the second half — 3rd among all TEs in grade for the year."], [6, "Dalton Kincaid", "BUF", "Best season yet — 2nd in grade behind only Kittle, led the league in yards per route run."], [7, "Tucker Kraft", "GB", "Nearly a perfect 158.3 passer rating when targeted; top-3 in yards after the catch over the last two years."], [8, "Kyle Pitts", "ATL", "Bounced back big — 2nd in receiving yards and receptions at the position, only trailing McBride."], [9, "Travis Kelce", "KC", "Slowing down at 36 but still top-4 in receiving yards over the last two years; closing in on 2nd all-time."], [10, "Tyler Warren", "IND", "No. 14 overall pick immediately delivered — 2nd in yards after the catch as a rookie."], [11, "Brenton Strange", "JAX", "Best year of his career — top-5 run-blocking grade at the position to go with solid receiving output."], [12, "Hunter Henry", "NE", "Career-high 768 receiving yards; first 75+ receiving grade since 2019."], [13, "Dalton Schultz", "HOU", "Stroud's clear second option after Collins — didn't drop a single one of 83 catchable targets."], [14, "Mark Andrews", "BAL", "Worst season of his career at 30, but a 91.2 career grade since 2018 still ranks 3rd at the position."], [15, "Colby Parkinson", "LAR", "Career year — top-10 receiving grade, tied for 3rd in TD catches among TEs."], [16, "AJ Barner", "SEA", "Dominant blocker who's added real receiving juice, including a Super Bowl TD catch."], [17, "Dallas Goedert", "PHI", "Tied for the league lead in TD catches at the position in 2025."], [18, "Juwan Johnson", "NO", "Career year at 231 pounds — blurs the line between receiver and tight end."], [19, "Harold Fannin Jr.", "CLE", "Broke the FBS single-season catch record at Bowling Green; 2nd only to McBride in forced missed tackles as a rookie."], [20, "Pat Freiermuth", "PIT", "Steady since being drafted in 2021 — top-10 in first-downs/TDs and YAC over the past five years."], [21, "T.J. Hockenson", "MIN", "Down year by his standard, but 4th at the position in receiving yards and first downs since 2020."], [22, "Isaiah Likely", "NYG", "Follows John Harbaugh to New York for his first real shot as a starter after four years behind Andrews."], [23, "Oronde Gadsden II", "LAC", "5th-round rookie who impressed as a receiver (top-20 grade) but has real work to do as a blocker."], [24, "Jake Ferguson", "DAL", "2nd only to McBride in broken tackles since 2023, but back-to-back sub-60 grades due to fumbles."], [25, "Chigoziem Okonkwo", "WAS", "Dangerous after the catch on a 3-year, $27M deal, but the league's worst run-blocking grade at the position in 2025."], [26, "Mike Gesicki", "CIN", "Quiet 2025 but didn't drop a single catchable target all season."], [27, "Darnell Washington", "PIT", "Plays like a tackle at 6-foot-6, 311 pounds — most big-time blocks at the position over the last two years."], [28, "Dawson Knox", "BUF", "Career-high grade as Buffalo's clear No. 2 behind Kincaid."], [29, "Cade Otton", "TB", "Sure-handed — just two drops on 61 catchable targets; Mayfield trusts him heavily."], [30, "Evan Engram", "DEN", "Down debut season in Denver after signing a big deal; 2022-23 shows the ceiling if he bounces back."], [31, "Cole Kmet", "CHI", "Blocking value matters more than his receiving numbers in Ben Johnson's scheme, alongside star rookie Loveland."], [32, "Theo Johnson", "NYG", "Likely demoted to TE2 with Likely's arrival, but produced solidly (528 yards, 5 TDs) when given the reps."]], "OT": [[1, "Penei Sewell", "DET", "Highest-graded tackle in football for the 2nd time in three years, led the NFL in run-blocking grade. Moving to full-time left tackle in 2026."], [2, "Tristan Wirfs", "TB", "Played a career-low snap count due to injury but still 2nd among qualified tackles with a 92.7 grade when on the field."], [3, "Trent Williams", "SF", "Bounced back at 37 with a 92.0 run-blocking grade, 2nd in the league — no signs of slowing down entering age 38."], [4, "Jordan Mailata", "PHI", "Fourth straight 1,000-snap season and fifth straight 80+ grade; remarkable rise from former rugby player to elite tackle."], [5, "Garett Bolles", "DEN", "Didn't allow a single sack across 802 pass-blocking snaps — led all offensive linemen with a 91.0 pass-block grade."], [6, "Lane Johnson", "PHI", "Cut short by a foot injury, but allowed just seven pressures — all hurries — in his 10 games."], [7, "Andrew Thomas", "NYG", "Elite when on the field (90.3 grade) but has topped 900 snaps just once in five years."], [8, "Rashawn Slater", "LAC", "Missed all of 2025 with a knee injury; a 90.9 grade in 2024 shows the ceiling if he and Alt both return healthy."], [9, "Laremy Tunsil", "WAS", "Excellent blind-side work on a rough Washington team — 88.9 pass-block grade, career-high run-block mark."], [10, "Zach Tom", "GB", "Green Bay's best lineman; didn't allow a sack across 351 pass-blocking snaps before injury cut his season short."], [11, "Bernhard Raimann", "IND", "Third straight 82+ grade season, one of just nine qualified tackles balanced at 78+ in both run and pass blocking."], [12, "Kolton Miller", "LV", "Season-ending injury in Week 4 exposed how much the line needed him; on pace for a career year before it happened."], [13, "Alaric Jackson", "LAR", "Career-high 84.2 grade in his fourth year as the Rams' starting left tackle."], [14, "Brian O'Neill", "MIN", "Career-low snap count but a career-high run-block grade when he played; foundational piece if he and Darrisaw stay healthy."], [15, "Darnell Wright", "CHI", "One of the league's best and most durable right tackles; 31 penalties in three years is the one blemish."], [16, "Charles Cross", "SEA", "Career-low two sacks allowed en route to a second Lombardi for Seattle."], [17, "Joe Alt", "LAC", "Limited to six games by injury but on an excellent pace; moving back to right tackle under new OC Mike McDaniel."], [18, "Christian Darrisaw", "MIN", "At his peak a top-tier tackle, but hasn't played a full season since 2022; still just 27."], [19, "Colton McKivitz", "SF", "Player-development story — 90.4 run-block grade, just six sacks allowed over the last two years."], [20, "Taylor Moton", "CAR", "Reliable for eight straight seasons; will miss time to start 2026 with a blood clot issue."], [21, "Paris Johnson Jr.", "ARI", "Foundational piece of Arizona's rebuild; missed eight games over two years but graded well when playing."], [22, "Mike McGlinchey", "DEN", "Career-high 1,259 snaps and 2nd-best career grade, key cog on the league's top pass-blocking unit."], [23, "Abraham Lucas", "SEA", "Healthiest and most productive season yet, capped by a 91.0 postseason grade in Seattle's title run."], [24, "Spencer Brown", "BUF", "Career-high run-block grade, but pass protection dipped (41 pressures allowed)."], [25, "Luke Goedeke", "TB", "Didn't allow a sack or knockdown across 416 pass-block reps — most in the league without one."], [26, "Jake Matthews", "ATL", "11th straight 1,000-snap, 77+ grade season; pass protection remains his calling card at 34."], [27, "Dion Dawkins", "BUF", "Fifth straight Pro Bowl; captain and enforcer of an excellent Buffalo line."], [28, "Ronnie Stanley", "BAL", "28 pressures allowed across 16 games, but only one sack after Week 3."], [29, "Roger Rosengarten", "BAL", "Quietly productive — led Baltimore's offense in snaps, allowed just three sacks all season."], [30, "Morgan Moses", "NE", "Career-high 1,294 snaps in his first Patriots season; rookie Caleb Lomu is the long-term successor watching from behind."], [31, "Kelvin Banks Jr.", "NO", "Led all rookie tackles in grade; five of his allowed sacks came in his first nine games, not his last nine."], [32, "Armand Membou", "NYJ", "2nd among rookie linemen in grade; only rookie to hit 72+ in both pass and run blocking."]], "OG": [[1, "Joe Thuney", "CHI", "Inaugural NFL Protector of the Year — led all guards in pass-block grade, zero sacks allowed on 788 pass-block snaps."], [2, "Quinn Meinerz", "DEN", "NFL's highest-graded guard in 2025, powered by a 91.0 run-block grade on the league's best pass-blocking unit."], [3, "Quenton Nelson", "IND", "Hall of Fame trajectory intact — 4th-highest graded guard in the league, 15 pressures allowed all season."], [4, "Chris Lindstrom", "ATL", "One of the best run-blocking guards in PFF history — 91.7 grade led all interior linemen, just one sack allowed in each of the last two years."], [5, "Kevin Dotson", "LAR", "3rd among guards in run-block grade since 2023, thriving in McVay's downhill scheme."], [6, "Peter Skoronski", "TEN", "Budding star and Tennessee's line anchor — 6th among guards in pass-block grade, career-high run-block mark."], [7, "Damien Lewis", "CAR", "Best football of his career since arriving in 2024 — one of just three guards balanced 75+ in both facets."], [8, "Tyler Smith", "DAL", "Remarkably consistent — a PFF grade within a two-point band across all four NFL seasons."], [9, "Mike Onwenu", "NE", "Led all offensive linemen in snaps played; one of just six guards balanced 72+ in both run and pass blocking."], [10, "Sam Cosmi", "WAS", "Only nine games due to a knee injury, but 10th among guards in grade when he played."], [11, "Landon Dickerson", "PHI", "Down from a career year in 2024, but locked in after a slow four-game start."], [12, "Trey Smith", "KC", "Career-low grade overall but his best pass-protection year yet — just one sack allowed in 12 games."], [13, "Steve Avila", "LAR", "Breakout year, 11th among guards in grade, part of two guard tandems both ranking top-12 at the position."], [14, "Dominick Puni", "SF", "Slight step back from a strong rookie year, still top-30 among guards in a strong developmental system."], [15, "Tyler Booker", "DAL", "Battled early injury but strong as a run blocker (8th at the position); a name to watch going forward."], [16, "Matthew Bergeron", "ATL", "Quietly solid next to Lindstrom — one sack allowed, penalties down from 12 to 3."], [17, "David Edwards", "NO", "Rewarded with a $61M deal — 12th among guards in pass-block grade, just four sacks allowed."], [18, "Jonah Jackson", "CHI", "Best season of his career reuniting with Ben Johnson — career-high snaps and grade."], [19, "Isaac Seumalo", "ARI", "A decade of consistency, parlayed into a fresh 3-year, $31.5M deal."], [20, "Alijah Vera-Tucker", "NE", "Has shown top-15 upside but has suffered season-ending injuries in three of the last four years, including all of 2025."], [21, "Tyler Steen", "PHI", "First real shot as a starter — 16th among guards in grade, top-15 in both run and pass blocking."], [22, "Mason McCormick", "PIT", "Started all 18 games — pass protection especially strong late in the year (4th in the league from Week 9 on)."], [23, "Joe Tippmann", "NYJ", "First full season at guard after moving from center went well; closed with a career-high 90.2 grade in Week 18."], [24, "Tate Ratledge", "DET", "Started all 18 as a rookie; pass protection improved sharply over his final seven games."], [25, "Grey Zabel", "SEA", "Full-season numbers modest, but a top-8 grade from Week 14 through the Super Bowl — a real breakout candidate."], [26, "Dalton Risner", "CIN", "Stable veteran pass protection — 17 pressures allowed across 503 snaps, career-high run-block grade."], [27, "Ezra Cleveland", "JAX", "1,100+ snaps for the 3rd time in his career, stabilizing Jacksonville's interior."], [28, "Robert Hunt", "CAR", "Mostly a lost 2025 to a torn biceps, but 2022-24 shows a top-10 run blocker when healthy."], [29, "Ed Ingram", "HOU", "Thrived in Houston's downhill scheme (6th among guards in run-block grade), earned a $37.5M extension."], [30, "Matt Goncalves", "IND", "Buried on a stacked line but performed well after almost no prior reps at guard."], [31, "Will Fries", "MIN", "Didn't live up to a $87M deal in year one; 2024 flashes show more if he can find it again."], [32, "Cody Mauch", "TB", "Torn meniscus wiped out most of 2025 after a promising 2024; health is the swing factor for a top-20 climb."]], "C": [[1, "Creed Humphrey", "KC", "4th straight year atop the position — only center to grade 80+ in both run and pass blocking in 2025."], [2, "Aaron Brewer", "MIA", "91.5 run-block grade paced all centers and ranked top-5 among any offensive lineman; Protector of the Year finalist."], [3, "Tyler Linderbaum", "LV", "Elite run-blocking movement skills profile perfectly for new HC Klint Kubiak's diverse scheme."], [4, "Zach Frazier", "PIT", "One of just five centers to grade 70+ in both facets at just 24 years old."], [5, "Tanor Bortolini", "IND", "Won a training-camp competition and delivered — 3rd-highest run-block grade among centers, feeding Jonathan Taylor."], [6, "Erik McCoy", "NO", "Injuries limited him to 742 snaps over two years, but an 84.1 pass-block grade before a torn bicep shows real talent."], [7, "Connor McGovern", "BUF", "Dependability defined — over 2,300 snaps the last two years, career-best grade in 2025."], [8, "Hjalte Froholdt", "ARI", "30 years old and still improving — career-best pass-block grade, just one sack allowed on 788 snaps."], [9, "Tyler Biadasz", "LAC", "Surprise release from Dallas landed him in LA; posted a career-high grade in 2025."], [10, "Luke Wattenberg", "DEN", "Broke into the top 10 by adding run-blocking to already-strong pass sets — one of just five centers 70+ in both."], [11, "Ryan Neuzil", "ATL", "Stepped into the starting job and thrived — 3rd-highest PFF WAR among centers in his first year as a starter."], [12, "Coleman Shelton", "LAR", "Perfect fit for McVay's zone scheme — 7th-highest run-block grade at the position."], [13, "Cooper Beebe", "DAL", "Ankle injury cost him time, but closed the year 12th-highest graded from Week 9 on."], [14, "Cam Jurgens", "PHI", "Played through a back injury for a career-high grade; says he's finally fully healthy for 2026."], [15, "Ted Karras", "CIN", "33 years old and still elite in protection — 70+ pass-block grade in five of the last six seasons."], [16, "Jake Brendel", "SF", "Career-best run-block grade in a Shanahan scheme that runs through the run game."], [17, "Ethan Pocic", "BAL", "Recovering from Achilles surgery but the favorite to win Baltimore's camp competition given his 97 career starts."], [18, "Elgton Jenkins", "CLE", "New team after seven years in Green Bay; proven pass protector when healthy, cut short by a leg fracture in 2025."], [19, "Jalen Sundell", "SEA", "Undrafted center who helped anchor a title run; top-12 grade from Week 7 on after an adjustment period."], [20, "Cade Mays", "DET", "Landed with Detroit after Carolina struggles; hasn't allowed a sack in 803 pass-block snaps over two years."], [21, "Graham Barton", "TB", "Filled in at left tackle for an injured Wirfs; grade dipped there but was solid back at center."], [22, "Robert Hainsey", "JAX", "Reunited with Liam Coen to help stabilize the offense; run-blocking is the strength, pass protection needs work."], [23, "Luke Fortner", "CAR", "Career-best marks in both facets filling in for an injured McCoy; landed in Carolina after New Orleans let him walk."], [24, "Garrett Bradbury", "CHI", "Down year overall (59.8 grade) after helping New England reach the Super Bowl; will need to hold off a talented rookie."], [25, "Blake Brandel", "MIN", "One of an unsettled group of options in Minnesota with no clean, proven answer at the position."], [26, "John Michael Schmitz Jr.", "NYG", "Yet to top a 62.0 grade in three seasons; contract year under a new coaching staff."], [27, "Jake Andrews", "HOU", "Ranked 29th among centers in grade; a talented first-round rookie is pushing hard for his job."], [28, "Jared Wilson", "NE", "Struggled badly out of position at guard as a rookie; move back to natural center should help."], [29, "Austin Schlottmann", "TEN", "Gets a first real shot as a Week 1 starter after mostly backup duty; graded well in a small Giants sample."], [30, "Sean Rhyan", "GB", "Struggled in pass protection after a move to center; run-blocking keeps him in the lineup for now."], [31, "Josh Myers", "NYJ", "Forced into the lineup by an injury elsewhere; bottom-three grade among qualifiers last season."], [32, "Nick Allegretti", "WAS", "Primarily a career guard now competing for center reps after Washington's line was thinned out this offseason."]], "IDL": [[1, "Jeffery Simmons", "TEN", "Career year at 29 — 2nd-most total pressures at the position, elite in a stacked field."], [2, "Quinnen Williams", "DAL", "Bounced back hard after a Dallas trade — 89.6 grade post-trade; dominant against the run too."], [3, "Chris Jones", "KC", "Pass-rush grade above 90 in seven of the last eight years; still no signs of decline at 32."], [4, "Dexter Lawrence", "CIN", "Career-low grade in 2025 but four straight years above 80 in pass rush entering a fresh start in Cincinnati."], [5, "Leonard Williams", "SEA", "11 years in the league, never a season below a 70 grade — an iron man who rarely leaves the field."], [6, "Cameron Heyward", "PIT", "Led all interior linemen in snaps at 37 years old; back-to-back 90+ grade seasons."], [7, "Vita Vea", "TB", "Requested a trade, likely for a bigger contract — elite pass-rush grades in seven of eight seasons."], [8, "Jalen Carter", "PHI", "Just signed a huge extension; 45+ pressures every season so far, needs to shore up run defense."], [9, "Kobie Turner", "LAR", "Ascending pass rusher — pressure totals have climbed every year, career-high 83.9 grade last season."], [10, "Zach Allen", "DEN", "One of the league's most reliable interior rushers — most combined sacks/hits at the position in 2025."], [11, "Milton Williams", "NE", "Slight step down after a huge Philly walk year, but career-high 59 pressures in his first Patriots season."], [12, "Derrick Brown", "CAR", "Solid return from injury, not quite back to his 2023 top-5 level yet at 28."], [13, "Byron Murphy II", "SEA", "Big Year 2 jump — pass-rush grade climbed from 64.5 to 77.3 on a title-winning defense."], [14, "DeForest Buckner", "IND", "Decline visible at 32 but still a reliable rusher when on the field before a second-half injury."], [15, "Nnamdi Madubuike", "BAL", "Feared his career might be over after a neck injury; now cleared and back on track for 2026."], [16, "Poona Ford", "LAR", "Late-career breakout — strong run defense two years running plus a real pass-rush contribution."], [17, "Jordan Davis", "PHI", "Continues to improve every year — career-high snaps and pressures in 2025."], [18, "Travis Jones", "BAL", "Best year of his career — 7th among interior linemen in grade, elite run-stuffer."], [19, "Ed Oliver", "BUF", "Career-high grade on just 124 snaps due to injury; a full healthy season could be a big jump."], [20, "John Franklin-Myers", "TEN", "Versatile across the front, 50+ pressures in five straight seasons before a slight 2025 dip."], [21, "Osa Odighizuwa", "SF", "Fresh start in San Francisco after five years in Dallas; 70+ pass-rush grade for four straight years."], [22, "Alim McNeill", "DET", "Dealing with a neck injury; 2024 form was a real top-10 level if he can get back to it."], [23, "Zach Sieler", "MIA", "Down year (60.7 grade) at 31 after a strong 2024; a bounce-back candidate."], [24, "Keeanu Benton", "PIT", "Career-high pressure total, but run-defense grade has slipped since a strong rookie year."], [25, "David Onyemata", "NYJ", "33 and showing no real signs of slowing, strong against the run for four of the last six years."], [26, "DJ Reader", "NYG", "Solid if not spectacular in Detroit; never graded below 60 in either facet across a 10-year career."], [27, "Christian Barmore", "NE", "Missed most of 2024 but a career-high pressure total in 2025; still just 27 with a higher gear available."], [28, "Moro Ojomo", "PHI", "Contract-year candidate after two solid seasons in Philadelphia's deep rotation."], [29, "Mason Graham", "CLE", "Improved as his rookie year went on — highest-graded rookie interior lineman by a clear margin."], [30, "Grover Stewart", "IND", "Decline evident at 32 (57.3 grade), but a strong run defender in the two years prior."], [31, "Kenny Clark", "DAL", "Resurgent first year in Dallas after the Micah Parsons trade — solid pass-rush production."], [32, "Jowon Briggs", "NYJ", "Broke out in Year 2 with a top-5 pass-rush grade at the position on limited career snaps so far."]], "EDGE": [[1, "Myles Garrett", "LAR", "Set the NFL single-season sack record (23) before a blockbuster trade to LA; seven straight years above a 90 pass-rush grade."], [2, "Will Anderson Jr.", "HOU", "Improved every season so far — 92.8 pass-rush grade and 102 total pressures in 2025 puts him in Garrett's range."], [3, "Micah Parsons", "GB", "91.5+ pass-rush grade every year of his career; the only question in 2026 is the ACL recovery timeline."], [4, "Aidan Hutchinson", "DET", "Devastating return from a broken leg — 100 total pressures, no signs the injury slowed him down."], [5, "Josh Hines-Allen", "JAX", "80+ grade for four straight seasons; strong against the run too, not just a pure pass rusher."], [6, "Nick Bosa", "SF", "Elite whenever healthy (85+ pass-rush grade every qualifying season), but durability remains the real question."], [7, "Maxx Crosby", "LV", "Nearly traded to Baltimore before it fell through; still one of the most complete players at the position."], [8, "Danielle Hunter", "HOU", "Career-high 89.9 grade forming a nightmare duo with Anderson off Houston's edge."], [9, "T.J. Watt", "PIT", "Lowest grade since his rookie year in 2025, but a year removed from 90+ in both facets — bounce-back expected."], [10, "Trey Hendrickson", "BAL", "Limited to 285 snaps in his last Bengals season, but 162 pressures across 2023-24 when fully healthy."], [11, "Jared Verse", "CLE", "Part of the Garrett trade return — 189 total pressures in two seasons, one of the game's most devastating bull rushes."], [12, "Greg Rousseau", "BUF", "Fourth straight 80+ grade season; best run-defense grade at the position in 2025."], [13, "Alex Highsmith", "PIT", "Small step back in 2025, but still 78+ in both run and pass rush — part of a loaded Steelers trio."], [14, "Nik Bonitto", "DEN", "Improved every single season — pressure total climbed from 19 to 81 across four years."], [15, "Laiatu Latu", "IND", "Ascending fast — pass-rush grade and pressure rate both jumped significantly in Year 2."], [16, "Abdul Carter", "NYG", "Strong rookie year that flew under the radar due to low sack totals; 10th-best pass-rush grade at the position."], [17, "Nick Herbig", "PIT", "6th among edges in pass-rush grade — arguably already Pittsburgh's best edge on a stacked roster."], [18, "Khalil Mack", "LAC", "First real signs of decline at 35, but still a strong run defender in year 12."], [19, "Jonathan Greenard", "PHI", "Traded to Philadelphia after missing time in Minnesota; career-high run-defense grade even in a shortened season."], [20, "Brian Burns", "NYG", "Career-high 29 combined sacks/hits; 70+ pass-rush grade in all seven NFL seasons."], [21, "DeMarcus Lawrence", "SEA", "2nd-best run-defense grade at the position; a worthwhile complementary pass rusher too."], [22, "Andrew Van Ginkel", "MIN", "Versatile — one of just five edges with 100+ coverage snaps; expect more dropbacks under DC Brian Flores."], [23, "Byron Young", "LAR", "All-around game improving fast; should see more one-on-ones with defenses focused on Garrett."], [24, "Boye Mafe", "CIN", "Dip in Year 4, but has flashed 77+ grades in both facets separately — just needs to combine them."], [25, "Chase Young", "NO", "Hasn't lived up to the No. 2 pick, but a career-high 86.3 pass-rush grade in 2025 shows real growth."], [26, "Odafe Oweh", "LAC", "Slow start to his career now paying off — career-high grade after a midseason trade to LA."], [27, "Yaya Diaby", "TB", "162 pressures in three years, with 65+ run-defense grades across the board — a complete, ascending player."], [28, "Josh Sweat", "ARI", "Moved to Arizona after seven years in Philly; 45+ pressures in five straight seasons."], [29, "Rashan Gary", "DAL", "Once a top-5 pass rusher in 2021, but grade has declined every year since — boom-or-bust proposition."], [30, "Jaelan Phillips", "CAR", "Bounced back from multiple injury-hit years with a career-high pressure rate on a new contract."], [31, "George Karlaftis", "KC", "Improved every year of his four-year career; career highs in both pass rush and run defense in 2025."], [32, "Montez Sweat", "CHI", "Solid, unspectacular floor — one sub-65 pass-rush season in seven years, unlikely to threaten the top 10."]], "LB": [[1, "Fred Warner", "SF", "93.2 grade despite an injury-shortened season — 6 straight years above an 80.0 grade defines continuity at the position."], [2, "Jack Campbell", "DET", "Grade has climbed every season; a fresh $81M extension backs a 90.3 grade that led all qualifiers in 2025."], [3, "Devin Lloyd", "CAR", "Contract-year breakout — 87.9 grade, top-10 in both coverage and run defense; now tasked with fixing Carolina's linebacker room."], [4, "Zack Baun", "PHI", "Went from fringe edge defender to elite off-ball backer in two years — 2nd-most WAR at the position since 2024."], [5, "Jordyn Brooks", "MIA", "4th-most WAR at the position over his two Miami seasons; elite downhill, missing just 4.3% of tackles in 2025."], [6, "Devin Bush", "CHI", "Rebuilt his career in Cleveland — 4th-highest grade at the position since 2024, now heading to Chicago."], [7, "Demario Davis", "NYJ", "37 years old and still elite against the run; heads back to New York after a Saints legacy."], [8, "Edgerrin Cooper", "GB", "2nd-round pick already producing top-10 grades at the position through two years."], [9, "Carson Schwesinger", "CLE", "Defensive Rookie of the Year — elite run-stop rate and low missed-tackle rate in his debut."], [10, "Bobby Wagner", "FA", "Leads all linebackers in WAR since 2021 but coverage has slipped hard (51.1 grade in 2025); still a top run defender at 36."], [11, "Roquan Smith", "BAL", "Three-time All-Pro no longer elite but still solidly above average; 9th in grade at the position since 2023."], [12, "Kaden Elliss", "NO", "Do-it-all producer, led all linebackers in pressures over the last five years back in New Orleans."], [13, "Azeez Al-Shaair", "HOU", "Underappreciated on a stacked Houston defense; coverage growth is the encouraging development."], [14, "Nick Bolton", "KC", "Steady since 2021, capped by a career-best 79.0 grade in 2025 after two shakier years."], [15, "Foyesade Oluokun", "JAX", "Strong in coverage but needs to sharpen run defense; takes over as Jacksonville's clear leader after Lloyd's exit."], [16, "Jihaad Campbell", "PHI", "Fell to pick 31 and made the league regret it — 94th percentile coverage grade as a rookie."], [17, "Divine Deablo", "ATL", "Career year in a fresh Atlanta opportunity — one of just four linebackers balanced 70+ across coverage, run defense and tackling."], [18, "Robert Spillane", "NE", "Undrafted success story, 12th-highest graded at the position since 2023, mostly on the strength of run defense."], [19, "Dre Greenlaw", "SF", "Limited to 420 snaps over two years by injury, but grade has never dipped below 73 when playing; back in SF."], [20, "Cedric Gray", "TEN", "Best-kept secret at the position — positional-best run-stop rate on a rough Tennessee defense."], [21, "Drue Tranquill", "KC", "Career-high grade in 2025, but the question is whether it's sustainable given a shakier track record."], [22, "Leo Chenal", "WAS", "6th-highest grade at the position since 2023, but volume has been the limiter; gets a real starter's role in 2026."], [23, "T.J. Edwards", "CHI", "6th-most WAR since 2021, but grade has slipped since 2024 amid injuries; needs a healthy platform to reclaim elite status."], [24, "Ernest Jones", "SEA", "Reputation exceeds recent metrics — a strong 2023 in LA hasn't repeated, coverage the main culprit."], [25, "Blake Cashman", "MIN", "Solid overall but grade has dipped two years running, especially in coverage; a contract-year swing spot."], [26, "Nate Landman", "LAR", "Strong first 12 weeks of 2025 faded badly down the stretch; re-signed to a mid-year extension anyway."], [27, "Alex Singleton", "DEN", "Overcame testicular cancer to help lead Denver to the AFC title game — a genuine inspirational story with solid run-D marks."], [28, "Alex Anzalone", "TB", "Reliable if unspectacular for five years in Detroit; brought in to upgrade a below-average Tampa unit."], [29, "Jamien Sherwood", "NYJ", "Strong against the run and in tackling, but a bottom-10 coverage grade among qualifiers."], [30, "Nakobe Dean", "LV", "Anchored Philly's title defense in 2024 before a patella tear wrecked 2025; Vegas bet $36M on his health returning."], [31, "Henry To'oTo'o", "HOU", "Late-round success story whose grade has improved every year; missed tackles are the next thing to clean up."], [32, "Daiyan Henley", "LAC", "Solid Year 2 didn't carry into Year 3 — coverage grade dropped nearly 20 points."]], "CB": [[1, "Devon Witherspoon", "SEA", "NFL's highest-graded corner in 2025 — versatile enough to play outside or slot, elite against the run too."], [2, "Sauce Gardner", "IND", "Traded to Indianapolis after an injury-hit year; still tied for 15th in coverage grade among qualifiers, career-high run-D mark."], [3, "Pat Surtain II", "DEN", "A year removed from Defensive Player of the Year, still a top-25 corner anchoring an elite Denver secondary."], [4, "Trent McDuffie", "LAR", "Rams paid up to get him — 2nd-best coverage grade in the NFL since being drafted in 2022."], [5, "Cooper DeJean", "PHI", "2nd-best grade at the position since entering the league; tied for 2nd in the NFL in pass breakups."], [6, "Quinyon Mitchell", "PHI", "3rd in the NFL in grade since 2024; allowed the 2nd-lowest passer rating among qualified corners in 2025."], [7, "Derek Stingley Jr.", "HOU", "Volatile year in coverage but elite ball skills — 2nd in coverage grade among corners over the last three years."], [8, "Christian Gonzalez", "NE", "12th in coverage grade, 4th in pass breakups among qualifiers, missed just one tackle all season at 24 years old."], [9, "Kamari Lassiter", "HOU", "7th among corners in grade over his first two seasons; forms one of the league's best young CB duos with Stingley."], [10, "Mike Jackson", "CAR", "Went from Seattle afterthought to arguably Carolina's best defender — led all qualified corners in coverage grade."], [11, "Jamel Dean", "PIT", "Career-high grade in his final Tampa season; allowed the lowest passer rating among all qualified corners."], [12, "Christian Benford", "BUF", "Rough 2025 (career-low coverage grade) but 87.1 grade the two years prior — real bounce-back candidate."], [13, "Ja'Quan McMillian", "DEN", "Highest-graded slot corner in the NFL; versatility lets Denver run a wide variety of coverages."], [14, "Jaylon Johnson", "CHI", "Injury-limited to nine games and not himself when playing, but was the league's top corner in 2023."], [15, "Jaylen Watson", "LAR", "Joins former Chiefs teammate McDuffie in LA off his best season yet — run defense stood out most."], [16, "Carlton Davis III", "NE", "19th overall but elite down the stretch — 3rd in the NFL from Week 11 on, part of a strong Patriots trio."], [17, "DJ Turner II", "CIN", "Breakout season — 7th among corners in coverage grade, tied for 2nd in pass breakups."], [18, "Joey Porter Jr.", "PIT", "Career-high coverage grade; allowed just a 55.9 passer rating, 3rd-lowest among qualifiers."], [19, "Marcus Jones", "NE", "Gets better every year — career-high coverage grade plus four picks, three sacks and a forced fumble."], [20, "Denzel Ward", "CLE", "Production dipped after leading the league in pass breakups in 2024; track record says a bounce back is likely."], [21, "Jourdan Lewis", "JAX", "One of the league's more productive slot corners the last two years — 12th in coverage grade since 2024."], [22, "Isaiah Rodgers", "MIN", "First real starting chance paid off, including the first-ever 99.9 game grade in PFF history."], [23, "D.J. Reed", "DET", "Career-low grade in his first Detroit season, skewed by two tough matchups; six straight 70+ years before that."], [24, "Charvarius Ward", "IND", "Limited to seven games by concussions but productive when playing — 9th in coverage grade among qualifiers."], [25, "A.J. Terrell", "ATL", "Struggled more than usual in coverage but still flashed playmaking; penalties (tied for the league lead) are the fixable issue."], [26, "Eric Stokes", "LV", "Career-high grade — didn't allow more than 50 yards in any single game all season."], [27, "Garrett Williams", "ARI", "Achilles tear cut a promising 2025 short; 2024 form (83.7 coverage grade) would be a huge boost if he returns to it."], [28, "Jaycee Horn", "CAR", "Inconsistent grading the past two years but flashes real playmaking ability — five picks in 2025."], [29, "Rasul Douglas", "WAS", "Bounced back in Miami after a rough Buffalo stint; solid veteran reinforcement for a young Washington room."], [30, "Tarheeb Still", "LAC", "Versatile through two seasons, lining up both outside and in the slot; tackling is the next growth area."], [31, "Kool-Aid McKinstry", "NO", "Becoming a reliable piece in New Orleans — led the team with three interceptions."], [32, "Keisean Nixon", "GB", "Tied for 2nd in the league in pass breakups; penalties are the one real drawback in his game."]], "S": [[1, "Kyle Hamilton", "BAL", "League's highest-graded safety since entering in 2022 — dominant whether playing deep, in the box or the slot."], [2, "Derwin James", "LAC", "Now the highest-paid safety in history — 77.5+ grade in seven of eight pro seasons despite the position's volatility."], [3, "Xavier McKinney", "GB", "90.9 grade since 2023 trails only Hamilton; added a career-best run-defense mark on top of a league-best coverage grade."], [4, "Minkah Fitzpatrick", "NYJ", "Bounced back hard in Miami before a Jets move — one of just four safeties balanced 78+ in coverage and run defense."], [5, "Brian Branch", "DET", "2nd-most valuable safety by WAR since debuting in 2023; an Achilles tear cut a dominant 2025 short."], [6, "Antoine Winfield Jr.", "TB", "Responded to a down 2024 with a strong bounce back — 2nd-lowest missed-tackle rate among qualified safeties."], [7, "Jalen Pitre", "HOU", "Career-best 83.6 grade, ranking 3rd among qualifiers; especially strong working out of the slot."], [8, "Kevin Byard", "NE", "Consistently strong at nearly 33 — 72.8+ grade every year since 2021, across three different teams."], [9, "Jessie Bates III", "ATL", "Grade fell sharply in 2025 (64.5) after a strong 2024; still a career 29-interception ballhawk."], [10, "Kamren Kinchens", "LAR", "3rd-round pick blossoming fast — top-4 coverage grade at the position in 2025, real All-Pro upside."], [11, "Bryan Cook", "CIN", "Broke out after three mediocre KC years — 83.3 grade, 3rd-best coverage mark at the position."], [12, "Kamren Curl", "LAR", "Strong all-around season for a title team — 2nd-best run-defense grade among safeties."], [13, "Antonio Johnson", "JAX", "Total turnaround from one of the league's worst safeties to one of the best — highest grade among high-snap qualifiers."], [14, "Nick Emmanwori", "SEA", "Wasn't a regular starter until Week 5, then a top-10 grade the rest of the way as a rookie."], [15, "Talanoa Hufanga", "DEN", "First healthy season in three years — strong coverage numbers, just needs to stay on the field more."], [16, "Kerby Joseph", "DET", "Unforgettable 2024 (90.7 grade) didn't carry into an injury-shortened 2025; huge swing factor for Detroit's defense if he's healthy."], [17, "Julian Love", "SEA", "5th in grade over three Seahawks seasons; run defense and reduced snap count due to injury are the concerns."], [18, "Jaylinn Hawkins", "BAL", "Career-high grade in 2025, now forms a promising trio with Hamilton and Starks in Baltimore."], [19, "Coby Bryant", "CHI", "Durable and solid across two seasons; tackling needs cleanup after a high missed-tackle rate."], [20, "Jalen Thompson", "DAL", "Consistent five-year floor now moves to Dallas to work alongside rookie Caleb Downs."], [21, "Evan Williams", "GB", "Steal since being a Day 3 pick — strong against the run, needs more discipline in coverage."], [22, "Justin Reid", "NO", "Strong 2024 in Kansas City didn't repeat in year one with New Orleans; run defense stayed solid."], [23, "Jalen Ramsey", "PIT", "Moved to safety midseason after a Steelers trade; a new DC in 2026 could unlock more of his peak form."], [24, "Alohi Gilman", "KC", "Solid across two teams last year; 2023 form (86.1 grade) is the higher gear Kansas City hopes to unlock."], [25, "Brandon Jones", "DEN", "Two strong years (2023-24) preceded a coverage-driven dip in 2025; bounce-back candidate in a stacked Denver room."], [26, "Xavier Watts", "ATL", "Impressive rookie year highlighted by five interceptions; better run defense is the next step."], [27, "Craig Woodson", "NE", "Strong run-defense-first rookie debut; coverage growth would make him and Byard a top tandem."], [28, "Ronnie Hickman Jr.", "CLE", "Productive when on the field across three years, but a contract year with a rookie now pushing him."], [29, "Camryn Bynum", "IND", "Durable and steady, top-10 percentile missed-tackle rate in his first Colts season."], [30, "Quentin Lake", "LAR", "Underrated — 4th-most safety WAR since 2023 — strong run defense, coverage lags a bit behind."], [31, "Calen Bullock", "HOU", "Growing fast over two years, but still gives up too many big plays for his target share."], [32, "Budda Baker", "ARI", "Eight-time Pro Bowler whose advanced numbers (35.7 coverage grade in 2025) tell a more concerning story than the reputation."]]}
+</script>
+<script id="moversData" type="application/json">
+{"up": [{"pos": "QB", "name": "Drake Maye", "team": "NE", "rank": 9, "note": "Engineered one of the great turnarounds in NFL history, into a Super Bowl trip."}, {"pos": "WR", "name": "Jaxon Smith-Njigba", "team": "SEA", "rank": 2, "note": "Vaulted into the league's elite tier off a receiving-yards title and Offensive Player of the Year."}, {"pos": "WR", "name": "George Pickens", "team": "DAL", "rank": 9, "note": "Breakout first season in Dallas — 3rd in the league in receiving yards."}, {"pos": "TE", "name": "Colston Loveland", "team": "CHI", "rank": 5, "note": "No. 10 pick who took off in the second half of his rookie year."}, {"pos": "IDL", "name": "Byron Murphy II", "team": "SEA", "rank": 13, "note": "Pass-rush grade jumped from 64.5 to 77.3 in Year 2 on a title defense."}, {"pos": "EDGE", "name": "Laiatu Latu", "team": "IND", "rank": 15, "note": "Pressure rate and grade both climbing fast heading into Year 3."}, {"pos": "LB", "name": "Devin Bush", "team": "CHI", "rank": 6, "note": "Rebuilt his career in Cleveland; arrives in Chicago off a career-high grade."}, {"pos": "S", "name": "Jalen Pitre", "team": "HOU", "rank": 7, "note": "Career-best grade patrolling one of the league's best defenses."}], "down": [{"pos": "WR", "name": "Justin Jefferson", "team": "MIN", "rank": 3, "note": "Posted career lows across the board behind shaky QB play in 2025."}, {"pos": "QB", "name": "C.J. Stroud", "team": "HOU", "rank": 17, "note": "Grade collapsed behind a battered offensive line — worst-in-league mark under pressure."}, {"pos": "QB", "name": "Aaron Rodgers", "team": "PIT", "rank": 22, "note": "Career-worst grade at 42, in his announced final season."}, {"pos": "EDGE", "name": "T.J. Watt", "team": "PIT", "rank": 9, "note": "Lowest grade since his rookie year, though a bounce-back is expected."}, {"pos": "S", "name": "Jessie Bates III", "team": "ATL", "rank": 9, "note": "Grade fell from 80.2 to 64.5 — his worst mark since 2019."}, {"pos": "S", "name": "Kerby Joseph", "team": "DET", "rank": 16, "note": "Couldn't replicate a huge 2024 in an injury-shortened season."}, {"pos": "CB", "name": "Christian Benford", "team": "BUF", "rank": 12, "note": "Coverage grade dropped to a career low after two elite seasons."}, {"pos": "EDGE", "name": "Rashan Gary", "team": "DAL", "rank": 29, "note": "Pass-rush grade has fallen every year since a 2021 peak."}]}
+</script>
+<script>
+(function(){
+'use strict';
+var DATA = JSON.parse(document.getElementById('rankingsData').textContent);
+var MOVERS = JSON.parse(document.getElementById('moversData').textContent);
+var POS_LABELS = {QB:'Quarterback',RB:'Running Back',WR:'Wide Receiver',TE:'Tight End',OT:'Tackle',OG:'Guard',C:'Center',IDL:'Interior D-Line',EDGE:'Edge Defender',LB:'Linebacker',CB:'Cornerback',S:'Safety'};
+var POS_ORDER = ['QB','RB','WR','TE','OT','OG','C','IDL','EDGE','LB','CB','S'];
+
+function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+function gradeFor(rank){
+  if(rank==='HM') return {cls:'grade-cp', label:'C+', hex:'#ff5d6c'};
+  if(rank<=3) return {cls:'grade-ap', label:'A+', hex:'#64c7ff'};
+  if(rank<=10) return {cls:'grade-a', label:'A', hex:'#22d97e'};
+  if(rank<=20) return {cls:'grade-bp', label:'B+', hex:'#ffb43a'};
+  return {cls:'grade-b', label:'B', hex:'#9aa7b5'};
+}
+
+/* ---------- flatten dataset ---------- */
+var ALL = [];
+POS_ORDER.forEach(function(pos){
+  DATA[pos].forEach(function(r){
+    ALL.push({pos:pos, rank:r[0], name:r[1], team:r[2], note:r[3]});
+  });
+});
+
+/* ---------- Overview stats ---------- */
+function buildOverview(){
+  var counts = {ap:0,a:0,bp:0,b:0,cp:0};
+  ALL.forEach(function(x){
+    var g = gradeFor(x.rank);
+    if(g.label==='A+') counts.ap++;
+    else if(g.label==='A') counts.a++;
+    else if(g.label==='B+') counts.bp++;
+    else if(g.label==='B') counts.b++;
+    else counts.cp++;
+  });
+  var deepest = POS_ORDER.map(function(p){ return {p:p, n:DATA[p].length}; }).sort(function(a,b){return b.n-a.n;})[0];
+  var cells = [
+    {l:'Total players graded', v:ALL.length, cls:'gold'},
+    {l:'A+ elite tier', v:counts.ap, cls:''},
+    {l:'A strong starters', v:counts.a, cls:''},
+    {l:'Positions covered', v:'12', cls:''},
+    {l:'Sources synthesized', v:'12', cls:''},
+    {l:'Deepest board', v:deepest.p, cls:''}
+  ];
+  document.getElementById('ovGrid').innerHTML = cells.map(function(c){
+    return '<div class="ov-item"><div class="l">'+c.l+'</div><div class="v '+c.cls+'">'+c.v+'</div></div>';
+  }).join('');
+  return counts;
+}
+var TIER_COUNTS = buildOverview();
+
+/* ---------- Donut chart ---------- */
+function buildDonut(){
+  var total = ALL.length;
+  var segs = [
+    {label:'A+ Elite', n:TIER_COUNTS.ap, color:'#64c7ff'},
+    {label:'A Strong', n:TIER_COUNTS.a, color:'#22d97e'},
+    {label:'B+ Solid', n:TIER_COUNTS.bp, color:'#ffb43a'},
+    {label:'B Depth', n:TIER_COUNTS.b, color:'#9aa7b5'},
+    {label:'C+ Camp battle', n:TIER_COUNTS.cp, color:'#ff5d6c'}
+  ];
+  var svg = document.getElementById('donutChart');
+  var r = 15.9155, cx=18, cy=18, circumference = 2*Math.PI*r;
+  var offset = 0, html = '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="transparent" stroke="rgba(255,255,255,.06)" stroke-width="4"></circle>';
+  segs.forEach(function(s){
+    var frac = s.n/total;
+    var len = frac*circumference;
+    html += '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="transparent" stroke="'+s.color+'" stroke-width="4" stroke-dasharray="'+len+' '+(circumference-len)+'" stroke-dashoffset="'+(-offset)+'" transform="rotate(-90 '+cx+' '+cy+')"></circle>';
+    offset += len;
+  });
+  svg.innerHTML = html;
+  document.getElementById('donutLegend').innerHTML = segs.map(function(s){
+    return '<div class="dli"><span class="sw" style="background:'+s.color+'"></span>'+s.label+'<b>'+s.n+'</b></div>';
+  }).join('');
+}
+buildDonut();
+
+/* ---------- Movers desk ---------- */
+var moversMode = 'up';
+function buildMovers(){
+  var list = MOVERS[moversMode];
+  document.getElementById('moversMini').innerHTML = list.slice(0,6).map(function(m){
+    return '<div class="mover-mini" data-pos="'+m.pos+'" data-name="'+esc(m.name)+'"><span class="arrow '+(moversMode==='up'?'up':'down')+'">'+(moversMode==='up'?'▲':'▼')+'</span><span class="info"><span class="nm">'+esc(m.name)+'</span><span class="mt">'+m.pos+' · '+m.team+' · #'+m.rank+'</span></span></div>';
+  }).join('');
+  Array.prototype.slice.call(document.querySelectorAll('#moversMini .mover-mini')).forEach(function(el){
+    el.style.cursor='pointer';
+    el.onclick = function(){ jumpToBoard(el.dataset.pos, el.dataset.name); };
+  });
+}
+Array.prototype.slice.call(document.querySelectorAll('[data-mv]')).forEach(function(btn){
+  btn.onclick = function(){
+    Array.prototype.slice.call(document.querySelectorAll('[data-mv]')).forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active');
+    moversMode = btn.dataset.mv;
+    buildMovers();
+  };
+});
+buildMovers();
+
+/* ---------- Spotlight ---------- */
+function buildSpotlight(){
+  var pick = ALL.find(function(x){ return x.pos==='QB' && x.rank===1; });
+  var g = gradeFor(pick.rank);
+  document.getElementById('spotlightBody').innerHTML =
+    '<div class="spot-grade" style="color:'+g.hex+'">'+g.label+'</div>'+
+    '<div class="spot-lbl">Top Overall Grade</div>'+
+    '<div class="spot-name">'+esc(pick.name)+'</div>'+
+    '<div class="spot-meta">'+pick.team+' · '+POS_LABELS[pick.pos]+' · NFL #'+pick.rank+'</div>'+
+    '<div class="spot-note">'+esc(pick.note)+'</div>'+
+    '<div class="spot-stats"><div><div class="v">'+g.label+'</div><div class="l">Grade</div></div><div><div class="v">#'+pick.rank+'</div><div class="l">Position rank</div></div><div><div class="v">12</div><div class="l">Sources</div></div></div>';
+  document.getElementById('spotlightBody').style.cursor='pointer';
+  document.getElementById('spotlightBody').onclick = function(){ jumpToBoard(pick.pos, pick.name); };
+}
+buildSpotlight();
+
+/* ---------- Position breakdown ---------- */
+function buildPosBreakdown(){
+  var rows = POS_ORDER.map(function(p){
+    var ap = DATA[p].filter(function(r){ return r[0]!=='HM' && r[0]<=3; }).length;
+    return {p:p, ap:ap, total:DATA[p].length};
+  }).sort(function(a,b){ return b.ap-a.ap; });
+  document.getElementById('posBreakdown').innerHTML = rows.map(function(r){
+    var pct = Math.round((r.ap/3)*100);
+    return '<div class="posbrk-row"><span class="pname">'+r.p+'</span><span class="posbrk-bar"><i style="width:'+pct+'%"></i></span><span class="pcount">'+r.ap+' A+</span></div>';
+  }).join('');
+}
+buildPosBreakdown();
+
+/* ---------- Camp Intel (real, sourced camp/preseason buzz) ---------- */
+var CAMP_INTEL = [
+  {tag:'Kevin Patra · NFL.com', headline:'Drake Maye enters camp with the standard raised', body:'Maye is no longer being treated like a developmental quarterback. After New England’s 2025 Super Bowl run, camp coverage has centered on faster starts, vertical aggression and proving last season’s efficiency is repeatable.', pos:'QB', name:'Drake Maye'},
+  {tag:'Kevin Patra · NFL.com', headline:'Travis Hunter created the loudest two-way practice', body:'Hunter produced impact plays on both sides of the ball during Back Together Weekend, including an interception and an explosive contested reception. The takeaway is role versatility, not just highlight value.', pos:'CB', name:'Travis Hunter'},
+  {tag:'NFL.com NFC West camp preview', headline:'Jaxon Smith-Njigba enters camp as the passing-game centerpiece', body:'Seattle is building around Smith-Njigba after a league-leading receiving season. The key 2026 question is no longer breakout potential; it is how defenses adjust now that he is the clear first read.', pos:'WR', name:'Jaxon Smith-Njigba'},
+  {tag:'Kevin Patra · NFL.com', headline:'George Pickens reported with no holdout plan', body:'Pickens arrived for mandatory work on the franchise tag and said he intended to be on schedule for training camp. For the Grade Book, the more relevant variable is how Dallas prices his target volume after a breakout season.', pos:'WR', name:'George Pickens'},
+  {tag:'Dalton Wasserman & Max Chadwick · PFF', headline:'Colston Loveland is already being treated like a top-tier tight end', body:'Loveland’s rookie efficiency was strong enough to push him into the top-five conversation entering Year 2. That makes route share and red-zone usage more important than raw snap count when evaluating his next step.', pos:'TE', name:'Colston Loveland'},
+  {tag:'Dalton Wasserman & Max Chadwick · PFF', headline:'The receiver hierarchy changed quickly', body:'The 2026 receiver board has a new elite tier: younger stars such as Smith-Njigba and George Pickens are forcing their way into conversations that were dominated by established names a year ago.', pos:'WR', name:'Jaxon Smith-Njigba'}
+];
+function buildCampIntel(){
+  document.getElementById('campIntelList').innerHTML = CAMP_INTEL.map(function(c){
+    var jumpAttr = c.pos ? ' data-pos="'+c.pos+'" data-name="'+esc(c.name)+'"' : '';
+    var jumpBtn = c.pos ? '<span class="intel-tag"'+jumpAttr+'>Open player →</span>' : '';
+    return '<div class="intel-card"><div class="intel-src"><b>FIELD NOTE</b><span>2026 CAMP</span></div><div class="intel-headline">'+esc(c.headline)+'</div><div class="intel-body">'+esc(c.body)+'</div><span class="intel-credit">Reported by '+esc(c.tag)+' · summarized by Short Open</span>'+jumpBtn+'</div>';
+  }).join('');
+  Array.prototype.slice.call(document.querySelectorAll('.intel-tag[data-pos]')).forEach(function(el){
+    el.onclick = function(){ jumpToBoard(el.dataset.pos, el.dataset.name); };
+  });
+}
+buildCampIntel();
+
+/* ---------- Profiles to monitor ---------- */
+var monitorMode = 'all';
+function buildMonitor(){
+  var list = [];
+  MOVERS.up.forEach(function(m){ list.push(Object.assign({dir:'up'}, m)); });
+  MOVERS.down.forEach(function(m){ list.push(Object.assign({dir:'down'}, m)); });
+  if(monitorMode!=='all') list = list.filter(function(x){ return x.dir===monitorMode; });
+  document.getElementById('monitorBody').innerHTML = list.map(function(m){
+    var g = gradeFor(m.rank);
+    return '<tr class="clickable" data-pos="'+m.pos+'" data-name="'+esc(m.name)+'"><td><span class="wname">'+esc(m.name)+'</span><span class="wmeta">'+m.pos+' · '+m.team+'</span></td><td><span class="mini-grade '+g.cls+'">'+g.label+'</span></td><td style="color:'+(m.dir==='up'?'var(--green)':'var(--red)')+'">'+(m.dir==='up'?'▲ Ascending':'▼ Volatile')+'</td></tr>';
+  }).join('');
+  Array.prototype.slice.call(document.querySelectorAll('#monitorBody tr')).forEach(function(tr){
+    tr.onclick = function(){ jumpToBoard(tr.dataset.pos, tr.dataset.name); };
+  });
+}
+Array.prototype.slice.call(document.querySelectorAll('[data-mon]')).forEach(function(btn){
+  btn.onclick = function(){
+    Array.prototype.slice.call(document.querySelectorAll('[data-mon]')).forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active');
+    monitorMode = btn.dataset.mon;
+    buildMonitor();
+  };
+});
+buildMonitor();
+
+/* ---------- Deep sleepers ---------- */
+var KEYWORDS = ['breakout','climb','improv','emerg','career-high','career high','ascend','jump','surprise','bounce','rising','earned'];
+var deepPos = 'ALL';
+function deepPool(){
+  return ALL.filter(function(x){
+    if(x.rank==='HM' || x.rank<21) return false;
+    var note = x.note.toLowerCase();
+    return KEYWORDS.some(function(k){ return note.indexOf(k)!==-1; });
+  });
+}
+function buildDeepChips(){
+  var pool = deepPool();
+  var positions = ['ALL'].concat(Array.from(new Set(pool.map(function(x){return x.pos;}))));
+  document.getElementById('deepChips').innerHTML = positions.map(function(p){
+    return '<button class="pchip'+(p===deepPos?' active':'')+'" data-dp="'+p+'">'+p+'</button>';
+  }).join('');
+  Array.prototype.slice.call(document.querySelectorAll('[data-dp]')).forEach(function(btn){
+    btn.onclick = function(){ deepPos = btn.dataset.dp; buildDeepChips(); buildDeepTable(); };
+  });
+}
+function buildDeepTable(){
+  var pool = deepPool();
+  if(deepPos!=='ALL') pool = pool.filter(function(x){ return x.pos===deepPos; });
+  document.getElementById('deepBody').innerHTML = pool.slice(0,8).map(function(x){
+    var g = gradeFor(x.rank);
+    return '<tr class="clickable" data-pos="'+x.pos+'" data-name="'+esc(x.name)+'"><td><span class="wname">'+esc(x.name)+'</span><span class="wmeta">'+x.pos+' · '+x.team+' · #'+x.rank+'</span></td><td><span class="mini-grade '+g.cls+'">'+g.label+'</span></td><td style="color:var(--green);font-family:var(--mono);font-size:10px">▲</td></tr>';
+  }).join('') || '<tr><td colspan="3" style="color:var(--muted);font-family:var(--mono);font-size:11px;padding:14px 0">No matches for this position.</td></tr>';
+  Array.prototype.slice.call(document.querySelectorAll('#deepBody tr')).forEach(function(tr){
+    if(!tr.dataset.pos) return;
+    tr.onclick = function(){ jumpToBoard(tr.dataset.pos, tr.dataset.name); };
+  });
+}
+buildDeepChips();
+buildDeepTable();
+
+/* ---------- Top calls sidebar ---------- */
+function buildTopCalls(){
+  var calls = [
+    Object.assign({tag:'TOP GRADE'}, ALL.find(function(x){return x.pos==='QB'&&x.rank===1;})),
+    Object.assign({tag:'ASCENDING PROFILE'}, (function(){var m=MOVERS.up[0]; return ALL.find(function(x){return x.pos===m.pos&&x.name===m.name;});})()),
+    Object.assign({tag:'UNDER-RADAR PROFILE'}, deepPool()[0] || ALL[0]),
+    Object.assign({tag:'MOST VOLATILE'}, (function(){var m=MOVERS.down[0]; return ALL.find(function(x){return x.pos===m.pos&&x.name===m.name;});})()),
+    Object.assign({tag:'REGRESSION WATCH'}, (function(){var m=MOVERS.down[1]; return ALL.find(function(x){return x.pos===m.pos&&x.name===m.name;});})())
+  ];
+  document.getElementById('topCallsList').innerHTML = calls.map(function(c, i){
+    var g = gradeFor(c.rank);
+    return '<div class="mover-mini" style="cursor:pointer" data-pos="'+c.pos+'" data-name="'+esc(c.name)+'"><span class="arrow" style="background:rgba(255,255,255,.05);color:var(--muted);font-family:var(--mono);font-size:9px">'+(i+1<10?'0'+(i+1):i+1)+'</span><span class="info"><span class="mt" style="color:var(--gold)">'+c.tag+'</span><span class="nm">'+esc(c.name)+'</span><span class="mt">'+c.pos+' · '+c.team+' · <span class="mini-grade '+g.cls+'" style="padding:1px 5px;font-size:9px">'+g.label+'</span></span></span></div>';
+  }).join('');
+  Array.prototype.slice.call(document.querySelectorAll('#topCallsList .mover-mini')).forEach(function(el){
+    el.onclick = function(){ jumpToBoard(el.dataset.pos, el.dataset.name); };
+  });
+}
+buildTopCalls();
+
+/* ---------- Insights ---------- */
+function buildInsights(){
+  var deepest = POS_ORDER.map(function(p){ return {p:p, ap:DATA[p].filter(function(r){return r[0]!=='HM'&&r[0]<=3;}).length}; }).sort(function(a,b){return b.ap-a.ap;})[0];
+  var items = [
+    '<b>'+TIER_COUNTS.ap+' players</b> graded A+ across all 12 positions.',
+    '<b>'+deepest.p+'</b> carries the most top-3 (A+) talent on the board.',
+    '<b>'+MOVERS.up.length+' risers</b> and <b>'+MOVERS.down.length+' fallers</b> flagged this cycle.',
+    'Static snapshot &mdash; grades reflect the 2026 season board, not live movement.'
+  ];
+  document.getElementById('insightsList').innerHTML = items.map(function(t){
+    return '<div style="padding:8px 0;border-top:1px solid var(--line)">'+t+'</div>';
+  }).join('');
+}
+buildInsights();
+
+/* ---------- Sidebar module + jump nav ---------- */
+Array.prototype.slice.call(document.querySelectorAll('[data-jump]')).forEach(function(el){
+  el.onclick = function(){
+    var target = document.getElementById(el.dataset.jump);
+    if(target){
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+      if(target.classList.contains('panel')){
+        target.classList.add('flash-panel');
+        setTimeout(function(){ target.classList.remove('flash-panel'); }, 1600);
+      }
+    }
+    if(el.classList.contains('mod-item')){
+      Array.prototype.slice.call(document.querySelectorAll('.mod-item')).forEach(function(m){m.classList.remove('active');});
+      el.classList.add('active');
+    }
+  };
+});
+
+/* ---------- Main board (position tabs + search) ---------- */
+var tabs = Array.prototype.slice.call(document.querySelectorAll('.postab'));
+var tbody = document.getElementById('tbody');
+var boardTitle = document.getElementById('boardTitle');
+var boardCount = document.getElementById('boardCount');
+var searchBox = document.getElementById('searchBox');
+var searchClear = document.getElementById('searchClear');
+var searchWrap = searchBox.closest('.board-search');
+var activePos = 'QB';
+var openKey = '';
+
+function fantasyRead(rank){
+  if(rank==='HM') return 'Camp-battle piece only \u2014 not draftable in most season-long formats yet.';
+  if(rank<=5) return 'Elite-tier grade \u2014 treat as a foundational piece in season-long formats.';
+  if(rank<=15) return 'Strong-starter grade \u2014 a reliable weekly option at the position.';
+  if(rank<=25) return 'Solid-depth grade \u2014 flex or streaming consideration depending on matchup.';
+  return 'Late-round or waiver-wire tier \u2014 best as a speculative add.';
+}
+var BETTING_READ = {
+  QB:'Pair this grade with the team\u2019s implied win total and pace of play before pricing passing props.',
+  RB:'Check current snap-share and game-script expectations before using this grade for rushing props.',
+  WR:'Target share and the current quarterback\u2019s form matter as much as this grade for receiving props.',
+  TE:'Red-zone role often swings tight end markets more than raw grade \u2014 check usage trends.',
+  OT:'Offensive line grades work best as a proxy for the starting quarterback\u2019s protection markets.',
+  OG:'Same read as tackle \u2014 this feeds sack-rate and pressure-rate markets more than player-specific props.',
+  C:'Center play is a strong signal for a team\u2019s run-blocking and short-yardage markets.',
+  IDL:'Interior grades correlate with a defense\u2019s run-stop and short-yardage markets.',
+  EDGE:'Pair this grade with the current sack-prop line \u2014 public money often chases name recognition over recent form.',
+  LB:'Tackle-prop markets track playing time closely \u2014 confirm the role before using this grade.',
+  CB:'Coverage grades are most useful against a specific opposing receiver, not as a standalone number.',
+  S:'Safety grades matter most in run-support and coverage markets \u2014 check the defensive scheme first.'
+};
+
+
+function gradeDriver(rank,pos,note){
+  var tier=rank==='HM'?'camp-battle tier':rank<=3?'elite top-three tier':rank<=10?'strong starter tier':rank<=20?'solid starter/depth tier':'developmental depth tier';
+  var map={QB:'clean-pocket efficiency, turnover control, pressure response and explosive throws',RB:'yards after contact, missed tackles forced, receiving utility and workload durability',WR:'route efficiency, separation, contested-catch conversion, YAC and target command',TE:'route participation, yards per route, blocking floor and red-zone usage',OT:'pass-protection stability, pressure rate allowed, run-game movement and availability',OG:'interior pressure prevention, run-blocking consistency and snap-to-snap reliability',C:'communication, pressure prevention, run-game leverage and availability',IDL:'pass-rush disruption, run stops, double-team resistance and down-to-down consistency',EDGE:'pressure rate, pass-rush win quality, run defense and health',LB:'coverage value, run fits, tackling security and every-down role',CB:'coverage efficiency, ball production, penalties, tackling and matchup versatility',S:'coverage range, slot/box flexibility, tackling and explosive-play prevention'};
+  return 'This is a '+tier+'. The grade is most sensitive to '+(map[pos]||'repeatable efficiency and role')+'. '+(note||'')+' The next movement should come from whether those strengths hold when opponent quality and role difficulty rise.';
+}
+function roleRead(pos){return {QB:'Volume is usually stable; protection, pace and red-zone pass rate determine ceiling.',RB:'Snap share, routes, goal-line work and game script can move opportunity faster than talent.',WR:'Route participation, first-read share and average depth of target are the fastest-moving inputs.',TE:'Routes per dropback and red-zone involvement matter more than raw snaps.',OT:'Track opponent edge quality and pressure rate allowed; this feeds the offense more than a standalone prop.',OG:'Interior pressure and run-game displacement are the practical translation points.',C:'Protection calls and interior run efficiency are the clearest team-level translation points.',IDL:'Opponent run rate, interior line health and pass volume determine statistical opportunity.',EDGE:'Opponent dropback volume, tackle matchup and time-to-throw shape sack opportunity.',LB:'Every-down snaps and tackle funnel matter more than reputation.',CB:'Shadow assignment, target rate and opposing route tree determine weekly volatility.',S:'Alignment and opponent formation usage determine whether the player gets tackle or coverage volume.'}[pos]||'Role and opponent context determine how the grade translates week to week.'}
+function floorCeiling(rank,pos){if(rank==='HM')return 'Wide range · role not secure';if(rank<=3)return 'High floor · elite ceiling';if(rank<=10)return 'Strong floor · top-tier ceiling';if(rank<=20)return 'Starter floor · matchup ceiling';return 'Volatile floor · role-driven ceiling'}
+function deepDive(rank,pos,name,team,note){
+  var g=gradeFor(rank), f=fantasyRead(rank), driver=gradeDriver(rank,pos,note), role=roleRead(pos);
+  var watch=rank==='HM'?'Roster security, preseason usage and special-teams value.':rank<=10?'Health, role continuity and whether defenses materially change the matchup difficulty.':rank<=20?'Whether usage expands enough to push the player into the next tier.':'Whether a clearer role or efficiency spike creates a sustainable move up the board.';
+  return {summary:note+' Short Open reads this as a profile where the ranking is earned by repeatable traits, but the weekly ceiling still depends on role and opponent context.',driver:driver,fantasy:f,role:role,watch:watch,range:floorCeiling(rank,pos),grade:g.label,rank:rank==='HM'?'HM':'#'+rank};
+}
+
+function jumpToBoard(pos, name){
+  tabs.forEach(function(b){ b.classList.toggle('active', b.dataset.pos===pos); });
+  activePos = pos;
+  searchBox.value = name;
+  openKey = '';
+  renderBoard();
+  document.getElementById('board').scrollIntoView({behavior:'smooth', block:'start'});
+  setTimeout(function(){
+    var row = tbody.querySelector('tr');
+    if(row) row.classList.add('flash');
+  }, 350);
+}
+function syncSearchUI(){
+  searchWrap.classList.toggle('has-query', !!searchBox.value.trim());
+}
+function clearPlayerSearch(){
+  searchBox.value = '';
+  openKey = '';
+  syncSearchUI();
+  renderBoard();
+  searchBox.focus();
+}
+function renderBoard(){
+  syncSearchUI();
+  var rows = DATA[activePos] || [];
+  var q = searchBox.value.trim().toLowerCase();
+  if(q){
+    rows = rows.filter(function(r){
+      return r[1].toLowerCase().indexOf(q)!==-1 || r[2].toLowerCase().indexOf(q)!==-1;
+    });
+  }
+  var gradeFilter = document.getElementById('filterGrade').value;
+  if(gradeFilter!=='all'){
+    rows = rows.filter(function(r){ return gradeFor(r[0]).label.toLowerCase().replace('+','p')===gradeFilter; });
+  }
+  if(document.getElementById('filterAscending').checked){
+    rows = rows.filter(function(r){
+      var note = r[3].toLowerCase();
+      return KEYWORDS.some(function(k){ return note.indexOf(k)!==-1; });
+    });
+  }
+  boardTitle.firstChild.textContent = POS_LABELS[activePos];
+  boardCount.textContent = ' — ' + rows.length + ' player' + (rows.length===1?'':'s');
+  if(!rows.length){
+    tbody.innerHTML = '<tr><td colspan="5"><div class="no-results">No players match "'+esc(searchBox.value)+'"</div></td></tr>';
+    return;
+  }
+  var html = '';
+  rows.forEach(function(r){
+    var rank=r[0], name=r[1], team=r[2], note=r[3];
+    var g = gradeFor(rank);
+    var rankDisplay = rank==='HM' ? 'HM' : rank;
+    var rankCls = rank==='HM' ? 'rk hm' : 'rk';
+    var rowKey = activePos+'|'+name;
+    var isOpen = openKey===rowKey;
+    var dd=deepDive(rank,activePos,name,team,note);
+    html += '<tr class="rowmain'+(isOpen?' open':'')+'" data-key="'+esc(rowKey)+'"><td class="rank-cell"><div class="rank-control"><span class="'+rankCls+'">'+rankDisplay+'</span><span class="exp-toggle" aria-label="'+(isOpen?'Close player details':'Open player details')+'">'+(isOpen?'\u2212':'+')+'</span></div></td><td class="player-name-cell"><span class="pnm">'+esc(name)+'</span></td><td><span class="ptm">'+esc(team)+'</span></td><td><span class="mini-grade '+g.cls+'">'+g.label+'</span></td><td><span class="pnote">'+esc(note)+'</span><span class="deep-open">'+(isOpen?'Close':'Deep dive')+' ↗</span></td></tr>';
+    if(isOpen){
+      html += '<tr class="detailrow"><td colspan="5"><div class="detailwrap"><div class="detailcol profile"><div class="dl">Player deep dive <span>'+activePos+' · '+esc(team)+'</span></div><p>'+esc(dd.summary)+'</p><div class="deep-kpis"><div class="deep-kpi"><span>Grade</span><b>'+dd.grade+'</b></div><div class="deep-kpi"><span>Position rank</span><b>'+dd.rank+'</b></div><div class="deep-kpi"><span>Range</span><b>'+esc(dd.range)+'</b></div></div><div class="detail-note">The full board is a synthesized Short Open read. Click any player to open or close this layer.</div></div><div class="detailcol"><div class="dl">Why the grade sits here</div><p>'+esc(dd.driver)+'</p></div><div class="detailcol"><div class="dl">Role & usage lens</div><p>'+esc(dd.role)+'</p></div><div class="detailcol"><div class="dl">Fantasy draft lens</div><p>'+esc(dd.fantasy)+'</p></div><div class="detailcol"><div class="dl">Betting translation</div><p>'+BETTING_READ[activePos]+'</p></div><div class="detailcol full"><div class="dl">What to monitor next</div><p>'+esc(dd.watch)+'</p></div></div></td></tr>';
+    }
+  });
+  tbody.innerHTML = html;
+  Array.prototype.slice.call(document.querySelectorAll('tr.rowmain')).forEach(function(tr){
+    tr.onclick = function(){
+      var key = tr.dataset.key;
+      openKey = openKey===key ? '' : key;
+      renderBoard();
+    };
+  });
+}
+tabs.forEach(function(btn){
+  btn.onclick = function(){
+    var sameTab = activePos===btn.dataset.pos;
+    if(sameTab && (searchBox.value.trim() || openKey)){
+      searchBox.value = '';
+      openKey = '';
+      syncSearchUI();
+      renderBoard();
+      return;
+    }
+    tabs.forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active');
+    activePos = btn.dataset.pos;
+    searchBox.value = '';
+    openKey = '';
+    syncSearchUI();
+    renderBoard();
+  };
+});
+searchBox.addEventListener('input', function(){ syncSearchUI(); renderBoard(); });
+searchClear.addEventListener('click', function(e){ e.stopPropagation(); clearPlayerSearch(); });
+searchBox.addEventListener('keydown', function(e){ if(e.key==='Escape' && searchBox.value){ clearPlayerSearch(); } });
+syncSearchUI();
+renderBoard();
+
+/* ---------- filters (grade / ascending) wired to board search as a lightweight filter ---------- */
+document.getElementById('filterGrade').addEventListener('change', renderBoard);
+document.getElementById('filterAscending').addEventListener('change', renderBoard);
+
+})();
+</script>
+
+<script id="so-gradebook-player-cycle-script">
+(function(){
+ const names=[
+  ['Josh','ALLEN · QB','Drake','MAYE · QB','J. ALLEN','D. MAYE','QB · #1','A+'],
+  ['Justin','JEFFERSON · WR','Ja’Marr','CHASE · WR','J. JEFFERSON','J. CHASE','WR · #1','A+'],
+  ['Saquon','BARKLEY · RB','Jahmyr','GIBBS · RB','S. BARKLEY','J. GIBBS','RB · #1','A+'],
+  ['George','KITTLE · TE','Brock','BOWERS · TE','G. KITTLE','B. BOWERS','TE · #1','A+'],
+  ['Myles','GARRETT · EDGE','Micah','PARSONS · EDGE','M. GARRETT','M. PARSONS','EDGE · #1','A+']
+ ];
+ let i=0,root=document.querySelector('.grade-orbit');
+ function paint(){const x=names[i++%names.length];[['gbBookLeft',x[0]],['gbBookLeftMeta',x[1]],['gbBookRight',x[2]],['gbBookRightMeta',x[3]],['gbOrbitA',x[4]],['gbOrbitB',x[5]],['gbOrbitPos',x[6]],['gbOrbitGrade',x[7]]].forEach(([id,v])=>{let e=document.getElementById(id);if(e)e.textContent=v});if(root){root.classList.remove('cycle-flash');void root.offsetWidth;root.classList.add('cycle-flash')}}
+ paint(); if(!matchMedia('(prefers-reduced-motion: reduce)').matches)setInterval(paint,3300);
+})();
+</script>
+<style id="so-decision-lens-research-v3">
+.mod-item.active{border-color:rgba(244,185,66,.44)!important;background:linear-gradient(90deg,rgba(244,185,66,.12),rgba(244,185,66,.025))!important;box-shadow:inset 3px 0 0 #f4b942,0 0 22px rgba(244,185,66,.06)!important}.panel.module-focus{border-color:rgba(244,185,66,.34)!important;box-shadow:0 0 0 1px rgba(244,185,66,.08),0 18px 42px rgba(0,0,0,.24)!important}.panel.module-focus .panel-head{color:#f4b942!important}
+.dlx-launch{border-color:rgba(244,185,66,.24)!important;background:linear-gradient(155deg,rgba(244,185,66,.075),rgba(10,15,24,.96))!important}.dlx-launch-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.dlx-open{padding:10px 8px;border:1px solid rgba(244,185,66,.18);border-radius:9px;background:rgba(244,185,66,.035);color:#d8b866;cursor:pointer;text-align:left;font:800 8px var(--mono);letter-spacing:.08em}.dlx-open:hover{border-color:rgba(244,185,66,.48);background:rgba(244,185,66,.09);transform:translateY(-1px)}
+.dlx{display:none;max-width:1540px;margin:0 auto;padding:24px 24px 70px}.dlx.open{display:block}.dlx-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:13px}.dlx-back,.dlx-tab{border:1px solid rgba(255,255,255,.11);border-radius:999px;background:#09121d;color:#7f8fa1;padding:9px 13px;cursor:pointer;font:800 8px var(--mono);letter-spacing:.09em}.dlx-back{color:#9edbff;border-color:rgba(112,183,233,.3)}.dlx-tabs{display:flex;gap:7px;flex-wrap:wrap}.dlx-tab.active{color:#ffd36f;border-color:rgba(244,185,66,.48);background:rgba(244,185,66,.09);box-shadow:0 0 20px rgba(244,185,66,.07)}
+.dlx-hero{position:relative;overflow:hidden;min-height:230px;border:1px solid rgba(244,185,66,.17);border-radius:20px;padding:28px;background:radial-gradient(560px 300px at 90% 0,rgba(87,167,255,.11),transparent 70%),linear-gradient(145deg,#0b1521,#070c13)}.dlx-hero:after{content:'';position:absolute;right:8%;top:40px;width:150px;height:150px;border:1px solid rgba(244,185,66,.18);border-radius:50%;box-shadow:0 0 0 22px rgba(244,185,66,.025),0 0 0 45px rgba(87,167,255,.018);animation:dlxOrbit 12s linear infinite}.dlx-ey{color:#6fcfff;font:800 9px var(--mono);letter-spacing:.15em}.dlx-hero h2{position:relative;z-index:2;margin:9px 0 8px;font-size:clamp(2.4rem,5vw,4.4rem);letter-spacing:-.06em}.dlx-hero p{position:relative;z-index:2;max-width:790px;margin:0;color:#8b9aad;line-height:1.65}.dlx-kpis{position:relative;z-index:2;display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.dlx-kpi{min-width:130px;padding:9px 11px;border:1px solid rgba(255,255,255,.07);border-radius:9px;background:rgba(4,9,15,.55)}.dlx-kpi span{display:block;color:#64778c;font:800 7px var(--mono);letter-spacing:.1em}.dlx-kpi b{display:block;margin-top:4px;font-size:14px}
+.dlx-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:13px}.dlx-card{position:relative;overflow:hidden;min-height:300px;padding:16px;border:1px solid rgba(255,255,255,.075);border-radius:15px;background:linear-gradient(155deg,rgba(255,255,255,.035),rgba(7,14,23,.97));cursor:pointer;transition:transform .2s,border-color .2s}.dlx-card:hover,.dlx-card.active{transform:translateY(-3px);border-color:rgba(244,185,66,.38)}.dlx-card:before{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 20%,rgba(255,255,255,.035) 46%,transparent 72%);translate:-120% 0;animation:dlxCardScan 8s ease-in-out infinite}.dlx-card:nth-child(2):before{animation-delay:-2s}.dlx-card:nth-child(3):before{animation-delay:-4s}.dlx-card:nth-child(4):before{animation-delay:-6s}.dlx-tag{position:relative;color:#f4b942;font:800 7px var(--mono);letter-spacing:.12em}.dlx-card h3{position:relative;margin:9px 0 2px;font-size:19px}.dlx-meta{position:relative;color:#6d8095;font:700 9px var(--mono)}.dlx-card p{position:relative;color:#8a99aa;font-size:10.5px;line-height:1.55}.dlx-stats{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}.dlx-stat{padding:8px 7px;border:1px solid rgba(255,255,255,.06);border-radius:8px}.dlx-stat span{display:block;color:#607287;font:700 6.5px var(--mono);text-transform:uppercase}.dlx-stat b{display:block;margin-top:4px;font-size:10px}.dlx-source{position:relative;margin-top:10px;color:#53667a;font:650 7px var(--mono);line-height:1.5}
+.dlx-detail{display:grid;grid-template-columns:1.1fr .9fr .9fr;gap:10px;margin-top:10px}.dlx-pane{border:1px solid rgba(255,255,255,.075);border-radius:14px;padding:15px;background:#08111b}.dlx-pane b{display:block;color:#f4b942;font:800 8px var(--mono);letter-spacing:.1em}.dlx-pane p{margin:8px 0 0;color:#8999aa;font-size:11px;line-height:1.65}@keyframes dlxOrbit{to{transform:rotate(360deg)}}@keyframes dlxCardScan{0%,35%{translate:-120% 0}65%,100%{translate:120% 0}}@media(max-width:1050px){.dlx-grid{grid-template-columns:1fr 1fr}.dlx-detail{grid-template-columns:1fr}}@media(max-width:650px){.dlx-grid{grid-template-columns:1fr}.dlx-nav{align-items:flex-start;flex-direction:column}.dlx{padding:16px}.dlx-hero{padding:22px}.dlx-hero:after{opacity:.35}}@media(prefers-reduced-motion:reduce){.dlx-hero:after,.dlx-card:before{animation:none!important}}
+.dlx-hero-signal{position:absolute;z-index:3;right:28px;top:27px;width:245px;padding:13px;border:1px solid rgba(111,207,255,.22);border-radius:13px;background:rgba(5,12,21,.78);box-shadow:0 18px 50px rgba(0,0,0,.28)}.dlx-signal-label{color:#5f7b94;font:800 7px var(--mono);letter-spacing:.12em}.dlx-signal-name{margin-top:7px;color:#f4f7fb;font-size:18px;font-weight:900}.dlx-signal-track{height:3px;margin-top:10px;border-radius:3px;background:#172331;overflow:hidden}.dlx-signal-track i{display:block;width:44%;height:100%;background:linear-gradient(90deg,#f4b942,#58dfff);animation:dlxSignal 3.8s ease-in-out infinite alternate}.dlx-matrix{margin-top:11px;border:1px solid rgba(255,255,255,.075);border-radius:14px;overflow:hidden;background:#07101a}.dlx-matrix-head,.dlx-matrix-row{display:grid;grid-template-columns:1.15fr .75fr .8fr 1.3fr;gap:10px;align-items:center;padding:10px 14px}.dlx-matrix-head{color:#65798f;background:rgba(255,255,255,.025);font:800 7px var(--mono);letter-spacing:.11em}.dlx-matrix-row{border-top:1px solid rgba(255,255,255,.055);color:#8fa0b2;font-size:10px}.dlx-matrix-row b{color:#eef4fa;font-size:11px}.dlx-matrix-row em{font-style:normal;color:#4bdd9a;font:800 8px var(--mono)}@keyframes dlxSignal{from{transform:translateX(-115%)}to{transform:translateX(240%)}}@media(max-width:800px){.dlx-hero-signal{position:relative;right:auto;top:auto;width:auto;margin-top:18px}.dlx-matrix{overflow-x:auto}.dlx-matrix-head,.dlx-matrix-row{min-width:650px}}
+/* Decision Lens v4: a research console, not a card landing page. */
+.dlx{--lens:#f4b942;max-width:1600px}.dlx[data-lens="trajectory"]{--lens:#32df92}.dlx[data-lens="volatility"]{--lens:#ff6d7c}.dlx[data-lens="depth"]{--lens:#65c8ff}.lv-hero{position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(350px,.8fr);min-height:340px;overflow:hidden;border:1px solid color-mix(in srgb,var(--lens) 30%,transparent);border-radius:24px;background:radial-gradient(650px 330px at 92% 10%,color-mix(in srgb,var(--lens) 13%,transparent),transparent 72%),linear-gradient(145deg,#0b1521,#060b12);box-shadow:0 28px 80px rgba(0,0,0,.34)}.lv-hero-copy{padding:42px 40px;position:relative;z-index:2}.lv-hero-copy:before{content:'';position:absolute;left:40px;top:28px;width:42px;height:2px;background:var(--lens);box-shadow:0 0 14px var(--lens)}.lv-ey{margin-top:10px;color:var(--lens);font:850 8px var(--mono);letter-spacing:.18em}.lv-hero h2{margin:15px 0 9px;max-width:760px;font-size:clamp(3.1rem,6vw,6.2rem);line-height:.86;letter-spacing:-.075em}.lv-hero p{max-width:720px;margin:0;color:#8d9bad;font-size:13px;line-height:1.7}.lv-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:24px}.lv-kpi{padding:10px 11px;border-top:1px solid color-mix(in srgb,var(--lens) 34%,transparent);background:rgba(255,255,255,.022)}.lv-kpi span{display:block;color:#5f7287;font:750 6.5px var(--mono);letter-spacing:.1em}.lv-kpi b{display:block;margin-top:5px;font-size:13px}.lv-telemetry{position:relative;overflow:hidden;padding:34px 28px;border-left:1px solid rgba(255,255,255,.06);background:repeating-linear-gradient(0deg,transparent 0 31px,rgba(255,255,255,.025) 32px),rgba(2,8,14,.42)}.lv-telemetry:before{content:'';position:absolute;inset:-30%;background:conic-gradient(from 0deg,transparent 0 72%,color-mix(in srgb,var(--lens) 12%,transparent) 78%,transparent 84%);animation:lvRadar 8s linear infinite}.lv-tel-head{position:relative;color:#60758b;font:800 7px var(--mono);letter-spacing:.14em}.lv-tel-player{position:relative;margin-top:21px;padding:15px;border:1px solid rgba(255,255,255,.07);border-radius:13px;background:rgba(5,12,20,.78)}.lv-tel-player b,.lv-tel-player span{display:block}.lv-tel-player b{font-size:18px}.lv-tel-player span{margin-top:4px;color:var(--lens);font:800 7px var(--mono);letter-spacing:.1em}.lv-gauge{position:relative;margin-top:15px}.lv-gauge label{display:flex;justify-content:space-between;color:#718498;font:700 7px var(--mono)}.lv-gauge i{display:block;height:4px;margin-top:6px;border-radius:4px;background:linear-gradient(90deg,var(--lens),#b9f8ff);transform-origin:left;animation:lvGauge 1s ease-out both}.lv-digest{display:grid;grid-template-columns:1.3fr .9fr;gap:12px;margin-top:12px;padding:22px 24px;border:1px solid color-mix(in srgb,var(--lens) 22%,transparent);border-radius:18px;background:linear-gradient(160deg,color-mix(in srgb,var(--lens) 5%,#0a121c),#070d15)}.lv-digest-label{display:block;margin-bottom:10px;color:var(--lens);font:800 7.5px var(--mono);letter-spacing:.14em}.lv-digest-copy p{margin:0;color:#a3b1c2;font-size:12px;line-height:1.75}.lv-digest-check ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}.lv-digest-check li{position:relative;padding-left:16px;color:#9aa8b8;font-size:11px;line-height:1.55}.lv-digest-check li:before{content:'';position:absolute;left:0;top:6px;width:6px;height:6px;border-radius:50%;background:var(--lens);box-shadow:0 0 6px var(--lens)}@media(max-width:900px){.lv-digest{grid-template-columns:1fr}}
+.lv-workspace{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(330px,.65fr);gap:12px;margin-top:13px}.lv-list{display:flex;flex-direction:column;gap:8px}.lv-row{display:grid;grid-template-columns:70px minmax(160px,.65fr) minmax(220px,1.35fr) 180px;gap:14px;align-items:center;padding:15px;border:1px solid rgba(255,255,255,.07);border-radius:14px;background:linear-gradient(90deg,rgba(255,255,255,.035),rgba(7,14,23,.97));cursor:pointer;transition:.22s ease}.lv-row:hover,.lv-row.active{border-color:color-mix(in srgb,var(--lens) 44%,transparent);transform:translateX(4px);box-shadow:inset 3px 0 0 var(--lens)}.lv-rank{display:grid;place-items:center;width:48px;height:48px;border:1px solid color-mix(in srgb,var(--lens) 34%,transparent);border-radius:50%;color:var(--lens);font:900 13px var(--mono)}.lv-name b,.lv-name span{display:block}.lv-name b{font-size:17px}.lv-name span{margin-top:4px;color:#697e93;font:750 8px var(--mono)}.lv-summary{color:#8999aa;font-size:10px;line-height:1.55}.lv-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.lv-mini div{padding:7px;border:1px solid rgba(255,255,255,.06);border-radius:7px}.lv-mini span,.lv-mini b{display:block}.lv-mini span{color:#5c7186;font:700 6px var(--mono)}.lv-mini b{margin-top:4px;font-size:9px}.lv-inspector{position:sticky;top:16px;align-self:start;min-height:460px;padding:22px;border:1px solid color-mix(in srgb,var(--lens) 25%,transparent);border-radius:17px;background:linear-gradient(160deg,color-mix(in srgb,var(--lens) 5%,#08111b),#07101a)}.lv-inspector-head{padding-bottom:15px;border-bottom:1px solid rgba(255,255,255,.07)}.lv-inspector-head span{color:var(--lens);font:800 7px var(--mono);letter-spacing:.12em}.lv-inspector-head h3{margin:7px 0 0;font-size:24px}.lv-inspector section{padding:15px 0;border-bottom:1px solid rgba(255,255,255,.06)}.lv-inspector section:last-child{border:0}.lv-inspector section b{color:#73879c;font:800 7px var(--mono);letter-spacing:.1em}.lv-inspector section p{margin:7px 0 0;color:#9aa8b7;font-size:10.5px;line-height:1.65}.lv-ledger{margin-top:12px;border:1px solid rgba(255,255,255,.07);border-radius:15px;overflow:auto;background:#07101a}.lv-ledger-head,.lv-ledger-row{display:grid;grid-template-columns:1.05fr .65fr .8fr 1.35fr;gap:10px;min-width:700px;padding:10px 14px}.lv-ledger-head{color:#5f7489;font:800 7px var(--mono);letter-spacing:.1em;background:rgba(255,255,255,.025)}.lv-ledger-row{border-top:1px solid rgba(255,255,255,.055);color:#8f9faf;font-size:10px}.lv-ledger-row strong{color:#edf4fa}.lv-ledger-row em{color:var(--lens);font:800 8px var(--mono);font-style:normal}.module-viewer{position:fixed;z-index:9999;inset:0;display:none;place-items:center;padding:28px;background:rgba(2,6,11,.84);backdrop-filter:blur(12px)}.module-viewer.open{display:grid;animation:moduleIn .24s ease-out}.module-viewer-card{width:min(1180px,94vw);max-height:88vh;overflow:auto;border:1px solid rgba(244,185,66,.28);border-radius:22px;background:linear-gradient(150deg,#0d1722,#060b11);box-shadow:0 40px 120px rgba(0,0,0,.65)}.module-viewer-bar{position:sticky;z-index:4;top:0;display:flex;justify-content:space-between;align-items:center;padding:13px 17px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(8,16,25,.96)}.module-viewer-bar span{color:#f4b942;font:800 8px var(--mono);letter-spacing:.12em}.module-viewer-close{border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:7px 10px;background:#0a1420;color:#dbe6ef;cursor:pointer}.module-viewer-body{padding:18px}.module-viewer-body>.panel{margin:0!important;box-shadow:none!important}.module-viewer-nav{display:flex;gap:8px;padding:0 18px 18px}.module-viewer-nav button{flex:1;padding:9px;border:1px solid rgba(244,185,66,.16);border-radius:9px;background:rgba(244,185,66,.04);color:#c5a95f;font:800 7px var(--mono);cursor:pointer}@keyframes lvRadar{to{transform:rotate(360deg)}}@keyframes lvGauge{from{transform:scaleX(.08);opacity:.2}to{transform:scaleX(1);opacity:1}}@keyframes moduleIn{from{opacity:0}to{opacity:1}}@media(max-width:1050px){.lv-hero{grid-template-columns:1fr}.lv-telemetry{border-left:0;border-top:1px solid rgba(255,255,255,.06)}.lv-workspace{grid-template-columns:1fr}.lv-inspector{position:relative;top:auto}.lv-row{grid-template-columns:55px 1fr}.lv-summary,.lv-mini{grid-column:2}}@media(max-width:650px){.lv-hero-copy{padding:34px 22px}.lv-hero-copy:before{left:22px}.lv-kpis{grid-template-columns:1fr 1fr}.lv-row{padding:12px}.lv-summary,.lv-mini{grid-column:1/-1}.module-viewer{padding:10px}.module-viewer-card{width:98vw}}
+</style>
+<script id="so-decision-lens-research-script-v3">
+(function(){
+ const shell=document.querySelector('.shell'),subnav=document.querySelector('.subnav'),side=document.querySelector('.side-left');if(!shell||!side)return;
+ const pages={
+ foundation:{title:'Foundation · Cornerstones',intro:'Players whose talent, role and multi-season evidence remain useful before matchup and price enter the equation.',digest:'Foundation profiles are the names where the grade book and the role report agree, year after year. The test here is not whether a player is talented \u2014 it is whether the opportunity underneath the talent is durable enough to survive a coaching change, an injury scare or a slow first month. A cornerstone loses its status the moment role security becomes a question the market has to ask every week.',checklist:['Multi-season grade consistency, not a single hot year','Role security independent of one coordinator or scheme','A clear primary market the profile actually controls','Health status treated as a real variable, not an afterthought'],players:[
+ {n:'Josh Allen',m:'QB · BUF · A+',tag:'FRANCHISE ENGINE',d:'The dual-threat baseline is unusually resistant to game script. Passing volume, designed rushing and red-zone usage create multiple ways for the profile to hold.',s:[['Baseline','97/100'],['Markets','3'],['Signal','Stable']],src:'Short Open Grade Book · NFL All-Pro reporting',why:'Quarterback quality and role security are both established. The key weekly question is not whether the offense runs through Allen, but how the opponent forces that volume to split.',move:'Protection, neutral-situation pass rate and designed red-zone carries.',use:'Start with pass yards and rushing usage, then price touchdowns separately.'},
+ {n:'Puka Nacua',m:'WR · LAR · A+',tag:'VOLUME + EFFICIENCY',d:'Nacua paired elite route efficiency with historic early-career production. NFL Research credited him with 4,191 yards through three seasons.',s:[['YPRR','3.9'],['3-YR YDS','4,191'],['Signal','Elite']],src:'NFL Research / NFL Pro · Week 18, 2025',why:'Target command and yards per route are reinforcing each other instead of relying on touchdown variance.',move:'Route rate, first-read share, health and quarterback availability.',use:'Receiving yards and receptions carry the cleanest foundation signal.'},
+ {n:'Myles Garrett',m:'EDGE · LAR · A+',tag:'PRESSURE ANCHOR',d:'A record-setting 23-sack season sits on top of a long elite pass-rush track record. The repeatability is in pressure creation, not merely sack conversion.',s:[['2025 SACKS','23'],['ROLE','Every down'],['Signal','Stable']],src:'Short Open Grade Book · 2025 defensive stat summaries',why:'High-end pressure quality survives opponent and game-script changes better than raw box-score streaks.',move:'Opponent dropbacks, tackle matchup, chip help and time to throw.',use:'Treat sacks as the volatile output of a stable disruption baseline.'},
+ {n:'Kyle Hamilton',m:'S · BAL · A+',tag:'ALIGNMENT CORNERSTONE',d:'Deep, box and slot work keep Hamilton involved regardless of the defensive call. That versatility protects both the floor and the number of statistical paths.',s:[['ALIGNMENTS','3'],['GRADE','A+'],['Signal','Stable']],src:'Short Open Grade Book · alignment/grade synthesis',why:'Role breadth matters: he does not need one narrow deployment to create value.',move:'Box rate, opponent formation usage and blitz responsibility.',use:'Tackles and disruption markets need alignment confirmation, not reputation alone.'},
+ {n:'Fred Warner',m:'LB · SF · A+',tag:'DEFENSIVE COMMAND',d:'Even in a season cut to six games by a dislocated ankle, Warner posted a career-best 93.2 PFF grade, the highest of any linebacker in football and the only one to clear 90 in both run defense and coverage.',s:[['GRADE','93.2'],['COVERAGE','91.5'],['Signal','Stable']],src:'PFF · 2025 linebacker grading report',why:'Six healthy games reasserted the clearest run-and-cover baseline at the position; the sample is short, not the signal.',move:'Ankle recovery timeline, every-down snap share and tackle-funnel usage under a new coordinator.',use:'Tackle props hinge on clearing camp health checks; treat volume as a lock once he is active.'},
+ {n:'George Kittle',m:'TE · SF · A+',tag:'RETURNING ANCHOR',d:'Kittle led all tight ends in grade for a third straight season before a January Achilles tear. He is targeting a Week 1 return, which would keep the position\u2019s most complete route-and-block profile fully intact.',s:[['STREAK','3 yrs'],['GRADE','A+'],['Signal','Stable']],src:'Short Open Grade Book \u00b7 injury/recovery synthesis',why:'A three-year run atop the position is a large sample to bet against; the swing factor is health, not talent.',move:'Practice-window snap counts, red-zone role and any setback reports in camp.',use:'Confirm the Week 1 activation before pricing receiving markets at full volume.'}]},
+ trajectory:{title:'Trajectory · Rookies & Risers',intro:'Profiles where age, role expansion and recent efficiency are moving in the same direction.',digest:'Trajectory is about the shape of the growth curve, not just the size of the role. The healthiest signal is a player whose efficiency climbs alongside his volume \u2014 that combination survives defenses adjusting far better than a single explosive month does. The riskiest trap in this lens is small-sample overreaction: a four-game hot streak reads identically to a real breakout until the market has had a chance to test it.',checklist:['Volume and efficiency rising together, not volume alone','A role expansion that came from coaching decisions, not garbage time','A large enough sample to separate signal from a hot stretch','Contract, draft-capital or scheme context supporting a bigger 2026 role'],players:[
+ {n:'Drake Maye',m:'QB · NE · A',tag:'ASCENDING QB',d:'Maye followed his rookie foundation with 4,394 passing yards, 31 touchdowns and a 113.5 passer rating in 2025.',s:[['PASS YDS','4,394'],['PASS TD','31'],['RATING','113.5']],src:'NFL 2025 All-Pro reporting',why:'Efficiency rose alongside volume, a healthier growth signal than a small-sample spike.',move:'Protection continuity, early-down passing and pressure response.',use:'Pass volume is the base; matchup determines whether efficiency is already priced.'},
+ {n:'Jaxon Smith-Njigba',m:'WR · SEA · A+',tag:'ROLE BREAKOUT',d:'The route tree and target share expanded into league-leading production and 2025 Offensive Player of the Year recognition.',s:[['REC YDS','1,793'],['GRADE','A+'],['TREND','Up']],src:'NFL 2025 All-Pro / awards reporting',why:'The role caught up to the separation profile, turning a projection into repeatable weekly volume.',move:'Target competition, coverage tilt and first-read share.',use:'Receptions carry the floor; yards respond more sharply to coverage structure.'},
+ {n:'Tetairoa McMillan',m:'WR · CAR · B+',tag:'ROOKIE ASCENT',d:'The 2025 Offensive Rookie of the Year established immediate target relevance, with size and contested-catch ability leaving room for a second-year efficiency jump.',s:[['TARGETS','125'],['REC TD','7'],['TREND','Up']],src:'NFL rookie/awards reporting · ESPN opportunity table',why:'A large rookie role is the hard part to earn. The next step is converting contested volume into more efficient production.',move:'Quarterback accuracy, red-zone share and separation against top corners.',use:'Targets support receptions; touchdown markets remain more price-sensitive.'},
+ {n:'Nick Emmanwori',m:'S · SEA · B+',tag:'ROOKIE ROLE GROWTH',d:'After entering the lineup, Emmanwori produced a top-10 positional grade over the remainder of his rookie season.',s:[['START','WK 5'],['RANGE','Top 10'],['TREND','Up']],src:'Short Open Grade Book · 2025 rookie synthesis',why:'Playing time and performance rose together, the clearest shape for a sustainable ascent.',move:'Every-down deployment, box usage and coverage responsibility.',use:'Tackle volume is the first market to watch as the role stabilizes.'},
+ {n:'Colston Loveland',m:'TE · CHI · A',tag:'SECOND-HALF BREAKOUT',d:'The No. 10 pick opened slowly, then closed the year at 12.0 targets per game over his final four contests including two playoff games \u2014 a workload only a handful of tight ends in NFL history have carried in that stretch.',s:[['FINAL 4 TGT','12.0/gm'],['SEASON REC','58'],['TREND','Up']],src:'PFF \u00b7 ESPN 2025 rookie-usage tracking',why:'The role expansion arrived alongside the production, not before it \u2014 the workload followed the tape rather than preceding it.',move:'Target competition, red-zone usage and quarterback health.',use:'Reception and yardage lines should reflect the December version of the role, not the September one.'},
+ {n:'Jihaad Campbell',m:'LB · PHI · B+',tag:'ROOKIE COVERAGE GRADE',d:'A slide to pick 31 turned into a 94th-percentile coverage grade as a rookie, pushing him into every-down conversations almost immediately on a contending defense.',s:[['DRAFT SLOT','31'],['COVERAGE','94th pct'],['TREND','Up']],src:'Short Open Grade Book \u00b7 rookie percentile synthesis',why:'Coverage grades this early and this high for a linebacker are rare enough that the draft-day fall looks more like value than red flag.',move:'Run-defense consistency, every-down role security and tackle-funnel volume.',use:'Coverage-driven markets carry the cleanest signal until the run-defense sample grows.'}]},
+ volatility:{title:'Volatility · Wide Outcome Range',intro:'Elite names and unstable profiles where health, supporting cast or recent performance create conflicting signals.',digest:'Volatility profiles are not the same as bad players \u2014 they are players whose season-long average hides two or three genuinely different realities. A grade built on a torn ACL rehab, a quarterback change or a scheme swap is really several small samples stitched together, and the market often prices the blended average rather than the current state. The research job here is separating which version of the player is actually on the field right now.',checklist:['A real, identifiable cause for the wide range: injury, scheme, or supporting cast','Evidence for both the recent-form read and the career-baseline read','A specific checkpoint that would resolve the uncertainty','Willingness to pass rather than force a signal that has not cleared yet'],players:[
+ {n:'C.J. Stroud',m:'QB · HOU · B+',tag:'PROTECTION FORK',d:'A 62.0 grade and severe pressure regression conflict with the high-end early-career baseline. A rebuilt line makes 2026 a true rebound test.',s:[['GRADE','62.0'],['PRESSURE','Low'],['RANGE','Wide']],src:'Short Open Grade Book · pressure/grade synthesis',why:'The talent prior remains meaningful, but current evidence says clean-pocket conditions matter more than the market may admit.',move:'Pressure rate, time to throw and early-down success.',use:'Avoid treating full-season averages as one stable distribution.'},
+ {n:'Justin Jefferson',m:'WR · MIN · A+',tag:'ELITE TALENT / QB RISK',d:'Career-low output arrived with unstable quarterback play, while his six-year receiving total remains historically strong.',s:[['GRADE','A+'],['QB RISK','High'],['RANGE','Wide']],src:'Short Open Grade Book · historical receiving context',why:'The player baseline and the weekly environment are pointing in opposite directions.',move:'Quarterback accuracy, target quality and double-team rate.',use:'Receptions may preserve floor better than yardage when quarterback play slips.'},
+ {n:'T.J. Watt',m:'EDGE · PIT · A',tag:'TRACK RECORD VS FORM',d:'His lowest grade since his rookie season followed a year with elite 90-plus performance in both major facets.',s:[['GRADE','A'],['PRIOR','90+'],['RANGE','Wide']],src:'Short Open Grade Book · multi-year grade context',why:'Name value can hold the price after the underlying performance range has widened.',move:'Snap share, pressure rate, opponent tackle and health.',use:'Require current disruption evidence before paying for the career résumé.'},
+ {n:'Michael Wilson',m:'WR · ARI · B',tag:'SPLIT-SEASON SWING',d:'Wilson moved from 0.8 yards per route through Week 10 to 2.6 from Week 11 onward, a dramatic role-and-efficiency split.',s:[['EARLY YPRR','0.8'],['LATE YPRR','2.6'],['RANGE','Wide']],src:'ESPN 2026 roster projection',why:'The late breakout is actionable, but it occurred with opportunity changes that must persist.',move:'Target competition, route participation and Harrison availability.',use:'Treat the late split as a hypothesis to verify, not a new permanent mean.'},
+ {n:'Nakobe Dean',m:'LB · LV · B',tag:'INJURY / OPPORTUNITY FORK',d:'A torn patellar tendon suffered in the 2024 playoffs wiped out most of his 2025 season; Las Vegas still guaranteed him roughly $36M to be the every-down answer in the middle of a rebuilding defense.',s:[['2025 GAMES','10'],['NEW DEAL','$36M gtd'],['RANGE','Wide']],src:'Short Open Grade Book \u00b7 free-agency and injury synthesis',why:'The Super Bowl-era tape and the fresh contract both say starter; the lost development time says the range stays wide until he plays a full slate.',move:'Camp health updates, defensive-call volume and tackle share once games start.',use:'Wait for a confirmed every-down role before pricing tackle or TFL markets.'},
+ {n:'Rashan Gary',m:'EDGE · DAL · B',tag:'DECLINING TREND LINE',d:'A top-five pass rusher in 2021, Gary\u2019s grade has slipped in each season since \u2014 a boom-or-bust profile now changing scenery to Dallas.',s:[['2021 RANK','Top 5'],['TREND','Down 4 yrs'],['RANGE','Wide']],src:'Short Open Grade Book \u00b7 multi-year decline tracking',why:'The 2021 ceiling is real, but four straight years of decline is too long a trend to wave off as a blip.',move:'Scheme fit in a new pass-rush room, snap share and opponent tackle matchups.',use:'Needs an early-season grade check before treating the 2021 peak as the current baseline.'}]},
+ depth:{title:'Depth · Value Profiles',intro:'Players below the headline tier whose role, efficiency or price can create practical value.',digest:'Depth profiles live in the gap between what the market assumes about a role player and what the tape and grade actually say. That gap tends to be widest for young players coming off a quiet season, backups with a real efficiency signal in limited snaps, and specialists whose per-target numbers are elite but whose overall volume looks unremarkable. None of that is actionable until the role itself is confirmed \u2014 efficiency without opportunity is a scouting note, not a market angle.',checklist:['A specific efficiency or grade signal, not just name recognition','A believable path to more snaps, targets or pass-rush reps','Price or market attention that lags the underlying signal','A role confirmation trigger to watch before treating the value as live'],players:[
+ {n:'Ladd McConkey',m:'WR · LAC · B',tag:'ROLE VALUE',d:'A quieter season did not erase an efficient rookie foundation. Protection and route stability remain the fastest route back to value.',s:[['AGE','23'],['ROLE','Starter'],['VALUE','Buy low']],src:'NFL salary-value exercise · Short Open Grade Book',why:'The market can discount a young receiver faster than the underlying route skill changes.',move:'Offensive-line health, route rate and first-read share.',use:'Look for reception value before paying for explosive-yardage outcomes.'},
+ {n:'Dawson Knox',m:'TE · BUF · B',tag:'SECONDARY ROLE',d:'Knox carries a credible snap and red-zone pathway even behind a higher-ranked teammate, making price and opponent the deciding layers.',s:[['GRADE','B'],['ROLE','TE2'],['VALUE','Matchup']],src:'Short Open Grade Book · ESPN value boards',why:'Depth value comes from a usable role at a price that does not assume primary-target volume.',move:'Kincaid availability, routes per dropback and end-zone usage.',use:'Touchdown and low receiving lines only when route participation confirms.'},
+ {n:'Nick Herbig',m:'EDGE · PIT · B+',tag:'PRESSURE VALUE',d:'A top-six pass-rush grade in a rotational context points to more talent than the headline role implies.',s:[['PR GRADE','Top 6'],['ROLE','Rotation'],['VALUE','Upside']],src:'Short Open Grade Book · pass-rush synthesis',why:'Efficiency can become value before playing time becomes consensus.',move:'Third-down share, injuries ahead of him and opponent dropbacks.',use:'Pressure and sack markets need a snap threshold before entry.'},
+ {n:'Devin Bush',m:'LB · CHI · A',tag:'REBUILT PROFILE',d:'Bush rebuilt his career into a top-tier recent grade and now enters a fresh team context where role certainty can lag perception.',s:[['GRADE','A'],['TREND','Up'],['VALUE','Role']],src:'Short Open Grade Book · recent-grade synthesis',why:'The performance reset is real enough to monitor, while a new deployment can keep the price modest.',move:'Every-down snaps, tackle funnel and coverage assignment.',use:'Tackle props become viable only after the every-down role is confirmed.'},
+ {n:'Alec Pierce',m:'WR · IND · B',tag:'SPECIALIST VALUE',d:'Pierce is the only qualifying receiver averaging 20-plus yards per catch since 2023, a specialist role the market tends to underprice outside of shot-play weeks.',s:[['YPC 3-YR','20.0+'],['ROLE','Deep specialist'],['VALUE','Situational']],src:'Short Open Grade Book · efficiency synthesis',why:'Elite per-target efficiency in a narrow role is easy for a generalist market to discount relative to target-share receivers.',move:'Deep-shot volume, quarterback aggressiveness and the coverage shells he draws.',use:'Longest-catch and anytime-TD markets fit the profile better than reception floors.'},
+ {n:'Harold Fannin Jr.',m:'TE · CLE · B',tag:'ROOKIE PRODUCTION VALUE',d:'Fannin broke the FBS single-season catch record at Bowling Green and finished second only to McBride in forced missed tackles among rookie tight ends.',s:[['COLLEGE MARK','FBS record'],['MT FORCED','2nd, rookies'],['VALUE','Buy low']],src:'Short Open Grade Book · rookie-class synthesis',why:'Missed-tackle production at this level rarely comes from a replacement-level athlete, even in a limited early role.',move:'Snap competition at tight end, route rate and Cleveland\'s passing-game investment.',use:'Treat him as a name to track before a market prices him like a full-time starter.'}]}
+ };
+ const launch=document.createElement('div');launch.className='side-card dlx-launch';launch.innerHTML='<div class="side-lbl">Decision Lens</div><div style="color:#8494a7;font-size:10px;line-height:1.55">Open a dedicated research board.</div><div class="dlx-launch-grid">'+Object.keys(pages).map(k=>'<button class="dlx-open" data-open="'+k+'">'+k.toUpperCase()+'</button>').join('')+'</div>';side.insertBefore(launch,side.firstChild);
+ const ui=document.createElement('main');ui.className='dlx';ui.innerHTML='<div class="dlx-nav"><button class="dlx-back">← GRADE BOOK</button><div class="dlx-tabs">'+Object.keys(pages).map(k=>'<button class="dlx-tab" data-tab="'+k+'">'+k.toUpperCase()+'</button>').join('')+'</div></div><section class="lv-hero"><div class="lv-hero-copy"><div class="lv-ey">DECISION LENS · INDEPENDENT RESEARCH CONSOLE</div><h2 id="dlxTitle"></h2><p id="dlxIntro"></p><div class="lv-kpis" id="dlxKpis"></div></div><aside class="lv-telemetry"><div class="lv-tel-head">SIGNAL TELEMETRY · CURRENT LENS</div><div id="lvTelemetry"></div></aside></section><section class="lv-digest" id="dlxDigest"></section><div class="lv-workspace"><section class="lv-list" id="dlxGrid"></section><aside class="lv-inspector" id="dlxDetail"></aside></div><section class="lv-ledger" id="dlxMatrix"></section>';document.body.insertBefore(ui,document.querySelector('script[id="rankingsData"]'));
+ function detail(p){document.getElementById('dlxDetail').innerHTML='<div class="lv-inspector-head"><span>SELECTED DOSSIER</span><h3>'+p.n+'</h3></div><section><b>WHY THIS PROFILE BELONGS</b><p>'+p.why+'</p></section><section><b>WHAT MOVES IT</b><p>'+p.move+'</p></section><section><b>BETTING / RESEARCH TRANSLATION</b><p>'+p.use+'</p></section><section><b>RESEARCH TRAIL</b><p>'+p.src+'</p></section>'}
+ function render(k){const pg=pages[k];ui.dataset.lens=k;document.getElementById('dlxTitle').textContent=pg.title;document.getElementById('dlxIntro').textContent=pg.intro;document.getElementById('dlxKpis').innerHTML=[['PROFILES',pg.players.length],['POSITIONS',new Set(pg.players.map(p=>p.m.split(' · ')[0])).size],['SOURCE LAYERS','3+'],['BOARD','2026']].map(x=>'<div class="lv-kpi"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>').join('');
+ const dig=document.getElementById('dlxDigest');if(dig&&pg.digest){dig.innerHTML='<div class="lv-digest-copy"><span class="lv-digest-label">RESEARCH BRIEF · READING THIS LENS</span><p>'+pg.digest+'</p></div><div class="lv-digest-check"><span class="lv-digest-label">WHAT TO LOOK FOR</span><ul>'+pg.checklist.map(c=>'<li>'+c+'</li>').join('')+'</ul></div>'}document.getElementById('lvTelemetry').innerHTML=pg.players.slice(0,3).map((p,i)=>'<div class="lv-tel-player"><b>'+p.n+'</b><span>'+p.tag+'</span><div class="lv-gauge"><label><span>'+p.s[0][0]+'</span><strong>'+p.s[0][1]+'</strong></label><i style="width:'+(92-i*11)+'%"></i></div></div>').join('');document.getElementById('dlxGrid').innerHTML=pg.players.map((p,i)=>'<article class="lv-row'+(i===0?' active':'')+'" data-i="'+i+'"><div class="lv-rank">0'+(i+1)+'</div><div class="lv-name"><b>'+p.n+'</b><span>'+p.m+'</span></div><div class="lv-summary">'+p.d+'</div><div class="lv-mini">'+p.s.map(s=>'<div><span>'+s[0]+'</span><b>'+s[1]+'</b></div>').join('')+'</div></article>').join('');document.getElementById('dlxMatrix').innerHTML='<div class="lv-ledger-head"><span>PLAYER</span><span>POSITION / TEAM</span><span>PRIMARY SIGNAL</span><span>MONITOR NEXT</span></div>'+pg.players.map(p=>'<div class="lv-ledger-row"><strong>'+p.n+'</strong><span>'+p.m.split(' · ').slice(0,2).join(' · ')+'</span><em>'+p.tag+'</em><span>'+p.move+'</span></div>').join('');ui.querySelectorAll('.dlx-tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===k));ui.querySelectorAll('.lv-row').forEach(c=>c.onclick=()=>{ui.querySelectorAll('.lv-row').forEach(x=>x.classList.remove('active'));c.classList.add('active');detail(pg.players[+c.dataset.i])});detail(pg.players[0]);window.scrollTo({top:0,behavior:'smooth'})}
+ function open(k){shell.style.display='none';if(subnav)subnav.style.display='none';ui.classList.add('open');render(k)}function close(){ui.classList.remove('open');shell.style.display='';if(subnav)subnav.style.display='';window.scrollTo({top:0,behavior:'smooth'})}launch.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>open(b.dataset.open));ui.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>render(b.dataset.tab));ui.querySelector('.dlx-back').onclick=close;
+ const modItems=[...document.querySelectorAll('.mod-item[data-jump]')],viewer=document.createElement('div');viewer.className='module-viewer';viewer.innerHTML='<div class="module-viewer-card"><div class="module-viewer-bar"><span id="moduleViewerTitle">GRADE MODULE</span><button class="module-viewer-close">CLOSE ×</button></div><div class="module-viewer-body" id="moduleViewerBody"></div><div class="module-viewer-nav"><button data-step="-1">← PREVIOUS MODULE</button><button data-step="1">NEXT MODULE →</button></div></div>';document.body.appendChild(viewer);let modIndex=0;
+ function showModule(i){modIndex=(i+modItems.length)%modItems.length;const item=modItems[modIndex],target=document.getElementById(item.dataset.jump),body=viewer.querySelector('#moduleViewerBody');if(!target)return;document.getElementById('moduleViewerTitle').textContent=item.querySelector('.mn').textContent+' · GRADE MODULE';body.innerHTML='';const clone=target.cloneNode(true);clone.removeAttribute('id');clone.classList.remove('flash-panel','module-focus');body.appendChild(clone);modItems.forEach(x=>x.classList.remove('active'));item.classList.add('active');viewer.classList.add('open');document.body.style.overflow='hidden';viewer.querySelector('.module-viewer-card').scrollTop=0}
+ function closeModule(){viewer.classList.remove('open');document.body.style.overflow=''}viewer.querySelector('.module-viewer-close').onclick=closeModule;viewer.querySelectorAll('[data-step]').forEach(b=>b.onclick=()=>showModule(modIndex+(+b.dataset.step)));viewer.addEventListener('click',e=>{if(e.target===viewer)closeModule()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&viewer.classList.contains('open'))closeModule()});modItems.forEach((item,i)=>{item.onclick=e=>{e.preventDefault();showModule(i)}});
+})();
+</script>
+</body>
+<style id="so-grade-depth-performance">.lv-data-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06)}.lv-data-grid div{padding:8px;border:1px solid rgba(255,255,255,.06);border-radius:7px;background:rgba(255,255,255,.018)}.lv-data-grid span,.lv-data-grid b{display:block}.lv-data-grid span{color:#60758a;font:750 6px var(--mono)}.lv-data-grid b{margin-top:4px;color:var(--lens);font-size:9px}.lv-storyboard{margin-top:13px;padding:20px;border:1px solid rgba(255,255,255,.07);border-radius:16px;background:#07101a}.lv-story-head span{color:var(--lens);font:800 7px var(--mono);letter-spacing:.12em}.lv-story-head h3{margin:6px 0 14px;font-size:19px}.lv-story-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.lv-story-grid article{padding:13px;border:1px solid rgba(255,255,255,.065);border-radius:11px}.lv-story-grid article>b{display:block;margin-bottom:10px;font-size:14px}.lv-story-grid span{display:block;margin-top:8px;color:var(--lens);font:800 6px var(--mono)}.lv-story-grid p{margin:4px 0 0;color:#8293a5;font-size:8.5px;line-height:1.5}.shell .lower-grid,.shell .side-card,.shell .panel{contain:layout style}.dlx:not(.open){content-visibility:hidden}@media(max-width:900px){.lv-story-grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.lv-story-grid{grid-template-columns:1fr}}</style>
+<script id="so-grade-depth-script">(function(){let scheduled=false;function enrich(){scheduled=false;const ui=document.querySelector('.dlx.open'),detail=document.getElementById('dlxDetail');if(!ui||!detail)return;if(!detail.querySelector('.lv-data-grid')){const minis=[...ui.querySelectorAll('.lv-row.active .lv-mini div')].slice(0,3);detail.querySelector('.lv-inspector-head')?.insertAdjacentHTML('afterend','<div class="lv-data-grid">'+minis.map(x=>'<div>'+x.innerHTML+'</div>').join('')+'<div><span>SIGNAL STACK</span><b>3+ layers</b></div><div><span>REVIEW</span><b>Weekly</b></div><div><span>STATUS</span><b>Live watch</b></div></div>')}if(!document.getElementById('lvStoryBoard')){const rows=[...ui.querySelectorAll('.lv-row')],ledger=[...ui.querySelectorAll('.lv-ledger-row')];const sec=document.createElement('section');sec.id='lvStoryBoard';sec.className='lv-storyboard';sec.innerHTML='<div class="lv-story-head"><span>STORYLINE DESK</span><h3>Current read and next checkpoint</h3></div><div class="lv-story-grid">'+rows.map((r,i)=>'<article><b>'+r.querySelector('.lv-name b').textContent+'</b><span>CURRENT SIGNAL</span><p>'+r.querySelector('.lv-summary').textContent+'</p><span>NEXT CHECK</span><p>'+(ledger[i]?.lastElementChild?.textContent||'Role, health and deployment update.')+'</p><span>RESEARCH USE</span><p>Reprice only after the signal clears its role and volume threshold.</p></article>').join('')+'</div>';ui.appendChild(sec)}}const mo=new MutationObserver(()=>{if(!scheduled){scheduled=true;(window.requestIdleCallback||setTimeout)(enrich,{timeout:300})}});mo.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class'],childList:true});document.addEventListener('click',()=>setTimeout(enrich,0));})();</script>
+</html>
