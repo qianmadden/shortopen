@@ -1,0 +1,543 @@
+<!doctype html><html lang="en" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="dark"><title>The Shortopen Model</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f7f5f0;
+  --panel:#ffffff;
+  --panel-2:#efece4;
+  --border:rgba(30,35,30,.12);
+  --border-strong:rgba(30,35,30,.22);
+  --text:#181c18;
+  --text-dim:#4b544c;
+  --muted:#7c8579;
+  --accent:#1f7a53;
+  --accent-soft:rgba(31,122,83,.12);
+  --amber:#9a6a12;
+  --amber-soft:rgba(154,106,18,.12);
+  --red:#a3384a;
+  --red-soft:rgba(163,56,74,.10);
+  --serif:'IBM Plex Serif',Georgia,serif;
+  --sans:'IBM Plex Sans',-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b0f0d;
+    --panel:#121815;
+    --panel-2:#161d19;
+    --border:rgba(255,255,255,.09);
+    --border-strong:rgba(255,255,255,.16);
+    --text:#e8ede9;
+    --text-dim:#b7c0b9;
+    --muted:#8a978f;
+    --accent:#3fd399;
+    --accent-soft:rgba(63,211,153,.12);
+    --amber:#e0a940;
+    --amber-soft:rgba(224,169,64,.12);
+    --red:#e2707d;
+    --red-soft:rgba(226,112,125,.12);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b0f0d;
+  --panel:#121815;
+  --panel-2:#161d19;
+  --border:rgba(255,255,255,.09);
+  --border-strong:rgba(255,255,255,.16);
+  --text:#e8ede9;
+  --text-dim:#b7c0b9;
+  --muted:#8a978f;
+  --accent:#3fd399;
+  --accent-soft:rgba(63,211,153,.12);
+  --amber:#e0a940;
+  --amber-soft:rgba(224,169,64,.12);
+  --red:#e2707d;
+  --red-soft:rgba(226,112,125,.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.page{
+  max-width:760px;
+  margin:0 auto;
+  padding:72px 28px 120px;
+}
+.masthead{
+  border-bottom:2px solid var(--text);
+  padding-bottom:20px;
+  margin-bottom:44px;
+}
+.masthead .kicker{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--accent);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.masthead .kicker:before{content:'●';font-size:8px}
+.masthead h1{
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:clamp(2rem,5vw,2.7rem);
+  margin:10px 0 8px;
+  letter-spacing:-.01em;
+  text-wrap:balance;
+}
+.masthead .dek{
+  font-size:15px;
+  color:var(--text-dim);
+  max-width:60ch;
+  margin:0;
+}
+.masthead .meta{
+  margin-top:18px;
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+  font-family:var(--mono);
+  font-size:10.5px;
+  color:var(--muted);
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+.intro{
+  font-size:16px;
+  color:var(--text-dim);
+  border-left:3px solid var(--accent);
+  padding-left:18px;
+  margin-bottom:56px;
+}
+.intro p{margin:0 0 12px}
+.intro p:last-child{margin-bottom:0}
+.intro b{color:var(--text);font-weight:600}
+
+section{margin-bottom:56px}
+.sec-head{
+  display:flex;
+  align-items:baseline;
+  gap:14px;
+  margin-bottom:18px;
+  border-bottom:1px solid var(--border-strong);
+  padding-bottom:10px;
+}
+.sec-num{
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--muted);
+  letter-spacing:.06em;
+  white-space:nowrap;
+}
+.sec-head h2{
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:1.5rem;
+  margin:0;
+  letter-spacing:-.005em;
+}
+
+p{max-width:66ch}
+.lede{font-size:16px;color:var(--text-dim);max-width:66ch}
+
+.formula{
+  font-family:var(--mono);
+  font-size:14px;
+  background:var(--panel);
+  border:1px solid var(--border-strong);
+  border-radius:8px;
+  padding:16px 18px;
+  margin:16px 0;
+  color:var(--accent);
+  overflow-x:auto;
+  white-space:pre;
+}
+.formula .op{color:var(--muted)}
+
+.worked{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:6px 14px;
+  font-family:var(--mono);
+  font-size:12.5px;
+  background:var(--panel-2);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:14px 16px;
+  margin:14px 0;
+}
+.worked dt{color:var(--muted)}
+.worked dd{margin:0;color:var(--text)}
+.worked dd b{color:var(--accent)}
+
+.callout{
+  border:1px solid var(--border-strong);
+  border-left:3px solid var(--amber);
+  background:var(--amber-soft);
+  border-radius:0 8px 8px 0;
+  padding:14px 18px;
+  margin:18px 0;
+  font-size:13.5px;
+  color:var(--text-dim);
+}
+.callout b{color:var(--text)}
+.callout .lbl{
+  display:block;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--amber);
+  margin-bottom:6px;
+}
+.model{
+  border:1px solid var(--border-strong);
+  border-left:3px solid var(--accent);
+  background:var(--accent-soft);
+  border-radius:0 8px 8px 0;
+  padding:14px 18px;
+  margin:10px 0 18px;
+  font-size:13.5px;
+  color:var(--text-dim);
+}
+.model b{color:var(--text)}
+.model .lbl{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:6px;
+}
+.model .lbl:before{content:'◆';font-size:9px}
+
+.reality{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:var(--border-strong);
+  border:1px solid var(--border-strong);
+  border-radius:10px;
+  overflow:hidden;
+  margin:18px 0;
+}
+.reality > div{background:var(--panel);padding:16px 18px}
+.reality h4{
+  margin:0 0 8px;
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.reality .yes h4{color:var(--accent)}
+.reality .no h4{color:var(--red)}
+.reality ul{margin:0;padding-left:18px;font-size:13px;color:var(--text-dim)}
+.reality li{margin-bottom:6px}
+.reality li:last-child{margin-bottom:0}
+
+.dial{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:16px 0 8px;
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.dial-track{
+  flex:1;
+  height:6px;
+  background:var(--panel-2);
+  border:1px solid var(--border-strong);
+  border-radius:4px;
+  position:relative;
+  overflow:hidden;
+}
+.dial-fill{
+  position:absolute;left:0;top:0;bottom:0;
+  background:linear-gradient(90deg,var(--accent),var(--amber));
+  border-radius:4px;
+}
+
+table.gloss{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+  margin:14px 0;
+}
+table.gloss th{
+  text-align:left;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+  padding:8px 12px 8px 0;
+  border-bottom:1px solid var(--border-strong);
+}
+table.gloss td{
+  padding:10px 12px 10px 0;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+  color:var(--text-dim);
+}
+table.gloss td:first-child{
+  font-family:var(--mono);
+  color:var(--text);
+  font-weight:600;
+  white-space:nowrap;
+}
+table.gloss tr:last-child td{border-bottom:none}
+
+.usemap{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin:16px 0;
+}
+.usemap-item{
+  border:1px solid var(--border-strong);
+  border-radius:8px;
+  padding:12px 14px;
+  background:var(--panel);
+}
+.usemap-item .page{
+  all:unset;
+  display:block;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:4px;
+}
+.usemap-item p{margin:0;font-size:12.5px;color:var(--text-dim);max-width:none}
+
+.foot{
+  margin-top:64px;
+  padding-top:20px;
+  border-top:2px solid var(--text);
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--muted);
+  letter-spacing:.03em;
+}
+
+@media(max-width:600px){
+  .reality,.usemap{grid-template-columns:1fr}
+  .page{padding:48px 18px 90px}
+}
+</style><style id="so-mobile-final-nine-pass">@media(max-width:700px){html,body{max-width:100%;overflow-x:hidden}table{max-width:none}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap,.article-grid,.cards-scroll{max-width:100%;-webkit-overflow-scrolling:touch}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap{overflow-x:auto}.hero h1{overflow-wrap:anywhere}.controls,.filter-row,.hub-tabs,.tab-row,.section-tabs{max-width:100%;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}.controls>* ,.filter-row>* ,.hub-tabs>* ,.tab-row>* ,.section-tabs>*{flex:0 0 auto}}@media(pointer:coarse) and (max-width:700px){*{scroll-behavior:auto}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap{scroll-snap-type:none}}</style></head><body>
+
+<div class="page">
+
+  <div class="masthead">
+    <div class="kicker">How Shortopen Prices a Bet</div>
+    <h1>The Shortopen Model</h1>
+    <p class="dek">Sports betting runs on a handful of real, well-known formulas — the same ones behind Vegas linemaking, algorithmic odds compilers, and sharp betting syndicates. This walks through them in plain language, what generic industry versions leave on the table, and how the Shortopen Model was built to cover that ground.</p>
+    <div class="meta">
+      <span>8 sections</span>
+      <span>Covers Market, Strikeout Props, Home Run Props, Matchup Lab, DFS lineup building</span>
+    </div>
+  </div>
+
+  <div class="intro">
+    <p><b>Every number on this site is computed live from real inputs</b> — the odds on the board right now, K-lines, season stats — never hand-typed. This page explains the math underneath it: the industry-standard method first, then honestly, where that standard method runs into trouble, then how the Shortopen Model was built to close that gap. The philosophy in one line: <b>know the open, short the consensus</b> — anchor to where a line started before the crowd moved it, and treat heavy public money as noise to be priced around rather than followed.</p>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2>The vocabulary, and who uses it</h2></div>
+    <p class="lede">Vegas oddsmakers, algorithmic pricing engines, sharp bettors, and DFS players all touch the same three ideas — they just sit in different chairs and call them different things.</p>
+    <table class="gloss">
+      <tr><th>Term</th><th>What it means</th></tr>
+      <tr><td>Implied probability</td><td>What a price says the chance of an outcome is, if you took it completely at face value. <span class="formula" style="display:inline;padding:0;border:0;background:none;margin:0;font-size:13px">−110 → 52.4%</span> — read directly off the odds, nothing removed yet.</td></tr>
+      <tr><td>Vig / juice</td><td>The book's built-in cut, baked into both sides of a two-sided market so the implied probabilities add up to more than 100%. A standard −110/−110 line implies 52.4% + 52.4% = 104.8% — that extra 4.8 points is the vig.</td></tr>
+      <tr><td>Hold / margin</td><td>The same concept as vig, described from the house's side of the desk — "what percentage of the total handle we structurally keep if action is balanced." When Shortopen shows you "margin," that's the same industry term, not our own branding.</td></tr>
+    </table>
+    <p>These aren't three competing ideas — they're the same fact, the book took a cut, described from three chairs: the bettor's ("what's the vig"), the modeler's ("what's the implied probability"), and the trading desk's ("what's our hold"). A Vegas oddsmaker setting an opening line, an algorithm re-pricing a book in real time, and a sharp bettor deciding where to place money are all reading the exact same numbers, just asking different questions of them.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2>Removing the vig — what "no-vig" actually is</h2></div>
+    <p class="lede">Once you know a market is overpriced by design, the natural next question is: what would it cost with the vig stripped out? That number is the market's "true" or "fair" price — its <b>no-vig</b> price. It's the single most load-bearing concept in sports betting, full stop — line betting, algorithmic pricing, and sharp modeling all start here.</p>
+
+    <p><b>The most common industry approach (proportional devig):</b> take each side's implied probability and just divide by the total. It's the version you'll find explained on most betting-education sites, and it's what most public odds comparison tools actually run.</p>
+    <div class="formula">fair(A) = implied(A) / (implied(A) + implied(B))</div>
+
+    <div class="callout">
+      <span class="lbl">How real is this</span>
+      Proportional devigging is the industry default because it's cheap to compute, but it treats every point of vig as if it were spread evenly across both sides. In practice, books load more vig onto the less-likely outcome — the "favorite-longshot bias" — so on a lopsided line, this method quietly overstates how good the underdog price really is. A more advanced technique, developed in academic market-microstructure research on bookmaker pricing, corrects for exactly that bias by solving a small system for each market:
+      <div class="formula" style="margin:12px 0 4px">p(i) = [ √(z² + 4(1-z)·π(i)²/S) − z ] / [ 2(1-z) ]
+<span class="op">— solved for z ∈ [0, 0.5) such that Σp(i) = 1</span></div>
+    </div>
+
+    <div class="worked">
+      <dt>Two-book input</dt><dd>Line A: −150 · Line B: +130</dd>
+      <dt>Implied (raw)</dt><dd>60.0% + 43.5% = <b>103.5%</b> (3.5% vig)</dd>
+      <dt>Proportional fair</dt><dd>A: 58.0% · B: 42.0%</dd>
+      <dt>Bias-corrected fair</dt><dd>A: 58.4% · B: 41.6% <span style="color:var(--muted)">— pulls slightly further off the favorite</span></dd>
+    </div>
+
+    <div class="model">
+      <span class="lbl">The Shortopen Model</span>
+      The bias-corrected method above is a real improvement over proportional devigging, but on its own it still has a blind spot: it assumes one distortion factor applies uniformly across a market at a single frozen instant, when in reality books don't move in lockstep — one has already reacted to news or sharp money while another hasn't, so a "simultaneous" set of prices is often a mix of stale and current numbers. The Shortopen Model treats that correction as one proven input among several, not the final word. Every book's quote is weighted by how far it sits from the pack, and how much the books disagree with each other becomes its own signal — a tight cluster reads as confident, a wide spread gets discounted rather than blindly averaged in. That dispersion is what builds the standard-deviation band behind the confidence tier you see on the board (High / Medium / Low), so the model is working with a distribution of likely fair value, not a single trusted point estimate.
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2>Turning a fair price into a decision — EV%</h2></div>
+    <p class="lede">A fair price tells you what a bet is worth. It doesn't tell you whether the price on the board right now is a good one. That's what EV% is for — the single formula every professional sports betting operation, from solo sharp bettors to market-making shops, runs before placing anything.</p>
+    <div class="formula">EV% = ( decimal_odds × fair_probability − 1 ) × 100</div>
+    <p>Decimal odds are just the American odds you see, rewritten as "how much you get back per $1 risked, including your stake" — e.g. +215 becomes 3.15. The formula asks one question: <i>if the fair probability is right, is this specific price paying you more than it should?</i> Positive means the book's price is generous relative to fair value; negative means it's short.</p>
+
+    <div class="worked">
+      <dt>Best price</dt><dd>+215 → decimal 3.15</dd>
+      <dt>Fair probability</dt><dd>38.95%</dd>
+      <dt>EV%</dt><dd>(3.15 × 0.3895 − 1) × 100 = <b>+22.7%</b></dd>
+      <dt>In dollars</dt><dd>At $100/bet: +$22.70 expected, per bet, on average</dd>
+    </div>
+
+    <p>Run the same bet 100 times at that price and that model read, and you'd expect roughly 39 hits and 61 misses — 39 × $215 profit against 61 × $100 lost — netting out close to what EV% predicts. That's what "expected value" is actually claiming: not that you win more often than you lose, but that <b>the size of the wins outweighs the frequency of the losses</b>, over enough repetitions.</p>
+
+    <div class="callout">
+      <span class="lbl">How real is this</span>
+      This is the standard, textbook definition of expected value applied to betting odds — nothing about the formula itself is proprietary. Where it's incomplete on its own: it treats the fair probability as a known fact rather than an estimate, and gives no sense of how confidently that fair number was actually derived. Two bets can show an identical EV% while one is backed by six agreeing books and the other by a single outlier price — plain EV% can't tell them apart.
+    </div>
+
+    <div class="model">
+      <span class="lbl">The Shortopen Model</span>
+      Every EV% on the site is paired with the confidence read from Section 02 — the same book-dispersion signal that sizes the fair-value band also discounts an EV% built on thin agreement. A high-EV, low-confidence price still gets surfaced, but visually distinguished from a high-EV, high-confidence one, so the number you act on already carries a sense of how much to trust it, not just how large it is.
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">04</span><h2>Compounding across at-bats — the prop-specific math</h2></div>
+    <p class="lede">Strikeout and hit props aren't asking about one event — they're asking about "at least once across roughly four at-bats." That needs one more step beyond a single fair probability: a per-event rate, compounded across trials. This is the same binomial logic behind any "at least one" stat in sports, and it's the base layer real prop-pricing desks build on too.</p>
+    <div class="formula">P(at least one) = 1 − (1 − p_per_event)^trials</div>
+    <p>This is exactly why Matchup Lab shows two different-looking numbers for what feels like "the same thing." A pitcher's <b>K Rate (per PA)</b> is p_per_event on its own — directly comparable to a real K% stat (league average ~20-23%, elite 30%+). <b>K chance induced (4AB)</b> is that same rate run through the formula above with trials = 4 — necessarily a bigger number, because four independent tries at even a modest rate adds up.</p>
+
+    <div class="worked">
+      <dt>Per-PA K rate</dt><dd><b>18.4%</b> <span style="color:var(--muted)">— realistic, matches real K% ranges</span></dd>
+      <dt>Aggregated, 4 AB</dt><dd>1 − (1 − 0.184)⁴ = <b>55.7%</b> <span style="color:var(--muted)">— a different question, a bigger number</span></dd>
+    </div>
+
+    <div class="callout">
+      <span class="lbl">How real is this</span>
+      The compounding formula itself is standard across sports analytics. Run generically, it has a known blind spot: a single blended per-event rate assumes every at-bat is an independent, identical trial, when a starter's true rate drifts as pitch count climbs and plays differently against a patient lineup than a free-swinging one.
+    </div>
+
+    <div class="model">
+      <span class="lbl">The Shortopen Model</span>
+      Rather than one flat league-average rate, the Shortopen Model blends the pitcher's line-implied rate with the specific hitter's own season profile — strikeout rate, walk rate, and contact quality (barrel%, hard-hit%) — and regresses that against real league-wide outcome data before compounding across trials. That's a hitter-specific, data-grounded rate going into the formula, and it's the same reasoning behind Matchup Lab's read depth, which states exactly how many tracked hitters and how much complete season data back any given number.
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">05</span><h2>Game-level pricing — margin, not a pick</h2></div>
+    <p class="lede">Moneyline, spread, and total markets each only have one book-vs-book comparison to work with per game (unlike props, which quote across six books). There's no "best price vs. second-best price" to check EV against — so the Market page reports the one honest thing it can: how much margin is baked into each number. "Hold" is literally the term a real sportsbook trading desk uses for this internally — it isn't adapted language.</p>
+    <div class="formula">margin% = ( implied(side A) + implied(side B) − 1 ) × 100</div>
+    <p>The Shortopen Call on a game card is simply: of the three markets on that game (moneyline, spread, total), which one carries the <b>least</b> margin right now. Sharp and Fair badges are just that number bucketed against the average margin across the day's whole slate, so a number is legible at a glance without re-deriving it.</p>
+    <p><b>This is explicitly not a pick.</b> Low margin tells you the price is close to true odds — you're giving up less of your money to the house's cut if you like that side. It says nothing about whether that side actually wins.</p>
+
+    <div class="callout">
+      <span class="lbl">How real is this</span>
+      Margin on its own measures price efficiency, not correctness — a market can be tightly priced and still lean on a biased consensus if the public is pricing name recognition or recent narrative rather than the real matchup. That's a limitation of margin as a standalone signal, in any context, not something specific to how it's shown here.
+    </div>
+
+    <div class="model">
+      <span class="lbl">The Shortopen Model</span>
+      This is why margin is treated as a filter, never a verdict. On the Market page it narrows the board down to the cleanest-priced number on each card; the actual lean — Shortopen Call, Fair, and the confidence tier behind it — comes from the same dispersion-weighted read described in Section 02, run market by market. Where the site tracks a real opening line for a market (Strikeout Props and Matchup Lab both do, shown as the open→consensus movement on each row), that gets folded in as its own signal rather than assumed. "Know the open, short the consensus" is the standing instruction across every page: anchor to where a number started, and treat a lopsided crowd as noise the model prices around rather than proof of anything.
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">06</span><h2>Where the Shortopen Model sits in the wider betting world</h2></div>
+    <p class="lede">Sports betting math roughly splits into four rooms — Vegas linemaking, algorithmic pricing engines, sharp/syndicate modeling, and DFS lineup construction. Here's where the Shortopen Model draws from each, and where a full institutional trading desk still goes further.</p>
+
+    <div class="dial">Public-facing model<span class="dial-track"><span class="dial-fill" style="width:55%"></span></span>Full institutional desk</div>
+
+    <div class="reality">
+      <div class="yes">
+        <h4>Proven methods the model is built on</h4>
+        <ul>
+          <li>Devigging before trusting any price — step one for every serious bettor, algorithm, and linemaker</li>
+          <li>A bias-corrected devig as one input layer, weighted further by book dispersion into a full probability band</li>
+          <li>EV% as the decision metric, paired with a confidence read rather than taken at face value</li>
+          <li>Per-event compounding for multi-at-bat props, grounded in hitter-specific season data</li>
+          <li>Book-agnostic price shopping — the same reason real sharp bettors hold accounts everywhere</li>
+        </ul>
+      </div>
+      <div class="no">
+        <h4>What a full institutional desk adds beyond this</h4>
+        <ul>
+          <li>Real-time bet-percentage / handle splits straight from the books, not inferred</li>
+          <li>Closing-line-value backtesting run against years of historical results</li>
+          <li>Full Monte Carlo game simulation layered on top of the compounding formula</li>
+          <li>Granular situational inputs: weather, umpire tendencies, bullpen fatigue, park factors</li>
+          <li>A live risk book — actual exposure and liability, not just a priced number</li>
+        </ul>
+      </div>
+    </div>
+
+    <p><b>On DraftKings/FanDuel lineup building specifically:</b> that's a different discipline from everything above, walked through in full in the next section.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">07</span><h2>DFS lineup building — DraftKings &amp; FanDuel specifically</h2></div>
+    <p class="lede">Daily fantasy is scored on projected points against a salary cap, not on beating a sportsbook price, so none of the win-probability math above applies directly. It's still governed by real, well-known formulas — value, ownership, leverage, and constrained optimization — and the Shortopen ownership simulator is built on top of them the same way the odds pages are built on top of devigging.</p>
+
+    <p><b>Value — the baseline efficiency read:</b> every DFS player pool boils down to points per dollar. This is the first filter every DFS player, pro or casual, runs a slate through.</p>
+    <div class="formula">value = projected points / (salary / 1000)</div>
+
+    <p><b>Ownership — what the field is actually going to roster:</b> value alone isn't enough, because if everyone can see the same cheap, efficient player, that player gets rostered into a huge share of lineups and stops being an edge in a tournament. Projecting <i>ownership</i> — what percent of entries will roster a given player — is the standard next layer, usually built from salary tier, projection tier, and recent role signals, then overridden with real reported ownership numbers whenever they're available for a slate.</p>
+    <div class="worked">
+      <dt>Inputs</dt><dd>Projection tier · salary tier · role signals (multi-position eligibility, recent power/usage) · a live override slot for real ownership data pulled in from that day's sheet</dd>
+      <dt>Output</dt><dd>A 0–35% ownership estimate per player, tiered into <b>Chalk</b>, <b>High</b>, <b>Neutral</b>, and <b>Contrarian</b></dd>
+    </div>
+    <table class="gloss">
+      <tr><th>Tier</th><th>Range</th><th>What it means</th></tr>
+      <tr><td>Chalk</td><td>30%+</td><td>The field's consensus play — safe on its own, but it caps your lineup's differentiation from everyone else's</td></tr>
+      <tr><td>High</td><td>20–30%</td><td>A popular play, still worth pricing carefully against how much upside it actually adds</td></tr>
+      <tr><td>Neutral</td><td>5–20%</td><td>Where most of a slate's players sit — ordinary exposure, no strong signal either way</td></tr>
+      <tr><td>Contrarian</td><td>&lt;5%</td><td>Low-owned — the pool leverage plays are drawn from</td></tr>
+    </table>
+
+    <p><b>Leverage — value and ownership combined into one signal:</b> the actual tournament-strategy metric is neither value nor ownership alone, it's the two set against each other — how much upside a player offers relative to how much of the field is already exposed to them. A high-value, low-owned player scores high leverage; a high-value, heavily-chalked player scores low leverage even though the raw projection looks identical, because everyone's lineup already has that same exposure.</p>
+    <div class="formula">leverage = f(value relative to field baseline, ownership relative to field baseline)</div>
+
+    <div class="callout">
+      <span class="lbl">How real is this</span>
+      Value, ownership projection, and leverage are the three pillars every serious DFS tool is built on — this isn't a Shortopen invention, it's the standard tournament-strategy toolkit. Where a generic version runs into trouble: an ownership model built purely from salary and projection tiers can't see anything outside the box score — a lineup change, a role bump, a park swap the field hasn't priced in yet. And a leverage score calculated once, before lineups are built, ignores the fact that leverage is really a portfolio problem: the same player's leverage value changes depending on who else is already in your lineup.
+    </div>
+    <div class="model">
+      <span class="lbl">The Shortopen Model</span>
+      The ownership simulator takes real, manually-tracked ownership data from a spreadsheet built fresh each slate as its primary input whenever it's available, and only falls back to the tiered heuristic model where it isn't — so the projection is grounded in what's actually being rostered, not just what a formula assumes should be. Lineup construction runs as a constrained search rather than a single top-value greedy build: within the salary cap, it samples repeatedly across the eligible player pool at each roster slot, weighted toward — but not locked to — the highest-scoring options, and keeps the best valid lineup found across that search. That's what lets a single run surface a lineup that isn't just "the eight highest-value players who fit the cap," which is the trap a naive optimizer falls into and exactly what produces max-chalk, zero-leverage lineups in a tournament field.
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">08</span><h2>Where the model shows up on the site</h2></div>
+    <div class="usemap">
+      <div class="usemap-item"><span class="page">Market</span><p>Bias-corrected devig for the win-probability bar · margin% + Sharp/Fair/Padded tiers for the Shortopen Call</p></div>
+      <div class="usemap-item"><span class="page">Strikeout Props</span><p>Bias-corrected devig for Shortopen Fair · EV% for Shortopen Call, checked across all six books</p></div>
+      <div class="usemap-item"><span class="page">Home Run Props</span><p>EV% vs. the model probability · the 100-bet breakeven walkthrough in each expanded row</p></div>
+      <div class="usemap-item"><span class="page">Matchup Lab</span><p>Per-PA rate + 4AB compounding for K Rate and Hit chance · read depth from real tracked-hitter counts</p></div>
+    </div>
+  </section>
+
+  <div class="foot">Shortopen · The Shortopen Model · know the open, short the consensus</div>
+
+</div></body></html>

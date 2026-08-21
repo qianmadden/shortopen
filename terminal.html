@@ -71,15 +71,15 @@ button{font:inherit}
 .frame-stage{position:relative;min-height:0;background:#04070d}
 .hub-pick{position:absolute;inset:0;z-index:6;display:grid;place-items:center;padding:32px;background:#04070d;overflow-y:auto}
 .hub-pick.hidden{display:none}
-.pick-grid{width:100%;max-width:960px;display:grid;grid-template-columns:repeat(var(--pick-count,2),1fr);gap:20px}
-.pick-card{position:relative;overflow:hidden;display:block;width:100%;box-sizing:border-box;margin:0;text-align:left;font:inherit;appearance:none;-webkit-appearance:none;border:1px solid rgba(255,255,255,.08);border-radius:20px;background:linear-gradient(155deg,rgba(255,255,255,.03),rgba(3,8,14,.75));color:#8996a4;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease}
+.pick-grid{width:100%;max-width:900px;display:grid;grid-template-columns:repeat(var(--pick-count,2),minmax(0,1fr));gap:16px}
+.pick-card{position:relative;overflow:hidden;display:grid;grid-template-rows:116px minmax(0,1fr);height:340px;width:100%;box-sizing:border-box;margin:0;text-align:left;font:inherit;appearance:none;-webkit-appearance:none;border:1px solid rgba(255,255,255,.08);border-radius:20px;background:linear-gradient(155deg,rgba(255,255,255,.03),rgba(3,8,14,.75));color:#8996a4;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease}
 .pick-card:hover{transform:translateY(-3px);border-color:var(--accent-border);background:linear-gradient(155deg,var(--accent-soft),rgba(5,10,17,.85) 68%)}
-.pick-art{position:relative;height:148px;display:grid;place-items:center;background:radial-gradient(circle at 50% 30%,var(--accent-soft),transparent 70%),rgba(255,255,255,.02);border-bottom:1px solid rgba(255,255,255,.06);box-sizing:border-box}
-.pick-art svg{width:112px;height:112px;stroke:var(--accent);fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;opacity:.92;color:var(--accent);overflow:visible}
-.pick-body{display:block;padding:24px 28px 28px;box-sizing:border-box}
+.pick-art{position:relative;height:116px;display:grid;place-items:center;background:radial-gradient(circle at 50% 30%,var(--accent-soft),transparent 70%),rgba(255,255,255,.02);border-bottom:1px solid rgba(255,255,255,.06);box-sizing:border-box}
+.pick-art svg{width:78px;height:78px;stroke:var(--accent);fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;opacity:.92;color:var(--accent);overflow:visible}
+.pick-body{display:flex;min-height:0;flex-direction:column;align-items:flex-start;padding:19px 21px 22px;box-sizing:border-box}
 .pick-name{display:block;color:#eef2f6;font-size:1.12rem;font-weight:850;letter-spacing:-.015em}
-.pick-desc{display:block;margin-top:10px;color:#8593a3;font-size:.75rem;line-height:1.65;word-wrap:break-word}
-.pick-go{display:inline-block;margin-top:18px;color:#5f6e7d;font-size:.64rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;transition:color .18s;white-space:nowrap}
+.pick-desc{display:block;margin-top:8px;color:#8593a3;font-size:.70rem;line-height:1.55;word-wrap:break-word}
+.pick-go{display:inline-block;margin-top:auto;padding-top:14px;color:#5f6e7d;font-size:.61rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;transition:color .18s;white-space:nowrap}
 .pick-card:hover .pick-go{color:var(--accent)}
 @media(max-width:640px){.pick-grid{grid-template-columns:1fr}.pick-art{height:126px}.pick-art svg{width:88px;height:88px}}
 .tool-frame{display:block;width:100%;height:100%;border:0;background:#04070d}
@@ -135,7 +135,23 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 <!-- Short Open account layer: non-blocking Supabase auth -->
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script defer src="auth.js?v=20260814"></script>
-</head>
+<style id="so-mobile-repair-20260819">
+@media(max-width:760px){
+ html,body{width:100%;max-width:100%;overflow-x:hidden}.hub-shell,.hub-header,.workspace,.frame-stage{min-width:0!important;width:100%!important}
+ .hub-tabs{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;gap:8px!important;padding:10px 14px!important;-webkit-overflow-scrolling:touch;scrollbar-width:none}.hub-tabs::-webkit-scrollbar,.pick-grid::-webkit-scrollbar{display:none}.hub-tab{flex:0 0 auto!important;white-space:nowrap}
+ .hub-pick{display:block!important;padding:18px 14px 24px!important;overflow:auto!important}.hub-pick.hidden{display:none!important}.pick-grid{display:flex!important;width:100%!important;max-width:none!important;overflow-x:auto!important;gap:12px!important;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:2px 8vw 12px 0}
+ .pick-card{flex:0 0 82vw!important;width:82vw!important;max-width:340px!important;min-height:420px!important;display:grid!important;grid-template-rows:150px 1fr!important;scroll-snap-align:start}.pick-art{height:150px!important}.pick-body{padding:22px!important}.pick-name{font-size:1.25rem!important}.pick-desc{font-size:.84rem!important;line-height:1.65!important}.tool-frame{width:100%!important;max-width:100%!important;min-width:0!important}
+}
+</style><style id="so-mobile-verified-pass-20260819">
+@media(max-width:760px){
+ .hub{grid-template-rows:auto minmax(0,1fr)!important}
+ .hub-bar{height:auto!important;min-height:0!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:8px!important;padding:10px 0 8px!important;overflow:hidden!important}
+ .hub-active{width:100%!important;padding:0 14px!important}.hub-active strong{font-size:.78rem!important}.hub-count{display:none!important}
+ .hub-switch{display:flex!important;width:100%!important;max-width:100%!important;margin:0!important;padding:0 14px 5px!important;gap:8px!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-padding-inline:14px;scroll-snap-type:x proximity;overscroll-behavior-x:contain;touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch}
+ .hub-switch::after{content:'';display:block;flex:0 0 6px}.hub-tab{flex:0 0 auto!important;min-height:38px!important;padding:9px 14px!important;font-size:.72rem!important;scroll-snap-align:center}
+ .hub-pick{padding:16px 0 22px 14px!important}.pick-grid{padding:0 14px 12px 0!important;gap:12px!important}.pick-card{flex-basis:min(78vw,300px)!important;width:min(78vw,300px)!important;max-width:300px!important;height:360px!important;min-height:360px!important;grid-template-rows:118px 1fr!important}.pick-art{height:118px!important}.pick-art svg{width:72px!important;height:72px!important}.pick-body{padding:18px 18px 20px!important}.pick-name{font-size:1.08rem!important;line-height:1.15!important}.pick-desc{margin-top:9px!important;font-size:.76rem!important;line-height:1.58!important}.pick-go{padding-top:12px!important}
+}
+</style><style id="so-mobile-final-nine-pass">@media(max-width:700px){html,body{max-width:100%;overflow-x:hidden}table{max-width:none}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap,.article-grid,.cards-scroll{max-width:100%;-webkit-overflow-scrolling:touch}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap{overflow-x:auto}.hero h1{overflow-wrap:anywhere}.controls,.filter-row,.hub-tabs,.tab-row,.section-tabs{max-width:100%;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}.controls>* ,.filter-row>* ,.hub-tabs>* ,.tab-row>* ,.section-tabs>*{flex:0 0 auto}}@media(pointer:coarse) and (max-width:700px){*{scroll-behavior:auto}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap{scroll-snap-type:none}}</style></head>
 <body><div class="so-nav-shell"><nav class="so-nav" aria-label="Primary navigation">
   <a class="so-nav-brand" href="index.html" aria-label="Short Open home"><span>short<b>open</b></span></a>
   <div class="so-nav-center">
@@ -162,10 +178,10 @@ html.so-perf-scrolling .so-perf-anim-target::after,
   <h1 class="sr-only">The Terminal</h1>
 <header class="hub-bar">
   <div class="hub-active"><span class="hub-dot"></span><strong id="activeTitle"></strong><span id="activeDesc"></span><span id="hubIdle">Command Center</span></div>
-  <div class="hub-switch" role="tablist" aria-label="The Terminal sections"><button class="hub-tab" role="tab" type="button" data-key="market" aria-selected="false" title="Games, props, parlays and roulette"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18V9m5 9V5m5 13v-7m5 7V3"/><path d="M3 20h18"/></svg><span>Market</span></button><button class="hub-tab" role="tab" type="button" data-key="optimizer" aria-selected="false" title="Lineup builder and ownership simulator"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V14M4 10V3M12 21V12M12 8V3M20 21V16M20 12V3"/><path d="M1 14h6M9 8h6M17 16h6"/></svg><span>Optimizer</span></button></div>
+  <div class="hub-switch" role="tablist" aria-label="The Terminal sections"><button class="hub-tab" role="tab" type="button" data-key="market" aria-selected="false" title="Games, props, parlays and roulette"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18V9m5 9V5m5 13v-7m5 7V3"/><path d="M3 20h18"/></svg><span>Market</span></button><button class="hub-tab" role="tab" type="button" data-key="optimizer" aria-selected="false" title="Lineup builder and ownership simulator"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V14M4 10V3M12 21V12M12 8V3M20 21V16M20 12V3"/><path d="M1 14h6M9 8h6M17 16h6"/></svg><span>Optimizer</span></button><button class="hub-tab" role="tab" type="button" data-key="model" aria-selected="false" title="Formula reference and pricing methodology"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="m15.5 8.5-2.1 4.9-4.9 2.1 2.1-4.9 4.9-2.1Z"/></svg><span>Model</span></button></div>
   <span class="hub-count" id="sectionCount"></span>
 </header>
-<section class="workspace" aria-live="polite"><div class="frame-stage"><div class="hub-pick" id="hubPick"><div class="pick-grid" style="--pick-count:2"><button class="pick-card" type="button" data-key="market"><span class="pick-art" aria-hidden="true"><svg viewBox="0 0 64 64">
+<section class="workspace" aria-live="polite"><div class="frame-stage"><div class="hub-pick" id="hubPick"><div class="pick-grid" style="--pick-count:3"><button class="pick-card" type="button" data-key="market"><span class="pick-art" aria-hidden="true"><svg viewBox="0 0 64 64">
 <path d="M8 46l9-8 8 6 11-15 9 9 8-6" stroke-width="2.2" stroke-linejoin="round"/>
 <path d="M50 30h7v7" stroke-width="1.6"/>
 <path d="M8 54h48" stroke-width="1.1"/>
@@ -181,9 +197,9 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 <circle cx="46" cy="38" r="3"/>
 <path d="M14 46h36" stroke-width="1.1"/>
 <path d="M40 14h9M40 17.5h6" stroke-width="1.1"/>
-</svg></span><span class="pick-body"><span class="pick-name">Optimizer</span><span class="pick-desc">Build and stress-test DFS lineups for DraftKings and FanDuel, simulate real tournament fields, and check projected ownership through Short Open's own model before you enter.</span><span class="pick-go">Open &rarr;</span></span></button></div></div><div class="frame-loader hidden" id="frameLoader"><div class="loader-card"><span class="loader-ring"></span><span id="loaderText">Loading selected workspace</span></div></div><iframe class="tool-frame" id="toolFrame" title="Short Open tool" referrerpolicy="same-origin"></iframe></div></section>
+</svg></span><span class="pick-body"><span class="pick-name">Optimizer</span><span class="pick-desc">Build and stress-test DFS lineups for DraftKings and FanDuel, simulate real tournament fields, and check projected ownership through Short Open's own model before you enter.</span><span class="pick-go">Open &rarr;</span></span></button><button class="pick-card" type="button" data-key="model"><span class="pick-art" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="21"/><path d="M32 7v7M32 50v7M7 32h7M50 32h7"/><path d="m41 23-5.8 12.2L23 41l5.8-12.2L41 23Z"/><circle cx="32" cy="32" r="2.3"/></svg></span><span class="pick-body"><span class="pick-name">Model</span><span class="pick-desc">The formula reference behind fair pricing, devigging, EV, margin, prop compounding and the site's matchup calculations.</span><span class="pick-go">Open &rarr;</span></span></button></div></div><div class="frame-loader hidden" id="frameLoader"><div class="loader-card"><span class="loader-ring"></span><span id="loaderText">Loading selected workspace</span></div></div><iframe class="tool-frame" id="toolFrame" title="Short Open tool" referrerpolicy="same-origin"></iframe></div></section>
 </main>
-<script type="application/json" id="hubConfig">{"title":"The Terminal","tabs":[{"key":"market","label":"Board","title":"Market","desc":"Games, props, parlays and roulette","src":"embed-market.html"},{"key":"optimizer","label":"Build","title":"Optimizer","desc":"Lineup builder and ownership simulator","src":"embed-optimizer.html"}]}</script><script>
+<script type="application/json" id="hubConfig">{"title":"The Terminal","tabs":[{"key":"market","label":"Board","title":"Market","desc":"Games, props, parlays and roulette","src":"embed-market.html"},{"key":"optimizer","label":"Build","title":"Optimizer","desc":"Lineup builder and ownership simulator","src":"embed-optimizer.html"},{"key":"model","label":"Reference","title":"Model","desc":"Formula reference and pricing methodology","src":"shortopenformulareference.html"}]}</script><script>
 (function(){
   'use strict';
   const config=JSON.parse(document.getElementById('hubConfig').textContent),frame=document.getElementById('toolFrame'),loader=document.getElementById('frameLoader'),loaderText=document.getElementById('loaderText'),tabs=[...document.querySelectorAll('.hub-tab')],picks=[...document.querySelectorAll('.pick-card')],pickScreen=document.getElementById('hubPick'),activeTitle=document.getElementById('activeTitle'),activeDesc=document.getElementById('activeDesc'),sectionCount=document.getElementById('sectionCount'),hubIdle=document.getElementById('hubIdle'),menu=document.getElementById('mobileMenu'),burger=document.getElementById('hamburgerBtn');
