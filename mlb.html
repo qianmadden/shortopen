@@ -149,7 +149,28 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 @media(max-width:1000px){.pick-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.pick-card{min-height:460px!important}}
 @media(max-width:640px){.pick-grid{grid-template-columns:1fr!important}.pick-card{min-height:0!important;grid-template-rows:148px auto!important}.pick-art{height:148px!important}.pick-desc{min-height:0!important}.pick-name{min-height:0!important}}
 </style>
-</head>
+<style id="so-mobile-repair-20260819">
+@media(max-width:760px){
+ html,body{width:100%;max-width:100%;overflow-x:hidden}
+ .hub-shell,.hub-header,.workspace,.frame-stage{min-width:0!important;width:100%!important}
+ .hub-tabs{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden;gap:8px!important;padding:10px 14px!important;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+ .hub-tabs::-webkit-scrollbar,.pick-grid::-webkit-scrollbar{display:none}.hub-tab{flex:0 0 auto!important;white-space:nowrap;scroll-snap-align:start}
+ .hub-pick{display:block!important;padding:18px 14px 24px!important;overflow:auto!important;overscroll-behavior:contain}
+ .hub-pick.hidden{display:none!important}.pick-grid{display:flex!important;width:100%!important;max-width:none!important;overflow-x:auto!important;gap:12px!important;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:2px 8vw 12px 0}
+ .pick-card{flex:0 0 82vw!important;width:82vw!important;max-width:340px!important;min-height:420px!important;grid-template-rows:150px 1fr!important;scroll-snap-align:start}
+ .pick-art{height:150px!important}.pick-body{padding:22px!important}.pick-name{font-size:1.25rem!important}.pick-desc{font-size:.84rem!important;line-height:1.65!important}
+ .tool-frame{width:100%!important;max-width:100%!important;min-width:0!important}
+}
+</style><style id="so-mobile-verified-pass-20260819">
+@media(max-width:760px){
+ .hub{grid-template-rows:auto minmax(0,1fr)!important}
+ .hub-bar{height:auto!important;min-height:0!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:8px!important;padding:10px 0 8px!important;overflow:hidden!important}
+ .hub-active{width:100%!important;padding:0 14px!important}.hub-active strong{font-size:.78rem!important}.hub-count{display:none!important}
+ .hub-switch{display:flex!important;width:100%!important;max-width:100%!important;margin:0!important;padding:0 14px 5px!important;gap:8px!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-padding-inline:14px;scroll-snap-type:x proximity;overscroll-behavior-x:contain;touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch}
+ .hub-switch::after{content:'';display:block;flex:0 0 6px}.hub-tab{flex:0 0 auto!important;min-height:38px!important;padding:9px 14px!important;font-size:.72rem!important;scroll-snap-align:center}
+ .hub-pick{padding:16px 0 22px 14px!important}.pick-grid{padding:0 14px 12px 0!important;gap:12px!important}.pick-card{flex-basis:min(78vw,300px)!important;width:min(78vw,300px)!important;max-width:300px!important;min-height:360px!important;grid-template-rows:118px 1fr!important}.pick-art{height:118px!important}.pick-art svg{width:72px!important;height:72px!important}.pick-body{padding:18px 18px 20px!important}.pick-name{font-size:1.08rem!important;line-height:1.15!important}.pick-desc{margin-top:9px!important;font-size:.76rem!important;line-height:1.58!important}.pick-go{padding-top:12px!important}
+}
+</style><style id="so-iphone-selector-overhaul">@media(max-width:760px){.hub-pick{display:block!important;padding:16px 0 22px 14px!important;overflow:hidden!important}.hub-pick.hidden{display:none!important}.pick-grid{display:flex!important;width:100%!important;max-width:none!important;overflow-x:auto!important;gap:12px!important;padding:0 14px 12px 0!important;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}.pick-grid::-webkit-scrollbar{display:none}.pick-card{flex:0 0 min(78vw,300px)!important;width:min(78vw,300px)!important;max-width:300px!important;height:360px!important;min-height:360px!important;grid-template-rows:118px 1fr!important;scroll-snap-align:start}.pick-art{height:118px!important}.pick-art svg{width:72px!important;height:72px!important}.pick-body{padding:18px 18px 20px!important}.pick-name{font-size:1.08rem!important;line-height:1.15!important}.pick-desc{margin-top:9px!important;font-size:.76rem!important;line-height:1.58!important}.pick-go{padding-top:12px!important}}</style></head>
 <body><div class="so-nav-shell"><nav class="so-nav" aria-label="Primary navigation">
   <a class="so-nav-brand" href="index.html" aria-label="Short Open home"><span>short<b>open</b></span></a>
   <div class="so-nav-center">
@@ -212,7 +233,7 @@ html.so-perf-scrolling .so-perf-anim-target::after,
     active=item.key;const idx=config.tabs.indexOf(item);
     pickScreen.classList.add('hidden');
     hubIdle.style.display='none';
-    tabs.forEach(btn=>{const on=btn.dataset.key===active;btn.classList.toggle('active',on);btn.setAttribute('aria-selected',String(on));btn.tabIndex=on?0:-1;});
+    tabs.forEach(btn=>{const on=btn.dataset.key===active;btn.classList.toggle('active',on);btn.setAttribute('aria-selected',String(on));btn.tabIndex=on?0:-1;});const selectedTab=tabs.find(btn=>btn.dataset.key===active);if(selectedTab&&matchMedia('(max-width:760px)').matches)requestAnimationFrame(()=>selectedTab.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}));
     activeTitle.textContent=item.title;activeDesc.textContent=item.desc;sectionCount.textContent=String(idx+1).padStart(2,'0')+' / '+String(config.tabs.length).padStart(2,'0');
     loaderText.textContent='Loading '+item.title;loader.classList.remove('hidden');frame.title=item.title+' — Short Open';frame.src=item.src;document.title=item.title+' — '+config.title+' · shortopen';
     const next='#'+item.key;if(location.hash!==next)history[replace?'replaceState':'pushState'](null,'',next);
