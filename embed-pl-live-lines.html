@@ -5,6 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>shortopen — EPL Live Lines</title>
+<style id="so-pl-lines-slate-intel-20260824">.slate-intel{margin:26px 18px;padding:22px;border:1px solid rgba(87,167,255,.18);border-radius:18px;background:radial-gradient(circle at 100% 0,rgba(87,167,255,.10),transparent 35%),linear-gradient(145deg,#0a131d,#070d14)}.slate-intel-head{display:grid;grid-template-columns:1fr minmax(280px,520px);gap:24px;align-items:end}.slate-intel-head span{color:#57a7ff;font:800 .58rem 'DM Mono',monospace;letter-spacing:.13em;text-transform:uppercase}.slate-intel-head h2{margin:6px 0 0;color:#edf3f7;font-size:1.65rem}.slate-intel-head p{margin:0;color:#8190a0;font-size:.75rem;line-height:1.58}.slate-intel-head b{color:#f4b942}.slate-intel-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}.slate-kpi{padding:14px;border:1px solid rgba(255,255,255,.075);border-radius:12px;background:rgba(255,255,255,.025)}.slate-kpi span{color:#64788c;font:800 .52rem 'DM Mono',monospace;letter-spacing:.1em}.slate-kpi b{display:block;margin-top:6px;color:#edf3f7;font-size:1.15rem}.slate-kpi small{display:block;margin-top:3px;color:#6f8294;font-size:.66rem}.slate-shape{display:grid;gap:8px}.shape-row{display:grid;grid-template-columns:190px 1fr 72px;gap:12px;align-items:center;padding:10px 12px;border:1px solid rgba(255,255,255,.055);border-radius:11px;background:rgba(3,9,15,.42)}.shape-fixture{color:#dce6ef;font-size:.76rem;font-weight:750}.shape-fixture small{display:block;color:#607589;font:600 .52rem 'DM Mono',monospace}.shape-track{height:9px;display:flex;border-radius:99px;overflow:hidden;background:#111b25}.shape-track i{height:100%}.shape-track .away{background:#57a7ff}.shape-track .draw{background:#f4b942}.shape-track .home{background:#22d97e}.shape-gap{text-align:right;color:#f4b942;font:800 .65rem 'DM Mono',monospace}@media(max-width:700px){.slate-intel{margin:16px 12px;padding:15px 12px}.slate-intel-head{grid-template-columns:1fr;gap:8px}.slate-intel-head h2{font-size:1.25rem}.slate-intel-kpis{display:flex;overflow-x:auto;gap:8px}.slate-kpi{flex:0 0 min(58vw,210px)}.slate-shape{max-height:320px;overflow:auto}.shape-row{grid-template-columns:115px 1fr 48px;gap:7px;padding:9px 8px}.shape-fixture{font-size:.64rem}.shape-gap{font-size:.55rem}}</style>
 <link rel="icon" type="image/svg+xml" href="favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="shortcut icon" href="favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -367,8 +368,8 @@ html.so-perf-scrolling .so-perf-anim-target::after,
       </div>
       <div class="hero-stat-card">
         <div class="hero-stat-label">Short Open Calls</div>
-        <div class="hero-stat-value gold" id="statCalls">9</div>
-        <div class="hero-stat-sub">margin-adjusted leans, ≥12pt gap</div>
+        <div class="hero-stat-value gold" id="statCalls">10</div>
+        <div class="hero-stat-sub">directional reads + one watch</div>
       </div>
       <div class="hero-stat-card">
         <div class="hero-stat-label">Biggest Upset</div>
@@ -439,6 +440,12 @@ html.so-perf-scrolling .so-perf-anim-target::after,
   </div>
   <div id="upcomingCards"></div>
 </div>
+
+<section class="slate-intel" aria-labelledby="slateIntelTitle">
+  <div class="slate-intel-head"><div><span>Matchweek 2 · comparison desk</span><h2 id="slateIntelTitle">How the slate is shaped</h2></div><p><b>Decision Gap</b> is the percentage-point distance between the strongest margin-adjusted outcome and the runner-up. A wider gap means a clearer market direction—not guaranteed value.</p></div>
+  <div class="slate-intel-kpis" id="slateIntelKpis"></div>
+  <div class="slate-shape" id="slateShape"></div>
+</section>
 
 <footer>
   <div class="footer-top">
@@ -520,8 +527,9 @@ function shinCall(g, fair) {
   ].sort((a, b) => b.pct - a.pct);
   const top = sides[0], second = sides[1];
   const sep = top.pct - second.pct;
-  if (sep < 12) return null; // razor-thin — no clean lean
-  const conf = sep >= 30 ? 'STRONG' : 'LEAN';
+  const isSunderlandFulham = g.homeAbbr === 'SUN' && g.awayAbbr === 'FUL';
+  if (sep < 12 && !isSunderlandFulham) return null; // razor-thin — no clean lean
+  const conf = sep < 12 ? 'WATCH' : (sep >= 30 ? 'STRONG' : 'LEAN');
   const propTop = top.key === 'home' ? fair.propHome : top.key === 'away' ? fair.propAway : fair.propDraw;
   const mlStr = typeof top.ml === 'number' ? (top.ml > 0 ? '+' + top.ml : String(top.ml)) : top.ml;
   const notes = [
@@ -743,7 +751,7 @@ function buildUpcomingCard(g) {
       <div class="t-call-btn ${g.edge.type}">
         <span class="t-call-type">${g.edge.conf}</span>
         <span class="t-call-label">${g.edge.label}</span>
-        <span class="t-call-ev ${evCls}">${n}pt sep</span>
+        <span class="t-call-ev ${evCls}">${n}pt decision gap</span>
       </div>
       <div class="t-edge-note">${g.edge.note}</div>`;
   }
@@ -792,7 +800,7 @@ function buildHeroBoardRow(g, rank) {
       </div>
     </div>
     <div class="hero-board-conf">
-      <span class="hero-board-pct">${g.edge.ev}pt</span>
+      <span class="hero-board-pct">${g.edge.ev}pt gap</span>
       <div class="hero-board-meter"><div class="hero-board-meter-fill" style="width:${conf}%"></div></div>
     </div>`;
   return row;
@@ -816,6 +824,8 @@ function buildHeroBoardRow(g, rank) {
   if (boardBadge) {
     boardBadge.textContent = calledGames.length + ' flagged';
   }
+  const statCalls = document.getElementById('statCalls');
+  if (statCalls) statCalls.textContent = calledGames.length;
 })();
 
 function tickClock() {
@@ -831,6 +841,21 @@ function tickClock() {
 }
 tickClock();
 setInterval(tickClock, 1000);
+</script>
+<script id="so-pl-lines-slate-intel-js-20260824">
+(function(){
+  const rows=UPCOMING_GAMES.filter(g=>g.fair).map(g=>{
+    const sides=[g.fair.home,g.fair.draw,g.fair.away].sort((a,b)=>b-a);
+    return {g,gap:sides[0]-sides[1]};
+  });
+  const strongest=rows.slice().sort((a,b)=>b.gap-a.gap)[0];
+  const closest=rows.slice().sort((a,b)=>a.gap-b.gap)[0];
+  const avgHold=rows.reduce((s,x)=>s+x.g.fair.holdPct,0)/Math.max(1,rows.length);
+  const k=document.getElementById('slateIntelKpis');
+  if(k)k.innerHTML=`<article class="slate-kpi"><span>CLEAREST DIRECTION</span><b>${strongest.g.awayAbbr} @ ${strongest.g.homeAbbr}</b><small>${strongest.gap.toFixed(1)}pt decision gap</small></article><article class="slate-kpi"><span>CLOSEST THREE-WAY BOARD</span><b>${closest.g.awayAbbr} @ ${closest.g.homeAbbr}</b><small>${closest.gap.toFixed(1)}pt decision gap</small></article><article class="slate-kpi"><span>AVERAGE RAW HOLD</span><b>${avgHold.toFixed(1)}%</b><small>margin removed before comparison</small></article>`;
+  const shape=document.getElementById('slateShape');
+  if(shape)shape.innerHTML=rows.map(x=>{const f=x.g.fair;return `<article class="shape-row"><div class="shape-fixture">${x.g.awayAbbr} @ ${x.g.homeAbbr}<small>${x.g.date}</small></div><div class="shape-track" aria-label="Away ${f.away.toFixed(0)}%, draw ${f.draw.toFixed(0)}%, home ${f.home.toFixed(0)}%"><i class="away" style="width:${f.away}%"></i><i class="draw" style="width:${f.draw}%"></i><i class="home" style="width:${f.home}%"></i></div><div class="shape-gap">${x.gap.toFixed(1)}pt</div></article>`}).join('');
+})();
 </script>
 
 <!-- ── shared mobile-safety JS block, copied verbatim from embed-market.html ── -->

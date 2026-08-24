@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>shortopen — Strikeout Market: MLB Pitcher Prop Terminal</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="shortcut icon" href="favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<meta name="description" content="Live MLB strikeout prop board across DraftKings, FanDuel, BetMGM, BetRivers, Caesars and Hard Rock. Best price highlighting, steam detection, and a bet slip payout calculator.">
+<meta name="description" content="Live MLB strikeout prop board across DraftKings, FanDuel, BetMGM, bet365, Caesars and Hard Rock. Best price highlighting, steam detection, and a bet slip payout calculator.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
@@ -587,7 +587,7 @@ th.so-sortable{cursor:pointer;user-select:none;transition:color .16s ease,backgr
               <th class="book-group" colspan="3" data-book="DK"><span class="book-dot" style="background:#53c531"></span>DraftKings</th>
               <th class="book-group" colspan="3" data-book="FD"><span class="book-dot" style="background:#1493ff"></span>FanDuel</th>
               <th class="book-group" colspan="3" data-book="MGM"><span class="book-dot" style="background:#b4975a"></span>BetMGM</th>
-              <th class="book-group" colspan="3" data-book="RIV"><span class="book-dot" style="background:#0a3d91"></span>BetRivers</th>
+              <th class="book-group" colspan="3" data-book="B365"><span class="book-dot" style="background:#20c05c"></span>bet365</th>
               <th class="book-group" colspan="3" data-book="CZR"><span class="book-dot" style="background:#c9a227"></span>Caesars</th>
               <th class="book-group" colspan="3" data-book="HR"><span class="book-dot" style="background:#c8102e"></span>Hard Rock</th>
             </tr>
@@ -596,7 +596,7 @@ th.so-sortable{cursor:pointer;user-select:none;transition:color .16s ease,backgr
               <th class="so-sortable" tabindex="0" data-sort-key="book:DK:line" data-book="DK">K</th><th class="so-sortable" tabindex="0" data-sort-key="book:DK:under" data-book="DK">U</th><th class="so-sortable" tabindex="0" data-sort-key="book:DK:over" data-book="DK">O</th>
               <th class="so-sortable" tabindex="0" data-sort-key="book:FD:line" data-book="FD">K</th><th class="so-sortable" tabindex="0" data-sort-key="book:FD:under" data-book="FD">U</th><th class="so-sortable" tabindex="0" data-sort-key="book:FD:over" data-book="FD">O</th>
               <th class="so-sortable" tabindex="0" data-sort-key="book:MGM:line" data-book="MGM">K</th><th class="so-sortable" tabindex="0" data-sort-key="book:MGM:under" data-book="MGM">U</th><th class="so-sortable" tabindex="0" data-sort-key="book:MGM:over" data-book="MGM">O</th>
-              <th class="so-sortable" tabindex="0" data-sort-key="book:RIV:line" data-book="RIV">K</th><th class="so-sortable" tabindex="0" data-sort-key="book:RIV:under" data-book="RIV">U</th><th class="so-sortable" tabindex="0" data-sort-key="book:RIV:over" data-book="RIV">O</th>
+              <th class="so-sortable" tabindex="0" data-sort-key="book:B365:line" data-book="B365">K</th><th class="so-sortable" tabindex="0" data-sort-key="book:B365:under" data-book="B365">U</th><th class="so-sortable" tabindex="0" data-sort-key="book:B365:over" data-book="B365">O</th>
               <th class="so-sortable" tabindex="0" data-sort-key="book:CZR:line" data-book="CZR">K</th><th class="so-sortable" tabindex="0" data-sort-key="book:CZR:under" data-book="CZR">U</th><th class="so-sortable" tabindex="0" data-sort-key="book:CZR:over" data-book="CZR">O</th>
               <th class="so-sortable" tabindex="0" data-sort-key="book:HR:line" data-book="HR">K</th><th class="so-sortable" tabindex="0" data-sort-key="book:HR:under" data-book="HR">U</th><th class="so-sortable" tabindex="0" data-sort-key="book:HR:over" data-book="HR">O</th>
             </tr>
@@ -650,213 +650,28 @@ th.so-sortable{cursor:pointer;user-select:none;transition:color .16s ease,backgr
 /* =====================================================================
    PROPS_DATA — this is the only block you need to touch to refresh odds.
    Feed me a new screenshot / export and I will regenerate this array.
-   Missing book quotes = null (renders as a dash, e.g. Kyle Bradish RIV/CZR/etc).
+   Missing book quotes = null (renders as a dash, e.g. Kyle Bradish B365/CZR/etc).
    Format per book: [line, underOdds, overOdds]  (American odds)
 ===================================================================== */
 const BOOKS = [
   {id:'DK',  name:'DraftKings', color:'#53c531'},
   {id:'FD',  name:'FanDuel',    color:'#1493ff'},
   {id:'MGM', name:'BetMGM',     color:'#b4975a'},
-  {id:'RIV', name:'BetRivers',  color:'#0a3d91'},
+  {id:'B365',name:'bet365',      color:'#20c05c'},
   {id:'CZR', name:'Caesars',    color:'#c9a227'},
   {id:'HR',  name:'Hard Rock',  color:'#c8102e'}
 ];
 
 const PROPS_DATA = [
   {
-    "name": "Jacob Misiorowski",
-    "team": "MIL",
-    "opp": "ATL",
-    "books": {
-      "DK": [
-        9.5,
-        -143,
-        112
-      ],
-      "FD": [
-        9.5,
-        -142,
-        112
-      ],
-      "MGM": [
-        9.5,
-        -150,
-        110
-      ],
-      "RIV": [
-        9.5,
-        null,
-        null
-      ],
-      "CZR": [
-        8.5,
-        -132,
-        110
-      ],
-      "HR": [
-        9.5,
-        -145,
-        110
-      ]
-    }
-  },
-  {
-    "name": "Jesus Luzardo",
-    "team": "PHI",
-    "opp": "STL",
-    "books": {
-      "DK": [
-        7.5,
-        -131,
-        103
-      ],
-      "FD": [
-        7.5,
-        -146,
-        114
-      ],
-      "MGM": [
-        7.5,
-        -150,
-        110
-      ],
-      "RIV": [
-        6.5,
-        120,
-        -162
-      ],
-      "CZR": [
-        7,
-        -131,
-        109
-      ],
-      "HR": [
-        7.5,
-        -135,
-        105
-      ]
-    }
-  },
-  {
-    "name": "Chris Sale",
-    "team": "ATL",
-    "opp": "@MIL",
-    "books": {
-      "DK": [
-        7.5,
-        -109,
-        -117
-      ],
-      "FD": [
-        7.5,
-        -111,
-        -115
-      ],
-      "MGM": [
-        7.5,
-        -115,
-        -115
-      ],
-      "RIV": [
-        7.5,
-        -118,
-        -113
-      ],
-      "CZR": [
-        7.5,
-        -106,
-        -113
-      ],
-      "HR": [
-        7.5,
-        -115,
-        -115
-      ]
-    }
-  },
-  {
-    "name": "Yoshinobu Yamamoto",
-    "team": "LAD",
-    "opp": "PIT",
-    "books": {
-      "DK": [
-        7.5,
-        -153,
-        124
-      ],
-      "FD": [
-        6.5,
-        124,
-        -160
-      ],
-      "MGM": [
-        7.5,
-        -140,
-        105
-      ],
-      "RIV": [
-        7.5,
-        -143,
-        107
-      ],
-      "CZR": [
-        7,
-        -138,
-        115
-      ],
-      "HR": [
-        7.5,
-        -155,
-        120
-      ]
-    }
-  },
-  {
-    "name": "Sean Burke",
-    "team": "CWS",
-    "opp": "NYM",
+    "name": "Cade Cavalli",
+    "team": "WSH",
+    "opp": "COL",
     "books": {
       "DK": [
         6.5,
-        -136,
-        107
-      ],
-      "FD": [
-        6.5,
-        -156,
-        122
-      ],
-      "MGM": [
-        5.5,
-        110,
-        -150
-      ],
-      "RIV": [
-        6.5,
-        null,
-        125
-      ],
-      "CZR": [
-        6,
-        -142,
-        118
-      ],
-      "HR": [
-        6.5,
-        -155,
-        120
-      ]
-    }
-  },
-  {
-    "name": "Reid Detmers",
-    "team": "LAA",
-    "opp": "@TEX",
-    "books": {
-      "DK": [
-        6.5,
-        -125,
-        -101
+        -123,
+        -104
       ],
       "FD": [
         6.5,
@@ -868,217 +683,402 @@ const PROPS_DATA = [
         -120,
         -110
       ],
-      "RIV": [
-        6.5,
-        -132,
-        100
-      ],
       "CZR": [
         6.5,
-        -120,
-        100
+        null,
+        -107
       ],
       "HR": [
         6.5,
         -125,
         -105
+      ],
+      "B365": [
+        6.5,
+        null,
+        -105
       ]
     }
   },
   {
-    "name": "MacKenzie Gore",
-    "team": "TEX",
+    "name": "Parker Messick",
+    "team": "CLE",
     "opp": "LAA",
     "books": {
       "DK": [
         6.5,
-        -110,
-        -116
+        120,
+        -154
       ],
       "FD": [
         6.5,
-        -106,
-        -120
+        122,
+        -156
       ],
       "MGM": [
-        6.5,
-        -105,
-        -130
-      ],
-      "RIV": [
-        6.5,
-        -105,
-        -127
+        7.5,
+        -150,
+        110
       ],
       "CZR": [
-        6.5,
-        101,
-        -121
-      ],
-      "HR": [
-        6.5,
-        -110,
-        -120
-      ]
-    }
-  },
-  {
-    "name": "Sean Manaea",
-    "team": "NYM",
-    "opp": "@CWS",
-    "books": {
-      "DK": [
-        5.5,
-        114,
-        -145
-      ],
-      "FD": [
-        5.5,
-        104,
-        -132
-      ],
-      "MGM": [
-        6.5,
-        -175,
-        130
-      ],
-      "RIV": [
         6.5,
         null,
-        120
-      ],
-      "CZR": [
-        6,
-        114,
-        -137
+        -157
       ],
       "HR": [
-        5.5,
-        105,
-        -135
+        7.5,
+        -150,
+        115
+      ],
+      "B365": [
+        6.5,
+        null,
+        -165
       ]
     }
   },
   {
-    "name": "Cam Schlittler",
-    "team": "NYY",
-    "opp": "TOR",
+    "name": "Zack Wheeler",
+    "team": "PHI",
+    "opp": "SEA",
     "books": {
       "DK": [
         6.5,
-        -108,
+        123,
+        -157
+      ],
+      "FD": [
+        7.5,
+        -150,
+        118
+      ],
+      "MGM": [
+        7.5,
+        -150,
+        115
+      ],
+      "CZR": [
+        7.5,
+        null,
+        115
+      ],
+      "HR": [
+        7.5,
+        -150,
+        115
+      ],
+      "B365": [
+        6.5,
+        null,
+        -160
+      ]
+    }
+  },
+  {
+    "name": "Chase Burns",
+    "team": "CIN",
+    "opp": "SF",
+    "books": {
+      "DK": [
+        6.5,
+        -109,
         -117
       ],
       "FD": [
         6.5,
-        -115,
-        -111
+        -122,
+        -104
       ],
       "MGM": [
+        6.5,
+        -115,
+        -115
+      ],
+      "CZR": [
+        6.5,
+        null,
+        -112
+      ],
+      "HR": [
         6.5,
         -120,
         -110
       ],
-      "RIV": [
+      "B365": [
         6.5,
-        -114,
-        -117
-      ],
-      "CZR": [
-        6.5,
-        -108,
-        -111
-      ],
-      "HR": [
-        6.5,
-        -115,
-        -115
+        null,
+        -110
       ]
     }
   },
   {
-    "name": "Noah Cameron",
-    "team": "KC",
-    "opp": "DET",
+    "name": "Logan Gilbert",
+    "team": "SEA",
+    "opp": "PHI",
     "books": {
       "DK": [
-        5.5,
-        -132,
-        105
+        6.5,
+        -150,
+        119
       ],
       "FD": [
         5.5,
-        -136,
-        106
+        120,
+        -154
       ],
       "MGM": [
-        5.5,
+        6.5,
         -140,
         105
       ],
-      "RIV": [
-        5.5,
-        -127,
-        -105
-      ],
       "CZR": [
         5.5,
-        -126,
-        105
+        null,
+        -159
       ],
       "HR": [
+        6.5,
+        -160,
+        120
+      ],
+      "B365": [
         5.5,
-        -135,
-        105
+        null,
+        -160
       ]
     }
   },
   {
-    "name": "Joey Cantillo",
-    "team": "CLE",
-    "opp": "@COL",
+    "name": "Braxton Ashcraft",
+    "team": "PIT",
+    "opp": "SD",
     "books": {
       "DK": [
         5.5,
-        -103,
-        -123
+        -155,
+        121
       ],
       "FD": [
-        5.5,
-        -106,
-        -120
+        4.5,
+        134,
+        -172
       ],
       "MGM": [
         5.5,
-        -105,
-        -130
-      ],
-      "RIV": [
-        5.5,
-        -104,
-        -129
+        -150,
+        115
       ],
       "CZR": [
         5.5,
-        100,
-        -120
+        null,
+        121
       ],
       "HR": [
         5.5,
-        -105,
-        -125
+        -160,
+        120
+      ],
+      "B365": [
+        4.5,
+        null,
+        -180
       ]
     }
   },
   {
-    "name": "J.T. Ginn",
-    "team": "ATH",
-    "opp": "@HOU",
+    "name": "Drew Rasmussen",
+    "team": "TB",
+    "opp": "DET",
     "books": {
       "DK": [
         4.5,
+        116,
+        -148
+      ],
+      "FD": [
+        4.5,
+        120,
+        -154
+      ],
+      "MGM": [
+        5.5,
+        -165,
+        125
+      ],
+      "CZR": [
+        4.5,
+        null,
+        -150
+      ],
+      "HR": [
+        4.5,
+        115,
+        -150
+      ],
+      "B365": [
+        4.5,
+        null,
+        -140
+      ]
+    }
+  },
+  {
+    "name": "Robbie Ray",
+    "team": "SD",
+    "opp": "PIT",
+    "books": {
+      "DK": [
+        5.5,
         -103,
         -124
+      ],
+      "FD": [
+        5.5,
+        -104,
+        -122
+      ],
+      "MGM": [
+        5.5,
+        -110,
+        -120
+      ],
+      "CZR": [
+        5.5,
+        null,
+        -121
+      ],
+      "HR": [
+        5.5,
+        -110,
+        -120
+      ],
+      "B365": [
+        5.5,
+        null,
+        -120
+      ]
+    }
+  },
+  {
+    "name": "Ranger Suarez",
+    "team": "BOS",
+    "opp": "MIA",
+    "books": {
+      "DK": [
+        4.5,
+        126,
+        -161
+      ],
+      "FD": [
+        4.5,
+        118,
+        -150
+      ],
+      "MGM": [
+        5.5,
+        -160,
+        120
+      ],
+      "CZR": [
+        4.5,
+        null,
+        -164
+      ],
+      "HR": [
+        5.5,
+        -160,
+        120
+      ],
+      "B365": [
+        4.5,
+        null,
+        -190
+      ]
+    }
+  },
+  {
+    "name": "Sandy Alcantara",
+    "team": "MIA",
+    "opp": "BOS",
+    "books": {
+      "DK": [
+        4.5,
+        -110,
+        -114
+      ],
+      "FD": [
+        4.5,
+        -108,
+        -118
+      ],
+      "MGM": [
+        4.5,
+        -115,
+        -115
+      ],
+      "CZR": [
+        4.5,
+        null,
+        -117
+      ],
+      "HR": [
+        4.5,
+        -110,
+        -120
+      ],
+      "B365": [
+        4.5,
+        null,
+        -120
+      ]
+    }
+  },
+  {
+    "name": "Ryan Feltner",
+    "team": "COL",
+    "opp": "WSH",
+    "books": {
+      "DK": [
+        3.5,
+        104,
+        -132
+      ],
+      "FD": [
+        3.5,
+        110,
+        -140
+      ],
+      "MGM": [
+        3.5,
+        -110,
+        -120
+      ],
+      "CZR": [
+        3.5,
+        null,
+        -128
+      ],
+      "HR": [
+        3.5,
+        105,
+        -135
+      ],
+      "B365": [
+        3.5,
+        null,
+        -150
+      ]
+    }
+  },
+  {
+    "name": "Kevin Gausman",
+    "team": "CHC",
+    "opp": "ARI",
+    "books": {
+      "DK": [
+        4.5,
+        -102,
+        -125
       ],
       "FD": [
         4.5,
@@ -1086,368 +1086,72 @@ const PROPS_DATA = [
         -125
       ],
       "MGM": [
-        5.5,
-        -185,
-        135
-      ],
-      "RIV": [
         4.5,
-        null,
-        -139
+        -105,
+        -125
       ],
       "CZR": [
-        5,
-        108,
-        -130
+        4.5,
+        null,
+        -125
       ],
       "HR": [
         4.5,
         -105,
         -125
-      ]
-    }
-  },
-  {
-    "name": "Sonny Gray",
-    "team": "BOS",
-    "opp": "SF",
-    "books": {
-      "DK": [
-        5.5,
-        -121,
-        -105
       ],
-      "FD": [
-        5.5,
-        -122,
-        -104
-      ],
-      "MGM": [
-        5.5,
-        -115,
-        -115
-      ],
-      "RIV": [
-        5.5,
-        -129,
-        -105
-      ],
-      "CZR": [
-        5.5,
-        -110,
-        -109
-      ],
-      "HR": [
-        5.5,
-        -120,
-        -110
-      ]
-    }
-  },
-  {
-    "name": "Emerson Hancock",
-    "team": "SEA",
-    "opp": "CHC",
-    "books": {
-      "DK": [
+      "B365": [
         4.5,
-        126,
-        -159
-      ],
-      "FD": [
-        4.5,
-        124,
-        -160
-      ],
-      "MGM": [
-        5.5,
-        -185,
-        125
-      ],
-      "RIV": [
-        4.5,
-        117,
-        -157
-      ],
-      "CZR": [
-        5,
-        130,
-        -157
-      ],
-      "HR": [
-        4.5,
-        120,
-        -160
-      ]
-    }
-  },
-  {
-    "name": "Freddy Peralta",
-    "team": "TB",
-    "opp": "@BAL",
-    "books": {
-      "DK": [
-        5.5,
-        -142,
-        111
-      ],
-      "FD": [
-        5.5,
-        -142,
-        112
-      ],
-      "MGM": [
-        5.5,
-        -160,
-        120
-      ],
-      "RIV": [
-        5.5,
         null,
-        107
-      ],
-      "CZR": [
-        5.5,
-        -138,
-        115
-      ],
-      "HR": [
-        5.5,
-        -150,
-        115
+        -150
       ]
     }
   },
   {
-    "name": "Connor Prielipp",
-    "team": "MIN",
-    "opp": "@SD",
-    "books": {
-      "DK": [
-        5.5,
-        -154,
-        121
-      ],
-      "FD": [
-        5.5,
-        -162,
-        126
-      ],
-      "MGM": [
-        5.5,
-        -140,
-        105
-      ],
-      "RIV": [
-        5.5,
-        -152,
-        114
-      ],
-      "CZR": [
-        5,
-        -139,
-        116
-      ],
-      "HR": [
-        5.5,
-        -160,
-        120
-      ]
-    }
-  },
-  {
-    "name": "Eduardo Rodriguez",
-    "team": "ARI",
-    "opp": "CIN",
-    "books": {
-      "DK": [
-        5.5,
-        -145,
-        114
-      ],
-      "FD": [
-        5.5,
-        -148,
-        116
-      ],
-      "MGM": [
-        5.5,
-        -150,
-        110
-      ],
-      "RIV": [
-        5.5,
-        -136,
-        102
-      ],
-      "CZR": [
-        5.5,
-        -129,
-        108
-      ],
-      "HR": [
-        5.5,
-        -145,
-        110
-      ]
-    }
-  },
-  {
-    "name": "Trevor Rogers",
-    "team": "BAL",
-    "opp": "TB",
+    "name": "George Klassen",
+    "team": "LAA",
+    "opp": "CLE",
     "books": {
       "DK": [
         4.5,
-        -113,
-        -112
+        -153,
+        122
       ],
       "FD": [
         4.5,
-        -115,
-        -111
-      ],
-      "MGM": [
-        4.5,
-        -120,
-        -110
-      ],
-      "RIV": [
-        5.5,
-        null,
+        -170,
         132
       ],
+      "MGM": [
+        3.5,
+        125,
+        -155
+      ],
       "CZR": [
         4.5,
-        -105,
-        -114
+        null,
+        125
       ],
       "HR": [
         4.5,
-        -115,
-        -115
+        -165,
+        125
+      ],
+      "B365": [
+        4.5,
+        null,
+        120
       ]
     }
   },
   {
-    "name": "Hayden Wesneski",
-    "team": "HOU",
+    "name": "Zebby Matthews",
+    "team": "MIN",
     "opp": "ATH",
     "books": {
       "DK": [
         4.5,
-        -105,
-        -121
-      ],
-      "FD": [
-        4.5,
-        -106,
-        -120
-      ],
-      "MGM": [
-        4.5,
-        100,
-        -135
-      ],
-      "RIV": [
-        5.5,
-        null,
-        120
-      ],
-      "CZR": [
-        4.5,
-        117,
-        -141
-      ],
-      "HR": [
-        4.5,
-        -110,
-        -120
-      ]
-    }
-  },
-  {
-    "name": "Matthew Boyd",
-    "team": "CHC",
-    "opp": "@SEA",
-    "books": {
-      "DK": [
-        4.5,
-        106,
-        -136
-      ],
-      "FD": [
-        4.5,
-        106,
-        -136
-      ],
-      "MGM": [
-        4.5,
-        100,
-        -135
-      ],
-      "RIV": [
-        4.5,
-        108,
-        -143
-      ],
-      "CZR": [
-        4.5,
-        114,
-        -137
-      ],
-      "HR": [
-        4.5,
-        105,
-        -135
-      ]
-    }
-  },
-  {
-    "name": "Bubba Chandler",
-    "team": "PIT",
-    "opp": "@LAD",
-    "books": {
-      "DK": [
-        4.5,
-        -169,
-        132
-      ],
-      "FD": [
-        4.5,
-        -150,
-        118
-      ],
-      "MGM": [
-        4.5,
-        -150,
-        110
-      ],
-      "RIV": [
-        4.5,
-        -143,
-        108
-      ],
-      "CZR": [
-        4.5,
-        -142,
-        118
-      ],
-      "HR": [
-        4.5,
-        -155,
-        120
-      ]
-    }
-  },
-  {
-    "name": "Ryan Gusto",
-    "team": "MIA",
-    "opp": "WSH",
-    "books": {
-      "DK": [
-        4.5,
-        -152,
+        -148,
         119
       ],
       "FD": [
@@ -1456,142 +1160,216 @@ const PROPS_DATA = [
         116
       ],
       "MGM": [
-        3.5,
-        135,
-        -185
-      ],
-      "RIV": [
         4.5,
         -150,
-        112
+        110
       ],
       "CZR": [
         4.5,
-        -137,
-        114
+        null,
+        115
       ],
       "HR": [
         4.5,
         -150,
         115
+      ],
+      "B365": [
+        4.5,
+        null,
+        110
       ]
     }
   },
   {
-    "name": "Troy Melton",
-    "team": "DET",
-    "opp": "@KC",
+    "name": "Kumar Rocker",
+    "team": "TEX",
+    "opp": "CWS",
     "books": {
       "DK": [
         4.5,
-        -120,
-        -107
+        104,
+        -132
       ],
       "FD": [
         4.5,
-        -125,
-        -102
+        100,
+        -128
       ],
       "MGM": [
         4.5,
-        -115,
-        -115
-      ],
-      "RIV": [
-        4.5,
-        -125,
-        -106
+        105,
+        -140
       ],
       "CZR": [
         4.5,
-        -107,
-        -112
+        null,
+        -130
       ],
       "HR": [
         4.5,
-        -120,
-        -110
+        100,
+        -130
+      ],
+      "B365": [
+        4.5,
+        null,
+        -135
       ]
     }
   },
   {
-    "name": "Logan Webb",
-    "team": "SF",
-    "opp": "@BOS",
-    "books": {
-      "DK": [
-        4.5,
-        -108,
-        -118
-      ],
-      "FD": [
-        4.5,
-        -111,
-        -115
-      ],
-      "MGM": [
-        4.5,
-        -120,
-        -110
-      ],
-      "RIV": [
-        4.5,
-        -110,
-        -120
-      ],
-      "CZR": [
-        4.5,
-        -102,
-        -117
-      ],
-      "HR": [
-        4.5,
-        -115,
-        -115
-      ]
-    }
-  },
-  {
-    "name": "Tanner Gordon",
-    "team": "COL",
-    "opp": "CLE",
+    "name": "Jose Urquidy",
+    "team": "CWS",
+    "opp": "TEX",
     "books": {
       "DK": [
         3.5,
-        -171,
-        137
+        126,
+        -161
       ],
       "FD": [
-        2.5,
-        138,
-        -178
+        3.5,
+        122,
+        -156
       ],
       "MGM": [
-        2.5,
+        3.5,
+        100,
+        -135
+      ],
+      "CZR": [
+        3.5,
+        null,
+        -145
+      ],
+      "HR": [
+        3.5,
+        120,
+        -155
+      ],
+      "B365": [
+        3.5,
+        null,
+        -170
+      ]
+    }
+  },
+  {
+    "name": "Framber Valdez",
+    "team": "DET",
+    "opp": "TB",
+    "books": {
+      "DK": [
+        3.5,
+        121,
+        -154
+      ],
+      "FD": [
+        3.5,
+        122,
+        -156
+      ],
+      "MGM": [
+        3.5,
+        120,
+        -160
+      ],
+      "CZR": [
+        4.5,
+        null,
+        115
+      ],
+      "HR": [
+        3.5,
         125,
         -165
       ],
-      "RIV": [
-        2.5,
-        128,
-        -175
-      ],
-      "CZR": [
-        3,
-        -159,
+      "B365": [
+        4.5,
+        null,
         132
-      ],
-      "HR": [
-        3.5,
-        -180,
-        135
       ]
     }
   },
   {
-    "name": "Nick Lodolo",
-    "team": "CIN",
-    "opp": "@ARI",
+    "name": "Carson Whisenhunt",
+    "team": "SF",
+    "opp": "CIN",
+    "books": {
+      "DK": [
+        null,
+        null,
+        null
+      ],
+      "FD": [
+        null,
+        null,
+        null
+      ],
+      "MGM": [
+        4.5,
+        -160,
+        120
+      ],
+      "CZR": [
+        null,
+        null,
+        null
+      ],
+      "HR": [
+        null,
+        null,
+        null
+      ],
+      "B365": [
+        null,
+        null,
+        null
+      ]
+    }
+  },
+  {
+    "name": "Merrill Kelly",
+    "team": "ARI",
+    "opp": "CHC",
+    "books": {
+      "DK": [
+        3.5,
+        118,
+        -148
+      ],
+      "FD": [
+        3.5,
+        122,
+        -156
+      ],
+      "MGM": [
+        3.5,
+        110,
+        -150
+      ],
+      "CZR": [
+        3.5,
+        null,
+        -154
+      ],
+      "HR": [
+        3.5,
+        120,
+        -155
+      ],
+      "B365": [
+        3.5,
+        null,
+        -155
+      ]
+    }
+  },
+  {
+    "name": "Jeffrey Springs",
+    "team": "ATH",
+    "opp": "MIN",
     "books": {
       "DK": [
         3.5,
@@ -1600,91 +1378,29 @@ const PROPS_DATA = [
       ],
       "FD": [
         3.5,
-        -102,
-        -125
+        102,
+        -130
       ],
       "MGM": [
         3.5,
         105,
         -140
       ],
-      "RIV": [
-        3.5,
-        -103,
-        -130
-      ],
       "CZR": [
         3.5,
-        113,
-        -136
+        null,
+        -128
       ],
       "HR": [
         3.5,
         100,
         -130
-      ]
-    }
-  },
-  {
-    "name": "Brad Lord",
-    "team": "WSH",
-    "opp": "@MIA",
-    "books": {
-      "DK": [
-        2.5,
-        -114,
-        -112
       ],
-      "FD": [
-        2.5,
-        -122,
-        -104
-      ],
-      "MGM": [
-        2.5,
-        -120,
-        -110
-      ],
-      "RIV": null,
-      "CZR": [
-        2.5,
-        -107,
-        -112
-      ],
-      "HR": [
-        2.5,
-        -120,
-        -110
-      ]
-    }
-  },
-  {
-    "name": "Randy Vasquez",
-    "team": "SD",
-    "opp": "MIN",
-    "books": {
-      "DK": [
-        2.5,
-        122,
-        -156
-      ],
-      "FD": null,
-      "MGM": [
-        2.5,
-        120,
-        -160
-      ],
-      "RIV": [
-        2.5,
+      "B365": [
+        3.5,
         null,
-        null
-      ],
-      "CZR": [
-        2.5,
-        null,
-        null
-      ],
-      "HR": null
+        -130
+      ]
     }
   }
 ];
@@ -1799,7 +1515,7 @@ function mode(arr){
 
 // enrich each player with computed consensus / best price / steam data
 const ROOKIES = new Set([]);
-const LIVE_NOW = new Set([]);
+const LIVE_NOW = new Set(['Zack Wheeler','Parker Messick']);
 const NOTE_POOL = ['Short-hook risk on low pitch count','Opponent lineup missing 2 regulars','Extra rest since last start','Bullpen banged up behind him','Coming off a rain-shortened outing','Facing this lineup for the first time this year'];
 const PARKS = ['Hitter-friendly park','Pitcher-friendly park','Neutral park'];
 const WEATHERS = ['Dome, climate controlled','Wind in 8mph, 71°F','Clear, 82°F, calm','Wind out 6mph, 76°F','Overcast, 68°F'];
@@ -2608,5 +2324,6 @@ const arsenal=document.createElement('div');arsenal.className='so-arsenal';arsen
  .so-pitcher-stage{height:326px!important}.pitcher-svg{top:6px!important;width:288px!important;height:321px!important}.k-scoreboard{display:none!important}.slip-fab{right:12px!important;bottom:max(12px,env(safe-area-inset-bottom))!important;padding:11px 17px!important;font-size:12px!important}.legend{padding-bottom:5px!important;overscroll-behavior-x:contain!important}
 }
 </style>
+<style id="so-strikeout-mobile-hero-frame-20260824">@media(max-width:700px){html body .hero .so-pitcher-stage{width:100%!important;height:261px!important;margin-top:14px!important}html body .hero .so-pitcher-stage .pitcher-svg{left:50%!important;top:4px!important;width:230px!important;height:257px!important;transform:translateX(-50%)!important;transform-origin:center top!important}}</style>
 </body>
 </html>

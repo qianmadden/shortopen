@@ -308,6 +308,10 @@ td.val{font-family:'DM Mono',monospace;font-weight:700;color:var(--text2);white-
   .mv-podium{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
   .podium-card{flex:0 0 78%;scroll-snap-align:start}
 }
+
+/* 50-player presentation board: twenty rows visible, remaining thirty scroll inside the panel. */
+#topList{max-height:1040px;overflow-y:auto;overscroll-behavior:contain;scrollbar-color:rgba(244,185,66,.5) rgba(255,255,255,.04);padding-right:10px}.mv-row{min-height:50px}.mv-row:nth-child(-n+3){background:linear-gradient(90deg,rgba(244,185,66,.045),transparent)}
+@media(max-width:760px){#topList{max-height:860px}.mv-podium{grid-template-columns:1fr}.podium-card{min-height:118px}.mv-row{grid-template-columns:24px minmax(0,1fr) auto;gap:8px}.mv-name{font-size:.78rem}.mv-team{max-width:100px;overflow:hidden;text-overflow:ellipsis}}
 </style>
 </head>
 <body>
@@ -354,29 +358,29 @@ td.val{font-family:'DM Mono',monospace;font-weight:700;color:var(--text2);white-
   <div class="stats" id="statStrip"></div>
 
   <section class="panel">
-    <div class="ph"><div class="t">Most Valuable Players <span class="note" style="margin-left:8px" id="mvNote">Top 50 &#183; global</span></div></div>
+    <div class="ph"><div class="t">Most Valuable Players <span class="note" style="margin-left:8px" id="mvNote">Top 20 &#183; global · scroll the board</span></div></div>
     <div class="mv-podium" id="mvPodium" aria-label="Top three player valuations"></div>
     <div class="mv-list" id="topList"></div>
   </section>
 
   <section class="panel">
     <div class="ph">
-      <div class="t"><b>Potential Transfer Targets</b></div>
-      <div class="note">High earners at clubs outside the traditional superclub bracket &#8212; the kind of value profile that draws bids from the very top</div>
+      <div class="t"><b>Transfer Radar</b></div>
+      <div class="note">Move-ready value profiles outside the traditional superclub bracket</div>
     </div>
     <div class="card-grid" id="targetsGrid"></div>
   </section>
 
   <section class="panel">
     <div class="ph">
-      <div class="t"><b>Hidden Gems</b></div>
-      <div class="note">Lower-valued, attack-leaning picks worth keeping an eye on</div>
+      <div class="t"><b>Breakout Watch</b></div>
+      <div class="note">Lower-valued, attack-leaning profiles with room to reprice</div>
     </div>
     <div class="card-grid" id="gemsGrid"></div>
   </section>
 
   <section class="panel">
-    <div class="ph"><div class="t"><b>All Players</b></div><div class="note" id="tableNote"></div></div>
+    <div class="ph"><div class="t"><b>Global Player Finder</b></div><div class="note" id="tableNote"></div></div>
     <div class="controls" id="filterBar">
       <input type="search" id="searchInput" placeholder="Search player&#8230;">
       <select id="teamSelect"><option value="">All clubs</option></select>
@@ -570,13 +574,17 @@ function renderStats(){
   PLAYERS.forEach(function(p){ byTeam[p.team] = (byTeam[p.team]||0) + p.value; });
   var teams = Object.keys(byTeam);
   var priciest = teams.reduce(function(a,b){ return byTeam[b] > byTeam[a] ? b : a; }, teams[0]);
-  var realCount = PLAYERS.filter(function(p){return p.source==='real';}).length;
+  var sortedValues = PLAYERS.map(function(p){return p.value;}).sort(function(a,b){return a-b;});
+  var median = sortedValues[Math.floor(sortedValues.length/2)];
+  var byPos = {};
+  PLAYERS.forEach(function(p){byPos[p.pos]=(byPos[p.pos]||0)+1;});
+  var deepestPos = Object.keys(byPos).sort(function(a,b){return byPos[b]-byPos[a];})[0];
 
   var stats = [
-    {lbl:'Tracked Players', val: totalPlayers, sub: teams.length + ' clubs'},
-    {lbl:'Total Market Value', val: SYM[state.currency] + Math.round(convert(totalValue)).toLocaleString() + 'm', sub: 'across full pool'},
     {lbl:'Priciest Squad', val: priciest, sub: SYM[state.currency] + convert(byTeam[priciest]).toFixed(1) + 'm combined'},
-    {lbl:'Sourced Valuations', val: realCount + ' / ' + totalPlayers, sub: 'remainder modeled'}
+    {lbl:'Market Median', val: SYM[state.currency] + convert(median).toFixed(1) + 'm', sub: 'middle valuation in the pool'},
+    {lbl:'Deepest Position', val: deepestPos, sub: byPos[deepestPos] + ' players tracked'},
+    {lbl:'Club Reach', val: teams.length, sub: 'global squads represented'}
   ];
   var html = stats.map(function(s){
     return '<div class="stat"><div class="lbl">'+esc(s.lbl)+'</div><div class="val">'+esc(String(s.val))+'</div><div class="sub">'+esc(s.sub)+'</div></div>';
@@ -584,7 +592,7 @@ function renderStats(){
   document.getElementById('statStrip').innerHTML = html;
 }
 
-/* ---------- most valuable: leaderboard bars (top 50, global) ---------- */
+/* ---------- most valuable: contained leaderboard (top 50, 20-row viewport) ---------- */
 function renderLeaderboard(){
   var top = PLAYERS.slice().sort(function(a,b){return b.value-a.value;}).slice(0,50);
   var maxVal = top[0].value;
@@ -914,6 +922,21 @@ html.so-perf-scrolling .so-perf-anim-target::after,
  .card-grid{display:flex!important;grid-template-columns:none!important;overflow-x:auto!important;gap:10px!important;padding:12px!important;scroll-snap-type:x proximity!important;-webkit-overflow-scrolling:touch!important}.card-grid>*{flex:0 0 min(80vw,310px)!important;scroll-snap-align:start!important}
  .controls{scroll-snap-type:x proximity!important}.controls input{flex-basis:76vw!important}.table table{min-width:900px!important;font-size:8.5px!important}.table th,.table td{padding:7px 6px!important}.ph{display:block!important}.ph .note{display:block!important;margin-top:5px!important;text-align:left!important}
 }
+</style>
+<style id="so-pl-transfer-presentation-20260824">
+/* A bounded, editorial transfer desk: podium first, then a contained Top 20 board. */
+#topList{max-height:1160px;overflow-y:auto;overscroll-behavior:contain;padding:8px 16px 16px;scrollbar-color:rgba(244,185,66,.36) rgba(255,255,255,.035);scrollbar-width:thin}
+#topList::-webkit-scrollbar,#tableWrap::-webkit-scrollbar{width:8px;height:8px}#topList::-webkit-scrollbar-track,#tableWrap::-webkit-scrollbar-track{background:rgba(255,255,255,.025)}#topList::-webkit-scrollbar-thumb,#tableWrap::-webkit-scrollbar-thumb{border-radius:99px;background:linear-gradient(var(--gold),#9d7425)}
+.mv-row{margin:4px 0;padding:12px 11px;border:1px solid rgba(255,255,255,.055);border-radius:11px;background:linear-gradient(90deg,rgba(244,185,66,.035),rgba(255,255,255,.012));transition:border-color .18s ease,transform .18s ease}.mv-row:hover{transform:translateX(3px);border-color:rgba(244,185,66,.22);background:linear-gradient(90deg,rgba(244,185,66,.07),rgba(255,255,255,.018))}
+#targetsGrid,#gemsGrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+#targetsGrid .tm-card{position:relative;min-height:220px;padding:18px;border-color:rgba(87,167,255,.25);background:radial-gradient(circle at 100% 0,rgba(87,167,255,.17),transparent 40%),linear-gradient(150deg,#0b1722,#081018);overflow:hidden}
+#targetsGrid .tm-card:before{content:'TRANSFER RADAR';display:block;margin-bottom:18px;color:var(--blue);font:800 9px 'DM Mono',monospace;letter-spacing:.14em}
+#targetsGrid .tm-meter{height:8px;margin-top:16px;box-shadow:0 0 24px rgba(87,167,255,.12)}
+#gemsGrid .gem-card{position:relative;min-height:220px;padding:18px;border-color:rgba(34,217,126,.22);background:radial-gradient(circle at 90% 5%,rgba(34,217,126,.14),transparent 43%),linear-gradient(150deg,#0a1716,#081018);overflow:hidden}
+#gemsGrid .gem-card:after{content:'';position:absolute;right:-36px;bottom:-36px;width:110px;height:110px;border:1px solid rgba(34,217,126,.14);border-radius:50%;box-shadow:0 0 0 18px rgba(34,217,126,.025),0 0 0 36px rgba(34,217,126,.018);pointer-events:none}
+#tableWrap{max-height:520px;overflow:auto;overscroll-behavior:contain}#tableWrap thead{position:sticky;top:0;z-index:4;background:#0b141e;box-shadow:0 1px rgba(255,255,255,.09)}
+@media(max-width:900px){#targetsGrid,#gemsGrid{display:flex;overflow-x:auto;grid-template-columns:none;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}#targetsGrid>*,#gemsGrid>*{flex:0 0 min(78vw,330px);scroll-snap-align:start}}
+@media(max-width:700px){#topList{max-height:410px;padding:5px 10px 12px}.mv-row{grid-template-columns:24px minmax(0,1fr) auto;gap:8px;padding:10px 8px}.mv-name{font-size:.76rem}.mv-team{max-width:105px;overflow:hidden;text-overflow:ellipsis}.mv-val{font-size:.78rem}#targetsGrid,#gemsGrid{padding:11px!important}#targetsGrid>*,#gemsGrid>*{flex-basis:min(82vw,305px)!important;min-height:205px}#tableWrap{max-height:450px}.mv-row:hover{transform:none}}
 </style>
 </body>
 </html>
