@@ -1033,12 +1033,67 @@ document.getElementById('filterAscending').addEventListener('change', renderBoar
 <script id="so-grade-depth-script">(function(){let scheduled=false;function enrich(){scheduled=false;const ui=document.querySelector('.dlx.open'),detail=document.getElementById('dlxDetail');if(!ui||!detail)return;if(!detail.querySelector('.lv-data-grid')){const minis=[...ui.querySelectorAll('.lv-row.active .lv-mini div')].slice(0,3);detail.querySelector('.lv-inspector-head')?.insertAdjacentHTML('afterend','<div class="lv-data-grid">'+minis.map(x=>'<div>'+x.innerHTML+'</div>').join('')+'<div><span>SIGNAL STACK</span><b>3+ layers</b></div><div><span>REVIEW</span><b>Weekly</b></div><div><span>STATUS</span><b>Live watch</b></div></div>')}if(!document.getElementById('lvStoryBoard')){const rows=[...ui.querySelectorAll('.lv-row')],ledger=[...ui.querySelectorAll('.lv-ledger-row')];const sec=document.createElement('section');sec.id='lvStoryBoard';sec.className='lv-storyboard';sec.innerHTML='<div class="lv-story-head"><span>STORYLINE DESK</span><h3>Current read and next checkpoint</h3></div><div class="lv-story-grid">'+rows.map((r,i)=>'<article><b>'+r.querySelector('.lv-name b').textContent+'</b><span>CURRENT SIGNAL</span><p>'+r.querySelector('.lv-summary').textContent+'</p><span>NEXT CHECK</span><p>'+(ledger[i]?.lastElementChild?.textContent||'Role, health and deployment update.')+'</p><span>RESEARCH USE</span><p>Reprice only after the signal clears its role and volume threshold.</p></article>').join('')+'</div>';ui.appendChild(sec)}}const mo=new MutationObserver(()=>{if(!scheduled){scheduled=true;(window.requestIdleCallback||setTimeout)(enrich,{timeout:300})}});mo.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class'],childList:true});document.addEventListener('click',()=>setTimeout(enrich,0));})();</script>
 <style id="so-gradebook-final-mobile-audit-20260821">
 @media(max-width:700px){
- html,body{width:100%!important;max-width:100%!important;overflow-x:hidden!important}.shell{width:100%!important;max-width:100%!important;padding:10px!important;gap:10px!important}
+ html,body{width:100%!important;max-width:100%!important;overflow-x:hidden!important}.shell{width:100%!important;max-width:100%!important;padding:10px!important;gap:10px!important;grid-template-columns:minmax(0,1fr)!important}.shell>.side-left,.shell>.main-col,.shell>.side-right{min-width:0!important;width:100%!important;max-width:100%!important}
+ /* Tab/pill sizing brought in line with the embed-nfl-draft.html mobile reference
+    (.mock-sort-btn etc: font-size .52rem/8.32px, padding 7px 10px). Every tab-like
+    control on this page (.subnav-tab, .subnav-pill, .ptab, .postab, .dlx-tab,
+    .dlx-back) was still rendering at its desktop size (10.5-11.5px font, 7-14px
+    padding) because none of them were ever targeted by a mobile override -- only
+    their container's overflow-x was handled. */
+ .subnav{padding:9px 12px!important}
+ .subnav-inner{gap:8px!important}
+ .subnav-tabs{display:flex!important;overflow-x:auto!important;flex-wrap:nowrap!important;gap:6px!important;margin-left:0!important;-webkit-overflow-scrolling:touch!important}
+ .subnav-eyebrow{font-size:8px!important;gap:6px!important}
+ .subnav-tab{flex:0 0 auto!important;font-size:.52rem!important;padding:7px 10px!important;white-space:nowrap!important}
+ .subnav-right{margin-left:0!important;flex-wrap:nowrap!important;overflow-x:auto!important;gap:6px!important;font-size:8px!important;-webkit-overflow-scrolling:touch!important}
+ .subnav-pill{flex:0 0 auto!important;font-size:8px!important;padding:6px 9px!important;white-space:nowrap!important}
+ .ptab{font-size:.52rem!important;padding:7px 10px!important}
+ .postab{font-size:.52rem!important;padding:7px 10px!important;min-width:0!important}
+ .dlx-tab,.dlx-back{font-size:.52rem!important;padding:7px 10px!important}
  .hero{display:block!important;min-height:0!important;padding:17px 14px!important;overflow:hidden!important;border-radius:18px!important}.hero-copy{width:100%!important;max-width:none!important}.hero h1{font-size:clamp(1.9rem,9vw,2.35rem)!important;line-height:1!important}.hero p{font-size:.73rem!important;line-height:1.5!important;max-width:100%!important}.hero-status{display:flex!important;overflow-x:auto!important;flex-wrap:nowrap!important;gap:7px!important}.hero-status>*{flex:0 0 auto!important}
- .pair-row,.tri-row,.lower-grid{grid-template-columns:minmax(0,1fr)!important}.panel,.side-card{min-width:0!important;padding:12px!important;overflow:hidden!important}.ov-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}.position-breakdown{overflow-x:auto!important}
- .panel-tabs,.board-tabs-scroll,.dlx-nav,.dlx-tabs{display:flex!important;max-width:100%!important;overflow-x:auto!important;flex-wrap:nowrap!important;gap:7px!important}.panel-tabs>*,.board-tabs-scroll>*,.dlx-nav>*,.dlx-tabs>*{flex:0 0 auto!important}.board-tabs-bar{display:block!important}.board-search{width:100%!important;max-width:100%!important;margin:10px 0 0!important}
+ .lower-grid{grid-template-columns:minmax(0,1fr)!important}.panel,.side-card{min-width:0!important;padding:12px!important;overflow:hidden!important}.ov-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}.position-breakdown{overflow-x:auto!important}
+ /* Large multi-panel rows (Overview/Breakdown, Movers/Spotlight/Position, Monitor/Deep Sleepers)
+    become a swipeable horizontal deck on mobile instead of three big stacked panels. */
+ .pair-row,.tri-row,.dual-row{display:flex!important;flex-wrap:nowrap!important;grid-template-columns:none!important;gap:10px!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scroll-padding-left:2px;padding-bottom:8px;margin-bottom:14px!important}
+ .pair-row>.panel,.tri-row>.panel,.dual-row>.panel{flex:0 0 86%!important;width:86%!important;scroll-snap-align:start;scroll-snap-stop:normal;margin:0!important}
+ .panel-tabs,.dlx-nav,.dlx-tabs{display:flex!important;max-width:100%!important;overflow-x:auto!important;flex-wrap:nowrap!important;gap:7px!important}.panel-tabs>*,.dlx-nav>*,.dlx-tabs>*{flex:0 0 auto!important}.board-tabs-bar{display:block!important}
+ .board-tabs-scroll{display:flex!important;flex-wrap:wrap!important;max-width:100%!important;overflow-x:visible!important;gap:7px!important}.board-tabs-scroll .postab{flex:0 0 auto!important}
+ .board-search{flex:1 1 100%!important;width:100%!important;max-width:100%!important;margin:6px 0 0!important;order:99}.board-search input{width:100%!important;box-sizing:border-box!important}
  .table-frame,.table-scroll{width:100%!important;max-width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}.maintable{width:max-content!important;min-width:860px!important;table-layout:fixed!important}
  .lv-hero,.lv-workspace{grid-template-columns:minmax(0,1fr)!important}.lv-hero{padding:14px!important}.lv-hero h2{font-size:1.75rem!important}.lv-story-grid{grid-template-columns:minmax(0,1fr)!important}
+ /* Deep-dive discovery: opening a player's detail row (colspan=5 <td> holding
+    .detailwrap) blew the WHOLE .maintable out to ~2068px, because the table
+    uses width:max-content!important with table-layout:fixed and the colspan
+    cell's grid content had no min-width:0 -- its intrinsic max-content size
+    dragged the entire table (and every other row) wider, so text inside the
+    opened card got clipped/scrolled-off rather than wrapping in place. This
+    only shows up when a row is expanded, which is why it survived every
+    earlier pass. width:1px on the colspan cell (classic fixed-table-layout
+    trick) decouples it from column-width distribution so it just takes the
+    width the rest of the table already established instead of growing it. */
+ .maintable:has(.detailrow){width:100%!important;min-width:0!important}
+ .detailrow td{width:1px!important;overflow:hidden!important}
+ .detailwrap{width:100%!important;max-width:100%!important;box-sizing:border-box!important;padding:12px!important;gap:8px!important}
+ .detailcol,.detailcol.full{min-width:0!important;box-sizing:border-box!important;grid-column:auto!important}
+ .detailcol .dl{overflow-wrap:anywhere!important}
+ .detailcol p,.detail-note{overflow-wrap:anywhere!important;word-break:break-word!important}
+ .deep-kpis{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+</style>
+<style id="so-gradebook-mobile-structure-20260824">
+@media(max-width:700px){
+ .shell{display:flex!important;flex-direction:column!important;align-items:stretch!important}
+ .side-left{display:none!important}.main-col{order:1!important;min-width:0!important}
+ .side-right{order:2!important;display:flex!important;flex-flow:row nowrap!important;gap:10px!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x proximity!important;padding:0 0 8px!important;-webkit-overflow-scrolling:touch!important;scrollbar-width:none!important}
+ .side-right::-webkit-scrollbar{display:none!important}.side-right>.side-card{flex:0 0 min(82vw,330px)!important;width:min(82vw,330px)!important;margin:0!important;scroll-snap-align:start!important}
+ .hero{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:8px!important}
+ .grade-orbit{position:relative!important;inset:auto!important;width:100%!important;max-width:330px!important;height:158px!important;margin:-2px auto -10px!important;transform:scale(.72)!important;transform-origin:center top!important}
+ .pair-row>.panel,.tri-row>.panel,.dual-row>.panel{flex-basis:min(82vw,330px)!important;width:min(82vw,330px)!important}
+ .donut-wrap{display:grid!important;grid-template-columns:104px minmax(0,1fr)!important;gap:12px!important;align-items:center!important}.donut{width:104px!important;height:104px!important}
+ .board-tabs-scroll{flex-wrap:nowrap!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;scrollbar-width:none!important}.board-tabs-scroll::-webkit-scrollbar{display:none!important}.board-search{flex:0 0 78vw!important;order:initial!important;margin:0!important}
+ .board-title-row{display:block!important}.bkey{display:flex!important;overflow-x:auto!important;gap:8px!important;white-space:nowrap!important}
+ .maintable{min-width:740px!important;font-size:9px!important}.maintable th,.maintable td{padding:8px 7px!important}
+ .lv-kpis{display:flex!important;overflow-x:auto!important;gap:8px!important}.lv-kpis>*{flex:0 0 42%!important}.lv-story-grid{display:flex!important;overflow-x:auto!important;gap:8px!important}.lv-story-grid article{flex:0 0 min(78vw,300px)!important}
 }
 </style>
 </body>

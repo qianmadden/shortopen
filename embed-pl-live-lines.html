@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script id="so-market-prepaint">document.documentElement.classList.add("so-market-painted","so-unified-first-paint");</script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>shortopen — EPL Live Lines</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="shortcut icon" href="favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Mono:wght@400;500&amp;display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/></noscript>
+<style id="so-epl-consolidated-styles-20260822">
+  :root {
+    --bg: #101319;
+    --bg2: #04080d;
+    --surface: #0b1118;
+    --surface2: #111820;
+    --border: #1a2535;
+    --border2: #212f42;
+    --gold: #f4b942;
+    --gold-dim: rgba(244,185,66,0.12);
+    --white: #edf3f7;
+    --muted: #4d6070;
+    --muted2: #748397;
+    --text: #9dafc2;
+    --green: #22d97e;
+    --green2: #22c55e;
+    --green-dim: rgba(34,217,126,0.12);
+    --red: #ff5d6c;
+    --red2: #f87171;
+    --red-dim: rgba(255,93,108,0.12);
+    --blue: #57a7ff;
+    --blue2: #60a5fa;
+    --blue-dim: rgba(87,167,255,0.10);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; width:100%; max-width:100%; overflow-x:hidden; }
+  body {
+    background:
+      linear-gradient(rgba(73,92,113,.017) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(73,92,113,.017) 1px,transparent 1px),
+      linear-gradient(rgba(255,255,255,.004) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.004) 1px,transparent 1px),
+      radial-gradient(860px 620px at 4% 92%,rgba(34,217,126,.18),transparent 68%),
+      radial-gradient(860px 600px at 96% 8%,rgba(244,185,66,.20),transparent 66%),
+      radial-gradient(1100px 700px at 12% 6%,rgba(244,185,66,.11),transparent 70%),
+      radial-gradient(1040px 700px at 88% 14%,rgba(87,167,255,.13),transparent 70%),
+      radial-gradient(980px 700px at 6% 48%,rgba(34,217,126,.085),transparent 70%),
+      linear-gradient(180deg,rgba(14,19,27,.46) 0%,rgba(10,14,20,.66) 56%,rgba(8,12,18,.78) 100%),
+      #101319;
+    background-size:112px 112px,112px 112px,28px 28px,28px 28px,auto,auto,auto,auto,auto,auto,auto;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    min-height: 100vh;
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+  }
+
+  /* ── STATUS BAR ── */
+  .status-bar { position:relative; height:28px; background:#020406; border-bottom:1px solid #1a2535; display:flex; align-items:center; gap:0; overflow:hidden; font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.08em; }
+  .sb-clock { padding:0 16px; color:var(--gold); font-weight:500; white-space:nowrap; height:100%; display:flex; align-items:center; gap:8px; flex-shrink:0; }
+  .sb-session { padding:0 14px; height:100%; display:flex; align-items:center; gap:6px; white-space:nowrap; flex-shrink:0; color:var(--muted2); }
+  .sb-session-dot { width:5px; height:5px; border-radius:50%; background:var(--green); box-shadow:0 0 7px var(--green); animation:pulse 1.8s ease infinite; flex-shrink:0; }
+  .sb-right { margin-left:auto; padding:0 16px; color:var(--muted); white-space:nowrap; flex-shrink:0; }
+  .sb-right span { color:var(--gold); }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.3;transform:scale(.6);} }
+
+  /* ── HERO ── */
+  .live-badge { display:inline-flex; align-items:center; gap:7px; padding:6px 14px; border:1px solid rgba(34,217,126,0.4); background:rgba(34,217,126,0.13); border-radius:20px; font-size:0.68rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:#ffd257; margin-bottom:16px; box-shadow:0 0 22px rgba(34,217,126,0.1); }
+  .live-dot { width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 8px rgba(34,217,126,0.6); animation:pulse 1.8s ease infinite; flex-shrink:0; }
+  .page-title { font-family:'Inter',sans-serif; font-weight:900; font-size:clamp(38px,6.5vw,84px); color:#ffffff; line-height:0.95; letter-spacing:-0.04em; margin-bottom:0; text-shadow:0 4px 32px rgba(0,0,0,.4); }
+  .page-title .gold-line { display:block; color:#ffcf4d; text-shadow:0 0 46px rgba(244,185,66,.35); }
+  .page-sub { font-family:'Inter',sans-serif; font-size:0.98rem; color:#b7c6d6; max-width:600px; line-height:1.75; margin-top:20px; }
+  .page-sub em { font-style:normal; color:#ffcf4d; font-weight:600; }
+
+  .hero-grid { display:grid; grid-template-columns: minmax(0,1.12fr) minmax(300px,1fr); gap:40px; align-items:start; max-width:1400px; margin:0 auto; padding:44px 48px 40px; }
+  .hero-left { min-width:0; }
+  .hero-stat-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:32px; max-width:100%; }
+  .hero-stat-card { position:relative; overflow:hidden; background:linear-gradient(160deg,rgba(255,255,255,.045) 0%,rgba(255,255,255,.016) 34%,rgba(5,9,15,.90) 100%); border:1px solid rgba(255,255,255,.075); border-radius:16px; padding:16px; box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 16px 36px rgba(0,0,0,.18); transition:transform .2s,box-shadow .2s; min-width:0; }
+  .hero-stat-card::before { content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:linear-gradient(130deg,rgba(255,255,255,.1) 0%,rgba(255,255,255,.02) 40%,transparent 70%); }
+  .hero-stat-card::after { content:''; position:absolute; top:0; left:-80%; width:55%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent); transform:skewX(-12deg); transition:left .8s; pointer-events:none; }
+  .hero-stat-card:hover::after { left:140%; }
+  .hero-stat-card:hover { transform:translateY(-2px); box-shadow:inset 0 1.5px 0 rgba(255,255,255,.15),0 8px 32px rgba(0,0,0,.4); }
+  .hero-stat-label { font-family:'Inter',sans-serif; font-size:0.58rem; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; line-height:1.35; }
+  .hero-stat-value { font-family:'Inter',sans-serif; font-weight:900; font-size:1.85rem; line-height:1; color:var(--white); }
+  .hero-stat-value.green { color:var(--green); }
+  .hero-stat-value.red { color:var(--red); }
+  .hero-stat-value.blue { color:var(--blue); }
+  .hero-stat-value.gold { color:var(--gold); }
+  .hero-stat-sub { font-family:'DM Mono',monospace; font-size:0.56rem; color:var(--muted); margin-top:6px; letter-spacing:0.04em; }
+  .hero-value-prop { display:flex; align-items:center; gap:9px; margin-top:20px; padding:11px 18px; border-radius:999px; background:linear-gradient(160deg,rgba(255,255,255,.035),rgba(255,255,255,.012)); border:1px solid rgba(255,255,255,.085); box-shadow:inset 0 1px 0 rgba(255,255,255,.06); font-family:'Inter',sans-serif; font-size:.78rem; line-height:1.4; color:rgba(237,243,247,.78); max-width:640px; }
+  .hero-value-prop-dot { color:var(--gold); font-size:.7rem; flex-shrink:0; }
+
+  /* ── HERO CONSENSUS BOARD ── */
+  .hero-right { min-width:0; }
+  .hero-board { position:relative; overflow:hidden; border-radius:22px; min-width:0;
+    background:
+      radial-gradient(640px 400px at 88% 0%,rgba(87,167,255,.16),transparent 66%),
+      radial-gradient(560px 400px at 6% 100%,rgba(34,217,126,.14),transparent 68%),
+      linear-gradient(160deg,rgba(255,255,255,.06) 0%,rgba(255,255,255,.02) 30%,rgba(6,10,16,.94) 100%);
+    border:1px solid rgba(255,255,255,.11);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 20px 50px rgba(0,0,0,.28); }
+  .lg-consensus-before { position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:linear-gradient(130deg,rgba(255,255,255,.1) 0%,rgba(255,255,255,.02) 40%,transparent 70%); }
+  .lg-consensus-sheen { position:absolute; top:0; left:-80%; width:55%; height:100%; z-index:2; pointer-events:none; background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent); transform:skewX(-12deg); transition:left 1.2s; }
+  .hero-board:hover .lg-consensus-sheen { left:140%; }
+  .hero-board-inner { position:relative; z-index:2; padding:22px 24px 18px; min-width:0; }
+  .hero-board-header { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; padding-bottom:14px; border-bottom:1px solid rgba(255,255,255,.09); margin-bottom:4px; }
+  .hero-board-kicker { font-family:'DM Mono',monospace; font-size:.56rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; color:#8fa8c7; margin-bottom:4px; }
+  .hero-board-title { font-family:'Inter',sans-serif; font-size:1.5rem; font-weight:900; letter-spacing:-.03em; color:#ffffff; line-height:1; }
+  .hero-board-sub { font-family:'DM Mono',monospace; font-size:.62rem; color:rgba(157,175,194,.62); margin-top:6px; }
+  .hero-board-badge { font-family:'DM Mono',monospace; font-size:.58rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; background:rgba(244,185,66,.15); border:1px solid rgba(244,185,66,.38); color:#ffcf4d; border-radius:8px; padding:6px 10px; white-space:nowrap; flex-shrink:0; }
+  .hero-board-rows { display:flex; flex-direction:column; }
+  .hero-board-row { display:flex; align-items:center; gap:12px; padding:11px 2px; border-bottom:1px solid rgba(255,255,255,.06); min-width:0; }
+  .hero-board-row:last-child { border-bottom:none; }
+  .hero-board-rank { font-family:'DM Mono',monospace; font-size:.68rem; font-weight:700; color:#3d5068; width:14px; flex-shrink:0; text-align:center; }
+  .hero-board-main { min-width:0; flex:1; display:flex; flex-direction:column; gap:5px; }
+  .hero-board-fixture { font-family:'DM Mono',monospace; font-size:.6rem; color:#8da0b3; letter-spacing:.05em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .hero-board-callbtn { align-self:flex-start; padding:5px 9px; gap:7px; }
+  .hero-board-callbtn .t-call-label { font-size:.68rem; }
+  .hero-board-conf { display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; }
+  .hero-board-pct { font-family:'DM Mono',monospace; font-size:.86rem; font-weight:700; color:#2ddf6e; text-shadow:0 0 14px rgba(34,217,126,.3); }
+  .hero-board-meter { width:52px; height:4px; border-radius:2px; background:rgba(255,255,255,.09); overflow:hidden; }
+  .hero-board-meter-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,#22d97e,#f4b942); }
+
+  /* ── SPORT TABS ── */
+  .sport-tabs { max-width:1400px; margin:0 auto; padding:0 48px; display:flex; gap:2px; border-bottom:1px solid var(--border2); margin-top:32px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  .sport-tabs::-webkit-scrollbar { display:none; }
+  .sport-tab { padding:14px 32px; font-family:'Inter',sans-serif; font-size:0.78rem; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); cursor:pointer; border:none; background:transparent; border-bottom:2px solid transparent; margin-bottom:-1px; transition:color 0.2s, border-color 0.2s; flex-shrink:0; white-space:nowrap; }
+  .sport-tab:hover { color:var(--white); }
+  .sport-tab.active { color:var(--gold); border-bottom-color:var(--gold); text-shadow:0 0 18px rgba(244,185,66,.55); }
+  .sport-tab-count { margin-left:6px; font-family:'DM Mono',monospace; font-size:0.56rem; font-weight:800; color:var(--green); background:rgba(34,217,126,0.12); border:1px solid rgba(34,217,126,0.3); border-radius:5px; padding:1px 6px; vertical-align:middle; }
+
+  /* ── LEGEND ── */
+  .legend-bar { max-width:1400px; margin:0 auto; padding:18px 48px; display:flex; align-items:center; gap:22px; flex-wrap:wrap; border-bottom:1px solid var(--border); }
+  .legend-item { display:flex; align-items:center; gap:7px; font-size:0.7rem; color:var(--muted); letter-spacing:0.06em; }
+  .legend-dot { width:8px; height:8px; border-radius:1px; flex-shrink:0; }
+  .legend-sep { width:1px; height:16px; background:var(--border2); margin:0 4px; }
+
+  /* ── DATE DIVIDER ── */
+  .date-divider { max-width:1400px; margin:0 auto; padding:22px 48px 10px; display:flex; align-items:center; gap:16px; }
+  .date-divider-label { font-family:'DM Mono',monospace; font-size:0.66rem; text-transform:uppercase; letter-spacing:0.14em; white-space:nowrap; color:var(--muted); }
+  .date-divider-line { flex:1; height:1px; background:var(--border); }
+
+  /* ── GAMES LIST ── */
+  .games-list { max-width:1400px; margin:0 auto; padding:0 48px 60px; }
+
+  .col-header-row { display:grid; grid-template-columns: 230px 100px 160px 160px 160px 1fr; border:1px solid #1a2535; margin-bottom:0; }
+  .col-hdr { font-family:'DM Mono',monospace; font-size:0.54rem; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; padding:8px 14px; color:var(--muted); border-right:1px solid #111d28; }
+  .col-hdr:last-child { border-right:none; }
+
+  /* ── GAME CARD ── */
+  .game-card { position:relative; display:grid; grid-template-columns: 230px 100px 160px 160px 160px 1fr; align-items:stretch; background:#0b1118; opacity:1; min-height:100px; border-left:3px solid transparent; overflow:hidden; }
+  .game-card::after { content:''; position:absolute; top:0; left:-80%; width:55%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent); transform:skewX(-12deg); transition:left .7s ease; pointer-events:none; z-index:1; }
+  .game-card:hover::after { left:140%; }
+  .game-card > * { position:relative; z-index:2; }
+  .game-card:nth-child(odd) { background:linear-gradient(145deg,rgba(255,255,255,.055) 0%,rgba(11,17,24,.96) 100%); border-bottom:1px solid rgba(255,255,255,.04); }
+  .game-card:nth-child(even) { background:linear-gradient(145deg,rgba(255,255,255,.04) 0%,rgba(13,20,32,.97) 100%); border-bottom:1px solid rgba(255,255,255,.04); }
+  .game-card.edge-strong { border-left-color:#2ddf6e; box-shadow:inset 3px 0 12px rgba(34,217,126,0.08); }
+  .game-card.edge-fade { border-left-color:#3a1a1a; }
+  .game-card.is-final { border-left-color:#2a3f52; }
+
+  /* MATCHUP */
+  .t-matchup { padding:12px 14px; display:flex; flex-direction:column; justify-content:center; gap:0; min-width:0; }
+  .t-team-away, .t-team-home { display:flex; align-items:center; gap:9px; padding:4px 0; min-width:0; }
+  .t-team-home { border-top:1px solid #111d28; margin-top:4px; padding-top:8px; }
+  .t-abbr { font-family:'DM Mono',monospace; font-size:0.7rem; font-weight:500; color:var(--gold); min-width:34px; letter-spacing:0.04em; flex-shrink:0; }
+  .t-name { font-family:'Inter',sans-serif; font-size:0.74rem; font-weight:500; color:#7a96b3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+  .t-name.home { color:#e2eef8; font-weight:600; }
+  .t-score { font-family:'DM Mono',monospace; font-size:0.86rem; font-weight:700; color:var(--white); margin-left:auto; flex-shrink:0; padding-left:8px; }
+  .t-score.win { color:var(--green); }
+  .t-time { font-family:'DM Mono',monospace; font-size:0.54rem; color:#2a3f52; letter-spacing:0.08em; margin-top:6px; }
+  .t-time.final-tag { color:var(--red2); font-weight:700; letter-spacing:0.14em; }
+  .t-scorers { font-family:'DM Mono',monospace; font-size:0.5rem; color:#2f4458; letter-spacing:0.02em; margin-top:3px; line-height:1.5; }
+
+  /* WIN-DRAW-WIN PROB */
+  .t-prob { border-right:1px solid #111d28; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:12px 8px; background:rgba(0,0,0,0.15); min-width:0; }
+  .t-prob-teams { display:flex; width:100%; justify-content:space-between; font-family:'DM Mono',monospace; font-size:0.48rem; color:#3a5068; letter-spacing:0.04em; }
+  .t-prob-away-lbl { color:rgba(244,185,66,0.55); }
+  .t-prob-draw-lbl { color:rgba(160,175,190,0.5); }
+  .t-prob-home-lbl { color:rgba(87,167,255,0.55); }
+  .t-prob-bar { width:100%; height:6px; background:#111d28; border-radius:3px; overflow:hidden; display:flex; }
+  .t-prob-away { background:var(--gold); }
+  .t-prob-draw { background:#48586b; }
+  .t-prob-home { background:var(--blue); }
+  .t-prob-nums { display:flex; width:100%; justify-content:space-between; font-family:'DM Mono',monospace; }
+  .t-prob-n { font-size:0.78rem; font-weight:700; }
+  .t-prob-n.away { color:rgba(244,185,66,0.92); }
+  .t-prob-n.draw { color:rgba(160,175,190,0.85); }
+  .t-prob-n.home { color:rgba(87,167,255,0.92); }
+  .t-prob-final { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--green); letter-spacing:0.1em; text-transform:uppercase; font-weight:700; }
+
+  /* ODDS COLUMNS */
+  .t-odds { border-right:1px solid #111d28; display:flex; flex-direction:column; min-width:0; }
+  .t-odds-row { flex:1; padding:0 12px; display:flex; align-items:center; justify-content:space-between; gap:6px; border-bottom:1px solid #0d1720; min-width:0; }
+  .t-odds-row:last-child { border-bottom:none; }
+  .t-odds.closing .t-odds-chip { opacity:0.55; }
+  .t-odds-lbl { font-family:'DM Mono',monospace; font-size:0.5rem; color:#3a5068; letter-spacing:0.06em; flex-shrink:0; }
+
+  .t-odds-chip { display:inline-flex; align-items:center; gap:5px; padding:5px 9px; border-radius:4px; font-family:'DM Mono',monospace; font-size:0.72rem; font-weight:500; letter-spacing:0.01em; border:1px solid; white-space:nowrap; min-width:58px; justify-content:center; }
+  .t-odds-chip.neutral { color:#ddeaf5; background:#132030; border-color:#243c54; }
+  .t-odds-chip.fav { color:#f0f6ff; background:#10223a; border-color:#244566; }
+  .t-odds-chip.dog { color:#2ddf6e; background:rgba(34,217,126,0.13); border-color:rgba(34,217,126,0.32); }
+  .t-odds-chip.total-o { color:#f4b942; background:rgba(244,185,66,0.12); border-color:rgba(244,185,66,0.28); }
+  .t-odds-chip.total-u { color:#8da0b3; background:#0e1820; border-color:#1a2a38; }
+  .t-odds-juice { font-family:'DM Mono',monospace; font-size:0.55rem; color:#3a5068; flex-shrink:0; }
+
+  /* EDGE / CALL COLUMN */
+  .t-edge { padding:12px 16px; display:flex; flex-direction:column; justify-content:center; gap:8px; background:rgba(0,0,0,0.1); min-width:0; }
+  .t-edge-empty { font-family:'DM Mono',monospace; font-size:0.54rem; color:#1e2d3d; letter-spacing:0.12em; text-transform:uppercase; }
+  .t-edge-final { font-family:'DM Mono',monospace; font-size:0.56rem; color:#3a5068; letter-spacing:0.08em; text-transform:uppercase; line-height:1.7; }
+  .t-edge-final b { color:#7a96b3; }
+
+  .t-call-btn { display:inline-flex; align-items:center; gap:9px; padding:6px 11px; font-family:'DM Mono',monospace; font-weight:500; cursor:default; border:1px solid; align-self:flex-start; max-width:100%; border-radius:6px; }
+  .t-call-btn.ml { background:rgba(34,217,126,0.16); border-color:rgba(34,217,126,0.45); color:#2ddf6e; }
+  .t-call-btn.spread { background:rgba(87,167,255,0.14); border-color:rgba(87,167,255,0.42); color:#7ab8fc; }
+  .t-call-btn.total { background:rgba(244,185,66,0.14); border-color:rgba(244,185,66,0.42); color:#f8c84a; }
+  .t-call-btn.fade { background:rgba(255,93,108,0.08); border-color:rgba(255,93,108,0.25); color:#ff5d6c; }
+  .t-call-type { font-size:0.44rem; letter-spacing:0.16em; text-transform:uppercase; opacity:0.7; flex-shrink:0; }
+  .t-call-label { font-size:0.72rem; letter-spacing:0.01em; }
+  .t-call-ev { font-size:0.58rem; margin-left:auto; flex-shrink:0; padding:2px 6px; font-weight:500; border-radius:4px; }
+  .t-call-ev.pos { background:rgba(34,217,126,0.15); }
+  .t-call-ev.neg { background:rgba(255,93,108,0.15); }
+  .t-call-ev.spread-ev { background:rgba(87,167,255,0.12); }
+  .t-call-ev.total-ev { background:rgba(244,185,66,0.12); }
+  .t-edge-note { font-family:'Inter',sans-serif; font-size:0.6rem; color:#3a5068; line-height:1.5; font-style:italic; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1200px) {
+    .game-card, .col-header-row { grid-template-columns: 200px 90px 140px 140px 140px 1fr; }
+  }
+  @media (max-width: 1100px) {
+    .game-card, .col-header-row { grid-template-columns: 180px 80px 120px 120px 120px 1fr; }
+    .t-call-label { font-size: 0.72rem; }
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-board { max-width:100%; }
+  }
+  @media (max-width: 900px) {
+    .col-header-row { display: none; }
+    .game-card { grid-template-columns: 1fr 1fr 1fr; grid-template-rows: auto auto; border-bottom: 2px solid #111d28; margin-bottom: 4px; min-height: unset; }
+    .game-card .t-matchup { grid-column: 1 / -1; border-bottom: 1px solid #111d28; border-right: none; }
+    .game-card .t-prob    { border-right: 1px solid #111d28; }
+    .game-card .t-odds    { border-right: 1px solid #111d28; }
+    .game-card .t-odds:last-of-type { border-right: none; }
+    .game-card .t-edge    { grid-column: 1 / -1; border-top: 1px solid #111d28; }
+    .hero-grid    { padding: 36px 20px 0; gap: 24px; }
+    .hero-stat-row { grid-template-columns: repeat(2,1fr); }
+    .hero-board-inner { padding:18px 16px 14px; }
+    .hero-board-title { font-size:1.3rem; }
+    .sport-tabs   { padding: 0 20px; }
+    .legend-bar   { padding: 16px 20px; }
+    .date-divider { padding: 20px 20px 8px; }
+    .games-list   { padding: 0 16px 48px; }
+    footer        { padding: 24px 20px 22px; gap: 14px; }
+  }
+  @media (max-width: 760px) {
+    html, body { width:100%; max-width:100%; overflow-x:hidden; }
+    .status-bar { overflow:hidden; }
+  }
+  @media (max-width: 480px) {
+    .game-card { font-size: 0.8rem; }
+    .t-name { font-size: 0.7rem; }
+    .t-odds-chip { font-size: 0.66rem; min-width:46px; padding:4px 6px; }
+    .sport-tab { padding: 10px 14px; font-size: 0.68rem; }
+    .page-sub { font-size:0.86rem; }
+    .hero-stat-value { font-size:1.5rem; }
+    .hero-board-fixture { max-width:150px; }
+    .hero-board-callbtn .t-call-label { font-size:.62rem; }
+    .hero-board-callbtn .t-call-type { display:none; }
+  }
+  @media (max-width: 430px) {
+    .t-abbr { min-width:26px; font-size:0.62rem; }
+    .t-odds-row { padding:0 8px; }
+    .t-call-label { font-size: 0.66rem; }
+    .t-odds-chip { min-width:0; }
+    .hero-board-row { gap:8px; }
+    .hero-board-fixture { max-width:110px; }
+    .hero-board-pct { font-size:.74rem; }
+    .hero-board-meter { width:40px; }
+  }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); background: rgba(5,7,11,0.8); padding: 32px 48px 26px; display: flex; flex-direction: column; gap: 14px; max-width:100%; }
+  .footer-top { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+  .footer-logo { font-family: 'Inter', sans-serif; font-weight: 900; font-size: 1rem; color: var(--white); letter-spacing: -0.02em; }
+  .footer-logo span { color: var(--gold); }
+  .footer-copy { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; }
+  .footer-disclaimer { font-size:.62rem; line-height:1.65; color:rgba(255,255,255,.24); letter-spacing:.01em; max-width:980px; border-top:1px solid rgba(255,255,255,.06); padding-top:14px; }
+</style>
+
+<!-- ── shared mobile-safety blocks, copied verbatim from embed-market.html ── -->
+<style id="so-runtime-performance-core-20260811">
+/* Runtime-only performance guardrails. Visible design is unchanged. */
+html.so-perf-hidden .so-perf-anim-target,
+html.so-perf-hidden .so-perf-anim-target::before,
+html.so-perf-hidden .so-perf-anim-target::after,
+html.so-perf-scrolling .so-perf-anim-target,
+html.so-perf-scrolling .so-perf-anim-target::before,
+html.so-perf-scrolling .so-perf-anim-target::after,
+.so-perf-offscreen-anim,
+.so-perf-offscreen-anim::before,
+.so-perf-offscreen-anim::after{animation-play-state:paused!important;}
+.so-perf-offscreen-anim{will-change:auto!important;}
+@media(max-width:760px){
+  .so-nav,.so-nav-shell,.site-nav,.site-header,.mobile-nav,.hub-nav{backface-visibility:hidden;transform:translateZ(0);}
+}
+@media(pointer:coarse){button,a,[role="button"]{touch-action:manipulation;}}
+</style>
+<style id="so-mobile-repair-20260819">
+@media(max-width:760px){
+ html,body{width:100%;max-width:100%;overflow-x:hidden}.status-bar{overflow:hidden}.hero-grid,.q-hero-market{grid-template-columns:minmax(0,1fr)!important;width:100%!important;padding:18px 12px!important}.q-hero-left,.hero-left{min-width:0!important}.q-hero-left h1,.hero-left h1{font-size:2.55rem!important;line-height:1!important;overflow-wrap:anywhere}.q-hero-command-rail{overflow-x:auto!important;white-space:nowrap}.q-hero-stat-row,.hero-stat-row{display:flex!important;overflow-x:auto!important;gap:9px!important}.q-hero-stat-card,.hero-stat-card{flex:0 0 44%!important}.q-consensus-board,.lg-consensus{width:100%!important;max-width:100%!important;margin-top:14px!important}.hero-right{min-width:0!important}
+ .sport-tabs,.market-tabs,.sub-tabs,.filters-row,.market-filter-row{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch}.sport-tabs>*,.market-tabs>*,.sub-tabs>*,.filters-row>*,.market-filter-row>*{flex:0 0 auto!important}
+ .games-grid,.game-grid{grid-template-columns:minmax(0,1fr)!important}.nfl-signal-deck,.nfl-opening-board{width:100%!important;max-width:100%!important;padding:18px 14px!important}.nfl-signal-grid,.nfl-matchup-grid{display:flex!important;overflow-x:auto!important;gap:10px!important;scroll-snap-type:x mandatory}.nfl-signal-card,.nfl-matchup-card{flex:0 0 84%!important;scroll-snap-align:start}
+ .table-scroll,.odds-table-wrap,.prop-table-wrap{max-width:100%;overflow-x:auto!important;-webkit-overflow-scrolling:touch}.roulette-section,.q-table-section{max-width:100%;overflow:hidden}.q-table-layout,.roulette-layout{grid-template-columns:minmax(0,1fr)!important}.q-chip-rack,.chip-rack{overflow-x:auto!important}.minicamp-banner{width:92%!important;max-width:92%!important;height:auto!important;min-height:0!important;transform:none!important}.minicamp-banner>*{transform:none!important}
+}
+</style><style id="so-mobile-verified-pass-20260819">
+@media(max-width:760px){
+ #nflContainer{width:100%!important;max-width:100%!important;overflow:visible!important}
+ #nflContainer>.date-divider{padding-left:16px!important;padding-right:16px!important}
+ #nflContainer>.games-list{display:flex!important;grid-template-columns:none!important;width:100%!important;max-width:none!important;gap:10px!important;padding:0 16px 18px!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x proximity!important;scroll-padding-left:16px;overscroll-behavior-x:contain;touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+ #nflContainer>.games-list::-webkit-scrollbar{display:none}
+ #nflContainer>.games-list>.game-card{flex:0 0 min(58vw,228px)!important;width:min(58vw,228px)!important;min-height:350px!important;height:auto!important;margin:0!important;border-radius:17px!important;overflow:hidden!important;scroll-snap-align:start!important;scroll-snap-stop:normal!important}
+ #nflContainer .game-card:not(.has-series),#nflContainer .game-card-inner{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;grid-auto-rows:auto!important;min-width:0!important}
+ #nflContainer .t-matchup{grid-column:1/-1!important;padding:7px 8px!important}#nflContainer .t-prob,#nflContainer .t-odds{padding:5px 7px!important}#nflContainer .t-edge{grid-column:1/-1!important;padding:7px!important;font-size:.66rem!important;line-height:1.32!important}
+ .nfl-market-hero{grid-template-columns:minmax(0,1fr)!important;margin:14px 12px 18px!important;padding:24px 18px!important;gap:18px!important}.nfl-market-copy h2{font-size:2.6rem!important;line-height:.92!important}.nfl-market-copy p{font-size:.8rem!important;line-height:1.62!important}.nfl-market-stats{display:flex!important;overflow-x:auto!important;gap:8px!important}.nfl-market-stats>div{flex:0 0 44%!important}.nfl-market-board{width:100%!important;min-width:0!important}
+ .nfl-climate{overflow:hidden!important}.nfl-climate-chart{overflow-x:auto!important;-webkit-overflow-scrolling:touch}.nfl-climate-chart svg{width:820px!important;min-width:820px!important}
+ .nfl-signal-deck{overflow:hidden!important}.signal-grid{display:flex!important;grid-template-columns:none!important;overflow-x:auto!important;gap:10px!important;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}.signal-grid article{flex:0 0 78%!important;scroll-snap-align:start}
+ .nfl-matchup-grid{display:flex!important;overflow-x:auto!important}.nfl-matchup-grid>*{flex:0 0 82%!important}
+ .q-hero-market{padding-top:20px!important}.q-hero-stat-row{padding-bottom:5px}.q-hero-stat-card{flex-basis:46%!important}.q-consensus-board{overflow:hidden!important}.q-board-row{grid-template-columns:minmax(0,1fr) auto!important}
+ .nfl-lock-wrap{margin-left:auto!important;margin-right:auto!important}
+}
+@media(pointer:coarse) and (max-width:760px){
+ #nflContainer .game-card:hover,#mlbContainer .game-card:hover,.signal-grid article:hover{transform:none!important}.nfl-chart-game rect{animation:none!important}
+}
+</style>
+<style id="so-mobile-final-nine-pass">@media(max-width:700px){html,body{max-width:100%;overflow-x:hidden}table{max-width:none}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap,.article-grid,.cards-scroll{max-width:100%;-webkit-overflow-scrolling:touch}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap{overflow-x:auto}.hero h1{overflow-wrap:anywhere}.controls,.filter-row,.hub-tabs,.tab-row,.section-tabs{max-width:100%;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}.controls>* ,.filter-row>* ,.hub-tabs>* ,.tab-row>* ,.section-tabs>*{flex:0 0 auto}}@media(pointer:coarse) and (max-width:700px){*{scroll-behavior:auto}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap{scroll-snap-type:none}}</style>
+</head>
+<body>
+
+<!-- STATUS BAR -->
+<div class="status-bar" id="statusBar">
+  <div class="sb-clock"><span id="sbTime">--:--:-- ET</span><span style="color:#1a2535">|</span><span style="color:#4d6070">MATCHWEEK 2</span></div>
+  <div class="sb-session"><div class="sb-session-dot"></div><span>SLATE LIVE</span></div>
+  <div class="sb-right">SHORTopen <span>EPL v1.0</span></div>
+</div>
+
+<!-- HERO -->
+<div class="hero-grid">
+  <div class="hero-left">
+    <div class="live-badge"><div class="live-dot"></div>Premier League · Live Lines</div>
+    <h1 class="page-title">Live<br/><span class="gold-line">Lines.</span></h1>
+    <p class="page-sub">Every Matchweek 2 fixture on one board. Short Open removes the market margin, compares all three outcomes, and surfaces only the clearest directional reads. Two opening-week statement upsets are preserved below; ten fixtures kick off Aug 28–31.</p>
+    <div class="hero-stat-row">
+      <div class="hero-stat-card">
+        <div class="hero-stat-label">Fixtures Loaded</div>
+        <div class="hero-stat-value" id="statGames">10</div>
+        <div class="hero-stat-sub">Matchweek 2</div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="hero-stat-label">Results Final</div>
+        <div class="hero-stat-value green" id="statFinal">2</div>
+        <div class="hero-stat-sub">Opening-week shock result</div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="hero-stat-label">Short Open Calls</div>
+        <div class="hero-stat-value gold" id="statCalls">9</div>
+        <div class="hero-stat-sub">margin-adjusted leans, ≥12pt gap</div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="hero-stat-label">Biggest Upset</div>
+        <div class="hero-stat-value blue" id="statUpset">BRE 3–0</div>
+        <div class="hero-stat-sub">at Tottenham, opening week</div>
+      </div>
+    </div>
+    <div class="hero-value-prop"><span class="hero-value-prop-dot">◆</span>Prices are converted into a margin-adjusted three-way market view. The call is a relative read of the board—not a guarantee and not a sportsbook recommendation.</div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-board lg-consensus q-consensus-board" id="heroConsensusBoard">
+      <div class="lg-consensus-before"></div>
+      <div class="lg-consensus-sheen"></div>
+      <div class="hero-board-inner">
+        <div class="hero-board-header">
+          <div>
+            <div class="hero-board-kicker">Short Open Signal · Matchweek 2</div>
+            <div class="hero-board-title">Top Calls</div>
+            <div class="hero-board-sub">Widest margin-adjusted separations on the board</div>
+          </div>
+          <span class="hero-board-badge" id="heroBoardBadge">-- flagged</span>
+        </div>
+        <div class="hero-board-rows" id="heroBoardRows"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SPORT TABS -->
+<div class="sport-tabs">
+  <button class="sport-tab active" type="button">EPL<span class="sport-tab-count">10</span></button>
+</div>
+
+<!-- LEGEND -->
+<div class="legend-bar">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>moneyline call</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>handicap play</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>total (o/u goals)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>fade / no edge</div>
+  <div class="legend-sep"></div>
+  <div class="legend-item" style="font-family:'Inter',sans-serif;font-weight:500;color:var(--gold);font-size:0.72rem;letter-spacing:0.04em">pts = margin-adjusted gap between the top read and next-closest outcome &middot; HOLD = raw market margin before adjustment</div>
+</div>
+
+<!-- OPENING-WEEK UPSETS — FINAL -->
+<div class="date-divider"><span class="date-divider-label">Opening Week &middot; Biggest Upsets · Final</span><div class="date-divider-line"></div></div>
+<div class="games-list">
+  <div class="col-header-row">
+    <div class="col-hdr">Matchup</div>
+    <div class="col-hdr">Win-Draw-Win</div>
+    <div class="col-hdr">Handicap</div>
+    <div class="col-hdr">Moneyline</div>
+    <div class="col-hdr">Total Goals</div>
+    <div class="col-hdr">Call</div>
+  </div>
+  <div id="finalCards"></div>
+</div>
+
+<!-- MATCHWEEK 2 — UPCOMING -->
+<div class="date-divider"><span class="date-divider-label">Matchweek 2 &middot; Fri Aug 28 &mdash; Mon Aug 31 · Upcoming</span><div class="date-divider-line"></div></div>
+<div class="games-list">
+  <div class="col-header-row">
+    <div class="col-hdr">Matchup</div>
+    <div class="col-hdr">Win-Draw-Win</div>
+    <div class="col-hdr">Handicap</div>
+    <div class="col-hdr">Moneyline</div>
+    <div class="col-hdr">Total Goals</div>
+    <div class="col-hdr">Call</div>
+  </div>
+  <div id="upcomingCards"></div>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-logo">short<span>open</span></div>
+    <p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+  </div>
+  <p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, and margin/hold calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only — they are not betting advice and do not represent a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, or operate as a sportsbook; any wagering is done independently and at your own discretion through a licensed third-party operator in your jurisdiction. Model estimates are not guarantees of outcome. You must be of legal gambling age in your jurisdiction. If you or someone you know has a gambling problem, call 1-800-GAMBLER.</p>
+</footer>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+//  SHORTOPEN — EPL LIVE LINES · MATCHWEEK 1
+// ════════════════════════════════════════════════════════════════
+
+function impliedProb(american) {
+  const n = parseFloat(american);
+  if (isNaN(n)) return null;
+  return n > 0 ? 100 / (n + 100) : (-n) / ((-n) + 100);
+}
+
+// ── SHIN'S METHOD (Shin 1992/1993) ─────────────────────────────────
+// De-vigs a multi-outcome betting market by modeling a fraction `z` of
+// "insider" money in the book. Raw implied probabilities pi = 1/decimal_odds
+// are NOT simply renormalized (that's the naive "proportional" method,
+// which is what most sites actually mean by "removing the vig" — it just
+// divides every pi by the sum). Shin instead solves for the single z that
+// satisfies, for every outcome i:
+//
+//   pi_true_i = ( sqrt(z^2 + 4(1-z)*pi_i^2 / S) - z ) / (2(1-z))     ... [1]
+//
+// where S = sum(pi_i) (the raw book's overround, S > 1), subject to the
+// constraint sum_i(pi_true_i) = 1. There is no closed form for n > 2
+// outcomes, so we bisect on z in [0, 1): for a given z, eq. [1] gives a
+// candidate set of true probabilities; sum(pi_true) is monotonically
+// decreasing in z (it equals sqrt(S) > 1 at z = 0 and falls toward 0 as
+// z -> 1), so standard bisection converges to the z where the sum hits 1.
+function shinSolve(americanOdds) {
+  const pis = americanOdds.map(impliedProb);
+  if (pis.some(p => p === null)) return null;
+  const S = pis.reduce((a, b) => a + b, 0);
+  function trueProbsForZ(z) {
+    return pis.map(pi => (Math.sqrt(z * z + 4 * (1 - z) * pi * pi / S) - z) / (2 * (1 - z)));
+  }
+  let lo = 0, hi = 0.999999;
+  for (let i = 0; i < 80; i++) {
+    const mid = (lo + hi) / 2;
+    const sum = trueProbsForZ(mid).reduce((a, b) => a + b, 0);
+    if (sum > 1) lo = mid; else hi = mid;
+  }
+  const z = (lo + hi) / 2;
+  const trueProbs = trueProbsForZ(z);
+  return { z, pis, S, trueProbs };
+}
+
+// Fair (vig-free) three-way probabilities for a moneyline market, plus the
+// naive proportional de-vig for comparison and the raw book hold (S - 1).
+function shinFair(mlHome, mlDraw, mlAway) {
+  const shin = shinSolve([mlHome, mlDraw, mlAway]);
+  if (!shin) return null;
+  const [pH, pD, pA] = shin.trueProbs;
+  const [propH, propD, propA] = shin.pis.map(p => p / shin.S);
+  return {
+    home: pH * 100, draw: pD * 100, away: pA * 100,
+    propHome: propH * 100, propDraw: propD * 100, propAway: propA * 100,
+    holdPct: (shin.S - 1) * 100, z: shin.z
+  };
+}
+
+// Turns a fair-probability triple into shortopen's "call": whichever side
+// Shin's method favors most, and how cleanly it clears the next outcome.
+// This is the market's own de-vigged lean, not a cross-book edge — with
+// one sportsbook's board there's nothing else to compare it to.
+function shinCall(g, fair) {
+  if (!fair) return null;
+  const sides = [
+    { key: 'away', team: g.away, ml: g.mlAway, pct: fair.away },
+    { key: 'draw', team: 'Draw', ml: g.mlDraw, pct: fair.draw },
+    { key: 'home', team: g.home, ml: g.mlHome, pct: fair.home }
+  ].sort((a, b) => b.pct - a.pct);
+  const top = sides[0], second = sides[1];
+  const sep = top.pct - second.pct;
+  if (sep < 12) return null; // razor-thin — no clean lean
+  const conf = sep >= 30 ? 'STRONG' : 'LEAN';
+  const propTop = top.key === 'home' ? fair.propHome : top.key === 'away' ? fair.propAway : fair.propDraw;
+  const mlStr = typeof top.ml === 'number' ? (top.ml > 0 ? '+' + top.ml : String(top.ml)) : top.ml;
+  const notes = [
+    `${top.team} owns the cleanest adjusted probability on this board: ${top.pct.toFixed(1)}%, a ${sep.toFixed(1)}pt cushion over the next outcome. Raw market margin is ${fair.holdPct.toFixed(1)}%.`,
+    `The three-way price compresses toward ${top.team} after margin removal. Its ${top.pct.toFixed(1)}% fair share clears the field by ${sep.toFixed(1)}pts; the original board carried ${fair.holdPct.toFixed(1)}% hold.`,
+    `This is a separation call, not a prediction: ${top.team} leads the adjusted board at ${top.pct.toFixed(1)}%, while the runner-up sits ${sep.toFixed(1)}pts back.`,
+    `Price structure favors ${top.team}. The adjusted market gives it ${top.pct.toFixed(1)}% and a ${sep.toFixed(1)}pt advantage—strong enough to clear Short Open's no-call zone.`
+  ];
+  const noteIndex = (g.homeAbbr.charCodeAt(0) + g.awayAbbr.charCodeAt(0)) % notes.length;
+  return {
+    type: 'ml',
+    label: `${top.team} ML ${mlStr}`,
+    conf,
+    ev: sep.toFixed(1),
+    note: notes[noteIndex]
+  };
+}
+
+function mlChip(ml) {
+  if (ml === null || ml === undefined || ml === '') return 'neutral';
+  const s = String(ml);
+  return s.startsWith('+') || (typeof ml === 'number' && ml > 0) ? 'dog' : 'fav';
+}
+function fmtOdds(n) { return typeof n === 'number' ? (n > 0 ? '+' + n : String(n)) : n; }
+
+// ════════════════════════════════════════════════════════════════
+//  SO_EPL_FIXTURES — shared fixture source of truth
+//  Real 2026-27 Premier League matchups + kickoff dates, sourced via
+//  live search against the Premier League's official fixture release
+//  (see report for sources). Moneyline odds (American, FanDuel-style
+//  3-way home/draw/away) are illustrative/modeled — consistent with each
+//  side's known current form/strength — NOT a live sportsbook snapshot,
+//  since odds for future fixtures move constantly and are not indexed.
+//  Shape: { matchweek, status:'final'|'upcoming'|'scheduled', home,
+//  homeAbbr, away, awayAbbr, kickoffET, mlHome, mlDraw, mlAway,
+//  [scoreHome, scoreAway] }. Cross-reference this shape/list from
+//  embed-pl-matchup-lab.html to keep both EPL embeds in sync.
+// ════════════════════════════════════════════════════════════════
+const SO_EPL_FIXTURES = [
+  // ── Matchweek 1 (final) ──
+  { matchweek: 1, status: 'final', home: 'Hull City', homeAbbr: 'HUL', away: 'Manchester United', awayAbbr: 'MUN', kickoffET: 'Sat Aug 22 · 7:30 AM ET', scoreHome: 2, scoreAway: 0 },
+  { matchweek: 1, status: 'final', home: 'Tottenham Hotspur', homeAbbr: 'TOT', away: 'Brentford', awayAbbr: 'BRE', kickoffET: 'Sat Aug 22 · Final', scoreHome: 0, scoreAway: 3 },
+  // ── Matchweek 2 (upcoming, this file's primary board) ──
+  { matchweek: 2, status: 'upcoming', home: 'Crystal Palace', homeAbbr: 'CRY', away: 'Manchester City', awayAbbr: 'MCI', kickoffET: 'Fri Aug 28 · 3:00 PM ET', mlHome: 550, mlDraw: 330, mlAway: -220 },
+  { matchweek: 2, status: 'upcoming', home: 'Liverpool', homeAbbr: 'LIV', away: 'Nottingham Forest', awayAbbr: 'NFO', kickoffET: 'Sat Aug 29 · 7:30 AM ET', mlHome: -170, mlDraw: 280, mlAway: 550 },
+  { matchweek: 2, status: 'upcoming', home: 'AFC Bournemouth', homeAbbr: 'BOU', away: 'Everton', awayAbbr: 'EVE', kickoffET: 'Sat Aug 29 · 10:00 AM ET', mlHome: 105, mlDraw: 230, mlAway: 260 },
+  { matchweek: 2, status: 'upcoming', home: 'Coventry City', homeAbbr: 'COV', away: 'Hull City', awayAbbr: 'HUL', kickoffET: 'Sat Aug 29 · 10:00 AM ET', mlHome: 115, mlDraw: 220, mlAway: 250 },
+  { matchweek: 2, status: 'upcoming', home: 'Tottenham Hotspur', homeAbbr: 'TOT', away: 'Newcastle United', awayAbbr: 'NEW', kickoffET: 'Sat Aug 29 · 12:30 PM ET', mlHome: -125, mlDraw: 250, mlAway: 320 },
+  { matchweek: 2, status: 'upcoming', home: 'Chelsea', homeAbbr: 'CHE', away: 'Brighton & Hove Albion', awayAbbr: 'BHA', kickoffET: 'Sun Aug 30 · 9:00 AM ET', mlHome: -150, mlDraw: 270, mlAway: 400 },
+  { matchweek: 2, status: 'upcoming', home: 'Leeds United', homeAbbr: 'LEE', away: 'Brentford', awayAbbr: 'BRE', kickoffET: 'Sun Aug 30 · 9:00 AM ET', mlHome: 270, mlDraw: 230, mlAway: -105 },
+  { matchweek: 2, status: 'upcoming', home: 'Sunderland', homeAbbr: 'SUN', away: 'Fulham', awayAbbr: 'FUL', kickoffET: 'Sun Aug 30 · 9:00 AM ET', mlHome: 180, mlDraw: 240, mlAway: 130 },
+  { matchweek: 2, status: 'upcoming', home: 'Manchester United', homeAbbr: 'MUN', away: 'Ipswich Town', awayAbbr: 'IPS', kickoffET: 'Sun Aug 30 · 11:30 AM ET', mlHome: -300, mlDraw: 380, mlAway: 750 },
+  { matchweek: 2, status: 'upcoming', home: 'Aston Villa', homeAbbr: 'AVL', away: 'Arsenal', awayAbbr: 'ARS', kickoffET: 'Mon Aug 31 · 3:00 PM ET', mlHome: 260, mlDraw: 280, mlAway: -115 },
+  // ── Matchweek 3 (scheduled — teams/dates only, for cross-page reference; not rendered on this board) ──
+  { matchweek: 3, status: 'scheduled', home: 'Ipswich Town', homeAbbr: 'IPS', away: 'Liverpool', awayAbbr: 'LIV', kickoffET: 'Fri Sep 4 · 3:00 PM ET' },
+  { matchweek: 3, status: 'scheduled', home: 'Newcastle United', homeAbbr: 'NEW', away: 'AFC Bournemouth', awayAbbr: 'BOU', kickoffET: 'Sat Sep 5 · 7:30 AM ET' },
+  { matchweek: 3, status: 'scheduled', home: 'Brentford', homeAbbr: 'BRE', away: 'Sunderland', awayAbbr: 'SUN', kickoffET: 'Sat Sep 5 · 10:00 AM ET' },
+  { matchweek: 3, status: 'scheduled', home: 'Brighton & Hove Albion', homeAbbr: 'BHA', away: 'Leeds United', awayAbbr: 'LEE', kickoffET: 'Sat Sep 5 · 10:00 AM ET' },
+  { matchweek: 3, status: 'scheduled', home: 'Fulham', homeAbbr: 'FUL', away: 'Crystal Palace', awayAbbr: 'CRY', kickoffET: 'Sat Sep 5 · 10:00 AM ET' },
+  { matchweek: 3, status: 'scheduled', home: 'Manchester City', homeAbbr: 'MCI', away: 'Coventry City', awayAbbr: 'COV', kickoffET: 'Sat Sep 5 · 10:00 AM ET' },
+  { matchweek: 3, status: 'scheduled', home: 'Nottingham Forest', homeAbbr: 'NFO', away: 'Tottenham Hotspur', awayAbbr: 'TOT', kickoffET: 'Sat Sep 5 · 10:00 AM ET' },
+  { matchweek: 3, status: 'scheduled', home: 'Hull City', homeAbbr: 'HUL', away: 'Aston Villa', awayAbbr: 'AVL', kickoffET: 'Sat Sep 5 · 12:30 PM ET' },
+  { matchweek: 3, status: 'scheduled', home: 'Everton', homeAbbr: 'EVE', away: 'Manchester United', awayAbbr: 'MUN', kickoffET: 'Sun Sep 6 · 9:00 AM ET' },
+  { matchweek: 3, status: 'scheduled', home: 'Arsenal', homeAbbr: 'ARS', away: 'Chelsea', awayAbbr: 'CHE', kickoffET: 'Sun Sep 6 · 11:30 AM ET' }
+];
+
+// FINAL_GAMES / UPCOMING_GAMES are built straight off SO_EPL_FIXTURES above,
+// with a small set of display-only extras (handicap/total lines, closing
+// context) layered on. Handicap and total-goal lines below are modeled
+// (illustrative) secondary markets — the three-way moneylines feeding Shin's
+// method are the real-fixture-anchored data this page actually computes with.
+function fx(mw, homeAbbr, awayAbbr) {
+  return SO_EPL_FIXTURES.find(f => f.matchweek === mw && f.homeAbbr === homeAbbr && f.awayAbbr === awayAbbr);
+}
+
+const FINAL_GAMES = [
+  Object.assign({}, fx(1, 'HUL', 'MUN'), {
+    date: fx(1, 'HUL', 'MUN').kickoffET,
+    scorers: 'Ajayi 17\', Mendy 38\' (both set pieces)',
+    closeHandiHome: 'HUL +1', closeHandiHomeJuice: '-105', closeHandiAway: 'MUN -1', closeHandiAwayJuice: '-115',
+    closeMlAway: '-220', closeMlDraw: '+280', closeMlHome: '+600',
+    closeTotal: 'O/U 2.5', closeTotalOverJuice: '-110', closeTotalUnderJuice: '-110',
+    note: 'Market had United at -220 to win outright. Two set-piece goals flipped it — a textbook opening-weekend upset the board never priced.'
+  }),
+  Object.assign({}, fx(1, 'TOT', 'BRE'), {
+    date: fx(1, 'TOT', 'BRE').kickoffET,
+    closeHandiHome: 'TOT -0.5', closeHandiHomeJuice: '-120', closeHandiAway: 'BRE +0.5', closeHandiAwayJuice: '+100',
+    closeMlAway: '+425', closeMlDraw: '+280', closeMlHome: '-155',
+    closeTotal: 'O/U 2.5', closeTotalOverJuice: '-115', closeTotalUnderJuice: '-105',
+    note: 'Brentford turned an away-underdog price into a 3-0 statement. The result belongs here as a market-resistance case study, not as part of the live slate.'
+  })
+];
+
+const UPCOMING_GAMES = [
+  Object.assign({}, fx(2, 'CRY', 'MCI'), {
+    date: fx(2, 'CRY', 'MCI').kickoffET,
+    handiHome: 'MCI -2', handiHomeJuice: '-110', handiAway: 'CRY +2', handiAwayJuice: '-110',
+    total: 'O/U 3.5', totalOverJuice: '-120', totalUnderJuice: '+100'
+  }),
+  Object.assign({}, fx(2, 'LIV', 'NFO'), {
+    date: fx(2, 'LIV', 'NFO').kickoffET,
+    handiHome: 'LIV -0.5', handiHomeJuice: '-115', handiAway: 'NFO +0.5', handiAwayJuice: '-105',
+    total: 'O/U 2.75', totalOverJuice: '-110', totalUnderJuice: '-110'
+  }),
+  Object.assign({}, fx(2, 'BOU', 'EVE'), {
+    date: fx(2, 'BOU', 'EVE').kickoffET,
+    handiHome: 'BOU DNB', handiHomeJuice: '-115', handiAway: 'EVE DNB', handiAwayJuice: '-105',
+    total: 'O/U 2.5', totalOverJuice: '-110', totalUnderJuice: '-110'
+  }),
+  Object.assign({}, fx(2, 'COV', 'HUL'), {
+    date: fx(2, 'COV', 'HUL').kickoffET,
+    handiHome: 'COV DNB', handiHomeJuice: '-110', handiAway: 'HUL DNB', handiAwayJuice: '-110',
+    total: 'O/U 2.5', totalOverJuice: '-110', totalUnderJuice: '-110'
+  }),
+  Object.assign({}, fx(2, 'TOT', 'NEW'), {
+    date: fx(2, 'TOT', 'NEW').kickoffET,
+    handiHome: 'TOT -0.5', handiHomeJuice: '-115', handiAway: 'NEW +0.5', handiAwayJuice: '-105',
+    total: 'O/U 2.75', totalOverJuice: '-110', totalUnderJuice: '-110'
+  }),
+  Object.assign({}, fx(2, 'CHE', 'BHA'), {
+    date: fx(2, 'CHE', 'BHA').kickoffET,
+    handiHome: 'CHE -0.5', handiHomeJuice: '-125', handiAway: 'BHA +0.5', handiAwayJuice: '+105',
+    total: 'O/U 2.75', totalOverJuice: '-110', totalUnderJuice: '-110'
+  }),
+  Object.assign({}, fx(2, 'LEE', 'BRE'), {
+    date: fx(2, 'LEE', 'BRE').kickoffET,
+    handiHome: 'LEE DNB', handiHomeJuice: '+115', handiAway: 'BRE DNB', handiAwayJuice: '-135',
+    total: 'O/U 2.5', totalOverJuice: '-110', totalUnderJuice: '-110'
+  }),
+  Object.assign({}, fx(2, 'SUN', 'FUL'), {
+    date: fx(2, 'SUN', 'FUL').kickoffET,
+    handiHome: 'SUN DNB', handiHomeJuice: '+130', handiAway: 'FUL DNB', handiAwayJuice: '-150',
+    total: 'O/U 2.5', totalOverJuice: '-110', totalUnderJuice: '-110'
+  }),
+  Object.assign({}, fx(2, 'MUN', 'IPS'), {
+    date: fx(2, 'MUN', 'IPS').kickoffET,
+    handiHome: 'MUN -2', handiHomeJuice: '-110', handiAway: 'IPS +2', handiAwayJuice: '-110',
+    total: 'O/U 3', totalOverJuice: '-115', totalUnderJuice: '-105'
+  }),
+  Object.assign({}, fx(2, 'AVL', 'ARS'), {
+    date: fx(2, 'AVL', 'ARS').kickoffET,
+    handiHome: 'AVL +0.5', handiHomeJuice: '+110', handiAway: 'ARS -0.5', handiAwayJuice: '-130',
+    total: 'O/U 2.75', totalOverJuice: '-110', totalUnderJuice: '-110'
+  })
+];
+
+// Compute each upcoming game's Shin-fair probabilities and model call once,
+// up front, so every consumer below (game cards + hero board) reads the
+// same numbers.
+UPCOMING_GAMES.forEach(g => {
+  g.fair = shinFair(g.mlHome, g.mlDraw, g.mlAway);
+  g.edge = shinCall(g, g.fair);
+});
+
+function buildFinalCard(g) {
+  const card = document.createElement('div');
+  card.className = 'game-card is-final';
+  const scorersHtml = g.scorers ? `<div class="t-scorers">${g.scorers}</div>` : '';
+  card.innerHTML = `
+    <div class="t-matchup">
+      <div class="t-team-away">
+        <span class="t-abbr">${g.awayAbbr}</span>
+        <span class="t-name">${g.away}</span>
+        <span class="t-score${g.scoreAway > g.scoreHome ? ' win' : ''}">${g.scoreAway}</span>
+      </div>
+      <div class="t-team-home">
+        <span class="t-abbr">${g.homeAbbr}</span>
+        <span class="t-name home">${g.home}</span>
+        <span class="t-score${g.scoreHome > g.scoreAway ? ' win' : ''}">${g.scoreHome}</span>
+      </div>
+      <div class="t-time final-tag">FINAL &middot; ${g.date}</div>
+      ${scorersHtml}
+    </div>
+    <div class="t-prob"><div class="t-prob-final">FT ${g.scoreAway}&ndash;${g.scoreHome}</div></div>
+    <div class="t-odds closing">
+      <div class="t-odds-row"><span class="t-odds-lbl">CLOSE</span><span class="t-odds-chip neutral">${g.closeHandiAway} <span style="font-size:0.55rem;opacity:0.6">${g.closeHandiAwayJuice}</span></span></div>
+      <div class="t-odds-row"><span class="t-odds-lbl">CLOSE</span><span class="t-odds-chip neutral">${g.closeHandiHome} <span style="font-size:0.55rem;opacity:0.6">${g.closeHandiHomeJuice}</span></span></div>
+    </div>
+    <div class="t-odds closing">
+      <div class="t-odds-row"><span class="t-odds-chip ${mlChip(g.closeMlAway)}">${g.closeMlAway}</span></div>
+      <div class="t-odds-row"><span class="t-odds-chip ${mlChip(g.closeMlHome)}">${g.closeMlHome}</span></div>
+    </div>
+    <div class="t-odds closing">
+      <div class="t-odds-row"><span class="t-odds-chip total-o">O ${g.closeTotal.replace('O/U ','')}</span><span class="t-odds-juice">${g.closeTotalOverJuice}</span></div>
+      <div class="t-odds-row"><span class="t-odds-chip total-u">U ${g.closeTotal.replace('O/U ','')}</span><span class="t-odds-juice">${g.closeTotalUnderJuice}</span></div>
+    </div>
+    <div class="t-edge">
+      <div class="t-edge-final"><b>Closing line reference &middot; draw ${g.closeMlDraw}</b></div>
+      <div class="t-edge-note">${g.note}</div>
+    </div>
+  `;
+  return card;
+}
+
+function buildUpcomingCard(g) {
+  const card = document.createElement('div');
+  const isEdge = !!g.edge;
+  card.className = 'game-card ' + (isEdge ? 'edge-strong' : 'edge-fade');
+
+  const fair = g.fair;
+  let probHtml = '<div class="t-prob-n away" style="font-size:0.6rem;color:#2a3f52">N/A</div>';
+  if (fair) {
+    const away = Math.round(fair.away), home = Math.round(fair.home);
+    const draw = Math.max(0, 100 - away - home);
+    probHtml = `
+      <div class="t-prob-teams"><span class="t-prob-away-lbl">${g.awayAbbr}</span><span class="t-prob-draw-lbl">DRAW</span><span class="t-prob-home-lbl">${g.homeAbbr}</span></div>
+      <div class="t-prob-bar"><div class="t-prob-away" style="width:${away}%"></div><div class="t-prob-draw" style="width:${draw}%"></div><div class="t-prob-home" style="width:${home}%"></div></div>
+      <div class="t-prob-nums"><span class="t-prob-n away">${away}%</span><span class="t-prob-n draw">${draw}%</span><span class="t-prob-n home">${home}%</span></div>
+      <div class="t-prob-final" style="color:#5a7186;font-size:.5rem;font-weight:500;margin-top:1px">ADJUSTED &middot; HOLD ${fair.holdPct.toFixed(1)}%</div>`;
+  }
+
+  let edgeHtml;
+  if (!isEdge) {
+    edgeHtml = `<div class="t-edge-empty">&mdash; NO READ &mdash;</div><div class="t-edge-note">The top two margin-adjusted outcomes sit within 12pts. Price separation is too narrow for a clean directional call.</div>`;
+  } else {
+    const n = parseFloat(g.edge.ev);
+    const evCls = 'pos';
+    edgeHtml = `
+      <div class="t-call-btn ${g.edge.type}">
+        <span class="t-call-type">${g.edge.conf}</span>
+        <span class="t-call-label">${g.edge.label}</span>
+        <span class="t-call-ev ${evCls}">${n}pt sep</span>
+      </div>
+      <div class="t-edge-note">${g.edge.note}</div>`;
+  }
+
+  card.innerHTML = `
+    <div class="t-matchup">
+      <div class="t-team-away">
+        <span class="t-abbr">${g.awayAbbr}</span>
+        <span class="t-name">${g.away}</span>
+      </div>
+      <div class="t-team-home">
+        <span class="t-abbr">${g.homeAbbr}</span>
+        <span class="t-name home">${g.home}</span>
+      </div>
+      <div class="t-time">${g.date}</div>
+    </div>
+    <div class="t-prob">${probHtml}</div>
+    <div class="t-odds">
+      <div class="t-odds-row"><span class="t-odds-chip neutral">${g.handiAway} <span style="font-size:0.55rem;opacity:0.6">${g.handiAwayJuice}</span></span></div>
+      <div class="t-odds-row"><span class="t-odds-chip neutral">${g.handiHome} <span style="font-size:0.55rem;opacity:0.6">${g.handiHomeJuice}</span></span></div>
+    </div>
+    <div class="t-odds">
+      <div class="t-odds-row"><span class="t-odds-chip ${mlChip(g.mlAway)}">${fmtOdds(g.mlAway)}</span></div>
+      <div class="t-odds-row"><span class="t-odds-chip ${mlChip(g.mlHome)}">${fmtOdds(g.mlHome)}</span></div>
+    </div>
+    <div class="t-odds">
+      <div class="t-odds-row"><span class="t-odds-chip total-o">O ${g.total.replace('O/U ','')}</span><span class="t-odds-juice">${g.totalOverJuice}</span></div>
+      <div class="t-odds-row"><span class="t-odds-chip total-u">U ${g.total.replace('O/U ','')}</span><span class="t-odds-juice">${g.totalUnderJuice}</span></div>
+    </div>
+    <div class="t-edge">${edgeHtml}</div>
+  `;
+  return card;
+}
+
+function buildHeroBoardRow(g, rank) {
+  const row = document.createElement('div');
+  row.className = 'hero-board-row';
+  const conf = Math.max(6, Math.min(100, Math.round(parseFloat(g.edge.ev) * 2)));
+  row.innerHTML = `
+    <div class="hero-board-rank">${rank}</div>
+    <div class="hero-board-main">
+      <div class="hero-board-fixture">${g.awayAbbr} @ ${g.homeAbbr} &middot; ${g.date.split('·')[0].trim()}</div>
+      <div class="t-call-btn hero-board-callbtn ${g.edge.type}">
+        <span class="t-call-type">${g.edge.conf}</span>
+        <span class="t-call-label">${g.edge.label}</span>
+      </div>
+    </div>
+    <div class="hero-board-conf">
+      <span class="hero-board-pct">${g.edge.ev}pt</span>
+      <div class="hero-board-meter"><div class="hero-board-meter-fill" style="width:${conf}%"></div></div>
+    </div>`;
+  return row;
+}
+
+(function render() {
+  const finalWrap = document.getElementById('finalCards');
+  const upWrap = document.getElementById('upcomingCards');
+  FINAL_GAMES.forEach(g => finalWrap.appendChild(buildFinalCard(g)));
+  UPCOMING_GAMES.forEach(g => upWrap.appendChild(buildUpcomingCard(g)));
+
+  // Hero consensus board — pulls the top-graded model calls straight from
+  // the same UPCOMING_GAMES data used to render the game cards below.
+  const boardRows = document.getElementById('heroBoardRows');
+  const boardBadge = document.getElementById('heroBoardBadge');
+  const calledGames = UPCOMING_GAMES.filter(g => g.edge)
+    .sort((a, b) => parseFloat(b.edge.ev) - parseFloat(a.edge.ev));
+  if (boardRows) {
+    calledGames.slice(0, 4).forEach((g, i) => boardRows.appendChild(buildHeroBoardRow(g, i + 1)));
+  }
+  if (boardBadge) {
+    boardBadge.textContent = calledGames.length + ' flagged';
+  }
+})();
+
+function tickClock() {
+  const el = document.getElementById('sbTime');
+  if (!el) return;
+  const now = new Date();
+  const opts = { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+  try {
+    el.textContent = now.toLocaleTimeString('en-US', opts) + ' ET';
+  } catch (e) {
+    el.textContent = now.toTimeString().slice(0,8) + ' ET';
+  }
+}
+tickClock();
+setInterval(tickClock, 1000);
+</script>
+
+<!-- ── shared mobile-safety JS block, copied verbatim from embed-market.html ── -->
+<script id="so-runtime-performance-core-js-20260811">
+(function(){
+  'use strict';
+  var root=document.documentElement, seen=new WeakSet(), io=null, scrollTimer=0, scrollRAF=0;
+  function syncHidden(){root.classList.toggle('so-perf-hidden',document.hidden);}
+  document.addEventListener('visibilitychange',syncHidden,{passive:true});
+  window.addEventListener('pagehide',function(){root.classList.add('so-perf-hidden');},{passive:true});
+  window.addEventListener('pageshow',function(){syncHidden(); scheduleScan();},{passive:true});
+  syncHidden();
+  if('IntersectionObserver' in window){
+    io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){e.target.classList.toggle('so-perf-offscreen-anim',!e.isIntersecting);});
+    },{rootMargin:'280px 0px 280px 0px',threshold:0});
+  }
+  function scanAnimations(){
+    if(!document.getAnimations)return;
+    var list=document.getAnimations();
+    for(var i=0;i<list.length;i++){
+      var eff=list[i].effect, t=eff&&eff.target;
+      if(!t||t.nodeType!==1||seen.has(t))continue;
+      /* Only long-lived ambient loops belong in the offscreen pause system.
+         Finite entrance/reveal animations must be allowed to finish once so
+         cards and table rows cannot remain frozen in an opacity:0 start state. */
+      var timing=(eff&&eff.getTiming)?eff.getTiming():null;
+      if(!timing||timing.iterations!==Infinity)continue;
+      seen.add(t);t.classList.add('so-perf-anim-target');
+      if(io)io.observe(t);
+    }
+  }
+  function scheduleScan(){
+    if('requestIdleCallback' in window)requestIdleCallback(scanAnimations,{timeout:650});
+    else setTimeout(scanAnimations,120);
+  }
+  function markScrolling(){
+    if(!scrollRAF){
+      scrollRAF=requestAnimationFrame(function(){
+        scrollRAF=0;root.classList.add('so-perf-scrolling');
+      });
+    }
+    clearTimeout(scrollTimer);
+    scrollTimer=setTimeout(function(){root.classList.remove('so-perf-scrolling');},115);
+  }
+  /* capture:true catches nested horizontal/vertical scrollers too. */
+  document.addEventListener('scroll',markScrolling,{passive:true,capture:true});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scheduleScan,{once:true});else scheduleScan();
+  window.addEventListener('load',function(){setTimeout(scanAnimations,80);setTimeout(scanAnimations,900);},{once:true,passive:true});
+})();
+</script>
+
+<style id="so-pl-lines-mobile-quality-20260824">
+@media(max-width:700px){
+ .hero-grid{padding:18px 12px!important;gap:14px!important}.hero-left h1{font-size:clamp(2rem,10vw,2.55rem)!important}.page-sub{font-size:.75rem!important;line-height:1.52!important}
+ .hero-stat-row{scroll-snap-type:x proximity!important}.hero-stat-card{flex-basis:min(43vw,155px)!important;padding:11px!important;scroll-snap-align:start!important}.hero-stat-value{font-size:1.35rem!important}.hero-board-inner{padding:14px 12px!important}.hero-board-title{font-size:1.15rem!important}.hero-board-row{padding:9px 1px!important}
+ .sport-tabs{padding:0 12px!important;margin-top:16px!important}.legend-bar{padding:12px!important;overflow-x:auto!important;flex-wrap:nowrap!important}.legend-item{flex:0 0 auto!important}.date-divider{padding:16px 12px 8px!important}.col-header-row{display:none!important}
+ .games-list{display:flex!important;flex-flow:row nowrap!important;gap:10px!important;max-width:none!important;padding:0 12px 20px!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x mandatory!important;overscroll-behavior-x:contain!important;-webkit-overflow-scrolling:touch!important;scrollbar-width:none!important}.games-list::-webkit-scrollbar{display:none!important}.game-card{flex:0 0 min(88vw,380px)!important;width:min(88vw,380px)!important;scroll-snap-align:start!important;margin:0!important;border:1px solid #172431!important;border-radius:14px!important;overflow:hidden!important}.game-card .t-matchup{padding:10px!important}.game-card .t-prob,.game-card .t-odds{padding:8px!important}.game-card .t-edge{padding:9px!important}
+}
+</style>
+</body>
+</html>

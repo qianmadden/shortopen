@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Transfer Market</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="shortcut icon" href="favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101319;
+  --gold:#f4b942;
+  --green:#22d97e;
+  --green2:#22c55e;
+  --blue:#57a7ff;
+  --red:#ff5d6c;
+  --purple:#a78bfa;
+  --teal:#2dd4bf;
+  --accent:#ff4d4d;
+  --text:#9dafc2;
+  --text2:#edf3f7;
+  --muted:#4d6070;
+  --muted2:#748397;
+  --line:rgba(255,255,255,.075);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;max-width:100%;overflow-x:hidden}
+body{
+  background:
+    linear-gradient(rgba(73,92,113,.017) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(73,92,113,.017) 1px,transparent 1px),
+    radial-gradient(760px 540px at 4% 92%,rgba(87,167,255,.10),transparent 66%),
+    radial-gradient(980px 620px at 10% 10%,rgba(244,185,66,.05),transparent 68%),
+    radial-gradient(940px 620px at 90% 18%,rgba(34,217,126,.05),transparent 68%),
+    linear-gradient(180deg,rgba(12,16,22,.62) 0%,rgba(9,13,19,.82) 56%,rgba(8,12,18,.88) 100%),
+    #101319;
+  background-size:112px 112px,112px 112px,auto,auto,auto,auto,auto;
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  line-height:1.6;
+  padding:22px;
+}
+.wrap{max-width:1180px;margin:0 auto;width:100%;min-width:0}
+a{color:inherit}
+.mono{font-family:'DM Mono',monospace}
+
+/* ---------- hero ---------- */
+.hero{
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:radial-gradient(ellipse 720px 420px at 12% 8%,rgba(244,185,66,.09),transparent 62%),rgba(8,17,26,.95);
+  padding:0;
+  position:relative;
+  overflow:hidden;
+  margin-bottom:18px;
+  isolation:isolate;
+}
+.hero::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:radial-gradient(420px 220px at 88% 0%,rgba(244,185,66,.08),transparent 70%);
+}
+.hero-glow{position:absolute;inset:-15%;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(440px 300px at 16% 22%,rgba(244,185,66,.16),transparent 70%),
+    radial-gradient(400px 280px at 86% 78%,rgba(34,217,126,.13),transparent 70%),
+    radial-gradient(360px 240px at 60% 4%,rgba(87,167,255,.11),transparent 70%);
+  animation:heroGlowPulse 9s ease-in-out infinite;
+}
+@keyframes heroGlowPulse{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.07)}}
+
+.hero-content{position:relative;z-index:2;padding:36px 38px}
+.ey{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.ey .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(34,217,126,.18);animation:dotPulse 2.1s ease-in-out infinite}
+@keyframes dotPulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hero h1{margin:0 0 10px;font-size:clamp(2.2rem,4.4vw,2.9rem);line-height:1.02;color:var(--text2);font-weight:900;letter-spacing:-.01em}
+.shimmer{background:linear-gradient(90deg,var(--gold) 20%,#fff3d0 45%,var(--gold) 70%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shimmerMove 3.4s linear infinite}
+@keyframes shimmerMove{to{background-position:-220% 0}}
+.hero p{margin:0;max-width:640px;font-size:.92rem;color:var(--text)}
+
+.hero-metrics{display:flex;gap:14px;margin-top:22px;flex-wrap:wrap}
+.hero-metric{border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.03);padding:11px 18px;min-width:160px}
+.hm-lbl{font-family:'DM Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted2);margin-bottom:5px}
+.hm-val{font-family:'DM Mono',monospace;font-size:1.34rem;font-weight:700;color:var(--text2)}
+
+.cur-toggle{display:inline-flex;gap:4px;margin-top:20px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:999px;padding:4px}
+.cur-pill{border:none;background:transparent;color:var(--muted2);font-family:'DM Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.03em;padding:7px 15px;border-radius:999px;cursor:pointer;transition:background .15s ease,color .15s ease}
+.cur-pill.active{background:var(--gold);color:#1a1204}
+.cur-pill:hover:not(.active){color:var(--text2)}
+.cur-note{font-family:'DM Mono',monospace;font-size:9.5px;color:var(--muted2);margin-top:8px}
+
+/* ---------- hero money-rain animation ----------
+   Elements are laid out at a static top/left position that already sits
+   inside the hero (never off-screen), then drift/rotate/fade gently in
+   place via keyframes. This keeps them inside the viewport at every frame,
+   including whatever frame the site's offscreen-pause runtime freezes them
+   at, instead of resting at an off-screen base position that a freeze could
+   strand outside the visible hero permanently. */
+.money-rain{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none}
+.bill,.mcoin{position:absolute;animation-name:billFloat;animation-timing-function:ease-in-out;animation-iteration-count:infinite;will-change:transform,opacity}
+.bill{border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-weight:800;color:rgba(255,255,255,.85)}
+.bill::after{content:'';position:absolute;inset:3px;border:1px dashed rgba(255,255,255,.28);border-radius:3px}
+.bill.eur{background:linear-gradient(135deg,#1d7a46,#22d97e 55%,#0e5c33)}
+.bill.gbp{background:linear-gradient(135deg,#8a5f13,#f4b942 55%,#a97a24)}
+.bill.usd{background:linear-gradient(135deg,#1f5f3a,#3fae6c 55%,#124026)}
+.bill{box-shadow:inset 0 0 0 1px rgba(255,255,255,.22),0 4px 10px rgba(0,0,0,.35)}
+.mcoin{border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-weight:800;box-shadow:0 3px 7px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,255,255,.28)}
+.mcoin::before{content:'';position:absolute;top:9%;left:15%;width:34%;height:19%;background:rgba(255,255,255,.55);border-radius:50%;filter:blur(1.4px);transform:rotate(-30deg)}
+.mcoin.gold{background:radial-gradient(circle at 32% 26%,#ffe9b0,var(--gold) 55%,#a97a24 100%);color:#3a2705}
+.mcoin.green{background:radial-gradient(circle at 32% 26%,#c3f3dc,var(--green) 55%,#0e7a44 100%);color:#062c19}
+.mcoin.blue{background:radial-gradient(circle at 32% 26%,#cfe6ff,var(--blue) 55%,#1e5a9c 100%);color:#062440}
+.layer-back{filter:blur(1.6px);opacity:.3}
+.layer-mid{opacity:.5}
+.layer-front{opacity:.8}
+@keyframes billFloat{
+  0%{transform:translate(0,0) rotate(var(--r0,-8deg));opacity:.65}
+  25%{transform:translate(var(--sway,14px),-14px) rotate(var(--r1,9deg));opacity:1}
+  50%{transform:translate(0,6px) rotate(var(--r0,-8deg));opacity:.8}
+  75%{transform:translate(calc(var(--sway,14px) * -1),-8px) rotate(var(--r2,-6deg));opacity:1}
+  100%{transform:translate(0,0) rotate(var(--r0,-8deg));opacity:.65}
+}
+@media(prefers-reduced-motion:reduce){
+  .bill,.mcoin,.hero-glow,.shimmer,.ey .dot{animation:none!important}
+  .shimmer{-webkit-text-fill-color:var(--gold);color:var(--gold)}
+  .money-rain{opacity:.3}
+}
+@media(max-width:760px){
+  .money-rain{display:none}
+}
+
+/* ---------- stat strip ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.stat{
+  border:1px solid var(--line);border-radius:14px;background:rgba(8,17,26,.93);
+  padding:16px 16px;min-width:0;
+}
+.stat .lbl{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted2);margin-bottom:8px}
+.stat .val{font-family:'DM Mono',monospace;font-size:1.55rem;font-weight:500;color:var(--text2)}
+.stat .sub{font-size:11px;color:var(--muted2);margin-top:4px}
+
+/* ---------- panels ---------- */
+.panel{
+  border:1px solid var(--line);border-radius:16px;background:rgba(8,17,26,.93);
+  margin-bottom:18px;overflow:hidden;
+}
+.ph{padding:13px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ph .t{font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted2);font-weight:500}
+.ph .t b{color:var(--text2);font-weight:700;letter-spacing:0;text-transform:none;font-size:13px}
+.ph .note{font-size:11px;color:var(--muted2)}
+.pbody{padding:16px}
+
+/* ---------- tags / badges ---------- */
+.tag{display:inline-flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;padding:2px 6px;border-radius:5px;line-height:1.5}
+.tag.gold{background:rgba(244,185,66,.12);color:var(--gold)}
+.tag.green{background:rgba(34,217,126,.12);color:var(--green)}
+.tag.blue{background:rgba(87,167,255,.12);color:var(--blue)}
+.tag.red{background:rgba(255,93,108,.12);color:var(--red)}
+.tag.muted{background:rgba(157,175,194,.10);color:var(--muted2)}
+.est{display:inline-block;font-family:'DM Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:.05em;color:var(--muted2);background:rgba(157,175,194,.10);border-radius:4px;padding:1.5px 4px;margin-left:5px;vertical-align:1px}
+
+.pos-pill{display:inline-block;font-family:'DM Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.04em;padding:2px 6px;border-radius:5px}
+.pos-GKP{background:rgba(87,167,255,.12);color:var(--blue)}
+.pos-DEF{background:rgba(34,217,126,.12);color:var(--green)}
+.pos-MID{background:rgba(244,185,66,.12);color:var(--gold)}
+.pos-FWD{background:rgba(255,93,108,.12);color:var(--red)}
+
+/* ---------- most valuable players: leaderboard bars ---------- */
+.mv-list{display:flex;flex-direction:column;padding:4px 16px 12px;min-width:0}
+.mv-podium{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px 16px 10px}
+.podium-card{position:relative;min-height:150px;padding:16px;border:1px solid rgba(244,185,66,.18);border-radius:15px;background:radial-gradient(circle at 80% 15%,rgba(244,185,66,.13),transparent 42%),linear-gradient(145deg,rgba(255,255,255,.035),rgba(7,14,22,.96));overflow:hidden}
+.podium-card:first-child{border-color:rgba(244,185,66,.42);box-shadow:inset 0 1px rgba(255,255,255,.05),0 14px 34px rgba(244,185,66,.06)}
+.podium-rank{font:800 9px 'DM Mono',monospace;letter-spacing:.12em;color:var(--gold)}
+.podium-name{margin-top:16px;color:var(--text2);font-size:1.08rem;font-weight:850;line-height:1.15}
+.podium-club{margin-top:5px;color:var(--muted2);font-size:11px}
+.podium-value{margin-top:18px;color:var(--gold);font:800 1.35rem 'DM Mono',monospace}
+.podium-track{height:5px;margin-top:11px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}.podium-track i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--gold),#fff0bd)}
+.mv-row{display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);min-width:0}
+.mv-row:last-child{border-bottom:none}
+.mv-row:hover{background:rgba(255,255,255,.02)}
+.mv-rank{font-family:'DM Mono',monospace;font-size:12.5px;color:var(--muted);font-weight:700;text-align:center}
+.mv-rank.top3{color:var(--gold);font-size:14px}
+.mv-main{min-width:0}
+.mv-top{display:flex;align-items:center;gap:7px;margin-bottom:7px;min-width:0;flex-wrap:wrap}
+.mv-crest{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;width:25px;height:25px;border-radius:7px;font-family:'DM Mono',monospace;font-size:9px;font-weight:800;letter-spacing:.01em}
+.mv-crest.c-gold{background:rgba(244,185,66,.15);color:var(--gold)}
+.mv-crest.c-green{background:rgba(34,217,126,.15);color:var(--green)}
+.mv-crest.c-blue{background:rgba(87,167,255,.15);color:var(--blue)}
+.mv-crest.c-red{background:rgba(255,93,108,.15);color:var(--red)}
+.mv-crest.c-purple{background:rgba(167,139,250,.15);color:var(--purple)}
+.mv-crest.c-teal{background:rgba(45,212,191,.15);color:var(--teal)}
+.mv-name{color:var(--text2);font-weight:700;font-size:.85rem;min-width:0}
+.mv-barwrap{height:6px;border-radius:4px;background:rgba(255,255,255,.055);overflow:hidden;min-width:0}
+.mv-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,#c98f22,var(--gold));transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.mv-bar.top3{background:linear-gradient(90deg,var(--gold),#ffe9ab)}
+.mv-side{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex:0 0 auto}
+.mv-val{font-family:'DM Mono',monospace;font-weight:700;color:var(--text2);font-size:.9rem;white-space:nowrap}
+.mv-team{font-size:9.5px;color:var(--muted2);white-space:nowrap;font-family:'DM Mono',monospace;letter-spacing:.02em}
+
+/* ---------- card grid (targets / gems) ---------- */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;padding:16px;min-width:0}
+.p-card{
+  border:1px solid var(--line);border-radius:12px;background:rgba(16,24,33,.6);
+  padding:14px;min-width:0;
+}
+.p-card .row1{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px}
+.p-card .n{color:var(--text2);font-weight:700;font-size:.95rem}
+.p-card .team{color:var(--muted2);font-size:11.5px;margin-top:2px}
+.p-card .val{font-family:'DM Mono',monospace;font-weight:700;color:var(--gold);font-size:1.05rem;white-space:nowrap}
+.p-card .blurb{font-size:11.5px;color:var(--text);margin-top:8px;line-height:1.55}
+.p-card .tagrow{margin-top:9px;display:flex;gap:6px;flex-wrap:wrap}
+
+/* ---------- transfer targets: value-vs-club-tier meter ---------- */
+.tm-card{border:1px solid rgba(87,167,255,.16);border-radius:12px;background:linear-gradient(165deg,rgba(87,167,255,.055),rgba(16,24,33,.6));padding:14px;min-width:0;transition:transform .18s ease,border-color .18s ease}
+.tm-card:hover{transform:translateY(-2px);border-color:rgba(87,167,255,.36)}
+.tm-card .row1{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.tm-card .n{color:var(--text2);font-weight:700;font-size:.95rem}
+.tm-card .team{color:var(--muted2);font-size:11.5px;margin-top:2px}
+.tm-card .val{font-family:'DM Mono',monospace;font-weight:700;color:var(--text2);font-size:1.02rem;white-space:nowrap}
+.tm-ratio{display:flex;align-items:center;gap:7px;margin-top:10px;flex-wrap:wrap}
+.tm-ratio .num{font-family:'DM Mono',monospace;font-size:12.5px;font-weight:800;color:var(--blue)}
+.tm-ratio .lbl{font-size:10px;color:var(--muted2);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.05em}
+.tm-meter{position:relative;height:7px;border-radius:4px;background:rgba(255,255,255,.06);margin-top:8px;min-width:0}
+.tm-meter .fill{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:linear-gradient(90deg,#2f6fbf,var(--blue));transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.tm-meter .tick{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--muted2);opacity:.7}
+.tm-meter .tick::after{content:'POS AVG';position:absolute;top:11px;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:.04em;color:var(--muted2);white-space:nowrap}
+.tm-card .blurb{font-size:11.5px;color:var(--text);margin-top:16px;line-height:1.55}
+.tm-card .tagrow{margin-top:9px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+
+/* ---------- hidden gems: sleeper editorial card ---------- */
+.gem-card{border:1px solid rgba(34,217,126,.18);border-radius:14px;background:linear-gradient(165deg,rgba(34,217,126,.06),rgba(16,24,33,.6));padding:15px;min-width:0;transition:transform .18s ease,border-color .18s ease}
+.gem-card:hover{transform:translateY(-2px);border-color:rgba(34,217,126,.4)}
+.gem-card .row1{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.gem-badge{display:inline-flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--green);background:rgba(34,217,126,.13);border-radius:6px;padding:3px 7px 3px 6px;line-height:1.4}
+.gem-card .val{font-family:'DM Mono',monospace;font-weight:700;color:var(--gold);font-size:1.02rem;white-space:nowrap}
+.gem-card .n{color:var(--text2);font-weight:700;font-size:.98rem;margin-top:10px}
+.gem-card .team{color:var(--muted2);font-size:11px;margin-left:6px;font-weight:400}
+.gem-blurb{font-size:12px;color:var(--text2);margin-top:8px;line-height:1.62;font-style:italic}
+.gem-foot{margin-top:11px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.gem-rating{display:flex;align-items:center;gap:3px}
+.gem-rating .rlbl{font-family:'DM Mono',monospace;font-size:8.5px;color:var(--muted2);text-transform:uppercase;letter-spacing:.05em;margin-right:5px}
+.gem-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.12);flex:0 0 auto}
+.gem-dot.on{background:var(--green)}
+
+/* ---------- filter controls ---------- */
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:nowrap;overflow-x:auto;padding:14px 16px;-webkit-overflow-scrolling:touch;border-bottom:1px solid var(--line)}
+.controls::-webkit-scrollbar{height:0}
+.controls input[type=search]{
+  flex:0 0 220px;min-width:150px;
+  background:#081019;border:1px solid var(--line);color:var(--text2);
+  border-radius:9px;padding:8px 12px;font-family:'Inter',sans-serif;font-size:12.5px;outline:none;
+}
+.controls input[type=search]::placeholder{color:var(--muted)}
+.controls select{
+  flex:0 0 auto;background:#081019;border:1px solid var(--line);color:var(--text2);
+  border-radius:9px;padding:8px 10px;font-family:'DM Mono',monospace;font-size:11.5px;outline:none;
+}
+.pill{
+  flex:0 0 auto;border:1px solid var(--line);background:#081019;color:#7f8d9b;
+  border-radius:999px;padding:8px 12px;font-size:11px;font-family:'DM Mono',monospace;
+  cursor:pointer;font-weight:600;letter-spacing:.02em;white-space:nowrap;
+}
+.pill.active{background:rgba(34,217,126,.12);border-color:rgba(34,217,126,.42);color:var(--green);font-weight:800}
+.pill.pos-active-GKP{background:rgba(87,167,255,.12);border-color:rgba(87,167,255,.42);color:var(--blue);font-weight:800}
+.pill.pos-active-DEF{background:rgba(34,217,126,.12);border-color:rgba(34,217,126,.42);color:var(--green);font-weight:800}
+.pill.pos-active-MID{background:rgba(244,185,66,.12);border-color:rgba(244,185,66,.42);color:var(--gold);font-weight:800}
+.pill.pos-active-FWD{background:rgba(255,93,108,.12);border-color:rgba(255,93,108,.42);color:var(--red);font-weight:800}
+.controls .count{margin-left:auto;flex:0 0 auto;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted2);padding-left:8px}
+
+/* ---------- table ---------- */
+.table{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;max-width:100%}
+table{width:100%;min-width:640px;border-collapse:collapse;font-size:.85rem}
+thead th{
+  position:sticky;top:0;background:#0b131b;
+  text-align:left;font-family:'DM Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--muted2);font-weight:500;padding:10px 16px;border-bottom:1px solid var(--line);white-space:nowrap;
+}
+th.so-sortable{cursor:pointer;user-select:none;transition:color .16s ease,background .16s ease}
+th.so-sortable:hover,th.so-sortable:focus-visible{color:#dfffee;background:rgba(31,221,132,.07);outline:none}
+th.so-sortable::after{content:'';display:inline-block;width:6px;height:8px;margin-left:6px;vertical-align:middle;background:linear-gradient(135deg,transparent 48%,#596a72 49% 58%,transparent 59%) top/6px 4px no-repeat,linear-gradient(315deg,transparent 48%,#596a72 49% 58%,transparent 59%) bottom/6px 4px no-repeat;opacity:.8}
+th.so-sortable[aria-sort="ascending"]::after{background:linear-gradient(135deg,transparent 48%,#31dd84 49% 58%,transparent 59%) top/6px 4px no-repeat}
+th.so-sortable[aria-sort="descending"]::after{background:linear-gradient(315deg,transparent 48%,#31dd84 49% 58%,transparent 59%) bottom/6px 4px no-repeat}
+tbody td{padding:9px 16px;border-bottom:1px solid var(--line);color:var(--text);vertical-align:middle}
+tbody tr:hover{background:rgba(255,255,255,.02)}
+tbody tr:last-child td{border-bottom:none}
+td.nm{color:var(--text2);font-weight:600}
+td.val{font-family:'DM Mono',monospace;font-weight:700;color:var(--text2);white-space:nowrap}
+#emptyRow td{text-align:center;color:var(--muted2);padding:26px 16px;font-size:.85rem}
+
+/* ---------- footnote ---------- */
+.foot{font-size:11px;color:var(--muted2);text-align:center;padding:6px 12px 4px;line-height:1.6}
+
+@media(max-width:760px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .hero-content{padding:26px 20px}
+  .hero h1{font-size:2rem}
+  .hero-metrics{gap:10px}
+  .hero-metric{padding:9px 14px;min-width:130px}
+  .card-grid{grid-template-columns:1fr 1fr;padding:12px}
+}
+@media(max-width:520px){
+  body{padding:12px}
+  .hero h1{font-size:1.7rem}
+  .card-grid{grid-template-columns:1fr}
+  .mv-row{grid-template-columns:22px 1fr auto;gap:8px;padding:9px 0}
+  .mv-crest{width:22px;height:22px;font-size:8px}
+  .mv-name{font-size:.8rem}
+  .mv-val{font-size:.84rem}
+  .tm-meter .tick::after{display:none}
+  .mv-podium{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+  .podium-card{flex:0 0 78%;scroll-snap-align:start}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section class="hero" id="hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="money-rain" id="moneyRain" aria-hidden="true">
+      <div class="bill eur layer-back" style="left:70%;top:6%;width:32px;height:21px;font-size:9px;animation-duration:8s;animation-delay:-2s;--r0:-10deg;--r1:8deg;--r2:-4deg;--sway:16px">&#8364;</div>
+      <div class="mcoin gold layer-back" style="left:78%;top:38%;width:16px;height:16px;font-size:8px;animation-duration:7.4s;animation-delay:-3.5s;--r0:6deg;--r1:-12deg;--r2:5deg;--sway:-14px">&#163;</div>
+      <div class="bill gbp layer-back" style="left:92%;top:14%;width:30px;height:20px;font-size:8px;animation-duration:8.6s;animation-delay:-1.4s;--r0:12deg;--r1:-6deg;--r2:9deg;--sway:-16px">&#163;</div>
+      <div class="mcoin green layer-back" style="left:96%;top:64%;width:18px;height:18px;font-size:8px;animation-duration:7s;animation-delay:-5s;--r0:-8deg;--r1:10deg;--r2:-3deg;--sway:12px">&#8364;</div>
+      <div class="bill usd layer-back" style="left:73%;top:78%;width:32px;height:21px;font-size:8.5px;animation-duration:9s;animation-delay:-6.6s;--r0:5deg;--r1:-9deg;--r2:4deg;--sway:15px">$</div>
+
+      <div class="bill eur layer-mid" style="left:82%;top:58%;width:36px;height:24px;font-size:10px;animation-duration:6.2s;animation-delay:-0.6s;--r0:-14deg;--r1:11deg;--r2:-6deg;--sway:18px">&#8364;</div>
+      <div class="mcoin blue layer-mid" style="left:75%;top:24%;width:22px;height:22px;font-size:10px;animation-duration:5.6s;animation-delay:-3s;--r0:9deg;--r1:-14deg;--r2:7deg;--sway:-18px">$</div>
+      <div class="bill gbp layer-mid" style="left:85%;top:36%;width:36px;height:24px;font-size:9.5px;animation-duration:6.8s;animation-delay:-1.6s;--r0:-9deg;--r1:13deg;--r2:-5deg;--sway:-20px">&#163;</div>
+      <div class="mcoin gold layer-mid" style="left:94%;top:82%;width:24px;height:24px;font-size:10px;animation-duration:5.2s;animation-delay:-4.4s;--r0:11deg;--r1:-8deg;--r2:6deg;--sway:16px">&#163;</div>
+      <div class="bill usd layer-mid" style="left:90%;top:52%;width:34px;height:22px;font-size:9px;animation-duration:7.2s;animation-delay:-2.4s;--r0:-6deg;--r1:9deg;--r2:-8deg;--sway:-14px">$</div>
+
+      <div class="mcoin green layer-front" style="left:79%;top:12%;width:26px;height:26px;font-size:11px;animation-duration:4.2s;animation-delay:-1.2s;--r0:14deg;--r1:-10deg;--r2:8deg;--sway:20px">&#8364;</div>
+      <div class="bill eur layer-front" style="left:72%;top:46%;width:40px;height:26px;font-size:11px;animation-duration:4.8s;animation-delay:-2.8s;--r0:-11deg;--r1:15deg;--r2:-7deg;--sway:22px">&#8364;</div>
+      <div class="mcoin gold layer-front" style="left:97%;top:38%;width:24px;height:24px;font-size:10px;animation-duration:4s;animation-delay:-0.4s;--r0:8deg;--r1:-13deg;--r2:6deg;--sway:-20px">&#163;</div>
+      <div class="bill usd layer-front" style="left:88%;top:80%;width:38px;height:25px;font-size:10.5px;animation-duration:4.6s;animation-delay:-2.2s;--r0:-13deg;--r1:10deg;--r2:-9deg;--sway:-22px">$</div>
+    </div>
+    <div class="hero-content">
+      <div class="ey"><span class="dot"></span>Global Football &#183; Transfer Market</div>
+      <h1>Transfer <span class="shimmer">Market</span></h1>
+      <p>Live-style market valuations for the world&#8217;s most valuable footballers &#8212; not limited to one league. Browse the global leaderboard, spot value outliers primed for a move, and surface breakout picks worth tracking.</p>
+      <div class="hero-metrics">
+        <div class="hero-metric"><div class="hm-lbl">Combined value tracked</div><div class="hm-val" id="heroValMetric">&#8364;0m</div></div>
+        <div class="hero-metric"><div class="hm-lbl">Players tracked</div><div class="hm-val" id="heroCountMetric">0</div></div>
+        <div class="hero-metric"><div class="hm-lbl">Clubs represented</div><div class="hm-val" id="heroClubMetric">0</div></div>
+      </div>
+      <div class="cur-toggle" id="curToggle" role="group" aria-label="Display currency">
+        <button class="cur-pill active" data-cur="EUR" aria-pressed="true">EUR &#8364;</button>
+        <button class="cur-pill" data-cur="GBP" aria-pressed="false">GBP &#163;</button>
+        <button class="cur-pill" data-cur="USD" aria-pressed="false">USD $</button>
+      </div>
+      <div class="cur-note" id="curNote"></div>
+    </div>
+  </section>
+
+  <div class="stats" id="statStrip"></div>
+
+  <section class="panel">
+    <div class="ph"><div class="t">Most Valuable Players <span class="note" style="margin-left:8px" id="mvNote">Top 50 &#183; global</span></div></div>
+    <div class="mv-podium" id="mvPodium" aria-label="Top three player valuations"></div>
+    <div class="mv-list" id="topList"></div>
+  </section>
+
+  <section class="panel">
+    <div class="ph">
+      <div class="t"><b>Potential Transfer Targets</b></div>
+      <div class="note">High earners at clubs outside the traditional superclub bracket &#8212; the kind of value profile that draws bids from the very top</div>
+    </div>
+    <div class="card-grid" id="targetsGrid"></div>
+  </section>
+
+  <section class="panel">
+    <div class="ph">
+      <div class="t"><b>Hidden Gems</b></div>
+      <div class="note">Lower-valued, attack-leaning picks worth keeping an eye on</div>
+    </div>
+    <div class="card-grid" id="gemsGrid"></div>
+  </section>
+
+  <section class="panel">
+    <div class="ph"><div class="t"><b>All Players</b></div><div class="note" id="tableNote"></div></div>
+    <div class="controls" id="filterBar">
+      <input type="search" id="searchInput" placeholder="Search player&#8230;">
+      <select id="teamSelect"><option value="">All clubs</option></select>
+      <button class="pill active" data-pos="">All positions</button>
+      <button class="pill" data-pos="GKP">GKP</button>
+      <button class="pill" data-pos="DEF">DEF</button>
+      <button class="pill" data-pos="MID">MID</button>
+      <button class="pill" data-pos="FWD">FWD</button>
+      <span class="count" id="rowCount"></span>
+    </div>
+    <div class="table" id="tableWrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="so-sortable" tabindex="0" data-key="name" aria-sort="none">Player</th>
+            <th class="so-sortable" tabindex="0" data-key="team" aria-sort="none">Club</th>
+            <th class="so-sortable" tabindex="0" data-key="pos" aria-sort="none">Pos</th>
+            <th class="so-sortable" tabindex="0" data-key="value" aria-sort="descending" id="valHeader">Value (&euro;m)</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="foot" id="footNote"></div>
+
+</div>
+
+<script type="application/json" id="playersData">
+[
+{"name":"Erling Haaland","team":"Manchester City","pos":"FWD","value":220,"source":"real"},
+{"name":"Lamine Yamal","team":"Barcelona","pos":"FWD","value":220,"source":"real"},
+{"name":"Kylian Mbappé","team":"Real Madrid","pos":"FWD","value":200,"source":"real"},
+{"name":"Michael Olise","team":"Bayern Munich","pos":"FWD","value":170,"source":"real"},
+{"name":"Jude Bellingham","team":"Real Madrid","pos":"MID","value":160,"source":"real"},
+{"name":"Pedri","team":"Barcelona","pos":"MID","value":150,"source":"real"},
+{"name":"Vinícius Júnior","team":"Real Madrid","pos":"FWD","value":140,"source":"real"},
+{"name":"Vitinha","team":"Paris Saint-Germain","pos":"MID","value":140,"source":"real"},
+{"name":"Khvicha Kvaratskhelia","team":"Paris Saint-Germain","pos":"FWD","value":140,"source":"real"},
+{"name":"João Neves","team":"Paris Saint-Germain","pos":"MID","value":140,"source":"real"},
+{"name":"Declan Rice","team":"Arsenal","pos":"MID","value":120,"source":"real"},
+{"name":"Julián Álvarez","team":"Atlético Madrid","pos":"FWD","value":120,"source":"real"},
+{"name":"Désiré Doué","team":"Paris Saint-Germain","pos":"FWD","value":120,"source":"real"},
+{"name":"Bukayo Saka","team":"Arsenal","pos":"FWD","value":110,"source":"real"},
+{"name":"Morgan Rogers","team":"Aston Villa","pos":"MID","value":110,"source":"real"},
+{"name":"Elliot Anderson","team":"Nottingham Forest","pos":"MID","value":110,"source":"real"},
+{"name":"Ousmane Dembélé","team":"Paris Saint-Germain","pos":"FWD","value":100,"source":"real"},
+{"name":"Dominik Szoboszlai","team":"Liverpool","pos":"MID","value":100,"source":"real"},
+{"name":"William Saliba","team":"Arsenal","pos":"DEF","value":100,"source":"real"},
+{"name":"Cole Palmer","team":"Chelsea","pos":"MID","value":100,"source":"real"},
+{"name":"Jamal Musiala","team":"Bayern Munich","pos":"MID","value":100,"source":"real"},
+{"name":"Florian Wirtz","team":"Liverpool","pos":"MID","value":100,"source":"real"},
+{"name":"Fermín López","team":"Barcelona","pos":"MID","value":100,"source":"real"},
+{"name":"Enzo Fernández","team":"Chelsea","pos":"MID","value":100,"source":"real"},
+{"name":"Moisés Caicedo","team":"Chelsea","pos":"MID","value":100,"source":"real"},
+{"name":"Pau Cubarsí","team":"Barcelona","pos":"DEF","value":100,"source":"real"},
+{"name":"Federico Valverde","team":"Real Madrid","pos":"MID","value":90,"source":"real"},
+{"name":"Rayan Cherki","team":"Manchester City","pos":"MID","value":90,"source":"real"},
+{"name":"Bradley Barcola","team":"Paris Saint-Germain","pos":"FWD","value":90,"source":"real"},
+{"name":"Aleksandar Pavlović","team":"Bayern Munich","pos":"MID","value":90,"source":"real"},
+{"name":"Arda Güler","team":"Real Madrid","pos":"MID","value":90,"source":"real"},
+{"name":"Yan Diomande","team":"Bayer Leverkusen","pos":"FWD","value":90,"source":"real"},
+{"name":"Alexander Isak","team":"Liverpool","pos":"FWD","value":85,"source":"real"},
+{"name":"Lautaro Martínez","team":"Inter Milan","pos":"FWD","value":85,"source":"real"},
+{"name":"Sandro Tonali","team":"Newcastle United","pos":"MID","value":80,"source":"real"},
+{"name":"Achraf Hakimi","team":"Paris Saint-Germain","pos":"DEF","value":80,"source":"real"},
+{"name":"Ryan Gravenberch","team":"Liverpool","pos":"MID","value":80,"source":"real"},
+{"name":"Anthony Gordon","team":"Newcastle United","pos":"FWD","value":80,"source":"real"},
+{"name":"Antoine Semenyo","team":"Bournemouth","pos":"FWD","value":80,"source":"real"},
+{"name":"Nuno Mendes","team":"Paris Saint-Germain","pos":"DEF","value":80,"source":"real"},
+{"name":"João Pedro","team":"Chelsea","pos":"FWD","value":80,"source":"real"},
+{"name":"Willian Pacho","team":"Paris Saint-Germain","pos":"DEF","value":80,"source":"real"},
+{"name":"Hugo Ekitiké","team":"Liverpool","pos":"FWD","value":80,"source":"real"},
+{"name":"Warren Zaïre-Emery","team":"Paris Saint-Germain","pos":"MID","value":80,"source":"real"},
+{"name":"Nico Paz","team":"Como","pos":"MID","value":80,"source":"real"},
+{"name":"Estêvão","team":"Chelsea","pos":"FWD","value":80,"source":"real"},
+{"name":"Ayyoub Bouaddi","team":"Lille","pos":"MID","value":80,"source":"real"},
+{"name":"Dayot Upamecano","team":"Bayern Munich","pos":"DEF","value":75,"source":"real"},
+{"name":"Victor Osimhen","team":"Napoli","pos":"FWD","value":75,"source":"real"},
+{"name":"Bryan Mbeumo","team":"Manchester United","pos":"FWD","value":75,"source":"real"},
+{"name":"Martín Zubimendi","team":"Arsenal","pos":"MID","value":75,"source":"real"},
+{"name":"Gabriel","team":"Arsenal","pos":"DEF","value":75,"source":"real"},
+{"name":"Jérémy Doku","team":"Manchester City","pos":"FWD","value":75,"source":"real"},
+{"name":"Matheus Cunha","team":"Manchester United","pos":"FWD","value":75,"source":"real"},
+{"name":"Benjamin Sesko","team":"Manchester United","pos":"FWD","value":75,"source":"real"},
+{"name":"Kenan Yıldız","team":"Juventus","pos":"FWD","value":75,"source":"real"},
+{"name":"Martin Ødegaard","team":"Arsenal","pos":"MID","value":70,"source":"real"},
+{"name":"Marc Guéhi","team":"Crystal Palace","pos":"DEF","value":70,"source":"real"},
+{"name":"Phil Foden","team":"Manchester City","pos":"MID","value":70,"source":"real"},
+{"name":"Raphinha","team":"Barcelona","pos":"FWD","value":70,"source":"real"},
+{"name":"Aurélien Tchouaméni","team":"Real Madrid","pos":"MID","value":70,"source":"real"},
+{"name":"Jurriën Timber","team":"Arsenal","pos":"DEF","value":70,"source":"real"},
+{"name":"Morgan Gibbs-White","team":"Nottingham Forest","pos":"MID","value":70,"source":"real"},
+{"name":"Josko Gvardiol","team":"Manchester City","pos":"DEF","value":70,"source":"real"},
+{"name":"Luis Díaz","team":"Bayern Munich","pos":"FWD","value":70,"source":"real"},
+{"name":"Bruno Guimarães","team":"Newcastle United","pos":"MID","value":70,"source":"real"},
+{"name":"Alexis Mac Allister","team":"Liverpool","pos":"MID","value":70,"source":"real"},
+{"name":"Nico O'Reilly","team":"Manchester City","pos":"DEF","value":70,"source":"real"},
+{"name":"Adam Wharton","team":"Crystal Palace","pos":"MID","value":70,"source":"real"},
+{"name":"Kobbie Mainoo","team":"Manchester United","pos":"MID","value":70,"source":"real"},
+{"name":"Endrick","team":"Real Madrid","pos":"FWD","value":25,"source":"estimate"},
+{"name":"Rico Lewis","team":"Manchester City","pos":"DEF","value":22,"source":"estimate"},
+{"name":"Ethan Nwaneri","team":"Arsenal","pos":"MID","value":20,"source":"estimate"},
+{"name":"Facundo Buonanotte","team":"Brighton","pos":"MID","value":18,"source":"estimate"},
+{"name":"Vitor Roque","team":"Palmeiras","pos":"FWD","value":16,"source":"estimate"},
+{"name":"Max Dowman","team":"Arsenal","pos":"FWD","value":15,"source":"estimate"},
+{"name":"Kacper Urbański","team":"Bologna","pos":"MID","value":14,"source":"estimate"},
+{"name":"Chido Obi","team":"Fulham","pos":"FWD","value":12,"source":"estimate"},
+{"name":"Gianluigi Donnarumma","team":"Manchester City","pos":"GKP","value":40,"source":"estimate"},
+{"name":"David Raya","team":"Arsenal","pos":"GKP","value":30,"source":"estimate"},
+{"name":"Alisson Becker","team":"Liverpool","pos":"GKP","value":18,"source":"estimate"},
+{"name":"Jan Oblak","team":"Atlético Madrid","pos":"GKP","value":15,"source":"estimate"}
+]
+</script>
+
+<script>
+(function(){
+'use strict';
+var PLAYERS = JSON.parse(document.getElementById('playersData').textContent);
+
+/* ---------- currency ---------- */
+var RATES = { EUR:1, GBP:0.856, USD:1.168 };
+var SYM = { EUR:'€', GBP:'£', USD:'$' };
+var RATE_DATE = 'Aug 24, 2026';
+var state = { q:'', team:'', pos:'', sortKey:'value', sortDir:'desc', currency:'EUR' };
+
+function convert(v){ return v * RATES[state.currency]; }
+function fmtM(v){ var c = convert(v); var dec = c >= 100 ? 0 : 1; return SYM[state.currency] + c.toFixed(dec) + 'm'; }
+function esc(s){ return String(s).replace(/[&<>"']/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+function valCell(p){
+  return fmtM(p.value) + (p.source === 'estimate' ? '<span class="est" title="Modeled estimate, not a sourced valuation">EST</span>' : '');
+}
+var ELITE_CLUBS = {'Real Madrid':1,'Barcelona':1,'Manchester City':1,'Paris Saint-Germain':1,'Bayern Munich':1,'Liverpool':1,'Arsenal':1,'Chelsea':1,'Manchester United':1,'Inter Milan':1};
+var TEAM_ABBR = {
+  'Real Madrid':'RMA','Barcelona':'BAR','Manchester City':'MCI','Paris Saint-Germain':'PSG','Bayern Munich':'BAY',
+  'Liverpool':'LIV','Arsenal':'ARS','Chelsea':'CHE','Manchester United':'MUN','Inter Milan':'INT',
+  'Atlético Madrid':'ATM','Aston Villa':'AVL','Nottingham Forest':'NFO','Bayer Leverkusen':'LEV','Newcastle United':'NEW',
+  'Bournemouth':'BOU','Como':'COM','Lille':'LIL','Napoli':'NAP','Juventus':'JUV','Crystal Palace':'CRY','Brighton':'BHA',
+  'Fulham':'FUL','Bologna':'BOL','Palmeiras':'PAL'
+};
+var CLUB_COLOR = {
+  'Real Madrid':'c-blue','Barcelona':'c-red','Manchester City':'c-blue','Paris Saint-Germain':'c-red','Bayern Munich':'c-red',
+  'Liverpool':'c-red','Arsenal':'c-red','Chelsea':'c-blue','Manchester United':'c-red','Inter Milan':'c-blue'
+};
+var CLUB_COLOR_FALLBACK = ['c-gold','c-green','c-teal','c-purple'];
+function clubColor(team){
+  if (CLUB_COLOR[team]) return CLUB_COLOR[team];
+  var h = 0;
+  for (var i = 0; i < team.length; i++) h = (h * 31 + team.charCodeAt(i)) >>> 0;
+  return CLUB_COLOR_FALLBACK[h % CLUB_COLOR_FALLBACK.length];
+}
+function teamAbbr(team){
+  if (TEAM_ABBR[team]) return TEAM_ABBR[team];
+  return team.replace(/[^A-Za-z]/g,'').slice(0,3).toUpperCase();
+}
+
+/* ---------- hero counters ---------- */
+(function(){
+  var totalValue = PLAYERS.reduce(function(a,p){return a+p.value;},0);
+  var totalPlayers = PLAYERS.length;
+  var totalClubs = new Set(PLAYERS.map(function(p){return p.team;})).size;
+  var elValue = document.getElementById('heroValMetric');
+  var elCount = document.getElementById('heroCountMetric');
+  var elClubs = document.getElementById('heroClubMetric');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) {
+    elValue.textContent = SYM[state.currency] + Math.round(convert(totalValue)).toLocaleString() + 'm';
+    elCount.textContent = String(totalPlayers);
+    elClubs.textContent = String(totalClubs);
+    return;
+  }
+  var start = null, dur = 1400;
+  function step(ts){
+    if (start === null) start = ts;
+    var p = Math.min(1, (ts - start) / dur);
+    var ease = 1 - Math.pow(1 - p, 3);
+    elValue.textContent = SYM[state.currency] + Math.round(convert(totalValue) * ease).toLocaleString() + 'm';
+    elCount.textContent = String(Math.round(totalPlayers * ease));
+    elClubs.textContent = String(Math.round(totalClubs * ease));
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+})();
+
+/* ---------- stat strip ---------- */
+function renderStats(){
+  var totalPlayers = PLAYERS.length;
+  var totalValue = PLAYERS.reduce(function(a,p){return a+p.value;},0);
+  var byTeam = {};
+  PLAYERS.forEach(function(p){ byTeam[p.team] = (byTeam[p.team]||0) + p.value; });
+  var teams = Object.keys(byTeam);
+  var priciest = teams.reduce(function(a,b){ return byTeam[b] > byTeam[a] ? b : a; }, teams[0]);
+  var realCount = PLAYERS.filter(function(p){return p.source==='real';}).length;
+
+  var stats = [
+    {lbl:'Tracked Players', val: totalPlayers, sub: teams.length + ' clubs'},
+    {lbl:'Total Market Value', val: SYM[state.currency] + Math.round(convert(totalValue)).toLocaleString() + 'm', sub: 'across full pool'},
+    {lbl:'Priciest Squad', val: priciest, sub: SYM[state.currency] + convert(byTeam[priciest]).toFixed(1) + 'm combined'},
+    {lbl:'Sourced Valuations', val: realCount + ' / ' + totalPlayers, sub: 'remainder modeled'}
+  ];
+  var html = stats.map(function(s){
+    return '<div class="stat"><div class="lbl">'+esc(s.lbl)+'</div><div class="val">'+esc(String(s.val))+'</div><div class="sub">'+esc(s.sub)+'</div></div>';
+  }).join('');
+  document.getElementById('statStrip').innerHTML = html;
+}
+
+/* ---------- most valuable: leaderboard bars (top 50, global) ---------- */
+function renderLeaderboard(){
+  var top = PLAYERS.slice().sort(function(a,b){return b.value-a.value;}).slice(0,50);
+  var maxVal = top[0].value;
+  document.getElementById('mvPodium').innerHTML = top.slice(0,3).map(function(p,i){
+    var pct=Math.max(25,Math.round(p.value/maxVal*100));
+    return '<article class="podium-card"><div class="podium-rank">0'+(i+1)+' · MARKET LEADER</div>'
+      +'<div class="podium-name">'+esc(p.name)+'</div><div class="podium-club">'+esc(p.team)+' · '+p.pos+'</div>'
+      +'<div class="podium-value">'+valCell(p)+'</div><div class="podium-track"><i style="width:'+pct+'%"></i></div></article>';
+  }).join('');
+  var html = top.map(function(p,i){
+    var pct = Math.max(6, Math.round(p.value / maxVal * 100));
+    var top3 = i < 3;
+    var color = clubColor(p.team);
+    return '<div class="mv-row">'
+      + '<div class="mv-rank'+(top3?' top3':'')+'">'+(i+1)+'</div>'
+      + '<div class="mv-main">'
+      +   '<div class="mv-top">'
+      +     '<span class="mv-crest '+color+'">'+esc(teamAbbr(p.team))+'</span>'
+      +     '<span class="mv-name">'+esc(p.name)+'</span>'
+      +     '<span class="pos-pill pos-'+p.pos+'">'+p.pos+'</span>'
+      +   '</div>'
+      +   '<div class="mv-barwrap"><div class="mv-bar'+(top3?' top3':'')+'" style="width:'+pct+'%"></div></div>'
+      + '</div>'
+      + '<div class="mv-side"><div class="mv-val">'+valCell(p)+'</div><div class="mv-team">'+esc(p.team)+'</div></div>'
+      + '</div>';
+  }).join('');
+  document.getElementById('topList').innerHTML = html;
+}
+
+/* ---------- potential transfer targets ----------
+   Heuristic only: not real scouting or transfer-rumor data. We flag players
+   at clubs outside the small "superclub" bracket, then rank their squad by
+   value relative to that club's own average value (a proxy for "this player
+   over-performs their team's typical price tag"), restricted to a reasonably
+   high absolute value too, so the list reads as plausible transfer subjects
+   rather than noise. */
+function renderTargets(){
+  var posGroups = {};
+  PLAYERS.forEach(function(p){ (posGroups[p.pos] = posGroups[p.pos]||[]).push(p.value); });
+  var posAvg = {};
+  Object.keys(posGroups).forEach(function(pos){
+    var arr = posGroups[pos];
+    posAvg[pos] = arr.reduce(function(a,v){return a+v;},0) / arr.length;
+  });
+
+  var candidates = [];
+  PLAYERS.forEach(function(p){
+    if (ELITE_CLUBS[p.team]) return;
+    if (p.pos === 'GKP') return;
+    var avg = posAvg[p.pos];
+    var ratio = p.value / avg;
+    if (p.value < 70) return;
+    candidates.push({p:p, ratio:ratio});
+  });
+  candidates.sort(function(a,b){ return b.p.value - a.p.value; });
+  var picks = candidates.slice(0,12);
+
+  var METER_MAX = 1.6;
+  var html = picks.map(function(c){
+    var p = c.p;
+    var fillPct = Math.min(100, Math.round(c.ratio / METER_MAX * 100));
+    var tickPct = Math.round(1 / METER_MAX * 100);
+    var above = c.ratio >= 1;
+    return '<div class="tm-card">'
+      + '<div class="row1"><div><div class="n">'+esc(p.name)+'</div><div class="team">'+esc(p.team)+'</div></div>'
+      + '<div class="val">'+valCell(p)+'</div></div>'
+      + '<div class="tm-ratio"><span class="num">&#215;'+c.ratio.toFixed(1)+'</span><span class="lbl">'+p.pos+' position avg</span></div>'
+      + '<div class="tm-meter"><div class="fill" style="width:'+fillPct+'%"></div><div class="tick" style="left:'+tickPct+'%"></div></div>'
+      + '<div class="blurb">Elite-bracket valuation for a player outside the sport&#8217;s handful of superclubs'+(above?', pricing above the average '+p.pos+' in this pool':'')+' &#8212; the profile that draws superclub interest.</div>'
+      + '<div class="tagrow"><span class="pos-pill pos-'+p.pos+'">'+p.pos+'</span><span class="tag blue">TARGET</span></div>'
+      + '</div>';
+  }).join('');
+  document.getElementById('targetsGrid').innerHTML = html || '<div style="padding:8px;color:var(--muted2);font-size:.85rem">No qualifying players found.</div>';
+}
+
+/* ---------- hidden gems ----------
+   Also heuristic/presentational, not real scouting: pull attack-leaning
+   players (MID/FWD weighted) under a value ceiling, using a deterministic
+   pseudo-random shuffle (seeded, so the list is stable across reloads)
+   rather than a genuine talent model. */
+function renderGems(){
+  function seededRand(seed){
+    var x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
+  }
+  var pool = PLAYERS.filter(function(p){ return p.value < 30 && p.value >= 2; });
+  var weighted = pool.map(function(p, i){
+    var w = (p.pos === 'MID' || p.pos === 'FWD') ? 2 : 1;
+    var score = p.value * w * (0.55 + seededRand(i * 17.31 + p.value) * 0.9);
+    return {p:p, score:score};
+  });
+  weighted.sort(function(a,b){ return b.score - a.score; });
+  var picks = weighted.slice(0,12);
+  var maxScore = picks.length ? picks[0].score : 1;
+
+  var blurbs = [
+    'Flying under the radar at this valuation &#8212; the kind of profile that can outstrip its price tag with a settled run of games.',
+    'A modest fee for the ceiling on offer; worth tracking if minutes open up.',
+    'Undervalued relative to positional peers at similar-tier clubs.',
+    'Young, cheap, and in a system that could accelerate development.',
+    'Quietly productive at a club that rarely gets the spotlight.'
+  ];
+  var html = picks.map(function(w,i){
+    var p = w.p;
+    var rating = Math.max(1, Math.min(5, Math.round(w.score / maxScore * 5)));
+    var dots = '';
+    for (var d = 1; d <= 5; d++) { dots += '<span class="gem-dot'+(d<=rating?' on':'')+'"></span>'; }
+    return '<div class="gem-card">'
+      + '<div class="row1"><span class="gem-badge">&#9670; SLEEPER</span><div class="val">'+valCell(p)+'</div></div>'
+      + '<div class="n">'+esc(p.name)+'<span class="team">'+esc(p.team)+'</span></div>'
+      + '<div class="gem-blurb">&#8220;'+blurbs[i % blurbs.length]+'&#8221;</div>'
+      + '<div class="gem-foot">'
+      +   '<span class="pos-pill pos-'+p.pos+'">'+p.pos+'</span>'
+      +   '<div class="gem-rating"><span class="rlbl">Sleeper score</span>'+dots+'</div>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+  document.getElementById('gemsGrid').innerHTML = html;
+}
+
+/* ---------- full table: filter / search / sort ---------- */
+var teamSelect = document.getElementById('teamSelect');
+var teams = Array.from(new Set(PLAYERS.map(function(p){return p.team;}))).sort();
+teams.forEach(function(t){
+  var o = document.createElement('option');
+  o.value = t; o.textContent = t;
+  teamSelect.appendChild(o);
+});
+
+var tbody = document.getElementById('tableBody');
+var rowCount = document.getElementById('rowCount');
+var tableNote = document.getElementById('tableNote');
+tableNote.textContent = PLAYERS.length + ' players total';
+
+function renderTable(){
+  var q = state.q.trim().toLowerCase();
+  var rows = PLAYERS.filter(function(p){
+    if (state.team && p.team !== state.team) return false;
+    if (state.pos && p.pos !== state.pos) return false;
+    if (q && p.name.toLowerCase().indexOf(q) === -1) return false;
+    return true;
+  });
+  rows.sort(function(a,b){
+    var k = state.sortKey, dir = state.sortDir === 'asc' ? 1 : -1;
+    var av = a[k], bv = b[k];
+    if (typeof av === 'string') { av = av.toLowerCase(); bv = bv.toLowerCase(); }
+    if (av < bv) return -1 * dir;
+    if (av > bv) return 1 * dir;
+    return 0;
+  });
+
+  if (!rows.length) {
+    tbody.innerHTML = '<tr id="emptyRow"><td colspan="4">No players match these filters.</td></tr>';
+  } else {
+    var html = rows.map(function(p){
+      return '<tr>'
+        + '<td class="nm">'+esc(p.name)+'</td>'
+        + '<td>'+esc(p.team)+'</td>'
+        + '<td><span class="pos-pill pos-'+p.pos+'">'+p.pos+'</span></td>'
+        + '<td class="val">'+valCell(p)+'</td>'
+        + '</tr>';
+    }).join('');
+    tbody.innerHTML = html;
+  }
+  rowCount.textContent = rows.length + ' shown';
+  document.getElementById('valHeader').textContent = 'Value (' + SYM[state.currency] + 'm)';
+}
+
+document.getElementById('searchInput').addEventListener('input', function(e){
+  state.q = e.target.value; renderTable();
+});
+teamSelect.addEventListener('change', function(e){
+  state.team = e.target.value; renderTable();
+});
+document.getElementById('filterBar').addEventListener('click', function(e){
+  var btn = e.target.closest('.pill[data-pos]');
+  if (!btn) return;
+  document.querySelectorAll('.pill[data-pos]').forEach(function(b){
+    b.classList.remove('active','pos-active-GKP','pos-active-DEF','pos-active-MID','pos-active-FWD');
+  });
+  var pos = btn.getAttribute('data-pos');
+  if (pos) btn.classList.add('pos-active-'+pos); else btn.classList.add('active');
+  state.pos = pos;
+  renderTable();
+});
+
+var ths = document.querySelectorAll('th.so-sortable');
+ths.forEach(function(th){
+  function sortColumn(){
+    var key = th.getAttribute('data-key');
+    if (state.sortKey === key) {
+      state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      state.sortKey = key;
+      state.sortDir = (key === 'value') ? 'desc' : 'asc';
+    }
+    ths.forEach(function(t){ t.setAttribute('aria-sort','none'); });
+    th.setAttribute('aria-sort', state.sortDir === 'asc' ? 'ascending' : 'descending');
+    renderTable();
+  }
+  th.addEventListener('click', sortColumn);
+  th.addEventListener('keydown', function(event){
+    if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); sortColumn(); }
+  });
+});
+
+/* ---------- currency toggle ---------- */
+document.getElementById('curToggle').addEventListener('click', function(e){
+  var btn = e.target.closest('.cur-pill');
+  if (!btn) return;
+  var cur = btn.getAttribute('data-cur');
+  if (cur === state.currency) return;
+  state.currency = cur;
+  document.querySelectorAll('.cur-pill').forEach(function(b){
+    var on = b === btn;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  var totalValue = PLAYERS.reduce(function(a,p){return a+p.value;},0);
+  document.getElementById('heroValMetric').textContent = SYM[state.currency] + Math.round(convert(totalValue)).toLocaleString() + 'm';
+  renderStats();
+  renderLeaderboard();
+  renderTargets();
+  renderGems();
+  renderTable();
+});
+
+document.getElementById('curNote').textContent = 'Values shown in ' + state.currency + ', converted at approx. market rates as of ' + RATE_DATE + '.';
+
+document.getElementById('footNote').textContent =
+  'Player values are sourced from Transfermarkt-style market valuations where available (' + PLAYERS.filter(function(p){return p.source==='real';}).length + ' of ' + PLAYERS.length + ' players); remaining values are modeled estimates. Currency conversion uses approx. market rates as of ' + RATE_DATE + ' (€1 ≈ £0.86 ≈ $1.17) and will drift from live rates over time. Transfer Targets and Hidden Gems are editorial heuristics for entertainment, not scouting advice.';
+
+renderStats();
+renderLeaderboard();
+renderTargets();
+renderGems();
+renderTable();
+
+})();
+</script>
+
+<style id="so-mobile-repair-20260819">
+@media(max-width:700px){
+ html,body{width:100%;max-width:100%;overflow-x:hidden}body{padding:10px!important}.wrap{width:100%;min-width:0}.hero-content{padding:22px 16px!important}.hero h1{font-size:2.15rem!important;line-height:.98}.hero p{font-size:.78rem!important;max-width:none}.hero-vs,.hero-vs-shell{display:none!important}
+ .stats{display:flex!important;overflow-x:auto!important;border-radius:14px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}.stat{flex:0 0 46%!important;min-width:0!important;border-right:1px solid var(--line)!important;scroll-snap-align:start}
+ .te-strip{display:flex!important;overflow-x:auto!important;gap:10px;scroll-snap-type:x mandatory}.te-card{flex:0 0 82%!important;scroll-snap-align:start}
+ .labgrid,.research-grid{grid-template-columns:minmax(0,1fr)!important}.panel,.research-card{min-width:0}.ph{align-items:flex-start;gap:8px}.ph span{white-space:normal;text-align:right}.evidence,.pw-grid,.pw-stats,.sel-grid,.research-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .radar-wrap{align-items:flex-start;overflow-x:auto}.controls{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;padding-bottom:10px}.controls button{flex:0 0 auto}.controls input{flex:0 0 88%;min-width:0!important;margin-left:0!important}
+ .table{width:100%;max-width:100%;overflow-x:auto!important;-webkit-overflow-scrolling:touch}.table table{min-width:1050px!important}.method-body-in{grid-template-columns:1fr!important}
+}
+</style><style id="so-mobile-verified-pass-20260819">
+@media(max-width:700px){
+ .hero{border-radius:16px!important}.hero-content{padding:20px 15px!important}.hero h1{font-size:clamp(1.9rem,10vw,2.5rem)!important}.hero p{font-size:.77rem!important;line-height:1.58!important}.hero-metrics{margin-top:16px!important}.stats{margin:11px 0!important}.stat{flex-basis:48%!important;padding:14px 12px!important}.te-card{flex-basis:80%!important}.labgrid{gap:10px!important;margin:10px 0!important}.research-grid{gap:10px!important}.panel,.research-card,.table{border-radius:14px!important}.selected{padding:15px!important}.radar-svg{width:132px!important;height:132px!important}.table table{min-width:980px!important}
+}
+@media(pointer:coarse) and (max-width:700px){.ev,.te-card{animation:none!important}.te-card:hover{transform:none!important}.tm-card:hover,.gem-card:hover{transform:none!important}}
+@media(max-width:700px){html,body{overflow-x:hidden!important}.wrap{width:100%!important;padding:10px!important}.hero-content{padding:18px 13px!important}.hero h1{font-size:2rem!important;line-height:1!important}.hero p{font-size:.74rem!important;line-height:1.52!important;max-width:100%!important}.lab-constellation{height:190px!important;width:145%!important;margin:12px -22.5% -18px!important;transform:scale(.68)!important;transform-origin:center top!important}.stats,.te-strip{display:flex!important;overflow-x:auto!important;gap:8px!important}.stats>*{flex:0 0 43%!important;padding:10px!important}.te-head{display:block!important}.te-card{flex:0 0 78%!important;padding:12px!important}.labgrid{grid-template-columns:1fr!important;gap:10px!important}.panel{min-width:0!important}.ph,.pw-wrap,.selected{padding:12px!important}.pw-stats,.selected-stats,.research-kpis{grid-template-columns:1fr!important;gap:8px!important}.radar-wrap{display:flex!important;flex-direction:column!important;align-items:center!important}.radar-svg{width:190px!important;max-width:100%!important}.radar-legend{width:100%!important;font-size:.68rem!important}.filters{overflow-x:auto!important;flex-wrap:nowrap!important}.filters>*{flex:0 0 auto!important}.table{overflow-x:auto!important}.table table{min-width:1120px!important}.read,.research-card p,.selected p{font-size:.72rem!important;line-height:1.5!important;overflow-wrap:anywhere}.selected h2,.pw-wrap h2{font-size:1.35rem!important}.hero-metrics{gap:8px!important}.hero-metric{padding:8px 12px!important;min-width:110px!important}.hm-val{font-size:1.1rem!important}.cur-toggle{margin-top:14px!important}.cur-pill{padding:6px 11px!important;font-size:10px!important}}
+</style>
+<style id="so-mobile-final-nine-pass">@media(max-width:700px){html,body{max-width:100%;overflow-x:hidden}table{max-width:none}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap,.article-grid,.cards-scroll{max-width:100%;-webkit-overflow-scrolling:touch}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap{overflow-x:auto}.hero h1{overflow-wrap:anywhere}.controls,.filter-row,.hub-tabs,.tab-row,.section-tabs{max-width:100%;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}.controls>* ,.filter-row>* ,.hub-tabs>* ,.tab-row>* ,.section-tabs>*{flex:0 0 auto}}@media(pointer:coarse) and (max-width:700px){*{scroll-behavior:auto}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap{scroll-snap-type:none}}</style>
+
+<style id="so-runtime-performance-core-20260811">
+/* Runtime-only performance guardrails. Visible design is unchanged. */
+html.so-perf-hidden .so-perf-anim-target,
+html.so-perf-hidden .so-perf-anim-target::before,
+html.so-perf-hidden .so-perf-anim-target::after,
+html.so-perf-scrolling .so-perf-anim-target,
+html.so-perf-scrolling .so-perf-anim-target::before,
+html.so-perf-scrolling .so-perf-anim-target::after,
+.so-perf-offscreen-anim,
+.so-perf-offscreen-anim::before,
+.so-perf-offscreen-anim::after{animation-play-state:paused!important;}
+.so-perf-offscreen-anim{will-change:auto!important;}
+@media(max-width:760px){
+  .so-nav,.so-nav-shell,.site-nav,.site-header,.mobile-nav,.hub-nav{backface-visibility:hidden;transform:translateZ(0);}
+}
+@media(pointer:coarse){button,a,[role="button"]{touch-action:manipulation;}}
+</style>
+
+<script id="so-runtime-performance-core-js-20260811">
+(function(){
+  'use strict';
+  var root=document.documentElement, seen=new WeakSet(), io=null, scrollTimer=0, scrollRAF=0;
+  function syncHidden(){root.classList.toggle('so-perf-hidden',document.hidden);}
+  document.addEventListener('visibilitychange',syncHidden,{passive:true});
+  window.addEventListener('pagehide',function(){root.classList.add('so-perf-hidden');},{passive:true});
+  window.addEventListener('pageshow',function(){syncHidden(); scheduleScan();},{passive:true});
+  syncHidden();
+  if('IntersectionObserver' in window){
+    io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){e.target.classList.toggle('so-perf-offscreen-anim',!e.isIntersecting);});
+    },{rootMargin:'280px 0px 280px 0px',threshold:0});
+  }
+  function scanAnimations(){
+    if(!document.getAnimations)return;
+    var list=document.getAnimations();
+    for(var i=0;i<list.length;i++){
+      var eff=list[i].effect, t=eff&&eff.target;
+      if(!t||t.nodeType!==1||seen.has(t))continue;
+      var timing=(eff&&eff.getTiming)?eff.getTiming():null;
+      if(!timing||timing.iterations!==Infinity)continue;
+      seen.add(t);t.classList.add('so-perf-anim-target');
+      if(io)io.observe(t);
+    }
+  }
+  function scheduleScan(){
+    if('requestIdleCallback' in window)requestIdleCallback(scanAnimations,{timeout:650});
+    else setTimeout(scanAnimations,120);
+  }
+  function markScrolling(){
+    if(!scrollRAF){
+      scrollRAF=requestAnimationFrame(function(){
+        scrollRAF=0;root.classList.add('so-perf-scrolling');
+      });
+    }
+    clearTimeout(scrollTimer);
+    scrollTimer=setTimeout(function(){root.classList.remove('so-perf-scrolling');},115);
+  }
+  document.addEventListener('scroll',markScrolling,{passive:true,capture:true});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scheduleScan,{once:true});else scheduleScan();
+  window.addEventListener('load',function(){setTimeout(scanAnimations,80);setTimeout(scanAnimations,900);},{once:true,passive:true});
+})();
+</script>
+<style id="so-pl-transfer-mobile-quality-20260824">
+@media(max-width:700px){
+ .hero{overflow:hidden!important}.hero-content{padding:18px 14px!important}.hero h1{font-size:clamp(1.95rem,10vw,2.45rem)!important}.hero p{font-size:.74rem!important;line-height:1.52!important}.money-rain{opacity:.45!important}
+ .hero-metrics{display:flex!important;overflow-x:auto!important;flex-wrap:nowrap!important;gap:8px!important}.hero-metric{flex:0 0 min(42vw,150px)!important;min-width:0!important;padding:9px 10px!important}.stats{overscroll-behavior-x:contain!important}.stat{flex-basis:min(44vw,155px)!important;padding:11px!important}.stat .val{font-size:1.15rem!important}
+ .mv-podium{display:flex!important;grid-template-columns:none!important;overflow-x:auto!important;gap:9px!important;padding:12px!important;scroll-snap-type:x mandatory!important}.podium-card{flex:0 0 min(76vw,285px)!important;min-height:132px!important;padding:13px!important;scroll-snap-align:start!important}
+ .card-grid{display:flex!important;grid-template-columns:none!important;overflow-x:auto!important;gap:10px!important;padding:12px!important;scroll-snap-type:x proximity!important;-webkit-overflow-scrolling:touch!important}.card-grid>*{flex:0 0 min(80vw,310px)!important;scroll-snap-align:start!important}
+ .controls{scroll-snap-type:x proximity!important}.controls input{flex-basis:76vw!important}.table table{min-width:900px!important;font-size:8.5px!important}.table th,.table td{padding:7px 6px!important}.ph{display:block!important}.ph .note{display:block!important;margin-top:5px!important;text-align:left!important}
+}
+</style>
+</body>
+</html>

@@ -22,6 +22,11 @@
     client = makeClient();
   } catch (error) {
     console.error('[Short Open Auth]', error);
+    // Keep account access available even if the Supabase CDN is slow or
+    // unavailable. Authentication can recover on the account page, while the
+    // navigation must never silently lose its Sign In entry.
+    ensureNavLink(document.querySelector('.so-nav-actions'), false);
+    ensureNavLink(document.querySelector('.so-mobile-menu'), true);
     window.shortOpenAuthReady = Promise.resolve({ client: null, session: null, error });
     return;
   }
@@ -32,6 +37,11 @@
     session: null,
     user: null
   };
+
+  // Paint the signed-out fallback immediately; getSession() upgrades the label
+  // to My Account as soon as an existing session is restored.
+  ensureNavLink(document.querySelector('.so-nav-actions'), false);
+  ensureNavLink(document.querySelector('.so-mobile-menu'), true);
 
   function ensureNavLink(container, mobile) {
     if (!container) return null;

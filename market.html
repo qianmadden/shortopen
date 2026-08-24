@@ -171,7 +171,7 @@
   .ct-ev{font-size:.68rem;font-weight:900;padding:5px 13px;border-radius:8px;background:rgba(34,197,94,.13);border:1px solid rgba(34,197,94,.35);color:#22c55e;white-space:nowrap;box-shadow:0 0 14px rgba(34,197,94,.2);flex-shrink:0}
   .ct-steam{font-size:1.15rem;font-weight:900;color:#57a7ff;text-shadow:0 0 14px rgba(87,167,255,.5);flex-shrink:0}
   .ct-sharp{font-size:.95rem;font-weight:900;color:#a78bfa;text-shadow:0 0 12px rgba(167,139,250,.5);flex-shrink:0}
-  .lg-consensus{position:relative;overflow:hidden;border-radius:20px;padding:20px 22px;background:linear-gradient(160deg,rgba(255,255,255,.042) 0%,rgba(255,255,255,.014) 34%,rgba(5,9,16,.92) 100%);border:1px solid rgba(255,255,255,.085);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 42px rgba(0,0,0,.18);}
+  .lg-consensus{position:relative;overflow:hidden;contain:paint;border-radius:20px;padding:20px 22px;background:linear-gradient(160deg,rgba(255,255,255,.042) 0%,rgba(255,255,255,.014) 34%,rgba(5,9,16,.92) 100%);border:1px solid rgba(255,255,255,.085);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 42px rgba(0,0,0,.18);}
   .lg-consensus-before{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(130deg,rgba(255,255,255,.09) 0%,rgba(255,255,255,.02) 40%,transparent 70%)}
   .lg-consensus-sheen{position:absolute;top:0;left:-80%;width:55%;height:100%;z-index:2;
     background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);
@@ -7967,7 +7967,8 @@ html.so-page-hidden *,html.so-page-hidden *::before,html.so-page-hidden *::after
   #mlbContainer .game-card-inner .t-edge{padding:8px 10px!important;font-size:.7rem!important;line-height:1.35!important;}
   #mlbContainer>.prop-list{max-height:min(74vh,720px)!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;padding:0 12px 18px!important;scrollbar-gutter:stable}
   #mlbContainer>.ls-wrap{max-height:min(88vh,920px)!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;padding-left:12px!important;padding-right:12px!important;scrollbar-gutter:stable}
-  .so-market-mobile-.so-nav-shell{position:fixed;z-index:900;inset:28px 0 auto;padding:16px 24px 0;pointer-events:none}
+}
+.so-nav-shell{position:fixed;z-index:900;inset:28px 0 auto;padding:16px 24px 0;pointer-events:none}
 .so-nav{pointer-events:auto;max-width:1460px;height:62px;margin:0 auto;padding:0 14px 0 18px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:28px;border:1px solid rgba(255,255,255,.075);border-radius:19px;background:rgba(5,8,13,.79);backdrop-filter:blur(22px) saturate(145%);-webkit-backdrop-filter:blur(22px) saturate(145%);box-shadow:0 18px 60px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.045)}
 .so-nav-brand{display:inline-flex;align-items:center;width:max-content;font-family:'Inter',system-ui,sans-serif;font-weight:800;letter-spacing:-.045em;font-size:1.02rem;color:#f4f2ed;text-decoration:none}
 .so-nav-brand b{color:#f4b942;font-weight:800}
@@ -9463,6 +9464,7 @@ body #mlbContainer .q-market-title .gold-line{position:relative!important;displa
     <a class="so-nav-link" href="mlb.html">MLB</a>
     <a class="so-nav-link" href="nfl.html">NFL</a>
     <a class="so-nav-link so-nav-badged" href="worldcup.html"><span>World Cup</span><span class="so-nav-tag gold">Limited</span></a>
+    <a class="so-nav-link" href="premier-league.html">Premier League</a>
     <a class="so-nav-link active" href="terminal.html"><span>Terminal</span><span class="so-nav-tag purple">Beta</span></a>
   </div>
   <div class="so-nav-actions"><a class="so-nav-secondary" href="about.html">About</a><a class="so-nav-cta" href="subscribe.html">Subscribe</a></div>
@@ -9475,6 +9477,7 @@ body #mlbContainer .q-market-title .gold-line{position:relative!important;displa
   <a class="" href="mlb.html">MLB</a>
   <a class="" href="nfl.html">NFL</a>
   <a class="so-nav-badged" href="worldcup.html"><span>World Cup</span><span class="so-mobile-tag gold">Limited</span></a>
+  <a href="premier-league.html">Premier League</a>
   <a class="active" href="terminal.html"><span>Terminal</span><span class="so-mobile-tag purple">Beta</span></a>
   <a href="about.html">About</a><a href="subscribe.html">Subscribe</a>
 </div>
@@ -11231,7 +11234,7 @@ function syncSportHero(sport){
   if(!soMlbHeroSnapshot)soMlbHeroSnapshot=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)?.textContent||'']));
   const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
   const kicker=document.querySelector('.q-consensus-kicker'),sub=document.querySelector('.q-consensus-sub'),pageSub=document.querySelector('.q-market-sub'),badge=document.querySelector('.q-market-badge');
-  if(sport==='nfl'){
+  if(sport==='nfl'&&typeof NFL_GAMES!=='undefined'){
     const totals=NFL_GAMES.map(g=>+g.total),avg=totals.reduce((a,b)=>a+b,0)/totals.length,road=NFL_GAMES.filter(g=>String(g.spreadAway).startsWith('-')).length;
     [['qStatGames','15'],['qStatGamesSub','NFL Week 1'],['qStatBestEV',road],['qStatBestEVSub','road favorites'],['qStatHighTotal',Math.max(...totals).toFixed(1)],['qStatHighTotalSub','TB @ CIN'],['qStatDogML','+450'],['qStatDogMLSub','ARI at LAC'],['qMostBetSpread','LAC -10.5'],['qMostBetSpreadSrc','Largest Week 1 spread'],['qSharpSide','BUF / HOU'],['qSharpSideSrc','Tightest moneyline'],['qTotalMove','51.5'],['qTotalMoveSrc','Highest total · TB @ CIN'],['qRLM','BAL -3.5'],['qRLMSrc','Road favorite watch']].forEach(x=>set(x[0],x[1]));
     if(kicker)kicker.textContent='Market Pulse · NFL';if(sub)sub.textContent='Signals pulled from the 15 Week 1 cards';if(pageSub)pageSub.textContent='A live NFL command center reading Week 1 spreads, moneylines, total climate and plus-money range.';if(badge)badge.lastChild.textContent='NFL Market Board';
@@ -13059,9 +13062,7 @@ function renderLongshots(shots, containerId) {
 // ── INIT ──
 // NBA season over — no render
 renderGames(MLB_GAMES, 'mlbContainer');
-renderGames(NFL_GAMES, 'nflContainer');
-refreshNFLBoard();
-renderNFLTotalChart();
+if(typeof NFL_GAMES!=='undefined'){renderGames(NFL_GAMES, 'nflContainer');refreshNFLBoard();renderNFLTotalChart();}
 buildGameSlipPanel('mlbContainer');
 renderPropParlays(MLB_PROP_PARLAYS, 'mlbContainer');
 renderFutures('nbaChampContainer', 'mlbContainer');

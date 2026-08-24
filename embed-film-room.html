@@ -122,6 +122,28 @@ z-index:12;
   .film-tag.bottom-left{bottom:auto!important;top:110px!important;left:16px!important;}
   .film-tag.bottom-right{bottom:auto!important;top:110px!important;right:16px!important;}
 }
+/* so-mobile-fix-round3: hero content was colliding with the film-tag badges above it —
+   the badges are absolutely positioned near the top of the hero while hero-content is
+   bottom-anchored and grows upward, so on shorter mobile hero heights the two overlapped.
+   so-mobile-fix-round4-20260822: the overlap was NOT actually confined to <=640px — the
+   badges use fixed pixel offsets (bottom:180px/left:48px) while hero-content's real height
+   scales continuously with text reflow, so the two collide anywhere the badges' fixed
+   position happens to fall inside hero-content's (variable) top edge. Verified this reproduces
+   at 700/768/800px (a tablet-portrait / large-phone-landscape range this rule previously
+   didn't cover at all — the "POCKET MOVEMENT" badge visibly struck through the hero
+   paragraph's last line at 768px). Widened this whole block from 640px to 900px, matching
+   the breakpoint the rest of this file already uses for its next layout tier
+   (.fr-preview/.fr-intro/.fr-feature all switch at 900px), so there's no gap in coverage. */
+@media(max-width:900px){
+  .film-tag.bottom-left,.film-tag.bottom-right{display:none!important;}
+  .hero{min-height:660px!important;}
+  .hero-content{padding-bottom:24px!important;}
+  .hero-content > div:last-child{display:none!important;} /* scrolling prospect ticker: decorative, drop below desktop to free vertical space */
+  .hero-content p{margin-bottom:16px!important;font-size:.85rem!important;line-height:1.55!important}
+  .hero-content > div[style*="flex-wrap"]{margin-bottom:14px!important;gap:8px!important}
+  .hero-content > div[style*="margin-bottom:22px"]{margin-bottom:14px!important}
+  .film-play{width:52px!important;height:52px!important;right:16px!important;bottom:16px!important;font-size:1.2rem!important;}
+}
 
 .film-play{
 position:absolute;
