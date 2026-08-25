@@ -1,0 +1,676 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Matchup Lab — NFL — shortopen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"><style>
+:root{--bg:#05070b;--panel:#09111b;--panel2:#0c1622;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);--text:#eef3f7;--muted:#758397;--muted2:#a2afbd;--gold:#f4b942;--green:#22d97e;--blue:#57a7ff;--red:#ff5d6c;--mono:'DM Mono',monospace}
+*{box-sizing:border-box}
+body{margin:0;padding:24px;background:linear-gradient(rgba(87,167,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(87,167,255,.018) 1px,transparent 1px),radial-gradient(circle at 12% 8%,rgba(244,185,66,.055),transparent 45%),radial-gradient(circle at 88% 12%,rgba(87,167,255,.06),transparent 45%),var(--bg);background-size:64px 64px,64px 64px,auto,auto,auto;color:var(--text);font-family:Inter,system-ui,sans-serif}
+.wrap{max-width:1500px;margin:auto}
+.hero{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,rgba(244,185,66,.05),rgba(6,9,14,.97) 55%,rgba(87,167,255,.035));padding:32px 34px 30px}
+.hero:after{content:'';position:absolute;right:-90px;top:-110px;width:430px;height:430px;border-radius:50%;border:1px solid rgba(244,185,66,.08);box-shadow:0 0 0 40px rgba(244,185,66,.015),0 0 0 80px rgba(87,167,255,.012)}
+.ey{color:var(--gold);font:800 10px var(--mono);letter-spacing:.16em;text-transform:uppercase}
+h1{font-size:clamp(2.5rem,5vw,4.6rem);line-height:.92;letter-spacing:-.055em;margin:11px 0 9px}
+.hero p{max-width:740px;color:#8a98a7;line-height:1.65;font-size:.83rem}
+.badge{position:absolute;right:24px;top:18px;padding:7px 12px;border:1px solid rgba(244,185,66,.34);border-radius:999px;color:var(--gold);font:800 9px var(--mono);letter-spacing:.12em;background:rgba(4,8,13,.82);box-shadow:0 0 0 1px rgba(244,185,66,.04),0 8px 24px rgba(0,0,0,.22)}
+
+/* ---- Hero animation: a stylized running-back silhouette sprints across
+   the hero while a football arcs in from behind and lands in his hands as
+   he crosses the frame, then the loop resets. Pure inline SVG + SMIL
+   (animateTransform / animateMotion, the same primitive already used for
+   the MLB/PL Matchup Lab hero pings) + a couple of CSS keyframes for the
+   limb cycle, so it stays lightweight and self-contained. Respects
+   prefers-reduced-motion and is picked up by the existing
+   so-runtime-performance-core offscreen/hidden-tab pause system since the
+   limb keyframes are standard infinite CSS Animations. ---- */
+.hero{padding-right:420px;min-height:266px}
+.nfl-hero-anim{position:absolute;right:20px;top:38px;width:392px;height:224px;z-index:2;pointer-events:none;filter:drop-shadow(0 16px 26px rgba(0,0,0,.32))}
+.nfl-field{position:absolute;left:0;right:0;bottom:30px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14) 12%,rgba(255,255,255,.14) 88%,transparent)}
+.nfl-field:before,.nfl-field:after{content:'';position:absolute;top:-4px;bottom:-4px;width:1px;background:rgba(255,255,255,.09)}
+.nfl-yard{position:absolute;bottom:22px;width:1px;height:16px;background:rgba(255,255,255,.08)}
+.runner-track{position:absolute;left:14px;top:24px;width:340px;height:180px;animation:runnerTrack 4.4s linear infinite}
+.runner-track.reduced{animation:none;left:170px}
+.runner{transform-origin:50% 100%}
+.rleg{stroke:#0c1420;stroke-width:9;stroke-linecap:round}
+.rleg.back{animation:legBack 0.42s ease-in-out infinite}
+.rleg.front{animation:legFront 0.42s ease-in-out infinite}
+.rarm{stroke:#0c1420;stroke-width:6.5;stroke-linecap:round;transform-origin:64px 78px}
+.rarm.back{animation:armBack 0.42s ease-in-out infinite}
+.rarm.front{animation:armFront 0.42s ease-in-out infinite}
+.rtorso{fill:var(--gold)}
+.rhelmet{fill:#0c1420}
+.rmask{stroke:#f4b942;stroke-width:2.4;fill:none}
+@keyframes runnerTrack{0%{transform:translateX(0)}100%{transform:translateX(300px)}}
+@keyframes legBack{0%,100%{transform:rotate(24deg)}50%{transform:rotate(-30deg)}}
+@keyframes legFront{0%,100%{transform:rotate(-28deg)}50%{transform:rotate(26deg)}}
+@keyframes armBack{0%,100%{transform:rotate(-26deg)}50%{transform:rotate(30deg)}}
+@keyframes armFront{0%,100%{transform:rotate(28deg)}50%{transform:rotate(-24deg)}}
+.football{transform-origin:center}
+.football-spin{animation:ballSpin .38s linear infinite}
+@keyframes ballSpin{to{transform:rotate(360deg)}}
+.catch-flash{opacity:0;fill:var(--gold)}
+.catch-flash-an{animation:catchFlash 4.4s linear infinite}
+@keyframes catchFlash{0%,79%{opacity:0}81%{opacity:.55}86%,100%{opacity:0}}
+@media(max-width:1180px){.hero{padding-right:34px;min-height:0}.nfl-hero-anim{position:relative;right:auto;top:auto;width:min(100%,392px);height:200px;margin:22px auto 0}}
+@media(max-width:650px){.nfl-hero-anim{transform:scale(.86);transform-origin:center top;margin-bottom:-16px}}
+@media(prefers-reduced-motion:reduce){.runner-track{animation:none!important;left:170px!important}.rleg,.rarm,.football-spin,.catch-flash-an{animation:none!important}.catch-flash{opacity:0!important}}
+
+.stats{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin:14px 0;background:#08111a}
+.stat{padding:16px 18px;border-right:1px solid var(--line)}.stat:last-child{border-right:0}
+.stat span{display:block;color:#617083;font:700 8px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.stat b{display:block;margin-top:7px;font-size:22px}
+.stat small{display:block;margin-top:4px;color:#6f7d8c;font-size:10px}
+
+.labgrid{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;margin:14px 0}
+.panel{border:1px solid var(--line);border-radius:16px;background:linear-gradient(155deg,rgba(255,255,255,.03),rgba(7,15,23,.96));overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 18px 46px rgba(0,0,0,.2)}
+.ph{padding:13px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.ph b{font:800 9px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#9ca9b8}
+.ph span{font:700 8px var(--mono);color:#586879;letter-spacing:.1em}
+
+.selected{padding:18px}
+.sel-top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.sel-name{font-size:22px;font-weight:850;letter-spacing:-.035em}
+.sel-meta{margin-top:3px;color:#728296;font:600 10px var(--mono)}
+.sel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:15px}
+.mini{padding:10px;border:1px solid rgba(255,255,255,.06);border-radius:9px}
+.mini span{display:block;color:#647487;font:700 7.5px var(--mono);letter-spacing:.09em;text-transform:uppercase}
+.mini b{display:block;margin-top:5px;font-size:12.5px}
+.read{margin-top:14px;padding-top:13px;border-top:1px solid var(--line);color:#8998a8;font-size:11.5px;line-height:1.65}
+.read strong{color:#dbe4ec}
+
+.gauge-wrap{display:flex;align-items:center;gap:14px}
+.gauge-svg{width:78px;height:78px;transform:rotate(-90deg);flex:0 0 auto}
+.gauge-bg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:8}
+.gauge-fill{fill:none;stroke:var(--green);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1s cubic-bezier(.22,.9,.3,1)}
+.gauge-fill.opp{stroke:var(--blue)}
+.gauge-label{display:flex;flex-direction:column;line-height:1.1}
+.gauge-label b{font-size:24px;font-weight:900;color:var(--text)}
+.gauge-label span{margin-top:3px;font:800 8px var(--mono);letter-spacing:.11em;color:#6b7a8c;text-transform:uppercase}
+
+.edge-lean{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.edge-lean-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.edge-lean-head span{font:800 8px var(--mono);letter-spacing:.1em;color:#647486}
+.edge-lean-head b{font:800 9px var(--mono);letter-spacing:.1em;color:#a9b6c4}
+.edge-track{position:relative;height:10px;border-radius:6px;background:rgba(255,255,255,.05);overflow:hidden}
+.edge-center{position:absolute;left:50%;top:-2px;bottom:-2px;width:2px;background:rgba(255,255,255,.25);transform:translateX(-1px);z-index:2}
+.edge-fill{position:absolute;top:0;bottom:0;border-radius:6px;transition:left .7s ease,width .7s ease,background .3s}
+.edge-readout{margin-top:7px;font:800 11px var(--mono);color:var(--text);text-align:center}
+.edge-readout small{color:#6b7a8c;font-weight:600}
+
+.radar-wrap{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:center;gap:16px}
+.radar-svg{width:178px;height:178px;flex:0 0 auto}
+.radar-grid{fill:none;stroke:rgba(255,255,255,.08);stroke-width:1}
+.radar-axis{stroke:rgba(255,255,255,.08);stroke-width:1}
+.radar-area{fill:rgba(244,185,66,.18);stroke:var(--gold);stroke-width:1.6;stroke-linejoin:round;transition:d .6s cubic-bezier(.2,.85,.3,1)}
+.radar-pt{fill:var(--gold);r:2.6}
+.radar-area.opp-radar{fill:rgba(87,167,255,.18);stroke:#57a7ff}
+.radar-pt.opp-radar-pt{fill:#57a7ff}
+.radar-area.avg-radar{fill:none;stroke:#54606f;stroke-width:1.1;stroke-dasharray:3 3}
+.radar-pt.avg-radar-pt{fill:#54606f;r:1.8}
+.radar-label{font:700 6.6px var(--mono);fill:#7b8998;text-transform:uppercase}
+.radar-legend{display:flex;flex-direction:column;gap:6px;min-width:0}
+.radar-legend b{font:800 9px var(--mono);letter-spacing:.08em;color:#a9b6c4;text-transform:uppercase;margin-bottom:2px}
+.radar-legend .rl-item{display:flex;justify-content:space-between;gap:14px;font:600 10px var(--mono);color:#8998a8}
+.radar-legend .rl-item b{color:#dbe4ec;font-weight:800}
+
+/* Trait bar chart */
+.barchart{margin-top:14px;padding-top:13px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:7px}
+.bar-row{display:grid;grid-template-columns:96px 1fr 30px;gap:8px;align-items:center}
+.bar-row span{font:700 8px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:#7c8ba0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-track{height:7px;border-radius:5px;background:rgba(255,255,255,.06);overflow:hidden}
+.bar-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--gold),#ffd76a);width:var(--w);transition:width .6s cubic-bezier(.2,.85,.3,1)}
+.bar-fill.blue{background:linear-gradient(90deg,var(--blue),#8fc4ff)}
+.bar-row b{font:800 10px var(--mono);color:#c8d2dc;text-align:right}
+
+/* Opponent defense panel */
+.pw-wrap{padding:16px}
+.pw-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.pw-title b{display:block;font-size:16px;color:#eef3f7;letter-spacing:-.01em}
+.pw-title span{display:block;margin-top:3px;color:#7d8ea0;font:700 9px var(--mono);letter-spacing:.06em}
+.pw-sample{color:#5e6e80;font:700 8px var(--mono);letter-spacing:.05em;white-space:nowrap}
+.pw-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}
+.pw-stat{padding:11px 12px;border:1px solid rgba(255,255,255,.06);border-radius:10px;background:rgba(255,255,255,.015)}
+.pw-stat span{display:block;font:700 7.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#68788a}
+.pw-stat b{display:block;margin-top:5px;font-size:16px}
+.pw-stat small{display:inline-block;margin-top:6px;font:800 7.5px var(--mono);letter-spacing:.06em;padding:2px 6px;border-radius:5px;background:rgba(255,255,255,.05)}
+.pw-stat i{display:block;height:4px;background:rgba(255,255,255,.06);border-radius:9px;margin-top:8px;overflow:hidden}
+.pw-stat i:after{content:'';display:block;height:100%;width:var(--w);background:var(--blue);border-radius:inherit}
+.pw-names{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:9px}
+.pw-mini{padding:9px 10px;border:1px solid rgba(255,255,255,.06);border-radius:9px;background:rgba(255,255,255,.012)}
+.pw-mini span{display:block;font:700 7px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#68788a}
+.pw-mini b{display:block;margin-top:4px;font-size:11.5px}
+.pw-threat{display:flex;align-items:baseline;gap:8px;margin-top:12px;padding:10px 12px;border:1px solid rgba(87,167,255,.18);border-radius:10px;background:rgba(87,167,255,.04)}
+.pw-threat span{font:700 7.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#5f85ab}
+.pw-threat b{color:#dbeaff;font-size:12px}
+.pw-threat small{color:#6f88a3;font-size:9px;margin-left:auto}
+.pw-read{margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06);color:#9aa7b5;font-size:10.5px;line-height:1.6}
+.pw-read strong{color:#c8d2dc}
+.pw-note{margin-top:6px;color:#5e6e80;font-size:9px;font-style:italic;line-height:1.5}
+.v-strong{color:var(--green)}.v-lean{color:#8ef3bd}.v-mixed{color:var(--gold)}.v-fade{color:var(--red)}
+
+/* Donut chart (defensive strength distribution) */
+.donut-row{display:flex;align-items:center;gap:16px;margin-top:14px;padding-top:13px;border-top:1px solid var(--line)}
+.donut-svg{width:104px;height:104px;flex:0 0 auto}
+.donut-center{position:relative}
+.donut-legend{display:flex;flex-direction:column;gap:7px;flex:1;min-width:0}
+.donut-item{display:flex;align-items:center;gap:8px;font:600 10px var(--mono);color:#8998a8}
+.donut-dot{width:9px;height:9px;border-radius:3px;flex:0 0 auto}
+.donut-item b{margin-left:auto;color:#dbe4ec;font-weight:800}
+
+/* League-wide bar chart panel */
+.league-panel{margin:14px 0}
+.league-body{padding:16px}
+.league-bars{display:flex;flex-direction:column;gap:6px;max-height:390px;overflow-y:auto;padding-right:4px}
+.league-row{display:grid;grid-template-columns:44px 1fr 34px;gap:8px;align-items:center}
+.league-row span{font:800 9px var(--mono);color:#8998a8}
+.league-track{height:9px;border-radius:5px;background:rgba(255,255,255,.055);overflow:hidden}
+.league-fill{height:100%;border-radius:5px;width:var(--w);background:linear-gradient(90deg,#57a7ff,#22d97e)}
+.league-row b{font:800 10px var(--mono);text-align:right;color:#c8d2dc}
+.league-row.self .league-fill{background:linear-gradient(90deg,var(--gold),#ffd76a)}
+.league-row.self span,.league-row.self b{color:var(--gold)}
+
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:12px 0}
+button,input,select{font:inherit}
+button{border:1px solid var(--line);background:#081019;color:#7f8d9b;border-radius:999px;padding:8px 12px;cursor:pointer;font-size:11px}
+button.active{background:rgba(244,185,66,.13);border-color:rgba(244,185,66,.42);color:var(--gold);font-weight:800}
+input{margin-left:auto;min-width:230px;background:#071018;border:1px solid var(--line);border-radius:10px;color:var(--text);padding:9px 11px;font-size:11px;outline:none}
+.table{border:1px solid var(--line);border-radius:16px;overflow:auto;background:#08111a;max-height:min(640px,72vh)}
+table{width:100%;border-collapse:collapse;min-width:1120px}
+th,td{padding:12px 13px;border-bottom:1px solid var(--line);text-align:left}
+th{position:sticky;top:0;background:#0b1520;color:#687789;font:800 8px var(--mono);letter-spacing:.11em;text-transform:uppercase;z-index:3;box-shadow:0 1px 0 var(--line)}
+th.so-sortable{cursor:pointer;user-select:none;white-space:nowrap;transition:color .16s ease,background .16s ease}
+th.so-sortable:hover,th.so-sortable:focus-visible{color:#ffedc4;background:rgba(244,185,66,.07);outline:none}
+th.so-sortable::after{content:'';display:inline-block;width:6px;height:8px;margin-left:6px;vertical-align:middle;background:linear-gradient(135deg,transparent 48%,#596a72 49% 58%,transparent 59%) top/6px 4px no-repeat,linear-gradient(315deg,transparent 48%,#596a72 49% 58%,transparent 59%) bottom/6px 4px no-repeat;opacity:.8}
+th.so-sortable[aria-sort="ascending"]::after{background:linear-gradient(135deg,transparent 48%,#ffd76a 49% 58%,transparent 59%) top/6px 4px no-repeat}
+th.so-sortable[aria-sort="descending"]::after{background:linear-gradient(315deg,transparent 48%,#ffd76a 49% 58%,transparent 59%) bottom/6px 4px no-repeat}
+td{font-size:11.5px;color:#b8c2cc}
+tr.data-row{cursor:pointer;transition:background .15s,box-shadow .15s}
+tr.data-row:hover{background:rgba(87,167,255,.04)}
+tr.data-row.active{background:rgba(244,185,66,.05);box-shadow:inset 3px 0 0 var(--gold),0 0 0 1px rgba(244,185,66,.08)}
+.player{font-weight:800;color:#eef3f7}
+.mono{font-family:var(--mono)}
+.good{color:var(--green);font-weight:800}
+.gold{color:var(--gold);font-weight:800}
+.weak{color:#7b8998}
+.ls-cell b{font-size:12.5px}
+.ls-cell i{display:block;height:3px;border-radius:2px;margin-top:5px;width:var(--w);background:linear-gradient(90deg,var(--gold),#ffd76a);opacity:.75;transition:width .5s ease}
+.pos-pill{display:inline-block;padding:2px 7px;border-radius:5px;font:800 8px var(--mono);letter-spacing:.06em}
+.pos-pill.QB{background:rgba(244,185,66,.12);color:var(--gold)}
+.pos-pill.RB{background:rgba(34,217,126,.12);color:var(--green)}
+.pos-pill.WR{background:rgba(87,167,255,.12);color:var(--blue)}
+.pos-pill.TE{background:rgba(255,93,108,.12);color:var(--red)}
+
+.srcnote{margin:12px 0 0;padding:12px 14px;border:1px solid rgba(87,167,255,.13);border-radius:12px;color:#718194;font-size:10.5px;line-height:1.6}
+.srcnote b{color:#a9b6c4}
+.srcnote h4{margin:10px 0 4px;color:#a9b6c4;font:800 9px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.srcnote p{margin:0 0 6px}
+
+@media(max-width:900px){.labgrid{grid-template-columns:1fr}}
+@media(max-width:950px){.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){body{padding:14px}.hero{padding:24px 18px}.badge{position:static;display:inline-flex;margin-top:10px}.stats{grid-template-columns:1fr 1fr}.sel-grid{grid-template-columns:1fr 1fr}input{margin-left:0;min-width:100%}}
+</style>
+<style id="so-mobile-repair-20260824">
+@media(max-width:700px){
+ html,body{width:100%;max-width:100%;overflow-x:hidden}body{padding:10px!important}.wrap{width:100%;min-width:0}.hero{padding:24px 18px!important;min-height:0}.hero h1{font-size:2.65rem!important;line-height:.96}.hero p{font-size:.78rem!important;max-width:none}
+ .stats{display:flex!important;overflow-x:auto!important;border-radius:14px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}.stat{flex:0 0 46%!important;min-width:0!important;border-right:1px solid var(--line)!important;scroll-snap-align:start}
+ .labgrid,.research-grid{grid-template-columns:minmax(0,1fr)!important}.panel,.research-card{min-width:0}.ph{align-items:flex-start;gap:8px}.ph span{white-space:normal;text-align:right}.pw-names,.pw-stats,.sel-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .radar-wrap{align-items:flex-start;overflow-x:auto}.donut-row{flex-direction:column;align-items:flex-start}.controls{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;padding-bottom:10px}.controls button{flex:0 0 auto}.controls input{flex:0 0 88%;min-width:0!important;margin-left:0!important}
+ .table{width:100%;max-width:100%;overflow-x:auto!important;-webkit-overflow-scrolling:touch}.table table{min-width:1180px!important}
+}
+</style>
+<style id="so-matchup-lab-swipe-sections-20260824">
+@media(max-width:700px){
+ .labgrid{display:flex!important;grid-template-columns:none!important;flex-wrap:nowrap!important;overflow-x:auto!important;gap:12px!important;scroll-snap-type:x mandatory!important;-webkit-overflow-scrolling:touch!important;padding-bottom:6px!important;scrollbar-width:none!important}
+ .labgrid::-webkit-scrollbar{display:none!important}
+ .labgrid>.panel{flex:0 0 88vw!important;width:88vw!important;max-width:400px!important;min-width:0!important;scroll-snap-align:start!important}
+}
+</style>
+<style id="so-mobile-verified-pass-20260824">
+@media(max-width:700px){
+ .hero{border-radius:16px!important;padding:23px 17px!important}.hero h1{font-size:clamp(2.15rem,11vw,2.75rem)!important}.hero p{font-size:.77rem!important;line-height:1.58!important}.stats{margin:11px 0!important}.stat{flex-basis:48%!important;padding:14px 12px!important}.labgrid{gap:10px!important;margin:10px 0!important}.panel,.table{border-radius:14px!important}.selected,.pw-wrap,.league-body{padding:15px!important}.radar-svg{width:132px!important;height:132px!important}.table table{min-width:1120px!important}
+}
+@media(pointer:coarse) and (max-width:700px){.rleg,.rarm,.football-spin{animation-play-state:running}}
+@media(max-width:700px){html,body{overflow-x:hidden!important}.wrap{width:100%!important;padding:10px!important}.hero{padding:20px 14px 14px!important;border-radius:20px!important;overflow:hidden!important}.hero h1{font-size:2.15rem!important;line-height:1!important}.hero p{font-size:.74rem!important;line-height:1.52!important;max-width:100%!important}.nfl-hero-anim{height:170px!important;width:130%!important;margin:12px -15% -10px!important;transform:scale(.72)!important;transform-origin:center top!important}.stats{display:flex!important;overflow-x:auto!important;gap:8px!important}.stats>*{flex:0 0 43%!important;padding:10px!important}.labgrid{grid-template-columns:1fr!important;gap:10px!important}.panel{min-width:0!important}.ph,.pw-wrap,.selected{padding:12px!important}.pw-stats,.sel-grid{grid-template-columns:1fr!important;gap:8px!important}.radar-wrap{display:flex!important;flex-direction:column!important;align-items:center!important}.radar-svg{width:190px!important;max-width:100%!important}.radar-legend{width:100%!important;font-size:.68rem!important}.bar-row{grid-template-columns:78px 1fr 26px!important}.table{overflow-x:auto!important;max-height:min(560px,66vh)!important}.table table{min-width:1180px!important}.read,.pw-read{font-size:.72rem!important;line-height:1.5!important;overflow-wrap:anywhere}.selected h2,.pw-wrap h2{font-size:1.35rem!important}}
+</style>
+<style id="so-mobile-final-nine-pass">@media(max-width:700px){html,body{max-width:100%;overflow-x:hidden}table{max-width:none}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap{max-width:100%;-webkit-overflow-scrolling:touch;overflow-x:auto}.hero h1{overflow-wrap:anywhere}.controls,.filter-row{max-width:100%;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}.controls>*,.filter-row>*{flex:0 0 auto}}@media(pointer:coarse) and (max-width:700px){*{scroll-behavior:auto}.table{scroll-snap-type:none}}</style>
+<style id="so-runtime-performance-core-20260811">
+html.so-perf-hidden .so-perf-anim-target,
+html.so-perf-hidden .so-perf-anim-target::before,
+html.so-perf-hidden .so-perf-anim-target::after,
+html.so-perf-scrolling .so-perf-anim-target,
+html.so-perf-scrolling .so-perf-anim-target::before,
+html.so-perf-scrolling .so-perf-anim-target::after,
+.so-perf-offscreen-anim,
+.so-perf-offscreen-anim::before,
+.so-perf-offscreen-anim::after{animation-play-state:paused!important;}
+.so-perf-offscreen-anim{will-change:auto!important;}
+@media(pointer:coarse){button,a,[role="button"]{touch-action:manipulation;}}
+@media(max-width:700px){input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px!important}a,button{-webkit-tap-highlight-color:transparent}body{padding-bottom:max(24px,env(safe-area-inset-bottom))!important}}
+</style>
+<style id="so-shared-disclaimer-footer-20260824">.so-shared-footer{width:100%;max-width:100%;margin:28px 0 0;padding:28px clamp(18px,4vw,48px) 30px;border-top:1px solid rgba(255,255,255,.08);background:rgba(4,7,12,.82);display:flex;flex-direction:column;gap:14px;clear:both}.so-shared-footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}.so-shared-footer-logo{font-family:Inter,Arial,sans-serif;font-size:1rem;font-weight:900;letter-spacing:-.02em;color:#f0ece4;text-decoration:none}.so-shared-footer-logo span{color:#e8a020}.so-shared-footer-top p{margin:0;color:#4d6070;font-size:.75rem;letter-spacing:.06em}.so-shared-footer .footer-disclaimer{max-width:1100px;margin:0;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.28);font-size:.62rem;line-height:1.68;letter-spacing:.01em}@media(max-width:700px){.so-shared-footer{margin-top:20px;padding:22px 16px max(24px,env(safe-area-inset-bottom));text-align:center}.so-shared-footer-top{flex-direction:column}.so-shared-footer .footer-disclaimer{text-align:left;font-size:.6rem;overflow-wrap:anywhere}}</style>
+<style id="so-nfl-terminal-expansion-20260824">.nfl-officiating-hero{position:relative;height:190px;margin:22px 0 -8px;border:1px solid rgba(244,185,66,.2);border-radius:18px;overflow:hidden;background:radial-gradient(circle at 50% 50%,rgba(244,185,66,.09),transparent 31%),linear-gradient(135deg,#07131d,#081019)}.field-grid{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 9.8%,rgba(255,255,255,.04) 10%),linear-gradient(rgba(87,167,255,.025) 1px,transparent 1px);background-size:auto,100% 38px}.hero-links{position:absolute;inset:20px 8%;width:84%;height:150px}.hero-links path{fill:none;stroke:rgba(244,185,66,.32);stroke-width:1.5;stroke-dasharray:5 7;animation:linkDash 5s linear infinite}.football-orbit{position:absolute;left:50%;top:50%;width:68px;height:68px;margin:-34px;animation:ballBounce 2.4s ease-in-out infinite}.football{position:absolute;inset:6px;border-radius:54% 46% 54% 46%;background:linear-gradient(145deg,#b96b31,#6e3517);border:2px solid #e9b779;transform:rotate(-24deg);box-shadow:inset 0 0 0 3px rgba(62,25,8,.3),0 9px 18px rgba(0,0,0,.4)}.football:before,.football:after{content:'';position:absolute;top:8px;bottom:8px;width:2px;border:1px solid rgba(255,239,207,.7);border-width:0 2px}.football:before{left:8px;border-radius:50% 0 0 50%}.football:after{right:8px;border-radius:0 50% 50% 0}.football i{position:absolute;left:50%;top:13px;bottom:13px;width:2px;background:#f7e7cc;transform:translateX(-50%)}.football b,.football span{position:absolute;left:20px;width:18px;height:2px;background:#f7e7cc}.football b{top:21px;box-shadow:0 5px #f7e7cc,0 10px #f7e7cc}.football span{top:36px}.referee{position:absolute;right:15%;bottom:19px;width:46px;height:92px;animation:refSignal 3.6s ease-in-out infinite}.ref-head{position:absolute;left:15px;top:0;width:16px;height:16px;border-radius:50%;background:#d7a06f}.ref-body{position:absolute;left:10px;top:17px;width:26px;height:42px;background:#e7edf2;border-radius:4px;border:1px solid #111;overflow:hidden}.ref-body i{display:block;float:left;width:20%;height:100%;background:#121820}.ref-body i:nth-child(2){margin:0 20%}.ref-arm{position:absolute;top:22px;width:7px;height:42px;background:#e7edf2;border:1px solid #111;transform-origin:top}.ref-arm.left{left:7px;transform:rotate(32deg)}.ref-arm.right{right:7px;transform:rotate(-32deg)}.ref-leg{position:absolute;top:57px;width:8px;height:34px;background:#111820}.ref-leg.left{left:12px;transform:rotate(6deg)}.ref-leg.right{right:12px;transform:rotate(-6deg)}.flag{position:absolute;left:-15px;top:55px;width:18px;height:13px;background:#f4b942;transform:rotate(-12deg);box-shadow:0 0 12px rgba(244,185,66,.55)}.hero-node{position:absolute;padding:8px 10px;border:1px solid rgba(87,167,255,.2);border-radius:10px;background:rgba(6,16,25,.85);min-width:115px}.hero-node small{display:block;color:#61778d;font:800 7px var(--mono)}.hero-node b{display:block;color:#cbd7e2;font:800 9px var(--mono);margin-top:4px}.n1{left:5%;top:22px}.n2{right:5%;top:22px}.n3{left:5%;bottom:22px}.n4{right:5%;bottom:22px}.hero-signal{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);font:800 7px var(--mono);color:#7c8d9e}.hero-signal span{color:#22d97e}.def-card-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:9px}.def-card{position:relative;text-align:left;border:1px solid #1a2835;border-radius:13px;background:linear-gradient(145deg,#0a141e,#070d14);padding:13px 11px;color:#dce5ed;min-width:0}.def-card:hover,.def-card.self{border-color:rgba(244,185,66,.55);box-shadow:0 0 18px rgba(244,185,66,.13)}.def-rank{position:absolute;right:9px;top:9px;color:#526477;font:700 7px var(--mono)}.def-card strong{font:900 13px var(--mono)}.def-card>b{display:block;margin:8px 0;font:900 19px var(--mono);color:#f4b942}.def-meter{height:5px;background:#15202b;border-radius:5px;overflow:hidden}.def-meter i{display:block;width:var(--w);height:100%;background:linear-gradient(90deg,#57a7ff,#22d97e,#f4b942)}.def-card small{display:block;margin-top:7px;color:#66788b;font:700 6px var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nfl-intel-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}.intel-panel{min-width:0}.intel-panel>div:last-child{padding:16px}.histogram{height:150px;display:flex;align-items:end;gap:7px;border-bottom:1px solid #243240}.histogram>div{height:100%;flex:1;display:flex;flex-direction:column;justify-content:end;align-items:center}.histogram i{width:100%;height:var(--h);min-height:4px;border-radius:5px 5px 0 0;background:linear-gradient(#f4b942,#57a7ff)}.histogram b{font:800 8px var(--mono);margin-top:-16px;color:#05101a}.histogram small{font:700 7px var(--mono);color:#687a8e;margin-top:5px}.intel-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:13px}.intel-kpis span{padding:10px;border:1px solid #182735;border-radius:10px}.intel-kpis small{display:block;color:#627488;font:700 7px var(--mono)}.intel-kpis b{display:block;margin-top:5px}.position-bars>div{display:grid;grid-template-columns:62px 1fr 42px;gap:8px;align-items:center;margin:12px 0}.position-bars span,.position-bars b{font:800 8px var(--mono)}.position-bars i{height:8px;background:#15212c;border-radius:8px;overflow:hidden}.position-bars em{display:block;width:var(--w);height:100%;background:linear-gradient(90deg,#57a7ff,#f4b942)}.position-bars small{grid-column:2/4;color:#627488;font:700 7px var(--mono)}.leader-set{margin-bottom:12px}.leader-set>span{display:block;color:#f4b942;font:800 7px var(--mono);margin-bottom:5px}.leader-set button{width:100%;display:flex;justify-content:space-between;padding:8px 9px;margin:4px 0;border:1px solid #182735;border-radius:8px;background:#07121c;color:#b8c5d1}.leader-set button b,.leader-set button em{font:800 8px var(--mono);font-style:normal}.window-row{display:grid;grid-template-columns:34px 1fr 1fr;gap:6px;align-items:stretch;margin-bottom:8px}.window-row>span{display:grid;place-items:center;color:#f4b942;font:900 9px var(--mono)}.window-row button{text-align:left;padding:8px;border:1px solid #182735;border-radius:9px;background:#07121c;color:#d4dee7}.window-row small,.window-row b,.window-row em{display:block}.window-row small{font:700 6px var(--mono);color:#607286}.window-row b{font-size:9px;margin:3px 0}.window-row em{font:700 7px var(--mono);color:#22d97e;font-style:normal}@keyframes ballBounce{0%,100%{transform:translateY(-20px) rotate(-7deg)}50%{transform:translateY(18px) rotate(10deg)}}@keyframes refSignal{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}@keyframes linkDash{to{stroke-dashoffset:-24}}@media(max-width:900px){.def-card-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(max-width:700px){.nfl-officiating-hero{height:178px;margin:14px 0 -4px}.hero-node{min-width:90px;padding:6px}.hero-node small{font-size:6px}.hero-node b{font-size:7px}.n1,.n3{left:3%}.n2,.n4{right:3%}.referee{right:9%;transform:scale(.75);transform-origin:bottom}.football-orbit{left:50%;margin-left:-34px}.hero-links{inset:18px 2%;width:96%}.league-body{padding:12px!important;overflow:hidden!important}.def-card-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:8px;padding-bottom:5px}.def-card{flex:0 0 43%;scroll-snap-align:start}.nfl-intel-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px}.intel-panel{flex:0 0 91%;scroll-snap-align:start}.histogram{height:125px}.window-row{grid-template-columns:28px 1fr 1fr}.window-row b{font-size:8px}}@media(prefers-reduced-motion:reduce){.football-orbit,.referee,.hero-links path{animation:none!important}}</style><style id="so-nfl-lab-final-layout">
+.hero{position:relative;min-height:410px;padding-right:475px!important;overflow:hidden}.nfl-officiating-hero{position:absolute;right:18px;top:34px;width:425px;height:300px;margin:0;border:0;border-radius:0;background:radial-gradient(circle at 56% 51%,rgba(244,185,66,.12),transparent 26%);overflow:visible}.field-grid{opacity:.55;border-radius:50%;inset:14px}.hero-links{inset:30px 2%;width:96%;height:230px}.hero-node{min-width:108px;backdrop-filter:blur(8px)}.n1{left:0;top:27px}.n2{right:0;top:27px}.n3{left:0;bottom:28px}.n4{right:0;bottom:28px}.football-orbit{left:49%;top:49%;width:76px;height:76px;margin:-38px}.referee{right:17%;bottom:92px;transform:scale(.88);transform-origin:bottom}.hero-signal{bottom:6px}.league-panel{margin-top:14px}.league-head{align-items:center}.league-head>div:first-child span{display:block}.league-metric-switch{display:flex;gap:5px;overflow-x:auto}.league-metric-switch button{border:1px solid #223548;border-radius:999px;background:#08131d;color:#6f8397;padding:7px 10px;font:800 7px var(--mono);white-space:nowrap}.league-metric-switch button.active{background:#f4b942;color:#071019;border-color:#f4b942}.league-body{padding:10px 12px 13px}.def-tape-intro{display:flex;justify-content:space-between;gap:14px;padding:0 2px 8px;color:#687c90;font-size:8px}.def-tape-intro b{color:#f4b942;font:800 7px var(--mono)}.def-card-grid{display:flex;gap:7px;overflow-x:auto;scroll-snap-type:x proximity;padding:2px 0 5px}.def-card{flex:0 0 122px;height:86px;padding:10px;border-radius:11px;scroll-snap-align:start}.def-card strong{font-size:11px}.def-card>b{font-size:16px;margin:6px 0}.def-card small{font-size:5.5px}.def-rank{font-size:6px}.nfl-intel-grid{margin:12px 0;gap:10px}.intel-panel>div:last-child{padding:14px}.intel-read{min-height:38px;margin:0 0 10px;color:#72859a;font-size:8px;line-height:1.55}.intel-read b{color:#c4d0da}.histogram{height:120px}.histogram i.attack{background:linear-gradient(#22d97e,#57a7ff)}.histogram i.caution{background:linear-gradient(#ff6575,#815063)}.histogram i.watch{background:linear-gradient(#f4b942,#57a7ff)}
+@media(max-width:980px){.hero{padding-right:36px!important;padding-bottom:270px!important}.nfl-officiating-hero{top:auto;bottom:12px;left:50%;right:auto;transform:translateX(-50%);width:min(520px,96%);height:245px}.hero-links{height:185px}.referee{bottom:70px}.nfl-intel-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.hero{padding:28px 18px 222px!important;min-height:0}.hero h1{font-size:clamp(2.45rem,13vw,3.5rem)!important}.hero p{font-size:.76rem!important;line-height:1.55}.nfl-officiating-hero{bottom:4px;width:370px;max-width:112%;height:205px}.hero-links{inset:20px 0;width:100%;height:158px}.football-orbit{width:62px;height:62px;margin:-31px}.referee{right:16%;bottom:58px;transform:scale(.68)}.hero-node{min-width:78px;padding:6px 7px}.hero-node small{font-size:5.5px}.hero-node b{font-size:6.5px}.n1,.n3{left:2%}.n2,.n4{right:2%}.hero-signal{font-size:6px}.league-head{display:block!important}.league-metric-switch{margin-top:10px}.def-tape-intro{display:block}.def-tape-intro span{display:block;margin-top:4px}.def-card{flex-basis:106px;height:82px}.nfl-intel-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory}.intel-panel{flex:0 0 91%;scroll-snap-align:start}.histogram{height:108px}.controls{margin-top:12px!important}}
+</style></head><body><div class="wrap">
+
+<section class="hero">
+<div class="ey">NFL · Offense vs. Defense Research Lab</div>
+<h1>Matchup Lab</h1>
+<p>The same opponent-adjusted engine shortopen built for MLB and the Premier League, retooled for football's real structural matchup: every offensive skill player against the <b style="color:#dce5ed">opposing defensive unit</b> they face in Week 1. A quarterback's arm, pocket presence and legs are read against that defense's front-seven pressure; a running back's speed and contact balance against its run defense; a receiver or tight end's routes and hands against its coverage grade. Defensive inputs are built from PFF's 2026 position-group rankings (DL, EDGE, LB, CB, Safety); offensive traits are calibrated against real 2025 season grades and scouting reputation. The result is a 1–100 Lab Score and a directional Matchup Lean for all sixteen Week 1 games.</p>
+<div class="badge">PREMIUM · DATA LAB</div>
+<div class="nfl-officiating-hero" aria-label="Animated football and referee matchup signal"><div class="field-grid"></div><svg class="hero-links" viewBox="0 0 520 150" aria-hidden="true"><path d="M68 39 C175 39 178 74 245 75"/><path d="M452 39 C345 39 342 74 275 75"/><path d="M68 116 C175 116 178 82 245 77"/><path d="M452 116 C345 116 342 82 275 77"/></svg><div class="football-orbit"><div class="football"><i></i><b></b><span></span></div></div><div class="referee" aria-hidden="true"><span class="ref-head"></span><span class="ref-body"><i></i><i></i><i></i></span><span class="ref-arm left"></span><span class="ref-arm right"></span><span class="ref-leg left"></span><span class="ref-leg right"></span><em class="flag"></em></div><div class="hero-node n1"><small>PLAYER TRAITS</small><b>ROLE-SPECIFIC</b></div><div class="hero-node n2"><small>DEFENSE FACED</small><b>FULL UNIT</b></div><div class="hero-node n3"><small>WEEK 1 POOL</small><b>160 PLAYERS</b></div><div class="hero-node n4"><small>LAB OUTPUT</small><b>LEAN + SCORE</b></div><div class="hero-signal">MATCHUP SIGNAL <span>READY</span></div></div>
+</section>
+
+<div class="stats" id="stats"></div>
+
+<div class="labgrid">
+<section class="panel"><div class="ph"><b>Selected Player</b><span>CLICK ANY ROW</span></div><div class="selected" id="selected"></div></section>
+<section class="panel"><div class="ph"><b>Opponent Defense</b><span id="pwSpan">WEEK 1 UNIT</span></div><div class="pw-wrap" id="evidence"></div></section>
+</div>
+
+<div class="controls" id="filterRow">
+<button class="active" data-f="all">All</button>
+<button data-f="QB">QB</button>
+<button data-f="RB">RB</button>
+<button data-f="WR">WR</button>
+<button data-f="TE">TE</button>
+<input id="search" placeholder="Search player or team…">
+</div>
+
+<div class="table"><table><thead><tr>
+<th class="so-sortable" tabindex="0" data-sort="rank">#</th>
+<th class="so-sortable" tabindex="0" data-sort="name">Player</th>
+<th class="so-sortable" tabindex="0" data-sort="team">Team</th>
+<th class="so-sortable" tabindex="0" data-sort="pos">Pos</th>
+<th class="so-sortable" tabindex="0" data-sort="oppTeam">Week 1</th>
+<th class="so-sortable" tabindex="0" data-sort="ovr">Off. Profile</th>
+<th class="so-sortable" tabindex="0" data-sort="defFaced">Primary Resistance</th>
+<th class="so-sortable" tabindex="0" data-sort="lean">Lean</th>
+<th class="so-sortable" tabindex="0" data-sort="labScore">Lab Score</th>
+</tr></thead><tbody id="body"></tbody></table></div>
+
+<section class="panel league-panel"><div class="ph league-head"><div><b>Defense Matchup Tape</b><span>RANK A UNIT, THEN OPEN ITS BEST-FITTING PLAYER</span></div><div class="league-metric-switch" id="leagueMetricSwitch"><button class="active" data-metric="overall">OVERALL</button><button data-metric="frontSeven">PRESSURE</button><button data-metric="runDef">RUN</button><button data-metric="coverage">COVERAGE</button></div></div><div class="league-body" id="leagueBoard"></div></section>
+
+<section class="nfl-intel-grid"><article class="panel intel-panel"><div class="ph"><b>Player Matchup Distribution</b><span>WHERE THE WEEK 1 POOL LANDS</span></div><div id="labDistribution"></div></article><article class="panel intel-panel"><div class="ph"><b>Positional Advantage Board</b><span>WHICH ROLES OWN THE CLEANEST PATHS</span></div><div id="positionAverages"></div></article><article class="panel intel-panel"><div class="ph"><b>Defense Pressure Points</b><span>UNITS MOST LIKELY TO SUPPRESS A ROLE</span></div><div id="resistanceLeaders"></div></article><article class="panel intel-panel"><div class="ph"><b>Best Player Paths</b><span>ATTACK AND CAUTION BY ROLE</span></div><div id="attackWindows"></div></article></section>
+
+<div class="srcnote"><b>Method:</b> Each player is evaluated against the entire opposing unit, with the resistance axis changing by role: pressure for quarterbacks, run fits for backs, and coverage for receivers and tight ends. Offensive traits are deterministic model outputs built from current depth-chart roles, recent performance context and scouting descriptors; they are not measured tracking data.<h4>Source layer</h4><p>The 2026 Week 1 schedule and current depth-chart structure set the player pool. Defensive profiles use the supplied 2026 position-group rankings for defensive line, edge, linebacker, cornerback and safety. Publicly unavailable placements are marked <b>(est.)</b> and carry lower confidence. No single-player panel should be read as a one-on-one assignment.</p></div>
+</div>
+
+<script id="nfl-offense-data" type="application/json">[{"name":"Josh Allen","team":"BUF","pos":"QB","ovr":97,"tags":"str arm zip run spd","archetype":"Movement Distributor","role":"Primary","note":"Sixth straight season above a 90.0 PFF grade; unmatched blend of arm strength and improvisational rushing."},{"name":"James Cook III","team":"BUF","pos":"RB","ovr":67,"tags":"juke ball route","archetype":"Space Back","role":"Primary","note":"Projected Week 1 primary role in BUF's current depth-chart structure; the modeled profile is strongest in elusion, ball skills, routes."},{"name":"DJ Moore","team":"BUF","pos":"WR","ovr":62,"tags":"gspd catch cont","archetype":"Route Separator","role":"Primary","note":"Projected Week 1 primary role in BUF's current depth-chart structure; the modeled profile is strongest in game speed, catch radius, contested."},{"name":"Khalil Shakir","team":"BUF","pos":"WR","ovr":74,"tags":"route catch","archetype":"Route Separator","role":"Secondary","note":"Buffalo's most reliable target; elite hands and a favorite of Josh Allen on money downs."},{"name":"Dalton Kincaid","team":"BUF","pos":"TE","ovr":81,"tags":"route catch","archetype":"Seam Stretcher","role":"Primary","note":"Best season yet — 2nd in grade behind only Kittle, led the league in yards per route run."},{"name":"Malik Willis","team":"MIA","pos":"QB","ovr":45,"tags":"pres spd acc","archetype":"Field General","role":"Primary","note":"Projected Week 1 primary role in MIA's current depth-chart structure; the modeled profile is strongest in pressure, speed, accuracy."},{"name":"De'Von Achane","team":"MIA","pos":"RB","ovr":84,"tags":"spd gspd","archetype":"Receiving Mismatch","role":"Primary","note":"One of the fastest players in football — NFL-best breakaway rate makes every touch a home-run threat."},{"name":"Caleb Douglas","team":"MIA","pos":"WR","ovr":63,"tags":"juke hr gspd","archetype":"Route Separator","role":"Primary","note":"Projected Week 1 primary role in MIA's current depth-chart structure; the modeled profile is strongest in juke, home run, game speed."},{"name":"Malik Washington","team":"MIA","pos":"WR","ovr":57,"tags":"ball hr spd","archetype":"YAC Creator","role":"Secondary","note":"Projected Week 1 secondary role in MIA's current depth-chart structure; the modeled profile is strongest in ball skills, home run, speed."},{"name":"Greg Dulcich","team":"MIA","pos":"TE","ovr":58,"tags":"cont spd ball","archetype":"Red-Zone Frame","role":"Primary","note":"Projected Week 1 primary role in MIA's current depth-chart structure; the modeled profile is strongest in contested, speed, hands."},{"name":"Geno Smith","team":"NYJ","pos":"QB","ovr":55,"tags":"zip acc spd","archetype":"Movement Distributor","role":"Primary","note":"Projected Week 1 primary role in NYJ's current depth-chart structure; the modeled profile is strongest in arm zip, accuracy, speed."},{"name":"Breece Hall","team":"NYJ","pos":"RB","ovr":82,"tags":"gspd catch","archetype":"Perimeter Breaker","role":"Primary","note":"Explosive dual-threat back; among the league's best in yards-after-catch when healthy."},{"name":"Garrett Wilson","team":"NYJ","pos":"WR","ovr":87,"tags":"route juke","archetype":"Route Separator","role":"Primary","note":"Route-running technician with elite separation quickness at every level of the route tree."},{"name":"Adonai Mitchell","team":"NYJ","pos":"WR","ovr":49,"tags":"cont juke gspd","archetype":"YAC Creator","role":"Secondary","note":"Projected Week 1 secondary role in NYJ's current depth-chart structure; the modeled profile is strongest in contested, juke, game speed."},{"name":"Kenyon Sadiq","team":"NYJ","pos":"TE","ovr":71,"tags":"spd cont route","archetype":"Motion H-Back","role":"Primary","note":"Projected Week 1 primary role in NYJ's current depth-chart structure; the modeled profile is strongest in speed, contested, routes."},{"name":"Drake Maye","team":"NE","pos":"QB","ovr":79,"tags":"spat arm acc","archetype":"Vertical Driver","role":"Primary","note":"Projected Week 1 primary role in NE's current depth-chart structure; the modeled profile is strongest in awareness, arm strength, accuracy."},{"name":"TreVeyon Henderson","team":"NE","pos":"RB","ovr":76,"tags":"ball pblk juke","archetype":"Perimeter Breaker","role":"Primary","note":"Projected Week 1 primary role in NE's current depth-chart structure; the modeled profile is strongest in ball skills, pass block, elusion."},{"name":"A.J. Brown","team":"NE","pos":"WR","ovr":82,"tags":"spd ball catch","archetype":"Route Separator","role":"Primary","note":"Projected Week 1 primary role in NE's current depth-chart structure; the modeled profile is strongest in speed, ball skills, catch radius."},{"name":"Romeo Doubs","team":"NE","pos":"WR","ovr":50,"tags":"juke cont route","archetype":"Vertical Accelerator","role":"Secondary","note":"Projected Week 1 secondary role in NE's current depth-chart structure; the modeled profile is strongest in juke, contested, routes."},{"name":"Hunter Henry","team":"NE","pos":"TE","ovr":50,"tags":"route catch ball","archetype":"Red-Zone Frame","role":"Primary","note":"Projected Week 1 primary role in NE's current depth-chart structure; the modeled profile is strongest in separation, catch radius, hands."},{"name":"Dak Prescott","team":"DAL","pos":"QB","ovr":76,"tags":"acc pocket spat","archetype":"Field General","role":"Primary","note":"Top-4 grade, 2nd in WAR, NFL's best in clutch situations in 2025."},{"name":"Javonte Williams","team":"DAL","pos":"RB","ovr":70,"tags":"spd juke","archetype":"Perimeter Breaker","role":"Primary","note":"Change-of-pace lead back rebuilding explosiveness after multiple knee injuries."},{"name":"CeeDee Lamb","team":"DAL","pos":"WR","ovr":78,"tags":"route juke","archetype":"Route Separator","role":"Primary","note":"Missed time and scored a career-low three TDs, but 3rd in the NFL in receiving yards since 2021."},{"name":"George Pickens","team":"DAL","pos":"WR","ovr":87,"tags":"spd ball hr","archetype":"Boundary Winner","role":"Secondary","note":"Projected Week 1 secondary role in DAL's current depth-chart structure; the modeled profile is strongest in speed, ball skills, home run."},{"name":"Jake Ferguson","team":"DAL","pos":"TE","ovr":76,"tags":"catch route","archetype":"Inline Mismatch","role":"Primary","note":"Reliable possession tight end and a security blanket over the middle of the field."},{"name":"Jalen Hurts","team":"PHI","pos":"QB","ovr":90,"tags":"str run pocket","archetype":"Timing Operator","role":"Primary","note":"Super Bowl-winning short-yardage force; accuracy and RPO reads have both sharpened."},{"name":"Saquon Barkley","team":"PHI","pos":"RB","ovr":74,"tags":"juke spd","archetype":"Space Back","role":"Primary","note":"A year removed from a 2,000-yard season, still finished top-10 in rushing yards in 2025."},{"name":"DeVonta Smith","team":"PHI","pos":"WR","ovr":83,"tags":"route catch","archetype":"Boundary Winner","role":"Primary","note":"Elite route technician who took over as Philadelphia's WR1 after A.J. Brown's trade to New England."},{"name":"Makai Lemon","team":"PHI","pos":"WR","ovr":67,"tags":"catch spd route","archetype":"Slot Controller","role":"Secondary","note":"Projected Week 1 secondary role in PHI's current depth-chart structure; the modeled profile is strongest in catch radius, speed, routes."},{"name":"Dallas Goedert","team":"PHI","pos":"TE","ovr":80,"tags":"catch cont","archetype":"Red-Zone Frame","role":"Primary","note":"Physical, reliable possession TE who thrives on Philadelphia's play-action shots."},{"name":"Jaxson Dart","team":"NYG","pos":"QB","ovr":62,"tags":"run spd spat","archetype":"Pressure Creator","role":"Primary","note":"Rookie thrust into the lineup; raw arm talent and legs, learning NFL processing speed."},{"name":"Cam Skattebo","team":"NYG","pos":"RB","ovr":70,"tags":"str juke ball","archetype":"Three-Down Engine","role":"Primary","note":"Physical rookie runner who forced his way into the lineup with contact balance."},{"name":"Malik Nabers","team":"NYG","pos":"WR","ovr":87,"tags":"gspd juke cont","archetype":"Vertical Accelerator","role":"Primary","note":"Electric route-runner with rare after-the-catch juice from Day 1."},{"name":"Darius Slayton","team":"NYG","pos":"WR","ovr":45,"tags":"gspd cont spd","archetype":"YAC Creator","role":"Secondary","note":"Projected Week 1 secondary role in NYG's current depth-chart structure; the modeled profile is strongest in game speed, contested, speed."},{"name":"Isaiah Likely","team":"NYG","pos":"TE","ovr":68,"tags":"ball spd cont","archetype":"Inline Mismatch","role":"Primary","note":"Projected Week 1 primary role in NYG's current depth-chart structure; the modeled profile is strongest in hands, speed, contested."},{"name":"Jayden Daniels","team":"WAS","pos":"QB","ovr":89,"tags":"spat run acc","archetype":"Pressure Creator","role":"Primary","note":"OROY runner-up form carried into year two; elite processing and escapability."},{"name":"Jacory Croskey-Merritt","team":"WAS","pos":"RB","ovr":67,"tags":"catch juke pblk","archetype":"Contact Finisher","role":"Primary","note":"Projected Week 1 primary role in WAS's current depth-chart structure; the modeled profile is strongest in catch radius, elusion, pass block."},{"name":"Terry McLaurin","team":"WAS","pos":"WR","ovr":87,"tags":"route vert gspd","archetype":"Slot Controller","role":"Primary","note":"Route-running savant who has quietly been a top-10 receiver for years."},{"name":"Stefon Diggs","team":"WAS","pos":"WR","ovr":52,"tags":"juke route spd","archetype":"Route Separator","role":"Secondary","note":"Projected Week 1 secondary role in WAS's current depth-chart structure; the modeled profile is strongest in juke, routes, speed."},{"name":"Chig Okonkwo","team":"WAS","pos":"TE","ovr":45,"tags":"cont ball catch","archetype":"Motion H-Back","role":"Primary","note":"Projected Week 1 primary role in WAS's current depth-chart structure; the modeled profile is strongest in blocking, hands, catch radius."},{"name":"Joe Burrow","team":"CIN","pos":"QB","ovr":94,"tags":"acc pocket spat","archetype":"Field General","role":"Primary","note":"91.3 grade in 2025 on the lowest turnover-worthy rate of any high-volume QB since 2006."},{"name":"Chase Brown","team":"CIN","pos":"RB","ovr":76,"tags":"gspd catch","archetype":"Perimeter Breaker","role":"Primary","note":"Broke out as the clear lead back in 2025; complements Chase and Higgins in the passing game."},{"name":"Ja'Marr Chase","team":"CIN","pos":"WR","ovr":87,"tags":"gspd hr cont","archetype":"YAC Creator","role":"Primary","note":"Five straight 1,000-yard seasons; leads the league in yards after the catch and forced missed tackles since 2024."},{"name":"Tee Higgins","team":"CIN","pos":"WR","ovr":57,"tags":"gspd cont catch","archetype":"Slot Controller","role":"Secondary","note":"Projected Week 1 secondary role in CIN's current depth-chart structure; the modeled profile is strongest in game speed, contested, catch radius."},{"name":"Mike Gesicki","team":"CIN","pos":"TE","ovr":68,"tags":"cont vert","archetype":"Inline Mismatch","role":"Primary","note":"Big catch-radius vertical seam threat used situationally in Cincinnati's offense."},{"name":"Deshaun Watson","team":"CLE","pos":"QB","ovr":68,"tags":"run str spd","archetype":"Timing Operator","role":"Primary","note":"Named Week 1 starter for 2026 over Sanders/Flacco after a lost 2025 season to injury."},{"name":"Quinshon Judkins","team":"CLE","pos":"RB","ovr":73,"tags":"str juke","archetype":"Contact Finisher","role":"Primary","note":"Rookie downhill runner with excellent contact balance for a first-year back."},{"name":"KC Concepcion","team":"CLE","pos":"WR","ovr":72,"tags":"spd hr ball","archetype":"Boundary Winner","role":"Primary","note":"Projected Week 1 primary role in CLE's current depth-chart structure; the modeled profile is strongest in speed, home run, ball skills."},{"name":"Denzel Boston","team":"CLE","pos":"WR","ovr":61,"tags":"catch vert spd","archetype":"Route Separator","role":"Secondary","note":"Projected Week 1 secondary role in CLE's current depth-chart structure; the modeled profile is strongest in catch radius, jump, speed."},{"name":"Harold Fannin Jr.","team":"CLE","pos":"TE","ovr":55,"tags":"cont route catch","archetype":"Seam Stretcher","role":"Primary","note":"Projected Week 1 primary role in CLE's current depth-chart structure; the modeled profile is strongest in blocking, separation, catch radius."},{"name":"Lamar Jackson","team":"BAL","pos":"QB","ovr":90,"tags":"spd run str","archetype":"Vertical Driver","role":"Primary","note":"Grade dipped to 69.0 in 2025 but remains the league's most explosive dual-threat passer."},{"name":"Derrick Henry","team":"BAL","pos":"RB","ovr":90,"tags":"spd ball","archetype":"Contact Finisher","role":"Primary","note":"Building a first-ballot resume at almost 32 — 4th all-time in rushing TDs, still 1,595 yards in 2025."},{"name":"Zay Flowers","team":"BAL","pos":"WR","ovr":82,"tags":"gspd juke route","archetype":"Route Separator","role":"Primary","note":"Shifty slot/perimeter hybrid who has become Lamar Jackson's top target."},{"name":"Rashod Bateman","team":"BAL","pos":"WR","ovr":61,"tags":"ball vert spd","archetype":"Boundary Winner","role":"Secondary","note":"Projected Week 1 secondary role in BAL's current depth-chart structure; the modeled profile is strongest in ball skills, jump, speed."},{"name":"Mark Andrews","team":"BAL","pos":"TE","ovr":82,"tags":"route cont","archetype":"Seam Stretcher","role":"Primary","note":"Elite route-runner for the position; still one of Lamar Jackson's favorite red-zone targets."},{"name":"Aaron Rodgers","team":"PIT","pos":"QB","ovr":80,"tags":"acc spat pocket","archetype":"Field General","role":"Primary","note":"Returns for another season at 42; still one of the league's sharpest anticipatory throwers."},{"name":"Jaylen Warren","team":"PIT","pos":"RB","ovr":71,"tags":"catch route","archetype":"Space Back","role":"Primary","note":"Undersized but shifty change-of-pace back who has taken over receiving-down work."},{"name":"Michael Pittman Jr.","team":"PIT","pos":"WR","ovr":58,"tags":"juke cont route","archetype":"Vertical Accelerator","role":"Primary","note":"Projected Week 1 primary role in PIT's current depth-chart structure; the modeled profile is strongest in juke, contested, routes."},{"name":"DK Metcalf","team":"PIT","pos":"WR","ovr":85,"tags":"str hr vert","archetype":"Boundary Winner","role":"Secondary","note":"Traded to Pittsburgh; a size/speed combination that wins vertically and after the catch."},{"name":"Pat Freiermuth","team":"PIT","pos":"TE","ovr":76,"tags":"cont catch","archetype":"Inline Mismatch","role":"Primary","note":"Reliable, physical red-zone target with strong hands through contact."},{"name":"Caleb Williams","team":"CHI","pos":"QB","ovr":76,"tags":"arm run spat","archetype":"Timing Operator","role":"Primary","note":"Erratic but explosive second-year QB; new staff building structure around his improvisation."},{"name":"D'Andre Swift","team":"CHI","pos":"RB","ovr":74,"tags":"gspd catch","archetype":"Space Back","role":"Primary","note":"Home-run speed complementing Chicago's new zone-scheme staff."},{"name":"Rome Odunze","team":"CHI","pos":"WR","ovr":83,"tags":"vert juke hr","archetype":"Slot Controller","role":"Primary","note":"Projected Week 1 primary role in CHI's current depth-chart structure; the modeled profile is strongest in jump, juke, home run."},{"name":"Luther Burden III","team":"CHI","pos":"WR","ovr":79,"tags":"ball vert spd","archetype":"Route Separator","role":"Secondary","note":"Projected Week 1 secondary role in CHI's current depth-chart structure; the modeled profile is strongest in ball skills, jump, speed."},{"name":"Colston Loveland","team":"CHI","pos":"TE","ovr":84,"tags":"route cont","archetype":"Inline Mismatch","role":"Primary","note":"No. 10 overall pick turned it on in the second half — 3rd among all TEs in grade for the year."},{"name":"Jared Goff","team":"DET","pos":"QB","ovr":88,"tags":"acc zip pocket","archetype":"Movement Distributor","role":"Primary","note":"Elite anticipation and ball placement inside a wide-zone play-action system."},{"name":"Jahmyr Gibbs","team":"DET","pos":"RB","ovr":94,"tags":"gspd catch route","archetype":"Three-Down Engine","role":"Primary","note":"Elite juice as both a runner and receiver; top-3 in receiving yards and rushing TDs since 2023."},{"name":"Amon-Ra St. Brown","team":"DET","pos":"WR","ovr":84,"tags":"route catch","archetype":"YAC Creator","role":"Primary","note":"2nd in the league in receiving grade since 2022; nobody moves the chains more often."},{"name":"Jameson Williams","team":"DET","pos":"WR","ovr":60,"tags":"gspd cont juke","archetype":"Route Separator","role":"Secondary","note":"Projected Week 1 secondary role in DET's current depth-chart structure; the modeled profile is strongest in game speed, contested, juke."},{"name":"Sam LaPorta","team":"DET","pos":"TE","ovr":87,"tags":"route catch","archetype":"Chain Mover","role":"Primary","note":"Missed 8 games with a herniated disc but still 5th at the position in grade when he played."},{"name":"Jordan Love","team":"GB","pos":"QB","ovr":81,"tags":"arm zip pocket","archetype":"Vertical Driver","role":"Primary","note":"Led all qualifiers in EPA per dropback in 2025; a 94.2 grade from a clean pocket."},{"name":"Josh Jacobs","team":"GB","pos":"RB","ovr":84,"tags":"str ball pblk","archetype":"Three-Down Engine","role":"Primary","note":"Physical, every-down workhorse who anchors Green Bay's run game."},{"name":"Christian Watson","team":"GB","pos":"WR","ovr":57,"tags":"cont gspd route","archetype":"Slot Controller","role":"Primary","note":"Projected Week 1 primary role in GB's current depth-chart structure; the modeled profile is strongest in contested, game speed, routes."},{"name":"Matthew Golden","team":"GB","pos":"WR","ovr":59,"tags":"vert catch ball","archetype":"Boundary Winner","role":"Secondary","note":"Projected Week 1 secondary role in GB's current depth-chart structure; the modeled profile is strongest in jump, catch radius, ball skills."},{"name":"Tucker Kraft","team":"GB","pos":"TE","ovr":78,"tags":"gspd cont","archetype":"Seam Stretcher","role":"Primary","note":"Nearly a perfect 158.3 passer rating when targeted; top-3 in yards after the catch over two years."},{"name":"Kyler Murray","team":"MIN","pos":"QB","ovr":52,"tags":"acc zip run","archetype":"Movement Distributor","role":"Primary","note":"Projected Week 1 primary role in MIN's current depth-chart structure; the modeled profile is strongest in accuracy, arm zip, on move."},{"name":"Aaron Jones Sr.","team":"MIN","pos":"RB","ovr":70,"tags":"pblk spd juke","archetype":"Receiving Mismatch","role":"Primary","note":"Projected Week 1 primary role in MIN's current depth-chart structure; the modeled profile is strongest in pass block, burst, elusion."},{"name":"Justin Jefferson","team":"MIN","pos":"WR","ovr":90,"tags":"route ball vert","archetype":"Route Separator","role":"Primary","note":"Career-low numbers with shaky QB play, but the most receiving yards by anyone through six seasons in NFL history."},{"name":"Jordan Addison","team":"MIN","pos":"WR","ovr":74,"tags":"vert ball catch","archetype":"Vertical Accelerator","role":"Secondary","note":"Projected Week 1 secondary role in MIN's current depth-chart structure; the modeled profile is strongest in jump, ball skills, catch radius."},{"name":"T.J. Hockenson","team":"MIN","pos":"TE","ovr":81,"tags":"route catch","archetype":"Chain Mover","role":"Primary","note":"Fully healthy after 2024 knee surgery; elite route-runner and chain-mover for the position."},{"name":"Daniel Jones","team":"IND","pos":"QB","ovr":74,"tags":"run spd acc","archetype":"Vertical Driver","role":"Primary","note":"Won the job over Anthony Richardson; efficient game manager with real rushing juice."},{"name":"Jonathan Taylor","team":"IND","pos":"RB","ovr":78,"tags":"spd juke","archetype":"Three-Down Engine","role":"Primary","note":"Led the league in rushing TDs; 3rd in rushing yards over the last two years."},{"name":"Alec Pierce","team":"IND","pos":"WR","ovr":77,"tags":"juke route hr","archetype":"YAC Creator","role":"Primary","note":"Projected Week 1 primary role in IND's current depth-chart structure; the modeled profile is strongest in juke, routes, home run."},{"name":"Josh Downs","team":"IND","pos":"WR","ovr":52,"tags":"catch spd route","archetype":"Route Separator","role":"Secondary","note":"Projected Week 1 secondary role in IND's current depth-chart structure; the modeled profile is strongest in catch radius, speed, routes."},{"name":"Tyler Warren","team":"IND","pos":"TE","ovr":78,"tags":"catch route ball","archetype":"Motion H-Back","role":"Primary","note":"No. 14 overall pick in 2025; instant three-level receiving threat as a rookie."},{"name":"Trevor Lawrence","team":"JAX","pos":"QB","ovr":81,"tags":"arm zip acc","archetype":"Movement Distributor","role":"Primary","note":"Talented but turnover-prone; new staff wants faster decisions from his big arm."},{"name":"Bhayshul Tuten","team":"JAX","pos":"RB","ovr":56,"tags":"gspd ball route","archetype":"Perimeter Breaker","role":"Primary","note":"Projected Week 1 primary role in JAX's current depth-chart structure; the modeled profile is strongest in game speed, ball skills, routes."},{"name":"Parker Washington","team":"JAX","pos":"WR","ovr":75,"tags":"catch spd route","archetype":"Slot Controller","role":"Primary","note":"Projected Week 1 primary role in JAX's current depth-chart structure; the modeled profile is strongest in catch radius, speed, routes."},{"name":"Brian Thomas Jr.","team":"JAX","pos":"WR","ovr":85,"tags":"gspd hr vert","archetype":"YAC Creator","role":"Secondary","note":"Explosive sophomore burst; among the league's most dangerous deep threats after a huge rookie year."},{"name":"Brenton Strange","team":"JAX","pos":"TE","ovr":72,"tags":"catch route","archetype":"Inline Mismatch","role":"Primary","note":"Ascending in-line tight end taking on a bigger route-running role."},{"name":"C.J. Stroud","team":"HOU","pos":"QB","ovr":85,"tags":"acc arm spat","archetype":"Pressure Creator","role":"Primary","note":"Bounced back with a clean pocket in 2025 after a brutal 2024 O-line; top-tier arm talent."},{"name":"David Montgomery","team":"HOU","pos":"RB","ovr":73,"tags":"spd catch juke","archetype":"Contact Finisher","role":"Primary","note":"Projected Week 1 primary role in HOU's current depth-chart structure; the modeled profile is strongest in burst, catch radius, elusion."},{"name":"Nico Collins","team":"HOU","pos":"WR","ovr":74,"tags":"vert cont catch","archetype":"YAC Creator","role":"Primary","note":"2nd in yards per route run over the last three years, trailing only Nacua."},{"name":"Tank Dell","team":"HOU","pos":"WR","ovr":50,"tags":"ball hr vert","archetype":"Route Separator","role":"Secondary","note":"Projected Week 1 secondary role in HOU's current depth-chart structure; the modeled profile is strongest in ball skills, home run, jump."},{"name":"Dalton Schultz","team":"HOU","pos":"TE","ovr":71,"tags":"route catch","archetype":"Chain Mover","role":"Primary","note":"Reliable red-zone chain-mover who has become a security blanket for C.J. Stroud."},{"name":"Cam Ward","team":"TEN","pos":"QB","ovr":66,"tags":"arm run spat","archetype":"Movement Distributor","role":"Primary","note":"No. 1 overall pick in 2025; big arm and mobility, still building consistency."},{"name":"Tony Pollard","team":"TEN","pos":"RB","ovr":74,"tags":"spd juke","archetype":"Contact Finisher","role":"Primary","note":"Veteran home-run hitter now leading a run-heavy, rebuilding backfield."},{"name":"Carnell Tate","team":"TEN","pos":"WR","ovr":57,"tags":"ball vert spd","archetype":"Boundary Winner","role":"Primary","note":"Projected Week 1 primary role in TEN's current depth-chart structure; the modeled profile is strongest in ball skills, jump, speed."},{"name":"Wan'Dale Robinson","team":"TEN","pos":"WR","ovr":71,"tags":"hr juke ball","archetype":"Boundary Winner","role":"Secondary","note":"Projected Week 1 secondary role in TEN's current depth-chart structure; the modeled profile is strongest in home run, juke, ball skills."},{"name":"Gunnar Helm","team":"TEN","pos":"TE","ovr":62,"tags":"spd route cont","archetype":"Chain Mover","role":"Primary","note":"Projected Week 1 primary role in TEN's current depth-chart structure; the modeled profile is strongest in speed, routes, contested."},{"name":"Baker Mayfield","team":"TB","pos":"QB","ovr":83,"tags":"acc run spat","archetype":"Timing Operator","role":"Primary","note":"Career-best 2025 season; gunslinger accuracy with underrated pocket mobility."},{"name":"Bucky Irving","team":"TB","pos":"RB","ovr":78,"tags":"juke gspd","archetype":"Receiving Mismatch","role":"Primary","note":"Explosive, natural runner who broke out immediately as a rookie in 2024."},{"name":"Emeka Egbuka","team":"TB","pos":"WR","ovr":77,"tags":"gspd cont spd","archetype":"Route Separator","role":"Primary","note":"Projected Week 1 primary role in TB's current depth-chart structure; the modeled profile is strongest in game speed, contested, speed."},{"name":"Chris Godwin Jr.","team":"TB","pos":"WR","ovr":52,"tags":"cont gspd ball","archetype":"YAC Creator","role":"Secondary","note":"Projected Week 1 secondary role in TB's current depth-chart structure; the modeled profile is strongest in contested, game speed, ball skills."},{"name":"Cade Otton","team":"TB","pos":"TE","ovr":73,"tags":"route catch","archetype":"Motion H-Back","role":"Primary","note":"Steady possession target who has taken over Tampa Bay's short-to-intermediate game."},{"name":"Tua Tagovailoa","team":"ATL","pos":"QB","ovr":46,"tags":"pocket str arm","archetype":"Vertical Driver","role":"Primary","note":"Projected Week 1 primary role in ATL's current depth-chart structure; the modeled profile is strongest in pocket, strength, arm strength."},{"name":"Bijan Robinson","team":"ATL","pos":"RB","ovr":97,"tags":"juke gspd catch","archetype":"Three-Down Engine","role":"Primary","note":"Nation-leading forced-missed-tackle and yards-after-contact totals since entering the league in 2023."},{"name":"Drake London","team":"ATL","pos":"WR","ovr":86,"tags":"catch cont vert","archetype":"Boundary Winner","role":"Primary","note":"Elite catch radius and body control; a matchup nightmare on contested and back-shoulder throws."},{"name":"Zachariah Branch","team":"ATL","pos":"WR","ovr":57,"tags":"cont gspd juke","archetype":"Slot Controller","role":"Secondary","note":"Projected Week 1 secondary role in ATL's current depth-chart structure; the modeled profile is strongest in contested, game speed, juke."},{"name":"Kyle Pitts Sr.","team":"ATL","pos":"TE","ovr":58,"tags":"route cont","archetype":"Inline Mismatch","role":"Primary","note":"Projected Week 1 primary role in ATL's current depth-chart structure; the modeled profile is strongest in routes, separation, blocking."},{"name":"Bryce Young","team":"CAR","pos":"QB","ovr":65,"tags":"acc pocket","archetype":"Timing Operator","role":"Primary","note":"Steadier in year three, but arm strength and pocket composure still limit the ceiling."},{"name":"Jonathon Brooks","team":"CAR","pos":"RB","ovr":69,"tags":"route gspd juke","archetype":"Three-Down Engine","role":"Primary","note":"Projected Week 1 primary role in CAR's current depth-chart structure; the modeled profile is strongest in routes, game speed, elusion."},{"name":"Tetairoa McMillan","team":"CAR","pos":"WR","ovr":80,"tags":"catch cont vert","archetype":"Boundary Winner","role":"Primary","note":"No. 8 overall pick in 2025; immediate size/catch-radius mismatch as a rookie."},{"name":"Jalen Coker","team":"CAR","pos":"WR","ovr":49,"tags":"hr juke spd","archetype":"Slot Controller","role":"Secondary","note":"Projected Week 1 secondary role in CAR's current depth-chart structure; the modeled profile is strongest in home run, juke, speed."},{"name":"Darren Waller","team":"CAR","pos":"TE","ovr":57,"tags":"ball route cont","archetype":"Inline Mismatch","role":"Primary","note":"Projected Week 1 primary role in CAR's current depth-chart structure; the modeled profile is strongest in hands, routes, blocking."},{"name":"Tyler Shough","team":"NO","pos":"QB","ovr":60,"tags":"pocket acc","archetype":"Vertical Driver","role":"Primary","note":"Rookie-year starter; game-manager profile early with a developing vertical arm."},{"name":"Travis Etienne Jr.","team":"NO","pos":"RB","ovr":80,"tags":"spd ball catch","archetype":"Space Back","role":"Primary","note":"Projected Week 1 primary role in NO's current depth-chart structure; the modeled profile is strongest in burst, ball skills, catch radius."},{"name":"Chris Olave","team":"NO","pos":"WR","ovr":80,"tags":"gspd route","archetype":"Vertical Accelerator","role":"Primary","note":"Smooth vertical route runner who remains New Orleans' clear top target."},{"name":"Jordyn Tyson","team":"NO","pos":"WR","ovr":48,"tags":"route spd catch","archetype":"Route Separator","role":"Secondary","note":"Projected Week 1 secondary role in NO's current depth-chart structure; the modeled profile is strongest in routes, speed, catch radius."},{"name":"Juwan Johnson","team":"NO","pos":"TE","ovr":70,"tags":"cont catch","archetype":"Seam Stretcher","role":"Primary","note":"Big-bodied red-zone weapon and one of Tyler Shough's most trusted outlets."},{"name":"Bo Nix","team":"DEN","pos":"QB","ovr":81,"tags":"acc spat run","archetype":"Movement Distributor","role":"Primary","note":"Rapid ascent in year two; quick-trigger accuracy fits Sean Payton's tempo offense."},{"name":"J.K. Dobbins","team":"DEN","pos":"RB","ovr":72,"tags":"spd gspd","archetype":"Perimeter Breaker","role":"Primary","note":"Explosive when healthy; earned a bigger early-down role in Sean Payton's offense."},{"name":"Jaylen Waddle","team":"DEN","pos":"WR","ovr":79,"tags":"cont gspd ball","archetype":"Slot Controller","role":"Primary","note":"Projected Week 1 primary role in DEN's current depth-chart structure; the modeled profile is strongest in contested, game speed, ball skills."},{"name":"Courtland Sutton","team":"DEN","pos":"WR","ovr":78,"tags":"cont vert hr","archetype":"Slot Controller","role":"Secondary","note":"Contested-catch specialist and Denver's clear red-zone go-to."},{"name":"Evan Engram","team":"DEN","pos":"TE","ovr":79,"tags":"gspd route","archetype":"Inline Mismatch","role":"Primary","note":"Undersized, speed-oriented seam-stretcher who leads Denver's tight end room."},{"name":"Justin Herbert","team":"LAC","pos":"QB","ovr":78,"tags":"arm zip pres","archetype":"Field General","role":"Primary","note":"Career-low grade behind the league's most-pressured line after losing both tackles."},{"name":"Omarion Hampton","team":"LAC","pos":"RB","ovr":77,"tags":"gspd str","archetype":"Space Back","role":"Primary","note":"Rookie first-rounder with a rare speed/power combination."},{"name":"Ladd McConkey","team":"LAC","pos":"WR","ovr":84,"tags":"gspd route juke","archetype":"Slot Controller","role":"Primary","note":"Explosive slot weapon who broke out immediately as a rookie in 2024."},{"name":"Quentin Johnston","team":"LAC","pos":"WR","ovr":72,"tags":"ball gspd cont","archetype":"Boundary Winner","role":"Secondary","note":"Projected Week 1 secondary role in LAC's current depth-chart structure; the modeled profile is strongest in ball skills, game speed, contested."},{"name":"David Njoku","team":"LAC","pos":"TE","ovr":44,"tags":"spd route ball","archetype":"Motion H-Back","role":"Primary","note":"Projected Week 1 primary role in LAC's current depth-chart structure; the modeled profile is strongest in speed, separation, hands."},{"name":"Patrick Mahomes","team":"KC","pos":"QB","ovr":87,"tags":"arm spat pres","archetype":"Timing Operator","role":"Primary","note":"Down 2025 season (76.0 grade, torn ACL/LCL) but a 95.8 grade since 2018 and three rings keep him elite."},{"name":"Kenneth Walker III","team":"KC","pos":"RB","ovr":82,"tags":"pblk ball gspd","archetype":"Perimeter Breaker","role":"Primary","note":"Projected Week 1 primary role in KC's current depth-chart structure; the modeled profile is strongest in pass block, ball skills, game speed."},{"name":"Rashee Rice","team":"KC","pos":"WR","ovr":90,"tags":"spd ball catch","archetype":"YAC Creator","role":"Primary","note":"Projected Week 1 primary role in KC's current depth-chart structure; the modeled profile is strongest in speed, ball skills, catch radius."},{"name":"Xavier Worthy","team":"KC","pos":"WR","ovr":80,"tags":"spd gspd hr","archetype":"Vertical Accelerator","role":"Secondary","note":"Blazing top-end speed; the league's fastest receiver stretches every Chiefs coverage shell."},{"name":"Travis Kelce","team":"KC","pos":"TE","ovr":84,"tags":"route ball cont","archetype":"Motion H-Back","role":"Primary","note":"Entering his age-36 season; still one of the league's smartest route-runners against zone."},{"name":"Fernando Mendoza","team":"LV","pos":"QB","ovr":44,"tags":"arm acc pres","archetype":"Pressure Creator","role":"Primary","note":"Projected Week 1 primary role in LV's current depth-chart structure; the modeled profile is strongest in arm strength, accuracy, pressure."},{"name":"Ashton Jeanty","team":"LV","pos":"RB","ovr":83,"tags":"juke ball str","archetype":"Receiving Mismatch","role":"Primary","note":"No. 6 overall pick in 2025; blends contact balance with home-run juke ability."},{"name":"Tre Tucker","team":"LV","pos":"WR","ovr":46,"tags":"juke hr cont","archetype":"Boundary Winner","role":"Primary","note":"Projected Week 1 primary role in LV's current depth-chart structure; the modeled profile is strongest in juke, home run, contested."},{"name":"Jalen Nailor","team":"LV","pos":"WR","ovr":59,"tags":"ball spd vert","archetype":"Boundary Winner","role":"Secondary","note":"Projected Week 1 secondary role in LV's current depth-chart structure; the modeled profile is strongest in ball skills, speed, jump."},{"name":"Brock Bowers","team":"LV","pos":"TE","ovr":90,"tags":"gspd juke catch","archetype":"Inline Mismatch","role":"Primary","note":"Broke Mike Ditka's 63-year-old rookie TE record in 2024; back healthy after a knee injury limited 2025."},{"name":"Brock Purdy","team":"SF","pos":"QB","ovr":83,"tags":"acc spat pocket","archetype":"Timing Operator","role":"Primary","note":"Efficient, quick-processing passer at the center of Kyle Shanahan's system."},{"name":"Christian McCaffrey","team":"SF","pos":"RB","ovr":87,"tags":"catch route pblk","archetype":"Space Back","role":"Primary","note":"The receiving standard at the position — led all backs in receiving yards for a 4th time."},{"name":"Mike Evans","team":"SF","pos":"WR","ovr":50,"tags":"ball vert spd","archetype":"Boundary Winner","role":"Primary","note":"Projected Week 1 primary role in SF's current depth-chart structure; the modeled profile is strongest in ball skills, jump, speed."},{"name":"Deebo Samuel Sr.","team":"SF","pos":"WR","ovr":70,"tags":"spd hr catch","archetype":"Vertical Accelerator","role":"Secondary","note":"Projected Week 1 secondary role in SF's current depth-chart structure; the modeled profile is strongest in speed, home run, catch radius."},{"name":"George Kittle","team":"SF","pos":"TE","ovr":97,"tags":"cont route ball","archetype":"Motion H-Back","role":"Primary","note":"Led all tight ends in grade for a 3rd straight season; on track to be ready Week 1 after a January Achilles tear."},{"name":"Jacoby Brissett","team":"ARI","pos":"QB","ovr":59,"tags":"str pocket acc","archetype":"Movement Distributor","role":"Primary","note":"Projected Week 1 primary role in ARI's current depth-chart structure; the modeled profile is strongest in strength, pocket, accuracy."},{"name":"Jeremiyah Love","team":"ARI","pos":"RB","ovr":72,"tags":"gspd catch spd","archetype":"Perimeter Breaker","role":"Primary","note":"Projected Week 1 primary role in ARI's current depth-chart structure; the modeled profile is strongest in game speed, catch radius, burst."},{"name":"Marvin Harrison Jr.","team":"ARI","pos":"WR","ovr":83,"tags":"route cont vert","archetype":"Vertical Accelerator","role":"Primary","note":"Elite route-running pedigree; a true X-receiver blending size and technique."},{"name":"Michael Wilson","team":"ARI","pos":"WR","ovr":75,"tags":"juke cont hr","archetype":"Boundary Winner","role":"Secondary","note":"Projected Week 1 secondary role in ARI's current depth-chart structure; the modeled profile is strongest in juke, contested, home run."},{"name":"Trey McBride","team":"ARI","pos":"TE","ovr":94,"tags":"route catch ball","archetype":"Red-Zone Frame","role":"Primary","note":"Most valuable tight end in football over the last two years by PFF WAR — 1,239 yards in 2025 led all TEs by 311."},{"name":"Matthew Stafford","team":"LAR","pos":"QB","ovr":84,"tags":"acc arm zip","archetype":"Vertical Driver","role":"Primary","note":"Led the NFL in grade and WAR in 2025; still drives the ball downfield as well as anyone."},{"name":"Kyren Williams","team":"LAR","pos":"RB","ovr":81,"tags":"ball str","archetype":"Perimeter Breaker","role":"Primary","note":"Physical, contact-balanced runner who paces the Rams' ground game."},{"name":"Puka Nacua","team":"LAR","pos":"WR","ovr":97,"tags":"route ball catch","archetype":"Boundary Winner","role":"Primary","note":"NFL-leading 3.19 yards per route run since entering the league; his 96.1 grade led all players, any position, in 2025."},{"name":"Davante Adams","team":"LAR","pos":"WR","ovr":63,"tags":"gspd cont catch","archetype":"Slot Controller","role":"Secondary","note":"Projected Week 1 secondary role in LAR's current depth-chart structure; the modeled profile is strongest in game speed, contested, catch radius."},{"name":"Terrance Ferguson","team":"LAR","pos":"TE","ovr":49,"tags":"catch route ball","archetype":"Red-Zone Frame","role":"Primary","note":"Projected Week 1 primary role in LAR's current depth-chart structure; the modeled profile is strongest in catch radius, routes, hands."},{"name":"Sam Darnold","team":"SEA","pos":"QB","ovr":46,"tags":"arm pocket spat","archetype":"Timing Operator","role":"Primary","note":"Projected Week 1 primary role in SEA's current depth-chart structure; the modeled profile is strongest in arm strength, pocket, awareness."},{"name":"Jadarian Price","team":"SEA","pos":"RB","ovr":74,"tags":"ball spd catch","archetype":"Three-Down Engine","role":"Primary","note":"Projected Week 1 primary role in SEA's current depth-chart structure; the modeled profile is strongest in ball skills, burst, catch radius."},{"name":"Jaxon Smith-Njigba","team":"SEA","pos":"WR","ovr":90,"tags":"juke ball vert","archetype":"Vertical Accelerator","role":"Primary","note":"Projected Week 1 primary role in SEA's current depth-chart structure; the modeled profile is strongest in juke, ball skills, jump."},{"name":"Rashid Shaheed","team":"SEA","pos":"WR","ovr":52,"tags":"catch spd route","archetype":"Boundary Winner","role":"Secondary","note":"Projected Week 1 secondary role in SEA's current depth-chart structure; the modeled profile is strongest in catch radius, speed, routes."},{"name":"AJ Barner","team":"SEA","pos":"TE","ovr":57,"tags":"cont catch route","archetype":"Seam Stretcher","role":"Primary","note":"Projected Week 1 primary role in SEA's current depth-chart structure; the modeled profile is strongest in blocking, catch radius, separation."}]</script>
+<script id="nfl-defense-data" type="application/json">[{"team":"ARI","dlRank":31,"dlName":"Dante Stills","edgeRank":28,"edgeName":"Josh Sweat","lbRank":34,"lbName":"Mack Wilson (est.)","cbRank":27,"cbName":"Garrett Williams","sRank":18,"sName":"Budda Baker (est.)"},{"team":"ATL","dlRank":32,"dlName":"Grady Jarrett (est.)","edgeRank":34,"edgeName":"Leonard Floyd (est.)","lbRank":17,"lbName":"Divine Deablo","cbRank":25,"cbName":"A.J. Terrell","sRank":9,"sName":"Jessie Bates III"},{"team":"BAL","dlRank":7,"dlName":"Nnamdi Madubuike","edgeRank":10,"edgeName":"Trey Hendrickson","lbRank":11,"lbName":"Roquan Smith","cbRank":33,"cbName":"Marlon Humphrey (est.)","sRank":1,"sName":"Kyle Hamilton"},{"team":"BUF","dlRank":14,"dlName":"Ed Oliver","edgeRank":12,"edgeName":"Greg Rousseau","lbRank":33,"lbName":"Matt Milano (est.)","cbRank":12,"cbName":"Christian Benford","sRank":21,"sName":"Taylor Rapp (est.)"},{"team":"CAR","dlRank":15,"dlName":"Derrick Brown","edgeRank":30,"edgeName":"Jaelan Phillips","lbRank":3,"lbName":"Devin Lloyd","cbRank":10,"cbName":"Mike Jackson","sRank":21,"sName":"Nick Scott (est.)"},{"team":"CHI","dlRank":26,"dlName":"Grady Jarrett","edgeRank":32,"edgeName":"Montez Sweat","lbRank":6,"lbName":"Devin Bush","cbRank":14,"cbName":"Jaylon Johnson","sRank":20,"sName":"Jaquan Brisker (est.)"},{"team":"CIN","dlRank":8,"dlName":"Dexter Lawrence","edgeRank":24,"edgeName":"Boye Mafe","lbRank":33,"lbName":"Logan Wilson (est.)","cbRank":17,"cbName":"DJ Turner II","sRank":11,"sName":"Bryan Cook"},{"team":"CLE","dlRank":12,"dlName":"Mason Graham","edgeRank":11,"edgeName":"Jared Verse","lbRank":9,"lbName":"Carson Schwesinger","cbRank":20,"cbName":"Denzel Ward","sRank":19,"sName":"Grant Delpit (est.)"},{"team":"DAL","dlRank":13,"dlName":"Osa Odighizuwa","edgeRank":29,"edgeName":"Rashan Gary","lbRank":35,"lbName":"Kenneth Murray Jr. (est.)","cbRank":33,"cbName":"Trevon Diggs (est.)","sRank":20,"sName":"Malik Hooker (est.)"},{"team":"DEN","dlRank":6,"dlName":"Zach Allen","edgeRank":14,"edgeName":"Nik Bonitto","lbRank":27,"lbName":"Alex Singleton","cbRank":3,"cbName":"Pat Surtain II","sRank":15,"sName":"Talanoa Hufanga"},{"team":"DET","dlRank":10,"dlName":"Alim McNeill","edgeRank":4,"edgeName":"Aidan Hutchinson","lbRank":2,"lbName":"Jack Campbell","cbRank":23,"cbName":"D.J. Reed","sRank":5,"sName":"Brian Branch"},{"team":"GB","dlRank":27,"dlName":"Devonte Wyatt","edgeRank":3,"edgeName":"Micah Parsons","lbRank":8,"lbName":"Edgerrin Cooper","cbRank":32,"cbName":"Keisean Nixon","sRank":3,"sName":"Xavier McKinney"},{"team":"HOU","dlRank":2,"dlName":"Will Anderson Jr. / Danielle Hunter","edgeRank":2,"edgeName":"Will Anderson Jr.","lbRank":13,"lbName":"Azeez Al-Shaair","cbRank":7,"cbName":"Derek Stingley Jr.","sRank":7,"sName":"Jalen Pitre"},{"team":"IND","dlRank":18,"dlName":"DeForest Buckner","edgeRank":15,"edgeName":"Laiatu Latu","lbRank":33,"lbName":"Zaire Franklin (est.)","cbRank":2,"cbName":"Sauce Gardner","sRank":18,"sName":"Cam Bynum (est.)"},{"team":"JAX","dlRank":9,"dlName":"Travon Walker","edgeRank":5,"edgeName":"Josh Hines-Allen","lbRank":15,"lbName":"Foyesade Oluokun","cbRank":21,"cbName":"Jourdan Lewis","sRank":13,"sName":"Antonio Johnson"},{"team":"KC","dlRank":19,"dlName":"Chris Jones","edgeRank":31,"edgeName":"George Karlaftis","lbRank":14,"lbName":"Nick Bolton","cbRank":34,"cbName":"Jaylen Watson (est.)","sRank":21,"sName":"Justin Reid (est.)"},{"team":"LAC","dlRank":23,"dlName":"Poona Ford","edgeRank":18,"edgeName":"Khalil Mack","lbRank":32,"lbName":"Daiyan Henley","cbRank":30,"cbName":"Tarheeb Still","sRank":2,"sName":"Derwin James"},{"team":"LAR","dlRank":1,"dlName":"Myles Garrett / Kobie Turner","edgeRank":1,"edgeName":"Myles Garrett","lbRank":26,"lbName":"Nate Landman","cbRank":4,"cbName":"Trent McDuffie","sRank":10,"sName":"Kamren Kinchens"},{"team":"LV","dlRank":24,"dlName":"Christian Wilkins","edgeRank":7,"edgeName":"Maxx Crosby","lbRank":30,"lbName":"Nakobe Dean","cbRank":26,"cbName":"Eric Stokes","sRank":22,"sName":"Jeremy Chinn (est.)"},{"team":"MIA","dlRank":30,"dlName":"Zach Sieler","edgeRank":34,"edgeName":"Bradley Chubb (est.)","lbRank":5,"lbName":"Jordyn Brooks","cbRank":33,"cbName":"Kader Kohou (est.)","sRank":24,"sName":"Ashtyn Davis (est.)"},{"team":"MIN","dlRank":22,"dlName":"Harrison Phillips","edgeRank":22,"edgeName":"Andrew Van Ginkel","lbRank":25,"lbName":"Blake Cashman","cbRank":22,"cbName":"Isaiah Rodgers","sRank":17,"sName":"Harrison Smith (est.)"},{"team":"NE","dlRank":16,"dlName":"Christian Barmore / Milton Williams","edgeRank":33,"edgeName":"Harold Landry III (est.)","lbRank":18,"lbName":"Robert Spillane","cbRank":8,"cbName":"Christian Gonzalez","sRank":8,"sName":"Kevin Byard"},{"team":"NO","dlRank":28,"dlName":"Bryan Bresee","edgeRank":25,"edgeName":"Chase Young","lbRank":12,"lbName":"Kaden Elliss","cbRank":31,"cbName":"Kool-Aid McKinstry","sRank":25,"sName":"Ugo Amadi (est.)"},{"team":"NYG","dlRank":21,"dlName":"Dexter Lawrence II (est.)","edgeRank":16,"edgeName":"Abdul Carter","lbRank":34,"lbName":"Bobby Okereke (est.)","cbRank":33,"cbName":"Paulson Adebo (est.)","sRank":21,"sName":"Tyler Nubin (est.)"},{"team":"NYJ","dlRank":29,"dlName":"David Onyemata / T’Vondre Sweat","edgeRank":33,"edgeName":"Will McDonald IV (est.)","lbRank":7,"lbName":"Demario Davis","cbRank":34,"cbName":"Azareye'h Thomas (est.)","sRank":4,"sName":"Minkah Fitzpatrick"},{"team":"PHI","dlRank":4,"dlName":"Jalen Carter","edgeRank":19,"edgeName":"Jonathan Greenard","lbRank":4,"lbName":"Zack Baun","cbRank":5,"cbName":"Cooper DeJean","sRank":19,"sName":"Reed Blankenship (est.)"},{"team":"PIT","dlRank":3,"dlName":"Cameron Heyward","edgeRank":8,"edgeName":"T.J. Watt","lbRank":34,"lbName":"Patrick Queen (est.)","cbRank":11,"cbName":"Jamel Dean","sRank":20,"sName":"DeShon Elliott (est.)"},{"team":"SEA","dlRank":5,"dlName":"Byron Murphy II","edgeRank":21,"edgeName":"DeMarcus Lawrence","lbRank":24,"lbName":"Ernest Jones","cbRank":1,"cbName":"Devon Witherspoon","sRank":14,"sName":"Nick Emmanwori"},{"team":"SF","dlRank":20,"dlName":"Jordan Elliott","edgeRank":6,"edgeName":"Nick Bosa","lbRank":1,"lbName":"Fred Warner","cbRank":33,"cbName":"Deommodore Lenoir (est.)","sRank":23,"sName":"Malik Mustapha (est.)"},{"team":"TB","dlRank":11,"dlName":"Vita Vea","edgeRank":27,"edgeName":"Yaya Diaby","lbRank":28,"lbName":"Alex Anzalone","cbRank":34,"cbName":"Zyon McCollum (est.)","sRank":6,"sName":"Antoine Winfield Jr."},{"team":"TEN","dlRank":17,"dlName":"Jeffery Simmons","edgeRank":34,"edgeName":"Jermaine Johnson","lbRank":20,"lbName":"Cedric Gray","cbRank":33,"cbName":"L'Jarius Sneed (est.)","sRank":22,"sName":"Amani Hooker (est.)"},{"team":"WAS","dlRank":25,"dlName":"Jonathan Allen","edgeRank":26,"edgeName":"Odafe Oweh","lbRank":22,"lbName":"Leo Chenal","cbRank":29,"cbName":"Rasul Douglas","sRank":23,"sName":"Quan Martin (est.)"}]</script>
+<script id="nfl-fixtures-data" type="application/json">[["NE","SEA"],["SF","LAR"],["CHI","CAR"],["TB","CIN"],["NO","DET"],["BUF","HOU"],["BAL","IND"],["CLE","JAX"],["ATL","PIT"],["NYJ","TEN"],["ARI","LAC"],["MIA","LV"],["GB","MIN"],["WAS","PHI"],["DAL","NYG"],["DEN","KC"]]</script>
+<script id="nfl-matchup-lab-engine">
+(function(){
+try{
+var OFFENSE = JSON.parse(document.getElementById('nfl-offense-data').textContent);
+var DEFENSE = JSON.parse(document.getElementById('nfl-defense-data').textContent);
+var FIXTURES = JSON.parse(document.getElementById('nfl-fixtures-data').textContent);
+
+var DEF_BY_TEAM = {};
+DEFENSE.forEach(function(d){ DEF_BY_TEAM[d.team]=d; });
+
+var OPP_OF = {};
+FIXTURES.forEach(function(f){ OPP_OF[f[0]]=f[1]; OPP_OF[f[1]]=f[0]; });
+
+var clamp=function(v,a,b){return Math.max(a,Math.min(b,v));};
+var n=function(v){return (Math.round(v*10)/10).toFixed(1);};
+
+/* ---- deterministic seeded generation so per-trait numbers are stable
+   across reloads for a given player, without claiming to be real combine
+   data. Same approach as the MLB/PL Matchup Lab pages. ---- */
+function hashStr(s){ var h=2166136261; for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619);} return h>>>0; }
+
+var TRAITS = {
+ QB: [['acc','Pass accuracy'],['pres','Under pressure'],['arm','Arm strength'],['zip','Arm zip'],['run','Throw on the run'],['pocket','Pocket presence'],['spat','Spatial awareness'],['spd','Speed'],['str','Strength']],
+ RB: [['spd','Speed'],['gspd','Game speed'],['juke','Juke/elusive'],['ball','Ball skills'],['catch','Catch radius'],['route','Route running'],['pblk','Pass blocking']],
+ WR: [['spd','Speed'],['gspd','Game speed'],['juke','Juke/elusive'],['ball','Ball skills'],['catch','Catch radius'],['cont','Contested catch'],['hr','Home-run threat'],['vert','Vertical/jump'],['route','Route running']],
+ TE: [['spd','Speed'],['gspd','Game speed'],['juke','Juke/elusive'],['ball','Ball skills'],['catch','Catch radius'],['cont','Contested catch'],['hr','Home-run threat'],['vert','Vertical/jump'],['route','Route running']]
+};
+TRAITS.WR===TRAITS.TE; // (kept distinct arrays intentionally for future divergence)
+var SHORT_LABEL = {acc:'ACC',pres:'PRESS',arm:'ARM',zip:'ZIP',run:'RUN',pocket:'POCK',spat:'SPACE',spd:'SPD',str:'STR',
+ gspd:'GSPD',juke:'JUKE',ball:'BALL',catch:'CATCH',route:'ROUTE',pblk:'PBLK',cont:'CONT',hr:'HR',vert:'VERT'};
+
+function traitsFor(p){
+ var defs = TRAITS[p.pos];
+ var tagSet = {}; (p.tags||'').split(/\s+/).forEach(function(t){ if(t) tagSet[t]=true; });
+ var out={};
+ defs.forEach(function(d){
+  var key=d[0];
+  var h = hashStr(p.name+'|'+p.team+'|'+key);
+  var noise = (h % 900)/100 - 4.5; // -4.5..4.5
+  var base = p.ovr - 7 + noise;
+  if(tagSet[key]) base += 15 + ((h>>>3)%400)/100; // +15..+19 tagged bonus
+  out[key] = clamp(Math.round(base*10)/10, 28, 99);
+ });
+ return out;
+}
+
+function rankScore(rank){ return clamp(Math.round(101 - rank*2.0), 26, 99); }
+
+function defenseProfile(team){
+ var d = DEF_BY_TEAM[team];
+ if(!d) return null;
+ var dl=rankScore(d.dlRank), ed=rankScore(d.edgeRank), lb=rankScore(d.lbRank), cb=rankScore(d.cbRank), sf=rankScore(d.sRank);
+ var frontSeven = Math.round(0.55*dl + 0.45*ed);
+ var runDef = Math.round(0.60*dl + 0.40*lb);
+ var coverage = Math.round(0.55*cb + 0.45*sf);
+ var overall = Math.round(0.30*dl + 0.22*ed + 0.20*lb + 0.16*cb + 0.12*sf);
+ return {team:team, dl:dl, edge:ed, lb:lb, cb:cb, s:sf, frontSeven:frontSeven, runDef:runDef, coverage:coverage, overall:overall, raw:d};
+}
+
+var DEF_PROFILES = {};
+DEFENSE.forEach(function(d){ DEF_PROFILES[d.team]=defenseProfile(d.team); });
+
+function relevantDefScore(pos, dp){
+ if(!dp) return 50;
+ if(pos==='QB') return dp.frontSeven;
+ if(pos==='RB') return dp.runDef;
+ return dp.coverage; // WR / TE
+}
+
+var cache=new WeakMap();
+function mx(p){
+ if(cache.has(p)) return cache.get(p);
+ var traits = traitsFor(p);
+ var oppTeam = OPP_OF[p.team];
+ var dp = oppTeam ? DEF_PROFILES[oppTeam] : null;
+ var relDef = relevantDefScore(p.pos, dp);
+ var labScore = clamp(Math.round((p.ovr*0.62 + (100-relDef)*0.38)*10)/10, 1, 99);
+ var lean = clamp(Math.round((p.ovr-relDef)*10)/10, -60, 60);
+ var out = {traits:traits, oppTeam:oppTeam, dp:dp, relDef:relDef, labScore:labScore, lean:lean};
+ cache.set(p,out);
+ return out;
+}
+
+var f='all', sel=0, leagueMetric='overall', tableSort={key:'labScore',dir:-1};
+var body=document.getElementById('body'), search=document.getElementById('search');
+
+function rows(){
+ var q=(search.value||'').toLowerCase().trim();
+ var a=OFFENSE.filter(function(p){
+  if(f!=='all' && p.pos!==f) return false;
+  if(q && p.name.toLowerCase().indexOf(q)<0 && p.team.toLowerCase().indexOf(q)<0) return false;
+  return true;
+ });
+ a.sort(function(x,y){
+  var key=tableSort.key, xv,yv;
+  if(key==='oppTeam'){ xv=OPP_OF[x.team]||''; yv=OPP_OF[y.team]||''; }
+  else if(key==='defFaced'){ xv=mx(x).relDef; yv=mx(y).relDef; }
+  else if(key==='lean'){ xv=mx(x).lean; yv=mx(y).lean; }
+  else if(key==='labScore'){ xv=mx(x).labScore; yv=mx(y).labScore; }
+  else { xv=x[key]; yv=y[key]; }
+  if(typeof xv==='string') return xv.localeCompare(yv)*tableSort.dir;
+  return ((Number(xv)||0)-(Number(yv)||0))*tableSort.dir;
+ });
+ return a;
+}
+
+function buildRadarGeneric(cats,title,variant,extra,shortLabels){
+ var cx=90,cy=90,maxR=58,cnt=cats.length;
+ var areaCls='radar-area'+(variant?' '+variant:'');
+ var ptCls='radar-pt'+(variant?' '+variant+'-pt':'');
+ var pt=function(i,r){ var a=(-90+i*(360/cnt))*Math.PI/180; return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; };
+ var grid=''; [0.33,0.66,1].forEach(function(fr){ var pts=''; for(var i=0;i<cnt;i++){ var xy=pt(i,maxR*fr); pts+=xy[0].toFixed(1)+','+xy[1].toFixed(1)+' '; } grid+='<polygon class="radar-grid" points="'+pts.trim()+'"/>'; });
+ var axes='', labels='';
+ for(var i=0;i<cnt;i++){ var e=pt(i,maxR); axes+='<line class="radar-axis" x1="'+cx+'" y1="'+cy+'" x2="'+e[0].toFixed(1)+'" y2="'+e[1].toFixed(1)+'"/>'; var l=pt(i,maxR+15); var lbl=(shortLabels&&shortLabels[i])?shortLabels[i]:cats[i][0]; labels+='<text class="radar-label" x="'+l[0].toFixed(1)+'" y="'+l[1].toFixed(1)+'" text-anchor="middle">'+lbl+'</text>'; }
+ var areaPts='', dots='';
+ cats.forEach(function(c,i){ var v=Math.max(4,Math.min(100,c[1])); var xy=pt(i,maxR*v/100); areaPts+=xy[0].toFixed(1)+','+xy[1].toFixed(1)+' '; dots+='<circle class="'+ptCls+'" cx="'+xy[0].toFixed(1)+'" cy="'+xy[1].toFixed(1)+'"/>'; });
+ var extraPoly='';
+ if(extra){
+  var exPts='';
+  extra.forEach(function(v,i){ var vv=Math.max(4,Math.min(100,v)); var xy=pt(i,maxR*vv/100); exPts+=xy[0].toFixed(1)+','+xy[1].toFixed(1)+' '; });
+  extraPoly='<polygon class="radar-area avg-radar" points="'+exPts.trim()+'"/>';
+ }
+ var legend=cats.map(function(c){ return '<div class="rl-item"><span>'+c[0]+'</span><b>'+c[1].toFixed(1)+'</b></div>'; }).join('');
+ return '<div class="radar-wrap"><svg class="radar-svg" viewBox="0 0 180 180">'+grid+axes+extraPoly+'<polygon class="'+areaCls+'" points="'+areaPts.trim()+'"/>'+dots+labels+'</svg><div class="radar-legend"><b>'+(title||'Trait Radar')+'</b>'+legend+'</div></div>';
+}
+
+function leagueAvgTraits(pos){
+ var list = OFFENSE.filter(function(p){return p.pos===pos;});
+ var defs = TRAITS[pos];
+ var sums={}; defs.forEach(function(d){sums[d[0]]=0;});
+ list.forEach(function(p){ var t=traitsFor(p); defs.forEach(function(d){ sums[d[0]]+=t[d[0]]; }); });
+ var avg={}; defs.forEach(function(d){ avg[d[0]] = sums[d[0]]/list.length; });
+ return avg;
+}
+var LEAGUE_AVG_CACHE={};
+function leagueAvg(pos){ if(!LEAGUE_AVG_CACHE[pos]) LEAGUE_AVG_CACHE[pos]=leagueAvgTraits(pos); return LEAGUE_AVG_CACHE[pos]; }
+
+function edgeLeanLabel(v){ if(v>=22) return 'Strong offense lean'; if(v>=8) return 'Offense lean'; if(v>-8) return 'Balanced matchup'; if(v>-22) return 'Defense lean'; return 'Strong defense lean'; }
+
+var GAUGE_C = 2*Math.PI*42;
+
+function drawSelected(p){
+ var selected=document.getElementById('selected');
+ if(!p){ selected.innerHTML='<div style="color:#6f7f91">No player selected.</div>'; return; }
+ var m=mx(p);
+ var defs=TRAITS[p.pos];
+ var avg=leagueAvg(p.pos);
+ var radarCats = defs.map(function(d){ return [d[1], m.traits[d[0]]]; });
+ var radarShort = defs.map(function(d){ return SHORT_LABEL[d[0]]||d[1]; });
+ var avgVals = defs.map(function(d){ return avg[d[0]]; });
+ var gaugeOff = GAUGE_C*(1-clamp(m.labScore,0,100)/100);
+ var edgeClamped = clamp(m.lean,-45,45);
+ var edgeFillStyle = edgeClamped>=0
+  ? ('left:50%;width:'+(edgeClamped/45*50).toFixed(1)+'%;background:linear-gradient(90deg,#f4b942,#ffd76a)')
+  : ('left:'+(50+edgeClamped/45*50).toFixed(1)+'%;width:'+(-edgeClamped/45*50).toFixed(1)+'%;background:linear-gradient(90deg,#57a7ff,#8fc4ff)');
+ var oppTeam = m.oppTeam||'—';
+
+ var barsHtml = defs.map(function(d){
+  var v=m.traits[d[0]];
+  return '<div class="bar-row"><span>'+d[1]+'</span><div class="bar-track"><div class="bar-fill" style="--w:'+v+'%"></div></div><b>'+n(v)+'</b></div>';
+ }).join('');
+
+ var minisHtml = '<div class="mini"><span>'+(p.pos==="QB"?"Passing":p.pos==="RB"?"Rushing":"Receiving")+' profile</span><b class="gold">'+n(p.ovr)+'</b></div>'
+  +'<div class="mini"><span>Week 1 opponent</span><b>'+oppTeam+'</b></div>'
+  +'<div class="mini"><span>Defense faced</span><b>'+n(m.relDef)+'</b></div>'
+  +'<div class="mini"><span>Lab Score</span><b class="good">'+n(m.labScore)+'</b></div>';
+
+ selected.innerHTML =
+  '<div class="sel-top"><div><div class="sel-name">'+p.name+'</div><div class="sel-meta">'+p.team+' · '+p.pos+' · '+(p.archetype||'Role profile')+' · Week 1 vs '+oppTeam+'</div></div>'
+  +'<div class="gauge-wrap"><svg class="gauge-svg" viewBox="0 0 100 100"><circle class="gauge-bg" cx="50" cy="50" r="42"/><circle class="gauge-fill" id="gaugeFillCircle" cx="50" cy="50" r="42" stroke-dasharray="'+GAUGE_C.toFixed(1)+'" stroke-dashoffset="'+GAUGE_C.toFixed(1)+'"/></svg><div class="gauge-label"><b>'+n(m.labScore)+'</b><span>LAB SCORE</span></div></div></div>'
+  +'<div class="edge-lean"><div class="edge-lean-head"><span>DEFENSE</span><b>MATCHUP LEAN</b><span>OFFENSE</span></div><div class="edge-track"><div class="edge-center"></div><div class="edge-fill" style="'+edgeFillStyle+'"></div></div><div class="edge-readout">'+edgeLeanLabel(m.lean)+' <small>('+(m.lean>=0?'+':'')+n(m.lean)+' pts, role-adjusted model)</small></div></div>'
+  +buildRadarGeneric(radarCats,'Trait Radar vs. League Avg',null,avgVals,radarShort)
+  +'<div class="barchart">'+barsHtml+'</div>'
+  +'<div class="sel-grid">'+minisHtml+'</div>'
+  +'<div class="read"><strong>Research read:</strong> '+p.note+' <span style="display:block;margin-top:6px;color:#5e6e80;font-size:9.5px">Individual traits are model outputs derived from grade + scouting-reputation tags — illustrative, not measured tracking data.</span></div>';
+
+ requestAnimationFrame(function(){ requestAnimationFrame(function(){ var gf=document.getElementById('gaugeFillCircle'); if(gf) gf.style.strokeDashoffset=gaugeOff; }); });
+}
+
+function donutSvg(parts){
+ // parts: [[label,value,color]...] — builds a conic-style donut using stroke-dasharray segments
+ var total=parts.reduce(function(s,p){return s+p[1];},0)||1;
+ var r=42, c=2*Math.PI*r, off=0, segs='';
+ parts.forEach(function(p){
+  var frac=p[1]/total, len=frac*c;
+  segs+='<circle cx="52" cy="52" r="'+r+'" fill="none" stroke="'+p[2]+'" stroke-width="16" stroke-dasharray="'+len.toFixed(1)+' '+(c-len).toFixed(1)+'" stroke-dashoffset="'+(-off).toFixed(1)+'" transform="rotate(-90 52 52)"/>';
+  off+=len;
+ });
+ return '<svg class="donut-svg" viewBox="0 0 104 104">'+segs+'<circle cx="52" cy="52" r="30" fill="#08111a"/></svg>';
+}
+
+function drawEvidence(p){
+ var evidence=document.getElementById('evidence');
+ var m=mx(p);
+ var dp=m.dp, raw=dp?dp.raw:null;
+ if(!dp){ evidence.innerHTML='<div style="padding:16px;color:#6f7f91">No Week 1 fixture found for '+p.team+'.</div>'; return; }
+ var oppTeam=m.oppTeam;
+ var tierTag=function(score,thresholds,labels){ for(var i=0;i<thresholds.length;i++){ if(score>=thresholds[i]) return labels[i]; } return labels[labels.length-1]; };
+ var tOverall=tierTag(dp.overall,[75,58,42],[['ELITE','v-strong'],['SOLID','v-lean'],['LEAGUE AVG','v-mixed'],['EXPOSED','v-fade']]);
+ var tFront=tierTag(dp.frontSeven,[75,58,42],[['ELITE','v-strong'],['STRONG','v-lean'],['AVG','v-mixed'],['SOFT','v-fade']]);
+ var tRun=tierTag(dp.runDef,[75,58,42],[['ELITE','v-strong'],['STRONG','v-lean'],['AVG','v-mixed'],['SOFT','v-fade']]);
+ var tCov=tierTag(dp.coverage,[75,58,42],[['ELITE','v-strong'],['STRONG','v-lean'],['AVG','v-mixed'],['SOFT','v-fade']]);
+
+ var statsHtml = '<div class="pw-stats">'
+  +'<div class="pw-stat"><span>Front seven pressure</span><b>'+n(dp.frontSeven)+'</b><small class="'+tFront[1]+'">'+tFront[0]+'</small><i style="--w:'+clamp(dp.frontSeven,4,100)+'%"></i></div>'
+  +'<div class="pw-stat"><span>Run defense</span><b>'+n(dp.runDef)+'</b><small class="'+tRun[1]+'">'+tRun[0]+'</small><i style="--w:'+clamp(dp.runDef,4,100)+'%"></i></div>'
+  +'<div class="pw-stat"><span>Coverage grade</span><b>'+n(dp.coverage)+'</b><small class="'+tCov[1]+'">'+tCov[0]+'</small><i style="--w:'+clamp(dp.coverage,4,100)+'%"></i></div>'
+  +'</div>';
+
+ var namesHtml = '<div class="pw-names">'
+  +'<div class="pw-mini"><span>D-line anchor</span><b>'+raw.dlName+'</b></div>'
+  +'<div class="pw-mini"><span>EDGE anchor</span><b>'+raw.edgeName+'</b></div>'
+  +'<div class="pw-mini"><span>Off-ball LB</span><b>'+raw.lbName+'</b></div>'
+  +'<div class="pw-mini"><span>Top corner</span><b>'+raw.cbName+'</b></div>'
+  +'<div class="pw-mini"><span>Top safety</span><b>'+raw.sName+'</b></div>'
+  +'<div class="pw-mini"><span>Overall D. output</span><b class="'+tOverall[1]+'">'+n(dp.overall)+'</b></div>'
+  +'</div>';
+
+ var donut = donutSvg([['Front 7',dp.frontSeven,'#f4b942'],['Run D',dp.runDef,'#22d97e'],['Coverage',dp.coverage,'#57a7ff']]);
+ var donutHtml = '<div class="donut-row">'+donut
+  +'<div class="donut-legend"><div class="donut-item"><span class="donut-dot" style="background:#f4b942"></span>Front Seven Pressure<b>'+n(dp.frontSeven)+'</b></div>'
+  +'<div class="donut-item"><span class="donut-dot" style="background:#22d97e"></span>Run Defense<b>'+n(dp.runDef)+'</b></div>'
+  +'<div class="donut-item"><span class="donut-dot" style="background:#57a7ff"></span>Coverage Grade<b>'+n(dp.coverage)+'</b></div></div></div>';
+
+ var faceLabel = p.pos==='QB' ? 'Front seven pressure' : (p.pos==='RB' ? 'Run defense' : 'Coverage grade');
+ var faceVal = m.relDef;
+ var readText;
+ if(p.pos==='QB'){
+  readText = oppTeam+"'s front seven grades at "+n(dp.frontSeven)+'/100, anchored by '+raw.dlName+' up front and '+raw.edgeName+' off the edge — the pressure package '+p.name+' has to beat with pocket presence and a quick release.';
+ } else if(p.pos==='RB'){
+  readText = oppTeam+"'s run defense grades at "+n(dp.runDef)+'/100 behind '+raw.dlName+' and off-ball linebacker '+raw.lbName+' — the gap integrity and tackling '+p.name+' has to break with vision and contact balance.';
+ } else {
+  readText = oppTeam+"'s coverage unit grades at "+n(dp.coverage)+'/100 fronted by '+raw.cbName+' at corner and '+raw.sName+' at safety — the shell '+p.name+' has to separate from on routes and contested throws.';
+ }
+
+ evidence.innerHTML =
+  '<div class="pw-head"><div class="pw-title"><b>'+oppTeam+' Defense</b><span>Week 1 opponent · faces '+p.pos+'s like '+p.name+'</span></div><div class="pw-sample">DEF. OUTPUT '+n(dp.overall)+'</div></div>'
+  +statsHtml
+  +donutHtml
+  +namesHtml
+  +'<div class="pw-threat"><span>Primary matchup metric</span><b>'+faceLabel+'</b><small>'+n(faceVal)+'/100 · '+oppTeam+'</small></div>'
+  +'<div class="pw-read"><strong>Matchup read:</strong> '+readText+'</div>'
+  +'<div class="pw-note">Front Seven Pressure, Run Defense and Coverage Grade are derived from PFF 2026 DL / EDGE / LB / CB / Safety rankings, weighted DL &gt; EDGE &gt; LB &gt; CB &gt; S. Not a live per-snap grade.</div>';
+}
+
+function drawLeagueBoard(){
+ var el=document.getElementById('leagueBoard'),labels={overall:'OVERALL OUTPUT',frontSeven:'QB PRESSURE',runDef:'RUN RESISTANCE',coverage:'COVERAGE RESISTANCE'};
+ var list=DEFENSE.map(function(d){return DEF_PROFILES[d.team];}).sort(function(a,b){return b[leagueMetric]-a[leagueMetric];});
+ var current=rows()[sel],selTeam=current?(OPP_OF[current.team]||''):'';
+ el.innerHTML='<div class="def-tape-intro"><b>'+labels[leagueMetric]+'</b><span>Strong defenses are harder matchups. Tap a card to load the highest-rated player facing that unit.</span></div><div class="def-card-grid">'+list.map(function(d,i){var v=d[leagueMetric];return '<button class="def-card'+(d.team===selTeam?' self':'')+'" data-team="'+d.team+'"><span class="def-rank">#'+String(i+1).padStart(2,'0')+'</span><strong>'+d.team+'</strong><b>'+n(v)+'</b><div class="def-meter"><i style="--w:'+v+'%"></i></div><small>'+labels[leagueMetric]+'</small></button>';}).join('')+'</div>';
+ document.querySelectorAll('#leagueMetricSwitch button').forEach(function(b){b.classList.toggle('active',b.dataset.metric===leagueMetric);b.onclick=function(){leagueMetric=b.dataset.metric;drawLeagueBoard();bindDefenseCards();};});
+}
+function bindDefenseCards(){document.querySelectorAll('.def-card').forEach(function(row){var go=function(){var team=row.dataset.team,candidates=rows().map(function(p,i){return {p:p,i:i,m:mx(p)};}).filter(function(x){return x.m.oppTeam===team;}).sort(function(x,y){return y.m.labScore-x.m.labScore;});if(!candidates.length)return;sel=candidates[0].i;draw();document.querySelector('.labgrid').scrollIntoView({behavior:'smooth',block:'start'});};row.onclick=go;row.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}};});}
+
+function drawAnalytics(){
+ var all=OFFENSE.slice(),scores=all.map(function(p){return mx(p).labScore;}),ordered=scores.slice().sort(function(a,b){return a-b;}),min=Math.floor(Math.min.apply(null,scores)/10)*10,max=Math.ceil(Math.max.apply(null,scores)/10)*10,bins=8,step=(max-min)/bins||1,counts=Array(bins).fill(0);scores.forEach(function(v){counts[Math.min(bins-1,Math.floor((v-min)/step))]++;});var peak=Math.max.apply(null,counts)||1,attack=scores.filter(function(v){return v>=68;}).length,caution=scores.filter(function(v){return v<48;}).length;
+ document.getElementById('labDistribution').innerHTML='<p class="intel-read"><b>Read the pool:</b> Scores above 68 flag cleaner role-plus-opponent paths; below 48 calls for price sensitivity or a pass.</p><div class="histogram">'+counts.map(function(c,i){var floor=min+i*step,cls=floor>=68?'attack':floor<48?'caution':'watch';return '<div><i class="'+cls+'" style="--h:'+(c/peak*100)+'%"></i><b>'+c+'</b><small>'+Math.round(floor)+'</small></div>';}).join('')+'</div><div class="intel-kpis"><span><small>ATTACK POOL</small><b>'+attack+'</b></span><span><small>MEDIAN</small><b>'+n(ordered[Math.floor(ordered.length/2)])+'</b></span><span><small>CAUTION POOL</small><b>'+caution+'</b></span></div>';
+ var poss=['QB','RB','WR','TE'];document.getElementById('positionAverages').innerHTML='<p class="intel-read"><b>Role lens:</b> Lab Score blends player profile with the resistance that matters most to that position.</p><div class="position-bars">'+poss.map(function(pos){var a=all.filter(function(p){return p.pos===pos;}),lab=a.reduce(function(z,p){return z+mx(p).labScore;},0)/a.length,ovr=a.reduce(function(z,p){return z+p.ovr;},0)/a.length,lean=a.reduce(function(z,p){return z+mx(p).lean;},0)/a.length;return '<div><span>'+pos+' ('+a.length+')</span><i><em style="--w:'+lab+'%"></em></i><b>'+n(lab)+'</b><small>'+(lean>=10?'FAVORABLE SLATE':lean<=-5?'RESISTANCE HEAVY':'MIXED BOARD')+' · AVG LEAN '+(lean>=0?'+':'')+n(lean)+' · PROFILE '+n(ovr)+'</small></div>';}).join('')+'</div>';
+ var defs=Object.keys(DEF_PROFILES).map(function(k){return DEF_PROFILES[k];});function leaders(key,label,role){return '<div class="leader-set"><span>'+label+' · '+role+' CAUTION</span>'+defs.slice().sort(function(a,b){return b[key]-a[key];}).slice(0,3).map(function(d,i){return '<button data-team="'+d.team+'"><b>'+String(i+1).padStart(2,'0')+' '+d.team+'</b><em>'+n(d[key])+'</em></button>';}).join('')+'</div>';};document.getElementById('resistanceLeaders').innerHTML='<p class="intel-read">These units create the highest friction for the named role. Open one to see the best player path that survives it.</p>'+leaders('frontSeven','PRESSURE','QB')+leaders('runDef','RUN FITS','RB')+leaders('coverage','COVERAGE','WR / TE');
+ document.getElementById('attackWindows').innerHTML='<p class="intel-read"><b>Decision shortcut:</b> Attack highlights the cleanest profile-versus-unit path; Caution identifies where opponent resistance overwhelms the profile.</p>'+poss.map(function(pos){var a=all.filter(function(p){return p.pos===pos;}).map(function(p){return {p:p,m:mx(p)};}).sort(function(x,y){return y.m.lean-x.m.lean;});return '<div class="window-row"><span>'+pos+'</span><button data-player="'+a[0].p.name+'"><small>ATTACK PATH</small><b>'+a[0].p.name+'</b><em>+'+n(a[0].m.lean)+' · '+a[0].m.oppTeam+' resistance '+n(a[0].m.relDef)+'</em></button><button data-player="'+a[a.length-1].p.name+'"><small>PRICE / PASS</small><b>'+a[a.length-1].p.name+'</b><em>'+n(a[a.length-1].m.lean)+' · '+a[a.length-1].m.oppTeam+' resistance '+n(a[a.length-1].m.relDef)+'</em></button></div>';}).join('');
+ document.querySelectorAll('#resistanceLeaders [data-team]').forEach(function(b){b.onclick=function(){var team=b.dataset.team,c=rows().map(function(p,i){return {p:p,i:i,m:mx(p)};}).filter(function(x){return x.m.oppTeam===team;}).sort(function(x,y){return y.m.labScore-x.m.labScore;})[0];if(c){sel=c.i;draw();}};});document.querySelectorAll('#attackWindows [data-player]').forEach(function(b){b.onclick=function(){var i=rows().findIndex(function(p){return p.name===b.dataset.player;});if(i>=0){sel=i;draw();}};});
+}
+
+function draw(){
+ var a = rows();
+ var avgLab = a.length ? (a.reduce(function(sum,x){return sum+mx(x).labScore;},0)/a.length) : 0;
+ var avgLean = a.length ? (a.reduce(function(sum,x){return sum+mx(x).lean;},0)/a.length) : 0;
+ var bestLean=null, bestOvr=null;
+ a.forEach(function(p){
+  var m=mx(p);
+  if(!bestLean||Math.abs(m.lean)>Math.abs(bestLean.lean)) bestLean={p:p,lean:m.lean};
+  if(!bestOvr||p.ovr>bestOvr.ovr) bestOvr=p;
+ });
+ document.getElementById('stats').innerHTML = [
+  ['Week 1 games tracked', FIXTURES.length, '32 teams · '+OFFENSE.length+' players'],
+  ['Avg Lab Score today', avgLab?n(avgLab):'—', a.length+' eligible players'],
+  ['Avg matchup lean', avgLean?(avgLean>=0?'+':'')+n(avgLean):'—', avgLean>=0?'Offense-favored slate':'Defense-favored slate'],
+  ['Top mismatch of the week', bestLean?(bestLean.lean>=0?'+':'')+n(bestLean.lean):'—', bestLean?(bestLean.p.name+' vs '+(OPP_OF[bestLean.p.team]||'—')):'—'],
+  ['Highest offensive profile', bestOvr?n(bestOvr.ovr):'—', bestOvr?(bestOvr.name+' · '+bestOvr.pos):'—']
+ ].map(function(s,i){ return '<div class="stat" style="animation-delay:'+(i*0.06)+'s"><span>'+s[0]+'</span><b>'+s[1]+'</b><small>'+s[2]+'</small></div>'; }).join('');
+
+ body.innerHTML = a.map(function(p,i){
+  var m=mx(p);
+  var oppTeam = m.oppTeam||'—';
+  var leanCls = m.lean>=8?'good':(m.lean<=-8?'weak':'gold');
+  return '<tr class="data-row'+(i===sel?' active':'')+'" data-i="'+i+'"><td class="mono">'+String(i+1).padStart(2,'0')+'</td>'
+   +'<td><span class="player">'+p.name+'</span></td>'
+   +'<td class="mono">'+p.team+'</td>'
+   +'<td><span class="pos-pill '+p.pos+'">'+p.pos+'</span></td>'
+   +'<td class="weak mono">vs '+oppTeam+'</td>'
+   +'<td class="mono">'+n(p.ovr)+'</td>'
+   +'<td class="mono">'+n(m.relDef)+'</td>'
+   +'<td class="mono '+leanCls+'">'+(m.lean>=0?'+':'')+n(m.lean)+'</td>'
+   +'<td class="good"><div class="ls-cell"><b>'+n(m.labScore)+'</b><i style="--w:'+Math.max(3,Math.min(100,m.labScore))+'%"></i></div></td></tr>';
+ }).join('');
+
+ if(sel>=a.length) sel=0;
+ drawSelected(a[sel]||null);
+ drawEvidence(a[sel]||OFFENSE[0]);
+ drawLeagueBoard();
+ drawAnalytics();
+ bindDefenseCards();
+ body.querySelectorAll('tr').forEach(function(tr){ tr.onclick=function(){ sel=+tr.dataset.i; draw(); document.querySelector('.labgrid').scrollIntoView({behavior:'smooth',block:'start'}); }; });
+}
+
+document.querySelectorAll('#filterRow [data-f]').forEach(function(b){
+ b.onclick=function(){ document.querySelectorAll('#filterRow [data-f]').forEach(function(x){x.classList.remove('active');}); b.classList.add('active'); f=b.dataset.f; sel=0; draw(); };
+});
+document.querySelectorAll('th[data-sort]').forEach(function(th){
+ var go=function(){
+  tableSort = tableSort.key===th.dataset.sort ? {key:tableSort.key,dir:-tableSort.dir} : {key:th.dataset.sort, dir:(['name','team','oppTeam','pos'].indexOf(th.dataset.sort)>=0?1:-1)};
+  document.querySelectorAll('th[data-sort]').forEach(function(z){ z.setAttribute('aria-sort', z.dataset.sort===tableSort.key ? (tableSort.dir===1?'ascending':'descending') : 'none'); });
+  sel=0; draw();
+ };
+ th.onclick=go;
+ th.onkeydown=function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } };
+});
+search.oninput=function(){ sel=0; draw(); };
+
+draw();
+}catch(err){ console.warn('[NFL Matchup Lab] init error:', err); }
+})();
+</script>
+
+<script id="so-runtime-performance-core-js-20260811">
+(function(){
+  'use strict';
+  var root=document.documentElement, seen=new WeakSet(), io=null, scrollTimer=0, scrollRAF=0;
+  function syncHidden(){root.classList.toggle('so-perf-hidden',document.hidden);}
+  document.addEventListener('visibilitychange',syncHidden,{passive:true});
+  window.addEventListener('pagehide',function(){root.classList.add('so-perf-hidden');},{passive:true});
+  window.addEventListener('pageshow',function(){syncHidden(); scheduleScan();},{passive:true});
+  syncHidden();
+  if('IntersectionObserver' in window){
+    io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){e.target.classList.toggle('so-perf-offscreen-anim',!e.isIntersecting);});
+    },{rootMargin:'280px 0px 280px 0px',threshold:0});
+  }
+  function scanAnimations(){
+    if(!document.getAnimations)return;
+    var list=document.getAnimations();
+    for(var i=0;i<list.length;i++){
+      var eff=list[i].effect, t=eff&&eff.target;
+      if(!t||t.nodeType!==1||seen.has(t))continue;
+      var timing=(eff&&eff.getTiming)?eff.getTiming():null;
+      if(!timing||timing.iterations!==Infinity)continue;
+      seen.add(t);t.classList.add('so-perf-anim-target');
+      if(io)io.observe(t);
+    }
+  }
+  function scheduleScan(){
+    if('requestIdleCallback' in window)requestIdleCallback(scanAnimations,{timeout:650});
+    else setTimeout(scanAnimations,120);
+  }
+  function markScrolling(){
+    if(!scrollRAF){
+      scrollRAF=requestAnimationFrame(function(){
+        scrollRAF=0;root.classList.add('so-perf-scrolling');
+      });
+    }
+    clearTimeout(scrollTimer);
+    scrollTimer=setTimeout(function(){root.classList.remove('so-perf-scrolling');},115);
+  }
+  document.addEventListener('scroll',markScrolling,{passive:true,capture:true});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scheduleScan,{once:true});else scheduleScan();
+  window.addEventListener('load',function(){setTimeout(scanAnimations,80);setTimeout(scanAnimations,900);},{once:true,passive:true});
+})();
+</script>
+
+<style id="so-nfl-lab-final-revamp">
+.nfl-route-hero{position:relative;height:132px;margin:22px 0 -8px;border:1px solid rgba(87,167,255,.19);border-radius:16px;overflow:hidden;background:linear-gradient(135deg,rgba(4,15,25,.9),rgba(10,26,36,.86))}.route-grid{position:absolute;inset:0;background:linear-gradient(90deg,transparent 49.6%,rgba(87,167,255,.09) 50%,transparent 50.4%),repeating-linear-gradient(90deg,transparent 0 13%,rgba(255,255,255,.045) 13.2% 13.5%)}.tiny-route{position:absolute;inset:10px 8%;width:84%;height:110px}.tiny-route>path{fill:none;stroke:rgba(244,185,66,.42);stroke-width:2;stroke-dasharray:6 8}.tiny-ball{animation:soBallCatch 3.8s cubic-bezier(.4,0,.2,1) infinite}.tiny-ball ellipse{fill:#8b552a;stroke:#f1c48d;stroke-width:1.2}.tiny-ball path{stroke:#fff3da;stroke-width:1}.tiny-runner{position:absolute;width:34px;height:58px;left:68%;top:47px;stroke:#57a7ff;stroke-width:4;stroke-linecap:round;fill:#08111a;animation:soRunnerStride .42s ease-in-out infinite alternate}.catch-pulse{position:absolute;left:72%;top:51px;width:22px;height:22px;border:1px solid #f4b942;border-radius:50%;animation:soCatchPulse 3.8s ease-out infinite}.route-copy{position:absolute;left:18px;bottom:13px;display:flex;gap:10px;align-items:center;font:700 9px/1.2 var(--mono);letter-spacing:.12em}.route-copy b{color:#f4b942}.route-copy span{color:#728598}@keyframes soBallCatch{0%{transform:translate(22px,75px) rotate(0)}72%,100%{transform:translate(302px,39px) rotate(720deg)}}@keyframes soRunnerStride{to{transform:translateY(-2px) rotate(1deg)}}@keyframes soCatchPulse{0%,66%{opacity:0;transform:scale(.35)}73%{opacity:1}90%,100%{opacity:0;transform:scale(2.2)}}.player-arch{display:block;color:#718397;font-size:8px;letter-spacing:.06em;margin-top:4px}.league-row{cursor:pointer;border-radius:6px;padding:3px 5px}.league-row:hover,.league-row:focus{background:rgba(87,167,255,.08)}
+@media(max-width:700px){.nfl-route-hero{height:104px;margin:14px 0 -4px}.tiny-route{height:88px;top:4px}.tiny-runner{width:28px;height:48px;top:35px}.route-copy{left:10px;bottom:8px;font-size:7.5px}.labgrid{display:flex!important;grid-template-columns:none!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;gap:10px!important;padding-bottom:5px!important}.labgrid>.panel{flex:0 0 91%!important;scroll-snap-align:start!important}.stats{display:flex!important;overflow-x:auto!important;scroll-snap-type:x proximity}.stats>.stat{flex:0 0 54%!important;scroll-snap-align:start}.league-panel{overflow:hidden}.league-body{overflow-x:auto}.league-bars{min-width:560px}.controls{overflow-x:auto!important;flex-wrap:nowrap!important}.controls>*{flex:0 0 auto}.controls input{min-width:180px}.selected,.pw-wrap{padding:13px!important}.pw-stats,.pw-names,.sel-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.donut-row{grid-template-columns:96px 1fr!important}.table{overflow-x:auto!important}.table table{min-width:930px!important}}
+@media(prefers-reduced-motion:reduce){.tiny-ball,.tiny-runner,.catch-pulse{animation:none!important}}
+</style>
+
+<footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>© 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call 1-800-GAMBLER.</p></footer>
+</body></html>
