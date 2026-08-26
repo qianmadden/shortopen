@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>shortopen — Strikeout Market: MLB Pitcher Prop Terminal</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="shortcut icon" href="favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <meta name="description" content="Live MLB strikeout prop board across DraftKings, FanDuel, BetMGM, BetRivers, Caesars and Hard Rock. Best price highlighting, steam detection, and a bet slip payout calculator.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -312,12 +313,26 @@
   .spark-lbl{font-family:var(--mono);font-size:9px;color:var(--text-faint);}
   .spark-lbl.up{color:var(--green);} .spark-lbl.dn{color:var(--red);}
 
-  /* ===== Sticky-3 fair odds column ===== */
-  td.sticky-3, th.sticky-3{position:sticky;left:340px;z-index:5;background:var(--panel);border-right:1px solid var(--border-strong);min-width:120px;}
-  tbody tr:hover td.sticky-3{background:#131a1c;}
-  .fair-lbl{font-family:var(--mono);font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.06em;}
-  .fair-val{font-family:var(--mono);font-size:12px;font-weight:700;}
+  /* ===== Sticky-3 shortopen call column, sticky-4 fair odds column ===== */
+  th.so-group{position:sticky;left:340px;z-index:6;background:var(--panel);text-align:center;}
+  td.sticky-3, th.sticky-3{position:sticky;left:340px;z-index:5;background:var(--panel);min-width:96px;text-align:left;}
+  td.sticky-4, th.sticky-4{position:sticky;left:436px;z-index:5;background:var(--panel);border-right:1px solid var(--border-strong);min-width:92px;text-align:right;}
+  th.sticky-3, th.sticky-4{text-align:center;}
+  tbody tr:hover td.sticky-3, tbody tr:hover td.sticky-4{background:#131a1c;}
+  .fair-lbl{font-family:var(--mono);font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.05em;line-height:1.25;}
+  .fair-val{font-family:var(--mono);font-size:11.5px;font-weight:700;line-height:1.25;}
   .fair-val.o{color:var(--green);} .fair-val.u{color:var(--red);}
+  .call-lbl{font-family:var(--mono);font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.05em;line-height:1.25;}
+  .call-val{font-family:var(--mono);font-size:11.5px;font-weight:700;line-height:1.25;}
+  .call-val.o{color:var(--green);} .call-val.u{color:var(--red);}
+  .call-ev{font-family:var(--mono);font-size:9.5px;font-weight:700;line-height:1.25;}
+  .call-ev.pos{color:var(--green);} .call-ev.neg{color:var(--text-faint);}
+  .call-conf{font-family:var(--mono);font-size:8px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.03em;line-height:1.25;}
+  .call-target{display:inline-flex;margin-bottom:3px;padding:2px 5px;border:1px dashed rgba(244,185,66,.42);border-radius:5px;background:rgba(244,185,66,.07);color:var(--amber);font-family:var(--mono);font-size:7.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;}
+  .target-lines{font-family:var(--mono);font-size:9.5px;font-weight:750;line-height:1.4;white-space:nowrap;}
+  .target-lines .to{color:var(--green)}.target-lines .tu{color:var(--red)}
+  .modeled-quote{background:linear-gradient(180deg,rgba(244,185,66,.065),rgba(244,185,66,.025))!important;color:var(--amber)!important;box-shadow:inset 0 0 0 1px rgba(244,185,66,.20);cursor:default!important;}
+  .modeled-quote small{display:block;margin-top:2px;color:rgba(244,185,66,.62);font:700 6.5px var(--mono);letter-spacing:.06em;white-space:nowrap;}
 
   /* ===== Matchup expand row ===== */
   tr.matchup-row{display:none;}
@@ -366,6 +381,38 @@
   .so-footer .footer-copy{font-size:11px;color:var(--text-faint);letter-spacing:.04em;}
   .so-footer .footer-disclaimer{font-size:11px;line-height:1.7;color:var(--text-faint);max-width:1000px;border-top:1px solid var(--border);padding-top:14px;}
   @media(max-width:900px){footer.so-footer{padding:22px 20px 26px;text-align:center;}.so-footer .footer-top{flex-direction:column;gap:10px;}}
+/* Hat label, circular K-probability gauge, numbers-first market lean. */
+.hat-word{font-size:5.4px!important;letter-spacing:.05em!important;font-weight:800!important}
+.gauge-label{fill:#5f8c78;font:800 5.4px var(--mono);letter-spacing:.09em}
+.gauge-track{fill:none;stroke:rgba(25,228,134,.16);stroke-width:5}
+.gauge-fill{fill:none;stroke:#19e486;stroke-width:5;stroke-linecap:round;stroke-dasharray:131.9;filter:drop-shadow(0 0 4px rgba(25,228,134,.55));animation:gaugeLoad 6.2s cubic-bezier(.4,0,.2,1) infinite}
+.gauge-pct{fill:#dfffee;font:900 11px var(--mono);text-anchor:middle;animation:gaugePct 6.2s ease-in-out infinite}
+.gauge-k{fill:#19e486;font:900 22px var(--mono);text-anchor:middle;opacity:0;filter:drop-shadow(0 0 8px rgba(25,228,134,.85));animation:gaugeK 6.2s cubic-bezier(.34,1.4,.4,1) infinite}
+.gauge-name{fill:#6f857b;font:700 6.5px var(--mono);letter-spacing:.05em;text-anchor:middle}
+.so-arsenal{position:absolute;right:566px;top:54px;width:100px;height:330px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.so-arsenal-title{color:#658578;font:800 7px var(--mono);letter-spacing:.12em;text-align:center;margin-bottom:2px}
+.so-arsenal-tag{border:1px solid rgba(0,255,136,.2);background:rgba(9,27,20,.5);border-radius:8px;padding:7px 5px;text-align:center;font:800 8.5px var(--mono);color:#8fe6bb;letter-spacing:.02em}
+.so-arsenal-note{color:#4c6357;font:600 6.5px var(--mono);text-align:center;line-height:1.4;margin-top:4px}
+@media(max-width:1330px){.so-arsenal{display:none}}
+.gauge-ring-flash{fill:none;stroke:#19e486;stroke-width:1;opacity:0;animation:gaugeRingFlash 6.2s ease-out infinite}
+.ou-sequence{margin-top:12px;padding:11px 10px 9px;border-top:1px solid rgba(255,255,255,.07)}
+.ou-sequence>span{display:block;color:#648174;font:800 7px var(--mono);letter-spacing:.12em}
+.ou-numbers{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;margin-top:9px}
+.ou-box{text-align:center;padding:6px 4px;border-radius:7px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02);transition:border-color .35s,background .35s}
+.ou-box.lean{border-color:rgba(25,228,134,.4);background:rgba(25,228,134,.08)}
+.ou-figure{display:block;font:900 15px var(--mono);color:#dfffee;transition:color .3s}
+.ou-figure.flash-up{color:#19e486}
+.ou-figure.flash-dn{color:#ff6d7c}
+.ou-box span{display:block;margin-top:2px;color:#6b8378;font:800 7px var(--mono);letter-spacing:.1em}
+.ou-box.lean span{color:#19e486}
+.ou-vs{color:#3f5449;font:800 8px var(--mono)}
+.ou-split{position:relative;height:3px;margin-top:9px;border-radius:3px;background:rgba(255,109,124,.28);overflow:hidden}
+.ou-split i{display:block;height:100%;background:#19e486;box-shadow:0 0 8px rgba(25,228,134,.5);transition:width 1.1s cubic-bezier(.4,0,.2,1)}
+.ou-sequence small{display:block;margin-top:6px;color:#496357;font:700 6px var(--mono);text-align:center}
+@keyframes gaugeLoad{0%,6%{stroke-dashoffset:131.9}62%,84%{stroke-dashoffset:2}100%{stroke-dashoffset:131.9}}
+@keyframes gaugePct{0%,6%{opacity:0;transform:scale(.8)}14%,56%{opacity:1;transform:scale(1)}66%,100%{opacity:0;transform:scale(.8)}}
+@keyframes gaugeK{0%,62%{opacity:0;transform:scale(.35) rotate(-16deg)}70%{opacity:1;transform:scale(1.3) rotate(5deg)}78%,90%{opacity:1;transform:scale(1) rotate(0)}100%{opacity:0;transform:scale(.35) rotate(-16deg)}}
+@keyframes gaugeRingFlash{0%,64%{opacity:0;stroke-width:1}68%{opacity:.9;stroke-width:9}80%,100%{opacity:0;stroke-width:1}}
 </style>
 <style id="so-final-scroll-speed-20260725">
 .table-frame{overflow:hidden!important;contain:layout paint}
@@ -379,7 +426,9 @@ html.so-k-hidden *,html.so-k-hidden *::before,html.so-k-hidden *::after{animatio
   .table-scroll{margin-right:0!important;padding-bottom:8px}
   .table-scroll th.sticky-1,.table-scroll td.sticky-1{left:0!important;min-width:148px!important;width:148px!important;max-width:148px!important;z-index:8!important;background:#0d1113!important;box-shadow:8px 0 14px rgba(0,0,0,.28)}
   .table-scroll th.sticky-2,.table-scroll td.sticky-2{position:static!important;left:auto!important;min-width:112px!important;width:112px!important;max-width:112px!important;box-shadow:none!important;white-space:normal!important;overflow:hidden!important;padding-left:8px!important;padding-right:6px!important;}
-  .table-scroll th.sticky-3,.table-scroll td.sticky-3{position:static!important;left:auto!important;min-width:104px!important;width:104px!important;max-width:104px!important;box-shadow:none!important;z-index:auto!important;white-space:normal!important;overflow:hidden!important;padding-left:8px!important;padding-right:6px!important;}
+  .table-scroll th.sticky-3,.table-scroll td.sticky-3{position:static!important;left:auto!important;min-width:88px!important;width:88px!important;max-width:88px!important;box-shadow:none!important;z-index:auto!important;white-space:normal!important;overflow:hidden!important;padding-left:8px!important;padding-right:6px!important;}
+  .table-scroll th.sticky-4,.table-scroll td.sticky-4{position:static!important;left:auto!important;min-width:84px!important;width:84px!important;max-width:84px!important;box-shadow:none!important;z-index:auto!important;white-space:normal!important;overflow:hidden!important;padding-left:8px!important;padding-right:6px!important;}
+  .table-scroll th.so-group{position:static!important;left:auto!important;}
   .table-scroll td.sticky-2 .best-pill{font-size:9px!important;white-space:normal!important;word-break:break-word!important;}
   .table-scroll td.sticky-2 .spark-wrap{flex-wrap:wrap!important;}
   .ticker-track,.nt-track{animation-duration:70s!important}
@@ -408,6 +457,21 @@ html.so-embed.so-workspace-unloading *,html.so-embed.so-workspace-unloading *::b
   window.addEventListener('pagehide',stopWorkspace,{once:true});
 })();
 </script>
+<style id="so-mobile-repair-20260819">
+@media(max-width:700px){
+ html,body{width:100%;max-width:100%;overflow-x:hidden}.ticker-bar,.notes-ticker{overflow:hidden}.ticker-track-wrap{min-width:0}.hero{padding:24px 14px 18px!important;max-width:100%;overflow:hidden}.hero>div[style*="position:absolute"]{position:static!important;display:inline-flex;margin-bottom:12px}.hero h1{font-size:2.45rem!important;line-height:1!important;overflow-wrap:anywhere}.hero p{font-size:.82rem!important;max-width:none}
+ .stat-row{display:flex!important;overflow-x:auto!important;border-radius:12px;scroll-snap-type:x proximity}.stat-cell{flex:0 0 48%!important;scroll-snap-align:start}.so-pitcher-stage{width:100%!important;height:315px!important;margin-top:18px!important;overflow:hidden}.pitcher-svg{left:50%!important;top:27px!important;width:300px!important;transform:translateX(-50%) scale(.82)!important;transform-origin:center top!important}.k-scoreboard{display:none!important}
+ .bb-wrap,.signals-wrap,.chip-row,.legend,.board,.clv-wrap{padding-left:12px!important;padding-right:12px!important}.bb-grid{grid-template-columns:1fr!important}.bb-card,.best-bet{min-width:0}.signals-scroll,.chip-row{flex-wrap:nowrap!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch}.chip-row>*{flex:0 0 auto}
+ .table-frame,.table-scroll{max-width:100%;overflow-x:auto!important;-webkit-overflow-scrolling:touch}.table-scroll table{min-width:1160px!important}.table-scroll th.sticky-1,.table-scroll td.sticky-1{min-width:132px!important;width:132px!important;max-width:132px!important}.controls,.filter-row,.toolbar{overflow-x:auto!important;flex-wrap:nowrap!important}.controls>*{flex:0 0 auto}.clv-row{min-width:650px}.clv-card{overflow-x:auto}
+}
+</style><style id="so-mobile-verified-pass-20260819">
+@media(max-width:700px){
+ body{padding-bottom:42px!important}.hero{margin:0!important}.hero h1{font-size:clamp(2rem,10vw,2.55rem)!important;max-width:100%}.hero p{font-size:.78rem!important;line-height:1.58!important;margin-bottom:18px!important}.stat-row{margin-top:12px!important}.stat-cell{padding:14px 12px!important}.so-pitcher-stage{height:292px!important;border-radius:16px!important}.pitcher-svg{top:18px!important;transform:translateX(-50%) scale(.78)!important}.bb-grid{gap:10px!important}.bb-card,.best-bet{padding:16px!important}.ticker-bar,.notes-ticker{contain:layout paint}.table-scroll{scrollbar-width:thin}
+}
+@media(pointer:coarse) and (max-width:700px){.k-tally,.k-score-row span,.lift-leg,.glove-group{animation-duration:7s!important}.bb-card:hover,.signal-card:hover{transform:none!important}}
+@media(max-width:700px){html,body{overflow-x:hidden!important}.hero{padding:20px 12px 14px!important;min-height:0!important}.hero h1{font-size:2rem!important;line-height:1!important}.hero p{font-size:.72rem!important;line-height:1.5!important;max-width:100%!important}.so-pitcher-stage{width:100%!important;height:270px!important;transform:none!important;margin-bottom:0!important}.pitcher-svg{transform:translateX(-50%) scale(1)!important}.stat-row,.stats{display:flex!important;overflow-x:auto!important;gap:8px!important}.stat-cell,.stats>*{flex:0 0 44%!important;padding:10px!important}.legend,.controls,.filter-row{overflow-x:auto!important;flex-wrap:nowrap!important}.legend>*,.controls>*,.filter-row>*{flex:0 0 auto!important}.board{padding:0 8px 24px!important}.table-frame,.table-scroll{overflow-x:auto!important}.table-scroll table{min-width:1080px!important;font-size:10px!important}.table-scroll th,.table-scroll td{padding:7px 5px!important}.table-scroll th.sticky-1,.table-scroll td.sticky-1{position:sticky!important;left:0!important;min-width:112px!important;width:112px!important;max-width:112px!important;z-index:9!important;overflow:hidden!important;background:#0d1113!important}.table-scroll th.sticky-2,.table-scroll td.sticky-2{position:static!important;left:auto!important;min-width:96px!important;width:96px!important;max-width:96px!important;z-index:auto!important;box-shadow:none!important;overflow:hidden!important}.player-name{font-size:10.5px!important;line-height:1.22!important;white-space:normal!important;overflow-wrap:anywhere!important}.player-sub{font-size:7.5px!important;white-space:normal!important;overflow-wrap:anywhere!important;line-height:1.3!important;margin-top:3px!important}.consensus-line{font-size:14px!important}.clv-row{min-width:620px!important}}
+th.so-sortable{cursor:pointer;user-select:none;transition:color .16s ease,background .16s ease}th.so-sortable:hover,th.so-sortable:focus-visible{color:#dfffee;background:rgba(31,221,132,.07);outline:none}th.so-sortable::after{content:'';display:inline-block;width:6px;height:8px;margin-left:5px;vertical-align:middle;background:linear-gradient(135deg,transparent 48%,#596a72 49% 58%,transparent 59%) top/6px 4px no-repeat,linear-gradient(315deg,transparent 48%,#596a72 49% 58%,transparent 59%) bottom/6px 4px no-repeat;opacity:.8}th.so-sortable[aria-sort="ascending"]::after{background:linear-gradient(135deg,transparent 48%,#31dd84 49% 58%,transparent 59%) top/6px 4px no-repeat}th.so-sortable[aria-sort="descending"]::after{background:linear-gradient(315deg,transparent 48%,#31dd84 49% 58%,transparent 59%) bottom/6px 4px no-repeat}
+</style><style id="so-mobile-final-nine-pass">@media(max-width:700px){html,body{max-width:100%;overflow-x:hidden}table{max-width:none}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap,.article-grid,.cards-scroll{max-width:100%;-webkit-overflow-scrolling:touch}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap{overflow-x:auto}.hero h1{overflow-wrap:anywhere}.controls,.filter-row,.hub-tabs,.tab-row,.section-tabs{max-width:100%;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}.controls>* ,.filter-row>* ,.hub-tabs>* ,.tab-row>* ,.section-tabs>*{flex:0 0 auto}}@media(pointer:coarse) and (max-width:700px){*{scroll-behavior:auto}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap{scroll-snap-type:none}}</style><style id="so-shared-disclaimer-footer-20260824">.so-shared-footer{width:100%;max-width:100%;margin:28px 0 0;padding:28px clamp(18px,4vw,48px) 30px;border-top:1px solid rgba(255,255,255,.08);background:rgba(4,7,12,.82);display:flex;flex-direction:column;gap:14px;clear:both}.so-shared-footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}.so-shared-footer-logo{font-family:Inter,Arial,sans-serif;font-size:1rem;font-weight:900;letter-spacing:-.02em;color:#f0ece4;text-decoration:none}.so-shared-footer-logo span{color:#e8a020}.so-shared-footer-top p{margin:0;color:#4d6070;font-size:.75rem;letter-spacing:.06em}.so-shared-footer .footer-disclaimer{max-width:1100px;margin:0;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.28);font-size:.62rem;line-height:1.68;letter-spacing:.01em}@media(max-width:700px){.so-shared-footer{margin-top:20px;padding:22px 16px max(24px,env(safe-area-inset-bottom));text-align:center}.so-shared-footer-top{flex-direction:column}.so-shared-footer .footer-disclaimer{text-align:left;font-size:.6rem;overflow-wrap:anywhere}}</style>
 </head>
 <body>
 
@@ -457,7 +521,7 @@ html.so-embed.so-workspace-unloading *,html.so-embed.so-workspace-unloading *::b
         <div class="sub" id="statTightSub">—</div>
       </div>
       <div class="stat-cell">
-        <div class="lbl">~ SO TARGET</div>
+        <div class="lbl">Shortopen Spread</div>
         <div class="val violet" id="statShortopen">--</div>
         <div class="sub" id="statShortopenSub">—</div>
       </div>
@@ -508,6 +572,7 @@ html.so-embed.so-workspace-unloading *,html.so-embed.so-workspace-unloading *::b
     <div><span class="lg-sw" style="background:var(--green-dim);box-shadow:inset 0 0 0 1px var(--green-line);"></span>Best price on board</div>
     <div><span class="lg-sw" style="background:var(--amber-dim);"></span>Steam / line diverges from consensus</div>
     <div><span class="lg-sw" style="background:transparent;box-shadow:inset 0 0 0 1px var(--border-strong);"></span>Click any price to add to slip</div>
+    <div><span class="lg-sw" style="background:rgba(244,185,66,.07);box-shadow:inset 0 0 0 1px rgba(244,185,66,.42);border-style:dashed;"></span>Target = ShortOpen model price, not a live quote</div>
   </div>
 
   <!-- Board -->
@@ -517,9 +582,9 @@ html.so-embed.so-workspace-unloading *,html.so-embed.so-workspace-unloading *::b
         <table id="propsTable">
           <thead>
             <tr class="book-row">
-              <th class="sticky-1" rowspan="2">Pitcher</th>
-              <th class="sticky-2" rowspan="2">Consensus K Line</th>
-              <th class="sticky-3" rowspan="2">No-Vig Fair Odds</th>
+              <th class="sticky-1 so-sortable" tabindex="0" data-sort-key="name" rowspan="2">Pitcher</th>
+              <th class="sticky-2 so-sortable" tabindex="0" data-sort-key="line" rowspan="2">Consensus K Line</th>
+              <th class="so-group" colspan="2">◆ Shortopen</th>
               <th class="book-group" colspan="3" data-book="DK"><span class="book-dot" style="background:#53c531"></span>DraftKings</th>
               <th class="book-group" colspan="3" data-book="FD"><span class="book-dot" style="background:#1493ff"></span>FanDuel</th>
               <th class="book-group" colspan="3" data-book="MGM"><span class="book-dot" style="background:#b4975a"></span>BetMGM</th>
@@ -528,12 +593,13 @@ html.so-embed.so-workspace-unloading *,html.so-embed.so-workspace-unloading *::b
               <th class="book-group" colspan="3" data-book="HR"><span class="book-dot" style="background:#c8102e"></span>Hard Rock</th>
             </tr>
             <tr class="sub-row">
-              <th data-book="DK">K</th><th data-book="DK">U</th><th data-book="DK">O</th>
-              <th data-book="FD">K</th><th data-book="FD">U</th><th data-book="FD">O</th>
-              <th data-book="MGM">K</th><th data-book="MGM">U</th><th data-book="MGM">O</th>
-              <th data-book="RIV">K</th><th data-book="RIV">U</th><th data-book="RIV">O</th>
-              <th data-book="CZR">K</th><th data-book="CZR">U</th><th data-book="CZR">O</th>
-              <th data-book="HR">K</th><th data-book="HR">U</th><th data-book="HR">O</th>
+              <th class="sticky-3 so-sortable" tabindex="0" data-sort-key="call">Call</th><th class="sticky-4 so-sortable" tabindex="0" data-sort-key="fair">Fair</th>
+              <th class="so-sortable" tabindex="0" data-sort-key="book:DK:line" data-book="DK">K</th><th class="so-sortable" tabindex="0" data-sort-key="book:DK:under" data-book="DK">U</th><th class="so-sortable" tabindex="0" data-sort-key="book:DK:over" data-book="DK">O</th>
+              <th class="so-sortable" tabindex="0" data-sort-key="book:FD:line" data-book="FD">K</th><th class="so-sortable" tabindex="0" data-sort-key="book:FD:under" data-book="FD">U</th><th class="so-sortable" tabindex="0" data-sort-key="book:FD:over" data-book="FD">O</th>
+              <th class="so-sortable" tabindex="0" data-sort-key="book:MGM:line" data-book="MGM">K</th><th class="so-sortable" tabindex="0" data-sort-key="book:MGM:under" data-book="MGM">U</th><th class="so-sortable" tabindex="0" data-sort-key="book:MGM:over" data-book="MGM">O</th>
+              <th class="so-sortable" tabindex="0" data-sort-key="book:RIV:line" data-book="RIV">K</th><th class="so-sortable" tabindex="0" data-sort-key="book:RIV:under" data-book="RIV">U</th><th class="so-sortable" tabindex="0" data-sort-key="book:RIV:over" data-book="RIV">O</th>
+              <th class="so-sortable" tabindex="0" data-sort-key="book:CZR:line" data-book="CZR">K</th><th class="so-sortable" tabindex="0" data-sort-key="book:CZR:under" data-book="CZR">U</th><th class="so-sortable" tabindex="0" data-sort-key="book:CZR:over" data-book="CZR">O</th>
+              <th class="so-sortable" tabindex="0" data-sort-key="book:HR:line" data-book="HR">K</th><th class="so-sortable" tabindex="0" data-sort-key="book:HR:under" data-book="HR">U</th><th class="so-sortable" tabindex="0" data-sort-key="book:HR:over" data-book="HR">O</th>
             </tr>
           </thead>
           <tbody id="tableBody"></tbody>
@@ -599,130 +665,130 @@ const BOOKS = [
 
 const PROPS_DATA = [
   {
-    "name": "Gavin Williams",
-    "team": "CLE",
-    "opp": "@LAA",
+    "name": "Jesus Luzardo",
+    "team": "PHI",
+    "opp": "@SEA",
     "books": {
       "DK": [
-        8.5,
-        -147,
-        117
+        7.5,
+        -112,
+        -113
       ],
       "FD": [
         7.5,
-        118,
-        -150
+        -115,
+        -113
       ],
       "MGM": [
-        8.5,
-        -140,
-        105
+        7.5,
+        -135,
+        100
       ],
       "RIV": [
-        8.5,
-        null,
-        -121
+        7.5,
+        -130,
+        -103
       ],
       "CZR": [
         7.5,
-        115,
-        -155
+        -115,
+        -112
       ],
       "HR": [
         7.5,
+        -120,
+        -110
+      ]
+    }
+  },
+  {
+    "name": "Sean Burke",
+    "team": "CWS",
+    "opp": "TEX",
+    "books": {
+      "DK": [
+        5.5,
+        124,
+        -158
+      ],
+      "FD": [
+        5.5,
+        120,
+        -154
+      ],
+      "MGM": [
+        6.5,
+        -155,
+        115
+      ],
+      "RIV": [
+        5.5,
+        112,
+        -150
+      ],
+      "CZR": [
+        5.5,
+        117,
+        -152
+      ],
+      "HR": [
+        5.5,
         120,
         -155
       ]
     }
   },
   {
-    "name": "Jacob deGrom",
+    "name": "Joey Cantillo",
+    "team": "CLE",
+    "opp": "@LAA",
+    "books": {
+      "DK": [
+        6.5,
+        -104,
+        -123
+      ],
+      "FD": [
+        6.5,
+        -102,
+        -125
+      ],
+      "MGM": [
+        6.5,
+        -110,
+        -118
+      ],
+      "RIV": [
+        6.5,
+        null,
+        -122
+      ],
+      "CZR": [
+        6.5,
+        -106,
+        -124
+      ],
+      "HR": [
+        6.5,
+        -105,
+        -125
+      ]
+    }
+  },
+  {
+    "name": "MacKenzie Gore",
     "team": "TEX",
     "opp": "@CWS",
     "books": {
       "DK": [
         6.5,
-        -109,
-        -117
+        -143,
+        112
       ],
       "FD": [
         6.5,
-        -115,
-        -108
-      ],
-      "MGM": [
-        6.5,
-        -115,
-        -115
-      ],
-      "RIV": [
-        6.5,
-        -114,
-        -117
-      ],
-      "CZR": [
-        6.5,
-        -118,
-        -112
-      ],
-      "HR": [
-        6.5,
-        -115,
-        -115
-      ]
-    }
-  },
-  {
-    "name": "Paul Skenes",
-    "team": "PIT",
-    "opp": "@SD",
-    "books": {
-      "DK": [
-        6.5,
-        -161,
-        126
-      ],
-      "FD": [
-        5.5,
-        124,
-        -158
-      ],
-      "MGM": [
-        5.5,
-        115,
-        -155
-      ],
-      "RIV": [
-        6.5,
-        -157,
-        118
-      ],
-      "CZR": [
-        5.5,
-        118,
-        -155
-      ],
-      "HR": [
-        6.5,
-        -160,
-        120
-      ]
-    }
-  },
-  {
-    "name": "Payton Tolle",
-    "team": "BOS",
-    "opp": "@MIA",
-    "books": {
-      "DK": [
-        6.5,
-        -145,
-        114
-      ],
-      "FD": [
-        6.5,
-        -154,
-        120
+        -148,
+        116
       ],
       "MGM": [
         6.5,
@@ -731,13 +797,13 @@ const PROPS_DATA = [
       ],
       "RIV": [
         6.5,
-        -162,
-        120
+        -143,
+        110
       ],
       "CZR": [
         6.5,
         -148,
-        113
+        112
       ],
       "HR": [
         6.5,
@@ -747,174 +813,34 @@ const PROPS_DATA = [
     }
   },
   {
-    "name": "Aaron Nola",
-    "team": "PHI",
-    "opp": "@SEA",
+    "name": "Sonny Gray",
+    "team": "BOS",
+    "opp": "@MIA",
     "books": {
       "DK": [
         5.5,
-        -104,
-        -122
+        -109,
+        -117
       ],
       "FD": [
+        5.5,
+        -111,
+        -115
+      ],
+      "MGM": [
+        5.5,
+        -105,
+        -125
+      ],
+      "RIV": [
         5.5,
         -106,
-        -120
-      ],
-      "MGM": [
-        6.5,
-        -190,
-        140
-      ],
-      "RIV": [
-        5.5,
-        -103,
-        -130
-      ],
-      "CZR": [
-        5.5,
-        -108,
-        -122
-      ],
-      "HR": [
-        5.5,
-        -105,
         -125
-      ]
-    }
-  },
-  {
-    "name": "Gage Jump",
-    "team": "ATH",
-    "opp": "MIN",
-    "books": {
-      "DK": [
-        5.5,
-        -162,
-        127
-      ],
-      "FD": [
-        5.5,
-        -164,
-        128
-      ],
-      "MGM": [
-        4.5,
-        115,
-        -155
-      ],
-      "RIV": [
-        5.5,
-        -167,
-        125
       ],
       "CZR": [
-        4.5,
-        125,
-        -175
-      ],
-      "HR": [
-        4.5,
-        125,
-        -165
-      ]
-    }
-  },
-  {
-    "name": "Ian Seymour",
-    "team": "TB",
-    "opp": "@DET",
-    "books": {
-      "DK": [
         5.5,
-        null,
-        null
-      ],
-      "FD": [
-        5.5,
-        null,
-        null
-      ],
-      "MGM": null,
-      "RIV": null,
-      "CZR": [
-        5.5,
-        null,
-        null
-      ],
-      "HR": [
-        5.5,
-        -110,
-        -120
-      ]
-    }
-  },
-  {
-    "name": "Kyle Harrison",
-    "team": "MIL",
-    "opp": "@NYM",
-    "books": {
-      "DK": [
-        5.5,
-        -104,
-        -122
-      ],
-      "FD": [
-        5.5,
-        -108,
+        -112,
         -118
-      ],
-      "MGM": [
-        5.5,
-        -105,
-        -125
-      ],
-      "RIV": [
-        5.5,
-        -105,
-        -129
-      ],
-      "CZR": [
-        5.5,
-        -111,
-        -120
-      ],
-      "HR": [
-        5.5,
-        -105,
-        -125
-      ]
-    }
-  },
-  {
-    "name": "Michael King",
-    "team": "SD",
-    "opp": "PIT",
-    "books": {
-      "DK": [
-        5.5,
-        -122,
-        -105
-      ],
-      "FD": [
-        5.5,
-        -113,
-        -113
-      ],
-      "MGM": [
-        5.5,
-        -125,
-        -105
-      ],
-      "RIV": [
-        5.5,
-        -127,
-        -105
-      ],
-      "CZR": [
-        5.5,
-        -111,
-        -120
       ],
       "HR": [
         5.5,
@@ -924,88 +850,384 @@ const PROPS_DATA = [
     }
   },
   {
-    "name": "Taj Bradley",
-    "team": "MIN",
-    "opp": "@ATH",
+    "name": "Peter Lambert",
+    "team": "HOU",
+    "opp": "@NYY",
     "books": {
       "DK": [
         5.5,
-        -108,
-        -118
+        -161,
+        126
       ],
       "FD": [
-        5.5,
-        -104,
-        -122
+        4.5,
+        140,
+        -180
       ],
       "MGM": [
         5.5,
-        -120,
-        -110
-      ],
-      "RIV": [
-        5.5,
-        -127,
-        -105
-      ],
-      "CZR": [
-        5.5,
-        -112,
-        -115
-      ],
-      "HR": [
-        5.5,
-        -110,
-        -120
-      ]
-    }
-  },
-  {
-    "name": "Tyler Glasnow",
-    "team": "LAD",
-    "opp": "@ATL",
-    "books": {
-      "DK": [
-        5.5,
-        126,
-        -162
-      ],
-      "FD": [
-        5.5,
-        126,
-        -162
-      ],
-      "MGM": [
-        5.5,
-        130,
-        -175
-      ],
-      "RIV": [
-        6.5,
-        -159,
+        -160,
         120
       ],
+      "RIV": [
+        5.5,
+        -152,
+        115
+      ],
       "CZR": [
-        6.5,
-        -150,
-        113
+        5.5,
+        -165,
+        122
       ],
       "HR": [
-        6.5,
+        5.5,
         -160,
         120
       ]
     }
   },
   {
-    "name": "Andrew Alvarez",
-    "team": "WSH",
-    "opp": "COL",
+    "name": "Connor Prielipp",
+    "team": "MIN",
+    "opp": "@ATH",
+    "books": {
+      "DK": [
+        5.5,
+        -115,
+        -110
+      ],
+      "FD": [
+        5.5,
+        -120,
+        -106
+      ],
+      "MGM": [
+        5.5,
+        -125,
+        100
+      ],
+      "RIV": [
+        5.5,
+        -122,
+        -109
+      ],
+      "CZR": [
+        5.5,
+        -121,
+        -108
+      ],
+      "HR": [
+        5.5,
+        -115,
+        -115
+      ]
+    }
+  },
+  {
+    "name": "Landen Roupp",
+    "team": "SF",
+    "opp": "CIN",
+    "books": {
+      "DK": [
+        5.5,
+        101,
+        -129
+      ],
+      "FD": [
+        5.5,
+        -102,
+        -125
+      ],
+      "MGM": [
+        5.5,
+        105,
+        -140
+      ],
+      "RIV": [
+        5.5,
+        -109,
+        -122
+      ],
+      "CZR": [
+        5.5,
+        100,
+        -130
+      ],
+      "HR": [
+        5.5,
+        100,
+        -130
+      ]
+    }
+  },
+  {
+    "name": "Roki Sasaki",
+    "team": "LAD",
+    "opp": "@ATL",
+    "books": {
+      "DK": [
+        5.5,
+        -154,
+        120
+      ],
+      "FD": [
+        4.5,
+        116,
+        -148
+      ],
+      "MGM": [
+        5.5,
+        -150,
+        110
+      ],
+      "RIV": [
+        5.5,
+        null,
+        138
+      ],
+      "CZR": [
+        4.5,
+        120,
+        -165
+      ],
+      "HR": [
+        4.5,
+        120,
+        -155
+      ]
+    }
+  },
+  {
+    "name": "Bryan Woo",
+    "team": "SEA",
+    "opp": "PHI",
+    "books": {
+      "DK": [
+        5.5,
+        -146,
+        115
+      ],
+      "FD": [
+        5.5,
+        -154,
+        120
+      ],
+      "MGM": [
+        5.5,
+        -155,
+        115
+      ],
+      "RIV": [
+        5.5,
+        -167,
+        125
+      ],
+      "CZR": [
+        5.5,
+        -154,
+        117
+      ],
+      "HR": [
+        5.5,
+        -155,
+        120
+      ]
+    }
+  },
+  {
+    "name": "Kyle Bradish",
+    "team": "BAL",
+    "opp": "@STL",
     "books": {
       "DK": [
         4.5,
-        109,
-        -139
+        -113,
+        -112
+      ],
+      "FD": [
+        4.5,
+        -120,
+        -106
+      ],
+      "MGM": [
+        4.5,
+        -110,
+        -120
+      ],
+      "RIV": [
+        4.5,
+        -121,
+        -109
+      ],
+      "CZR": [
+        4.5,
+        -114,
+        -115
+      ],
+      "HR": [
+        4.5,
+        -115,
+        -115
+      ]
+    }
+  },
+  {
+    "name": "Bubba Chandler",
+    "team": "PIT",
+    "opp": "@SD",
+    "books": {
+      "DK": [
+        4.5,
+        -147,
+        117
+      ],
+      "FD": [
+        4.5,
+        -172,
+        134
+      ],
+      "MGM": [
+        4.5,
+        -140,
+        105
+      ],
+      "RIV": [
+        4.5,
+        -167,
+        125
+      ],
+      "CZR": [
+        4.5,
+        -157,
+        120
+      ],
+      "HR": [
+        4.5,
+        -155,
+        120
+      ]
+    }
+  },
+  {
+    "name": "J.T. Ginn",
+    "team": "ATH",
+    "opp": "MIN",
+    "books": {
+      "DK": [
+        4.5,
+        -153,
+        120
+      ],
+      "FD": [
+        4.5,
+        -154,
+        120
+      ],
+      "MGM": [
+        3.5,
+        115,
+        -155
+      ],
+      "RIV": [
+        4.5,
+        -167,
+        125
+      ],
+      "CZR": [
+        4.5,
+        -159,
+        122
+      ],
+      "HR": [
+        4.5,
+        -160,
+        120
+      ]
+    }
+  },
+  {
+    "name": "Tanner Gordon",
+    "team": "COL",
+    "opp": "@WSH",
+    "books": {
+      "DK": [
+        3.5,
+        -107,
+        -119
+      ],
+      "FD": [
+        3.5,
+        -108,
+        -118
+      ],
+      "MGM": [
+        3.5,
+        -105,
+        -125
+      ],
+      "RIV": [
+        4.5,
+        null,
+        123
+      ],
+      "CZR": [
+        3.5,
+        -112,
+        -118
+      ],
+      "HR": [
+        3.5,
+        -110,
+        -120
+      ]
+    }
+  },
+  {
+    "name": "Nick Lodolo",
+    "team": "CIN",
+    "opp": "@SF",
+    "books": {
+      "DK": [
+        4.5,
+        114,
+        -146
+      ],
+      "FD": [
+        4.5,
+        100,
+        -128
+      ],
+      "MGM": [
+        4.5,
+        -110,
+        -120
+      ],
+      "RIV": [
+        4.5,
+        -103,
+        -130
+      ],
+      "CZR": [
+        4.5,
+        101,
+        -132
+      ],
+      "HR": [
+        4.5,
+        100,
+        -130
+      ]
+    }
+  },
+  {
+    "name": "Dustin May",
+    "team": "MIL",
+    "opp": "@NYM",
+    "books": {
+      "DK": [
+        4.5,
+        100,
+        -127
       ],
       "FD": [
         4.5,
@@ -1019,13 +1241,13 @@ const PROPS_DATA = [
       ],
       "RIV": [
         4.5,
-        null,
-        -143
+        -108,
+        -124
       ],
       "CZR": [
         4.5,
-        107,
-        -138
+        -108,
+        -125
       ],
       "HR": [
         4.5,
@@ -1035,98 +1257,24 @@ const PROPS_DATA = [
     }
   },
   {
-    "name": "Anthony Kay",
-    "team": "CWS",
-    "opp": "TEX",
+    "name": "Michael McGreevy",
+    "team": "STL",
+    "opp": "BAL",
     "books": {
       "DK": [
         4.5,
-        102,
-        -130
+        -131,
+        103
       ],
       "FD": [
         4.5,
-        -106,
-        -120
-      ],
-      "MGM": [
-        4.5,
-        105,
-        -145
-      ],
-      "RIV": [
-        4.5,
-        -109,
-        -121
-      ],
-      "CZR": [
-        4.5,
-        -106,
-        -124
-      ],
-      "HR": [
-        4.5,
-        -110,
-        -120
-      ]
-    }
-  },
-  {
-    "name": "Brady Singer",
-    "team": "CIN",
-    "opp": "@SF",
-    "books": {
-      "DK": [
-        4.5,
-        -121,
-        -105
-      ],
-      "FD": [
-        4.5,
-        -150,
-        118
-      ],
-      "MGM": [
-        4.5,
-        -145,
-        105
-      ],
-      "RIV": [
-        4.5,
-        -150,
+        -142,
         112
       ],
-      "CZR": [
-        4.5,
-        -143,
-        110
-      ],
-      "HR": [
-        4.5,
-        -145,
-        110
-      ]
-    }
-  },
-  {
-    "name": "Brandon Pfaadt",
-    "team": "ARI",
-    "opp": "CHC",
-    "books": {
-      "DK": [
-        4.5,
-        -141,
-        112
-      ],
-      "FD": [
-        4.5,
-        -138,
-        108
-      ],
       "MGM": [
-        4.5,
-        -140,
-        105
+        3.5,
+        145,
+        -200
       ],
       "RIV": [
         4.5,
@@ -1146,14 +1294,88 @@ const PROPS_DATA = [
     }
   },
   {
-    "name": "Bryce Elder",
-    "team": "ATL",
-    "opp": "LAD",
+    "name": "Troy Melton",
+    "team": "DET",
+    "opp": "TB",
+    "books": {
+      "DK": [
+        3.5,
+        131,
+        -167
+      ],
+      "FD": [
+        3.5,
+        134,
+        -172
+      ],
+      "MGM": [
+        3.5,
+        125,
+        -165
+      ],
+      "RIV": [
+        4.5,
+        null,
+        112
+      ],
+      "CZR": [
+        3.5,
+        127,
+        -170
+      ],
+      "HR": [
+        3.5,
+        125,
+        -165
+      ]
+    }
+  },
+  {
+    "name": "Freddy Peralta",
+    "team": "TB",
+    "opp": "@DET",
     "books": {
       "DK": [
         4.5,
-        -161,
-        126
+        -124,
+        -103
+      ],
+      "FD": [
+        4.5,
+        -125,
+        -102
+      ],
+      "MGM": [
+        4.5,
+        -125,
+        -105
+      ],
+      "RIV": [
+        4.5,
+        null,
+        -106
+      ],
+      "CZR": [
+        4.5,
+        -134,
+        103
+      ],
+      "HR": [
+        4.5,
+        -130,
+        100
+      ]
+    }
+  },
+  {
+    "name": "Grayson Rodriguez",
+    "team": "LAA",
+    "opp": "CLE",
+    "books": {
+      "DK": [
+        4.5,
+        -151,
+        121
       ],
       "FD": [
         4.5,
@@ -1167,124 +1389,87 @@ const PROPS_DATA = [
       ],
       "RIV": [
         4.5,
-        -155,
-        115
+        null,
+        118
       ],
       "CZR": [
         4.5,
-        -165,
+        -164,
         125
       ],
       "HR": [
         4.5,
-        -160,
-        120
+        -165,
+        125
       ]
     }
   },
   {
-    "name": "Ethan Pecko",
-    "team": "HOU",
-    "opp": "@NYY",
+    "name": "Eduardo Rodriguez",
+    "team": "ARI",
+    "opp": "CHC",
     "books": {
       "DK": [
         4.5,
-        -158,
-        124
+        -163,
+        128
       ],
       "FD": [
         4.5,
-        -158,
-        124
+        -162,
+        126
+      ],
+      "MGM": [
+        4.5,
+        -160,
+        120
+      ],
+      "RIV": [
+        4.5,
+        -177,
+        132
+      ],
+      "CZR": [
+        4.5,
+        -170,
+        125
+      ],
+      "HR": [
+        4.5,
+        -165,
+        125
+      ]
+    }
+  },
+  {
+    "name": "AJ Smith-Shawver",
+    "team": "ATL",
+    "opp": "LAD",
+    "books": {
+      "DK": [
+        4.5,
+        -166,
+        130
+      ],
+      "FD": [
+        4.5,
+        -170,
+        132
       ],
       "MGM": [
         4.5,
         -155,
         115
-      ],
-      "RIV": [
-        4.5,
-        -143,
-        110
-      ],
-      "CZR": [
-        4.5,
-        -160,
-        120
-      ],
-      "HR": [
-        4.5,
-        -155,
-        120
-      ]
-    }
-  },
-  {
-    "name": "George Kirby",
-    "team": "SEA",
-    "opp": "PHI",
-    "books": {
-      "DK": [
-        4.5,
-        -101,
-        -126
-      ],
-      "FD": [
-        4.5,
-        -104,
-        -120
-      ],
-      "MGM": [
-        4.5,
-        105,
-        -140
-      ],
-      "RIV": [
-        4.5,
-        100,
-        -134
-      ],
-      "CZR": [
-        4.5,
-        -107,
-        -125
-      ],
-      "HR": [
-        4.5,
-        100,
-        -130
-      ]
-    }
-  },
-  {
-    "name": "Walbert Urena",
-    "team": "LAA",
-    "opp": "CLE",
-    "books": {
-      "DK": [
-        4.5,
-        -158,
-        126
-      ],
-      "FD": [
-        4.5,
-        -164,
-        128
-      ],
-      "MGM": [
-        3.5,
-        120,
-        -160
       ],
       "RIV": [
         4.5,
         null,
-        120
+        125
       ],
       "CZR": [
         4.5,
-        -164,
-        125
+        -170,
+        127
       ],
       "HR": [
         4.5,
@@ -1294,268 +1479,46 @@ const PROPS_DATA = [
     }
   },
   {
-    "name": "Will Warren",
-    "team": "NYY",
-    "opp": "HOU",
-    "books": {
-      "DK": [
-        4.5,
-        119,
-        -152
-      ],
-      "FD": [
-        4.5,
-        112,
-        -142
-      ],
-      "MGM": [
-        5.5,
-        -185,
-        135
-      ],
-      "RIV": [
-        4.5,
-        108,
-        -143
-      ],
-      "CZR": [
-        4.5,
-        114,
-        -150
-      ],
-      "HR": [
-        4.5,
-        120,
-        -155
-      ]
-    }
-  },
-  {
-    "name": "Zac Thornton",
+    "name": "Robert Stock",
     "team": "NYM",
     "opp": "MIL",
     "books": {
       "DK": [
         4.5,
-        -158,
-        126
-      ],
-      "FD": [
-        3.5,
-        128,
-        -164
-      ],
-      "MGM": [
-        3.5,
-        115,
-        -155
-      ],
-      "RIV": [
-        3.5,
-        125,
-        -167
-      ],
-      "CZR": [
-        4.5,
-        -170,
-        126
-      ],
-      "HR": [
-        4.5,
-        -165,
-        125
-      ]
-    }
-  },
-  {
-    "name": "Adrian Houser",
-    "team": "SF",
-    "opp": "CIN",
-    "books": {
-      "DK": [
-        3.5,
-        118,
-        -150
-      ],
-      "FD": [
-        3.5,
-        108,
-        -138
-      ],
-      "MGM": [
-        3.5,
-        -105,
-        -130
-      ],
-      "RIV": [
-        3.5,
-        102,
-        -136
-      ],
-      "CZR": [
-        3.5,
-        105,
-        -137
-      ],
-      "HR": [
-        3.5,
-        105,
-        -135
-      ]
-    }
-  },
-  {
-    "name": "Chris Bassitt",
-    "team": "BAL",
-    "opp": "@STL",
-    "books": {
-      "DK": [
-        3.5,
-        -102,
-        -124
-      ],
-      "FD": [
-        3.5,
-        -108,
-        -120
-      ],
-      "MGM": [
-        3.5,
-        100,
-        -135
-      ],
-      "RIV": [
-        3.5,
-        104,
-        -139
-      ],
-      "CZR": [
-        3.5,
-        -107,
-        -125
-      ],
-      "HR": [
-        3.5,
-        -105,
-        -125
-      ]
-    }
-  },
-  {
-    "name": "Clay Holmes",
-    "team": "CHC",
-    "opp": "@ARI",
-    "books": {
-      "DK": [
-        3.5,
-        -136,
-        107
-      ],
-      "FD": [
-        3.5,
-        -132,
-        104
-      ],
-      "MGM": [
-        3.5,
-        -135,
-        100
-      ],
-      "RIV": [
-        3.5,
-        -132,
-        100
-      ],
-      "CZR": [
-        3.5,
-        -135,
+        -129,
         102
       ],
-      "HR": [
-        3.5,
-        -130,
-        100
-      ]
-    }
-  },
-  {
-    "name": "Jackson Jobe",
-    "team": "DET",
-    "opp": "TB",
-    "books": {
-      "DK": [
-        3.5,
-        -141,
-        111
-      ],
       "FD": [
-        3.5,
-        -132,
-        104
+        4.5,
+        -140,
+        110
       ],
       "MGM": [
-        3.5,
-        -140,
-        105
+        4.5,
+        -135,
+        100
       ],
       "RIV": [
-        3.5,
-        null,
-        112
+        4.5,
+        -136,
+        102
       ],
       "CZR": [
-        3.5,
-        -127,
-        -104
+        4.5,
+        -138,
+        107
       ],
       "HR": [
-        3.5,
+        4.5,
         -135,
         105
       ]
     }
   },
   {
-    "name": "Max Scherzer",
-    "team": "TOR",
-    "opp": "KC",
-    "books": {
-      "DK": [
-        3.5,
-        126,
-        -162
-      ],
-      "FD": [
-        3.5,
-        116,
-        -148
-      ],
-      "MGM": [
-        4.5,
-        -165,
-        125
-      ],
-      "RIV": [
-        3.5,
-        110,
-        -148
-      ],
-      "CZR": [
-        3.5,
-        117,
-        -154
-      ],
-      "HR": [
-        3.5,
-        120,
-        -155
-      ]
-    }
-  },
-  {
-    "name": "Seth Lugo",
-    "team": "KC",
-    "opp": "@TOR",
+    "name": "Matthew Boyd",
+    "team": "CHC",
+    "opp": "@ARI",
     "books": {
       "DK": [
         3.5,
@@ -1564,45 +1527,115 @@ const PROPS_DATA = [
       ],
       "FD": [
         3.5,
-        104,
-        -132
+        -111,
+        -115
       ],
       "MGM": [
         3.5,
-        -110,
-        -120
+        -115,
+        -115
       ],
       "RIV": [
         3.5,
-        -103,
-        -130
+        -109,
+        -122
       ],
       "CZR": [
         3.5,
-        100,
-        -130
+        -104,
+        -127
       ],
       "HR": [
         3.5,
-        105,
-        -135
+        -105,
+        -125
       ]
     }
   },
   {
-    "name": "Tyler Phillips",
+    "name": "Ryan Gusto",
     "team": "MIA",
     "opp": "BOS",
     "books": {
       "DK": [
         3.5,
-        112,
-        -141
+        117,
+        -149
       ],
       "FD": [
         3.5,
-        -106,
-        -120
+        112,
+        -142
+      ],
+      "MGM": [
+        3.5,
+        -105,
+        -125
+      ],
+      "RIV": [
+        3.5,
+        102,
+        -136
+      ],
+      "CZR": [
+        3.5,
+        108,
+        -141
+      ],
+      "HR": [
+        3.5,
+        110,
+        -145
+      ]
+    }
+  },
+  {
+    "name": "Elmer Rodriguez",
+    "team": "NYY",
+    "opp": "HOU",
+    "books": {
+      "DK": [
+        3.5,
+        106,
+        -136
+      ],
+      "FD": [
+        3.5,
+        -125,
+        -102
+      ],
+      "MGM": [
+        3.5,
+        null,
+        null
+      ],
+      "RIV": null,
+      "CZR": [
+        3.5,
+        -113,
+        -115
+      ],
+      "HR": [
+        3.5,
+        -115,
+        -115
+      ]
+    }
+  },
+  {
+    "name": "Randy Vasquez",
+    "team": "SD",
+    "opp": "PIT",
+    "books": {
+      "DK": [
+        3.5,
+        -109,
+        -116
+      ],
+      "FD": [
+        3.5,
+        -125,
+        -102
       ],
       "MGM": [
         3.5,
@@ -1611,18 +1644,55 @@ const PROPS_DATA = [
       ],
       "RIV": [
         3.5,
-        -105,
-        -127
+        -132,
+        100
       ],
       "CZR": [
         3.5,
-        102,
-        -132
+        -117,
+        -112
       ],
       "HR": [
         3.5,
-        100,
-        -130
+        -120,
+        -110
+      ]
+    }
+  },
+  {
+    "name": "Randy Dobnak",
+    "team": "KC",
+    "opp": "@TOR",
+    "books": {
+      "DK": [
+        2.5,
+        -105,
+        -122
+      ],
+      "FD": [
+        2.5,
+        -115,
+        -111
+      ],
+      "MGM": [
+        2.5,
+        -110,
+        -120
+      ],
+      "RIV": [
+        2.5,
+        102,
+        -134
+      ],
+      "CZR": [
+        2.5,
+        -107,
+        -122
+      ],
+      "HR": [
+        2.5,
+        -110,
+        -120
       ]
     }
   }
@@ -1637,6 +1707,93 @@ function americanFromProb(p){
   if(p===null||p===undefined||p<=0||p>=1) return null;
   return p>=0.5 ? Math.round(-100*p/(1-p)) : Math.round(100*(1-p)/p);
 }
+function americanFromDecimal(d){
+  if(d===null||d===undefined||d<=1) return null;
+  return d>=2 ? Math.round((d-1)*100) : Math.round(-100/(d-1));
+}
+function playAtOdds(fairProb,minEv=.03){
+  if(fairProb===null||fairProb===undefined||fairProb<=0||fairProb>=1) return null;
+  return americanFromDecimal((1+minEv)/fairProb);
+}
+function estimatedCounterpartOdds(observedOdds,assumedHold=.045){
+  const observedProb=impliedProb(observedOdds);
+  if(observedProb==null) return null;
+  const missingQuotedProb=1+assumedHold-observedProb;
+  return missingQuotedProb>0&&missingQuotedProb<1 ? americanFromProb(missingQuotedProb) : null;
+}
+
+/* ===== shortopen fair-price / EV layer =====
+   Replaces proportional devigging with Shin's method (corrects the
+   favorite-longshot bias proportional splitting ignores), and replaces
+   the flat "+2pt margin" Shortopen Spread hack with a real EV call:
+   every book's price checked against the Shin-fair probability, best
+   EV wins regardless of which book it's on -- nothing here is pinned
+   to a specific sportsbook. */
+function fairProbsShin(rawProbs, tol=1e-10, maxIter=100){
+  const S = rawProbs.reduce((a,b)=>a+b,0);
+  function shinAt(z){
+    return rawProbs.map(pi => (Math.sqrt(z*z + 4*(1-z)*pi*pi/S) - z) / (2*(1-z)));
+  }
+  let lo=0, hi=0.5;
+  for(let i=0;i<maxIter;i++){
+    const mid=(lo+hi)/2, probs=shinAt(mid), sum=probs.reduce((a,b)=>a+b,0);
+    if(Math.abs(sum-1)<tol) return probs;
+    if(sum>1) lo=mid; else hi=mid;
+  }
+  return shinAt((lo+hi)/2);
+}
+function evPercent(americanOdds, fairProb){
+  const dec = americanToDecimal(americanOdds);
+  if(dec==null || fairProb==null) return null;
+  return (dec*fairProb - 1) * 100;
+}
+function confidenceTag(bookCount, spreadCents){
+  if(bookCount<3) return 'Low';
+  if(spreadCents==null) return 'Medium';
+  if(spreadCents<=1.5) return 'High';
+  if(spreadCents<=3.5) return 'Medium';
+  return 'Low';
+}
+// booksAtLine: [{book, under, over}] filtered to the SAME line already
+function shortopenCall(booksAtLine){
+  const quotes = booksAtLine.filter(b=>b.under!=null && b.over!=null);
+  if(!quotes.length) return null;
+  const perBook = quotes.map(b=>{
+    const [pu, po] = fairProbsShin([impliedProb(b.under), impliedProb(b.over)]);
+    return {book:b.book, under:b.under, over:b.over, pu, po};
+  });
+  const fairUnderProb = perBook.reduce((a,b)=>a+b.pu,0)/perBook.length;
+  const fairOverProb  = perBook.reduce((a,b)=>a+b.po,0)/perBook.length;
+  let bestUnder=null, bestOver=null;
+  perBook.forEach(b=>{
+    const evU = evPercent(b.under, fairUnderProb), evO = evPercent(b.over, fairOverProb);
+    if(!bestUnder || evU>bestUnder.evPct) bestUnder = {book:b.book, odds:b.under, evPct:evU};
+    if(!bestOver  || evO>bestOver.evPct)  bestOver  = {book:b.book, odds:b.over,  evPct:evO};
+  });
+  const spreadUnder = (Math.max(...perBook.map(b=>impliedProb(b.under))) - Math.min(...perBook.map(b=>impliedProb(b.under))))*100;
+  const spreadOver  = (Math.max(...perBook.map(b=>impliedProb(b.over)))  - Math.min(...perBook.map(b=>impliedProb(b.over))))*100;
+  const confidence = confidenceTag(quotes.length, Math.max(spreadUnder, spreadOver));
+  const call = bestOver.evPct >= bestUnder.evPct ? {side:'Over', ...bestOver} : {side:'Under', ...bestUnder};
+  return { fairUnderProb, fairOverProb, fairUnder: americanFromProb(fairUnderProb), fairOver: americanFromProb(fairOverProb), call, confidence, bookCount: quotes.length };
+}
+
+// Fallback for one-sided source feeds. Observed Over quotes stay observed;
+// this derives a separate fair/target layer and never writes an estimated
+// Under into a sportsbook cell or the bet slip.
+function modeledTargetFromOvers(booksAtLine,assumedHold=.045,minEv=.03){
+  const quotes=booksAtLine.filter(b=>b.over!=null);
+  if(!quotes.length) return null;
+  const modeled=quotes.map(b=>{
+    const rawOver=impliedProb(b.over),rawUnder=1+assumedHold-rawOver;
+    if(rawUnder<=0||rawUnder>=1) return null;
+    const [pu,po]=fairProbsShin([rawUnder,rawOver]);
+    return {pu,po};
+  }).filter(Boolean);
+  if(!modeled.length) return null;
+  const fairUnderProb=modeled.reduce((a,b)=>a+b.pu,0)/modeled.length;
+  const fairOverProb=modeled.reduce((a,b)=>a+b.po,0)/modeled.length;
+  return {fairUnderProb,fairOverProb,fairUnder:americanFromProb(fairUnderProb),fairOver:americanFromProb(fairOverProb),targetUnder:playAtOdds(fairUnderProb,minEv),targetOver:playAtOdds(fairOverProb,minEv),assumedHold,minEv,bookCount:modeled.length};
+}
 
 function mode(arr){
   const counts = {};
@@ -1650,7 +1807,7 @@ function mode(arr){
 }
 
 // enrich each player with computed consensus / best price / steam data
-const ROOKIES = new Set(["Andrew Alvarez","Ethan Pecko","Walbert Urena","Zac Thornton"]);
+const ROOKIES = new Set([]);
 const LIVE_NOW = new Set([]);
 const NOTE_POOL = ['Short-hook risk on low pitch count','Opponent lineup missing 2 regulars','Extra rest since last start','Bullpen banged up behind him','Coming off a rain-shortened outing','Facing this lineup for the first time this year'];
 const PARKS = ['Hitter-friendly park','Pitcher-friendly park','Neutral park'];
@@ -1660,40 +1817,48 @@ function seededRand(seed){ let x=Math.sin(seed)*10000; return x-Math.floor(x); }
 
 PROPS_DATA.forEach((p,i)=>{
   const lines = BOOKS.map(b=> p.books[b.id] ? p.books[b.id][0] : null);
-  p.consensusLine = mode(lines);
+  const pricedLines = BOOKS.map(b=>p.books[b.id]).filter(row=>row && (row[1]!=null || row[2]!=null)).map(row=>row[0]);
+  p.consensusLine = mode(pricedLines.length ? pricedLines : lines);
   p.steamCount = lines.filter(l=> l!==null && l!==p.consensusLine).length;
 
-  // Match both the line and side before price comparison or Shin devigging.
   let bestOver=-Infinity, bestOverBook=null, bestUnder=-Infinity, bestUnderBook=null;
-  let overProbs=[], underProbs=[];
-  function shinPair(u,o){
-    const q=[impliedProb(u),impliedProb(o)],s=q[0]+q[1];
-    if(!(s>0)) return null;
-    if(s<=1) return [q[0]/s,q[1]/s];
-    function at(z){const d=2*(1-z);return q.map(x=>(Math.sqrt(z*z+4*(1-z)*(x*x/s))-z)/d);}
-    let lo=0,hi=.999999;
-    for(let k=0;k<70;k++){const mid=(lo+hi)/2,ps=at(mid);if(ps[0]+ps[1]>1)lo=mid;else hi=mid;}
-    const ps=at((lo+hi)/2),t=ps[0]+ps[1];return [ps[0]/t,ps[1]/t];
-  }
   BOOKS.forEach(b=>{
-    const row=p.books[b.id];
+    const row = p.books[b.id];
     if(!row) return;
-    const [line,u,o]=row;
-    if(line!==p.consensusLine || u===null || o===null) return;
-    const fair=shinPair(u,o); if(!fair) return;
-    underProbs.push(fair[0]); overProbs.push(fair[1]);
-    if(u>bestUnder){bestUnder=u;bestUnderBook=b.id;}
-    if(o>bestOver){bestOver=o;bestOverBook=b.id;}
+    const [,u,o] = row;
+    if(u!==null && u>bestUnder){bestUnder=u; bestUnderBook=b.id;}
+    if(o!==null && o>bestOver){bestOver=o; bestOverBook=b.id;}
   });
-  p.bestOver=bestOverBook?{odds:bestOver,book:bestOverBook}:null;
-  p.bestUnder=bestUnderBook?{odds:bestUnder,book:bestUnderBook}:null;
-  p.fairOverProb=overProbs.length?overProbs.reduce((a,b)=>a+b,0)/overProbs.length:null;
-  p.fairUnderProb=underProbs.length?underProbs.reduce((a,b)=>a+b,0)/underProbs.length:null;
-  p.fairOver=americanFromProb(p.fairOverProb);
-  p.fairUnder=americanFromProb(p.fairUnderProb);
-  // SO prices are modeled targets, never sportsbook quotes and never part of observed counts.
-  p.soOver=p.fairOverProb!==null?americanFromProb(p.fairOverProb):null;
-  p.soUnder=p.fairUnderProb!==null?americanFromProb(p.fairUnderProb):null;
+  p.bestOver = bestOverBook? {odds:bestOver, book:bestOverBook} : null;
+  p.bestUnder = bestUnderBook? {odds:bestUnder, book:bestUnderBook} : null;
+
+  // No-vig fair odds at the consensus line, via Shin's method, plus a
+  // real EV call scanned across every book quoting that line (not
+  // pinned to any one sportsbook -- whichever book has the best EV
+  // against the fair number wins the call).
+  const booksAtLine = BOOKS.map(b=>{
+    const row=p.books[b.id];
+    if(!row || row[0]!==p.consensusLine) return null;
+    return {book:b.id, under:row[1], over:row[2]};
+  }).filter(Boolean);
+  const so = shortopenCall(booksAtLine);
+  const targetModel = so ? null : modeledTargetFromOvers(booksAtLine);
+  p.targetModel = targetModel;
+  p.fairOverProb = so ? so.fairOverProb : (targetModel ? targetModel.fairOverProb : null);
+  p.fairUnderProb = so ? so.fairUnderProb : (targetModel ? targetModel.fairUnderProb : null);
+  p.fairOver = so ? so.fairOver : (targetModel ? targetModel.fairOver : null);
+  p.fairUnder = so ? so.fairUnder : (targetModel ? targetModel.fairUnder : null);
+
+  // Shortopen Call — replaces the old flat "+2pt margin" hack. This is
+  // the single judgment: best EV side, whichever book offers it, as a
+  // percentage relative to the Shin-fair price, plus a confidence tag
+  // driven by how many books quote this line and how tightly they agree.
+  p.shortopenCall = so ? so.call : null;         // {side, book, odds, evPct}
+  p.shortopenConfidence = so ? so.confidence : null;
+  // Kept for back-compat with any code still reading soOver/soUnder:
+  // now genuinely the best-EV price on each side, not a flat markup.
+  p.soOver = so && so.call.side==='Over' ? so.call.odds : (p.bestOver ? p.bestOver.odds : null);
+  p.soUnder = so && so.call.side==='Under' ? so.call.odds : (p.bestUnder ? p.bestUnder.odds : null);
 
   // Opening line (simulated) for the sparkline
   const wobble = (seededRand(i*7.3+1)-0.5)*2;
@@ -1774,6 +1939,14 @@ function renderTable(list){
         ${bestOverHtml}${bestUnderHtml}
       </td>
       <td class="sticky-3">
+        ${p.shortopenCall ? `
+        <div class="call-lbl">${p.shortopenCall.side}</div>
+        <div class="call-val ${p.shortopenCall.side==='Over'?'o':'u'}">${fmtOdds(p.shortopenCall.odds)} <span style="color:var(--text-faint);font-weight:500">${p.shortopenCall.book}</span></div>
+        <div class="call-ev ${p.shortopenCall.evPct>=0?'pos':'neg'}">${p.shortopenCall.evPct>=0?'+':''}${p.shortopenCall.evPct.toFixed(1)}% EV</div>
+        <div class="call-conf">${p.shortopenConfidence||'—'} confidence</div>
+        ` : (p.targetModel ? `<div class="call-target">SO target</div><div class="target-lines"><span class="to">O ${fmtOdds(p.targetModel.targetOver)}+</span><br><span class="tu">U ${fmtOdds(p.targetModel.targetUnder)}+</span></div><div class="call-conf">${Math.round(p.targetModel.minEv*100)}% entry · assumed ${(p.targetModel.assumedHold*100).toFixed(1)}% hold</div>` : `<div class="call-lbl">—</div><div class="call-val">No market input</div>`)}
+      </td>
+      <td class="sticky-4">
         <div class="fair-lbl">Over</div><div class="fair-val o">${fmtOdds(p.fairOver)}</div>
         <div class="fair-lbl" style="margin-top:5px">Under</div><div class="fair-val u">${fmtOdds(p.fairUnder)}</div>
       </td>
@@ -1794,12 +1967,14 @@ function renderTable(list){
       const oBest = p.bestOver && p.bestOver.book===b.id ? ' best' : '';
       const uDash = u===null ? ' dash' : '';
       const oDash = o===null ? ' dash' : '';
+      const uEstimate = u===null && o!==null ? estimatedCounterpartOdds(o) : null;
+      const oEstimate = o===null && u!==null ? estimatedCounterpartOdds(u) : null;
 
       html += `<td class="book-cell line${divergeCls}${hiddenCls}" data-book="${b.id}">${line.toFixed(1)}</td>`;
-      html += `<td class="book-cell odds${uBest}${uDash}${hiddenCls}" data-book="${b.id}"
+      html += uEstimate!==null ? `<td class="book-cell odds modeled-quote${hiddenCls}" data-book="${b.id}" title="ShortOpen estimate from the observed Over price using an assumed 4.5% total hold; not a live sportsbook quote">~${fmtOdds(uEstimate)}<small>SO EST</small></td>` : `<td class="book-cell odds${uBest}${uDash}${hiddenCls}" data-book="${b.id}"
                   data-player="${p.name}" data-team="${p.team}" data-opp="${p.opp}" data-side="Under" data-book-id="${b.id}"
                   data-line="${line}" data-odds="${u!==null?u:''}">${fmtOdds(u)}</td>`;
-      html += `<td class="book-cell odds${oBest}${oDash}${hiddenCls}" data-book="${b.id}"
+      html += oEstimate!==null ? `<td class="book-cell odds modeled-quote${hiddenCls}" data-book="${b.id}" title="ShortOpen estimate from the observed Under price using an assumed 4.5% total hold; not a live sportsbook quote">~${fmtOdds(oEstimate)}<small>SO EST</small></td>` : `<td class="book-cell odds${oBest}${oDash}${hiddenCls}" data-book="${b.id}"
                   data-player="${p.name}" data-team="${p.team}" data-opp="${p.opp}" data-side="Over" data-book-id="${b.id}"
                   data-line="${line}" data-odds="${o!==null?o:''}">${fmtOdds(o)}</td>`;
     });
@@ -1810,7 +1985,7 @@ function renderTable(list){
     const mtr = document.createElement('tr');
     mtr.className = 'matchup-row' + (isOpen ? ' open' : '');
     mtr.id = `mrow-${cssSafe(p.name)}`;
-    mtr.innerHTML = `<td colspan="21">${matchupRowHtml(p)}</td>`;
+    mtr.innerHTML = `<td colspan="22">${matchupRowHtml(p)}</td>`;
     tableBody.appendChild(mtr);
   });
 
@@ -1926,22 +2101,18 @@ function renderStats(){
     document.getElementById('statTightSub').textContent = `${tight.p.name} · ${tight.side}`;
   }
 
-  // Shortopen target — strongest positive exact-line edge versus the observed best price
-  let so=null;
+  // Shortopen Call — the single highest +EV price on the board, vs. its
+  // own Shin-fair probability (not a flat markup). Book-agnostic: this
+  // is whichever book that day actually offers the best number.
+  let best=null;
   PROPS_DATA.forEach(p=>{
-    ['Over','Under'].forEach(side=>{
-      const soOdds = side==='Over' ? p.soOver : p.soUnder;
-      const mkt = side==='Over' ? p.bestOver : p.bestUnder;
-      if(soOdds===null || !mkt) return;
-      const fairProb = side==='Over' ? p.fairOverProb : p.fairUnderProb;
-      const edge = fairProb===null ? null : (fairProb*americanToDecimal(mkt.odds)-1)*100;
-      if(edge===null || edge<=0 || edge>10) return;
-      if(!so || edge>so.edge) so = {p, side, soOdds, edge};
-    });
+    if(!p.shortopenCall) return;
+    if(!best || p.shortopenCall.evPct>best.call.evPct) best = {p, call:p.shortopenCall, confidence:p.shortopenConfidence};
   });
-  if(so){
-    document.getElementById('statShortopen').textContent = fmtOdds(so.soOdds);
-    document.getElementById('statShortopenSub').textContent = `${so.p.name} · ${so.side} · +${so.edge.toFixed(1)}% vs market best`;
+  if(best){
+    document.getElementById('statShortopen').textContent = fmtOdds(best.call.odds);
+    const sign = best.call.evPct>=0 ? '+' : '';
+    document.getElementById('statShortopenSub').textContent = `${best.p.name} · ${best.call.side} · ${best.call.book} · ${sign}${best.call.evPct.toFixed(1)}% EV vs fair · ${best.confidence} confidence`;
   }
 
   let topOver=null, topUnder=null;
@@ -1986,8 +2157,15 @@ function renderBookToggles(){
       const id = chip.dataset.book;
       if(activeBooks.has(id)){ activeBooks.delete(id); chip.classList.add('off'); }
       else{ activeBooks.add(id); chip.classList.remove('off'); }
+      // Hide the header cells too (both the merged book-name th and the
+      // per-column K/U/O sub-headers), not just the body cells -- toggling
+      // only body cells left the header row in place, so every book except
+      // the last one just went blank instead of the column actually
+      // collapsing. Hiding both makes every book toggle look the same.
       document.querySelectorAll(`[data-book="${id}"]`).forEach(el=>{
         if(el.tagName==='TD' && el.classList.contains('book-cell')){
+          el.classList.toggle('col-hidden', !activeBooks.has(id));
+        } else if(el.tagName==='TH'){
           el.classList.toggle('col-hidden', !activeBooks.has(id));
         }
       });
@@ -1995,6 +2173,7 @@ function renderBookToggles(){
   });
 }
 
+let headerSort={key:"",dir:-1};
 /* ===================== Filter / Sort ===================== */
 function getFilteredSorted(){
   const q = document.getElementById('searchBox').value.trim().toLowerCase();
@@ -2009,7 +2188,10 @@ function getFilteredSorted(){
   }
   const sortVal = document.getElementById('sortSel').value;
   list = [...list];
-  switch(sortVal){
+  if(headerSort.key){
+    const val=(p,key)=>{if(key==='name')return p.name.toLowerCase();if(key==='line')return p.consensusLine||0;if(key==='call')return p.shortopenCall?p.shortopenCall.evPct:-Infinity;if(key==='fair')return p.fairOverProb||0;if(key.indexOf('book:')===0){const q=key.split(':'),v=p.books[q[1]];if(!v)return -Infinity;return v[q[2]==='line'?0:q[2]==='under'?1:2]??-Infinity}return 0};
+    list.sort((a,b)=>{const av=val(a,headerSort.key),bv=val(b,headerSort.key);return (typeof av==='string'?av.localeCompare(bv):av-bv)*headerSort.dir});
+  } else switch(sortVal){
     case 'line_desc': list.sort((a,b)=> (b.consensusLine||0)-(a.consensusLine||0)); break;
     case 'line_asc': list.sort((a,b)=> (a.consensusLine||0)-(b.consensusLine||0)); break;
     case 'steam_desc': list.sort((a,b)=> b.steamCount-a.steamCount); break;
@@ -2017,7 +2199,7 @@ function getFilteredSorted(){
     case 'best_under': list.sort((a,b)=> (b.bestUnder?b.bestUnder.odds:-999)-(a.bestUnder?a.bestUnder.odds:-999)); break;
     case 'name_asc': list.sort((a,b)=> a.name.localeCompare(b.name)); break;
   }
-  list.sort((a,b)=> (watchlist.has(b.name)?1:0) - (watchlist.has(a.name)?1:0));
+  if(!headerSort.key) list.sort((a,b)=> (watchlist.has(b.name)?1:0) - (watchlist.has(a.name)?1:0));
   return list;
 }
 
@@ -2040,25 +2222,31 @@ function setQuickFilter(id){ quickFilter = id; renderChips(); rerender(); }
 
 /* ===================== Today's Best Bets ===================== */
 function renderBestBets(){
+  // Only surface calls with at least Medium confidence (3+ books quoting
+  // the line, reasonable agreement) -- a Low-confidence gap is more
+  // likely one outlier book than a real mispricing, and shouldn't
+  // headline the page.
   const edges = [];
   PROPS_DATA.forEach(p=>{
+    if(p.shortopenConfidence==='Low') return;
     if(p.bestOver && p.fairOverProb!==null){
-      edges.push({p, side:'Over', odds:p.bestOver.odds, book:p.bestOver.book, edge:(p.fairOverProb*americanToDecimal(p.bestOver.odds)-1)*100});
+      edges.push({p, side:'Over', odds:p.bestOver.odds, book:p.bestOver.book, edge:(p.fairOverProb - impliedProb(p.bestOver.odds))*100, evPct: evPercent(p.bestOver.odds, p.fairOverProb)});
     }
     if(p.bestUnder && p.fairUnderProb!==null){
-      edges.push({p, side:'Under', odds:p.bestUnder.odds, book:p.bestUnder.book, edge:(p.fairUnderProb*americanToDecimal(p.bestUnder.odds)-1)*100});
+      edges.push({p, side:'Under', odds:p.bestUnder.odds, book:p.bestUnder.book, edge:(p.fairUnderProb - impliedProb(p.bestUnder.odds))*100, evPct: evPercent(p.bestUnder.odds, p.fairUnderProb)});
     }
   });
-  edges.sort((a,b)=> b.edge-a.edge);
-  const top = edges.filter(e=>e.edge>0&&e.edge<=10).slice(0,3);
+  edges.sort((a,b)=> b.evPct-a.evPct);
+  const top = edges.slice(0,3);
   document.getElementById('bestBets').innerHTML = top.map(e=>{
     const steamNote = e.p.steamCount>0 ? `Line has moved at ${e.p.steamCount} book${e.p.steamCount>1?'s':''} — ` : '';
+    const sign = e.evPct>=0 ? '+' : '';
     return `
     <div class="bb-card" onclick="document.getElementById('searchBox').value='${e.p.name}';rerender();document.querySelector('.board').scrollIntoView({behavior:'smooth'})">
       <div class="nm">${e.p.name} <span style="color:var(--text-dim);font-weight:400">${e.side}</span></div>
-      <div class="sub">${e.p.team} vs ${e.p.opp} · ${e.p.consensusLine.toFixed(1)} K line</div>
-      <div class="row"><span class="price">${fmtOdds(e.odds)}</span><span class="edge">+${e.edge.toFixed(1)}% vs fair</span></div>
-      <div class="why">${steamNote}best price at ${bookName(e.book)}, priced above the no-vig fair line.</div>
+      <div class="sub">${e.p.team} vs ${e.p.opp} · ${e.p.consensusLine.toFixed(1)} K line · ${e.p.shortopenConfidence} confidence</div>
+      <div class="row"><span class="price">${fmtOdds(e.odds)}</span><span class="edge">${sign}${e.evPct.toFixed(1)}% EV</span></div>
+      <div class="why">${steamNote}best price at ${bookName(e.book)} (Shortopen fair: ${e.side==='Over'?fmtOdds(e.p.fairOver):fmtOdds(e.p.fairUnder)}) — every book checked, not one favored.</div>
     </div>`;
   }).join('') || '<div class="clv-empty">Not enough data yet.</div>';
 }
@@ -2152,7 +2340,7 @@ function showToast(msg){
 
 
 document.getElementById('searchBox').addEventListener('input', rerender);
-document.getElementById('sortSel').addEventListener('change', rerender);
+document.getElementById('sortSel').addEventListener('change',()=>{headerSort={key:'',dir:-1};rerender()});document.querySelectorAll('th[data-sort-key]').forEach(th=>{const go=()=>{headerSort=headerSort.key===th.dataset.sortKey?{key:headerSort.key,dir:-headerSort.dir}:{key:th.dataset.sortKey,dir:(th.dataset.sortKey==='name'?1:-1)};document.querySelectorAll('th[data-sort-key]').forEach(z=>z.setAttribute('aria-sort',z.dataset.sortKey===headerSort.key?(headerSort.dir===1?'ascending':'descending'):'none'));rerender()};th.addEventListener('click',go);th.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
 
 /* ===================== Bet Slip ===================== */
 function pickKey(pk){ return `${pk.player}|${pk.side}|${pk.book}`; }
@@ -2305,5 +2493,134 @@ renderCLVTracker();
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
 </script>
+<style id="so-strikeout-pitcher-v3">
+.hero{position:relative;padding-right:min(53vw,760px)!important;background:radial-gradient(560px 330px at 86% 42%,rgba(0,255,136,.105),transparent 70%),linear-gradient(145deg,#06110d,#071019 64%,#06130e)!important}.so-pitcher-stage{position:absolute;right:24px;top:54px;width:530px;height:330px;border:1px solid rgba(0,255,136,.2);border-radius:18px;background:radial-gradient(260px 230px at 38% 45%,rgba(34,217,126,.10),transparent 70%),linear-gradient(155deg,rgba(7,29,21,.72),rgba(5,12,17,.86));overflow:hidden}.so-pitcher-stage:before{content:'SHORT OPEN · PITCH SEQUENCE';position:absolute;left:18px;top:15px;color:#658578;font:800 8px var(--mono);letter-spacing:.14em}.pitcher-svg{position:absolute;left:12px;top:26px;width:315px;height:305px}.pitcher-head{fill:#17231e;stroke:#0b120e;stroke-width:2}.pitcher-cap{fill:#050806;stroke:#18dd83;stroke-width:3}.pitcher-cap-brim{fill:#13d87b}.pitcher-jersey{fill:#07100c;stroke:#17db81;stroke-width:3}.pitcher-jersey-panel{fill:#0c2419}.pitcher-belt{fill:#0b1711;stroke:#17db81;stroke-width:1.5}.pitcher-leg{fill:none;stroke:#d6ded8;stroke-width:20;stroke-linecap:round}.pitcher-shoe{fill:#07100c;stroke:#17db81;stroke-width:2.5}.pitcher-arm{fill:none;stroke:#16271f;stroke-width:15;stroke-linecap:round}.pitcher-ball{fill:#f4f7f4;stroke:#c7d0d6;stroke-width:2}.ball-seam{fill:none;stroke:#e05a5a;stroke-width:1.4;stroke-linecap:round}.pitcher-glove{fill:#b87535;stroke:#7a4d22;stroke-width:3}.glove-thumb{fill:#b87535;stroke:#7a4d22;stroke-width:2.5}.glove-web{fill:none;stroke:#5c3b1c;stroke-width:1.6;stroke-linecap:round}.hat-word{fill:url(#hatGradSO);font:800 8.5px 'Inter',sans-serif;letter-spacing:.13em;paint-order:stroke;stroke:rgba(5,10,8,.4);stroke-width:.4px}.mound-grass{fill:#0d2318;opacity:.6}.pitcher-mound{fill:url(#moundGrad);stroke:rgba(0,0,0,.25);stroke-width:1.5}.mound-rubber{fill:#eef3ee;stroke:#c3cac3;stroke-width:1}.mound-word{fill:#5c3f22;font:800 10px 'Inter',sans-serif;letter-spacing:.16em;opacity:.85}.jersey-word{fill:#6ef0aa;font:900 10px var(--mono);letter-spacing:.1em}.k-tally{fill:#19e486;font:900 15px var(--mono);opacity:0;animation:kJerseyAdd 8s steps(1,end) infinite}.k2{animation-delay:.7s}.k3{animation-delay:1.4s}.k4{animation-delay:2.1s}.k5{animation-delay:2.8s}.k6{animation-delay:3.5s}.k7{animation-delay:4.2s}.k8{animation-delay:4.9s}.lift-leg{transform-origin:164px 184px;animation:legSet 5s ease-in-out infinite}.glove-group{transform-origin:248px 119px;animation:gloveSet 5s ease-in-out infinite}.k-scoreboard{position:absolute;right:17px;top:50px;width:190px}.k-score-label{color:#648174;font:800 7px var(--mono);letter-spacing:.12em}.k-score-row{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}.k-score-row span{height:47px;border:1px solid rgba(0,255,136,.2);border-radius:10px;background:#091b14;display:grid;place-items:center;color:#19e486;font:900 23px var(--mono);opacity:0;animation:kBoardAdd 8s cubic-bezier(.2,.8,.25,1) infinite}.k-score-row span:nth-child(2){animation-delay:.7s}.k-score-row span:nth-child(3){animation-delay:1.4s}.k-score-row span:nth-child(4){animation-delay:2.1s}.k-score-row span:nth-child(5){animation-delay:2.8s}.k-score-row span:nth-child(6){animation-delay:3.5s}.k-score-row span:nth-child(7){animation-delay:4.2s}.k-score-row span:nth-child(8){animation-delay:4.9s}.k-score-row .back{transform:scaleX(-1)}.k-count{margin-top:13px;padding:10px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;color:#6f857b;font:700 8px var(--mono)}.k-count b{color:#19e486;font-size:12px}@keyframes kJerseyAdd{0%,6%{opacity:0;transform:scale(.3) translateY(7px)}11%{opacity:1;transform:scale(1.22) translateY(-2px);filter:drop-shadow(0 0 7px rgba(25,228,134,.9))}18%,82%{opacity:1;transform:scale(1) translateY(0);filter:drop-shadow(0 0 2px rgba(25,228,134,.4))}92%,100%{opacity:0;transform:scale(1.28) translateY(-9px);filter:drop-shadow(0 0 0 rgba(25,228,134,0))}}@keyframes kBoardAdd{0%,8%{opacity:0;translate:0 -10px;rotate:-8deg}13%,87%{opacity:1;translate:0 0;rotate:0}100%{opacity:0;translate:0 8px}}@keyframes legSet{0%,100%{transform:rotate(0)}45%,60%{transform:rotate(-8deg) translateY(-8px)}}@keyframes gloveSet{0%,100%{transform:translate(0,0)}45%,60%{transform:translate(4px,-7px)}}
+@media(max-width:1150px){.hero{padding-right:24px!important}.so-pitcher-stage{position:relative;right:auto;top:auto;width:100%;margin-top:22px}}@media(max-width:650px){.so-pitcher-stage{height:305px}.pitcher-svg{left:-20px;transform:scale(.87);transform-origin:left top}.k-scoreboard{width:155px}.k-score-row{gap:5px}.k-score-row span{height:39px;font-size:19px}}@media(prefers-reduced-motion:reduce){.k-tally,.k-score-row span,.lift-leg,.glove-group{animation:none!important;opacity:1}}
+</style>
+<script id="so-strikeout-pitcher-script-v3">
+(function(){const hero=document.querySelector('.hero');if(!hero||hero.querySelector('.so-pitcher-stage'))return;const stage=document.createElement('div');stage.className='so-pitcher-stage';stage.innerHTML='<svg class="pitcher-svg" viewBox="0 0 310 345" aria-label="Short Open pitcher in the set position"><defs><linearGradient id="hatGradSO" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#eafff2"/><stop offset="55%" stop-color="#8ff5c0"/><stop offset="100%" stop-color="#eafff2"/></linearGradient><radialGradient id="moundGrad" cx="50%" cy="30%" r="75%"><stop offset="0%" stop-color="#c9985f"/><stop offset="55%" stop-color="#a97542"/><stop offset="100%" stop-color="#8a5c34"/></radialGradient></defs><ellipse class="mound-grass" cx="150" cy="330" rx="170" ry="20"/><ellipse class="pitcher-mound" cx="150" cy="328" rx="148" ry="15"/><text class="mound-word" x="150" y="323" text-anchor="middle">SHORTOPEN</text><rect class="mound-rubber" x="128" y="266" width="34" height="8" rx="2"/><path class="pitcher-leg" d="M136 184 Q131 224 128 258"/><ellipse class="pitcher-shoe" cx="127" cy="264" rx="17" ry="9"/><g class="lift-leg"><path class="pitcher-leg" d="M164 184 Q196 198 206 228 Q211 250 200 262"/><ellipse class="pitcher-shoe" cx="199" cy="266" rx="15" ry="9" transform="rotate(-18 199 266)"/></g><rect class="pitcher-jersey" x="110" y="86" width="80" height="100" rx="20"/><rect class="pitcher-jersey-panel" x="140" y="86" width="20" height="100" rx="10"/><rect class="pitcher-belt" x="110" y="176" width="80" height="9" rx="4"/><path class="pitcher-arm" d="M126 100 Q92 88 58 72"/><circle class="pitcher-ball" cx="53" cy="69" r="8"/><path class="ball-seam" d="M47 64 Q53 69 47 75 M59 63 Q53 69 59 76"/><circle class="pitcher-head" cx="150" cy="50" r="29"/><path class="pitcher-cap" d="M121 48 Q124 15 150 13 Q177 15 180 48 Q151 38 121 48 Z"/><path class="pitcher-cap-brim" d="M150 39 Q193 34 212 49 Q196 60 163 51 Z"/><path id="hatCurveSO" d="M126,36 Q150,19 174,36" fill="none"/><text class="hat-word" text-anchor="middle"><textPath href="#hatCurveSO" xlink:href="#hatCurveSO" startOffset="50%">SHORT OPEN</textPath></text><path class="pitcher-arm" d="M174 100 Q216 96 247 117"/><g class="glove-group"><circle class="pitcher-glove" cx="248" cy="119" r="18"/><path class="glove-web" d="M235 111 Q248 130 261 111 M234 121 Q248 108 262 121 M238 128 L258 110"/><circle class="glove-thumb" cx="233" cy="126" r="7"/></g><text class="jersey-word" x="150" y="112" text-anchor="middle">K CLUB</text>'+[[128,128,-10],[168,128,8],[125,152,-14],[172,152,12],[135,175,-8],[163,175,10]].map((p,i)=>'<g transform="rotate('+p[2]+' '+p[0]+' '+p[1]+')"><text class="k-tally k'+(i+1)+'" x="'+p[0]+'" y="'+p[1]+'" style="transform-origin:'+p[0]+'px '+p[1]+'px">'+(i%2?'ꓘ':'K')+'</text></g>').join('')+'</svg><div class="k-scoreboard"><div class="k-score-label">STRIKEOUT TALLY · LIVE SEQUENCE</div><div class="k-score-row">'+['K','K','K','K','K','K','K','K'].map((k,i)=>'<span class="'+(i%2?'back':'')+'">K</span>').join('')+'</div><div class="k-count"><span>JERSEY ROW</span><b>K / ꓘ</b></div></div>';hero.appendChild(stage);
+const arsenal=document.createElement('div');arsenal.className='so-arsenal';arsenal.innerHTML='<div class="so-arsenal-title">ARSENAL REFERENCE</div>'+['Fastball','2-Seam','Slider','Splitter','Knuckle Curve'].map(p=>'<div class="so-arsenal-tag">'+p+'</div>').join('')+'<div class="so-arsenal-note">Pitch types checked when reading K-line matchups</div>';hero.appendChild(arsenal);
+})();
+</script>
+<script id="so-strikeout-final-polish">
+(function(){
+ const stage=document.querySelector('.so-pitcher-stage'); if(!stage)return;
+ const set=(sel,attrs)=>{const el=stage.querySelector(sel);if(el)Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v))};
+ set('.mound-grass',{cy:'286'});set('.pitcher-mound',{cy:'284'});set('.mound-word',{y:'288'});set('.mound-rubber',{y:'271'});
+ stage.querySelectorAll('.k-tally').forEach(el=>el.closest('g').style.display='none');
+ const jersey=stage.querySelector('.jersey-word');
+ if(jersey){jersey.setAttribute('y','104');jersey.textContent='K CLUB';jersey.insertAdjacentHTML('afterend','<text class="gauge-label" x="150" y="118" text-anchor="middle">TOP CALL FAIR %</text><g><circle class="gauge-track" cx="150" cy="147" r="21"/><circle class="gauge-fill" cx="150" cy="147" r="21" transform="rotate(-90 150 147)"/><circle class="gauge-ring-flash" cx="150" cy="147" r="25"/><text class="gauge-pct" x="150" y="151">0%</text><text class="gauge-k" x="150" y="157">K</text></g><text class="gauge-name" x="150" y="172" text-anchor="middle">—</text>')}
+ const count=stage.querySelector('.k-count');
+ if(count){count.querySelector('span').textContent='STRIKEOUT ROW';count.insertAdjacentHTML('afterend','<div class="ou-sequence"><span id="ouFeedLabel">TOP SHORTOPEN CALLS · REAL DATA</span><div class="ou-numbers"><div class="ou-box lean" id="ouOverBox"><b class="ou-figure" id="ouOverNum">—</b><span>OVER</span></div><div class="ou-vs">vs</div><div class="ou-box" id="ouUnderBox"><b class="ou-figure" id="ouUnderNum">—</b><span>UNDER</span></div></div><div class="ou-split"><i id="ouSplitBar" style="width:50%"></i></div><small id="ouFeedSub">Fair probability, best current price — not a live line</small></div>')}
+
+ // Pull real picks off PROPS_DATA (already processed by rerender() earlier in
+ // the page) instead of decorating the hero with fabricated/random numbers.
+ // Ranked by EV% on the Shortopen Call so the figure always reflects an
+ // actual computed read, not a flourish.
+ function realPicks(){
+   if(typeof PROPS_DATA==='undefined') return [];
+   return PROPS_DATA.filter(p=>p.shortopenCall && p.shortopenConfidence!=='Low')
+     .map(p=>({
+       name:p.name,
+       side:p.shortopenCall.side,
+       prob: p.shortopenCall.side==='Over' ? p.fairOverProb : p.fairUnderProb,
+       evPct: p.shortopenCall.evPct
+     }))
+     .filter(x=>x.prob!=null)
+     .sort((a,b)=>b.evPct-a.evPct);
+ }
+
+ function animateCountUp(el,from,to,ms){
+   if(!el)return;
+   const start=performance.now();
+   function step(now){
+     const t=Math.min(1,(now-start)/ms);
+     const eased=1-Math.pow(1-t,3);
+     const val=Math.round(from+(to-from)*eased);
+     el.textContent=val+'%';
+     if(t<1)requestAnimationFrame(step);
+   }
+   requestAnimationFrame(step);
+ }
+
+ let feedIdx=0;
+ function tickFeed(){
+   const picks=realPicks();
+   const pctEl=stage.querySelector('.gauge-pct'),nameEl=stage.querySelector('.gauge-name');
+   const overBox=stage.querySelector('#ouOverBox'),underBox=stage.querySelector('#ouUnderBox'),overNum=stage.querySelector('#ouOverNum'),underNum=stage.querySelector('#ouUnderNum'),split=stage.querySelector('#ouSplitBar');
+   if(!picks.length){ if(pctEl)pctEl.textContent='—'; if(nameEl)nameEl.textContent='No qualifying calls yet'; return; }
+   const top=picks[0];
+   const topPct=Math.round(top.prob*100);
+   animateCountUp(pctEl,0,topPct,1200);
+   if(nameEl)nameEl.textContent=top.name.split(' ').pop()+' · '+top.side;
+
+   // Cycle through the next few real picks for the OU feed so it still
+   // feels "live" without inventing any numbers.
+   const cyclePicks=picks.slice(0,Math.min(6,picks.length));
+   const pick=cyclePicks[feedIdx%cyclePicks.length];
+   feedIdx++;
+   const over = pick.side==='Over' ? Math.round(pick.prob*100) : 100-Math.round(pick.prob*100);
+   const under = 100-over;
+   if(!overNum||!underNum)return;
+   const wasOver=parseInt(overNum.textContent)||over,dir=over>wasOver?'flash-up':over<wasOver?'flash-dn':'';
+   overNum.textContent=over+'%';underNum.textContent=under+'%';
+   const feedLabel=stage.querySelector('#ouFeedSub'); if(feedLabel)feedLabel.textContent=pick.name+' · fair '+(pick.side==='Over'?'Over':'Under')+' probability';
+   if(split)split.style.width=over+'%';
+   if(overBox)overBox.classList.toggle('lean',over>=under);
+   if(underBox)underBox.classList.toggle('lean',under>over);
+   if(dir){overNum.classList.remove('flash-up','flash-dn');void overNum.offsetWidth;overNum.classList.add(dir);underNum.classList.remove('flash-up','flash-dn');void underNum.offsetWidth;underNum.classList.add(dir==='flash-up'?'flash-dn':'flash-up')}
+ }
+ tickFeed();
+ if(!matchMedia('(prefers-reduced-motion: reduce)').matches)setInterval(tickFeed,6200);
+})();
+</script>
+<style id="so-strikeout-mobile-consolidated-20260822">
+@media(max-width:700px){
+ html,body{width:100%!important;max-width:100%!important;overflow-x:hidden!important}.board{width:100%!important;max-width:100%!important;padding:10px!important}
+ .table-frame,.table-scroll{width:100%!important;max-width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}.table-scroll table{width:max-content!important;min-width:1240px!important;table-layout:fixed!important}
+ .clv-grid{grid-template-columns:minmax(0,1fr)!important}.clv-wrap{overflow:hidden!important}
+ /* Per-player sparkline chart (open->consensus line movement) in the sticky-2
+    column was being squeezed to 96px by an earlier @media(max-width:700px)
+    block (line ~471), which won cascade over an even-earlier 112px rule (same
+    specificity, later source order). At 96px the 30x14 sparkline SVG, the
+    consensus-line number, the movement label, and both best-odds pills were
+    all stacked/wrapped into a column narrower than the sparkline's own natural
+    reading width. Widened the column and enlarged the sparkline + labels here
+    (last block in file, wins cascade) so the chart is actually legible. */
+ .table-scroll th.sticky-2,.table-scroll td.sticky-2{min-width:136px!important;width:136px!important;max-width:136px!important;padding:8px 8px 8px 10px!important;white-space:normal!important}
+ .table-scroll td.sticky-2 .cline{font-size:14.5px!important;font-weight:700!important;display:inline-block!important}
+ .table-scroll td.sticky-2 .spark-wrap{flex-wrap:nowrap!important;gap:6px!important;margin-top:6px!important}
+ .table-scroll td.sticky-2 .spark-wrap svg{width:44px!important;height:21px!important;flex:0 0 auto!important}
+ .table-scroll td.sticky-2 .spark-lbl{font-size:10.5px!important;white-space:nowrap!important}
+ .table-scroll td.sticky-2 .best-pill{font-size:10px!important;line-height:1.4!important;display:block!important;margin-top:4px!important;white-space:normal!important;word-break:break-word!important}
+ .bb-grid{display:flex!important;grid-template-columns:none!important;overflow-x:auto!important;overflow-y:hidden!important;flex-wrap:nowrap!important;gap:10px!important;scroll-snap-type:x proximity!important;padding-bottom:4px!important;-webkit-overflow-scrolling:touch!important}
+ .bb-card{flex:0 0 78%!important;max-width:300px!important;scroll-snap-align:start!important}
+ /* The pitcher-figure frame was sized/scaled by several stacked mobile blocks
+    earlier in this file (all width/height on .so-pitcher-stage + .pitcher-svg),
+    but none of them accounted for the SVG's real aspect ratio (viewBox 310x345).
+    Net effect: the 270px-tall frame clipped ~35px off the bottom of a 305px-tall
+    figure (legs/mound cut off), while the figure itself only filled ~85% of the
+    frame's width with dead margin on both sides. Re-sized here (last block in
+    the file, wins cascade) to the correct 310:345 aspect, filling the frame
+    edge-to-edge like the "tightest spread" stat-row above it, with the whole
+    figure visible instead of cropped. */
+ .so-pitcher-stage{width:100%!important;height:366px!important;margin-top:16px!important;overflow:hidden!important;border-radius:16px!important}
+ .pitcher-svg{position:absolute!important;left:50%!important;top:12px!important;width:312px!important;height:347px!important;transform:translateX(-50%)!important;transform-origin:center top!important}
+}
+</style>
+<style id="so-strikeout-mobile-quality-20260824">
+@media(max-width:700px){
+ .table-scroll table{min-width:970px!important;font-size:9px!important}.table-scroll th,.table-scroll td{padding:7px 4px!important}
+ .table-scroll th.sticky-1,.table-scroll td.sticky-1{min-width:104px!important;width:104px!important;max-width:104px!important;padding-left:7px!important;padding-right:5px!important}
+ .table-scroll th.sticky-2,.table-scroll td.sticky-2{min-width:116px!important;width:116px!important;max-width:116px!important;padding:7px 5px!important}.table-scroll td.sticky-2 .cline{font-size:13px!important}.table-scroll td.sticky-2 .spark-wrap svg{width:36px!important;height:18px!important}.table-scroll td.sticky-2 .spark-lbl{font-size:9px!important}.table-scroll td.sticky-2 .best-pill{font-size:8.5px!important}
+ .player-name{font-size:9.5px!important}.player-sub{font-size:7px!important}.bb-card{flex-basis:min(76vw,280px)!important;padding:13px!important}.bb-card h3,.best-bet h3{font-size:1rem!important}.bb-card p,.best-bet p{font-size:.7rem!important;line-height:1.45!important}.stat-cell{flex-basis:min(42vw,150px)!important;padding:10px!important}
+ .so-pitcher-stage{height:326px!important}.pitcher-svg{top:6px!important;width:288px!important;height:321px!important}.k-scoreboard{display:none!important}.slip-fab{right:12px!important;bottom:max(12px,env(safe-area-inset-bottom))!important;padding:11px 17px!important;font-size:12px!important}.legend{padding-bottom:5px!important;overscroll-behavior-x:contain!important}
+}
+</style>
+<style id="so-strikeout-mobile-hero-frame-20260824">@media(max-width:700px){html body .hero .so-pitcher-stage{width:100%!important;height:261px!important;margin-top:14px!important}html body .hero .so-pitcher-stage .pitcher-svg{left:50%!important;top:4px!important;width:230px!important;height:257px!important;transform:translateX(-50%)!important;transform-origin:center top!important}}</style>
+<style id="so-strikeout-mobile-hero-frame-final-20260824">
+@media(max-width:700px){html body .hero .so-pitcher-stage{height:196px!important;margin-top:12px!important}html body .hero .so-pitcher-stage .pitcher-svg{left:50%!important;top:3px!important;width:161px!important;height:180px!important;transform:translateX(-50%)!important;transform-origin:center top!important}}
+</style>
+<footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>© 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call 1-800-GAMBLER.</p></footer>
 </body>
 </html>
