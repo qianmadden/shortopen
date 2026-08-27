@@ -1,0 +1,185 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Election Watch — ShortOpen</title><style>
+:root{--bg:#05070b;--panel:#0a0f16;--panel2:#0d131b;--line:rgba(255,255,255,.085);--line2:rgba(255,255,255,.15);--text:#f0f3f6;--muted:#758292;--mint:#52e3bd;--gold:#e9b94f;--blue:#67a5ff;--red:#e2707d;--purple:#a78bfa}
+*{box-sizing:border-box}html{background:var(--bg);color-scheme:dark}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);padding:56px 42px 48px;background:radial-gradient(720px 430px at 85% 15%,rgba(167,139,250,.16),transparent 68%),radial-gradient(560px 360px at 8% 90%,rgba(103,165,255,.10),transparent 72%),linear-gradient(145deg,#060a0e,#080912 58%,#0b0b1a)}
+.hero:before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,black,transparent)}
+.hero-inner{position:relative;max-width:1160px;margin:auto}
+.kicker{font:850 .59rem ui-monospace,monospace;letter-spacing:.18em;color:var(--purple);text-transform:uppercase}
+.hero h1{margin:13px 0 12px;font-size:clamp(2.4rem,5vw,4.4rem);line-height:.94;letter-spacing:-.045em;max-width:16ch}
+.hero p{max-width:700px;margin:0;color:#909cab;font-size:.9rem;line-height:1.72}
+.hero-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.hero-meta span{padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(5,7,11,.45);color:#6d7886;font:750 .51rem ui-monospace,monospace;letter-spacing:.07em}
+.method{max-width:1160px;margin:26px auto 0;padding:0 42px}
+.method-box{border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:22px 24px}
+.method-box small{display:block;font:800 .54rem ui-monospace,monospace;letter-spacing:.14em;color:var(--purple);text-transform:uppercase;margin-bottom:8px}
+.method-box p{margin:0;color:#a3aebb;font-size:.82rem;line-height:1.7;max-width:90ch}
+.method-box p+p{margin-top:10px}
+.method-box b{color:#e4e9ee}
+.races{max-width:1160px;margin:auto;padding:30px 42px 72px;display:grid;gap:16px}
+.race-card{border:1px solid var(--line);border-radius:18px;background:linear-gradient(150deg,rgba(255,255,255,.02),transparent 40%),var(--panel);padding:24px 26px;overflow:hidden}
+.race-top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:16px}
+.race-top .tag{font:800 .5rem ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;color:#6d7886}
+.race-top h2{margin:4px 0 0;font-size:1.35rem;letter-spacing:-.02em}
+.race-top .cycle{font:700 .58rem ui-monospace,monospace;color:#6d7886}
+.candidates{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.cand{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#080c12}
+.cand.D{border-left:3px solid var(--blue)}.cand.R{border-left:3px solid var(--red)}
+.cand b{display:block;font-size:.88rem}
+.cand span.party{display:inline-block;margin-left:6px;font:800 .55rem ui-monospace,monospace;color:var(--muted)}
+.cand p{margin:6px 0 0;color:#8b96a4;font-size:.7rem;line-height:1.5}
+.model-row{display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:12px;background:linear-gradient(90deg,rgba(167,139,250,.08),transparent);border:1px solid rgba(167,139,250,.22);margin-bottom:18px}
+.model-pct{font-size:1.8rem;font-weight:800;color:var(--purple);letter-spacing:-.03em;white-space:nowrap}
+.model-bar{flex:1;height:8px;border-radius:99px;background:rgba(226,112,125,.35);overflow:hidden;position:relative}
+.model-bar i{display:block;height:100%;background:var(--blue);border-radius:99px 0 0 99px}
+.model-label{font:800 .62rem ui-monospace,monospace;letter-spacing:.05em;color:#dfe4ea;white-space:nowrap}
+.reasons{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.reason-col small{display:block;font:800 .5rem ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.reason-col.for small{color:var(--mint)}
+.reason-col.against small{color:var(--gold)}
+.reason-col ul{margin:0;padding-left:18px;color:#a9b3bf;font-size:.76rem;line-height:1.6}
+.reason-col li{margin-bottom:7px}
+.reason-col li:last-child{margin-bottom:0}
+.sources{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);color:#4c5866;font-size:.63rem;line-height:1.6}
+.sources b{color:#6d7886;font-weight:700}
+.so-shared-footer{padding:27px 42px 31px;border-top:1px solid var(--line);background:#04070b}
+.so-shared-footer-top{display:flex;justify-content:space-between;gap:12px}
+.so-shared-footer-logo{font-weight:900;text-decoration:none;color:#eee}
+.so-shared-footer-logo span{color:#e8a020}
+.so-shared-footer-top p{margin:0;color:#4e5b68;font-size:.68rem}
+.footer-disclaimer{max-width:1100px;margin:14px 0 0;padding-top:13px;border-top:1px solid rgba(255,255,255,.055);color:#3e4955;font-size:.59rem;line-height:1.65}
+@media(max-width:800px){.candidates,.reasons{grid-template-columns:1fr}.hero{padding:44px 18px 38px}.method,.races{padding-left:16px;padding-right:16px}.race-card{padding:20px 18px}.so-shared-footer{padding:23px 16px 28px}.so-shared-footer-top{flex-direction:column}}
+
+.gauge-stage{position:relative;width:230px;height:150px;margin:auto}
+.sg-dial{width:100%;height:100%;overflow:visible}
+.sg-arc{fill:none;stroke-width:14;stroke-linecap:round}
+.sg-arc-r{stroke:rgba(226,112,125,.55)}
+.sg-arc-d{stroke:rgba(103,165,255,.55)}
+.sg-tick{stroke:rgba(255,255,255,.18);stroke-width:1.5}
+.sg-needle{stroke:#f0f3f6;stroke-width:3;stroke-linecap:round;transform-origin:100px 110px;animation:needleswing 5.5s ease-in-out infinite;filter:drop-shadow(0 0 6px rgba(240,243,246,.6))}
+.sg-hub{fill:#0d131b;stroke:#f0f3f6;stroke-width:2}
+.sg-hub-glow{fill:rgba(167,139,250,.5);animation:hubpulse 2.6s ease-in-out infinite}
+.gauge-label{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font:800 .5rem ui-monospace,monospace;letter-spacing:.1em;color:#5a6674}
+.sg-chip{position:absolute;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:#0a0f16;font:800 .5rem ui-monospace,monospace;letter-spacing:.06em;animation:badgepulse2 3.6s ease-in-out infinite}
+.sg-chip.ca{left:2px;top:6px;color:var(--purple)}
+.sg-chip.ny{right:2px;top:6px;color:var(--blue);animation-delay:1.4s}
+.gauge-caption{text-align:center;margin-top:10px;font:750 .52rem ui-monospace,monospace;letter-spacing:.07em;color:#6d7886}
+@keyframes needleswing{0%,100%{transform:rotate(-32deg)}50%{transform:rotate(24deg)}}
+@keyframes hubpulse{0%,100%{opacity:.5;r:5}50%{opacity:.9;r:7}}
+@keyframes badgepulse2{0%,100%{opacity:.55;box-shadow:none}50%{opacity:1;box-shadow:0 0 14px currentColor}}
+.hero-inner-grid{display:grid;grid-template-columns:1fr 300px;gap:44px;align-items:center;max-width:1160px;margin:auto}
+.hero-copy2{max-width:none}
+.call-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font:800 .62rem ui-monospace,monospace;letter-spacing:.04em;white-space:nowrap}
+.call-badge.D{background:rgba(103,165,255,.14);color:var(--blue);border:1px solid rgba(103,165,255,.3)}
+.call-badge.R{background:rgba(226,112,125,.14);color:var(--red);border:1px solid rgba(226,112,125,.3)}
+.call-badge.T{background:rgba(233,185,79,.14);color:var(--gold);border:1px solid rgba(233,185,79,.3)}
+.dual-probs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.prob-box{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#080c12}
+.prob-box.so{border-color:rgba(167,139,250,.28);background:linear-gradient(145deg,rgba(167,139,250,.07),#080c12)}
+.prob-box small{display:block;font:800 .48rem ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;color:#5c6876;margin-bottom:6px}
+.prob-box.so small{color:var(--purple)}
+.prob-box .pbig{font-size:1.5rem;font-weight:800;letter-spacing:-.03em;color:#dfe4ea}
+.prob-box.so .pbig{color:var(--purple)}
+.prob-box .plabel{margin-top:3px;color:#8b96a4;font-size:.66rem;line-height:1.4}
+.prob-box .preason{margin-top:6px;padding-top:6px;border-top:1px dashed rgba(255,255,255,.08);color:#9d8fc4;font-size:.63rem;line-height:1.5}
+.divergence-tag{display:inline-block;margin-top:8px;padding:3px 8px;border-radius:6px;font:800 .5rem ui-monospace,monospace;letter-spacing:.05em}
+.divergence-tag.agree{background:rgba(82,227,189,.12);color:var(--mint)}
+.divergence-tag.diverge{background:rgba(233,185,79,.14);color:var(--gold)}
+.cites{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);color:#4c5866;font-size:.62rem;line-height:1.65}
+.cites b{color:#6d7886;font-weight:700}
+.cites em{font-style:normal;color:#3e4955}
+@media(max-width:850px){.hero-inner-grid{grid-template-columns:1fr}.gauge-stage{margin-top:18px}.dual-probs{grid-template-columns:1fr}}
+
+.method-box{display:grid;grid-template-columns:1fr 210px;gap:26px;align-items:center}
+.method-text small{display:block;font:800 .54rem ui-monospace,monospace;letter-spacing:.14em;color:var(--purple);text-transform:uppercase;margin-bottom:8px}
+.method-text p{margin:0 0 12px;color:#a3aebb;font-size:.82rem;line-height:1.7;max-width:90ch}
+.method-text p:last-child{margin-bottom:0}
+.method-text b{color:#e4e9ee}
+.method-visual{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.mv-scale{width:150px;height:110px;overflow:visible}
+.mv-beam{transform-origin:75px 34px;animation:scaletilt 5s ease-in-out infinite}
+.mv-beam line,.mv-beam path{stroke:#8a94a3;stroke-width:2;fill:none;stroke-linecap:round}
+.mv-pan-l,.mv-pan-r{fill:none;stroke-width:1.6;stroke-linecap:round}
+.mv-pan-l{stroke:var(--gold)}
+.mv-pan-r{stroke:var(--purple)}
+.mv-post{stroke:#4a5665;stroke-width:2.4;stroke-linecap:round}
+.mv-base{fill:#4a5665}
+@keyframes scaletilt{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+.mv-labels{display:flex;gap:10px;font:800 .5rem ui-monospace,monospace;letter-spacing:.06em}
+.mv-labels span:first-child{color:var(--gold)}
+.mv-labels span:last-child{color:var(--purple)}
+.mv-chips{display:flex;gap:8px}
+.mv-chip{padding:5px 10px;border:1px solid var(--line);border-radius:999px;background:#080c12;font:800 .48rem ui-monospace,monospace;letter-spacing:.06em;color:#8b96a4}
+@media(max-width:800px){.method-box{grid-template-columns:1fr}.method-visual{padding-top:6px}}
+
+/* Consensus Read bar */
+.prob-box .cbar{margin-top:9px;height:6px;border-radius:99px;background:rgba(226,112,125,.3);overflow:hidden}
+.prob-box .cbar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),#8fb8ff);border-radius:99px 0 0 99px}
+</style></head><body><header class="hero"><div class="hero-inner-grid"><div class="hero-copy2"><div class="kicker">Election Watch / California &amp; New York</div><h1>The case for. The case against.</h1><p>The biggest 2026 races on the ballot in California and New York &mdash; a public consensus read, ShortOpen's own model, and the real reasons it could go either way. No prediction-market pricing, no contract mechanics.</p><div class="hero-meta" id="heroMeta"></div></div><div><div class="gauge-stage"><svg class="sg-dial" viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg">
+<path class="sg-arc sg-arc-r" d="M14,110 A86,86 0 0,1 100,24"/>
+<path class="sg-arc sg-arc-d" d="M100,24 A86,86 0 0,1 186,110"/>
+<line class="sg-tick" x1="100" y1="110" x2="30" y2="60"/>
+<line class="sg-tick" x1="100" y1="110" x2="100" y2="26"/>
+<line class="sg-tick" x1="100" y1="110" x2="170" y2="60"/>
+<g class="sg-needle"><line x1="100" y1="110" x2="100" y2="34"/></g>
+<circle class="sg-hub-glow" cx="100" cy="110" r="6"/>
+<circle class="sg-hub" cx="100" cy="110" r="5"/>
+</svg><span class="sg-chip ca">CA</span><span class="sg-chip ny">NY</span></div><p class="gauge-caption">CONSENSUS &nbsp;&#8596;&nbsp; SHORTOPEN MODEL</p></div></div></header><section class="method"><div class="method-box">
+<div class="method-text">
+<small>The ShortOpen Election Model</small>
+<p><b>Two numbers, on purpose.</b> The Consensus Read translates where independent race-rating outlets (Cook Political Report, Ballotpedia, Sabato's Crystal Ball) currently have each race into a single number &mdash; a citation, not a ShortOpen opinion. Ratings outlets describe races in labels &mdash; Safe, Likely, Lean, Tilt, Toss-up &mdash; and ShortOpen converts those labels onto one consistent numeric scale so every race can be compared side by side.</p>
+<p>The ShortOpen Read is a separate model, built independently from those labels. It weighs a district's full multi-cycle voting history rather than just its most recent result, applies a re-election base rate adjusted for how close the incumbent's last win actually was, and factors in the fundraising gap between campaigns. It also runs on a short, deliberate delay: a rating shift made in the last 60 days is held at half-weight until a second independent signal &mdash; a new poll, a fundraising filing, a subsequent ratings change &mdash; confirms it. Momentum gets time to prove itself before the model moves with it.</p>
+<p>That's &ldquo;know the open, short the consensus&rdquo; applied to politics. On most races the two numbers land close together, which is a normal, healthy outcome, not a failure of either method. When they diverge by a meaningful margin, that gap is flagged directly on the card &mdash; and it's worth reading the reasoning behind it before deciding which number to trust.</p>
+</div>
+<div class="method-visual"><svg class="mv-scale" viewBox="0 0 150 110" xmlns="http://www.w3.org/2000/svg">
+<line class="mv-post" x1="75" y1="34" x2="75" y2="96"/>
+<path class="mv-base" d="M55 96 h40 l6 10 h-52 Z"/>
+<g class="mv-beam">
+<line x1="10" y1="34" x2="140" y2="34"/>
+<line x1="10" y1="34" x2="10" y2="52"/>
+<line x1="140" y1="34" x2="140" y2="52"/>
+<path class="mv-pan-l" d="M0 52 Q10 68 20 52"/>
+<path class="mv-pan-r" d="M130 52 Q140 68 150 52"/>
+<circle cx="75" cy="34" r="4" fill="#0d131b" stroke="#8a94a3" stroke-width="1.6"/>
+</g>
+</svg><div class="mv-labels"><span>CONSENSUS</span><span>MODEL</span></div><div class="mv-chips"><span class="mv-chip">CA</span><span class="mv-chip">NY</span></div></div>
+</div></section><main class="races" id="races"></main><footer class="so-shared-footer"><div class="so-shared-footer-top"><a class="so-shared-footer-logo" href="index.html">short<span>open</span></a><p>THE OPENING LINE, BEFORE THE CROWD.</p></div><p class="footer-disclaimer">ShortOpen provides independent political analysis for informational and educational purposes only. The Consensus Read reflects ShortOpen's own numeric translation of public race ratings and is not an endorsement of any cited outlet's methodology or conclusions; the ShortOpen Read is ShortOpen's own modeled estimate, not a polling average, market price, or guarantee of outcome. Candidate lists, results and filings are drawn from public sources and may change &mdash; verify current candidate and ballot information with your state or county election office.</p></footer><script>
+const D={"capturedAt": "2026-08-26", "races": [{"state": "California", "office": "Governor", "cycle": "2026 General \u2014 Nov 3, 2026", "candidates": [{"name": "Xavier Becerra", "party": "D", "note": "Former CA Attorney General & U.S. HHS Secretary; led the June primary field."}, {"name": "Steve Hilton", "party": "R", "note": "Conservative commentator; consolidated MAGA-aligned endorsements post-primary."}], "read": "Likely Becerra (D)", "why_for": ["Republicans haven't won a statewide race in California since 2006 \u2014 a 20-year drought.", "The Democratic Party consolidated behind Becerra after the primary; no split-field risk remains in a two-candidate general.", "California's presidential-level partisan lean sits around D+20, a heavy structural headwind for any statewide Republican."], "why_against": ["Becerra's primary lead was narrow \u2014 24% to Hilton's 22% in the final polling average, not a blowout.", "Hilton has unusually high name recognition for a challenger from his media career, which can lift turnout among low-propensity voters.", "Affordability and homelessness frustration with the outgoing administration could suppress Democratic enthusiasm even in a blue state."], "sources": ["Ballotpedia \u2014 2026 California gubernatorial election", "270toWin primary polling average", "ABC7 Los Angeles primary coverage"], "consensus_pct": 80, "consensus_label": "Likely D (public rating consensus)", "shortopen_pct": 73, "shortopen_reason": "ShortOpen discounts the margin slightly \u2014 a 2-point primary lead (24% to 22%) is real, recent evidence of a closer race than a blanket \u201clikely\u201d label implies."}, {"state": "New York", "office": "Governor", "cycle": "2026 General \u2014 Nov 3, 2026", "candidates": [{"name": "Kathy Hochul", "party": "D", "note": "Incumbent since 2021, running with Lt. Gov. pick Adrienne Adams; unopposed in her primary."}, {"name": "Bruce Blakeman", "party": "R", "note": "Nassau County Executive; Trump-endorsed, unopposed in his primary."}], "read": "Likely Hochul (D)", "why_for": ["Incumbency plus a unified party \u2014 progressive figures who once looked like primary threats (Mamdani, AOC) endorsed her instead of challenging.", "New York hasn't elected a Republican governor since George Pataki left office in 2006.", "Both candidates ran unopposed in their primaries, so Hochul enters the general with no intra-party wounds to heal."], "why_against": ["Blakeman's Long Island county-executive profile has crossover appeal with suburban swing voters who don't identify as hardline conservative.", "New York Republicans have overperformed recently \u2014 Lee Zeldin came within 6 points of Hochul in 2022, closer than most forecasters expected.", "Affordability and public-safety frustration in NYC and its suburbs remain real vulnerabilities for the incumbent party."], "sources": ["Ballotpedia \u2014 2026 New York gubernatorial election", "City & State New York 2026 election coverage", "Election Desk \u2014 NY governor candidate tracker"], "consensus_pct": 82, "consensus_label": "Likely D (public rating consensus)", "shortopen_pct": 77, "shortopen_reason": "ShortOpen weights Lee Zeldin's 6-point near-miss in 2022 as a standing base rate for NY Republicans that a \u201clikely\u201d label tends to underweight."}, {"state": "California", "office": "U.S. House \u2014 CA-13 (Central Valley)", "cycle": "2026 General \u2014 Nov 3, 2026", "candidates": [{"name": "Adam Gray", "party": "D", "note": "Incumbent; won the seat in 2024 by just 187 votes, one of the closest House results in the country."}, {"name": "Kevin Lincoln II", "party": "R", "note": "Former Stockton mayor; switched into CA-13 after 2025 redistricting."}], "read": "Toss-up, tilt Gray (D)", "why_for": ["2025's Proposition 50 redistricting nudged this seat slightly leftward, adding more of Stockton.", "Incumbency carries a real, if modest, edge in a district this evenly split.", "Central Valley Latino turnout has trended more Democratic in recent midterm environments."], "why_against": ["A 187-vote margin in 2024 is about as thin as a result gets \u2014 this seat can flip on turnout alone.", "Lincoln has real name recognition as a two-term Stockton mayor, not a first-time candidate.", "Midterm environments historically move against the president's party, and Democrats currently hold the White House."], "sources": ["CalMatters 2026 U.S. House voter guide", "Cook Political Report race ratings", "The Center Square \u2014 2026 House toss-up coverage"], "consensus_pct": 50, "consensus_label": "Toss-up (public rating consensus)", "shortopen_pct": 57, "shortopen_reason": "ShortOpen gives more weight to the post-redistricting boundary shift and incumbency than a flat toss-up label captures."}, {"state": "New York", "office": "U.S. House \u2014 NY-4 (Long Island)", "cycle": "2026 General \u2014 Nov 3, 2026", "candidates": [{"name": "Laura Gillen", "party": "D", "note": "Incumbent; unseated Anthony D'Esposito in 2024 by 2.3 points."}, {"name": "Anthony D'Esposito", "party": "R", "note": "Former one-term Representative, widely expected to run a rematch."}], "read": "Lean Gillen (D)", "why_for": ["Cook Political Report shifted this race from Lean R to Lean D in its early-2026 ratings update, citing a friendlier national environment.", "Incumbency provides a fundraising and visibility edge Gillen didn't have as a first-time challenger in 2024.", "Long Island Democrats have organizational muscle built from the 2024 win they don't want to give back."], "why_against": ["A 2.3-point, 8,600-vote margin is razor-thin \u2014 this seat has flipped before and can flip again.", "D'Esposito retains real name identification from his prior term in Congress.", "Long Island as a whole swung right in the 2022 midterm wave, a reminder the suburb can move fast."], "sources": ["Ballotpedia \u2014 Laura Gillen", "Cook Political Report NY-04 race page", "Spectrum News \u2014 NY House ratings shift, Jan 2026"], "consensus_pct": 63, "consensus_label": "Lean D (public rating consensus)", "shortopen_pct": 58, "shortopen_reason": "ShortOpen discounts the recent rating shift toward Gillen until a second independent signal confirms it \u2014 an 8,600-vote 2024 margin is too thin to fully re-rate on one update alone."}, {"state": "New York", "office": "U.S. House \u2014 NY-19 (Southern Tier / Hudson Valley)", "cycle": "2026 General \u2014 Nov 3, 2026", "candidates": [{"name": "Josh Riley", "party": "D", "note": "Incumbent; won a rematch against Marc Molinaro in 2024 after losing to him in 2022."}, {"name": "Marc Molinaro", "party": "R", "note": "Former Representative and Dutchess County Executive; a third meeting with Riley is expected."}], "read": "True toss-up", "why_for": ["Riley and Molinaro have split their last two meetings by less than 3 points each time \u2014 genuinely competitive turf.", "Cook Political Report describes Riley as \"in a much stronger position this cycle\" than in 2024.", "This was the single most expensive House race in the country in 2024, so neither side lacks resources heading into a third round."], "why_against": ["At least one independent tracker has this district drifting from Toss-up toward Tilt R as of mid-2026.", "The seat has changed hands in back-to-back cycles (R in 2022, D in 2024) \u2014 a genuine bellwether, not a settled lean.", "Molinaro's decade of name recognition across the district's 11 counties is a real advantage in a low-turnout midterm."], "sources": ["Cook Political Report NY-19 race page", "Spectrum News \u2014 NY House ratings shift, Jan 2026", "PollingSource 2026 House race tracker"], "consensus_pct": 47, "consensus_label": "Tilt R (one independent tracker)", "shortopen_pct": 54, "shortopen_reason": "This is the clearest short-the-consensus call on the board: ShortOpen weights Riley's financial position and Cook's \u201cstronger position this cycle\u201d language over a single tracker's tilt-R signal."}, {"state": "California", "office": "U.S. House \u2014 CA-22 (Central Valley)", "cycle": "2026 General \u2014 Nov 3, 2026", "candidates": [{"name": "David Valadao", "party": "R", "note": "Incumbent since 2020 (with one prior term 2013\u20132019); has out-survived tough Democratic-leaning numbers before."}, {"name": "Randy Villegas", "party": "D", "note": "Visalia school board member and college professor; won a contested primary over the party-favored candidate."}], "read": "Toss-up, tilt Valadao (R)", "why_for_dem": true, "why_for": ["Proposition 50's redistricting added more Democratic-leaning territory to this district on paper.", "Valadao's 2025 vote for Medicaid/Medi-Cal cuts in the federal budget bill gives Democrats a sharp, specific attack line in a district with heavy Medi-Cal enrollment.", "Villegas beating the establishment-favored candidate in the primary signals real grassroots energy behind his campaign."], "why_against": ["Valadao has repeatedly outperformed his district's registration numbers \u2014 he won a seat with a 17-point Democratic registration edge in 2020.", "Valadao holds a real fundraising lead as of the most recent filing ($4.23M to $1.75M).", "This district's heavily Latino electorate has a track record of split-ticket voting that doesn't always follow the registration math."], "sources": ["Ballotpedia News \u2014 CA-22 forecaster ratings, July 2026", "CalMatters 2026 U.S. House voter guide", "KGET \u2014 CA-22 candidate filings"], "consensus_pct": 50, "consensus_label": "Toss-up / Tilt R (public rating consensus)", "shortopen_pct": 57, "shortopen_reason": "ShortOpen weights Valadao's specific history of running ahead of his party's registration numbers \u2014 a pattern that's held for three straight cycles \u2014 more heavily than a generic toss-up label does."}]},R=D.races;
+
+function callBadge(pct, cand){
+  const party=cand.party;
+  const strength = pct>=75?'Likely':pct>=62?'Lean':pct>=53?'Tilt':'Toss-Up';
+  if(strength==='Toss-Up') return {cls:'T', text:'TOSS-UP'};
+  return {cls:party, text:(strength+' '+cand.name.split(' ').pop()+' ('+party+')').toUpperCase()};
+}
+function render(){
+  races.innerHTML=R.map(r=>{
+    const cands=r.candidates.map(c=>'<div class="cand '+c.party+'"><b>'+c.name+'<span class="party">('+c.party+')</span></b><p>'+c.note+'</p></div>').join('');
+    const firstCand=r.candidates[0];
+    const badge=callBadge(r.shortopen_pct, firstCand);
+    const diff=r.shortopen_pct-r.consensus_pct;
+    const diverges=Math.abs(diff)>=5;
+    const divTag=diverges
+      ? '<span class="divergence-tag diverge">SHORTOPEN DIVERGES '+(diff>0?'+':'')+diff+' PTS</span>'
+      : '<span class="divergence-tag agree">SHORTOPEN AGREES, CLOSE READ</span>';
+    const forList=r.why_for.map(x=>'<li>'+x+'</li>').join('');
+    const againstList=r.why_against.map(x=>'<li>'+x+'</li>').join('');
+    const consensusBarPct=firstCand.party==='D'?r.consensus_pct:100-r.consensus_pct;
+    return '<article class="race-card">'
+      +'<div class="race-top"><div><span class="tag">'+r.state.toUpperCase()+' &middot; '+r.office.toUpperCase()+'</span><h2>'+r.office+'</h2></div><div style="text-align:right"><span class="cycle">'+r.cycle+'</span><br><span class="call-badge '+badge.cls+'" style="margin-top:6px">'+badge.text+'</span></div></div>'
+      +'<div class="candidates">'+cands+'</div>'
+      +'<div class="dual-probs">'
+        +'<div class="prob-box"><small>Consensus Read</small><span class="pbig">'+r.consensus_pct+'%</span><div class="plabel">'+r.consensus_label+' &middot; '+firstCand.name.split(' ').pop()+'</div><div class="cbar"><i style="width:'+consensusBarPct+'%"></i></div></div>'
+        +'<div class="prob-box so"><small>ShortOpen Read</small><span class="pbig">'+r.shortopen_pct+'%</span><div class="plabel">'+firstCand.name.split(' ').pop()+' ('+firstCand.party+')</div><div class="preason">'+r.shortopen_reason+'</div></div>'
+      +'</div>'
+      +divTag
+      +'<div class="reasons" style="margin-top:16px">'
+        +'<div class="reason-col for"><small>Why it could go this way</small><ul>'+forList+'</ul></div>'
+        +'<div class="reason-col against"><small>Why it might not</small><ul>'+againstList+'</ul></div>'
+      +'</div>'
+      +'<div class="cites"><b>Consensus compiled from, not endorsed by ShortOpen:</b> '+r.sources.join(' &middot; ')+'. <em>Ratings reflect each outlet\'s own editorial judgment as of the capture date below.</em></div>'
+    +'</article>';
+  }).join('');
+}
+heroMeta.innerHTML='<span>'+R.length+' RACES TRACKED</span><span>CA + NY</span><span>CONSENSUS + SHORTOPEN READ</span><span>UPDATED '+D.capturedAt+'</span>';
+render();
+</script></body></html>

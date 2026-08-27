@@ -1,0 +1,196 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Sports Futures — ShortOpen</title><style>
+:root{--bg:#05070b;--panel:#0a0f16;--panel2:#0d131b;--line:rgba(255,255,255,.085);--line2:rgba(255,255,255,.15);--text:#f0f3f6;--muted:#758292;--mint:#52e3bd;--gold:#e9b94f;--blue:#67a5ff;--purple:#a78bfa}
+*{box-sizing:border-box}html{background:var(--bg);color-scheme:dark}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.hero{position:relative;min-height:400px;overflow:hidden;border-bottom:1px solid var(--line);background:radial-gradient(720px 430px at 82% 40%,rgba(82,227,189,.18),transparent 68%),radial-gradient(560px 360px at 8% 78%,rgba(233,185,79,.10),transparent 72%),linear-gradient(145deg,#060a0e,#080912 58%,#0b0b1a)}
+.hero:before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,black,transparent)}
+.hero-inner{position:relative;max-width:1420px;margin:auto;padding:54px 42px 66px;display:grid;grid-template-columns:minmax(0,1fr) 400px;align-items:center;gap:54px}
+.kicker{font:850 .59rem ui-monospace,monospace;letter-spacing:.18em;color:var(--mint);text-transform:uppercase}
+.hero h1{margin:13px 0 12px;font-size:clamp(2.6rem,5.4vw,5.4rem);line-height:.88;letter-spacing:-.06em}
+.hero h1 span{display:block;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.33)}
+.hero-copy p{max-width:680px;margin:0;color:#909cab;font-size:.88rem;line-height:1.72}
+.hero-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.hero-meta span{padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(5,7,11,.45);color:#6d7886;font:750 .51rem ui-monospace,monospace;letter-spacing:.07em}
+.engine{height:280px;display:grid;place-items:center;position:relative}
+.engine-ring{width:260px;aspect-ratio:1;position:relative;border:1px solid rgba(82,227,189,.28);border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,rgba(15,20,32,.94) 0 35%,transparent 36%);box-shadow:0 0 70px rgba(82,227,189,.10),inset 0 0 75px rgba(0,0,0,.38)}
+.engine-ring:before,.engine-ring:after{content:'';position:absolute;border-radius:50%;border:1px dashed rgba(255,255,255,.1)}
+.engine-ring:before{inset:26px;animation:spin 22s linear infinite}
+.engine-ring:after{inset:58px;border-style:solid}
+.engine-core{text-align:center;z-index:1}
+.engine-core small{display:block;color:#8a94aa;font:800 .49rem ui-monospace,monospace;letter-spacing:.15em}
+.engine-core strong{display:block;margin:4px 0;font-size:2rem;letter-spacing:-.05em}
+.engine-core em{color:var(--mint);font:800 .55rem ui-monospace,monospace;font-style:normal}
+.engine-chip{position:absolute;border:1px solid var(--line);border-radius:999px;background:#080c12;padding:7px 10px;font:800 .49rem ui-monospace,monospace;letter-spacing:.08em;white-space:nowrap}
+.ec1{top:14px;left:-8px;color:var(--gold)}.ec2{right:-20px;top:112px;color:var(--blue)}.ec3{left:-6px;bottom:22px;color:var(--mint)}
+.hero-tape{position:absolute;bottom:0;left:0;right:0;height:42px;border-top:1px solid var(--line);overflow:hidden;display:flex;align-items:center;background:rgba(5,7,11,.63)}
+.tape-track{display:flex;gap:42px;white-space:nowrap;animation:tape 34s linear infinite;color:#566170;font:800 .53rem ui-monospace,monospace;letter-spacing:.11em}
+.tape-track b{color:var(--gold)}
+.legend{max-width:1420px;margin:26px auto 0;padding:0 42px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.legend-item{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:15px 17px}
+.legend-item small{display:block;font:800 .5rem ui-monospace,monospace;letter-spacing:.12em;color:var(--mint)}
+.legend-item strong{display:block;margin:7px 0 5px;font-size:.92rem;letter-spacing:-.01em}
+.legend-item p{margin:0;color:#8390a0;font-size:.68rem;line-height:1.56}
+.legend-item.mid small{color:var(--gold)}.legend-item.end small{color:var(--purple)}
+@media(max-width:850px){.legend{grid-template-columns:1fr;padding:0 16px}}
+.desk-wrap{max-width:1420px;margin:auto;padding:30px 42px 0}
+.section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:14px}
+.section-head small{color:var(--mint);font:800 .54rem ui-monospace,monospace;letter-spacing:.15em}
+.section-head h2{margin:5px 0 0;font-size:1.45rem;letter-spacing:-.035em}
+.section-head p{max-width:470px;margin:0;color:#697584;font-size:.68rem;line-height:1.55}
+.desk-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.desk-tab{min-height:76px;text-align:left;border:1px solid var(--line);border-radius:13px;background:#080c12;color:#7d8997;padding:13px 14px;cursor:pointer;transition:.18s}
+.desk-tab:hover{border-color:var(--line2)}
+.desk-tab.active{border-color:rgba(233,185,79,.32);background:linear-gradient(145deg,rgba(233,185,79,.07),#090e14)}
+.desk-tab[data-desk=NFL].active{border-color:rgba(103,165,255,.32);background:linear-gradient(145deg,rgba(103,165,255,.07),#090e14)}
+.desk-tab[data-desk=NFL].active b i{color:var(--blue)}
+.desk-tab[data-desk=MLB].active{border-color:rgba(82,227,189,.32);background:linear-gradient(145deg,rgba(82,227,189,.07),#090e14)}
+.desk-tab[data-desk=MLB].active b i{color:var(--mint)}
+.desk-tab[data-desk=NBA].active{border-color:rgba(167,139,250,.32);background:linear-gradient(145deg,rgba(167,139,250,.07),#090e14)}
+.desk-tab[data-desk=NBA].active b i{color:var(--purple)}
+.desk-tab[data-desk=EPL].active{border-color:rgba(226,71,71,.32);background:linear-gradient(145deg,rgba(226,71,71,.07),#090e14)}
+.desk-tab[data-desk=EPL].active b i{color:#e24747}
+.desk-tab b{display:flex;justify-content:space-between;color:#dce2e7;font-size:.69rem}
+.desk-tab b i{font-style:normal;color:var(--gold);font:800 .56rem ui-monospace,monospace}
+.desk-tab span{display:block;margin-top:7px;color:#63707f;font:700 .5rem ui-monospace,monospace}
+.tools{position:sticky;top:0;z-index:5;margin-top:14px;border-block:1px solid var(--line);background:rgba(5,7,11,.93);backdrop-filter:blur(16px)}
+.tools-inner{max-width:1420px;margin:auto;padding:10px 42px;display:grid;grid-template-columns:minmax(240px,1fr) auto;gap:9px;align-items:center}
+input{height:40px;width:100%;border:1px solid var(--line);border-radius:10px;background:#090e14;color:#aab4bf;padding:0 12px;font:700 .56rem ui-monospace,monospace;outline:none}
+.result-count{color:#53606e;font:750 .53rem ui-monospace,monospace;white-space:nowrap}
+.market-grid{max-width:1420px;margin:auto;padding:22px 42px 72px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.market-card{--tone:var(--mint);min-height:280px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,rgba(255,255,255,.022),transparent 42%),var(--panel);padding:18px;display:flex;flex-direction:column;overflow:hidden;transition:.18s}
+.market-card.NFL{--tone:var(--blue)}.market-card.MLB{--tone:var(--mint)}.market-card.NBA{--tone:var(--purple)}.market-card.EPL{--tone:#e24747}
+.market-card:hover{transform:translateY(-2px);border-color:var(--line2)}
+.card-top{display:flex;justify-content:space-between;gap:10px;color:#5c6876;font:800 .49rem ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase}
+.market-card h3{margin:11px 0 4px;font-size:1.15rem;line-height:1.18;letter-spacing:-.02em}
+.market-card .evt{margin:0 0 14px;color:#7c8896;font-size:.68rem}
+.price-row{display:flex;align-items:baseline;gap:12px;padding-bottom:13px;border-bottom:1px solid var(--line);margin-bottom:12px}
+.price-row .odds{font-size:1.9rem;font-weight:800;color:var(--tone);letter-spacing:-.03em}
+.price-row .implied{color:#8b96a4;font-size:.72rem}
+.price-row .implied b{color:#d5dbe1}
+.facts{display:grid;gap:9px;flex:1}
+.fact{padding-bottom:8px;border-bottom:1px solid var(--line)}
+.fact:last-child{border:0}
+.fact small{display:block;color:#566271;font:750 .46rem ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase}
+.fact b{display:block;margin-top:3px;color:#b9c2cb;font-size:.72rem;line-height:1.4;font-weight:600}
+.card-foot{display:flex;justify-content:space-between;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);color:#566271;font-size:.57rem}
+.so-shared-footer{padding:27px 42px 31px;border-top:1px solid var(--line);background:#04070b}
+.so-shared-footer-top{display:flex;justify-content:space-between;gap:12px}
+.so-shared-footer-logo{font-weight:900;text-decoration:none;color:#eee}
+.so-shared-footer-logo span{color:#e8a020}
+.so-shared-footer-top p{margin:0;color:#4e5b68;font-size:.68rem}
+.footer-disclaimer{max-width:1100px;margin:14px 0 0;padding-top:13px;border-top:1px solid rgba(255,255,255,.055);color:#3e4955;font-size:.59rem;line-height:1.65}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes tape{to{transform:translateX(-50%)}}
+@media(max-width:1100px){.market-grid{grid-template-columns:repeat(2,1fr)}.desk-tabs{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:850px){.hero-inner{grid-template-columns:1fr}.engine{display:none}.desk-tabs{display:flex;overflow-x:auto;scroll-snap-type:x mandatory}.desk-tab{flex:0 0 min(60vw,220px);scroll-snap-align:start}.tools-inner{grid-template-columns:1fr}.result-count{display:none}}
+@media(max-width:650px){.hero{min-height:410px}.hero-inner{padding:38px 16px 63px}.hero h1{font-size:3rem}.desk-wrap{padding-inline:14px}.section-head{display:block}.section-head p{margin-top:8px}.tools-inner{padding:9px 12px}.market-grid{grid-template-columns:1fr;padding:15px 12px 52px}.so-shared-footer{padding:23px 16px 28px}.so-shared-footer-top{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.trophy-stage{position:relative;width:270px;height:270px;margin:auto}
+.ts-ring{position:absolute;inset:0;border:1px solid rgba(233,185,79,.22);border-radius:50%;animation:spin 26s linear infinite}
+.ts-ring2{position:absolute;inset:26px;border:1px dashed rgba(255,255,255,.11);border-radius:50%;animation:spin 19s linear infinite reverse}
+.ts-glow{position:absolute;inset:66px;border-radius:50%;background:radial-gradient(circle,rgba(233,185,79,.38),transparent 70%);filter:blur(7px);animation:pulseglow 3.4s ease-in-out infinite}
+.ts-trophy{position:absolute;left:50%;top:50%;width:78px;height:94px;transform:translate(-50%,-50%);filter:drop-shadow(0 0 16px rgba(233,185,79,.5));animation:trophyfloat 4.2s ease-in-out infinite}
+.ts-trophy path{fill:none;stroke:#e9b94f;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.ts-trophy .cup{fill:rgba(233,185,79,.16)}
+.ts-badge{position:absolute;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:#0a0f16;font:800 .5rem ui-monospace,monospace;letter-spacing:.06em;animation:badgepulse 3.6s ease-in-out infinite}
+.ts-badge.nfl{top:2px;left:50%;transform:translateX(-50%);color:var(--blue);animation-delay:0s}
+.ts-badge.mlb{right:-8px;top:50%;transform:translateY(-50%);color:var(--mint);animation-delay:.9s}
+.ts-badge.nba{bottom:2px;left:50%;transform:translateX(-50%);color:var(--purple);animation-delay:1.8s}
+.ts-badge.epl{left:-8px;top:50%;transform:translateY(-50%);color:#e24747;animation-delay:2.7s}
+.ts-spark{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;opacity:0;animation:spark 5s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulseglow{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:.85;transform:scale(1.1)}}
+@keyframes trophyfloat{0%,100%{transform:translate(-50%,-50%) translateY(0)}50%{transform:translate(-50%,-50%) translateY(-7px)}}
+@keyframes badgepulse{0%,100%{opacity:.5;box-shadow:none}50%{opacity:1;box-shadow:0 0 15px currentColor}}
+@keyframes spark{0%,100%{opacity:0;transform:translateY(0)}50%{opacity:.8;transform:translateY(-14px)}}
+.price-row{flex-wrap:wrap}
+.so-row{display:flex;align-items:center;gap:9px;margin:2px 0 12px;padding:9px 10px;border-radius:10px;background:rgba(233,185,79,.06);border:1px solid rgba(233,185,79,.18)}
+.so-row .so-pct{font:800 1.15rem ui-monospace,monospace;color:var(--gold);letter-spacing:-.02em}
+.so-row .so-meta{flex:1;min-width:0}
+.so-row .so-meta small{display:block;font:750 .46rem ui-monospace,monospace;letter-spacing:.09em;text-transform:uppercase;color:#8a744a}
+.so-row .so-meta span{display:block;margin-top:2px;color:#c9b787;font-size:.66rem;line-height:1.4}
+.so-delta{font:800 .58rem ui-monospace,monospace;white-space:nowrap}
+.so-delta.up{color:var(--mint)}.so-delta.down{color:#ff8b7a}.so-delta.flat{color:#7d8997}
+@media(max-width:850px){.trophy-stage{width:210px;height:210px}}
+
+.legend-item{position:relative;overflow:hidden;padding:18px 18px 17px}
+.legend-item:before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--mint),transparent)}
+.legend-item.mid:before{background:linear-gradient(90deg,var(--gold),transparent)}
+.legend-item.end:before{background:linear-gradient(90deg,var(--purple),transparent)}
+.legend-item .lg-icon{position:absolute;right:12px;top:12px;font-size:1.5rem;opacity:.13;line-height:1}
+.legend-item .lg-stat{display:block;margin:9px 0 3px;font:800 1.5rem ui-monospace,monospace;letter-spacing:-.02em;color:var(--mint)}
+.legend-item.mid .lg-stat{color:var(--gold)}
+.legend-item.end .lg-stat{color:var(--purple)}
+.legend-item .lg-stat small{display:block;font:750 .48rem ui-monospace,monospace;letter-spacing:.08em;color:#5c6876;text-transform:uppercase;margin-top:2px}
+
+.market-card{position:relative;isolation:isolate}
+.market-card:before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--tone),transparent 85%);z-index:1}
+.market-card:after{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(115deg,rgba(255,255,255,.012) 0 2px,transparent 2px 26px);pointer-events:none;opacity:.5}
+.market-card .card-glow{position:absolute;right:-40px;top:-40px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,var(--tone),transparent 70%);opacity:.08;filter:blur(6px);pointer-events:none;transition:opacity .3s ease}
+.market-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.22);box-shadow:0 14px 34px -18px var(--tone)}
+.market-card:hover .card-glow{opacity:.16}
+.market-card .lg-badge{position:absolute;right:6px;bottom:2px;font-size:3rem;opacity:.05;z-index:0;pointer-events:none;line-height:1}
+.market-card h3{position:relative;z-index:1}
+.market-card .price-row,.market-card .so-row,.market-card .facts,.market-card .card-foot,.market-card .evt,.market-card .card-top{position:relative;z-index:1}
+.so-row{position:relative;overflow:hidden}
+.so-row:before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(233,185,79,.08),transparent);animation:shimmer 3.5s ease-in-out infinite}
+@keyframes shimmer{0%{transform:translateX(-100%)}50%,100%{transform:translateX(100%)}}
+.so-row .so-pct{position:relative;z-index:1}
+.so-row .so-meta{position:relative;z-index:1}
+</style></head><body><header class="hero"><div class="hero-inner"><div class="hero-copy"><div class="kicker">Sports Futures / Sourced &amp; Shopped</div><h1>Futures before <span>the field settles.</span></h1><p>Championship, pennant and title odds shopped across real sportsbooks &mdash; DraftKings, FanDuel, BetMGM, ESPN Bet, VegasInsider &mdash; with the roster and schedule context behind each price, plus ShortOpen's own read next to it.</p><div class="hero-meta" id="heroMeta"></div></div><div class="engine"><div class="trophy-stage"><div class="ts-ring"></div><div class="ts-ring2"></div><div class="ts-glow"></div><svg class="ts-trophy" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+<path class="cup" d="M30 10 h40 v22 c0 16 -9 26 -20 26 s-20 -10 -20 -26 Z"/>
+<path d="M30 10 h40 v22 c0 16 -9 26 -20 26 s-20 -10 -20 -26 Z"/>
+<path d="M30 16 c-14 0 -18 10 -14 20 c3 8 10 12 16 12"/>
+<path d="M70 16 c14 0 18 10 14 20 c-3 8 -10 12 -16 12"/>
+<path d="M50 58 v14"/>
+<path d="M36 90 h28 l-4 -18 h-20 Z"/>
+<path d="M28 90 h44"/>
+</svg><span class="ts-badge nfl">NFL</span><span class="ts-badge mlb">MLB</span><span class="ts-badge nba">NBA</span><span class="ts-badge epl">EPL</span></div></div></div><div class="hero-tape"><div class="tape-track"><b>PRESENTED BY SHORTOPEN</b><span>ODDS ARE NOT CERTAINTY</span><span>SHOP EVERY BOOK</span><span>CONTEXT OVER HYPE</span><span>PRICE THE FIELD</span><b>PRESENTED BY SHORTOPEN</b><span>ODDS ARE NOT CERTAINTY</span><span>SHOP EVERY BOOK</span><span>CONTEXT OVER HYPE</span><span>PRICE THE FIELD</span></div></div></header><section class="legend">
+<div class="legend-item"><span class="lg-icon">&#127942;</span><small>01 &middot; BEST LINE</small><strong>The best real price found.</strong><span class="lg-stat" id="lgBestStat">&mdash;<small>SHOPPED ACROSS 5 SPORTSBOOKS</small></span><p>DraftKings, FanDuel, BetMGM, ESPN Bet and VegasInsider &mdash; named per line, never blended into one anonymous number.</p></div>
+<div class="legend-item mid"><span class="lg-icon">&#128202;</span><small>02 &middot; IMPLIED PROBABILITY</small><strong>What the price says, plainly.</strong><span class="lg-stat" id="lgImpliedStat">&mdash;<small>EXAMPLE FROM TODAY'S BOARD</small></span><p>100 &divide; (odds + 100). The raw break-even read behind the price &mdash; before any vig is removed, before any opinion is added.</p></div>
+<div class="legend-item end"><span class="lg-icon">&#9889;</span><small>03 &middot; SHORTOPEN READ</small><strong>Where ShortOpen disagrees.</strong><span class="lg-stat" id="lgDivergeStat">&mdash;<small>BIGGEST FADE ON THE BOARD TODAY</small></span><p>A disclosed adjustment off the implied number, built from real roster and schedule signals &mdash; sometimes it agrees, sometimes it doesn't.</p></div>
+</section><section class="desk-wrap"><div class="section-head"><div><small>LEAGUE ROUTER</small><h2>Four boards, one page.</h2></div><p>Filter by league or search any team. Every price below is a real, sourced sportsbook number &mdash; captured 2026-08-26, subject to change as rosters, injuries and schedules shift.</p></div><div class="desk-tabs" id="deskTabs"></div></section><div class="tools"><div class="tools-inner"><input id="search" placeholder="SEARCH TEAM OR EVENT"><span class="result-count" id="count"></span></div></div><main class="market-grid" id="grid"></main><footer class="so-shared-footer"><div class="so-shared-footer-top"><a class="so-shared-footer-logo" href="index.html">short<span>open</span></a><p>THE OPENING LINE, BEFORE THE CROWD.</p></div><p class="footer-disclaimer">ShortOpen provides independent market analysis for informational and educational purposes only. Odds are attributed, real sportsbook snapshots and change constantly &mdash; verify current pricing before acting. Implied probability is a direct, undevigged read of the posted price. The ShortOpen Read is a modeled estimate built from public roster, injury and schedule signals &mdash; not a guarantee, and not always in agreement with the market.</p></footer><script>
+const D={"capturedAt": "2026-08-26", "futures": [{"league": "NFL", "event": "Super Bowl LXI Winner", "team": "Los Angeles Rams", "odds": 600, "book": "FanDuel", "context": "Added Myles Garrett via trade; most-bet team all summer per BetMGM.", "implied": 14.3, "so_pct": 16.3, "so_delta": 2.0, "so_reason": "Momentum still building post-trade; price hasn't fully caught up."}, {"league": "NFL", "event": "Super Bowl LXI Winner", "team": "Buffalo Bills", "odds": 1000, "book": "VegasInsider", "context": "Josh Allen enters a healthier supporting cast after adding DJ Moore.", "implied": 9.1, "so_pct": 10.6, "so_delta": 1.5, "so_reason": "Roster additions outpacing the market's early read."}, {"league": "NFL", "event": "Super Bowl LXI Winner", "team": "Baltimore Ravens", "odds": 1100, "book": "VegasInsider", "context": "Consistent top-5 roster; nudged out from co-favorite as Rams surged.", "implied": 8.3, "so_pct": 7.3, "so_delta": -1.0, "so_reason": "Displaced as co-favorite; ShortOpen sees the gap as slightly wider."}, {"league": "NFL", "event": "Super Bowl LXI Winner", "team": "Seattle Seahawks", "odds": 1100, "book": "ESPN Bet", "context": "Defending Super Bowl LX champions, opened 2026 as 3.5-pt Week 1 favorites.", "implied": 8.3, "so_pct": 9.8, "so_delta": 1.5, "so_reason": "Defending champs already playing like Week 1 favorites."}, {"league": "NFL", "event": "Super Bowl LXI Winner", "team": "Kansas City Chiefs", "odds": 1500, "book": "VegasInsider", "context": "Mahomes returning from a torn knee adds real health uncertainty.", "implied": 6.2, "so_pct": 4.2, "so_delta": -2.0, "so_reason": "Mahomes' knee recovery is a real, underpriced risk this early."}, {"league": "MLB", "event": "2026 World Series Winner", "team": "Los Angeles Dodgers", "odds": 170, "book": "ESPN Bet", "context": "Chasing a third straight title; grip loosened slightly (+160 to +170).", "implied": 37.0, "so_pct": 35.5, "so_delta": -1.5, "so_reason": "Two straight lengthenings (+160\u2192+170) suggest the market is catching up to real fatigue risk."}, {"league": "MLB", "event": "2026 World Series Winner", "team": "New York Yankees", "odds": 750, "book": "ESPN Bet", "context": "Judge-led lineup pacing the AL; second-shortest price on the board.", "implied": 11.8, "so_pct": 13.3, "so_delta": 1.5, "so_reason": "Lineup performance outpacing where the price sits."}, {"league": "MLB", "event": "2026 World Series Winner", "team": "Milwaukee Brewers", "odds": 850, "book": "ESPN Bet", "context": "Best record in MLB; odds tightened from +950 to +850 in two weeks.", "implied": 10.5, "so_pct": 12.5, "so_delta": 2.0, "so_reason": "Best record in baseball; tightening odds still lag the on-field case."}, {"league": "MLB", "event": "2026 World Series Winner", "team": "Tampa Bay Rays", "odds": 1100, "book": "ESPN Bet", "context": "Best record in the American League as of late August.", "implied": 8.3, "so_pct": 9.8, "so_delta": 1.5, "so_reason": "Best AL record deserves a shorter price than +1100."}, {"league": "MLB", "event": "2026 World Series Winner", "team": "Chicago White Sox", "odds": 2500, "book": "ESPN Bet", "context": "Started the year near +40000; the biggest odds-move story of the season.", "implied": 3.8, "so_pct": 6.3, "so_delta": 2.5, "so_reason": "Started near +40000 \u2014 even after the move, ShortOpen thinks the swing continues."}, {"league": "NBA", "event": "2027 NBA Finals Winner", "team": "San Antonio Spurs", "odds": 260, "book": "BetMGM", "context": "Reached the 2026 Finals; Wembanyama's continued ascent anchors the favorite tag.", "implied": 27.8, "so_pct": 29.3, "so_delta": 1.5, "so_reason": "Wembanyama's trajectory undersold at a co-favorite price."}, {"league": "NBA", "event": "2027 NBA Finals Winner", "team": "Oklahoma City Thunder", "odds": 270, "book": "BetMGM", "context": "Reigning MVP Shai Gilgeous-Alexander leads the league's most consistent roster.", "implied": 27.0, "so_pct": 28.5, "so_delta": 1.5, "so_reason": "Reigning MVP, most consistent roster in the league \u2014 a fair favorite, arguably short-priced."}, {"league": "NBA", "event": "2027 NBA Finals Winner", "team": "New York Knicks", "odds": 900, "book": "BetMGM", "context": "Defending champions chasing a first back-to-back title since 2018.", "implied": 10.0, "so_pct": 10.0, "so_delta": 0.0, "so_reason": "Defending champs priced about right for a repeat bid."}, {"league": "NBA", "event": "2027 NBA Finals Winner", "team": "Philadelphia 76ers", "odds": 1000, "book": "BetMGM", "context": "Price cut from +2700 after signing LeBron James in free agency.", "implied": 9.1, "so_pct": 8.1, "so_delta": -1.0, "so_reason": "Rapid price cut on a single signing reads like overreaction, not a full roster re-evaluation."}, {"league": "EPL", "event": "2026-27 Premier League Winner", "team": "Arsenal", "odds": 153, "book": "DraftKings", "context": "Defending champions after ending a 22-year title drought last season.", "implied": 39.5, "so_pct": 38.0, "so_delta": -1.5, "so_reason": "Heavy favorite pricing after one title; ShortOpen fades the crowd here."}, {"league": "EPL", "event": "2026-27 Premier League Winner", "team": "Manchester City", "odds": 282, "book": "DraftKings", "context": "Runners-up last season, seven points back; Guardiola's squad reloaded.", "implied": 26.2, "so_pct": 27.7, "so_delta": 1.5, "so_reason": "Reload after a 7-point runner-up finish looks underpriced."}, {"league": "EPL", "event": "2026-27 Premier League Winner", "team": "Liverpool", "odds": 550, "book": "DraftKings", "context": "Navigating a managerial change entering the new campaign.", "implied": 15.4, "so_pct": 13.9, "so_delta": -1.5, "so_reason": "Managerial transition is real uncertainty the price hasn't absorbed."}, {"league": "EPL", "event": "2026-27 Premier League Winner", "team": "Manchester United", "odds": 620, "book": "DraftKings", "context": "Also adjusting to a new manager; early-season form still unproven.", "implied": 13.9, "so_pct": 12.9, "so_delta": -1.0, "so_reason": "Same new-manager uncertainty as Liverpool, unproven early form."}, {"league": "EPL", "event": "2026-27 Premier League Winner", "team": "Chelsea", "odds": 1000, "book": "DraftKings", "context": "Deep, talented core (Palmer, Est\u00eav\u00e3o, Caicedo) seen as a value price.", "implied": 9.1, "so_pct": 11.1, "so_delta": 2.0, "so_reason": "Squad talent genuinely ahead of a +1000 price."}]},F=D.futures;let league='all',q='';
+
+const leagueIcon={NFL:'&#127944;',MLB:'&#9918;',NBA:'&#127936;',EPL:'&#9917;'};
+const leagues=[['all','All Boards'],['NFL','NFL'],['MLB','MLB'],['NBA','NBA'],['EPL','EPL']];
+function leagueStats(key){const rows=key==='all'?F:F.filter(f=>f.league===key);const best=[...rows].sort((a,b)=>a.odds-b.odds)[0];return{rows,best}}
+function renderTabs(){
+  deskTabs.innerHTML=leagues.map(([k,label])=>{
+    const s=leagueStats(k);
+    return '<button class="desk-tab '+(league===k?'active':'')+'" data-desk="'+k+'"><b>'+label+'<i>'+s.rows.length+'</i></b><span>Favorite: '+s.best.team+' +'+s.best.odds+'</span></button>';
+  }).join('');
+  document.querySelectorAll('[data-desk]').forEach(b=>b.onclick=()=>{league=b.dataset.desk;renderTabs();render()});
+}
+function render(){
+  const rows=F.filter(f=>league==='all'||f.league===league).filter(f=>!q||(f.team+' '+f.event).toLowerCase().includes(q));
+  count.textContent=rows.length+' SOURCED LINES';
+  grid.innerHTML=rows.map(f=>{
+    const dir=f.so_delta>0.1?'up':f.so_delta<-0.1?'down':'flat';
+    const arrow=dir==='up'?'&#9650;':dir==='down'?'&#9660;':'&#9644;';
+    const deltaTxt=(f.so_delta>0?'+':'')+f.so_delta.toFixed(1)+' PTS';
+    return '<article class="market-card '+f.league+'"><div class="card-glow"></div><span class="lg-badge">'+leagueIcon[f.league]+'</span>'
+      +'<div class="card-top"><span>'+f.league+'</span><span>'+f.book+'</span></div>'
+      +'<h3>'+f.team+'</h3>'
+      +'<p class="evt">'+f.event+'</p>'
+      +'<div class="price-row"><span class="odds">+'+f.odds+'</span><span class="implied">Implied <b>'+f.implied+'%</b></span></div>'
+      +'<div class="so-row"><span class="so-pct">'+f.so_pct+'%</span><span class="so-meta"><small>ShortOpen Read '+arrow+' <span class="so-delta '+dir+'">'+deltaTxt+'</span></small><span>'+f.so_reason+'</span></span></div>'
+      +'<div class="facts">'
+        +'<div class="fact"><small>Context</small><b>'+f.context+'</b></div>'
+      +'</div>'
+      +'<div class="card-foot"><span>SOURCED '+D.capturedAt+'</span><span>'+f.book.toUpperCase()+'</span></div>'
+    +'</article>';
+  }).join('');
+}
+function renderLegendStats(){
+  const books=[...new Set(F.map(f=>f.book))];
+  lgBestStat.innerHTML=books.length+'<small>REAL SPORTSBOOKS SHOPPED</small>';
+  const cheapest=[...F].sort((a,b)=>a.odds-b.odds)[0];
+  const imp=Math.round(100/(cheapest.odds+100)*1000)/10;
+  lgImpliedStat.innerHTML='+'+cheapest.odds+' &rarr; '+imp+'%<small>'+cheapest.team.toUpperCase()+' &middot; SHORTEST PRICE TODAY</small>';
+  const biggestFade=[...F].sort((a,b)=>a.so_delta-b.so_delta)[0];
+  lgDivergeStat.innerHTML=biggestFade.so_delta.toFixed(1)+' PTS<small>'+biggestFade.team.toUpperCase()+' &middot; BIGGEST FADE</small>';
+}
+heroMeta.innerHTML='<span>'+F.length+' SOURCED LINES</span><span>4 LEAGUES</span><span>5 BOOKS SHOPPED</span><span>CAPTURED '+D.capturedAt+'</span>';
+search.oninput=e=>{q=e.target.value.toLowerCase().trim();render()};
+renderTabs();render();renderLegendStats();
+</script></body></html>
