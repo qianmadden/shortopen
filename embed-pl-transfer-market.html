@@ -461,7 +461,7 @@ td.val{font-family:'DM Mono',monospace;font-weight:700;color:var(--text2);white-
 
 <script id="so-transfer-terminal-js-20260824">(function(){'use strict';const P=JSON.parse(document.getElementById('playersData').textContent),rates={EUR:1,GBP:.856,USD:1.168},sym={EUR:'€',GBP:'£',USD:'$'};let cur='EUR',spendMode='high',activeMoveIdx=0;const SPEND=[['Chelsea',530.6],['Tottenham',311.5],['Manchester City',325.3],['Arsenal',265],['Aston Villa',276],['Newcastle',298.2],['Manchester United',209],['Ipswich',208.1],['Coventry',166.5],['Brentford',152],['Brighton',147.5],['Liverpool',124.4],['Everton',115.8],['Leeds',107],['Hull',103.4],['Fulham',103.1],['Bournemouth',92.8],['Crystal Palace',73.9],['Nottingham Forest',70],['Sunderland',32.7]];const MOVES=[['Morgan Rogers','Aston Villa','Chelsea',138],['Elliot Anderson','Nottingham Forest','Manchester City',135],['Yan Diomande','RB Leipzig','Real Madrid',125],['Sandro Tonali','Newcastle','Tottenham',108],['Ayyoub Bouaddi','Lille','Manchester City',100],['Matheus Fernandes','West Ham','Tottenham',99],['Carlos Baleba','Brighton','Manchester United',82],['Nicolas Jackson','Chelsea','Aston Villa',76],['Nico González','Manchester City','Newcastle',58],['Honest Ahanor','Atalanta','Chelsea',47]];const WIRE=[['AGREEMENT REPORTED','Allan Elias','Palmeiras → Manchester City','Up to £34.2m, including add-ons. Reuters reported an agreement.','hot','Reuters + The Guardian'],['ADVANCED TALKS','Liam Delap','Chelsea → Nottingham Forest','Forest in advanced talks; not yet presented as completed.','warm','Sky Sports'],['RUMOUR','Julián Álvarez','Atlético Madrid → Arsenal','Arsenal-linked; price and deal structure remain speculative.','','Fabrizio Romano'],['RUMOUR','Alejandro Balde','Barcelona → Manchester United','Reported interest only. Treat as a monitoring item.','','David Ornstein'],['MONITOR','Jarrod Bowen','West Ham → Crystal Palace','Potential £50m approach reported; no completed deal.','','Fabrizio Romano'],['DEAL WORK','Joel Ordóñez','Club Brugge → Aston Villa','Villa pursuit reported as active.','warm','David Ornstein'],['HERE WE GO','Nico Paz','Como → Real Madrid','Romano reports terms are close; Como retain a buy-back clause in most versions of the deal.','hot','Fabrizio Romano'],['EXCLUSIVE','Rodrigo Mora','Porto → Manchester City','Ornstein reports City have opened direct talks with Porto over a deal structured with add-ons.','warm','David Ornstein'],['RUMOUR','Bryan Mbeumo links','Brentford → Manchester United','Recirculated in transfer-window roundups; no fresh confirmation attached.','','Fabrizio Romano'],['MONITOR','Igor Jesus','Botafogo → Nottingham Forest','Reported as a name Forest are tracking for depth; talks not confirmed as advanced.','','David Ornstein']];const NAT_FLAG={"Erling Haaland": "🇳🇴", "Lamine Yamal": "🇪🇸", "Kylian Mbappé": "🇫🇷", "Michael Olise": "🇫🇷", "Jude Bellingham": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Pedri": "🇪🇸", "Vinícius Júnior": "🇧🇷", "Vitinha": "🇵🇹", "Khvicha Kvaratskhelia": "🇬🇪", "João Neves": "🇵🇹", "Declan Rice": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Julián Álvarez": "🇦🇷", "Désiré Doué": "🇫🇷", "Bukayo Saka": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Morgan Rogers": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Elliot Anderson": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Ousmane Dembélé": "🇫🇷", "Dominik Szoboszlai": "🇭🇺", "William Saliba": "🇫🇷", "Cole Palmer": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Jamal Musiala": "🇩🇪", "Florian Wirtz": "🇩🇪", "Fermín López": "🇪🇸", "Enzo Fernández": "🇦🇷", "Moisés Caicedo": "🇪🇨", "Pau Cubarsí": "🇪🇸", "Federico Valverde": "🇺🇾", "Rayan Cherki": "🇫🇷", "Bradley Barcola": "🇫🇷", "Aleksandar Pavlović": "🇩🇪", "Arda Güler": "🇹🇷", "Yan Diomande": "🇨🇮", "Alexander Isak": "🇸🇪", "Lautaro Martínez": "🇦🇷", "Sandro Tonali": "🇮🇹", "Achraf Hakimi": "🇲🇦", "Ryan Gravenberch": "🇳🇱", "Anthony Gordon": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Antoine Semenyo": "🇬🇭", "Nuno Mendes": "🇵🇹", "João Pedro": "🇧🇷", "Willian Pacho": "🇪🇨", "Hugo Ekitiké": "🇫🇷", "Warren Zaïre-Emery": "🇫🇷", "Nico Paz": "🇦🇷", "Estêvão": "🇧🇷", "Ayyoub Bouaddi": "🇫🇷", "Dayot Upamecano": "🇫🇷", "Victor Osimhen": "🇳🇬", "Bryan Mbeumo": "🇨🇲", "Martín Zubimendi": "🇪🇸", "Gabriel": "🇧🇷", "Jérémy Doku": "🇧🇪", "Matheus Cunha": "🇧🇷", "Benjamin Sesko": "🇸🇮", "Kenan Yıldız": "🇹🇷", "Martin Ødegaard": "🇳🇴", "Marc Guéhi": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Phil Foden": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Raphinha": "🇧🇷", "Aurélien Tchouaméni": "🇫🇷", "Jurriën Timber": "🇳🇱", "Morgan Gibbs-White": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Josko Gvardiol": "🇭🇷", "Luis Díaz": "🇨🇴", "Bruno Guimarães": "🇧🇷", "Alexis Mac Allister": "🇦🇷", "Nico O'Reilly": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Adam Wharton": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Kobbie Mainoo": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Endrick": "🇧🇷", "Rico Lewis": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Ethan Nwaneri": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Facundo Buonanotte": "🇦🇷", "Vitor Roque": "🇧🇷", "Max Dowman": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Kacper Urbański": "🇵🇱", "Chido Obi": "🇳🇬", "Gianluigi Donnarumma": "🇮🇹", "David Raya": "🇪🇸", "Alisson Becker": "🇧🇷", "Jan Oblak": "🇸🇮"};
 const CLUB_COLORS={Chelsea:'#034694',Tottenham:'#132257',Arsenal:'#EF0107',Newcastle:'#241F20','Manchester City':'#6CABDD',Ipswich:'#1D3D8F','Aston Villa':'#670E36',Coventry:'#78C4E8',Brighton:'#0057B8',Liverpool:'#C8102E',Everton:'#003399','Manchester United':'#DA291C',Leeds:'#1D428A',Hull:'#F18A00',Fulham:'#000000',Brentford:'#E30613',Bournemouth:'#DA291C','Crystal Palace':'#1B458F','Nottingham Forest':'#DD0000',Sunderland:'#EB172B','RB Leipzig':'#DD0741','Real Madrid':'#FEBE10',Lille:'#C8102E','West Ham':'#7A263A',Atalanta:'#1D57A5'};const CLUB_ABBR={Chelsea:'CHE',Tottenham:'TOT','Manchester City':'MCI',Arsenal:'ARS','Aston Villa':'AVL',Newcastle:'NEW','Manchester United':'MUN',Ipswich:'IPS',Coventry:'COV',Brentford:'BRE',Brighton:'BHA',Liverpool:'LIV',Everton:'EVE',Leeds:'LEE',Hull:'HUL',Fulham:'FUL',Bournemouth:'BOU','Crystal Palace':'CRY','Nottingham Forest':'NFO',Sunderland:'SUN'};function clubAbbr(name){return CLUB_ABBR[name]||name.replace(/[^A-Za-z]/g,'').slice(0,3).toUpperCase()}const JERSEY_NUM={'Morgan Rogers':17,'Elliot Anderson':8,'Yan Diomande':25,'Sandro Tonali':8,'Ayyoub Bouaddi':32,'Carlos Baleba':20,'Nicolas Jackson':15,'Nico González':6,'Honest Ahanor':69};function countUp(el,target,fmt,dur){if(!el)return;dur=dur||1100;var t0=performance.now();function step(t){var p=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-p,3);el.textContent=fmt(target*e);if(p<1)requestAnimationFrame(step);else el.textContent=fmt(target);}requestAnimationFrame(step);}
-function money(v,base='EUR'){let eur=base==='USD'?v/.856:v;return sym[cur]+(eur*rates[cur]).toFixed(eur*rates[cur]>=100?0:1)+'m'}function esc(x){return String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}function renderPulse(){document.getElementById('marketPulse').innerHTML=[['ARRIVALS',248,0,'','Premier League',0,'gold'],['DEPARTURES',203,0,'','Premier League',0,'red'],['GROSS SPEND',2.77,2,'bn','record flow',0,'green'],['TRANSFER INCOME',1.75,2,'bn','reported receipts',0,'green'],['NET BALANCE',1.02,2,'bn','outbound capital',1,'blue']].map(x=>'<article><span>'+x[0]+'</span><b class="mp-'+x[6]+'" data-target="'+x[1]+'" data-suffix="'+x[3]+'"'+(x[5]?' data-neg="1"':'')+'>0</b><small>'+x[4]+'</small></article>').join('')}function renderSpend(){var a=SPEND.slice().sort((x,y)=>spendMode==='high'?y[1]-x[1]:x[1]-y[1]),max=Math.max(...SPEND.map(x=>x[1])),total=SPEND.reduce((s,x)=>s+x[1],0),avg=total/SPEND.length,top=SPEND.slice().sort((x,y)=>y[1]-x[1])[0],top3=a.slice(0,3),rest=a.slice(3),order=top3.length===3?[top3[1],top3[0],top3[2]]:top3;document.getElementById('spendingBoard').innerHTML='<div class="cx-stats">'+'<div class="cx-stat"><span>LEAGUE POOL</span><b>'+money(total,'USD')+'</b></div>'+'<div class="cx-stat"><span>AVERAGE SPEND</span><b>'+money(avg,'USD')+'</b></div>'+'<div class="cx-stat gold"><span>TOP SPENDER</span><b>'+money(top[1],'USD')+'</b><i>'+esc(top[0])+'</i></div>'+'</div>'+'<div class="cx-podium">'+order.map(function(x){var rank=a.indexOf(x)+1,c=CLUB_COLORS[x[0]]||'#57a7ff',pct=Math.round(x[1]/max*100);return '<div class="cx-podium-card rank-'+rank+'" style="--c:'+c+'">'+(rank===1?'<div class="cx-crown">&#128081;</div>':'')+'<div class="cx-crest jersey" style="--c:'+c+'"><span class="jersey-num" style="font-size:13px">7</span></div>'+'<div class="cx-podium-rank">#'+rank+'</div>'+'<div class="cx-podium-name">'+esc(x[0])+'</div>'+'<div class="cx-podium-val">'+money(x[1],'USD')+'</div>'+'<div class="cx-podium-meter"><i style="width:'+pct+'%"></i></div>'+'</div>';}).join('')+'</div>'+'<div class="cx-rail" role="tablist">'+rest.map(function(x,i){var rank=i+4,c=CLUB_COLORS[x[0]]||'#57a7ff',pct=Math.round(x[1]/max*100);return '<div class="cx-row" style="--c:'+c+'">'+'<span class="cx-rank">'+String(rank).padStart(2,'0')+'</span>'+'<span class="cx-badge jersey" style="--c:'+c+'"><span class="jersey-num" style="font-size:8px">7</span></span>'+'<span class="cx-name">'+esc(x[0])+'</span>'+'<span class="cx-bar"><i style="width:'+pct+'%"></i></span>'+'<span class="cx-val">'+money(x[1],'USD')+'</span>'+'</div>';}).join('')+'</div>';}function renderWire(){document.getElementById('rumourWire').innerHTML=WIRE.map(x=>'<article class="wire-item '+x[4]+'"><span>'+x[0]+'</span><h3>'+esc(x[1])+'</h3><b>'+esc(x[2])+'</b><p>'+esc(x[3])+'</p><em class="wire-src">'+esc(x[5]||'')+'</em></article>').join('')}function renderMoves(){var sorted=MOVES.slice().sort((a,b)=>b[3]-a[3]),max=sorted[0][3],total=MOVES.reduce((a,x)=>a+x[3],0),avg=total/MOVES.length,statTop=sorted[0];if(activeMoveIdx>=sorted.length||activeMoveIdx<0)activeMoveIdx=0;var sel=sorted[activeMoveIdx],selC=CLUB_COLORS[sel[2]]||'#f4b942';document.getElementById('confirmedStats').innerHTML='<div class="dl-stat"><span>LEDGER VOLUME</span><b>'+money(total)+'</b><i>ACROSS '+MOVES.length+' DEALS</i></div>'+'<div class="dl-stat"><span>AVERAGE FEE</span><b>'+money(avg)+'</b><i>PER CONFIRMED MOVE</i></div>'+'<div class="dl-stat gold"><span>TOP MOVE</span><b>'+money(statTop[3])+'</b><i>'+esc(statTop[0])+'</i></div>';document.getElementById('confirmedChart').innerHTML='<div class="dl-feature"><div class="dl-feature-jersey jersey" style="--c:'+selC+'"><span class="jersey-num" style="font-size:22px">'+(JERSEY_NUM[sel[0]]||9)+'</span></div><div class="dl-feature-ribbon">'+(activeMoveIdx===0?'&#127942; TOP MOVE':'&#128204; SELECTED MOVE')+'</div><div class="dl-feature-name">'+esc(sel[0])+'</div><div class="dl-feature-route"><span class="dl-chip" style="--c:'+(CLUB_COLORS[sel[1]]||'#57a7ff')+'">'+esc(sel[1])+'</span><span class="dl-arrow">&#8594;</span><span class="dl-chip" style="--c:'+selC+'">'+esc(sel[2])+'</span></div><div class="dl-feature-fee">'+money(sel[3])+'</div></div>';document.getElementById('confirmedBoard').innerHTML=sorted.map(function(x,i){var pct=Math.round(x[3]/max*100),medal=i===0?'&#129351;':i===1?'&#129352;':i===2?'&#129353;':'#'+(i+1),toC=CLUB_COLORS[x[2]]||'#f4b942';return '<div class="dl-card'+(i===0?' first':'')+(i===activeMoveIdx?' active':'')+'" data-idx="'+i+'" role="button" tabindex="0" aria-pressed="'+(i===activeMoveIdx?'true':'false')+'">'+'<div class="dl-card-top"><span class="dl-rank">'+medal+'</span><span class="dl-fee">'+money(x[3])+'</span></div>'+'<div class="dl-card-body">'+'<div class="dl-card-jersey jersey" style="--c:'+toC+'"></div>'+'<div class="dl-card-main">'+'<div class="dl-card-name">'+esc(x[0])+'</div>'+'<div class="dl-card-route">'+'<span class="dl-mini-chip" style="--c:'+(CLUB_COLORS[x[1]]||'#57a7ff')+'">'+esc(x[1])+'</span>'+'<span class="dl-mini-arrow">&#8594;</span>'+'<span class="dl-mini-chip" style="--c:'+toC+'">'+esc(x[2])+'</span>'+'</div>'+'</div>'+'</div>'+'<div class="dl-card-bar"><i style="width:'+pct+'%"></i></div>'+'</div>';}).join('');}function selectMove(i){activeMoveIdx=i;renderMoves()}document.getElementById('confirmedBoard').addEventListener('click',function(e){var c=e.target.closest('[data-idx]');if(c)selectMove(+c.dataset.idx)});document.getElementById('confirmedBoard').addEventListener('keydown',function(e){if(e.key!=='Enter'&&e.key!==' ')return;var c=e.target.closest('[data-idx]');if(c){e.preventDefault();selectMove(+c.dataset.idx)}});function renderValues(){let a=P.slice().sort((x,y)=>y.value-x.value).slice(0,50),max=a[0].value;document.getElementById('valueCards').innerHTML=a.map((p,i)=>'<button data-v="'+i+'" style="--w:'+(p.value/max*100)+'%"><span class="vc-rank'+(i<3?' top':'')+'">'+String(i+1).padStart(2,'0')+'</span><div><b>'+(NAT_FLAG[p.name]?'<span class="vc-flag">'+NAT_FLAG[p.name]+'</span> ':'')+esc(p.name)+'</b><small>'+esc(p.team)+' · '+p.pos+'</small><i><em style="--w:'+(p.value/max*100)+'%"></em></i></div><strong>'+money(p.value)+'</strong></button>').join('');document.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>detail(a[+b.dataset.v],+b.dataset.v+1));detail(a[0],1)}function detail(p,rank){let peers=P.filter(x=>x.pos===p.pos),avg=peers.reduce((a,x)=>a+x.value,0)/peers.length;document.getElementById('valueDetail').innerHTML='<span>SELECTED PLAYER · #'+rank+'</span><h3>'+(NAT_FLAG[p.name]?NAT_FLAG[p.name]+' ':'')+esc(p.name)+'</h3><p>'+esc(p.team)+' · '+p.pos+'</p><strong>'+money(p.value)+'</strong><div><small>POSITION PREMIUM</small><b>'+((p.value/avg-1)*100>=0?'+':'')+Math.round((p.value/avg-1)*100)+'%</b></div><div><small>VALUE TIER</small><b>'+(p.value>=120?'SUPERSTAR':p.value>=70?'ELITE':p.value>=30?'CORE':'DEVELOPMENT')+'</b></div><em>Market value is an estimate, not a reported offer or guaranteed transfer fee.</em>'}function renderMix(){let total=SPEND.reduce((a,x)=>a+x[1],0),top5=SPEND.slice().sort((a,b)=>b[1]-a[1]).slice(0,5),share=top5.reduce((a,x)=>a+x[1],0)/total*100;document.getElementById('spendMix').innerHTML='<div class="capital-ring" style="--share:'+share+'"><div><b>'+share.toFixed(1)+'%</b><span>TOP 5 CLUB SHARE</span></div></div><div class="capital-list">'+top5.map(x=>'<span><b>'+x[0]+'</b><em>$'+x[1].toFixed(1)+'m</em></span>').join('')+'</div>'}function renderTable(){let q=document.getElementById('transferSearch').value.toLowerCase(),pos=document.getElementById('transferPos').value,a=P.filter(p=>(!q||(p.name+' '+p.team).toLowerCase().includes(q))&&(!pos||p.pos===pos)).sort((x,y)=>y.value-x.value);document.getElementById('transferRows').innerHTML=a.map(p=>'<tr><td>'+(NAT_FLAG[p.name]?NAT_FLAG[p.name]+' ':'')+esc(p.name)+'</td><td>'+esc(p.team)+'</td><td>'+p.pos+'</td><td>'+money(p.value)+'</td></tr>').join('')}document.querySelectorAll('#curToggle button').forEach(b=>b.onclick=()=>{cur=b.dataset.cur;document.querySelectorAll('#curToggle button').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',x===b?'true':'false')});renderMoves();renderValues();renderTable();renderSpend();let total=P.reduce((a,p)=>a+p.value,0);document.getElementById('heroValMetric').textContent=sym[cur]+Math.round(total*rates[cur]).toLocaleString()+'m'});document.querySelectorAll('[data-spend]').forEach(b=>b.onclick=()=>{spendMode=b.dataset.spend;document.querySelectorAll('[data-spend]').forEach(x=>x.classList.toggle('active',x===b));renderSpend()});document.getElementById('transferSearch').oninput=renderTable;document.getElementById('transferPos').onchange=renderTable;document.querySelectorAll('#deskTabs button').forEach(function(b){b.onclick=function(){document.querySelectorAll('#deskTabs button').forEach(function(x){x.classList.toggle('active',x===b)});var w=b.dataset.desk==='wire';document.getElementById('marketDesk').style.display=w?'none':'';document.getElementById('rumourDesk').style.display=w?'':'none'}});let total=P.reduce((a,p)=>a+p.value,0);countUp(document.getElementById('heroValMetric'),total,v=>'€'+Math.round(v).toLocaleString()+'m');countUp(document.getElementById('heroCountMetric'),P.length,v=>Math.round(v));countUp(document.getElementById('heroClubMetric'),new Set(P.map(p=>p.team)).size,v=>Math.round(v));document.getElementById('curNote').textContent='Display conversion only · rates fixed Aug 27, 2026';renderPulse();renderSpend();renderWire();renderMoves();renderValues();renderMix();renderTable();document.querySelectorAll('#marketPulse b[data-target]').forEach(function(el){var t=parseFloat(el.dataset.target),isBn=el.dataset.suffix==='bn';countUp(el,t,v=>isBn?(el.dataset.neg==='1'?'−€':'€')+v.toFixed(2)+'bn':Math.round(v))});})();</script>
+function money(v,base='EUR'){let eur=base==='USD'?v/.856:v;return sym[cur]+(eur*rates[cur]).toFixed(eur*rates[cur]>=100?0:1)+'m'}function esc(x){return String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}function renderPulse(){document.getElementById('marketPulse').innerHTML=[['ARRIVALS',248,0,'','Premier League',0,'gold'],['DEPARTURES',203,0,'','Premier League',0,'red'],['GROSS SPEND',2.77,2,'bn','record flow',0,'green'],['INCOME',1.75,2,'bn','reported receipts',0,'teal'],['NET BALANCE',1.02,2,'bn','outbound capital',1,'blue']].map(x=>'<article><span>'+x[0]+'</span><b class="mp-'+x[6]+'" data-target="'+x[1]+'" data-suffix="'+x[3]+'"'+(x[5]?' data-neg="1"':'')+'>0</b><small>'+x[4]+'</small></article>').join('')}function renderSpend(){var a=SPEND.slice().sort((x,y)=>spendMode==='high'?y[1]-x[1]:x[1]-y[1]),max=Math.max(...SPEND.map(x=>x[1])),total=SPEND.reduce((s,x)=>s+x[1],0),avg=total/SPEND.length,top=SPEND.slice().sort((x,y)=>y[1]-x[1])[0],top3=a.slice(0,3),rest=a.slice(3),order=top3.length===3?[top3[1],top3[0],top3[2]]:top3;document.getElementById('spendingBoard').innerHTML='<div class="cx-stats">'+'<div class="cx-stat"><span>LEAGUE POOL</span><b>'+money(total,'USD')+'</b></div>'+'<div class="cx-stat"><span>AVERAGE SPEND</span><b>'+money(avg,'USD')+'</b></div>'+'<div class="cx-stat gold"><span>TOP SPENDER</span><b>'+money(top[1],'USD')+'</b><i>'+esc(top[0])+'</i></div>'+'</div>'+'<div class="cx-podium">'+order.map(function(x){var rank=a.indexOf(x)+1,c=CLUB_COLORS[x[0]]||'#57a7ff',pct=Math.round(x[1]/max*100);return '<div class="cx-podium-card rank-'+rank+'" style="--c:'+c+'">'+(rank===1?'<div class="cx-crown">&#128081;</div>':'')+'<div class="cx-crest jersey" style="--c:'+c+'"><span class="jersey-num" style="font-size:13px">7</span></div>'+'<div class="cx-podium-rank">#'+rank+'</div>'+'<div class="cx-podium-name">'+esc(x[0])+'</div>'+'<div class="cx-podium-val">'+money(x[1],'USD')+'</div>'+'<div class="cx-podium-meter"><i style="width:'+pct+'%"></i></div>'+'</div>';}).join('')+'</div>'+'<div class="cx-rail" role="tablist">'+rest.map(function(x,i){var rank=i+4,c=CLUB_COLORS[x[0]]||'#57a7ff',pct=Math.round(x[1]/max*100);return '<div class="cx-row" style="--c:'+c+'">'+'<span class="cx-rank">'+String(rank).padStart(2,'0')+'</span>'+'<span class="cx-badge jersey" style="--c:'+c+'"><span class="jersey-num" style="font-size:8px">7</span></span>'+'<span class="cx-name">'+esc(x[0])+'</span>'+'<span class="cx-bar"><i style="width:'+pct+'%"></i></span>'+'<span class="cx-val">'+money(x[1],'USD')+'</span>'+'</div>';}).join('')+'</div>';}function renderWire(){document.getElementById('rumourWire').innerHTML=WIRE.map(x=>'<article class="wire-item '+x[4]+'"><span>'+x[0]+'</span><h3>'+esc(x[1])+'</h3><b>'+esc(x[2])+'</b><p>'+esc(x[3])+'</p><em class="wire-src">'+esc(x[5]||'')+'</em></article>').join('')}function renderMoves(){var sorted=MOVES.slice().sort((a,b)=>b[3]-a[3]),max=sorted[0][3],total=MOVES.reduce((a,x)=>a+x[3],0),avg=total/MOVES.length,statTop=sorted[0];if(activeMoveIdx>=sorted.length||activeMoveIdx<0)activeMoveIdx=0;var sel=sorted[activeMoveIdx],selC=CLUB_COLORS[sel[2]]||'#f4b942';document.getElementById('confirmedStats').innerHTML='<div class="dl-stat"><span>LEDGER VOLUME</span><b>'+money(total)+'</b><i>ACROSS '+MOVES.length+' DEALS</i></div>'+'<div class="dl-stat"><span>AVERAGE FEE</span><b>'+money(avg)+'</b><i>PER CONFIRMED MOVE</i></div>'+'<div class="dl-stat gold"><span>TOP MOVE</span><b>'+money(statTop[3])+'</b><i>'+esc(statTop[0])+'</i></div>';document.getElementById('confirmedChart').innerHTML='<div class="dl-feature"><div class="dl-feature-jersey jersey" style="--c:'+selC+'"><span class="jersey-num" style="font-size:22px">'+(JERSEY_NUM[sel[0]]||9)+'</span></div><div class="dl-feature-ribbon">'+(activeMoveIdx===0?'&#127942; TOP MOVE':'&#128204; SELECTED MOVE')+'</div><div class="dl-feature-name">'+esc(sel[0])+'</div><div class="dl-feature-route"><span class="dl-chip" style="--c:'+(CLUB_COLORS[sel[1]]||'#57a7ff')+'">'+esc(sel[1])+'</span><span class="dl-arrow">&#8594;</span><span class="dl-chip" style="--c:'+selC+'">'+esc(sel[2])+'</span></div><div class="dl-feature-fee">'+money(sel[3])+'</div></div>';document.getElementById('confirmedBoard').innerHTML=sorted.map(function(x,i){var pct=Math.round(x[3]/max*100),medal=i===0?'&#129351;':i===1?'&#129352;':i===2?'&#129353;':'#'+(i+1),toC=CLUB_COLORS[x[2]]||'#f4b942';return '<div class="dl-card'+(i===0?' first':'')+(i===activeMoveIdx?' active':'')+'" data-idx="'+i+'" role="button" tabindex="0" aria-pressed="'+(i===activeMoveIdx?'true':'false')+'">'+'<div class="dl-card-top"><span class="dl-rank">'+medal+'</span><span class="dl-fee">'+money(x[3])+'</span></div>'+'<div class="dl-card-body">'+'<div class="dl-card-jersey jersey" style="--c:'+toC+'"></div>'+'<div class="dl-card-main">'+'<div class="dl-card-name">'+esc(x[0])+'</div>'+'<div class="dl-card-route">'+'<span class="dl-mini-chip" style="--c:'+(CLUB_COLORS[x[1]]||'#57a7ff')+'">'+esc(x[1])+'</span>'+'<span class="dl-mini-arrow">&#8594;</span>'+'<span class="dl-mini-chip" style="--c:'+toC+'">'+esc(x[2])+'</span>'+'</div>'+'</div>'+'</div>'+'<div class="dl-card-bar"><i style="width:'+pct+'%"></i></div>'+'</div>';}).join('');}function selectMove(i){activeMoveIdx=i;renderMoves()}document.getElementById('confirmedBoard').addEventListener('click',function(e){var c=e.target.closest('[data-idx]');if(c)selectMove(+c.dataset.idx)});document.getElementById('confirmedBoard').addEventListener('keydown',function(e){if(e.key!=='Enter'&&e.key!==' ')return;var c=e.target.closest('[data-idx]');if(c){e.preventDefault();selectMove(+c.dataset.idx)}});function renderValues(){let a=P.slice().sort((x,y)=>y.value-x.value).slice(0,50),max=a[0].value;document.getElementById('valueCards').innerHTML=a.map((p,i)=>'<button data-v="'+i+'" style="--w:'+(p.value/max*100)+'%"><span class="vc-rank'+(i<3?' top':'')+'">'+String(i+1).padStart(2,'0')+'</span><div><b>'+(NAT_FLAG[p.name]?'<span class="vc-flag">'+NAT_FLAG[p.name]+'</span> ':'')+esc(p.name)+'</b><small>'+esc(p.team)+' · '+p.pos+'</small><i><em style="--w:'+(p.value/max*100)+'%"></em></i></div><strong>'+money(p.value)+'</strong></button>').join('');document.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>detail(a[+b.dataset.v],+b.dataset.v+1));detail(a[0],1)}function detail(p,rank){let peers=P.filter(x=>x.pos===p.pos),avg=peers.reduce((a,x)=>a+x.value,0)/peers.length;document.getElementById('valueDetail').innerHTML='<span>SELECTED PLAYER · #'+rank+'</span><h3>'+(NAT_FLAG[p.name]?NAT_FLAG[p.name]+' ':'')+esc(p.name)+'</h3><p>'+esc(p.team)+' · '+p.pos+'</p><strong>'+money(p.value)+'</strong><div><small>POSITION PREMIUM</small><b>'+((p.value/avg-1)*100>=0?'+':'')+Math.round((p.value/avg-1)*100)+'%</b></div><div><small>VALUE TIER</small><b>'+(p.value>=120?'SUPERSTAR':p.value>=70?'ELITE':p.value>=30?'CORE':'DEVELOPMENT')+'</b></div><em>Market value is an estimate, not a reported offer or guaranteed transfer fee.</em>'}function renderMix(){let total=SPEND.reduce((a,x)=>a+x[1],0),top5=SPEND.slice().sort((a,b)=>b[1]-a[1]).slice(0,5),share=top5.reduce((a,x)=>a+x[1],0)/total*100;document.getElementById('spendMix').innerHTML='<div class="capital-ring" style="--share:'+share+'"><div><b>'+share.toFixed(1)+'%</b><span>TOP 5 CLUB SHARE</span></div></div><div class="capital-list">'+top5.map(x=>'<span><b>'+x[0]+'</b><em>$'+x[1].toFixed(1)+'m</em></span>').join('')+'</div>'}function renderTable(){let q=document.getElementById('transferSearch').value.toLowerCase(),pos=document.getElementById('transferPos').value,a=P.filter(p=>(!q||(p.name+' '+p.team).toLowerCase().includes(q))&&(!pos||p.pos===pos)).sort((x,y)=>y.value-x.value);document.getElementById('transferRows').innerHTML=a.map(p=>'<tr><td>'+(NAT_FLAG[p.name]?NAT_FLAG[p.name]+' ':'')+esc(p.name)+'</td><td>'+esc(p.team)+'</td><td>'+p.pos+'</td><td>'+money(p.value)+'</td></tr>').join('')}document.querySelectorAll('#curToggle button').forEach(b=>b.onclick=()=>{cur=b.dataset.cur;document.querySelectorAll('#curToggle button').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',x===b?'true':'false')});renderMoves();renderValues();renderTable();renderSpend();let total=P.reduce((a,p)=>a+p.value,0);document.getElementById('heroValMetric').textContent=sym[cur]+Math.round(total*rates[cur]).toLocaleString()+'m'});document.querySelectorAll('[data-spend]').forEach(b=>b.onclick=()=>{spendMode=b.dataset.spend;document.querySelectorAll('[data-spend]').forEach(x=>x.classList.toggle('active',x===b));renderSpend()});document.getElementById('transferSearch').oninput=renderTable;document.getElementById('transferPos').onchange=renderTable;document.querySelectorAll('#deskTabs button').forEach(function(b){b.onclick=function(){document.querySelectorAll('#deskTabs button').forEach(function(x){x.classList.toggle('active',x===b)});var w=b.dataset.desk==='wire';document.getElementById('marketDesk').style.display=w?'none':'';document.getElementById('rumourDesk').style.display=w?'':'none'}});let total=P.reduce((a,p)=>a+p.value,0);countUp(document.getElementById('heroValMetric'),total,v=>'€'+Math.round(v).toLocaleString()+'m');countUp(document.getElementById('heroCountMetric'),P.length,v=>Math.round(v));countUp(document.getElementById('heroClubMetric'),new Set(P.map(p=>p.team)).size,v=>Math.round(v));document.getElementById('curNote').textContent='Display conversion only · rates fixed Aug 27, 2026';renderPulse();renderSpend();renderWire();renderMoves();renderValues();renderMix();renderTable();document.querySelectorAll('#marketPulse b[data-target]').forEach(function(el){var t=parseFloat(el.dataset.target),isBn=el.dataset.suffix==='bn';countUp(el,t,v=>isBn?(el.dataset.neg==='1'?'−€':'€')+v.toFixed(2)+'bn':Math.round(v))});})();</script>
 
 <style id="so-mobile-repair-20260819">
 @media(max-width:700px){
@@ -576,7 +576,12 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 </style>
 <footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>© 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call 1-800-GAMBLER.</p></footer>
 <script id="so-transfer-wire-final-js">(function(){const W=[
+{status:'AGREEMENT',player:'Bradley Barcola',route:'Paris Saint-Germain → Liverpool',fee:'REPORTED £109M–£140M',confidence:91,heat:99,read:'Liverpool have reached a fee compromise with PSG after a prolonged standoff; reported figures have ranged from roughly £110m to £140m depending on outlet, with Liverpool.com and This Is Anfield converging closest to a £123m package. Barcola has since travelled for a medical.',next:'Official club confirmation and unveiling',source:'ESPN + This Is Anfield + Liverpool.com'},
 {status:'AGREEMENT',player:'Allan Elias',route:'Palmeiras → Manchester City',fee:'UP TO £34.2M',confidence:94,heat:96,read:'Agreement reported with £32m guaranteed plus £2m in add-ons. This sits closest to completion on the desk.',next:'Medical, registration and club announcement',source:'Reuters + The Guardian'},
+{status:'ADVANCED',player:'Pape Matar Sarr',route:'Tottenham → Nottingham Forest',fee:'LOAN + OPTION, TBD',confidence:63,heat:71,read:'Sarr has formally asked to leave after slipping down Tottenham’s pecking order. Talks with Forest have advanced toward a paid loan with an option to buy, though Tottenham’s sign-off on that structure and Sarr’s own agreement to the move both remain outstanding.',next:'Structure sign-off from Tottenham and player agreement',source:'Sacha Tavolieri'},
+{status:'MONITOR',player:'Ismaila Sarr',route:'Crystal Palace → Manchester United',fee:'ASKING NORTH OF £50M',confidence:41,heat:57,read:'United are monitoring the winger as a squad-depth option, but reporting frames Galatasaray as front-runners for a move that would need to clear Palace’s £50m-plus asking price.',next:'A direct approach from a Premier League club',source:'3 Added Minutes'},
+{status:'RUMOUR',player:'Marcus Rashford',route:'Manchester United → Arsenal',fee:'SPECULATIVE',confidence:29,heat:44,read:'Arsenal are described as keeping tabs on Rashford as one avenue for a left-sided forward addition. Framed as background interest, not an active approach.',next:'A concrete enquiry or bid from Arsenal',source:'3 Added Minutes'},
+{status:'TALKS',player:'Jean-Philippe Mateta',route:'Crystal Palace → Aston Villa',fee:'TBD',confidence:56,heat:64,read:'Villa are pursuing Mateta as a replacement for Ollie Watkins, but face competition from Manchester United, Tottenham and Galatasaray for the Palace striker.',next:'Palace agreeing to sell within the final week of the window',source:'3 Added Minutes'},
 {status:'AGREEMENT',player:'Savinho',route:'Manchester City → Tottenham',fee:'£75M + £10M',confidence:86,heat:94,read:'A large outgoing move that can reshape City wing minutes and finance the next acquisition cycle; reporting still stopped short of official confirmation.',next:'Official confirmation and contract filing',source:'Reuters + The Guardian'},
 {status:'AGREEMENT',player:'Nico González',route:'Manchester City → Newcastle',fee:'£47M + £3M',confidence:95,heat:92,read:'Romano reports a verbal agreement is done at £47m plus £3m in add-ons, with the player giving the green light overnight. Newcastle midfield construction and City squad balance are the key second-order effects.',next:'Medical and official club announcement',source:'Fabrizio Romano'},
 {status:'ADVANCED',player:'Liam Delap',route:'Chelsea → Nottingham Forest',fee:'TBD',confidence:80,heat:83,read:'Advanced talks address Forest striker depth. Treat the lack of a settled fee as the main unresolved variable.',next:'Fee structure and player agreement',source:'The Guardian'},
@@ -956,7 +961,7 @@ document.getElementById('wireDetail').innerHTML='<span>'+x.status+' \u00b7 VERIF
 (function(){
   'use strict';
   var SPEND=[['Tottenham',322],['Chelsea',272.9],['Newcastle',224.2],['Liverpool',217.5],['Manchester City',216.7],['Aston Villa',213.8],['Arsenal',198.5],['Manchester United',163],['Ipswich',143.95],['Coventry',127.2],['Brighton',114],['Brentford',112.5],['Nottingham Forest',84.3],['Leeds',82.5],['Fulham',77.5],['Everton',74],['Bournemouth',57.9],['Sunderland',33.7],['Hull',27.8],['Crystal Palace',10]];
-  var MOVES=[['Bradley Barcola','Paris Saint-Germain','Liverpool',123,106,17],['Morgan Rogers','Aston Villa','Chelsea',117],['Elliot Anderson','Nottingham Forest','Manchester City',116],['Sandro Tonali','Newcastle','Tottenham',100],['Ayyoub Bouaddi','Lille','Manchester City',86],['Mateus Fernandes','West Ham','Tottenham',85],['Savio','Manchester City','Tottenham',85],['Bruno Guimaraes','Newcastle','Arsenal',75],['Carlos Baleba','Brighton','Manchester United',70],['Nicolas Jackson','Chelsea','Aston Villa',65],['Jeremy Jacquet','Rennes','Liverpool',60]];
+  var MOVES=[['Bradley Barcola','Paris Saint-Germain','Liverpool',123,106,17],['Morgan Rogers','Aston Villa','Chelsea',117],['Elliot Anderson','Nottingham Forest','Manchester City',116],['Yan Diomande','RB Leipzig','Real Madrid',107],['Sandro Tonali','Newcastle','Tottenham',100],['Mateus Fernandes','West Ham','Tottenham',85],['Ayyoub Bouaddi','Lille','Manchester City',81],['Bruno Guimaraes','Newcastle','Arsenal',75],['Savio','Manchester City','Tottenham',75],['Anthony Gordon','Newcastle','Barcelona',69],['Carlos Baleba','Brighton','Manchester United',65],['Nicolas Jackson','Chelsea','Aston Villa',65],['Jeremy Jacquet','Rennes','Liverpool',55],['Crysencio Summerville','West Ham','Al Hilal',55],['Maxence Lacroix','Crystal Palace','Chelsea',52],['Jan Paul van Hecke','Brighton','Tottenham',52],['Tijjani Reijnders','Manchester City','Al-Qadsiah',52],['Ezri Konsa','Aston Villa','Arsenal',51],['Johan Manzambi','Freiburg','Aston Villa',51],['Rasmus Hojlund','Manchester United','Napoli',38]];
   var COLORS={Chelsea:'#176bc1',Tottenham:'#293f8f',Arsenal:'#ef2636',Newcastle:'#817a74','Manchester City':'#72bde7',Ipswich:'#315ec0','Aston Villa':'#8f184c',Coventry:'#79c8ed',Brighton:'#1374c9',Liverpool:'#d72236',Everton:'#154fba','Manchester United':'#df312b',Leeds:'#3157a1',Hull:'#f18a00',Fulham:'#777',Brentford:'#e52d35',Bournemouth:'#d72931','Crystal Palace':'#3159a6','Nottingham Forest':'#dd202a',Sunderland:'#ec2634','RB Leipzig':'#dd285b','Real Madrid':'#d1a91f',Lille:'#c82939','West Ham':'#8f3155',Atalanta:'#2866b9'};
   var KITS={Chelsea:['#176bc1','#0a3c8c','#f1d487','#176bc1','#176bc1'],Tottenham:['#f4f5f7','#1d285a','#1d285a','#1d285a','#f4f5f7'],'Manchester City':['#75c9ed','#25568a','#f4f5f7','#f4f5f7','#75c9ed'],Arsenal:['#e32838','#a10d1d','#f4f5f7','#f4f5f7','#e32838'],'Aston Villa':['#8c1c4b','#52a9d3','#52a9d3','#f4f5f7','#8c1c4b'],Newcastle:['#17191d','#f3f4f5','#e9b94f','#17191d','#17191d'],'Manchester United':['#df2d33','#9f1117','#f2c45d','#f4f5f7','#11151b'],Liverpool:['#d51e33','#8e101e','#f0d58c','#d51e33','#d51e33'],'Real Madrid':['#f4f5f7','#d8dbe1','#d8b24d','#f4f5f7','#f4f5f7'],'RB Leipzig':['#f4f5f7','#d62355','#d62355','#d62355','#f4f5f7'],Lille:['#c82939','#861421','#f4f5f7','#173158','#c82939'],'West Ham':['#8f3155','#5eb2d4','#5eb2d4','#f4f5f7','#8f3155'],Brighton:['#1878cc','#f4f5f7','#f4f5f7','#f4f5f7','#1878cc'],Everton:['#1552bd','#0b337c','#f4f5f7','#f4f5f7','#1552bd'],'Nottingham Forest':['#dd202a','#9b1018','#f4f5f7','#f4f5f7','#dd202a'],Atalanta:['#1760a9','#17191d','#f4f5f7','#17191d','#1760a9']};
   var WINDOW_ARRIVALS={
@@ -981,7 +986,7 @@ document.getElementById('wireDetail').innerHTML='<span>'+x.status+' \u00b7 VERIF
     Sunderland:[['Dayann Methalie',25.7],['Jules Ahoka',8]],
     Tottenham:[['Sandro Tonali',100],['Mateus Fernandes',85],['Savio',85],['Jan Paul van Hecke',52]]
   };
-  var NUM={'Bradley Barcola':29,'Morgan Rogers':17,'Elliot Anderson':8,'Sandro Tonali':8,'Ayyoub Bouaddi':32,'Mateus Fernandes':18,'Savio':26,'Bruno Guimaraes':39,'Carlos Baleba':20,'Nicolas Jackson':15,'Jeremy Jacquet':6};
+  var NUM={'Bradley Barcola':29,'Morgan Rogers':17,'Elliot Anderson':8,'Sandro Tonali':8,'Ayyoub Bouaddi':32,'Mateus Fernandes':18,'Savio':26,'Bruno Guimaraes':39,'Carlos Baleba':20,'Nicolas Jackson':15,'Jeremy Jacquet':6,'Yan Diomande':25,'Anthony Gordon':10,'Crysencio Summerville':7,'Maxence Lacroix':4,'Jan Paul van Hecke':4,'Tijjani Reijnders':4,'Ezri Konsa':4,'Johan Manzambi':8,'Rasmus Hojlund':9};
   var spendMode='high',selectedClub='Chelsea',selectedMove=0;
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function currency(){var b=document.querySelector('#curToggle button.active');return b?b.dataset.cur:'EUR'}
@@ -1019,5 +1024,245 @@ document.getElementById('wireDetail').innerHTML='<span>'+x.status+' \u00b7 VERIF
   setTimeout(function(){document.querySelectorAll('#marketPulse article').forEach(function(card){var label=card.querySelector('span'),value=card.querySelector('b');if(label&&value&&label.textContent.trim()==='GROSS SPEND'){value.removeAttribute('data-target');value.textContent='£2.65bn';var note=card.querySelector('small');if(note)note.textContent='DISCLOSED PAID FEES'}})},1250);
 })();
 </script>
+<style id="so-transfer-agent-polish-20260829">
+/* ============================================================
+   Final consolidated polish pass. Placed last in the document so
+   it wins the cascade over the many earlier layered patches above,
+   without having to unpick every one of them individually.
+   ============================================================ */
+
+/* --- 1. Eyebrow labels -> pill/banner treatment (Club Spending
+   Exchange, High-Fee Ledger, Global Value Book, Rumour Wire all
+   share the same "<div class=terminal-head><div><span>EYEBROW</span>
+   <h2>Title</h2></div>..." markup, so one selector covers all four). --- */
+.terminal-head>div:first-child>span{
+  position:relative;
+  display:inline-flex!important;align-items:center;gap:6px;
+  padding:6px 14px 6px 11px!important;
+  border:1px solid transparent;
+  border-radius:999px;
+  background:
+    linear-gradient(#0a141f,#0a141f) padding-box,
+    linear-gradient(120deg,rgba(244,185,66,.8),rgba(87,167,255,.5) 55%,rgba(244,185,66,.8)) border-box;
+  color:#f6e2ac!important;
+  font-family:'DM Mono',monospace!important;
+  font-size:8.5px!important;
+  font-weight:800!important;
+  letter-spacing:.16em!important;
+  text-transform:uppercase;
+  box-shadow:0 0 0 1px rgba(244,185,66,.07),0 5px 18px rgba(244,185,66,.12),inset 0 1px rgba(255,255,255,.07);
+  margin-bottom:10px!important;
+}
+.terminal-head>div:first-child>span:before{
+  content:'';flex:none;width:5px;height:5px;border-radius:50%;
+  background:var(--gold,#f4b942);
+  box-shadow:0 0 0 3px rgba(244,185,66,.18),0 0 8px rgba(244,185,66,.6);
+}
+.terminal-head>div:first-child>h2{
+  font-weight:600!important;
+  letter-spacing:-.01em;
+}
+
+/* --- 2 & 3. Section title font: finer, lighter than the default
+   bold h2 across every terminal-head. --- */
+.terminal-head h2{font-weight:600!important;letter-spacing:-.01em!important}
+
+/* --- 1. Club-jersey graphic in the spend presentation: scale it
+   down so it sits in better proportion with the rest of the card.
+   This targets only .kit-showcase / .window-jersey (the spend-card
+   kit graphic) — it does NOT touch .bill/.mcoin/.hero-glow/.shimmer,
+   which are the separate hero money-rain & glow animations, so the
+   hero motion is unaffected by this resize. --- */
+.tm-stage-body .tm-kit-zone{height:165px!important}
+.tm-kit-zone .kit-showcase.single-window-kit{transform:scale(.6912);transform-origin:50% 8%}
+@media(max-width:700px){
+  .tm-stage-body .tm-kit-zone{height:123px!important}
+  .tm-kit-zone .kit-showcase.single-window-kit{transform:scale(.6696)}
+}
+@media(prefers-reduced-motion:reduce){.tm-kit-zone .kit-showcase.single-window-kit{animation:none!important}}
+
+/* --- 2. High-Fee Ledger: real mobile bug — the three summary tiles
+   (Ledger Volume / Average Fee / Confirmed Moves) were picking up a
+   leftover forced sizing rule and rendering as near-empty columns.
+   Neutralize back to auto/content-driven height at every width. --- */
+.confirmed-card .ledger-stats{
+  display:block!important;
+  overflow:visible!important;
+  padding:12px 14px 0!important;
+  height:auto!important;min-height:0!important;max-height:none!important;
+}
+/* The actual live JS renders #confirmedStats.ledger-stats > div.tm-summary-strip
+   > span (three stat cards). An earlier rule (".confirmed-card .ledger-stats>div")
+   turned that wrapper div into a column flex item with flex:1 + min-height:80px,
+   and another rule gave each <span> flex:0 0 225px — in a column flex container
+   that flex-basis becomes a *height*, which is what inflated the three tiles.
+   Reset both back to a plain content-sized grid. */
+.confirmed-card .ledger-stats>div{
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  flex:none!important;width:auto!important;
+  gap:8px!important;
+  height:auto!important;min-height:0!important;max-height:none!important;
+  overflow:visible!important;
+}
+.confirmed-card .ledger-stats>div>span,.confirmed-card .dl-stat{
+  flex:none!important;width:auto!important;
+  height:auto!important;min-height:0!important;max-height:none!important;
+  padding:12px 13px!important;
+}
+@media(max-width:700px){
+  .confirmed-card .ledger-stats{padding:10px 10px 0!important}
+  .confirmed-card .ledger-stats>div{grid-template-columns:1fr 1fr!important}
+  .confirmed-card .ledger-stats>div>span:last-child,.confirmed-card .dl-stat:last-child{grid-column:1/-1}
+}
+@media(max-width:420px){
+  .confirmed-card .ledger-stats>div{grid-template-columns:1fr!important}
+}
+
+/* --- 4. Market Desk / Rumour Wire desk-tabs: ~10% bigger than the
+   prior forced 7px/31px (desktop) and 6px/28px (mobile) sizing. --- */
+#deskTabs button{
+  padding:9px 15px!important;
+  font-size:8.8px!important;
+  min-height:39px!important;
+}
+@media(max-width:700px){
+  #deskTabs button{padding:8px 12px!important;font-size:7.5px!important;min-height:36px!important}
+}
+
+/* --- 3. Global Value Book: shrink the "SCROLLABLE · CLICK A
+   PLAYER" hint well out of the way (it wasn't covered by the same
+   mobile shrink the other terminal-heads got), and stack the list +
+   detail pane on mobile instead of a horizontal peek/carousel so
+   nothing reads as cut off. --- */
+.valuation-card .terminal-head{flex-wrap:wrap}
+.valuation-card .terminal-head>small{
+  font-size:8px!important;
+  color:#4d6070!important;
+  letter-spacing:.06em!important;
+  opacity:.75;
+}
+@media(max-width:700px){
+  .valuation-card .terminal-head{display:grid!important;grid-template-columns:1fr!important;gap:4px!important;padding:13px 12px 11px!important}
+  .valuation-card .terminal-head>div:first-child>span{font-size:6px!important}
+  .valuation-card .terminal-head h2{font-size:1rem!important}
+  .valuation-card .terminal-head>small{font-size:6.5px!important;white-space:normal!important;justify-self:start!important}
+  .valuation-shell{display:block!important;overflow:visible!important}
+  .value-cards{width:100%!important;max-width:100%!important;flex:none!important}
+  .value-detail{width:100%!important;max-width:100%!important;flex:none!important;margin-top:10px!important;border-left:none!important;border-top:1px solid #1b2939}
+}
+
+/* --- 5. Rumour Wire: Market Heat / Confidence controls were
+   oversized and overflowing ("CONFID…" cut off) — bring them back
+   in line with the rest of the page and let them wrap cleanly. --- */
+.wire-card-full .wire-controls{flex-wrap:wrap!important;gap:8px!important}
+.wire-card-full .wire-controls input{flex:1 1 160px!important;min-width:0!important;padding:9px 12px!important;font-size:9px!important}
+.wire-card-full .wire-sort{flex-wrap:wrap!important;gap:6px!important;flex:1 1 100%!important}
+.wire-card-full .wire-sort button{
+  padding:8px 10px!important;
+  font-size:7px!important;
+  min-width:0!important;
+  flex:1 1 auto!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+}
+@media(max-width:700px){
+  .wire-card-full .wire-controls input{flex:1 1 100%!important;padding:9px 11px!important;font-size:8.5px!important}
+  .wire-card-full .wire-sort button{padding:7px 8px!important;font-size:6.3px!important}
+}
+
+/* Belt-and-braces: nothing in the touched components should ever
+   force page-level horizontal scroll. */
+.confirmed-card,.valuation-card,.spend-card,.wire-card-full{max-width:100%}
+</style>
+<style id="so-transfer-pulse-terminal-rebuild-20260829">
+/* ============================================================
+   Market-pulse stat row rebuild: financial-terminal tile chrome
+   in place of the flat "5 plain boxes with a big number" look —
+   hairline card borders, a per-tile colour-coded accent line,
+   a restrained mono eyebrow label and tabular-nums figures.
+   Counting-up animation (renderPulse / countUp) is untouched —
+   this is purely a visual layer on the same markup. --- */
+.market-pulse{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:10px!important;
+  border:none!important;
+  border-radius:0!important;
+  background:transparent!important;
+  overflow:visible!important;
+}
+.market-pulse article{
+  position:relative;
+  min-width:0;
+  padding:17px 15px 14px!important;
+  border:1px solid rgba(157,175,194,.16)!important;
+  border-radius:12px!important;
+  background:linear-gradient(168deg,rgba(255,255,255,.032),rgba(6,12,19,.94) 58%)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.04),0 10px 22px rgba(0,0,0,.22);
+  overflow:hidden;
+  isolation:isolate;
+}
+.market-pulse article:before{
+  content:'';position:absolute;left:14px;right:14px;top:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--pc,#57a7ff),transparent);
+  box-shadow:0 0 10px color-mix(in srgb,var(--pc,#57a7ff) 55%,transparent);
+  opacity:.9;
+}
+.market-pulse article:has(.mp-gold){--pc:#f4b942}
+.market-pulse article:has(.mp-red){--pc:#ff5d6c}
+.market-pulse article:has(.mp-green){--pc:#22d97e}
+.market-pulse article:has(.mp-teal){--pc:#2dd4bf}
+.market-pulse article:has(.mp-blue){--pc:#57a7ff}
+.market-pulse span{
+  display:block!important;
+  color:#6c8098!important;
+  font-family:'DM Mono',monospace!important;
+  font-size:9.5px!important;
+  font-weight:700!important;
+  letter-spacing:.14em!important;
+  text-transform:uppercase;
+}
+#marketPulse b{
+  display:block!important;
+  margin:10px 0 4px!important;
+  font-family:'DM Mono',monospace!important;
+  font-weight:700!important;
+  font-size:1.32rem!important;
+  letter-spacing:-.02em!important;
+  font-variant-numeric:tabular-nums;
+}
+.market-pulse small{
+  display:block;
+  color:#546881!important;
+  font-family:'DM Mono',monospace!important;
+  font-size:8px!important;
+  font-weight:700!important;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+  opacity:.85;
+}
+.mp-teal{color:var(--teal,#2dd4bf)}
+@media(max-width:980px){
+  .market-pulse{display:flex!important;overflow-x:auto!important;gap:9px!important;padding-bottom:2px}
+  .market-pulse article{flex:0 0 170px!important}
+}
+@media(max-width:700px){
+  .market-pulse{gap:8px!important}
+  .market-pulse article{flex:0 0 min(46vw,192px)!important;padding:14px 13px 12px!important}
+  .market-pulse article:before{left:12px;right:12px}
+  #marketPulse b{font-size:1.14rem!important;margin:8px 0 3px!important}
+  .market-pulse span{font-size:8.5px!important}
+  .market-pulse small{font-size:7.3px!important}
+}
+
+/* --- Deal Desk banner on narrow phones: give the pill its own row
+   so "DEAL DESK · AUG 27" never wraps against "STATUS MATTERS". --- */
+.terminal-head>div:first-child>span{white-space:nowrap}
+@media(max-width:480px){
+  .wire-card-full .terminal-head{display:grid!important;grid-template-columns:1fr!important;gap:6px!important;align-items:start!important}
+  .wire-card-full .terminal-head>small{white-space:normal!important}
+}
+</style>
 </body>
 </html>

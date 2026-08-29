@@ -577,6 +577,129 @@ section:nth-of-type(n+2),footer{content-visibility:visible;contain-intrinsic-siz
 /* consolidated final performance clarity */
 
 </style>
+
+<style id="so-hero-revamp-20260829">
+/* ===================== HERO REVAMP — background atmosphere, ticker tape,
+   headline sweep, upgraded stat cards, Who We Are chrome. Scoped to hero. ===================== */
+
+.hero-atmosphere{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.hero-atmosphere::before{
+  content:"";position:absolute;inset:-12%;
+  background-image:
+    linear-gradient(90deg,rgba(244,185,66,.055) 1px,transparent 1px),
+    linear-gradient(rgba(244,185,66,.038) 1px,transparent 1px);
+  background-size:58px 58px;
+  -webkit-mask-image:radial-gradient(1150px 640px at 26% 32%,#000 0%,transparent 70%);
+  mask-image:radial-gradient(1150px 640px at 26% 32%,#000 0%,transparent 70%);
+  animation:heroGridDrift 30s linear infinite;
+}
+@keyframes heroGridDrift{from{background-position:0 0}to{background-position:116px 116px}}
+.hero-chart{position:absolute;right:0;bottom:2%;width:52%;max-width:680px;height:230px;opacity:.48}
+.hero-chart svg{width:100%;height:100%;overflow:visible}
+.hero-chart .hc-area{opacity:.16}
+.hero-chart .hc-line{fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 10px rgba(244,185,66,.2))}
+.hero-chart .hc-dot{animation:heroChartPulse 2.6s ease-in-out infinite}
+.hero-chart .hc-dot.d2{animation-delay:.5s}
+.hero-chart .hc-dot.d3{animation-delay:1s}
+@keyframes heroChartPulse{0%,100%{opacity:.45;r:2.6}50%{opacity:1;r:4.2}}
+.hero-candles{position:absolute;left:2%;bottom:4%;width:28%;max-width:380px;display:flex;align-items:flex-end;justify-content:space-between;gap:0;opacity:.24}
+.hero-candle{width:6px;border-radius:2px;background:linear-gradient(180deg,rgba(87,167,255,.55),rgba(87,167,255,.08));animation:candleBreathe 3.6s ease-in-out infinite}
+.hero-candle.up{background:linear-gradient(180deg,rgba(63,193,122,.6),rgba(63,193,122,.08))}
+.hero-candle:nth-child(2n){animation-delay:.4s}.hero-candle:nth-child(3n){animation-delay:.9s}
+@keyframes candleBreathe{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.14)}}
+@media(prefers-reduced-motion:reduce){
+  .hero-atmosphere::before{animation:none}
+  .hero-chart .hc-dot{animation:none}
+  .hero-candle{animation:none}
+}
+
+/* Badge sheen */
+.hero-badge{position:relative;overflow:hidden}
+.hero-badge::after{content:"";position:absolute;top:0;left:-45%;width:35%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
+  animation:badgeSheen 5.5s ease-in-out infinite}
+@keyframes badgeSheen{0%,8%{left:-45%}55%,100%{left:120%}}
+@media(prefers-reduced-motion:reduce){.hero-badge::after{display:none}}
+
+/* Headline accent sweep under "the research." */
+.hero-accent{position:relative;display:inline-block;
+  background-image:linear-gradient(100deg,#f4b942 0%,#f4b942 38%,#fffce6 50%,#f4b942 62%,#f4b942 100%);
+  background-size:230% 100%;background-position:0% 0;background-repeat:no-repeat;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  animation:heroTextSweep 4s linear infinite}
+@keyframes heroTextSweep{from{background-position:0% 0}to{background-position:100% 0}}
+.hero-accent::after{content:"";position:absolute;left:1px;right:1px;bottom:-2px;height:4px;border-radius:4px;
+  background:linear-gradient(90deg,rgba(244,185,66,0),rgba(244,185,66,.95) 28%,rgba(244,185,66,.95) 72%,rgba(244,185,66,0));
+  filter:drop-shadow(0 0 12px rgba(244,185,66,.55));
+  animation:accentSweep 4.2s ease-in-out infinite;transform-origin:center}
+@keyframes accentSweep{0%,100%{opacity:.5;transform:scaleX(.85)}50%{opacity:1;transform:scaleX(1)}}
+@media(prefers-reduced-motion:reduce){
+  .hero-accent{animation:none;background:none;-webkit-background-clip:unset;background-clip:unset;color:var(--gold);-webkit-text-fill-color:var(--gold)}
+  .hero-accent::after{animation:none;opacity:.85}
+}
+
+/* CTA hover-glow — real-hover devices only, so touch never gets a stuck state */
+.hero-cta{transition:transform .25s ease,box-shadow .3s ease,border-color .3s ease}
+@media(hover:hover) and (pointer:fine){
+  .hero-cta-gold:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(244,185,66,.38),0 0 0 1px rgba(244,185,66,.3)}
+  .hero-cta-ghost:hover{transform:translateY(-2px);border-color:rgba(244,185,66,.32)!important;box-shadow:0 10px 26px rgba(0,0,0,.3)}
+}
+@media(prefers-reduced-motion:reduce){.hero-cta{transition:none}}
+
+/* Who We Are card — one-time light-catch reflection sweep on load */
+.card-sheen{position:absolute;inset:0;z-index:3;overflow:hidden;border-radius:inherit;pointer-events:none}
+.card-sheen::before{content:"";position:absolute;top:-30%;left:-65%;width:38%;height:160%;
+  background:linear-gradient(78deg,transparent,rgba(255,255,255,.14) 45%,rgba(244,185,66,.16) 55%,transparent);
+  transform:skewX(-18deg);
+  animation:cardSheenSweep 1.9s cubic-bezier(.3,.7,.3,1) .7s 1 both}
+@keyframes cardSheenSweep{0%{left:-65%}100%{left:140%}}
+@media(prefers-reduced-motion:reduce){.card-sheen::before{animation:none;display:none}}
+
+/* Live market tape */
+.so-index-hero-copy{min-width:0}
+.hero-tape{position:relative;overflow:hidden;border-radius:999px;border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.025);padding:10px 0;margin:26px 0 0;width:100%;max-width:600px;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.hero-tape-track{display:flex;width:max-content;animation:ticker 30s linear infinite}
+.hero-tape-item{display:inline-flex;align-items:center;gap:7px;padding:0 20px;
+  font-family:'DM Mono','Courier New',monospace;font-size:.66rem;letter-spacing:.02em;
+  color:#93a4b8;white-space:nowrap;border-right:1px solid rgba(255,255,255,.07)}
+.hero-tape-item b{color:#e8edf5;font-weight:700;font-family:inherit}
+.hero-tape-item .up{color:#3fc17a}
+.hero-tape-item .down{color:#ef4444}
+@media(prefers-reduced-motion:reduce){.hero-tape-track{animation:none}}
+
+/* Upgraded hero stat cards */
+.hero-stat-row .pop-card{padding:20px 18px!important}
+.hero-stat-row .pop-icon{width:38px;height:38px;border-radius:11px}
+.hero-stat-row .pop-icon svg{width:17px;height:17px}
+.hero-stat-row .pop-num{font-size:2.15rem}
+.hero-stat-row .pop-label{margin-top:0}
+.hero-stat-row .stat-spark{position:relative;z-index:1;width:100%;height:20px;margin-top:8px;opacity:.7}
+.hero-stat-live{position:relative;display:inline-flex;align-items:center;gap:5px;margin-top:6px;
+  font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:#3fc17a}
+
+/* Who We Are card chrome */
+.so-built-card{position:relative}
+.so-built-card::after{content:"";position:absolute;top:0;left:12%;right:12%;height:2px;z-index:2;
+  background:linear-gradient(90deg,transparent,rgba(244,185,66,.75) 22%,rgba(87,167,255,.5) 55%,transparent 100%);
+  filter:drop-shadow(0 0 10px rgba(244,185,66,.4));opacity:.85}
+.who-badge-pill{position:relative;overflow:hidden}
+.who-badge-pill .live-dot{width:6px;height:6px}
+.tile-pop{position:relative}
+.tile-pop::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;z-index:2;
+  background:var(--tile-accent,#57a7ff);box-shadow:0 0 12px var(--tile-accent,#57a7ff);opacity:.85}
+
+@media(max-width:640px){
+  .hero-atmosphere::before{background-size:40px 40px}
+  .hero-chart{width:78%;height:150px;opacity:.3;bottom:-2%}
+  .hero-candles{width:42%;max-width:none;bottom:1%;opacity:.17}
+  .hero-tape{margin-top:16px;width:100%;max-width:100%}
+  .hero-tape-item{font-size:.6rem;padding:0 14px}
+  .hero-stat-row .pop-num{font-size:1.15rem}
+}
+</style>
 <!-- Font requests removed: the system stack is immediate and avoids late page-wide reflow. -->
 
 
@@ -1092,23 +1215,70 @@ body::after{opacity:.56!important}
 <section class="relative overflow-hidden border-b border-white/5">
 <div class="hero-glow"></div>
 <div class="hero-glow-r"></div>
+<div class="hero-atmosphere" aria-hidden="true">
+<div class="hero-candles">
+<div class="hero-candle up" style="height:24px"></div>
+<div class="hero-candle" style="height:14px"></div>
+<div class="hero-candle up" style="height:34px"></div>
+<div class="hero-candle up" style="height:20px"></div>
+<div class="hero-candle" style="height:30px"></div>
+<div class="hero-candle up" style="height:44px"></div>
+<div class="hero-candle" style="height:18px"></div>
+<div class="hero-candle up" style="height:38px"></div>
+</div>
+<div class="hero-chart">
+<svg preserveaspectratio="none" viewbox="0 0 400 180">
+<defs>
+<lineargradient id="heroChartGrad" x1="0" x2="1" y1="0" y2="0">
+<stop offset="0%" stop-color="#57a7ff"></stop>
+<stop offset="55%" stop-color="#f4b942"></stop>
+<stop offset="100%" stop-color="#3fc17a"></stop>
+</lineargradient>
+<lineargradient id="heroChartFill" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#f4b942" stop-opacity=".55"></stop>
+<stop offset="100%" stop-color="#f4b942" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path class="hc-area" d="M0,140 L40,120 L80,132 L120,90 L160,104 L200,60 L240,76 L280,40 L320,54 L360,20 L400,32 L400,180 L0,180 Z" fill="url(#heroChartFill)"></path>
+<path class="hc-line" d="M0,140 L40,120 L80,132 L120,90 L160,104 L200,60 L240,76 L280,40 L320,54 L360,20 L400,32" stroke="url(#heroChartGrad)"></path>
+<circle class="hc-dot" cx="120" cy="90" fill="#57a7ff" r="3"></circle>
+<circle class="hc-dot d2" cx="240" cy="76" fill="#f4b942" r="3"></circle>
+<circle class="hc-dot d3" cx="360" cy="20" fill="#3fc17a" r="3"></circle>
+</svg>
+</div>
+</div>
 <div class="max-w-[1600px] mx-auto px-6 xl:px-10 py-24 relative z-10">
 <div class="grid xl:grid-cols-[1.15fr_.85fr] gap-16 items-center">
 <!-- LEFT -->
 <div class="so-index-hero-copy">
-<div class="inline-flex items-center gap-3 rounded-full border px-5 py-3 text-xs uppercase tracking-[.24em] mb-8" style="border-color:rgba(244,185,66,.2);background:rgba(244,185,66,.1);color:#fde68a">
+<div class="hero-badge inline-flex items-center gap-3 rounded-full border px-5 py-3 text-xs uppercase tracking-[.24em] mb-8" style="border-color:rgba(244,185,66,.2);background:rgba(244,185,66,.1);color:#fde68a">
 <div class="live-dot"></div>Short the Consensus · Know the Open
         </div>
 <h1 class="text-[3.8rem] md:text-[6.5rem] leading-[.88] font-black tracking-tight mb-6">
-          The edge is in<br/><span style="color:var(--gold)">the research.</span>
+          The edge is in<br/><span class="hero-accent">the research.</span>
 </h1>
 <p class="text-xl leading-9 text-zinc-400 max-w-xl mb-10">Short Open tracks opening numbers, line movement, player signals, and crowd bias so you can study the board before making your own call.</p>
 <div class="flex flex-wrap gap-4">
-<a class="rounded-2xl px-7 py-4 font-black text-sm uppercase tracking-[.18em] inline-block" href="optimizer.html" style="background:var(--gold);color:#000;text-decoration:none">Explore Tools</a>
-<a class="glass rounded-2xl px-7 py-4 text-sm font-semibold text-zinc-300 inline-block" href="subscribe.html" style="text-decoration:none">Get Market Notes</a>
+<a class="hero-cta hero-cta-gold rounded-2xl px-7 py-4 font-black text-sm uppercase tracking-[.18em] inline-block" href="optimizer.html" style="background:var(--gold);color:#000;text-decoration:none">Explore Tools</a>
+<a class="hero-cta hero-cta-ghost glass rounded-2xl px-7 py-4 text-sm font-semibold text-zinc-300 inline-block" href="subscribe.html" style="text-decoration:none">Get Market Notes</a>
+</div>
+<!-- LIVE MARKET TAPE -->
+<div class="hero-tape" aria-hidden="true">
+<div class="hero-tape-track">
+<span class="hero-tape-item">NFL TOTAL <b>44.5</b> <span class="up">→ 47.0</span></span>
+<span class="hero-tape-item">YANKEES ML <b>-142</b> <span class="down">open -128</span></span>
+<span class="hero-tape-item">PGA OUTRIGHT <b>+2200</b> <span class="up">steam ↑</span></span>
+<span class="hero-tape-item">KNICKS SPREAD <b>-3.5</b> <span class="down">open -2.5</span></span>
+<span class="hero-tape-item">EPL O/U 2.5 <b>-110</b> <span class="up">sharp side</span></span>
+<span class="hero-tape-item">NFL TOTAL <b>44.5</b> <span class="up">→ 47.0</span></span>
+<span class="hero-tape-item">YANKEES ML <b>-142</b> <span class="down">open -128</span></span>
+<span class="hero-tape-item">PGA OUTRIGHT <b>+2200</b> <span class="up">steam ↑</span></span>
+<span class="hero-tape-item">KNICKS SPREAD <b>-3.5</b> <span class="down">open -2.5</span></span>
+<span class="hero-tape-item">EPL O/U 2.5 <b>-110</b> <span class="up">sharp side</span></span>
+</div>
 </div>
 <!-- STAT ROW -->
-<div class="grid grid-cols-3 gap-4 mt-12 max-w-xl">
+<div class="hero-stat-row grid grid-cols-3 gap-4 mt-12 max-w-xl">
 <div class="glass rounded-[22px] p-5 market-card pop-card" style="--pop-accent:rgba(87,167,255,.7)">
 <div class="pop-glow" style="background:rgba(87,167,255,.5)"></div>
 <div class="pop-card-inner">
@@ -1149,12 +1319,14 @@ body::after{opacity:.56!important}
 <div class="pop-label">Updated Daily</div>
 <div class="pop-num text-emerald-400">2PM ET</div>
 <div class="pop-sublabel">Process First</div>
+<div class="hero-stat-live"><span class="live-dot" style="width:5px;height:5px"></span>Live now</div>
 </div>
 </div>
 </div>
 </div>
 <!-- RIGHT — Who We Are card -->
 <div class="glass rounded-[36px] p-8 market-card so-built-card">
+<div class="card-sheen" aria-hidden="true"></div>
 <div class="flex items-center justify-between border-b border-white/10 pb-5 mb-7">
 <div class="flex items-center gap-4">
 <div class="who-mark">
@@ -1165,7 +1337,7 @@ body::after{opacity:.56!important}
 <div class="text-2xl font-black">Built for bettors who think.<br/><span style="color:var(--gold)">Not bettors who chase.</span></div>
 </div>
 </div>
-<div class="rounded-full px-4 py-2 text-xs uppercase tracking-[.2em]" style="background:rgba(244,185,66,.1);color:var(--gold)">shortopen</div>
+<div class="who-badge-pill rounded-full px-4 py-2 text-xs uppercase tracking-[.2em] inline-flex items-center gap-2" style="background:rgba(244,185,66,.1);color:var(--gold);border:1px solid rgba(244,185,66,.22)"><span class="live-dot" style="background:var(--gold);box-shadow:0 0 8px rgba(244,185,66,.7)"></span>shortopen</div>
 </div>
 <div class="space-y-4 text-sm leading-7 text-zinc-400 mb-7">
 <p>Short Open started with a simple model: <strong class="text-white">short the consensus, know the open.</strong> The goal is not to scream picks. It is to understand when the public has pushed a number away from its cleanest price.</p>
@@ -1173,14 +1345,14 @@ body::after{opacity:.56!important}
 <p>This is our betting research: simple to read — <strong class="text-white">data is a book, instinct tells the story.</strong></p>
 </div>
 <div class="grid grid-cols-2 gap-3">
-<div class="rounded-[16px] border border-white/10 bg-black/20 p-4 tile-pop">
+<div class="rounded-[16px] border border-white/10 bg-black/20 p-4 tile-pop" style="--tile-accent:#57a7ff">
 <div class="tile-icon" style="background:rgba(87,167,255,.14);color:#57a7ff">
 <svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" viewbox="0 0 24 24" width="14"><ellipse cx="12" cy="5" rx="8" ry="3"></ellipse><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"></path><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"></path></svg>
 </div>
 <div class="text-xs uppercase tracking-[.14em] text-zinc-500 mb-1">Method</div>
 <div class="text-lg font-black">Model First.</div>
 </div>
-<div class="rounded-[16px] border border-white/10 bg-black/20 p-4 tile-pop">
+<div class="rounded-[16px] border border-white/10 bg-black/20 p-4 tile-pop" style="--tile-accent:#3fc17a">
 <div class="tile-icon" style="background:rgba(63,193,122,.14);color:#3fc17a">
 <svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" viewbox="0 0 24 24" width="14"><rect height="9" rx="2" width="16" x="4" y="11"></rect><path d="M8 11V8a4 4 0 0 1 7.4-2"></path></svg>
 </div>
