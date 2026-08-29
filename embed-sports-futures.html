@@ -217,6 +217,35 @@ input{height:40px;width:100%;border:1px solid var(--line);border-radius:10px;bac
 @media(max-width:650px){.fut2-wrap{padding:0 14px;margin-top:26px}.fut2-meta h3{font-size:.95rem}.fut2-spot{padding:14px 0 16px;gap:14px}.fut2-spot-side{align-items:flex-start;text-align:left}}
 @media(max-width:380px){.fut2-spot{flex-direction:column;align-items:flex-start}.fut2-spot-side{align-items:flex-start;text-align:left}}
 
+/* Mobile card deck: compare one compact future at a time, with the full
+   ShortOpen call contained inside every card. */
+@media(max-width:650px){
+ html,body{max-width:100%;overflow-x:hidden}
+ .market-grid{display:flex!important;grid-template-columns:none!important;gap:10px!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;overscroll-behavior-x:contain;padding:15px max(14px,calc((100vw - 360px)/2)) 30px!important;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+ .market-grid::-webkit-scrollbar{display:none}
+ .market-card{flex:0 0 min(86vw,330px)!important;width:min(86vw,330px)!important;min-height:0!important;height:auto!important;padding:15px!important;border-radius:15px!important;scroll-snap-align:center!important;scroll-snap-stop:always!important}
+ .market-card h3{font-size:1rem!important;margin:9px 0 3px!important}
+ .market-card .evt{font-size:.61rem!important;margin-bottom:10px!important}
+ .stat-swipe{display:block!important;overflow:visible!important;margin:0 0 9px!important;padding:0!important}
+ .stat-slide{display:block!important;width:100%!important;max-width:100%!important;margin:0!important}
+ .stat-slide+.stat-slide{margin-top:7px!important}
+ .stat-slide .price-row,.stat-slide .so-row{width:100%!important;height:auto!important;margin:0!important}
+ .price-row{padding:0 0 9px!important}.price-row .odds{font-size:1.55rem!important}
+ .so-row{align-items:flex-start!important;padding:8px 9px!important;overflow:hidden!important}
+ .so-row .so-pct{flex:0 0 auto;font-size:1rem!important}
+ .so-row .so-meta{overflow:hidden!important}.so-row .so-meta small{font-size:.41rem!important;white-space:normal!important}.so-row .so-meta span{font-size:.58rem!important;line-height:1.35!important;overflow-wrap:anywhere!important}
+ .stat-slide-tag{display:none!important}
+ .facts{gap:6px!important}.fact{padding-bottom:6px!important}.fact b{font-size:.62rem!important;line-height:1.35!important}.fact small{font-size:.41rem!important}
+ .card-foot{font-size:.47rem!important;line-height:1.35!important;gap:10px!important}.card-foot span:last-child{text-align:right}
+}
+
+/* Performance pass: keep one hero motion system, remove full-page repaint loops. */
+body{background-attachment:scroll!important}
+body:before{position:absolute!important;inset:0!important;animation:none!important;filter:none!important;opacity:.62}
+.ts-ring2,.ts-spark{animation:none!important}.ts-glow{animation:none!important;filter:none!important;opacity:.58}
+.so-row:before{content:none!important}.market-card .card-glow{filter:none!important;opacity:.055!important}
+.market-card,.legend-item,.fut2-body{contain:layout paint style}.fut2-wrap,.so-page-data-note{content-visibility:auto;contain-intrinsic-size:680px}
+@media(max-width:700px){.ts-ring,.ts-orbit,.ts-badge i{animation:none!important}.ts-trophy{filter:drop-shadow(0 0 10px rgba(233,185,79,.32))}.market-card{contain-intrinsic-size:300px}}
 </style></head><body><header class="hero"><div class="hero-inner"><div class="hero-copy"><div class="kicker">Sports Futures / Sourced &amp; Shopped</div><h1>Futures before <span>the field settles.</span></h1><p>Championship, pennant and title odds shopped across real sportsbooks &mdash; DraftKings, FanDuel, BetMGM, ESPN Bet, VegasInsider &mdash; with the roster and schedule context behind each price, plus ShortOpen's own read next to it.</p><div class="hero-meta" id="heroMeta"></div></div><div class="engine"><div class="trophy-stage"><div class="ts-ring"></div><div class="ts-ring2"></div><div class="ts-glow"></div><svg class="ts-trophy" viewBox="0 0 100 134" xmlns="http://www.w3.org/2000/svg">
 <!-- tg1: Vince Lombardi Trophy (Super Bowl) - chrome football tilted sharply atop a slim tapered triangular stand -->
 <g class="tg tg1">

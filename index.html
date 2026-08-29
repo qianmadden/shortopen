@@ -577,10 +577,7 @@ section:nth-of-type(n+2),footer{content-visibility:visible;contain-intrinsic-siz
 /* consolidated final performance clarity */
 
 </style>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
-<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" rel="stylesheet"/></noscript>
+<!-- Font requests removed: the system stack is immediate and avoids late page-wide reflow. -->
 
 
 
@@ -953,9 +950,8 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 @media(pointer:coarse){button,a,[role="button"]{touch-action:manipulation;}}
 </style>
 
-<!-- Short Open account layer: non-blocking Supabase auth -->
-<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script defer src="auth.js?v=20260814"></script>
+<!-- Short Open account layer: loaded after the first visual frame. -->
+<script id="so-lazy-auth-loader">(function(){var started=false;function load(){if(started)return;started=true;var sdk=document.createElement('script');sdk.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';sdk.onload=function(){var auth=document.createElement('script');auth.src='auth.js?v=20260814';document.head.appendChild(auth)};document.head.appendChild(sdk)}if(document.readyState==='complete'){setTimeout(load,700)}else{window.addEventListener('load',function(){setTimeout(load,700)},{once:true,passive:true})}document.addEventListener('pointerdown',load,{once:true,passive:true})})();</script>
 <style id="so-five-desk-carousel">
 .desk-carousel-shell{position:relative;max-width:1180px;margin:auto;padding:0 64px}
 .desk-progress{height:2px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin:0 0 26px}
@@ -1037,7 +1033,32 @@ html.so-perf-scrolling .so-perf-anim-target::after,
   .hero-glow{opacity:.42!important;filter:none!important;}
   .hero-glow-r{opacity:.40!important;filter:none!important;}
 }
-</style><style id="so-announce-swipe">.so-roadmap-section{position:relative}.so-announce-track{display:flex!important;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:20px 2px 10px;scrollbar-width:none}.so-announce-track::-webkit-scrollbar{display:none}.so-announce-track>.announcement-card{flex:0 0 min(400px,84vw);width:min(400px,84vw);scroll-snap-align:start;scroll-snap-stop:always;min-width:0}.so-announce-track>.so-subscribe-card{flex-basis:min(440px,88vw);width:min(440px,88vw)}.so-announce-nav{display:flex;justify-content:flex-end;gap:8px;margin-top:12px;position:relative;z-index:1}.so-announce-nav button{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.08);background:rgba(8,12,18,.4);color:rgba(220,229,237,.65);font-size:1rem;cursor:pointer;transition:.2s;backdrop-filter:blur(2px)}.so-announce-nav button:hover{border-color:rgba(244,185,66,.5);color:var(--gold);transform:scale(1.06)}@media(max-width:640px){.so-announce-nav{display:none}}</style></head>
+</style><style id="so-announce-swipe">.so-roadmap-section{position:relative}.so-announce-track{display:flex!important;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:20px 2px 10px;scrollbar-width:none}.so-announce-track::-webkit-scrollbar{display:none}.so-announce-track>.announcement-card{flex:0 0 min(400px,84vw);width:min(400px,84vw);scroll-snap-align:start;scroll-snap-stop:always;min-width:0}.so-announce-track>.so-subscribe-card{flex-basis:min(440px,88vw);width:min(440px,88vw)}.so-announce-nav{display:flex;justify-content:flex-end;gap:8px;margin-top:12px;position:relative;z-index:1}.so-announce-nav button{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.08);background:rgba(8,12,18,.4);color:rgba(220,229,237,.65);font-size:1rem;cursor:pointer;transition:.2s;backdrop-filter:blur(2px)}.so-announce-nav button:hover{border-color:rgba(244,185,66,.5);color:var(--gold);transform:scale(1.06)}@media(max-width:640px){.so-announce-nav{display:none}}</style>
+<style id="so-subscribe-card-density-20260828">
+.so-subscribe-card form input,.so-subscribe-card form button{min-height:0!important;height:36px!important;border-radius:10px!important}
+.so-subscribe-card form input{padding:.38rem .72rem!important;font-size:.68rem!important}
+.so-subscribe-card form button{padding:.38rem .82rem!important;font-size:.59rem!important;letter-spacing:.1em!important}
+.so-subscribe-card form+p{margin-top:.42rem!important;font-size:.51rem!important;letter-spacing:.055em!important;line-height:1.3!important}
+@media(max-width:640px){
+ .so-announce-track>.so-subscribe-card{flex-basis:min(390px,84vw)!important;width:min(390px,84vw)!important}
+ .so-subscribe-card .p-7{padding:1.18rem!important;padding-top:1rem!important}
+ .so-subscribe-card form{gap:.55rem!important}
+ .so-subscribe-card form input,.so-subscribe-card form button{height:36px!important;border-radius:10px!important}
+ .so-subscribe-card form input{padding:.38rem .7rem!important;font-size:.65rem!important}
+ .so-subscribe-card form button{padding:.38rem .78rem!important;font-size:.56rem!important}
+ .so-subscribe-card form+p{margin-top:.4rem!important;font-size:.48rem!important;line-height:1.28!important}
+}
+</style>
+<style id="so-index-seamless-first-paint-20260828">
+section,footer,.so-roadmap-section,.inside-section{content-visibility:visible!important;contain:none!important}
+.desk-panel,.announcement-card,.so-market-notes-card{backface-visibility:visible;will-change:auto!important}
+html:not(.so-perf-hidden) .so-perf-anim-target,html:not(.so-perf-hidden) .so-perf-offscreen-anim{animation-play-state:running!important}
+html,body{background-color:#080d16!important}
+body::before{opacity:.72!important}
+body::after{opacity:.56!important}
+.text-zinc-400{color:#b5b8bf!important}.text-zinc-500{color:#8d929b!important}
+.glass,.desk-panel,.announcement-card,.so-market-notes-card{border-color:rgba(255,255,255,.11)!important}
+</style></head>
 <body>
 <div class="so-nav-shell"><nav class="so-nav" aria-label="Primary navigation">
   <a class="so-nav-brand" href="index.html" aria-label="Short Open home"><span>short<b>open</b></span></a>
@@ -1330,19 +1351,8 @@ function handleSubmit(e){
   input.placeholder='Welcome to Short Open.';
   input.disabled=true;
 }
-// Keep first paint immediate. Only gate the below-fold decorative motion so
-// hero/desks/newsletter never wait on an entrance observer.
 const roadmapSection=document.querySelector('.so-roadmap-section');
-if(roadmapSection){
-  if('IntersectionObserver' in window){
-    const roadmapMotionObserver=new IntersectionObserver(entries=>{
-      entries.forEach(entry=>roadmapSection.classList.toggle('so-roadmap-active',entry.isIntersecting));
-    },{rootMargin:'180px 0px'});
-    roadmapMotionObserver.observe(roadmapSection);
-  }else{
-    roadmapSection.classList.add('so-roadmap-active');
-  }
-}
+if(roadmapSection)roadmapSection.classList.add('so-roadmap-active');
 
 // Count-up observer removed: there are no .count-up nodes on this page.
 </script>
@@ -1361,49 +1371,13 @@ if(roadmapSection){
 <script id="so-runtime-performance-core-js-20260811">
 (function(){
   'use strict';
-  var root=document.documentElement, seen=new WeakSet(), io=null, scrollTimer=0, scrollRAF=0;
-  function syncHidden(){root.classList.toggle('so-perf-hidden',document.hidden);}
-  document.addEventListener('visibilitychange',syncHidden,{passive:true});
-  window.addEventListener('pagehide',function(){root.classList.add('so-perf-hidden');},{passive:true});
-  window.addEventListener('pageshow',function(){syncHidden(); scheduleScan();},{passive:true});
-  syncHidden();
-  if('IntersectionObserver' in window){
-    io=new IntersectionObserver(function(entries){
-      entries.forEach(function(e){e.target.classList.toggle('so-perf-offscreen-anim',!e.isIntersecting);});
-    },{rootMargin:'280px 0px 280px 0px',threshold:0});
-  }
-  function scanAnimations(){
-    if(!document.getAnimations)return;
-    var list=document.getAnimations();
-    for(var i=0;i<list.length;i++){
-      var eff=list[i].effect, t=eff&&eff.target;
-      if(!t||t.nodeType!==1||seen.has(t))continue;
-      /* Only long-lived ambient loops belong in the offscreen pause system.
-         Finite entrance/reveal animations must be allowed to finish once so
-         cards and table rows cannot remain frozen in an opacity:0 start state. */
-      var timing=(eff&&eff.getTiming)?eff.getTiming():null;
-      if(!timing||timing.iterations!==Infinity)continue;
-      seen.add(t);t.classList.add('so-perf-anim-target');
-      if(io)io.observe(t);
-    }
-  }
-  function scheduleScan(){
-    if('requestIdleCallback' in window)requestIdleCallback(scanAnimations,{timeout:650});
-    else setTimeout(scanAnimations,120);
-  }
-  function markScrolling(){
-    if(!scrollRAF){
-      scrollRAF=requestAnimationFrame(function(){
-        scrollRAF=0;root.classList.add('so-perf-scrolling');
-      });
-    }
-    clearTimeout(scrollTimer);
-    scrollTimer=setTimeout(function(){root.classList.remove('so-perf-scrolling');},115);
-  }
-  /* capture:true catches nested horizontal/vertical scrollers too. */
-  document.addEventListener('scroll',markScrolling,{passive:true,capture:true});
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',scheduleScan,{once:true});else scheduleScan();
-  window.addEventListener('load',function(){setTimeout(scanAnimations,80);setTimeout(scanAnimations,900);},{once:true,passive:true});
+  /* The observer/idle-scan version paused and resumed sections while scrolling,
+     which looked like segmented loading. Keep every section painted from the
+     first frame and let each component own its small, local animation. */
+  document.documentElement.classList.remove('so-perf-hidden','so-perf-scrolling');
+  document.querySelectorAll('.so-perf-offscreen-anim,.so-perf-anim-target').forEach(function(el){
+    el.classList.remove('so-perf-offscreen-anim','so-perf-anim-target');
+  });
 })();
 </script>
 
@@ -1438,7 +1412,6 @@ if(roadmapSection){
     }
     dots.querySelectorAll('button').forEach(function(b,n){var isActive=n===centerOrderIdx;b.classList.toggle('active',isActive);b.setAttribute('aria-current',isActive?'true':'false')});
     if(progress){var bar=progress.querySelector('i');if(bar)bar.style.width=(((centerOrderIdx+1)/5)*100)+'%'}
-    sizeStage();
   }
   function centerCard(){return cards[ORDER[centerOrderIdx]]}
   function goTo(newCenterOrderIdx){centerOrderIdx=(newCenterOrderIdx+5)%5;applySlots()}
