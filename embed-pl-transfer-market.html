@@ -5,7 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Transfer Market</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="shortcut icon" href="favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Loaded non-blocking (print-media swap trick): the previous plain rel="stylesheet" link
+     held up first paint until the Google Fonts CSS resolved. This lets the page render
+     immediately with the system font stack and swap to Inter/DM Mono once they land.
+     Weights also widened to 400/500/700/800 for DM Mono — the page's own CSS calls for
+     font-weight 700/800/900 on DM Mono numerals in several places, but only 400/500 were
+     ever being fetched, so the browser was silently substituting the nearest weight it had
+     (500) instead of the bold the design calls for. -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500;700;800&display=swap" media="print" onload="this.media='all'" rel="stylesheet">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500;700;800&display=swap" rel="stylesheet"></noscript>
 <style>
 :root{
   --bg:#101319;
@@ -1074,10 +1083,10 @@ document.getElementById('wireDetail').innerHTML='<span>'+x.status+' \u00b7 VERIF
    which are the separate hero money-rain & glow animations, so the
    hero motion is unaffected by this resize. --- */
 .tm-stage-body .tm-kit-zone{height:165px!important}
-.tm-kit-zone .kit-showcase.single-window-kit{transform:scale(.6912);transform-origin:50% 8%}
+.tm-kit-zone .kit-showcase.single-window-kit{transform:scale(.6912) translateY(38px);transform-origin:50% 8%}
 @media(max-width:700px){
   .tm-stage-body .tm-kit-zone{height:123px!important}
-  .tm-kit-zone .kit-showcase.single-window-kit{transform:scale(.6696)}
+  .tm-kit-zone .kit-showcase.single-window-kit{transform:scale(.57) translateY(48px)}
 }
 @media(prefers-reduced-motion:reduce){.tm-kit-zone .kit-showcase.single-window-kit{animation:none!important}}
 
