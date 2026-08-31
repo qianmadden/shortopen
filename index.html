@@ -94,10 +94,11 @@ linear-gradient(90deg,rgba(140,162,190,.010) 1px,transparent 1px);background-siz
   }
 
   /* ===================== POP STAT CARDS — upgraded ===================== */
-  .pop-card{position:relative;overflow:hidden}
+  .pop-card{position:relative;overflow:hidden;border-radius:22px;clip-path:inset(0 round 22px)}
   .pop-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:3px 3px 0 0;background:var(--pop-accent,rgba(87,167,255,.9));box-shadow:0 0 18px var(--pop-accent,rgba(87,167,255,.7)),0 0 36px var(--pop-accent,rgba(87,167,255,.3));z-index:2}
   .pop-card:hover{border-color:var(--pop-accent,rgba(87,167,255,.35))!important;transform:translateY(-3px)}
-  .pop-glow{position:absolute;top:-20px;right:-20px;width:90px;height:90px;border-radius:50%;filter:blur(28px);opacity:.35;pointer-events:none;transition:opacity .35s ease,transform .35s ease;z-index:0}
+  .pop-glow-clip{position:absolute;inset:0;overflow:hidden;border-radius:22px;pointer-events:none;z-index:0}
+  .pop-glow{position:absolute;top:-20px;right:-20px;width:90px;height:90px;border-radius:50%;background:var(--glow-color,rgba(87,167,255,.5));filter:blur(28px);opacity:.35;pointer-events:none;transition:opacity .35s ease,transform .35s ease}
   .pop-card:hover .pop-glow{opacity:.65;transform:scale(1.2)}
   .pop-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;margin-bottom:0}
   .pop-card-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:flex-start;gap:0;height:100%}
@@ -1441,7 +1442,7 @@ body::after{opacity:.56!important}
 <!-- STAT ROW -->
 <div class="hero-stat-row grid grid-cols-3 gap-4 mt-12 max-w-xl">
 <div class="glass rounded-[22px] p-5 market-card pop-card" style="--pop-accent:rgba(87,167,255,.7)">
-<div class="pop-glow" style="background:rgba(87,167,255,.5)"></div>
+<div class="pop-glow-clip"><div class="pop-glow" style="--glow-color:rgba(87,167,255,.5)"></div></div>
 <div class="pop-card-inner">
 <div class="pop-card-top">
 <div class="pop-icon" style="background:rgba(87,167,255,.12);color:#57a7ff">
@@ -1455,7 +1456,7 @@ body::after{opacity:.56!important}
 </div>
 </div>
 <div class="glass rounded-[22px] p-5 market-card pop-card" style="--pop-accent:rgba(244,185,66,.7)">
-<div class="pop-glow" style="background:rgba(244,185,66,.5)"></div>
+<div class="pop-glow-clip"><div class="pop-glow" style="--glow-color:rgba(244,185,66,.5)"></div></div>
 <div class="pop-card-inner">
 <div class="pop-card-top">
 <div class="pop-icon" style="background:rgba(244,185,66,.12);color:var(--gold)">
@@ -1469,7 +1470,7 @@ body::after{opacity:.56!important}
 </div>
 </div>
 <div class="glass rounded-[22px] p-5 market-card pop-card" style="--pop-accent:rgba(63,193,122,.7)">
-<div class="pop-glow" style="background:rgba(63,193,122,.5)"></div>
+<div class="pop-glow-clip"><div class="pop-glow" style="--glow-color:rgba(63,193,122,.5)"></div></div>
 <div class="pop-card-inner">
 <div class="pop-card-top">
 <div class="pop-icon" style="background:rgba(63,193,122,.12);color:#3fc17a">
