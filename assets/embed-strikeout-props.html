@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en" class="so-embed">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>shortopen — Strikeout Market: MLB Pitcher Prop Terminal</title>
+<meta name="description" content="Live MLB strikeout prop board across DraftKings, FanDuel, BetMGM, BetRivers, Caesars and Hard Rock. Best price highlighting, steam detection, and a bet slip payout calculator.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
+<style>
+  :root{
+    --bg:#06080a;
+    --panel:#0d1113;
+    --panel-2:#111719;
+    --panel-3:#151c1f;
+    --border:rgba(255,255,255,0.08);
+    --border-strong:rgba(255,255,255,0.16);
+    --text:#e7edf0;
+    --text-dim:#8a969c;
+    --text-faint:#4c565b;
+    --green:#22d97e;
+    --green-dim:rgba(34,217,126,0.14);
+    --green-line:rgba(34,217,126,0.35);
+    --red:#ff4d5e;
+    --red-dim:rgba(255,77,94,0.14);
+    --amber:#ffb43a;
+    --amber-dim:rgba(255,180,58,0.15);
+    --mono:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --radius:8px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 500px at 15% -10%, rgba(34,217,126,0.06), transparent 60%),
+      radial-gradient(900px 400px at 100% 0%, rgba(255,77,94,0.05), transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:96px;
+  }
+  a{color:inherit;text-decoration:none;}
+  ::selection{background:var(--green-dim);color:var(--green);}
+
+  /* ===== Ticker bar ===== */
+  .ticker-bar{
+    position:sticky;top:62px;z-index:60;margin-top:62px;
+    display:flex;align-items:center;gap:18px;
+    background:#000;
+    border-bottom:1px solid var(--border);
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.03em;
+    color:var(--text-dim);
+    padding:0 16px;
+    height:30px;
+    overflow:hidden;
+    white-space:nowrap;
+  }
+  .ticker-bar .fixed-left{display:flex;align-items:center;gap:14px;flex-shrink:0;padding-right:14px;border-right:1px solid var(--border);}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+  .market-open{color:var(--green);font-weight:600;}
+  .ticker-track-wrap{flex:1;overflow:hidden;position:relative;height:100%;display:flex;align-items:center;}
+  .ticker-track{display:flex;gap:36px;animation:scroll-left 42s linear infinite;white-space:nowrap;}
+  .ticker-track span{color:var(--text-faint);}
+  .ticker-track b{color:var(--text);font-weight:600;}
+  .ticker-track .up{color:var(--green);}
+  .ticker-track .dn{color:var(--red);}
+  @keyframes scroll-left{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  .build-tag{flex-shrink:0;color:var(--text-faint);}
+
+  /* ===== Nav (shortopen shared theme) ===== */
+  nav.site-nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 24px;height:62px;
+    background:rgba(6,8,10,0.94);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-logo{font-family:'Inter',var(--sans);font-weight:900;font-size:1.15rem;color:var(--text);letter-spacing:-.02em;text-decoration:none;}
+  .nav-logo span{color:var(--green);}
+.mobile-menu{display:none!important;position:fixed!important;top:0!important;left:0!important;right:0!important;bottom:0!important;background:rgba(6,8,10,.98)!important;backdrop-filter:blur(20px)!important;-webkit-backdrop-filter:blur(20px)!important;z-index:150!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;overflow-y:auto!important;overscroll-behavior:contain!important;}
+.mobile-menu.open{display:flex!important;}
+.mobile-menu-close{position:absolute!important;top:22px!important;right:22px!important;background:transparent!important;border:none!important;color:#4c565b!important;font-size:1.3rem!important;line-height:1!important;cursor:pointer!important;padding:8px!important;}
+  /* World Cup — gold limited-edition tab */
+  
+  
+  
+  
+  @keyframes soBetaPulse{0%,100%{opacity:1}50%{opacity:.55}}
+  
+
+  /* ===== Hero ===== */
+  .hero{padding:44px 24px 28px;max-width:1400px;margin:0 auto;}
+  .eyebrow{
+    display:flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:12px;color:var(--green);
+    text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;
+  }
+  .eyebrow::before{content:'◆';font-size:9px;}
+  h1{
+    font-size:clamp(28px,4.2vw,44px);
+    font-weight:800;
+    line-height:1.05;
+    margin:0 0 12px;
+    letter-spacing:-.02em;
+  }
+  h1 .k{font-family:var(--mono);color:var(--text-dim);}
+  .hero p{color:var(--text-dim);max-width:640px;font-size:15px;line-height:1.6;margin:0 0 26px;}
+
+  .stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+  .stat-cell{background:var(--panel);padding:16px 18px;}
+  .stat-cell .lbl{font-size:11px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);margin-bottom:8px;}
+  .stat-cell .val{font-family:var(--mono);font-size:24px;font-weight:700;}
+  .stat-cell .sub{font-size:11px;color:var(--text-dim);margin-top:4px;}
+  .stat-cell .val.green{color:var(--green);}
+  .stat-cell .val.amber{color:var(--amber);}
+  .stat-cell .val.violet{color:#b18cff;}
+  @media (max-width:1100px){.stat-row{grid-template-columns:repeat(3,1fr);}}
+  @media (max-width:800px){.stat-row{grid-template-columns:repeat(2,1fr);}}
+
+  /* ===== Controls ===== */
+  .controls{
+    max-width:1400px;margin:0 auto;padding:0 24px 18px;
+    display:flex;flex-wrap:wrap;align-items:center;gap:12px;
+  }
+  .search-wrap{position:relative;flex:1;min-width:220px;max-width:320px;}
+  .search-wrap input{
+    width:100%;background:var(--panel);border:1px solid var(--border);color:var(--text);
+    font-family:var(--mono);font-size:13px;padding:9px 12px 9px 30px;border-radius:6px;
+  }
+  .search-wrap input:focus{outline:none;border-color:var(--green);}
+  .search-wrap::before{content:'⌕';position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-faint);font-size:14px;}
+  select#sortSel{
+    background:var(--panel);border:1px solid var(--border);color:var(--text);
+    font-family:var(--mono);font-size:12px;padding:9px 10px;border-radius:6px;
+  }
+  .book-toggles{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto;}
+  .book-chip{
+    display:flex;align-items:center;gap:6px;
+    font-family:var(--mono);font-size:11px;color:var(--text-dim);
+    border:1px solid var(--border);padding:6px 10px;border-radius:20px;cursor:pointer;user-select:none;
+    background:var(--panel);
+  }
+  .book-chip .sw{width:8px;height:8px;border-radius:50%;}
+  .book-chip.off{opacity:.35;}
+  .legend{display:flex;gap:16px;max-width:1400px;margin:0 auto;padding:0 24px 14px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:var(--text-faint);}
+  .legend .lg-sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px;}
+
+  /* ===== Table ===== */
+  .board{max-width:1400px;margin:0 auto;padding:0 24px 40px;}
+  .table-frame{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--panel);}
+  .table-scroll{overflow-x:auto;}
+  table{border-collapse:separate;border-spacing:0;font-family:var(--mono);font-size:12.5px;min-width:1320px;width:100%;}
+  thead th{
+    background:var(--panel-2);color:var(--text-dim);font-weight:600;
+    text-transform:uppercase;letter-spacing:.06em;font-size:10.5px;
+    padding:10px 10px;border-bottom:1px solid var(--border);white-space:nowrap;
+  }
+  thead tr.book-row th{
+    padding:8px 10px;font-size:10px;border-bottom:1px solid var(--border);
+  }
+  thead tr.sub-row th{
+    font-size:9.5px;color:var(--text-faint);font-weight:500;padding:6px 8px;
+    border-bottom:1px solid var(--border-strong);background:var(--panel);
+  }
+  th.book-group{text-align:center;border-left:1px solid var(--border);}
+  .book-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;}
+  td{padding:9px 10px;border-bottom:1px solid var(--border);white-space:nowrap;color:var(--text);}
+  tbody tr:hover td{background:rgba(255,255,255,0.02);}
+  tbody tr:last-child td{border-bottom:none;}
+
+  td.sticky-1, th.sticky-1{position:sticky;left:0;z-index:5;background:var(--panel);min-width:190px;}
+  td.sticky-2, th.sticky-2{position:sticky;left:190px;z-index:5;background:var(--panel);border-right:1px solid var(--border-strong);min-width:150px;}
+  tbody tr:hover td.sticky-1, tbody tr:hover td.sticky-2{background:#131a1c;}
+
+  .player-name{font-family:var(--sans);font-weight:700;font-size:13px;color:var(--text);}
+  .player-sub{font-family:var(--mono);font-size:10.5px;color:var(--text-dim);margin-top:2px;}
+  .team-badge{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text-dim);}
+
+  .cline{font-weight:700;font-size:13px;}
+  .steam-badge{
+    display:inline-flex;align-items:center;gap:3px;font-size:9px;color:var(--amber);
+    background:var(--amber-dim);border:1px solid rgba(255,180,58,0.4);padding:2px 6px;border-radius:10px;margin-left:6px;
+  }
+  .best-pill{
+    display:block;font-size:10px;margin-top:3px;color:var(--text-dim);
+  }
+  .best-pill b{color:var(--green);}
+  .best-pill.u b{color:var(--red);}
+
+  td.book-cell{border-left:1px solid var(--border);text-align:center;cursor:pointer;}
+  td.book-cell.line{font-weight:600;cursor:default;}
+  td.book-cell.line.diverge{color:var(--amber);}
+  td.odds{transition:background .12s;touch-action:manipulation;}
+  td.odds:hover{background:rgba(255,255,255,0.05);}
+  td.odds.best{background:var(--green-dim);color:var(--green);font-weight:700;border-radius:4px;box-shadow:inset 0 0 0 1px var(--green-line);}
+  td.odds.dash{color:var(--text-faint);cursor:default;}
+  td.odds.picked{background:var(--amber-dim);color:var(--amber);box-shadow:inset 0 0 0 1px rgba(255,180,58,0.5);}
+
+  .col-hidden{display:none;}
+
+  /* ===== Bet Slip ===== */
+  .slip-fab{
+    position:fixed;right:20px;bottom:20px;z-index:70;
+    background:var(--green);color:#04140b;font-family:var(--mono);font-weight:700;font-size:13px;
+    padding:12px 18px;border-radius:30px;cursor:pointer;box-shadow:0 8px 24px rgba(34,217,126,0.35);
+    display:flex;align-items:center;gap:8px;border:none;
+  }
+  .slip-drawer{
+    position:fixed;bottom:0;left:0;right:0;z-index:80;
+    background:#0a0f11;border-top:1px solid var(--border-strong);
+    transform:translateY(100%);transition:transform .25s ease;
+    max-height:70vh;overflow-y:auto;
+  }
+  .slip-drawer.open{transform:translateY(0);}
+  .slip-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:#0a0f11;
+  }
+  .slip-head .t{font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:.03em;}
+  .slip-head .t b{color:var(--green);}
+  .slip-close{background:none;border:1px solid var(--border-strong);color:var(--text-dim);border-radius:6px;padding:6px 10px;cursor:pointer;font-family:var(--mono);font-size:12px;}
+  .slip-body{padding:14px 20px;}
+  .slip-empty{color:var(--text-faint);font-family:var(--mono);font-size:12px;padding:20px 0;text-align:center;}
+  .pick-row{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:12px;gap:10px;
+  }
+  .pick-row .pinfo{display:flex;flex-direction:column;gap:2px;overflow:hidden;}
+  .pick-row .pinfo .nm{color:var(--text);font-weight:600;font-family:var(--sans);}
+  .pick-row .pinfo .dt{color:var(--text-dim);font-size:11px;}
+  .pick-row .pval{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+  .pick-row .odd{font-weight:700;}
+  .pick-row .odd.o{color:var(--green);}
+  .pick-row .odd.u{color:var(--red);}
+  .pick-row .edge{font-size:10px;color:var(--text-dim);min-width:64px;text-align:right;}
+  .rm{background:none;border:none;color:var(--text-faint);cursor:pointer;font-size:16px;line-height:1;}
+  .rm:hover{color:var(--red);}
+  .slip-foot{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    padding:16px 20px;border-top:1px solid var(--border);background:var(--panel);
+  }
+  .stake-ctrl{display:flex;align-items:center;gap:6px;font-family:var(--mono);}
+  .stake-ctrl button{width:26px;height:26px;border-radius:5px;border:1px solid var(--border-strong);background:var(--panel-2);color:var(--text);cursor:pointer;font-size:14px;}
+  .stake-ctrl .amt{min-width:64px;text-align:center;font-weight:700;}
+  .payout-block{text-align:right;font-family:var(--mono);}
+  .payout-block .plabel{font-size:10px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.06em;}
+  .payout-block .pval{font-size:20px;font-weight:800;color:var(--green);}
+  .clear-btn{font-family:var(--mono);font-size:11px;color:var(--text-dim);border:1px solid var(--border);background:none;padding:8px 12px;border-radius:6px;cursor:pointer;}
+  .clear-btn:hover{color:var(--red);border-color:var(--red);}
+  .slip-note{font-size:10px;color:var(--text-faint);padding:0 20px 16px;max-width:900px;}
+
+  /* ===== Today's Best Bets ===== */
+  .bb-wrap{max-width:1400px;margin:0 auto;padding:0 24px 22px;}
+  .bb-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+  .bb-head .lbl{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);}
+  .bb-head .tag{font-family:var(--mono);font-size:9.5px;color:var(--green);background:var(--green-dim);border:1px solid var(--green-line);padding:2px 8px;border-radius:20px;}
+  .bb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  @media(max-width:900px){.bb-grid{grid-template-columns:1fr;}}
+  .bb-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;transition:border-color .15s;}
+  .bb-card:hover{border-color:var(--green-line);}
+  .bb-card .nm{font-weight:700;font-size:13.5px;color:var(--text);}
+  .bb-card .sub{font-family:var(--mono);font-size:10.5px;color:var(--text-dim);margin-top:2px;}
+  .bb-card .row{display:flex;align-items:baseline;justify-content:space-between;margin-top:10px;}
+  .bb-card .price{font-family:var(--mono);font-weight:800;font-size:19px;color:var(--green);}
+  .bb-card .edge{font-family:var(--mono);font-size:10.5px;color:var(--amber);}
+  .bb-card .why{font-size:10.5px;color:var(--text-dim);margin-top:6px;line-height:1.5;}
+
+  /* ===== Live Signals rail ===== */
+  .signals-wrap{max-width:1400px;margin:0 auto;padding:0 24px 18px;}
+  .signals-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;}
+  .signal-card{flex:0 0 auto;min-width:190px;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:10px 12px;cursor:pointer;}
+  .signal-card:hover{border-color:var(--amber);}
+  .signal-card .nm{font-weight:700;font-size:12.5px;}
+  .signal-card .mv{font-family:var(--mono);font-size:11px;color:var(--amber);margin-top:4px;}
+  .signal-card .mv b{color:var(--text);}
+
+  /* ===== Notes ticker (second thin ticker) ===== */
+  .notes-ticker{position:sticky;top:calc(62px + 30px);z-index:59;display:flex;align-items:center;gap:14px;background:#000;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10.5px;color:var(--text-dim);padding:0 16px;height:24px;overflow:hidden;white-space:nowrap;}
+  .notes-ticker .nt-lbl{flex-shrink:0;color:var(--amber);font-weight:700;padding-right:12px;border-right:1px solid var(--border);}
+  .notes-ticker .nt-track-wrap{flex:1;overflow:hidden;height:100%;display:flex;align-items:center;}
+  .notes-ticker .nt-track{display:flex;gap:30px;animation:scroll-left 55s linear infinite;white-space:nowrap;}
+  .notes-ticker .nt-track b{color:var(--text);}
+
+  /* ===== Filter chips ===== */
+  .chip-row{max-width:1400px;margin:0 auto;padding:0 24px 12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .fchip{font-family:var(--mono);font-size:11px;color:var(--text-dim);border:1px solid var(--border);background:var(--panel);padding:6px 12px;border-radius:20px;cursor:pointer;user-select:none;display:flex;align-items:center;gap:5px;}
+  .fchip:hover{border-color:var(--border-strong);color:var(--text);}
+  .fchip.on{color:#04140b;background:var(--green);border-color:var(--green);font-weight:700;}
+  .fchip .ct{opacity:.7;font-size:10px;}
+
+  /* ===== Player cell extras: star / caret ===== */
+  .pname-row{display:flex;align-items:center;gap:6px;}
+  .star-btn,.caret-btn{background:none;border:none;cursor:pointer;font-size:13px;color:var(--text-faint);padding:0;line-height:1;touch-action:manipulation;}
+  .star-btn.on{color:var(--amber);}
+  .caret-btn{transition:transform .15s;}
+  .caret-btn.open{transform:rotate(90deg);}
+  .live-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:8.5px;font-weight:800;color:#ff4d5e;background:var(--red-dim);border:1px solid rgba(255,77,94,.4);padding:1px 6px;border-radius:8px;margin-left:6px;}
+  .rookie-tag{color:var(--amber);font-size:9.5px;font-family:var(--mono);font-weight:800;}
+  .live-badge .ld{width:5px;height:5px;border-radius:50%;background:var(--red);animation:pulse 1.4s infinite;}
+
+  /* ===== Sparkline ===== */
+  .spark-wrap{display:flex;align-items:center;gap:5px;margin-top:4px;}
+  .spark-wrap svg{display:block;}
+  .spark-lbl{font-family:var(--mono);font-size:9px;color:var(--text-faint);}
+  .spark-lbl.up{color:var(--green);} .spark-lbl.dn{color:var(--red);}
+
+  /* ===== Sticky-3 fair odds column ===== */
+  td.sticky-3, th.sticky-3{position:sticky;left:340px;z-index:5;background:var(--panel);border-right:1px solid var(--border-strong);min-width:120px;}
+  tbody tr:hover td.sticky-3{background:#131a1c;}
+  .fair-lbl{font-family:var(--mono);font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.06em;}
+  .fair-val{font-family:var(--mono);font-size:12px;font-weight:700;}
+  .fair-val.o{color:var(--green);} .fair-val.u{color:var(--red);}
+
+  /* ===== Matchup expand row ===== */
+  tr.matchup-row{display:none;}
+  tr.matchup-row.open{display:table-row;}
+  tr.matchup-row td{background:var(--panel-2);border-bottom:1px solid var(--border-strong);padding:12px 16px;}
+  .mrow-grid{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start;font-family:var(--sans);}
+  .mrow-cell .lbl{font-size:9.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.07em;font-family:var(--mono);margin-bottom:4px;}
+  .mrow-cell .val{font-size:12.5px;color:var(--text);}
+  .mrow-notes{display:flex;gap:6px;flex-wrap:wrap;}
+  .mrow-note-tag{font-family:var(--mono);font-size:9.5px;color:var(--amber);background:var(--amber-dim);border:1px solid rgba(255,180,58,.35);padding:2px 8px;border-radius:10px;}
+  .form5{display:flex;align-items:flex-end;gap:3px;height:34px;}
+  .form5 .fb{width:9px;background:var(--border-strong);border-radius:2px 2px 0 0;}
+  .form5 .fb.hit{background:var(--green);}
+  .form5 .fb.miss{background:var(--red);}
+  .live-track{margin-top:4px;}
+  .live-track .bar{height:5px;border-radius:99px;background:var(--border);overflow:hidden;width:160px;}
+  .live-track .bar i{display:block;height:100%;background:var(--green);border-radius:99px;}
+  .live-track .lt-lbl{font-family:var(--mono);font-size:9.5px;color:var(--text-dim);margin-top:3px;}
+
+  /* ===== CLV tracker ===== */
+  .clv-wrap{max-width:1400px;margin:0 auto;padding:0 24px 40px;}
+  .clv-frame{border:1px solid var(--border);border-radius:10px;background:var(--panel);padding:16px 18px;}
+  .clv-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
+  .clv-head .lbl{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);}
+  .clv-clear{font-family:var(--mono);font-size:10.5px;color:var(--text-dim);border:1px solid var(--border);background:none;padding:5px 10px;border-radius:6px;cursor:pointer;}
+  .clv-clear:hover{color:var(--red);border-color:var(--red);}
+  .clv-empty{font-family:var(--mono);font-size:11.5px;color:var(--text-faint);padding:14px 0;}
+  .clv-row{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr .8fr;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:11.5px;}
+  .clv-row:last-child{border-bottom:none;}
+  .clv-row .p{font-family:var(--sans);font-weight:700;color:var(--text);font-size:12.5px;}
+  .clv-row .p small{display:block;font-family:var(--mono);font-weight:400;color:var(--text-dim);font-size:10px;}
+  .clv-row .pos{color:var(--green);} .clv-row .neg{color:var(--red);}
+  .log-clv-btn{font-family:var(--mono);font-size:9.5px;color:var(--green);border:1px solid var(--green-line);background:var(--green-dim);padding:4px 8px;border-radius:6px;cursor:pointer;margin-left:8px;}
+  .log-clv-btn:hover{background:rgba(34,217,126,.24);}
+
+  /* ===== Toasts ===== */
+  .toast-wrap{position:fixed;top:70px;right:16px;z-index:200;display:flex;flex-direction:column;gap:8px;}
+  .toast{background:var(--panel-3);border:1px solid var(--green-line);border-left:3px solid var(--green);border-radius:8px;padding:10px 14px;font-family:var(--mono);font-size:11.5px;color:var(--text);box-shadow:0 8px 20px rgba(0,0,0,.4);max-width:280px;animation:toastIn .2s ease;}
+  @keyframes toastIn{from{opacity:0;transform:translateX(16px);}to{opacity:1;transform:translateX(0);}}
+
+  /* ===== Footer (shared shortopen identity) ===== */
+  footer.so-footer{max-width:1400px;margin:20px auto 0;padding:28px 24px 34px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:14px;}
+  .so-footer .footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+  .so-footer .footer-logo{font-family:var(--mono);font-weight:700;font-size:14px;color:var(--text);letter-spacing:.02em;}
+  .so-footer .footer-logo span{color:var(--green);}
+  .so-footer .footer-copy{font-size:11px;color:var(--text-faint);letter-spacing:.04em;}
+  .so-footer .footer-disclaimer{font-size:11px;line-height:1.7;color:var(--text-faint);max-width:1000px;border-top:1px solid var(--border);padding-top:14px;}
+  @media(max-width:900px){footer.so-footer{padding:22px 20px 26px;text-align:center;}.so-footer .footer-top{flex-direction:column;gap:10px;}}
+</style>
+<style id="so-final-scroll-speed-20260725">
+.table-frame{overflow:hidden!important;contain:layout paint}
+.table-scroll{overflow-x:scroll!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-x pan-y!important;overscroll-behavior-x:contain;scrollbar-gutter:stable;cursor:grab;max-width:100%}
+.table-scroll.so-dragging{cursor:grabbing;user-select:none}
+.table-scroll table{min-width:1320px!important}
+.market-wrap,.stats-wrap,.clv-wrap{content-visibility:visible;contain:none}
+html.so-k-hidden *,html.so-k-hidden *::before,html.so-k-hidden *::after{animation-play-state:paused!important}
+@media(max-width:700px){
+  nav.site-nav{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .table-scroll{margin-right:0!important;padding-bottom:8px}
+  .table-scroll th.sticky-1,.table-scroll td.sticky-1{left:0!important;min-width:148px!important;width:148px!important;max-width:148px!important;z-index:8!important;background:#0d1113!important;box-shadow:8px 0 14px rgba(0,0,0,.28)}
+  .table-scroll th.sticky-2,.table-scroll td.sticky-2{position:static!important;left:auto!important;min-width:112px!important;width:112px!important;max-width:112px!important;box-shadow:none!important;white-space:normal!important;overflow:hidden!important;padding-left:8px!important;padding-right:6px!important;}
+  .table-scroll th.sticky-3,.table-scroll td.sticky-3{position:static!important;left:auto!important;min-width:104px!important;width:104px!important;max-width:104px!important;box-shadow:none!important;z-index:auto!important;white-space:normal!important;overflow:hidden!important;padding-left:8px!important;padding-right:6px!important;}
+  .table-scroll td.sticky-2 .best-pill{font-size:9px!important;white-space:normal!important;word-break:break-word!important;}
+  .table-scroll td.sticky-2 .spark-wrap{flex-wrap:wrap!important;}
+  .ticker-track,.nt-track{animation-duration:70s!important}
+}
+</style>
+
+
+
+<style id="so-embed-shell">
+html.so-embed .ticker-bar{top:0;margin-top:0;}
+html.so-embed .notes-ticker{top:30px;}
+html.so-embed.so-workspace-unloading *,html.so-embed.so-workspace-unloading *::before,html.so-embed.so-workspace-unloading *::after{animation-play-state:paused!important;transition:none!important;}
+</style>
+
+<script id="so-embed-lifecycle">
+(function(){
+  'use strict';
+  var stopped=false;
+  function stopWorkspace(){
+    if(stopped)return;stopped=true;
+    document.documentElement.classList.add('so-workspace-unloading');
+    try{document.getAnimations({subtree:true}).forEach(function(a){a.cancel();});}catch(_e){}
+    try{window.dispatchEvent(new Event('shortopen:workspace-unload'));}catch(_e){}
+  }
+  window.addEventListener('message',function(e){if(e&&e.data&&e.data.type==='shortopen:workspace-unload')stopWorkspace();},{passive:true});
+  window.addEventListener('pagehide',stopWorkspace,{once:true});
+})();
+</script>
+</head>
+<body>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <!-- Ticker Bar -->
+  <div class="ticker-bar">
+    <div class="fixed-left">
+      <span class="dot"></span>
+      <span class="market-open">MARKET OPEN</span>
+      <span id="clockET">--:--:-- ET</span>
+    </div>
+    <div class="ticker-track-wrap">
+      <div class="ticker-track" id="tickerTrack"></div>
+    </div>
+    <div class="build-tag">SHORTopen · PREMIUM · K MARKET</div>
+  </div>
+
+  <!-- Notes ticker (bullpen / lineup flags) -->
+  <div class="notes-ticker">
+    <span class="nt-lbl">NOTES</span>
+    <div class="nt-track-wrap">
+      <div class="nt-track" id="notesTrack"></div>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  
+  <!-- Mobile menu -->
+  
+
+  <!-- Hero -->
+  <div class="hero"><div style="position:absolute;right:24px;top:18px;padding:7px 12px;border:1px solid rgba(244,185,66,.34);border-radius:999px;color:#f4b942;font:700 .55rem DM Mono,monospace;letter-spacing:.12em">PREMIUM · K MARKET</div>
+    <div class="eyebrow">MLB Player Props · Short the Consensus</div>
+    <h1>Strikeout Market <span class="k">// K-Board</span></h1>
+    <p>Every pitcher strikeout line across six books, read the way a desk reads order flow. Green marks the best price on the board. Amber marks a book whose line has broken from consensus — that's where the market disagrees with itself.</p>
+
+    <div class="stat-row">
+      <div class="stat-cell">
+        <div class="lbl">Books in Agreement</div>
+        <div class="val" id="statAgree">--</div>
+        <div class="sub" id="statAgreeSub">Book lines matching consensus</div>
+      </div>
+      <div class="stat-cell">
+        <div class="lbl">Tightest Spread</div>
+        <div class="val amber" id="statTight">--</div>
+        <div class="sub" id="statTightSub">—</div>
+      </div>
+      <div class="stat-cell">
+        <div class="lbl">Shortopen Spread</div>
+        <div class="val violet" id="statShortopen">--</div>
+        <div class="sub" id="statShortopenSub">—</div>
+      </div>
+      <div class="stat-cell">
+        <div class="lbl">Best Value · Over</div>
+        <div class="val green" id="statBestOver">--</div>
+        <div class="sub" id="statBestOverName">—</div>
+      </div>
+      <div class="stat-cell">
+        <div class="lbl">Best Value · Under</div>
+        <div class="val green" id="statBestUnder">--</div>
+        <div class="sub" id="statBestUnderName">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Today's Best Bets -->
+  <div class="bb-wrap">
+    <div class="bb-head"><span class="lbl">Today's Best Bets</span><span class="tag">Model Edge</span></div>
+    <div class="bb-grid" id="bestBets"></div>
+  </div>
+
+  <!-- Live Signals rail -->
+  <div class="signals-wrap">
+    <div class="bb-head"><span class="lbl">Live Signals</span><span class="tag" id="signalsCount">0 Active</span></div>
+    <div class="signals-scroll" id="signalsRail"></div>
+  </div>
+
+  <!-- Filter chips -->
+  <div class="chip-row" id="chipRow"></div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="search-wrap">
+      <input id="searchBox" type="text" placeholder="Search pitcher, team, opp…">
+    </div>
+    <select id="sortSel">
+      <option value="line_desc">Sort: Line (High → Low)</option>
+      <option value="line_asc">Sort: Line (Low → High)</option>
+      <option value="steam_desc">Sort: Steam Alerts First</option>
+      <option value="best_over">Sort: Best Over Value</option>
+      <option value="best_under">Sort: Best Under Value</option>
+      <option value="name_asc">Sort: Name (A → Z)</option>
+    </select>
+    <div class="book-toggles" id="bookToggles"></div>
+  </div>
+  <div class="legend">
+    <div><span class="lg-sw" style="background:var(--green-dim);box-shadow:inset 0 0 0 1px var(--green-line);"></span>Best price on board</div>
+    <div><span class="lg-sw" style="background:var(--amber-dim);"></span>Steam / line diverges from consensus</div>
+    <div><span class="lg-sw" style="background:transparent;box-shadow:inset 0 0 0 1px var(--border-strong);"></span>Click any price to add to slip</div>
+  </div>
+
+  <!-- Board -->
+  <div class="board">
+    <div class="table-frame">
+      <div class="table-scroll">
+        <table id="propsTable">
+          <thead>
+            <tr class="book-row">
+              <th class="sticky-1" rowspan="2">Pitcher</th>
+              <th class="sticky-2" rowspan="2">Consensus K Line</th>
+              <th class="sticky-3" rowspan="2">No-Vig Fair Odds</th>
+              <th class="book-group" colspan="3" data-book="DK"><span class="book-dot" style="background:#53c531"></span>DraftKings</th>
+              <th class="book-group" colspan="3" data-book="FD"><span class="book-dot" style="background:#1493ff"></span>FanDuel</th>
+              <th class="book-group" colspan="3" data-book="MGM"><span class="book-dot" style="background:#b4975a"></span>BetMGM</th>
+              <th class="book-group" colspan="3" data-book="RIV"><span class="book-dot" style="background:#0a3d91"></span>BetRivers</th>
+              <th class="book-group" colspan="3" data-book="CZR"><span class="book-dot" style="background:#c9a227"></span>Caesars</th>
+              <th class="book-group" colspan="3" data-book="HR"><span class="book-dot" style="background:#c8102e"></span>Hard Rock</th>
+            </tr>
+            <tr class="sub-row">
+              <th data-book="DK">K</th><th data-book="DK">U</th><th data-book="DK">O</th>
+              <th data-book="FD">K</th><th data-book="FD">U</th><th data-book="FD">O</th>
+              <th data-book="MGM">K</th><th data-book="MGM">U</th><th data-book="MGM">O</th>
+              <th data-book="RIV">K</th><th data-book="RIV">U</th><th data-book="RIV">O</th>
+              <th data-book="CZR">K</th><th data-book="CZR">U</th><th data-book="CZR">O</th>
+              <th data-book="HR">K</th><th data-book="HR">U</th><th data-book="HR">O</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLV Tracker -->
+  <div class="clv-wrap">
+    <div class="clv-frame">
+      <div class="clv-head">
+        <span class="lbl">CLV Tracker</span>
+        <button class="clv-clear" id="clvClear">Clear log</button>
+      </div>
+      <div id="clvBody"></div>
+    </div>
+  </div>
+
+  <!-- Bet Slip -->
+  <button class="slip-fab" id="slipFab">SLIP · <span id="fabCount">0</span></button>
+  <div class="slip-drawer" id="slipDrawer">
+    <div class="slip-head">
+      <div class="t">YOUR SLIP · <b id="slipCount">0</b> picks</div>
+      <button class="slip-close" id="slipCloseBtn">Close ✕</button>
+    </div>
+    <div class="slip-body" id="slipBody">
+      <div class="slip-empty">No picks yet. Click a price on the board to add it here.</div>
+    </div>
+    <div class="slip-foot">
+      <div class="stake-ctrl">
+        <span style="color:var(--text-faint);font-size:11px;">STAKE</span>
+        <button id="stakeMinus">−</button>
+        <span class="amt" id="stakeAmt">$10</span>
+        <button id="stakePlus">+</button>
+      </div>
+      <div class="payout-block">
+        <div class="plabel">Payout if all hit</div>
+        <div class="pval" id="payoutVal">$0.00</div>
+      </div>
+      <button class="clear-btn" id="clearSlip">Clear</button>
+    </div>
+    <div class="slip-note">Payout shown is a parlay estimate at your stake across the picks selected. "Edge vs. mid" compares your price to the average price across books for that side — it is a market-comparison figure, not a win-probability forecast. Estimates only, not a real-money wager — use this board to place bets at your sportsbook of choice.</div>
+  </div>
+
+  
+
+<script>
+/* =====================================================================
+   PROPS_DATA — this is the only block you need to touch to refresh odds.
+   Feed me a new screenshot / export and I will regenerate this array.
+   Missing book quotes = null (renders as a dash, e.g. Kyle Bradish RIV/CZR/etc).
+   Format per book: [line, underOdds, overOdds]  (American odds)
+===================================================================== */
+const BOOKS = [
+  {id:'DK',  name:'DraftKings', color:'#53c531'},
+  {id:'FD',  name:'FanDuel',    color:'#1493ff'},
+  {id:'MGM', name:'BetMGM',     color:'#b4975a'},
+  {id:'RIV', name:'BetRivers',  color:'#0a3d91'},
+  {id:'CZR', name:'Caesars',    color:'#c9a227'},
+  {id:'HR',  name:'Hard Rock',  color:'#c8102e'}
+];
+
+const PROPS_DATA = [{name:"Jacob deGrom",team:"TEX",opp:"ATH",books:{DK:[6.5,-114,-111],FD:[6.5,-122,-104],MGM:[6.5,-105,-125],RIV:[7.5,null,130],CZR:[6.5,-110,-117],HR:[6.5,-115,-115]}},{name:"Michael King",team:"SD",opp:"@CIN",books:{DK:[5.5,107,-136],FD:[5.5,104,-132],MGM:[5.5,110,-150],RIV:[6.5,null,106],CZR:[5.5,-102,-127],HR:[5.5,-105,-125]}},{name:"Ian Seymour",team:"TB",opp:"NYM",books:{DK:[6.5,-162,-127],FD:[6.5,-162,-126],MGM:[5.5,115,-155],RIV:[6.5,null,114],CZR:[5.5,113,-145],HR:[5.5,120,-160]}},{name:"Payton Tolle",team:"BOS",opp:"SEA",books:{DK:[6.5,-106,-118],FD:[6.5,-111,-115],MGM:[6.5,-110,-120],RIV:[6.5,-107,-125],CZR:[6.5,-112,-112],HR:[6.5,-110,-120]}},{name:"Kyle Bradish",team:"BAL",opp:"@COL",books:{DK:null,FD:null,MGM:null,RIV:null,CZR:null,HR:null}},{name:"Taj Bradley",team:"MIN",opp:"DET",books:{DK:[5.5,-118,-107],FD:[5.5,-125,-102],MGM:[5.5,110,-118],RIV:[5.5,null,-115],CZR:[5.5,-120,-108],HR:[5.5,-120,-110]}},{name:"Kyle Harrison",team:"MIL",opp:"@CHC",books:{DK:[5.5,-151,118],FD:[5.5,-154,120],MGM:[5.5,-160,120],RIV:[5.5,-155,117],CZR:[5.5,-152,118],HR:[5.5,-155,120]}},{name:"Gage Jump",team:"ATH",opp:"@TEX",books:{DK:[5.5,-109,-117],FD:[5.5,-118,-108],MGM:[5.5,-115,-115],RIV:[5.5,null,-125],CZR:[5.5,-121,-105],HR:[5.5,-120,-110]}},{name:"Peter Lambert",team:"HOU",opp:"CWS",books:{DK:[5.5,-125,-101],FD:[5.5,-132,104],MGM:[5.5,-125,-105],RIV:[5.5,null,-105],CZR:[5.5,-127,100],HR:[5.5,-125,-105]}},{name:"Aaron Nola",team:"PHI",opp:"@ARI",books:{DK:[4.5,-101,-126],FD:[4.5,-102,-125],MGM:[5.5,-200,150],RIV:[4.5,100,-134],CZR:[4.5,-108,-121],HR:[4.5,-105,-125]}},{name:"Walbert Urena",team:"LAA",opp:"NYY",books:{DK:[5.5,-127,100],FD:[5.5,-122,-104],MGM:[4.5,140,-190],RIV:[5.5,-139,105],CZR:[5.5,-129,101],HR:[5.5,-130,100]}},{name:"Bryce Elder",team:"ATL",opp:"SF",books:{DK:[4.5,-154,123],FD:[4.5,-160,124],MGM:[4.5,-155,115],RIV:[4.5,-152,114],CZR:[4.5,-175,128],HR:[4.5,-165,125]}},{name:"Tanner Gordon",team:"COL",opp:"BAL",books:{DK:[4.5,-109,-116],FD:[4.5,-120,-106],MGM:[4.5,-115,-115],RIV:[4.5,-127,-106],CZR:[4.5,-115,-112],HR:[4.5,-120,-110]}},{name:"Ryan Gusto",team:"MIA",opp:"@WSH",books:{DK:[3.5,107,-137],FD:[3.5,106,-136],MGM:[3.5,105,-130],RIV:[4.5,null,120],CZR:[3.5,108,-137],HR:[3.5,110,-145]}},{name:"Clay Holmes",team:"CHC",opp:"MIL",books:{DK:[3.5,131,-168],FD:[4.5,-162,126],MGM:[4.5,-160,120],RIV:[4.5,-162,123],CZR:[4.5,-162,126],HR:[4.5,-165,125]}},{name:"Anthony Kay",team:"CWS",opp:"@HOU",books:{DK:[4.5,-141,111],FD:[4.5,-146,114],MGM:[4.5,-155,115],RIV:[4.5,null,108],CZR:[4.5,-148,114],HR:[4.5,-150,115]}},{name:"George Kirby",team:"SEA",opp:"@BOS",books:{DK:[4.5,-112,-114],FD:[4.5,-113,-113],MGM:[4.5,-105,-125],RIV:[4.5,-109,-122],CZR:[4.5,-112,-115],HR:[4.5,-110,-120]}},{name:"Elmer Rodriguez",team:"NYY",opp:"@LAA",books:{DK:[4.5,-128,101],FD:[4.5,-136,106],MGM:[4.5,135,100],RIV:[4.5,-127,-105],CZR:[4.5,-122,100],HR:[4.5,-135,105]}},{name:"Brady Singer",team:"CIN",opp:"SD",books:{DK:[4.5,-138,108],FD:[4.5,-138,108],MGM:[4.5,-160,120],RIV:[4.5,null,102],CZR:[4.5,-140,111],HR:[4.5,-145,110]}},{name:"Will Dion",team:"WSH",opp:"MIA",books:{DK:[3.5,-106,-119],FD:[3.5,100,-128],MGM:[3.5,115,-155],RIV:null,CZR:[3.5,-105,-125],HR:[3.5,-105,-125]}},{name:"Jackson Jobe",team:"DET",opp:"@MIN",books:{DK:[3.5,-109,-117],FD:[3.5,-113,-113],MGM:[3.5,-125,-105],RIV:[3.5,null,-120],CZR:[3.5,-113,-113],HR:[3.5,-115,-115]}},{name:"Brandon Pfaadt",team:"ARI",opp:"PHI",books:{DK:[3.5,-105,-121],FD:[3.5,100,-128],MGM:[3.5,105,-140],RIV:[3.5,-117,-114],CZR:[3.5,-110,-118],HR:[3.5,100,-130]}},{name:"Robert Stock",team:"NYM",opp:"@TB",books:{DK:[3.5,-156,122],FD:[3.5,-150,118],MGM:[3.5,-155,115],RIV:[3.5,null,118],CZR:[3.5,-180,135],HR:[3.5,-165,125]}},{name:"Anthony Molina",team:"SF",opp:"@ATL",books:{DK:[2.5,-121,-105],FD:[2.5,null,null],MGM:[2.5,null,null],RIV:null,CZR:null,HR:[2.5,-120,-110]}}];
+
+
+/* ===================== Helpers ===================== */
+function americanToDecimal(o){ if(o===null||o===undefined) return null; return o>0 ? 1+o/100 : 1+100/Math.abs(o); }
+function impliedProb(o){ const d=americanToDecimal(o); return d? 1/d : null; }
+function fmtOdds(o){ if(o===null||o===undefined) return '—'; return o>0 ? '+'+o : String(o); }
+function americanFromProb(p){
+  if(p===null||p===undefined||p<=0||p>=1) return null;
+  return p>=0.5 ? Math.round(-100*p/(1-p)) : Math.round(100*(1-p)/p);
+}
+
+function mode(arr){
+  const counts = {};
+  let best=null, bestCt=0;
+  arr.forEach(v=>{
+    if(v===null||v===undefined) return;
+    counts[v]=(counts[v]||0)+1;
+    if(counts[v]>bestCt){bestCt=counts[v]; best=v;}
+  });
+  return best;
+}
+
+// enrich each player with computed consensus / best price / steam data
+const ROOKIES = new Set(['Ian Seymour','Payton Tolle','Walbert Urena','Will Dion','Elmer Rodriguez','Anthony Molina']);
+const LIVE_NOW = new Set([]);
+const NOTE_POOL = ['Short-hook risk on low pitch count','Opponent lineup missing 2 regulars','Extra rest since last start','Bullpen banged up behind him','Coming off a rain-shortened outing','Facing this lineup for the first time this year'];
+const PARKS = ['Hitter-friendly park','Pitcher-friendly park','Neutral park'];
+const WEATHERS = ['Dome, climate controlled','Wind in 8mph, 71°F','Clear, 82°F, calm','Wind out 6mph, 76°F','Overcast, 68°F'];
+
+function seededRand(seed){ let x=Math.sin(seed)*10000; return x-Math.floor(x); }
+
+PROPS_DATA.forEach((p,i)=>{
+  const lines = BOOKS.map(b=> p.books[b.id] ? p.books[b.id][0] : null);
+  p.consensusLine = mode(lines);
+  p.steamCount = lines.filter(l=> l!==null && l!==p.consensusLine).length;
+
+  let bestOver=-Infinity, bestOverBook=null, bestUnder=-Infinity, bestUnderBook=null;
+  BOOKS.forEach(b=>{
+    const row = p.books[b.id];
+    if(!row) return;
+    const [,u,o] = row;
+    if(u!==null && u>bestUnder){bestUnder=u; bestUnderBook=b.id;}
+    if(o!==null && o>bestOver){bestOver=o; bestOverBook=b.id;}
+  });
+  p.bestOver = bestOverBook? {odds:bestOver, book:bestOverBook} : null;
+  p.bestUnder = bestUnderBook? {odds:bestUnder, book:bestUnderBook} : null;
+
+  // No-vig fair odds at the consensus line
+  let overProbs=[], underProbs=[];
+  BOOKS.forEach(b=>{
+    const row=p.books[b.id];
+    if(!row) return;
+    const [line,u,o]=row;
+    if(line!==p.consensusLine || u===null || o===null) return;
+    const po=impliedProb(o), pu=impliedProb(u);
+    const sum=po+pu;
+    overProbs.push(po/sum); underProbs.push(pu/sum);
+  });
+  p.fairOverProb = overProbs.length ? overProbs.reduce((a,b)=>a+b,0)/overProbs.length : null;
+  p.fairUnderProb = underProbs.length ? underProbs.reduce((a,b)=>a+b,0)/underProbs.length : null;
+  p.fairOver = americanFromProb(p.fairOverProb);
+  p.fairUnder = americanFromProb(p.fairUnderProb);
+
+  // Shortopen Spread — our formula: raw aggregate average across every book quoting this side, plus a flat 2-point margin
+  const rawOverProbs = BOOKS.map(b=>{ const row=p.books[b.id]; return row && row[2]!==null ? impliedProb(row[2]) : null; }).filter(v=>v!==null);
+  const rawUnderProbs = BOOKS.map(b=>{ const row=p.books[b.id]; return row && row[1]!==null ? impliedProb(row[1]) : null; }).filter(v=>v!==null);
+  const avgOverProb = rawOverProbs.length ? rawOverProbs.reduce((a,b)=>a+b,0)/rawOverProbs.length : null;
+  const avgUnderProb = rawUnderProbs.length ? rawUnderProbs.reduce((a,b)=>a+b,0)/rawUnderProbs.length : null;
+  p.soOver = avgOverProb!==null ? americanFromProb(Math.min(0.99, avgOverProb + 0.02)) : null;
+  p.soUnder = avgUnderProb!==null ? americanFromProb(Math.min(0.99, avgUnderProb + 0.02)) : null;
+
+  // Opening line (simulated) for the sparkline
+  const wobble = (seededRand(i*7.3+1)-0.5)*2;
+  p.openLine = p.consensusLine!==null ? +(p.consensusLine - wobble).toFixed(1) : null;
+
+  // Matchup context (simulated)
+  p.oppKRate = +(19 + seededRand(i*3.1+2)*8).toFixed(1);
+  p.park = PARKS[Math.floor(seededRand(i*5.2+3)*PARKS.length)];
+  p.weather = WEATHERS[Math.floor(seededRand(i*2.7+4)*WEATHERS.length)];
+  p.notes = [];
+  if(seededRand(i*1.9+5) > 0.55) p.notes.push(NOTE_POOL[Math.floor(seededRand(i*4.4+6)*NOTE_POOL.length)]);
+  if(p.consensusLine!==null && p.consensusLine<=4.5 && seededRand(i*6.1+7)>0.5) p.notes.push('Short-hook risk on low pitch count');
+  p.notes = [...new Set(p.notes)];
+
+  // Last-5 starts K totals (simulated around the current line)
+  const base = p.consensusLine || 5;
+  p.last5 = Array.from({length:5}, (_,j)=> Math.max(1, Math.round(base + (seededRand(i*9.3+j+8)-0.5)*4)));
+
+  p.rookie = ROOKIES.has(p.name);
+  p.home = !p.opp.startsWith('@');
+
+  // Live in-game state (simulated for a few pitchers)
+  if(LIVE_NOW.has(p.name)){
+    p.live = true;
+    p.inningsPitched = +(2 + seededRand(i*8.8+9)*3).toFixed(1);
+    p.currentKs = Math.max(0, Math.round((base * (p.inningsPitched/6)) + (seededRand(i*1.2+10)-0.3)*2));
+  } else {
+    p.live = false;
+  }
+});
+
+/* ===================== Persistent state (localStorage) ===================== */
+function loadSet(key){ try{ return new Set(JSON.parse(localStorage.getItem(key)||'[]')); }catch(e){ return new Set(); } }
+function saveSet(key,set){ localStorage.setItem(key, JSON.stringify([...set])); }
+let watchlist = loadSet('so_watchlist');
+let clvLog = (()=>{ try{ return JSON.parse(localStorage.getItem('so_clv_log')||'[]'); }catch(e){ return []; } })();
+function saveClvLog(){ localStorage.setItem('so_clv_log', JSON.stringify(clvLog)); }
+let quickFilter = 'all';
+let expandedRows = new Set();
+
+/* ===================== Rendering ===================== */
+const tableBody = document.getElementById('tableBody');
+let activeBooks = new Set(BOOKS.map(b=>b.id));
+let slip = []; // {player, side, book, odds, line}
+let stake = 10;
+
+function bookName(id){ return BOOKS.find(b=>b.id===id).name; }
+
+function renderTable(list){
+  tableBody.innerHTML = '';
+  list.forEach(p=>{
+    const tr = document.createElement('tr');
+
+    const steamHtml = p.steamCount>0 ? `<span class="steam-badge">${p.steamCount} STEAM</span>` : '';
+    const bestOverHtml = p.bestOver ? `<span class="best-pill">Best O <b>${fmtOdds(p.bestOver.odds)}</b> · ${p.bestOver.book}</span>` : '';
+    const bestUnderHtml = p.bestUnder ? `<span class="best-pill u">Best U <b>${fmtOdds(p.bestUnder.odds)}</b> · ${p.bestUnder.book}</span>` : '';
+    const liveHtml = p.live ? `<span class="live-badge"><span class="ld"></span>LIVE ${p.currentKs}K · ${p.inningsPitched}IP</span>` : '';
+    const watching = watchlist.has(p.name);
+    const isOpen = expandedRows.has(p.name);
+
+    const spark = sparklineSvg(p.openLine, p.consensusLine);
+    const moveDir = p.consensusLine!==null && p.openLine!==null ? (p.consensusLine>p.openLine?'up':(p.consensusLine<p.openLine?'dn':'')) : '';
+    const moveTxt = p.openLine!==null ? `${p.openLine.toFixed(1)}→${p.consensusLine.toFixed(1)}` : '';
+
+    let html = `
+      <td class="sticky-1">
+        <div class="pname-row">
+          <button class="caret-btn${isOpen?' open':''}" title="Matchup detail" onclick="toggleMatchup('${p.name}')">▸</button>
+          <button class="star-btn${watching?' on':''}" title="Watchlist" onclick="toggleWatchlist('${p.name}')">★</button>
+          <div class="player-name">${p.name}${p.rookie?' <span class="rookie-tag">R</span>':''}</div>
+        </div>
+        <div class="player-sub"><span class="team-badge">${p.team}</span> vs ${p.opp}</div>
+        ${liveHtml}
+      </td>
+      <td class="sticky-2">
+        <span class="cline">${p.consensusLine!==null? p.consensusLine.toFixed(1):'—'} K</span>${steamHtml}
+        <div class="spark-wrap">${spark}<span class="spark-lbl ${moveDir}">${moveTxt}</span></div>
+        ${bestOverHtml}${bestUnderHtml}
+      </td>
+      <td class="sticky-3">
+        <div class="fair-lbl">Over</div><div class="fair-val o">${fmtOdds(p.fairOver)}</div>
+        <div class="fair-lbl" style="margin-top:5px">Under</div><div class="fair-val u">${fmtOdds(p.fairUnder)}</div>
+      </td>
+    `;
+
+    BOOKS.forEach(b=>{
+      const row = p.books[b.id];
+      const hiddenCls = activeBooks.has(b.id) ? '' : ' col-hidden';
+      if(!row){
+        html += `<td class="book-cell line dash${hiddenCls}" data-book="${b.id}">—</td>
+                 <td class="book-cell odds dash${hiddenCls}" data-book="${b.id}">—</td>
+                 <td class="book-cell odds dash${hiddenCls}" data-book="${b.id}">—</td>`;
+        return;
+      }
+      const [line,u,o] = row;
+      const divergeCls = (line!==p.consensusLine) ? ' diverge' : '';
+      const uBest = p.bestUnder && p.bestUnder.book===b.id ? ' best' : '';
+      const oBest = p.bestOver && p.bestOver.book===b.id ? ' best' : '';
+      const uDash = u===null ? ' dash' : '';
+      const oDash = o===null ? ' dash' : '';
+
+      html += `<td class="book-cell line${divergeCls}${hiddenCls}" data-book="${b.id}">${line.toFixed(1)}</td>`;
+      html += `<td class="book-cell odds${uBest}${uDash}${hiddenCls}" data-book="${b.id}"
+                  data-player="${p.name}" data-team="${p.team}" data-opp="${p.opp}" data-side="Under" data-book-id="${b.id}"
+                  data-line="${line}" data-odds="${u!==null?u:''}">${fmtOdds(u)}</td>`;
+      html += `<td class="book-cell odds${oBest}${oDash}${hiddenCls}" data-book="${b.id}"
+                  data-player="${p.name}" data-team="${p.team}" data-opp="${p.opp}" data-side="Over" data-book-id="${b.id}"
+                  data-line="${line}" data-odds="${o!==null?o:''}">${fmtOdds(o)}</td>`;
+    });
+
+    tr.innerHTML = html;
+    tableBody.appendChild(tr);
+
+    const mtr = document.createElement('tr');
+    mtr.className = 'matchup-row' + (isOpen ? ' open' : '');
+    mtr.id = `mrow-${cssSafe(p.name)}`;
+    mtr.innerHTML = `<td colspan="21">${matchupRowHtml(p)}</td>`;
+    tableBody.appendChild(mtr);
+  });
+
+  attachCellHandlers();
+  refreshPickedHighlights();
+}
+
+function cssSafe(name){ return name.replace(/[^a-z0-9]/gi,'_'); }
+
+function sparklineSvg(open, cur){
+  if(open===null || cur===null) return '<svg width="30" height="14"></svg>';
+  const lo = Math.min(open,cur)-0.5, hi = Math.max(open,cur)+0.5;
+  const y = v => 12 - ((v-lo)/(hi-lo||1))*10;
+  const color = cur>open ? 'var(--green)' : (cur<open ? 'var(--red)' : 'var(--text-faint)');
+  return `<svg width="30" height="14" viewBox="0 0 30 14"><line x1="2" y1="${y(open)}" x2="28" y2="${y(cur)}" stroke="${color}" stroke-width="2" stroke-linecap="round"/><circle cx="2" cy="${y(open)}" r="1.6" fill="var(--text-faint)"/><circle cx="28" cy="${y(cur)}" r="1.8" fill="${color}"/></svg>`;
+}
+
+function matchupRowHtml(p){
+  const notesHtml = p.notes.length ? p.notes.map(n=>`<span class="mrow-note-tag">${n}</span>`).join('') : '<span style="color:var(--text-faint);font-size:10.5px">No flags</span>';
+  const maxLast5 = Math.max(...p.last5, p.consensusLine||0);
+  const form5Html = p.last5.map(v=>{
+    const h = Math.max(6, (v/maxLast5)*32);
+    const cls = p.consensusLine!==null ? (v>p.consensusLine?'hit':'miss') : '';
+    return `<div class="fb ${cls}" style="height:${h}px" title="${v} K"></div>`;
+  }).join('');
+  const liveHtml = p.live ? `
+    <div class="mrow-cell">
+      <div class="lbl">Live tracker</div>
+      <div class="live-track">
+        <div class="bar"><i style="width:${Math.min(100, (p.currentKs/(p.consensusLine||1))*100)}%"></i></div>
+        <div class="lt-lbl">${p.currentKs} K through ${p.inningsPitched} IP · line ${p.consensusLine.toFixed(1)}</div>
+      </div>
+    </div>` : '';
+  return `
+    <div class="mrow-grid">
+      <div class="mrow-cell"><div class="lbl">Opp K rate</div><div class="val">${p.oppKRate}%</div></div>
+      <div class="mrow-cell"><div class="lbl">Park factor</div><div class="val">${p.park}</div></div>
+      <div class="mrow-cell"><div class="lbl">Weather</div><div class="val">${p.weather}</div></div>
+      <div class="mrow-cell"><div class="lbl">Venue</div><div class="val">${p.home?'Home':'Away'}</div></div>
+      <div class="mrow-cell"><div class="lbl">Last 5 starts (K)</div><div class="form5">${form5Html}</div></div>
+      <div class="mrow-cell"><div class="lbl">Notes</div><div class="mrow-notes">${notesHtml}</div></div>
+      ${liveHtml}
+    </div>
+  `;
+}
+
+function toggleMatchup(name){
+  if(expandedRows.has(name)) expandedRows.delete(name); else expandedRows.add(name);
+  const row = document.getElementById(`mrow-${cssSafe(name)}`);
+  if(row) row.classList.toggle('open');
+  const btn = [...document.querySelectorAll('.caret-btn')].find(b=> b.getAttribute('onclick')===`toggleMatchup('${name}')`);
+  if(btn) btn.classList.toggle('open');
+}
+
+function toggleWatchlist(name){
+  if(watchlist.has(name)) watchlist.delete(name); else watchlist.add(name);
+  saveSet('so_watchlist', watchlist);
+  rerender(); renderChips(); renderSignalsRail();
+}
+
+function attachCellHandlers(){
+  document.querySelectorAll('td.odds:not(.dash)').forEach(td=>{
+    td.onclick = ()=>{
+      const odds = td.dataset.odds;
+      if(odds==='') return;
+      togglePick({
+        player: td.dataset.player,
+        team: td.dataset.team,
+        opp: td.dataset.opp,
+        side: td.dataset.side,
+        book: td.dataset.bookId,
+        line: parseFloat(td.dataset.line),
+        odds: parseInt(odds,10)
+      });
+    };
+  });
+}
+
+/* ===================== Stat cards ===================== */
+function spreadCentsFor(p, side){
+  const key = side==='Over' ? 2 : 1;
+  const oddsArr = BOOKS.map(b=>{ const row=p.books[b.id]; return row ? row[key] : null; }).filter(v=>v!==null);
+  if(oddsArr.length<2) return null;
+  const probs = oddsArr.map(impliedProb);
+  return (Math.max(...probs) - Math.min(...probs)) * 100;
+}
+
+function renderStats(){
+  // Books in agreement — share of all book-quoted lines that match each pitcher's consensus line
+  let totalQuotes=0, matching=0;
+  PROPS_DATA.forEach(p=>{
+    BOOKS.forEach(b=>{
+      const row = p.books[b.id];
+      if(!row) return;
+      totalQuotes++;
+      if(row[0]===p.consensusLine) matching++;
+    });
+  });
+  const agreePct = totalQuotes ? Math.round((matching/totalQuotes)*100) : 0;
+  document.getElementById('statAgree').textContent = agreePct+'%';
+  document.getElementById('statAgreeSub').textContent = `${matching} of ${totalQuotes} book lines match consensus`;
+
+  // Tightest spread — smallest best-vs-worst price gap (in cents) across the board
+  let tight=null;
+  PROPS_DATA.forEach(p=>{
+    ['Over','Under'].forEach(side=>{
+      const c = spreadCentsFor(p, side);
+      if(c!==null && (!tight || c<tight.cents)) tight = {p, side, cents:c};
+    });
+  });
+  if(tight){
+    document.getElementById('statTight').textContent = tight.cents.toFixed(1)+'¢';
+    document.getElementById('statTightSub').textContent = `${tight.p.name} · ${tight.side}`;
+  }
+
+  // Shortopen Spread — biggest +EV gap between our formula (aggregate avg + 2%) and the market's best price
+  let so=null;
+  PROPS_DATA.forEach(p=>{
+    ['Over','Under'].forEach(side=>{
+      const soOdds = side==='Over' ? p.soOver : p.soUnder;
+      const mkt = side==='Over' ? p.bestOver : p.bestUnder;
+      if(soOdds===null || !mkt) return;
+      const edge = (impliedProb(soOdds) - impliedProb(mkt.odds)) * 100;
+      if(!so || edge>so.edge) so = {p, side, soOdds, edge};
+    });
+  });
+  if(so){
+    document.getElementById('statShortopen').textContent = fmtOdds(so.soOdds);
+    document.getElementById('statShortopenSub').textContent = `${so.p.name} · ${so.side} · +${so.edge.toFixed(1)}% vs market best`;
+  }
+
+  let topOver=null, topUnder=null;
+  PROPS_DATA.forEach(p=>{
+    if(p.bestOver && (!topOver || p.bestOver.odds>topOver.odds)) topOver={...p.bestOver, name:p.name};
+    if(p.bestUnder && (!topUnder || p.bestUnder.odds>topUnder.odds)) topUnder={...p.bestUnder, name:p.name};
+  });
+  if(topOver){
+    document.getElementById('statBestOver').textContent = fmtOdds(topOver.odds);
+    document.getElementById('statBestOverName').textContent = `${topOver.name} · ${topOver.book}`;
+  }
+  if(topUnder){
+    document.getElementById('statBestUnder').textContent = fmtOdds(topUnder.odds);
+    document.getElementById('statBestUnderName').textContent = `${topUnder.name} · ${topUnder.book}`;
+  }
+}
+
+/* ===================== Ticker ===================== */
+function renderTicker(){
+  const items = [...PROPS_DATA]
+    .sort((a,b)=> (b.bestOver? b.bestOver.odds:-999) - (a.bestOver? a.bestOver.odds:-999))
+    .slice(0,14)
+    .map(p=>{
+      const steam = p.steamCount>0 ? `<span class="up">STEAM</span>` : '';
+      return `<span><b>${p.team}</b> ${p.name.split(' ').slice(-1)[0]} · ${p.consensusLine!==null?p.consensusLine.toFixed(1):'--'}K
+        <span class="up">O${p.bestOver?fmtOdds(p.bestOver.odds):'--'}</span> /
+        <span class="dn">U${p.bestUnder?fmtOdds(p.bestUnder.odds):'--'}</span> ${steam}</span>`;
+    }).join('<span style="color:var(--text-faint)">·</span>');
+  document.getElementById('tickerTrack').innerHTML = items + '<span style="color:var(--text-faint)">·</span>' + items;
+}
+
+/* ===================== Book toggles ===================== */
+function renderBookToggles(){
+  const wrap = document.getElementById('bookToggles');
+  wrap.innerHTML = BOOKS.map(b=>`
+    <div class="book-chip" data-book="${b.id}">
+      <span class="sw" style="background:${b.color}"></span>${b.id}
+    </div>
+  `).join('');
+  wrap.querySelectorAll('.book-chip').forEach(chip=>{
+    chip.onclick = ()=>{
+      const id = chip.dataset.book;
+      if(activeBooks.has(id)){ activeBooks.delete(id); chip.classList.add('off'); }
+      else{ activeBooks.add(id); chip.classList.remove('off'); }
+      document.querySelectorAll(`[data-book="${id}"]`).forEach(el=>{
+        if(el.tagName==='TD' && el.classList.contains('book-cell')){
+          el.classList.toggle('col-hidden', !activeBooks.has(id));
+        }
+      });
+    };
+  });
+}
+
+/* ===================== Filter / Sort ===================== */
+function getFilteredSorted(){
+  const q = document.getElementById('searchBox').value.trim().toLowerCase();
+  let list = PROPS_DATA.filter(p=>
+    !q || p.name.toLowerCase().includes(q) || p.team.toLowerCase().includes(q) || p.opp.toLowerCase().includes(q)
+  );
+  switch(quickFilter){
+    case 'watchlist': list = list.filter(p=> watchlist.has(p.name)); break;
+    case 'aces': list = list.filter(p=> (p.consensusLine||0) >= 6.5); break;
+    case 'home': list = list.filter(p=> p.home); break;
+    case 'rookies': list = list.filter(p=> p.rookie); break;
+  }
+  const sortVal = document.getElementById('sortSel').value;
+  list = [...list];
+  switch(sortVal){
+    case 'line_desc': list.sort((a,b)=> (b.consensusLine||0)-(a.consensusLine||0)); break;
+    case 'line_asc': list.sort((a,b)=> (a.consensusLine||0)-(b.consensusLine||0)); break;
+    case 'steam_desc': list.sort((a,b)=> b.steamCount-a.steamCount); break;
+    case 'best_over': list.sort((a,b)=> (b.bestOver?b.bestOver.odds:-999)-(a.bestOver?a.bestOver.odds:-999)); break;
+    case 'best_under': list.sort((a,b)=> (b.bestUnder?b.bestUnder.odds:-999)-(a.bestUnder?a.bestUnder.odds:-999)); break;
+    case 'name_asc': list.sort((a,b)=> a.name.localeCompare(b.name)); break;
+  }
+  list.sort((a,b)=> (watchlist.has(b.name)?1:0) - (watchlist.has(a.name)?1:0));
+  return list;
+}
+
+function rerender(){ renderTable(getFilteredSorted()); }
+
+/* ===================== Filter chips ===================== */
+function renderChips(){
+  const chips = [
+    {id:'all', label:'All'},
+    {id:'watchlist', label:'⭐ Watchlist', count: watchlist.size},
+    {id:'aces', label:'Aces only', count: PROPS_DATA.filter(p=>(p.consensusLine||0)>=6.5).length},
+    {id:'home', label:'Home favorites', count: PROPS_DATA.filter(p=>p.home).length},
+    {id:'rookies', label:'Rookie debuts', count: PROPS_DATA.filter(p=>p.rookie).length}
+  ];
+  document.getElementById('chipRow').innerHTML = chips.map(c=>
+    `<button class="fchip${quickFilter===c.id?' on':''}" onclick="setQuickFilter('${c.id}')">${c.label}${c.count!==undefined?` <span class="ct">${c.count}</span>`:''}</button>`
+  ).join('');
+}
+function setQuickFilter(id){ quickFilter = id; renderChips(); rerender(); }
+
+/* ===================== Today's Best Bets ===================== */
+function renderBestBets(){
+  const edges = [];
+  PROPS_DATA.forEach(p=>{
+    if(p.bestOver && p.fairOverProb!==null){
+      edges.push({p, side:'Over', odds:p.bestOver.odds, book:p.bestOver.book, edge:(p.fairOverProb - impliedProb(p.bestOver.odds))*100});
+    }
+    if(p.bestUnder && p.fairUnderProb!==null){
+      edges.push({p, side:'Under', odds:p.bestUnder.odds, book:p.bestUnder.book, edge:(p.fairUnderProb - impliedProb(p.bestUnder.odds))*100});
+    }
+  });
+  edges.sort((a,b)=> b.edge-a.edge);
+  const top = edges.slice(0,3);
+  document.getElementById('bestBets').innerHTML = top.map(e=>{
+    const steamNote = e.p.steamCount>0 ? `Line has moved at ${e.p.steamCount} book${e.p.steamCount>1?'s':''} — ` : '';
+    return `
+    <div class="bb-card" onclick="document.getElementById('searchBox').value='${e.p.name}';rerender();document.querySelector('.board').scrollIntoView({behavior:'smooth'})">
+      <div class="nm">${e.p.name} <span style="color:var(--text-dim);font-weight:400">${e.side}</span></div>
+      <div class="sub">${e.p.team} vs ${e.p.opp} · ${e.p.consensusLine.toFixed(1)} K line</div>
+      <div class="row"><span class="price">${fmtOdds(e.odds)}</span><span class="edge">+${e.edge.toFixed(1)}% vs fair</span></div>
+      <div class="why">${steamNote}best price at ${bookName(e.book)}, priced above the no-vig fair line.</div>
+    </div>`;
+  }).join('') || '<div class="clv-empty">Not enough data yet.</div>';
+}
+
+/* ===================== Live Signals rail ===================== */
+function renderSignalsRail(){
+  const movers = PROPS_DATA.filter(p=> p.steamCount>0 && p.openLine!==null)
+    .map(p=> ({p, delta: Math.abs((p.consensusLine||0) - p.openLine)}))
+    .sort((a,b)=> b.delta-a.delta)
+    .slice(0,10);
+  document.getElementById('signalsCount').textContent = `${movers.length} Active`;
+  document.getElementById('signalsRail').innerHTML = movers.map(m=>{
+    const dir = m.p.consensusLine > m.p.openLine ? 'up' : 'dn';
+    const arrow = dir==='up' ? '▲' : '▼';
+    return `
+    <div class="signal-card" onclick="document.getElementById('searchBox').value='${m.p.name}';rerender();document.querySelector('.board').scrollIntoView({behavior:'smooth'})">
+      <div class="nm">${m.p.name}</div>
+      <div class="mv">${arrow} ${m.p.openLine.toFixed(1)} → <b>${m.p.consensusLine.toFixed(1)}</b> K · ${m.p.steamCount} book${m.p.steamCount>1?'s':''}</div>
+    </div>`;
+  }).join('') || '<div class="clv-empty">No active line moves right now.</div>';
+}
+
+/* ===================== Notes ticker ===================== */
+function renderNotesTicker(){
+  const items = PROPS_DATA.filter(p=>p.notes.length).slice(0,16).map(p=>
+    `<span><b>${p.team}</b> ${p.name.split(' ').slice(-1)[0]} — ${p.notes[0]}</span>`
+  );
+  const html = items.join('<span style="color:var(--text-faint)"> · </span>');
+  document.getElementById('notesTrack').innerHTML = html + '<span style="color:var(--text-faint)"> · </span>' + html;
+}
+
+/* ===================== CLV tracker ===================== */
+function logPickForCLV(pk){
+  clvLog.push({...pk, ts: Date.now()});
+  saveClvLog();
+  renderCLVTracker();
+  showToast(`Logged ${pk.player} ${pk.side} ${fmtOdds(pk.odds)} to your CLV tracker.`);
+}
+
+function currentFairOddsFor(playerName, side){
+  const p = PROPS_DATA.find(pp=>pp.name===playerName);
+  if(!p) return null;
+  return side==='Over' ? p.fairOver : p.fairUnder;
+}
+
+function renderCLVTracker(){
+  const body = document.getElementById('clvBody');
+  if(!clvLog.length){
+    body.innerHTML = '<div class="clv-empty">No bets logged yet. Use "Log to CLV" on a slip pick to start tracking closing-line value.</div>';
+    return;
+  }
+  body.innerHTML = [...clvLog].reverse().map((e,revIdx)=>{
+    const idx = clvLog.length-1-revIdx;
+    const fairNow = currentFairOddsFor(e.player, e.side);
+    let clvHtml = '<span>—</span>';
+    if(fairNow!==null){
+      const takenP = impliedProb(e.odds), fairP = impliedProb(fairNow);
+      const clv = (fairP - takenP) * 100;
+      const sign = clv>=0 ? '+' : '';
+      clvHtml = `<span class="${clv>=0?'pos':'neg'}">${sign}${clv.toFixed(1)}%</span>`;
+    }
+    return `
+      <div class="clv-row">
+        <div class="p">${e.player}<small>${e.side} ${e.line} K · ${bookName(e.book)}</small></div>
+        <div>Odds taken<br><b>${fmtOdds(e.odds)}</b></div>
+        <div>Fair now<br><b>${fairNow!==null?fmtOdds(fairNow):'—'}</b></div>
+        <div>CLV<br>${clvHtml}</div>
+        <div style="text-align:right"><button class="clv-clear" style="padding:4px 8px" onclick="removeClvEntry(${idx})">✕</button></div>
+      </div>`;
+  }).join('');
+}
+
+function removeClvEntry(idx){
+  clvLog.splice(idx,1);
+  saveClvLog();
+  renderCLVTracker();
+}
+
+document.getElementById('clvClear').onclick = ()=>{ clvLog=[]; saveClvLog(); renderCLVTracker(); };
+
+/* ===================== Toasts ===================== */
+function showToast(msg){
+  const wrap = document.getElementById('toastWrap');
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transition='opacity .3s'; setTimeout(()=>el.remove(),300); }, 4200);
+}
+
+
+
+document.getElementById('searchBox').addEventListener('input', rerender);
+document.getElementById('sortSel').addEventListener('change', rerender);
+
+/* ===================== Bet Slip ===================== */
+function pickKey(pk){ return `${pk.player}|${pk.side}|${pk.book}`; }
+
+function togglePick(pk){
+  const key = pickKey(pk);
+  const idx = slip.findIndex(s=> pickKey(s)===key);
+  if(idx>-1){ slip.splice(idx,1); }
+  else{ slip.push(pk); }
+  renderSlip();
+  refreshPickedHighlights();
+  if(slip.length>0) openSlip();
+}
+
+function refreshPickedHighlights(){
+  document.querySelectorAll('td.odds').forEach(td=>{
+    if(!td.dataset.player) return;
+    const key = `${td.dataset.player}|${td.dataset.side}|${td.dataset.bookId}`;
+    td.classList.toggle('picked', slip.some(s=> pickKey(s)===key));
+  });
+}
+
+function avgImpliedProbForSide(playerName, side){
+  const p = PROPS_DATA.find(pp=>pp.name===playerName);
+  if(!p) return null;
+  const probs = BOOKS.map(b=>{
+    const row = p.books[b.id];
+    if(!row) return null;
+    const val = side==='Over' ? row[2] : row[1];
+    return impliedProb(val);
+  }).filter(v=>v!==null);
+  if(!probs.length) return null;
+  return probs.reduce((a,b)=>a+b,0)/probs.length;
+}
+
+function renderSlip(){
+  const body = document.getElementById('slipBody');
+  document.getElementById('slipCount').textContent = slip.length;
+  document.getElementById('fabCount').textContent = slip.length;
+
+  if(slip.length===0){
+    body.innerHTML = '<div class="slip-empty">No picks yet. Click a price on the board to add it here.</div>';
+  } else {
+    body.innerHTML = slip.map(pk=>{
+      const avgP = avgImpliedProbForSide(pk.player, pk.side);
+      const myP = impliedProb(pk.odds);
+      let edgeHtml = '<span class="edge">—</span>';
+      if(avgP!==null && myP!==null){
+        const edge = (avgP - myP) * 100;
+        const sign = edge>=0 ? '+' : '';
+        const color = edge>=0 ? 'var(--green)' : 'var(--red)';
+        edgeHtml = `<span class="edge" style="color:${color}">${sign}${edge.toFixed(1)}% vs mid</span>`;
+      }
+      return `
+        <div class="pick-row" data-key="${pickKey(pk)}">
+          <div class="pinfo">
+            <div class="nm">${pk.player} <span style="color:var(--text-dim);font-weight:400;">(${pk.team} vs ${pk.opp})</span></div>
+            <div class="dt">${pk.side} ${pk.line} K · ${bookName(pk.book)}</div>
+          </div>
+          <div class="pval">
+            <span class="odd ${pk.side==='Over'?'o':'u'}">${fmtOdds(pk.odds)}</span>
+            ${edgeHtml}
+            <button class="log-clv-btn" data-key="${pickKey(pk)}">Log to CLV</button>
+            <button class="rm" data-key="${pickKey(pk)}">✕</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+    body.querySelectorAll('.rm').forEach(btn=>{
+      btn.onclick = ()=>{
+        const key = btn.dataset.key;
+        slip = slip.filter(s=> pickKey(s)!==key);
+        renderSlip();
+        refreshPickedHighlights();
+      };
+    });
+    body.querySelectorAll('.log-clv-btn').forEach(btn=>{
+      btn.onclick = ()=>{
+        const key = btn.dataset.key;
+        const pk = slip.find(s=> pickKey(s)===key);
+        if(pk) logPickForCLV(pk);
+      };
+    });
+  }
+  renderPayout();
+}
+
+function renderPayout(){
+  document.getElementById('stakeAmt').textContent = '$'+stake;
+  let decimalProduct = 1;
+  slip.forEach(pk=>{ decimalProduct *= americanToDecimal(pk.odds); });
+  const payout = slip.length ? stake * decimalProduct : 0;
+  document.getElementById('payoutVal').textContent = '$'+payout.toFixed(2);
+}
+
+document.getElementById('stakeMinus').onclick = ()=>{ stake = Math.max(1, stake-5); renderPayout(); };
+document.getElementById('stakePlus').onclick = ()=>{ stake = stake+5; renderPayout(); };
+document.getElementById('clearSlip').onclick = ()=>{ slip=[]; renderSlip(); refreshPickedHighlights(); };
+
+const slipDrawer = document.getElementById('slipDrawer');
+function openSlip(){ slipDrawer.classList.add('open'); }
+function closeSlip(){ slipDrawer.classList.remove('open'); }
+document.getElementById('slipFab').onclick = ()=> slipDrawer.classList.toggle('open');
+document.getElementById('slipCloseBtn').onclick = closeSlip;
+
+/* ===================== Clock ===================== */
+function tickClock(){
+  const now = new Date();
+  const et = new Date(now.toLocaleString('en-US', {timeZone:'America/New_York'}));
+  const hh = String(et.getHours()).padStart(2,'0');
+  const mm = String(et.getMinutes()).padStart(2,'0');
+  const ss = String(et.getSeconds()).padStart(2,'0');
+  document.getElementById('clockET').textContent = `${hh}:${mm}:${ss} ET`;
+}
+setInterval(tickClock,1000); tickClock();
+
+/* ===================== Mobile menu ===================== */
+function toggleMobileMenu(){
+  document.getElementById('hamburgerBtn').classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+/* ===================== Init ===================== */
+renderStats();
+renderTicker();
+renderNotesTicker();
+renderBookToggles();
+renderChips();
+renderBestBets();
+renderSignalsRail();
+rerender();
+renderSlip();
+renderCLVTracker();
+</script>
+<script id="so-final-scroll-speed-20260725-js">
+(function(){
+  function boot(){
+    var scroller=document.querySelector('.table-scroll');
+    if(scroller){
+      var down=false,startX=0,startLeft=0,moved=false,pid=null;
+      scroller.addEventListener('pointerdown',function(e){if(e.pointerType==='touch')return;down=true;moved=false;startX=e.clientX;startLeft=scroller.scrollLeft;pid=e.pointerId;});
+      scroller.addEventListener('pointermove',function(e){if(!down)return;var dx=e.clientX-startX;if(Math.abs(dx)>4){if(!moved){moved=true;scroller.classList.add('so-dragging');scroller.setPointerCapture&&scroller.setPointerCapture(pid);}scroller.scrollLeft=startLeft-dx;}});
+      function up(){down=false;scroller.classList.remove('so-dragging')}
+      scroller.addEventListener('pointerup',up);scroller.addEventListener('pointercancel',up);scroller.addEventListener('mouseleave',up);
+      scroller.addEventListener('click',function(e){if(moved){e.preventDefault();e.stopPropagation();moved=false;}},true);
+    }
+    function vis(){document.documentElement.classList.toggle('so-k-hidden',document.hidden)}
+    vis();document.addEventListener('visibilitychange',vis,{passive:true});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
+</body>
+</html>
