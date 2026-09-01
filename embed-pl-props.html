@@ -1,0 +1,702 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Player Props — Premier League — shortopen</title><link rel="icon" type="image/svg+xml" href="favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="shortcut icon" href="favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet"><style>
+:root{--bg:#04080d;--panel:#08111a;--panel2:#0b1620;--line:rgba(255,255,255,.075);--line2:rgba(255,255,255,.13);--text:#edf3f7;--muted:#748397;--muted2:#a2afbd;--gold:#f4b942;--green:#22d97e;--blue:#57a7ff;--red:#ff5d6c;--red-deep:#c8202f;--mono:'DM Mono',monospace}
+*{box-sizing:border-box}
+body{margin:0;padding:24px;background:linear-gradient(rgba(255,93,108,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(255,93,108,.016) 1px,transparent 1px),radial-gradient(circle at 15% 10%,rgba(255,93,108,.07),transparent 45%),radial-gradient(circle at 85% 15%,rgba(200,32,47,.055),transparent 45%),var(--bg);background-size:64px 64px,64px 64px,auto,auto,auto;color:var(--text);font-family:Inter,system-ui,sans-serif}
+.wrap{max-width:1500px;margin:auto}
+
+/* ===== HERO ===== */
+.hero{position:relative;overflow:hidden;border:1px solid rgba(255,93,108,.16);border-radius:22px;background:linear-gradient(145deg,rgba(255,93,108,.065),rgba(6,13,20,.97) 55%,rgba(200,32,47,.05));padding:32px 34px 68px;min-height:220px}
+/* Decorative ring behind the devil doubles as an "impact trigger" —
+   it flashes brighter right when the ball connects (ringPulse, timed to
+   propsBallRock's contact window below), so the hit reads as the thing
+   that sets the devil off rather than a coincidence. */
+.hero:after{content:'';position:absolute;right:-90px;top:-110px;width:430px;height:430px;border-radius:50%;border:1px solid rgba(255,93,108,.12);box-shadow:0 0 0 40px rgba(255,93,108,.02),0 0 0 80px rgba(200,32,47,.014);animation:ringPulse 7s ease-in-out infinite}
+@keyframes ringPulse{
+ 0%,45%{border-color:rgba(255,93,108,.12);box-shadow:0 0 0 40px rgba(255,93,108,.02),0 0 0 80px rgba(200,32,47,.014)}
+ 48%{border-color:rgba(255,111,124,.65);box-shadow:0 0 0 40px rgba(255,93,108,.12),0 0 0 80px rgba(200,32,47,.07),0 0 70px 6px rgba(255,93,108,.4)}
+ 53%{border-color:rgba(255,93,108,.32);box-shadow:0 0 0 40px rgba(255,93,108,.06),0 0 0 80px rgba(200,32,47,.035),0 0 34px rgba(255,93,108,.18)}
+ 60%,100%{border-color:rgba(255,93,108,.12);box-shadow:0 0 0 40px rgba(255,93,108,.02),0 0 0 80px rgba(200,32,47,.014)}
+}
+.ey{color:var(--red);font:800 10px var(--mono);letter-spacing:.16em;text-transform:uppercase;display:flex;align-items:center;gap:7px}
+.ey:before{content:'';width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 8px rgba(255,93,108,.7)}
+h1{position:relative;font-size:clamp(2.5rem,5vw,4.6rem);line-height:.92;letter-spacing:-.055em;margin:11px 0 9px;max-width:11ch;
+  color:var(--red);
+  background:linear-gradient(100deg,var(--red) 0%,var(--red) 42%,#fff2ee 50%,var(--red) 58%,var(--red) 100%);
+  background-size:280% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:redSweep 6.5s ease-in-out infinite;
+}
+@keyframes redSweep{0%{background-position:220% 0}45%{background-position:-30% 0}100%{background-position:-30% 0}}
+.hero p{position:relative;max-width:640px;color:#8a98a7;line-height:1.65;font-size:.83rem}
+.badge{position:absolute;right:24px;top:18px;padding:7px 12px;border:1px solid rgba(244,185,66,.34);border-radius:999px;color:var(--gold);font:800 9px var(--mono);letter-spacing:.12em;background:rgba(4,8,13,.82);box-shadow:0 0 0 1px rgba(244,185,66,.04),0 8px 24px rgba(0,0,0,.22)}
+
+/* ---- Red Devil mascot: original flat-vector cartoon devil, our own
+   invented character (not a reproduction of any club crest or photo) —
+   sits in the hero's open right side as the Man Utd-fan nod the user
+   asked for. Absolute + aria-hidden so it never disrupts text flow.
+   Idle bob animation + a periodic kick-arm swing timed to the ball's
+   back-and-forth cycle so the two read as "engaging" with each other. ---- */
+.devil-wrap{position:absolute;right:14px;bottom:-8px;width:224px;height:224px;pointer-events:none;z-index:3;opacity:.98;filter:drop-shadow(0 16px 24px rgba(0,0,0,.48)) drop-shadow(0 0 28px rgba(255,93,108,.26));animation:devilBob 7s ease-in-out infinite}
+.devil-wrap svg{width:100%;height:100%;overflow:visible}
+@keyframes devilBob{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-7px) rotate(1.4deg)}}
+/* Reaction sequence, timed to the ball's 7s round-trip (propsBallRock):
+   the ball now actually rolls into the devil's planted leg (peaking
+   ~46%–52%, the contact window below) rather than just turning around
+   in front of him — so the body jolt/shake and tail whip read as a
+   direct reaction to the bump, not a coincidence of timing. Body and
+   tail animate on separate groups so they layer over the idle bob
+   without clobbering each other's transform. */
+.devil-body-shake{transform-origin:104px 150px;animation:devilShake 7s ease-in-out infinite}
+@keyframes devilShake{
+ 0%,46%{transform:translate(0,0) rotate(0deg)}
+ 48%{transform:translate(-6px,2px) rotate(-3.4deg)}
+ 49.5%{transform:translate(7px,-2.5px) rotate(3.8deg)}
+ 51%{transform:translate(-5px,2px) rotate(-2.6deg)}
+ 53%{transform:translate(4px,-1.5px) rotate(1.9deg)}
+ 55.5%{transform:translate(-2px,1px) rotate(-1deg)}
+ 58%{transform:translate(1px,-.4px) rotate(.4deg)}
+ 61%,100%{transform:translate(0,0) rotate(0deg)}
+}
+/* Eye light: plain fill/r animation on the eye highlight dots — no
+   filter, no blend mode, no transform-box, so it renders the same in
+   every browser. Gold at rest; on the same 46%-53% impact window as the
+   body shake (devilShake, below), it dilates — grows and flips to
+   green — then contracts back to gold, reading as a reaction to the
+   ball's hit rather than a standalone ambient loop. */
+.devil-eye-light{animation:eyeDilate 7s ease-in-out infinite}
+@keyframes eyeDilate{
+ 0%,45%{fill:#f4b942;r:3px}
+ 48%{fill:#22d97e;r:5.5px}
+ 53%{fill:#22d97e;r:4.5px}
+ 60%,100%{fill:#f4b942;r:3px}
+}
+.devil-tail{transform-origin:172px 158px;animation:tailWhip 7s ease-in-out infinite}
+@keyframes tailWhip{
+ 0%,47%{transform:rotate(0deg) scale(1)}
+ 49%{transform:rotate(-16deg) scale(1.03)}
+ 52%{transform:rotate(30deg) scale(1.06)}
+ 55.5%{transform:rotate(-11deg) scale(1.03)}
+ 59%{transform:rotate(5deg) scale(1.01)}
+ 63%,100%{transform:rotate(0deg) scale(1)}
+}
+@media(max-width:1180px){.devil-wrap{width:176px;height:176px;right:8px;bottom:-6px}}
+@media(max-width:820px){.devil-wrap{width:136px;height:136px;opacity:.92}}
+/* Used to be hidden entirely below 650px — but the ball's whole
+   "rolls in and bumps the devil" story plays out on mobile too, so
+   hiding the devil left that animation pointed at nothing. Shown small
+   instead, tucked into the corner so it doesn't crowd the headline. */
+@media(max-width:650px){.devil-wrap{width:98px;height:98px;right:2px;bottom:-2px;opacity:.85}}
+@media(max-width:400px){.devil-wrap{width:82px;height:82px}}
+
+/* Hero decorative animation: shortopen-branded ball rolling in and
+   actually bumping into the devil's planted leg, then rebounding back
+   across the hero's lower band (same artwork family as Matchup Lab's
+   .lab-ball), ~10% larger than the original single-pass roll. Contact
+   is a real collision beat — the ball overshoots slightly on arrival,
+   squashes, and kicks back — not just a smooth turnaround. */
+.props-ball-track{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
+/* Driven by transform:translateX() instead of the "left" percentage this
+   used to animate — left forces a layout recalculation every frame for
+   the full 7s infinite loop, which is what read as lag/stutter.
+   translateX is compositor-only, so the same motion is now free. --btw
+   (ball-track width, in px, set by JS below) lets translateX use a
+   parent-relative distance despite % in transform resolving against the
+   ball's own tiny box rather than the track's. */
+.props-ball{position:absolute;bottom:16px;top:auto;left:0;width:44px;height:44px;filter:drop-shadow(0 7px 9px rgba(0,0,0,.4)) drop-shadow(0 0 10px rgba(255,93,108,.3));animation:propsBallRock 7s linear infinite;will-change:transform}
+/* Rotation is kept as a near-constant function of horizontal position
+   (~6.5deg per 1% left) through the whole cycle, forward and back, so
+   the spin rate never jumps between keyframes — that's what reads as
+   smooth "rolling" instead of the old sparse-keyframe stutter. The only
+   deliberate break from that rule is the impact/recoil micro-beat at
+   48%–55%, where the ball actually reaches the devil's planted leg. */
+@keyframes propsBallRock{
+ 0%{transform:translateX(calc(var(--btw,900px)*.06)) rotate(0deg) scale(1)}
+ 6%{transform:translateX(calc(var(--btw,900px)*.14)) rotate(52deg) scale(1)}
+ 12%{transform:translateX(calc(var(--btw,900px)*.22)) rotate(104deg) scale(1)}
+ 18%{transform:translateX(calc(var(--btw,900px)*.31)) rotate(163deg) scale(1)}
+ 24%{transform:translateX(calc(var(--btw,900px)*.40)) rotate(221deg) scale(1)}
+ 30%{transform:translateX(calc(var(--btw,900px)*.49)) rotate(280deg) scale(1)}
+ 36%{transform:translateX(calc(var(--btw,900px)*.58)) rotate(338deg) scale(1)}
+ 41%{transform:translateX(calc(var(--btw,900px)*.66)) rotate(390deg) scale(1)}
+ 44%{transform:translateX(calc(var(--btw,900px)*.71)) rotate(423deg) scale(1)}
+ 46.5%{transform:translateX(calc(var(--btw,900px)*.76)) rotate(455deg) scale(1)}
+ 48%{transform:translateX(calc(var(--btw,900px)*.80)) rotate(481deg) scale(1.07,.9)}
+ 49.5%{transform:translateX(calc(var(--btw,900px)*.775)) rotate(465deg) scale(.93,1.08)}
+ 51.5%{transform:translateX(calc(var(--btw,900px)*.74)) rotate(442deg) scale(1)}
+ 55%{transform:translateX(calc(var(--btw,900px)*.76)) rotate(455deg) scale(1)}
+ 60%{transform:translateX(calc(var(--btw,900px)*.70)) rotate(416deg) scale(1)}
+ 67%{transform:translateX(calc(var(--btw,900px)*.59)) rotate(345deg) scale(1)}
+ 74%{transform:translateX(calc(var(--btw,900px)*.48)) rotate(273deg) scale(1)}
+ 81%{transform:translateX(calc(var(--btw,900px)*.37)) rotate(202deg) scale(1)}
+ 88%{transform:translateX(calc(var(--btw,900px)*.26)) rotate(130deg) scale(1)}
+ 94%{transform:translateX(calc(var(--btw,900px)*.16)) rotate(65deg) scale(1)}
+ 100%{transform:translateX(calc(var(--btw,900px)*.06)) rotate(0deg) scale(1)}
+}
+@media(max-width:1180px){.props-ball{width:35px;height:35px;bottom:14px}}
+@media(max-width:650px){.props-ball{width:26px;height:26px;bottom:10px}}
+
+/* ===== DESK STATS STRIP — dial-style readout, not a plain box grid:
+   each cell gets its own accent-colored progress arc/tick and an index
+   mark, so the row reads like an instrument panel rather than five
+   identical boxes. ===== */
+/* Refreshed as discrete tiles instead of one strip with internal
+   dividers — each stat gets its own hairline card and a small accent
+   dot in place of the old boxed index number, which reads sleeker at a
+   glance and scales down to 2-up on mobile without orphaned divider
+   lines. */
+.deskstrip{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:16px 0 0}
+.deskcell{position:relative;padding:13px 14px 12px;display:flex;flex-direction:column;gap:5px;border-radius:11px;border:1px solid rgba(255,255,255,.055);background:linear-gradient(155deg,rgba(255,255,255,.025),rgba(5,10,16,.9));transition:border-color .15s,background .15s,transform .15s}
+.deskcell:hover{border-color:rgba(255,93,108,.28);background:linear-gradient(155deg,rgba(255,93,108,.05),rgba(5,10,16,.92));transform:translateY(-1px)}
+.deskcell .dk-dot{width:5px;height:5px;border-radius:50%;background:#3d4b5a;margin-bottom:1px}
+.deskcell b{font:900 1.3rem var(--mono);letter-spacing:-.02em;color:var(--text);font-variant-numeric:tabular-nums;line-height:1}
+.deskcell span{font:700 8px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#5c6c7d}
+.deskcell .dk-bar{height:2px;border-radius:2px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:2px}
+.deskcell .dk-bar i{display:block;height:100%;border-radius:inherit;background:#3d4b5a;width:60%}
+.deskcell.accent .dk-dot{background:var(--red)}
+.deskcell.accent b{color:var(--red)}
+.deskcell.accent2 .dk-dot{background:var(--gold)}
+.deskcell.accent2 b{color:var(--gold)}
+.deskcell.accent2 .dk-bar i{background:var(--gold)}
+.deskcell.accent3 .dk-dot{background:var(--green)}
+.deskcell.accent3 b{color:var(--green)}
+.deskcell.accent3 .dk-bar i{background:var(--green)}
+@media(max-width:820px){.deskstrip{grid-template-columns:repeat(2,1fr)}}
+/* Mobile: a 2-up grid of these tiles still stacks tall (each cell carries
+   a value, a label, and sometimes a bar). Swap to a swipeable horizontal
+   strip instead, matching the category-tab pattern, so the row stays
+   compact and scrolls rather than stretching the page. */
+@media(max-width:650px){.deskstrip{display:flex;grid-template-columns:none;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;gap:7px;padding-bottom:8px;scrollbar-width:none}.deskstrip::-webkit-scrollbar{display:none}.deskcell{flex:0 0 122px;scroll-snap-align:start;padding:10px 12px 9px}.deskcell b{font-size:1.05rem}.deskcell span{font-size:7px}}
+
+/* ===== METHODOLOGY PANEL ===== */
+.methpanel{margin:14px 0 0;border:1px solid rgba(255,93,108,.13);border-radius:14px;overflow:hidden;background:rgba(255,93,108,.02)}
+.methhead{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(255,93,108,.1);background:rgba(255,93,108,.045)}
+.methhead b{font:800 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#e8b0b5}
+.methhead span{color:#5c6c7d;font-size:10px}
+.methgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.05)}
+.methcard{background:#070d14;padding:13px 15px}
+.methcard .mh-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}
+.methcard b{display:block;font-size:11px;font-weight:800;color:#c7d0da}
+.methcard .mh-tag{font:800 7.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--red);background:rgba(255,93,108,.09);border:1px solid rgba(255,93,108,.18);border-radius:5px;padding:3px 6px;white-space:nowrap}
+.methcard p{margin:0;color:#647486;font-size:10px;line-height:1.6}
+.methcard p b.inline{color:#8a98a7;font-weight:700}
+@media(max-width:950px){.methgrid{grid-template-columns:repeat(2,1fr)}}
+/* Mobile: four full-width methodology paragraphs stacked vertically was
+   the "enormous" block the user flagged. Swap to a swipeable horizontal
+   strip of fixed-width cards, same pattern as the deskstrip/tabs, so the
+   panel stays a fixed, compact height regardless of category count. */
+@media(max-width:650px){.methhead{flex-direction:column;align-items:flex-start;padding:11px 13px;gap:4px}.methhead span{font-size:9px;line-height:1.5}.methgrid{display:flex;grid-template-columns:none;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;gap:8px;background:none;padding:10px;scrollbar-width:none}.methgrid::-webkit-scrollbar{display:none}.methcard{flex:0 0 176px;scroll-snap-align:start;border-radius:9px;border:1px solid rgba(255,255,255,.05);padding:10px 12px;height:168px;overflow:hidden}.methcard .mh-row{margin-bottom:5px}.methcard b{font-size:10px}.methcard .mh-tag{font-size:6.5px;padding:2px 5px}.methcard p{font-size:8.7px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;overflow:hidden}}
+
+/* ===== PROBABILITY CHART — the statistically-driven centerpiece: every
+   player in the active category ranked on one axis, so the read is a
+   distribution, not ten disconnected cards. ===== */
+.chartpanel{margin:14px 0 4px;padding:18px 20px 16px;border:1px solid rgba(255,93,108,.15);border-radius:14px;background:linear-gradient(155deg,rgba(255,255,255,.025),rgba(5,10,16,.94))}
+.chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.chart-head b{font-size:13px;font-weight:800;color:#eef3f7}
+.chart-head span{display:block;margin-top:2px;color:#647486;font-size:9.5px;line-height:1.45;max-width:520px}
+.chart-legend{display:flex;align-items:center;gap:7px;font:700 9px var(--mono);color:#576578}
+.chart-legend i{width:11px;height:0;border-top:1.4px dashed rgba(244,185,66,.65);display:inline-block}
+.probchart{width:100%}
+/* Hybrid layout: desk-table input columns on the left (rank, name, the
+   exact base/signal/fixture numbers that built the read) feeding into a
+   range-dot plot on the right (baseline tick, connector, read dot) —
+   the data-entry precision of a ledger with the at-a-glance spread of a
+   scatter strip. Condensed ~30% vertically (tighter row padding, plot
+   height, dot size, type scale) so the panel doesn't dominate the page. */
+.chartpanel{--gridcols:18px 150px 36px 1fr 60px 52px}
+.pcx-axis{display:grid;grid-template-columns:var(--gridcols);gap:8px;padding:0 0 8px}
+.pcx-ticks{position:relative;height:12px;width:62%;margin:0 auto}
+.pcx-ticks i{position:absolute;top:0;transform:translateX(-50%);font:700 7.5px var(--mono);font-style:normal;color:#4c5b6b}
+.pcx-axis .pcx-lbl{font:700 7px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:#3d4b5a;align-self:end;text-align:right}
+.pcx-axis .pcx-lbl:first-of-type{text-align:left}
+.pcx-row{display:grid;grid-template-columns:var(--gridcols);align-items:center;gap:8px;padding:6.5px 0}
+.pcx-row:not(:last-child){border-bottom:1px solid rgba(255,255,255,.035)}
+.pcx-row:hover{background:rgba(255,255,255,.015)}
+.pcx-rank{font:800 9.5px var(--mono);color:#3d4b5a;font-variant-numeric:tabular-nums}
+.pcx-row:nth-child(-n+3) .pcx-rank{color:var(--gold)}
+.pcx-name{font-size:11px;font-weight:700;color:#c3ccd6;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pcx-name.ceiling{color:var(--gold)}
+.pcx-sub{display:block;color:#576578;font-weight:600;font-size:8.5px;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pcx-in{font:700 9.5px var(--mono);text-align:right;color:#8593a3;font-variant-numeric:tabular-nums}
+.pcx-in.pos{color:var(--green)}
+.pcx-in.neg{color:#ff8b93}
+.pcx-plot{position:relative;height:14px;width:62%;margin:0 auto}
+.pcx-line{position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,.07)}
+.pcx-base{position:absolute;top:1px;bottom:1px;width:1px;background:rgba(244,185,66,.6)}
+.pcx-base:after{content:'';position:absolute;top:-2.5px;left:-2.5px;width:6px;height:6px;border-radius:50%;background:rgba(244,185,66,.6)}
+.pcx-conn{position:absolute;top:50%;height:1.4px;transform:translateY(-50%);background:rgba(255,93,108,.28)}
+.pcx-conn.neg{height:1.8px;background:rgba(255,93,108,.5)}
+.pcx-dot{position:absolute;top:50%;width:9.5px;height:9.5px;border-radius:50%;transform:translate(-50%,-50%);background:var(--red);box-shadow:0 0 0 2px rgba(255,93,108,.16)}
+.pcx-dot.ceiling{background:var(--gold);box-shadow:0 0 0 2px rgba(244,185,66,.18)}
+.pcx-heat{font:900 11.5px var(--mono);text-align:center;font-variant-numeric:tabular-nums;padding:3.5px 5px;border-radius:6px}
+.pcx-odds{font:800 10px var(--mono);text-align:right;font-variant-numeric:tabular-nums;color:var(--gold);background:rgba(244,185,66,.08);border:1px solid rgba(244,185,66,.2);border-radius:5px;padding:3px 6px}
+@media(max-width:960px){.chartpanel{--gridcols:14px 122px 1fr 42px 48px}.pcx-in{display:none}.pcx-axis .pcx-lbl.pcx-in-lbl{display:none}}
+@media(max-width:650px){.chart-head span{max-width:none}.chartpanel{padding:10px 10px 7px}.chartpanel{--gridcols:13px 96px 1fr 40px 42px}.pcx-name{font-size:9.5px}.pcx-heat{font-size:9.5px;padding:2px 5px}.pcx-rank{font-size:8.5px}.pcx-odds{font-size:8.5px;padding:2px 4px}}
+
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:16px 0 4px}
+/* Swipeable category switcher on mobile: a horizontal scroller with
+   momentum and no wrapping, rather than relying only on the shared
+   site-wide mobile-repair patch further down to catch this. */
+@media(max-width:650px){.controls{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;padding-bottom:10px;scrollbar-width:none}.controls::-webkit-scrollbar{display:none}button.tab{flex:0 0 auto;scroll-snap-align:start}}
+button{font:inherit}
+button.tab{border:1px solid var(--line);background:#081019;color:#7f8d9b;border-radius:999px;padding:9px 16px;cursor:pointer;font-size:11.5px;font-weight:700;transition:background .15s,border-color .15s,color .15s}
+button.tab.active{background:rgba(255,93,108,.13);border-color:rgba(255,93,108,.46);color:var(--red);font-weight:800}
+.tab-note{margin:2px 0 14px;color:#647486;font-size:10px;font-style:italic;line-height:1.55;min-height:14px}
+
+/* ===== PROP CARDS — data-desk ticket format. Each card now carries a
+   heat-colored left rail keyed to its own read (same ramp as the chart),
+   an inline SO Target price next to the read so the card and the chart
+   speak the same language, and the breakdown row rebuilt as a divided
+   ledger strip instead of loose gapped columns — reads as sourced data,
+   not a decorative stat block. ===== */
+.propgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:9px;margin:4px 0 6px}
+.prop-card{position:relative;overflow:hidden;padding:11px 13px 11px;border:1px solid rgba(255,255,255,.07);border-radius:11px;background:linear-gradient(155deg,rgba(255,255,255,.03),rgba(7,15,23,.97));box-shadow:inset 0 1px 0 rgba(255,255,255,.03);transition:border-color .15s,transform .15s}
+.prop-card:hover{border-color:rgba(255,255,255,.14);transform:translateY(-1px)}
+.prop-card.ceiling{border-color:rgba(244,185,66,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.03),0 0 0 1px rgba(244,185,66,.1)}
+.pc-tag{position:absolute;top:10px;right:10px;padding:3px 7px;border-radius:999px;background:rgba(244,185,66,.14);border:1px solid rgba(244,185,66,.42);color:var(--gold);font:800 6.5px var(--mono);letter-spacing:.08em;white-space:nowrap}
+.pc-topline{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pc-team{font:700 7.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#68788a}
+.pc-id{font:700 7px var(--mono);letter-spacing:.06em;color:#3d4b5a}
+.pc-name{margin-top:3px;font-size:12.5px;font-weight:800;letter-spacing:-.01em;color:#eef3f7;padding-right:52px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pc-sub{margin-top:2px;color:#647486;font-size:8.5px}
+.pc-metarow{margin-top:7px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.pc-fixture{display:flex;align-items:center;gap:4px;font:700 8px var(--mono);color:#8a98a7;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:3px 6px}
+.pc-fixture .fw{color:var(--muted2)}
+.pc-line{padding:3px 6px;border-radius:6px;background:rgba(255,255,255,.05);color:#c3ccd6;font:700 8px var(--mono);letter-spacing:.01em}
+.pc-pctrow{display:flex;align-items:center;justify-content:space-between;gap:7px;margin-top:9px}
+.pc-pctmain{display:flex;align-items:baseline;gap:5px;min-width:0}
+.pc-pct{font:900 19px var(--mono);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.pc-pctlabel{color:#586879;font:700 6.8px var(--mono);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.pc-odds{flex:0 0 auto;font:800 8.5px var(--mono);text-align:right;font-variant-numeric:tabular-nums;color:var(--gold);background:rgba(244,185,66,.08);border:1px solid rgba(244,185,66,.2);border-radius:5px;padding:2.5px 5px;white-space:nowrap}
+.pc-bar{height:4px;border-radius:3px;background:rgba(255,255,255,.06);margin-top:6px;overflow:hidden}
+.pc-bar i{display:block;height:100%;border-radius:inherit;width:var(--w);background:var(--c);transition:width .5s ease}
+
+/* model-input breakdown as a quiet divided ledger row — vertical
+   hairlines between cells and centered values, kept small so it reads
+   as supporting data rather than competing with the read number above */
+.pc-breakdown{display:flex;margin-top:9px;padding-top:8px;border-top:1px solid rgba(255,255,255,.055)}
+.pc-bd-item{flex:1;min-width:0;text-align:center}
+.pc-bd-item:not(:first-child){border-left:1px solid rgba(255,255,255,.05)}
+.pc-bd-val{font:800 9.5px var(--mono);color:#c3ccd6;font-variant-numeric:tabular-nums}
+.pc-bd-val.pos{color:var(--green)}
+.pc-bd-val.neg{color:var(--red)}
+.pc-bd-lbl{margin-top:2px;font:700 6px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:#4c5b6b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+@media(max-width:950px){.propgrid{grid-template-columns:repeat(auto-fill,minmax(184px,1fr))}}
+@media(max-width:650px){body{padding:14px}.hero{padding:24px 18px 56px}.badge{position:static;display:inline-flex;margin-top:10px}.propgrid{grid-template-columns:repeat(2,1fr);gap:8px}.prop-card{padding:10px 11px 10px}.pc-name{font-size:12px;padding-right:0}.pc-sub{font-size:8px}.pc-fixture,.pc-line{font-size:7.2px;padding:3px 5px}.pc-pctrow{margin-top:8px}.pc-pct{font-size:18px}.pc-pctlabel{font-size:6px}.pc-odds{font-size:7.5px;padding:2px 5px}.pc-breakdown{gap:0;margin-top:7px;padding-top:6px}.pc-bd-val{font-size:8.5px}.pc-bd-lbl{font-size:5.4px}button.tab{padding:7px 13px;font-size:10.5px}}
+</style>
+<style id="so-mobile-repair-20260819">
+@media(max-width:700px){
+ html,body{width:100%;max-width:100%;overflow-x:hidden}body{padding:10px!important}.wrap{width:100%;min-width:0}.hero{padding:24px 18px 54px!important;min-height:0}.hero h1{font-size:2.65rem!important;line-height:.96}.hero p{font-size:.78rem!important;max-width:none}.hero-vs,.hero-vs-shell{display:none!important}
+ .controls{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;padding-bottom:10px}.controls button{flex:0 0 auto}
+}
+</style><style id="so-mobile-verified-pass-20260819">
+@media(max-width:700px){
+ .hero{border-radius:16px!important;padding:23px 17px!important}.hero h1{font-size:clamp(2.15rem,11vw,2.75rem)!important}.hero p{font-size:.77rem!important;line-height:1.58!important}
+}
+@media(pointer:coarse) and (max-width:700px){.props-ball{animation-duration:9s!important}}
+@media(max-width:700px){html,body{overflow-x:hidden!important}.wrap{width:100%!important;padding:10px!important}.hero{padding:20px 14px 48px!important;border-radius:20px!important;overflow:hidden!important}.hero h1{font-size:2.15rem!important;line-height:1!important}.hero p{font-size:.74rem!important;line-height:1.52!important;max-width:100%!important}}
+</style><style id="so-mobile-final-nine-pass">@media(max-width:700px){html,body{max-width:100%;overflow-x:hidden}table{max-width:none}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap,.article-grid,.cards-scroll{max-width:100%;-webkit-overflow-scrolling:touch}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap{overflow-x:auto}.hero h1{overflow-wrap:anywhere}.controls,.filter-row,.hub-tabs,.tab-row,.section-tabs{max-width:100%;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}.controls>* ,.filter-row>* ,.hub-tabs>* ,.tab-row>* ,.section-tabs>*{flex:0 0 auto}}@media(pointer:coarse) and (max-width:700px){*{scroll-behavior:auto}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap{scroll-snap-type:none}}</style>
+<style id="so-shared-disclaimer-footer-20260824">.so-shared-footer{width:100%;max-width:100%;margin:28px 0 0;padding:28px clamp(18px,4vw,48px) 30px;border-top:1px solid rgba(255,255,255,.08);background:rgba(4,7,12,.82);display:flex;flex-direction:column;gap:14px;clear:both}.so-shared-footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}.so-shared-footer-logo{font-family:Inter,Arial,sans-serif;font-size:1rem;font-weight:900;letter-spacing:-.02em;color:#f0ece4;text-decoration:none}.so-shared-footer-logo span{color:#e8a020}.so-shared-footer-top p{margin:0;color:#4d6070;font-size:.75rem;letter-spacing:.06em}.so-shared-footer .footer-disclaimer{max-width:1100px;margin:0;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.28);font-size:.62rem;line-height:1.68;letter-spacing:.01em}@media(max-width:700px){.so-shared-footer{margin-top:20px;padding:22px 16px max(24px,env(safe-area-inset-bottom));text-align:center}.so-shared-footer-top{flex-direction:column}.so-shared-footer .footer-disclaimer{text-align:left;font-size:.6rem;overflow-wrap:anywhere}}</style>
+</head><body><div class="wrap">
+
+<section class="hero">
+<div class="ey">Premier League · Player Props</div>
+<h1>Premier League Props</h1>
+<p>Short Open's model read on whether a player clears their line — not a sportsbook price. Every number below is built from three visible inputs: a category baseline, the player's own form, and the fixture's difficulty. No hidden black box.</p>
+<div class="badge">MODEL · BETA</div>
+<div class="devil-wrap" aria-hidden="true">
+ <svg viewBox="0 0 220 220">
+  <defs>
+   <radialGradient id="devilFace2" cx="38%" cy="30%" r="75%"><stop offset="0" stop-color="#ff7480"/><stop offset=".5" stop-color="#e8394a"/><stop offset="1" stop-color="#8f0f1c"/></radialGradient>
+   <linearGradient id="devilHorn2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#33393f"/><stop offset="1" stop-color="#0a0c0f"/></linearGradient>
+   <radialGradient id="devilCheek2" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#ff8b93" stop-opacity=".5"/><stop offset="1" stop-color="#ff8b93" stop-opacity="0"/></radialGradient>
+   <radialGradient id="eyeGlow2" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffe27a"/><stop offset=".45" stop-color="#ff5d3d"/><stop offset="1" stop-color="#ff5d3d" stop-opacity="0"/></radialGradient>
+   <filter id="softBlur2" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="3.2"/></filter>
+   <path id="tailCurve2" d="M170,166 C198,180 216,160 210,132 C207,112 188,104 181,120" fill="none"/>
+  </defs>
+
+  <!-- Whole body reacts on impact as the ball arrives (devil-body-shake,
+       timed to the ball's cycle) — replaces the old per-part blink/kick
+       animations, which is what read as "flying". -->
+  <g class="devil-body-shake">
+  <!-- horns: sharper, asymmetric, more menacing -->
+  <path d="M76 78 C56 48 42 14 48 3 C68 6 84 32 92 62 Z" fill="url(#devilHorn2)"/>
+  <path d="M154 70 C176 42 194 10 189 2 C167 6 148 30 140 56 Z" fill="url(#devilHorn2)"/>
+
+  <!-- head -->
+  <ellipse cx="104" cy="135" rx="68" ry="72" fill="url(#devilFace2)"/>
+  <ellipse cx="72" cy="136" rx="16" ry="10" fill="url(#devilCheek2)" opacity=".55"/>
+  <ellipse cx="136" cy="136" rx="16" ry="10" fill="url(#devilCheek2)" opacity=".55"/>
+
+  <!-- angry, steep eyebrows (scowl) -->
+  <path d="M54 96c13-16 32-19 46-9M154 96c-13-16-32-19-46-9" fill="none" stroke="#2a050b" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- glowing ember eyes — the small highlight dot in each eye is the
+       animated "light": cycles gold to green and back on a plain
+       fill/opacity keyframe animation (devil-eye-light), the simplest
+       possible technique so it renders the same in every browser. -->
+  <g>
+   <circle cx="76" cy="121" r="16" fill="url(#eyeGlow2)" filter="url(#softBlur2)" opacity=".85"/>
+   <circle cx="132" cy="121" r="16" fill="url(#eyeGlow2)" filter="url(#softBlur2)" opacity=".85"/>
+   <path d="M65 120c4-6 12-9 20-6 2 3 2 8 0 11-8 3-16 0-20-5z" fill="#1a0507"/>
+   <path d="M143 120c-4-6-12-9-20-6-2 3-2 8 0 11 8 3 16 0 20-5z" fill="#1a0507"/>
+   <circle class="devil-eye-light" cx="79" cy="119" r="3" fill="#f4b942"/>
+   <circle class="devil-eye-light" cx="129" cy="119" r="3" fill="#f4b942"/>
+  </g>
+
+  <!-- nose hint -->
+  <path d="M99 146c1 3 3 5 5 5s4-2 5-5" fill="none" stroke="#4a0c14" stroke-width="2.4" stroke-linecap="round"/>
+
+  <!-- devilish smirk with fangs -->
+  <path d="M60 158c8 17 25 27 44 25 17-2 32-13 40-27" fill="none" stroke="#2a050b" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M66 163c14 16 46 18 68 3l-2 6c-22 15-52 13-68-3z" fill="#4a0c14"/>
+  <path d="M73 167c3 5 8 8 13 8s10-3 13-8" fill="#fff" opacity=".95"/>
+  <path d="M110 168c3 5 8 8 13 8s9-3 12-8" fill="#fff" opacity=".95"/>
+  <path d="M68 160l8 18 9-14z" fill="#fff8f4"/>
+  <path d="M142 156l-9 19-9-15z" fill="#fff8f4"/>
+
+  <!-- resting arm (right side, relaxed claw) -->
+  <path d="M158 178c14 6 22 20 20 35-11-2-22-12-27-25z" fill="url(#devilFace2)"/>
+
+  <!-- braced leg (left side, planted — steadies the body through the
+       shake). Built the same way as the resting arm: starts right on the
+       body's own silhouette edge and curves outward/down from there, so
+       it hangs off the body instead of overlapping into it. -->
+  <path d="M56 192c-9 3-15 15-13 29 3 13 13 22 24 24 5-15 3-32-3-50-3-2-5-3-8-3z" fill="url(#devilFace2)"/>
+  <path d="M55 236l4 13 12-3-4-13z" fill="#2a2f36"/>
+
+  <!-- raised left arm holding a hand-lettered fan sign, "YANITED", up on
+       a thin stick. Mirrors the resting arm on the right side — shoulder
+       to a hand that hangs clear of the head, well below the cheek, so
+       it reads as a held sign rather than something stuck to his face.
+       The stick is the long, thin connector from that hand up to the
+       sign, which stays exactly where it was. -->
+  <path d="M55 168c-11 1-22 5-32 11l-4 9c12-6 24-10 36-11z" fill="url(#devilFace2)"/>
+  <ellipse cx="18" cy="181" rx="8" ry="7" fill="url(#devilFace2)"/>
+  <path d="M13 177l3 6M18 174l1 7M23 176l-2 6" stroke="#8f0f1c" stroke-width="1.6" stroke-linecap="round"/>
+  <line x1="17" y1="176" x2="7" y2="110" stroke="#6b4226" stroke-width="3.4" stroke-linecap="round"/>
+  <g transform="translate(4 92) rotate(-11)">
+   <rect x="-45" y="-17" width="90" height="34" rx="4" fill="#f4ece0" stroke="#2a050b" stroke-width="3"/>
+   <text x="0" y="6" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="900" letter-spacing=".3" fill="#c8202f">YANITED</text>
+  </g>
+  </g>
+
+  <!-- tail: curls out to the right, arrowed tip, "shortopen" running along
+       it — whips out on impact (devil-tail), a beat after the body shake -->
+  <g class="devil-tail">
+   <use href="#tailCurve2" stroke="url(#devilFace2)" stroke-width="15" stroke-linecap="round"/>
+   <path d="M181 120l-11 10 4 12 13-8z" fill="url(#devilFace2)"/>
+   <text font-family="Inter,Arial,sans-serif" font-size="9.5" font-weight="800" letter-spacing="1" fill="#fff6f1">
+    <textPath href="#tailCurve2" startOffset="6">shortopen</textPath>
+   </text>
+  </g>
+ </svg>
+</div>
+<div class="props-ball-track" aria-hidden="true">
+ <svg class="props-ball" viewBox="0 0 64 64" aria-label="Short Open panelled soccer ball"><defs><radialGradient id="soBallGold2" cx="34%" cy="25%" r="72%"><stop offset="0" stop-color="#fff0a3"/><stop offset=".34" stop-color="#f4c64d"/><stop offset=".72" stop-color="#eaa926"/><stop offset="1" stop-color="#9a5b08"/></radialGradient><linearGradient id="soPanel2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#12171c"/><stop offset="1" stop-color="#020406"/></linearGradient><clipPath id="soBallClip2"><circle cx="32" cy="32" r="28.5"/></clipPath></defs><circle cx="32" cy="32" r="29" fill="url(#soBallGold2)" stroke="#020406" stroke-width="2.6"/><g clip-path="url(#soBallClip2)" fill="url(#soPanel2)" stroke="#05080b" stroke-width="1.2" stroke-linejoin="round"><path d="M32 20l9 6-3.4 10.5H26.4L23 26z"/><path d="M13 12l8-5 8 3-2 10-10 4-7-6z"/><path d="M51 12l-8-5-8 3 2 10 10 4 7-6z"/><path d="M5 34l8-7 10 4 1 11-9 6-10-5z"/><path d="M59 34l-8-7-10 4-1 11 9 6 10-5z"/><path d="M21 57l2-15 9-5.5 9 5.5 2 15-11 7z"/></g><g clip-path="url(#soBallClip2)" fill="none" stroke="#11171b" stroke-width="2.1" stroke-linecap="round"><path d="M23 26L17 24M41 26l6-2M26.4 36.5L24 42M37.6 36.5L40 42M27 20l2-10M37 20l-2-10M15 48l6 9M49 48l-6 9M13 27L5 23M51 27l8-4"/></g><path d="M13 18c5-8 15-13 25-12" fill="none" stroke="rgba(255,255,255,.58)" stroke-width="2.3" stroke-linecap="round"/><circle cx="32" cy="32" r="28.5" fill="none" stroke="rgba(255,255,255,.18)"/><text x="32" y="32.9" text-anchor="middle" dominant-baseline="middle" fill="#f4b942" font-size="7.4" font-weight="950" font-family="Inter,Arial,sans-serif" letter-spacing="-.4">SO</text></svg>
+</div>
+</section>
+
+<div class="deskstrip">
+ <div class="deskcell accent"><i class="dk-dot"></i><b id="dsPlayers">53</b><span>Players Tracked</span></div>
+ <div class="deskcell"><i class="dk-dot"></i><b>4</b><span>Prop Categories</span></div>
+ <div class="deskcell accent2"><i class="dk-dot"></i><b id="dsAvg">—</b><span>Avg. Model Read</span><div class="dk-bar"><i id="dsAvgBar" style="width:0%"></i></div></div>
+ <div class="deskcell accent3"><i class="dk-dot"></i><b id="dsHigh">—</b><span>Highest Read</span><div class="dk-bar"><i id="dsHighBar" style="width:0%"></i></div></div>
+ <div class="deskcell"><i class="dk-dot"></i><b>MW3</b><span>Fixture Calibration</span></div>
+</div>
+
+<div class="methpanel">
+ <div class="methhead"><b>Model Methodology</b><span>A layered read, not a single number — category baseline, player-specific signal, and fixture context are weighted and blended into the probability shown on each card.</span></div>
+ <div class="methgrid">
+  <div class="methcard"><div class="mh-row"><b>Goals / Assists</b><span class="mh-tag">Form-weighted</span></div><p>Starts from a category baseline, then leans on <b class="inline">recent production</b> — output above a player's own first-goal-or-assist threshold this season nudges the read up, within a modeled ceiling. <b class="inline">Fixture context</b> layers on top, scaled to how the market itself prices the matchup. No player gets a hand-set number — proven top scorers simply clear the ceiling on form alone.</p></div>
+  <div class="methcard"><div class="mh-row"><b>Clean Sheets</b><span class="mh-tag">Inverted read</span></div><p>Framed as the goals-conceded side of the same coin, so direction stays consistent with the categories above it. A team's defensive track record this season pulls the number down as it accumulates; fixture context runs the opposite way here — the model treats being favored as protective, not exposing.</p></div>
+  <div class="methcard"><div class="mh-row"><b>Passes Completed</b><span class="mh-tag">Volume-set line</span></div><p>The line itself is derived rather than fixed — anchored just above a player's own season volume so the read leans slightly toward the under before any other signal is applied. Fixture context is the only adjustment layered in beyond that starting point.</p></div>
+  <div class="methcard"><div class="mh-row"><b>Fixture Tier</b><span class="mh-tag">Market-derived</span></div><p>Every fixture adjustment used above traces back here: a team's implied strength for the matchweek, extracted from the market's own three-way price with the house edge stripped out, then bucketed into a tiered nudge rather than applied as a raw number.</p></div>
+ </div>
+</div>
+
+<div class="controls" id="tabs">
+<button class="tab active" data-cat="goals">Goals</button>
+<button class="tab" data-cat="assists">Assists</button>
+<button class="tab" data-cat="cleansheets">Clean Sheets</button>
+<button class="tab" data-cat="passes">Passes</button>
+</div>
+<div class="tab-note" id="tabNote"></div>
+
+<div class="chartpanel">
+ <div class="chart-head">
+  <div><b id="chartTitle">Over 0.5 Goals</b><span>Ranked highest to lowest &mdash; Fix is the fixture-tier move from the matchup's own market-implied win probability (favorable matchup = positive, tough matchup = negative); the line runs from each category's baseline out to the read; Read is shaded on the same scale and brightens fast past 45%; SO Target is the fair price that read implies at shortopen's own board, not a sportsbook quote</span></div>
+  <div class="chart-legend"><span style="display:flex;align-items:center;gap:5px"><i style="background:var(--gold);border-radius:50%;width:7px;height:7px;border:0"></i>baseline</span><span style="display:flex;align-items:center;gap:5px"><i style="background:var(--red);border-radius:50%;width:7px;height:7px;border:0"></i>model read</span></div>
+ </div>
+ <div id="probChart" class="probchart"></div>
+</div>
+
+<div class="propgrid" id="propGrid"></div>
+
+</div>
+<footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>© 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call 1-800-GAMBLER.</p></footer>
+
+<script>
+var DATA={
+ goals:{
+  line:"Over 0.5 Goals",
+  note:"",
+  players:[
+   {name:"Bruno Fernandes",team:"Man Utd",opp:"Everton",side:"A",sub:"3 goals this season",pct:44,base:40,form:5.0,fbon:-1,winP:42},
+   {name:"Jack Hinshelwood",team:"Brighton",opp:"Leeds",side:"H",sub:"2 goals this season",pct:43,base:40,form:2.5,fbon:0.5,winP:53},
+   {name:"João Pedro",team:"Chelsea",opp:"Arsenal",side:"A",sub:"2 goals this season",pct:39,base:40,form:2.5,fbon:-4,winP:18},
+   {name:"Rayan Cherki",team:"Man City",opp:"Coventry",side:"H",sub:"2 goals this season",pct:46,base:40,form:2.5,fbon:3.5,winP:80},
+   {name:"Anthony Elanga",team:"Newcastle",opp:"Bournemouth",side:"H",sub:"2 goals this season",pct:42,base:40,form:2.5,fbon:-1,winP:43},
+   {name:"Cole Palmer",team:"Chelsea",opp:"Arsenal",side:"A",sub:"2 goals this season",pct:39,base:40,form:2.5,fbon:-4,winP:18},
+   {name:"Bukayo Saka",team:"Arsenal",opp:"Chelsea",side:"H",sub:"2 goals this season",pct:43,base:40,form:2.5,fbon:0.5,winP:56},
+   {name:"Erling Haaland",team:"Man City",opp:"Coventry",side:"H",sub:"6 goals this season",pct:54,base:40,form:10,fbon:3.5,winP:80},
+   {name:"Malick Yalcouyé",team:"Brighton",opp:"Leeds",side:"H",sub:"2 goals this season",pct:43,base:40,form:2.5,fbon:0.5,winP:53},
+   {name:"Michael Kayode",team:"Brentford",opp:"Sunderland",side:"H",sub:"2 goals this season",pct:44,base:40,form:2.5,fbon:1.5,winP:61},
+   {name:"Alexander Isak",team:"Liverpool",opp:"Ipswich Town",side:"A",sub:"5 goals this season",pct:52,base:40,form:10,fbon:1.5,winP:63},
+   {name:"Antoine Semenyo",team:"Man City",opp:"Coventry",side:"H",sub:"4 goals this season",pct:51,base:40,form:7.5,fbon:3.5,winP:80},
+   {name:"Igor Thiago",team:"Brentford",opp:"Sunderland",side:"H",sub:"4 goals this season",pct:49,base:40,form:7.5,fbon:1.5,winP:61},
+   {name:"Viktor Gyökeres",team:"Arsenal",opp:"Chelsea",side:"H",sub:"3 goals this season",pct:46,base:40,form:5,fbon:0.5,winP:56},
+   {name:"Hugo Ekitike",team:"Liverpool",opp:"Ipswich Town",side:"A",sub:"2 goals this season",pct:44,base:40,form:2.5,fbon:1.5,winP:63},
+   {name:"Benjamin Šeško",team:"Man Utd",opp:"Everton",side:"A",sub:"2 goals this season",pct:42,base:40,form:2.5,fbon:-1,winP:43},
+   {name:"Morgan Rogers",team:"Chelsea",opp:"Arsenal",side:"A",sub:"2 goals this season",pct:39,base:40,form:2.5,fbon:-4,winP:18},
+   {name:"Dominik Szoboszlai",team:"Liverpool",opp:"Ipswich Town",side:"A",sub:"2 goals this season",pct:44,base:40,form:2.5,fbon:1.5,winP:63},
+   {name:"Dominic Calvert-Lewin",team:"Leeds United",opp:"Brighton",side:"A",sub:"2 goals this season",pct:39,base:40,form:2.5,fbon:-3.5,winP:22},
+   {name:"Danny Welbeck",team:"Chelsea",opp:"Arsenal",side:"A",sub:"2 goals this season",pct:39,base:40,form:2.5,fbon:-4,winP:18},
+   {name:"Jérémy Doku",team:"Man City",opp:"Coventry",side:"H",sub:"2 goals this season",pct:46,base:40,form:2.5,fbon:3.5,winP:80},
+   {name:"Florian Wirtz",team:"Liverpool",opp:"Ipswich Town",side:"A",sub:"2 goals this season",pct:44,base:40,form:2.5,fbon:1.5,winP:63},
+   {name:"Callum Wilson",team:"Brentford",opp:"Sunderland",side:"H",sub:"2 goals this season",pct:44,base:40,form:2.5,fbon:1.5,winP:61}
+  ]
+ },
+ assists:{
+  line:"Over 0.5 Assists",
+  note:"",
+  players:[
+   {name:"João Pedro",team:"Chelsea",opp:"Arsenal",side:"A",sub:"2 assists this season",pct:39,base:40,form:2.5,fbon:-4,winP:18},
+   {name:"Julio Enciso",team:"Ipswich Town",opp:"Liverpool",side:"H",sub:"2 assists this season",pct:39,base:40,form:2.5,fbon:-4,winP:17},
+   {name:"Riccardo Calafiori",team:"Arsenal",opp:"Chelsea",side:"H",sub:"2 assists this season",pct:43,base:40,form:2.5,fbon:0.5,winP:56},
+   {name:"Rayan Cherki",team:"Man City",opp:"Coventry",side:"H",sub:"2 assists this season",pct:46,base:40,form:2.5,fbon:3.5,winP:80},
+   {name:"Evanilson",team:"Bournemouth",opp:"Newcastle",side:"A",sub:"2 assists this season",pct:41,base:40,form:2.5,fbon:-2,winP:32},
+   {name:"Phil Foden",team:"Man City",opp:"Coventry",side:"H",sub:"2 assists this season",pct:46,base:40,form:2.5,fbon:3.5,winP:80},
+   {name:"Harrison Armstrong",team:"Everton",opp:"Man Utd",side:"H",sub:"2 assists this season",pct:40,base:40,form:2.5,fbon:-2.5,winP:31},
+   {name:"Jorrel Hato",team:"Chelsea",opp:"Arsenal",side:"A",sub:"2 assists this season",pct:39,base:40,form:2.5,fbon:-4,winP:18},
+   {name:"Habib Diarra",team:"Sunderland",opp:"Brentford",side:"A",sub:"2 assists this season",pct:39,base:40,form:2.5,fbon:-4,winP:16},
+   {name:"Mohamed Belloumi",team:"Hull City",opp:"Aston Villa",side:"H",sub:"2 assists this season",pct:40,base:40,form:2.5,fbon:-3,winP:23}
+  ]
+ },
+ cleansheets:{
+  line:"Over 0.5 Goals Allowed",
+  note:"Inverse framing: this line tracks whether the goalkeeper's team concedes at least once — a lower probability here means the model likes them to keep another clean sheet.",
+  players:[
+   {name:"Konstantinos Tzolakis",team:"Hull City",opp:"Aston Villa",side:"H",sub:"2 clean sheets this season",pct:41,base:48,csbon:10,fbon:3,winP:23},
+   {name:"David Raya",team:"Arsenal",opp:"Chelsea",side:"H",sub:"2 clean sheets this season",pct:38,base:48,csbon:10,fbon:-0.5,winP:56},
+   {name:"Robin Roefs",team:"Sunderland",opp:"Brentford",side:"A",sub:"1 clean sheet this season",pct:47,base:48,csbon:5,fbon:4,winP:16},
+   {name:"Bart Verbruggen",team:"Brighton",opp:"Leeds",side:"H",sub:"1 clean sheet this season",pct:43,base:48,csbon:5,fbon:-0.5,winP:53},
+   {name:"Lukáš Hornícek",team:"Newcastle",opp:"Bournemouth",side:"H",sub:"1 clean sheet this season",pct:44,base:48,csbon:5,fbon:1,winP:43},
+   {name:"James Trafford",team:"Leeds United",opp:"Brighton",side:"A",sub:"1 clean sheet this season",pct:47,base:48,csbon:5,fbon:3.5,winP:22},
+   {name:"Caoimhín Kelleher",team:"Brentford",opp:"Sunderland",side:"H",sub:"1 clean sheet this season",pct:42,base:48,csbon:5,fbon:-1.5,winP:61},
+   {name:"Jordan Pickford",team:"Everton",opp:"Man Utd",side:"H",sub:"1 clean sheet this season",pct:46,base:48,csbon:5,fbon:2.5,winP:31},
+   {name:"Emiliano Martínez",team:"Chelsea",opp:"Arsenal",side:"A",sub:"0 clean sheets this season",pct:52,base:48,csbon:0,fbon:4,winP:18},
+   {name:"Nick Pope",team:"Newcastle",opp:"Bournemouth",side:"H",sub:"0 clean sheets this season",pct:49,base:48,csbon:0,fbon:1,winP:43}
+  ]
+ },
+ passes:{
+  line:"",
+  note:"",
+  players:[
+   {name:"Rúben Dias",team:"Man City",opp:"Coventry",side:"H",sub:"season total: 236 · avg 78.7",line:"Over 83.0 Passes Completed",pct:46,base:42,fbon:3.5,winP:80},
+   {name:"Lewis Dunk",team:"Brighton",opp:"Leeds",side:"H",sub:"season total: 213 · avg 71.0",line:"Over 75.0 Passes Completed",pct:43,base:42,fbon:0.5,winP:53},
+   {name:"Luka Vuskovic",team:"Brighton",opp:"Leeds",side:"H",sub:"season total: 198 · avg 66.0",line:"Over 69.5 Passes Completed",pct:43,base:42,fbon:0.5,winP:53},
+   {name:"Marc Guéhi",team:"Man City",opp:"Coventry",side:"H",sub:"season total: 174 · avg 58.0",line:"Over 61.0 Passes Completed",pct:46,base:42,fbon:3.5,winP:80},
+   {name:"Abdukodir Khusanov",team:"Man City",opp:"Coventry",side:"H",sub:"season total: 173 · avg 57.7",line:"Over 61.0 Passes Completed",pct:46,base:42,fbon:3.5,winP:80},
+   {name:"Virgil van Dijk",team:"Liverpool",opp:"Ipswich Town",side:"A",sub:"season total: 172 · avg 57.3",line:"Over 60.5 Passes Completed",pct:44,base:42,fbon:1.5,winP:62},
+   {name:"Calvin Bassey",team:"Fulham",opp:"Crystal Palace",side:"H",sub:"season total: 167 · avg 55.7",line:"Over 59.0 Passes Completed",pct:41,base:42,fbon:-1,winP:41},
+   {name:"Matt Grimes",team:"Coventry City",opp:"Man City",side:"A",sub:"season total: 164 · avg 54.7",line:"Over 57.5 Passes Completed",pct:37,base:42,fbon:-5,winP:8},
+   {name:"Elliot Anderson",team:"Man City",opp:"Coventry",side:"H",sub:"season total: 159 · avg 53.0",line:"Over 56.0 Passes Completed",pct:46,base:42,fbon:3.5,winP:80},
+   {name:"Bruno Fernandes",team:"Man Utd",opp:"Everton",side:"A",sub:"season total: 153 · avg 51.0",line:"Over 54.0 Passes Completed",pct:41,base:42,fbon:-1,winP:42}
+  ]
+ }
+};
+
+function hexToRgb(h){h=h.replace('#','');return[parseInt(h.substr(0,2),16),parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)]}
+function lerp(a,b,t){return Math.round(a+(b-a)*t)}
+function lerpColor(c1,c2,t){var a=hexToRgb(c1),b=hexToRgb(c2);return 'rgb('+lerp(a[0],b[0],t)+','+lerp(a[1],b[1],t)+','+lerp(a[2],b[2],t)+')'}
+function colorForPct(p){
+ var RED='#ff5d6c',GOLD='#f4b942',GREEN='#22d97e';
+ if(p<=36) return RED;
+ if(p>=48) return GREEN;
+ if(p<42) return lerpColor(RED,GOLD,(p-36)/6);
+ return lerpColor(GOLD,GREEN,(p-42)/6);
+}
+function barWidth(p){
+ var w=((p-25)/(58-25))*100;
+ if(w<8)w=8; if(w>100)w=100;
+ return w.toFixed(1)+'%';
+}
+function fmtSigned(n){ n=Math.round(n*10)/10; return (n>0?'+':'')+n; }
+
+var grid=document.getElementById('propGrid');
+var tabNote=document.getElementById('tabNote');
+
+function breakdownHtml(p,cat){
+ // Every card exposes the exact inputs that produced its number — the
+ // "sourced" desk feel: baseline, the player-specific adjustment, and
+ // the fixture-tier read pulled from the de-vigged matchweek price.
+ if(p.ceiling){
+  return '<div class="pc-breakdown">'
+   +'<div class="pc-bd-item"><div class="pc-bd-val">FIXED</div><div class="pc-bd-lbl">Model Override</div></div>'
+   +'<div class="pc-bd-item"><div class="pc-bd-val">'+p.winP+'%</div><div class="pc-bd-lbl">Fixture Win Prob</div></div>'
+   +'<div class="pc-bd-item"><div class="pc-bd-val">52%</div><div class="pc-bd-lbl">Ceiling Read</div></div>'
+   +'</div>';
+ }
+ var midLabel='Form', midVal=fmtSigned(p.form);
+ if(cat==='cleansheets'){ midLabel='CS Penalty'; midVal='−'+p.csbon; }
+ if(cat==='passes'){ midLabel='Baseline'; midVal=p.base+'%'; }
+ var fbonCls = p.fbon>0 ? 'pos' : (p.fbon<0 ? 'neg' : '');
+ return '<div class="pc-breakdown">'
+  +'<div class="pc-bd-item"><div class="pc-bd-val">'+(cat==='passes'?p.base+'%':p.base)+'</div><div class="pc-bd-lbl">'+(cat==='passes'?'Base Rate':'Baseline')+'</div></div>'
+  +(cat!=='passes'?'<div class="pc-bd-item"><div class="pc-bd-val">'+midVal+'</div><div class="pc-bd-lbl">'+midLabel+'</div></div>':'')
+  +'<div class="pc-bd-item"><div class="pc-bd-val '+fbonCls+'">'+fmtSigned(p.fbon)+'</div><div class="pc-bd-lbl">Fixture Tier</div></div>'
+  +'<div class="pc-bd-item"><div class="pc-bd-val">'+p.winP+'%</div><div class="pc-bd-lbl">'+p.team+' Win Prob</div></div>'
+  +'</div>';
+}
+
+var CHART_META={
+ goals:{baseline:40,title:'Over 0.5 Goals'},
+ assists:{baseline:40,title:'Over 0.5 Assists'},
+ cleansheets:{baseline:48,title:'Over 0.5 Goals Allowed'},
+ passes:{baseline:42,title:'Passes Completed — model read vs. each player’s own line'}
+};
+function midInfo(p,cat){
+ if(p.ceiling) return {label:'Model',val:'FIXED'};
+ if(cat==='cleansheets') return {label:'CS Bon',val:p.csbon?('−'+p.csbon):'0',cls:''};
+ if(cat==='passes') return {label:'Base%',val:p.base+'%',cls:''};
+ return {label:'Form',val:fmtSigned(p.form),cls:p.form>0?'pos':''};
+}
+// Fair American odds implied by the model's own probability — framed as
+// "what shortopen's board would price this at" alongside the read,
+// not a real sportsbook quote.
+function fmtOdds(pct){
+ var p=pct/100;
+ if(p>=.5) return Math.round(-(p/(1-p))*100);
+ return '+'+Math.round(((1-p)/p)*100);
+}
+function renderChart(cat){
+ var d=DATA[cat],meta=CHART_META[cat];
+ document.getElementById('chartTitle').textContent=meta.title;
+ var sorted=d.players.slice().sort(function(a,b){return b.pct-a.pct});
+ // Domain is centered ON the baseline (rather than just clamped to the
+ // data's spread) so the baseline tick always lands at the middle of the
+ // plot, not wherever it happens to fall — that's what kept pulling the
+ // whole chart over to the left edge.
+ var maxDev=Math.max.apply(null,d.players.map(function(p){return Math.abs(p.pct-meta.baseline)}));
+ var half=Math.max(20,Math.ceil((maxDev+8)/5)*5);
+ var lo=Math.max(0,meta.baseline-half), hi=Math.min(100,meta.baseline+half);
+ var range=hi-lo, step=range<=25?5:(range<=45?10:15);
+ var ticks=[];
+ for(var t=Math.ceil(lo/step)*step;t<=hi;t+=step) ticks.push(t);
+ function pos(v){return Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100)).toFixed(1)}
+ // Heat color: red-deep to gold, but weighted so the ramp stays muted up
+ // to 45% and brightens fast past it — 45% and 55% should look visibly
+ // different, not two shades of the same orange.
+ var HEAT_T=45;
+ function heatColor(pct){
+  var t;
+  if(pct<=HEAT_T) t=Math.max(0,(pct-lo)/(HEAT_T-lo))*0.4;
+  else t=0.4+Math.max(0,(pct-HEAT_T)/Math.max(1,hi-HEAT_T))*0.6;
+  t=Math.max(0,Math.min(1,t));
+  var c1=[139,20,31],c2=[244,185,66];
+  var r=Math.round(c1[0]+(c2[0]-c1[0])*t),g=Math.round(c1[1]+(c2[1]-c1[1])*t),b=Math.round(c1[2]+(c2[2]-c1[2])*t);
+  return {bg:'rgb('+r+','+g+','+b+')',dark:t>0.55};
+ }
+ var html='<div class="pcx-axis"><span></span><span></span><span class="pcx-lbl pcx-in-lbl">Fix</span><span class="pcx-ticks">'
+  +ticks.filter(function(t){var pp=+pos(t);return pp>4&&pp<96}).map(function(t){return '<i style="left:'+pos(t)+'%">'+t+'%</i>'}).join('')
+  +'</span><span class="pcx-lbl">Read</span><span class="pcx-lbl">SO Target</span></div>';
+ // A player only a point or two below baseline produces a connector so
+ // short it barely registers next to the bigger positive moves — give
+ // every below-baseline line a visible minimum length so it still reads
+ // as a real move rather than vanishing into the baseline tick.
+ var MIN_NEG_CONN=5;
+ sorted.forEach(function(p,i){
+  var fixVal=p.ceiling?'—':fmtSigned(p.fbon);
+  var fixCls=(!p.ceiling&&p.fbon>0)?'pos':((!p.ceiling&&p.fbon<0)?'neg':'');
+  var hc=heatColor(p.pct);
+  var isNeg=p.pct<meta.baseline;
+  var x1=Math.min(pos(meta.baseline),pos(p.pct)),x2=Math.max(pos(meta.baseline),pos(p.pct));
+  if(isNeg&&(x2-x1)<MIN_NEG_CONN) x1=Math.max(0,x2-MIN_NEG_CONN);
+  html+='<div class="pcx-row">'
+   +'<div class="pcx-rank">'+(i+1)+'</div>'
+   +'<div class="pcx-name'+(p.ceiling?' ceiling':'')+'">'+p.name+'<span class="pcx-sub">'+p.team+'</span></div>'
+   +'<div class="pcx-in '+fixCls+'">'+fixVal+'</div>'
+   +'<div class="pcx-plot"><div class="pcx-line"></div><div class="pcx-base" style="left:'+pos(meta.baseline)+'%"></div>'
+   +'<div class="pcx-conn'+(isNeg?' neg':'')+'" style="left:'+x1+'%;width:'+(x2-x1)+'%"></div>'
+   +'<div class="pcx-dot'+(p.ceiling?' ceiling':'')+'" style="left:'+pos(p.pct)+'%"></div></div>'
+   +'<div class="pcx-heat" style="background:'+hc.bg+';color:'+(hc.dark?'#12080a':'#fff6ea')+'">'+p.pct+'%</div>'
+   +'<div class="pcx-odds">'+fmtOdds(p.pct)+'</div>'
+   +'</div>';
+ });
+ document.getElementById('probChart').innerHTML=html;
+}
+
+function render(cat){
+ var d=DATA[cat];
+ var html='';
+ var idx=0;
+ d.players.forEach(function(p){
+  idx++;
+  var lineText=p.line||d.line;
+  var color=colorForPct(p.pct);
+  var w=barWidth(p.pct);
+  var ticket='P-'+(cat.slice(0,2).toUpperCase())+String(idx).padStart(2,'0');
+  html+='<div class="prop-card'+(p.ceiling?' ceiling':'')+'">'
+    +(p.ceiling?'<span class="pc-tag">MODEL CEILING</span>':'')
+    +'<div class="pc-topline"><span class="pc-team">'+p.team+'</span><span class="pc-id">'+ticket+'</span></div>'
+    +'<div class="pc-name">'+p.name+'</div>'
+    +'<div class="pc-sub">'+p.sub+'</div>'
+    +'<div class="pc-metarow"><span class="pc-fixture">'+(p.side==='H'?'vs':'@')+' <span class="fw">'+p.opp+'</span></span><span class="pc-line">'+lineText+'</span></div>'
+    +'<div class="pc-pctrow"><div class="pc-pctmain"><span class="pc-pct" style="color:'+color+'">'+p.pct+'%</span><span class="pc-pctlabel">model read</span></div><span class="pc-odds">'+fmtOdds(p.pct)+'</span></div>'
+    +'<div class="pc-bar"><i style="--w:'+w+';--c:'+color+'"></i></div>'
+    +breakdownHtml(p,cat)
+    +'</div>';
+ });
+ grid.innerHTML=html;
+ tabNote.textContent=d.note||'';
+ var pcts=d.players.map(function(p){return p.pct});
+ var avg=Math.round(pcts.reduce(function(a,b){return a+b},0)/pcts.length);
+ var high=Math.max.apply(null,pcts);
+ document.getElementById('dsAvg').textContent=avg+'%';
+ document.getElementById('dsHigh').textContent=high+'%';
+ var avgBar=document.getElementById('dsAvgBar'); if(avgBar) avgBar.style.width=Math.max(6,Math.min(100,avg))+'%';
+ var highBar=document.getElementById('dsHighBar'); if(highBar) highBar.style.width=Math.max(6,Math.min(100,high))+'%';
+ renderChart(cat);
+}
+
+document.getElementById('tabs').addEventListener('click',function(e){
+ var btn=e.target.closest('button.tab');
+ if(!btn)return;
+ document.querySelectorAll('#tabs button.tab').forEach(function(b){b.classList.remove('active')});
+ btn.classList.add('active');
+ render(btn.getAttribute('data-cat'));
+});
+
+// The ball's flight used to animate the "left" percentage directly, which
+// forces the browser to re-run layout on every single frame of a 7s
+// infinite animation — that's the stutter/lag. Driving it off a
+// transform (GPU-composited, layout-free) instead needs the track's
+// actual pixel width as a CSS variable, since transform's own percentage
+// unit resolves against the ball's own tiny box, not its container.
+(function(){
+ var tracks=document.querySelectorAll('.props-ball-track');
+ function syncBallTrackWidth(){
+  tracks.forEach(function(el){ el.style.setProperty('--btw', el.clientWidth+'px'); });
+ }
+ syncBallTrackWidth();
+ window.addEventListener('resize', syncBallTrackWidth);
+ if('ResizeObserver' in window){
+  var ro=new ResizeObserver(syncBallTrackWidth);
+  tracks.forEach(function(el){ ro.observe(el); });
+ }
+})();
+
+render('goals');
+</script>
+</body></html>

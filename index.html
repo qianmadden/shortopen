@@ -679,7 +679,7 @@ section:nth-of-type(n+2),footer{content-visibility:visible;contain-intrinsic-siz
 .hero-landing-dot.persistent{opacity:.4;transform:scale(.7)}
 .hero-landing-dot.lit{opacity:1;transform:scale(1.15)}
 .hero-landing-dot.green{background:#3fc17a;box-shadow:0 0 9px rgba(63,193,122,.85),0 0 18px rgba(63,193,122,.4)}
-/* Once the ball falls into the Live-now dot, the whole 2PM ET tab pulses
+/* Once the ball falls into the Live-now dot, the whole 3PM ET tab pulses
    green once — same accent as its own corner dot and the "Live now" text —
    instead of a gold flash that clashed with the card's green theme. */
 .hero-card-pulse{position:relative}
@@ -1225,8 +1225,9 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 @media(pointer:coarse){button,a,[role="button"]{touch-action:manipulation;}}
 </style>
 
-<!-- Short Open account layer: loaded after the first visual frame. -->
-<script id="so-lazy-auth-loader">(function(){var started=false;function load(){if(started)return;started=true;var sdk=document.createElement('script');sdk.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';sdk.onload=function(){var auth=document.createElement('script');auth.src='auth.js?v=20260814';document.head.appendChild(auth)};document.head.appendChild(sdk)}if(document.readyState==='complete'){setTimeout(load,700)}else{window.addEventListener('load',function(){setTimeout(load,700)},{once:true,passive:true})}document.addEventListener('pointerdown',load,{once:true,passive:true})})();</script>
+<!-- Short Open account layer -->
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer src="auth.js?v=20260814"></script>
 <style id="so-five-desk-carousel">
 .desk-carousel-shell{position:relative;max-width:1180px;margin:auto;padding:0 64px}
 .desk-progress{height:2px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin:0 0 26px}
@@ -1369,7 +1370,77 @@ body::after{opacity:.56!important}
   .so-roadmap-section .announcement-card p.text-sm{font-size:.68rem!important;line-height:1.28rem!important;margin-bottom:8px!important}
   .so-roadmap-section .announcement-card .text-\[\.6rem\]{font-size:.44rem!important}
 }
-</style></head>
+</style>
+
+<style id="so-roadmap-mobile-8pct-trim-20260901">
+/* Roadmap ("Where Short Open Is Going") cards were still reading ~8% too
+   large on mobile after the density pass above. This block wins the
+   cascade (placed after so-mobile-density-pass-20260831) and trims every
+   font-size/padding/margin/gap value in that pass by ~8% — scoped only to
+   .so-roadmap-section, the Five Desks carousel is untouched. */
+@media(max-width:700px){
+  .so-roadmap-section > .flex h2{font-size:.85rem!important;line-height:1.01rem!important}
+  .so-roadmap-section > .flex .text-xs{font-size:.53rem!important}
+  .so-roadmap-section > .flex > a{padding:6px 12px!important;font-size:.61rem!important}
+  .so-roadmap-section .announcement-card{min-height:0!important}
+  .so-roadmap-section .announcement-card > div:first-child{padding-top:7px!important;padding-left:15px!important;padding-right:15px!important;gap:5px!important}
+  .so-roadmap-section .announcement-card > div:first-child span{font-size:.39rem!important}
+  .so-roadmap-section .announcement-card .p-7{padding:13px!important;padding-top:11px!important}
+  .so-roadmap-section .announcement-card h3{font-size:.85rem!important;line-height:1.06rem!important;margin-bottom:6px!important}
+  .so-roadmap-section .announcement-card p.text-sm{font-size:.63rem!important;line-height:1.18rem!important;margin-bottom:7px!important}
+  .so-roadmap-section .announcement-card .text-\[\.6rem\]{font-size:.4rem!important}
+}
+</style>
+
+<style id="so-hero-stat-align-fix-20260901">
+/* Hero stat row — Open/Weekly/3PM ET must render at identical font-size and
+   identical vertical position at EVERY width, not just mobile. Root cause:
+   .pop-card-top{margin-bottom:auto} (a shared rule reused by other market
+   cards elsewhere on the page) redistributes leftover flex space per-card
+   based on how much content follows it. 3PM ET has an extra ".hero-stat-live"
+   row that Open/Weekly don't, so it has less leftover space and its number
+   sits higher; Open/Weekly get pushed further down by the auto margin. Fixed
+   by neutralizing the auto margin inside .hero-stat-row only (untouched
+   elsewhere) and giving the label a fixed top gap instead, so all three
+   stack identically top-down regardless of extra content. Weekly's inline
+   font-size:1.5rem override was also removed from the markup so all three
+   numbers share the same base 2.15rem size. Does not touch .pop-dot or
+   .pop-glow (the accent dot / hover glow), and does not touch .pop-card's
+   top gradient border. */
+.hero-stat-row .pop-card-top{margin-bottom:0!important}
+.hero-stat-row .pop-label{margin-top:13px!important;margin-bottom:5px!important}
+.hero-stat-row.grid-cols-3 > div,
+.hero-stat-row .pop-card{display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:flex-start!important}
+.hero-stat-row .pop-card-inner{display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:flex-start!important;text-align:left!important;width:100%!important}
+.hero-stat-row .pop-card-top{display:flex!important;align-items:flex-start!important;justify-content:space-between!important;width:100%!important}
+.hero-stat-row .pop-label,
+.hero-stat-row .pop-num,
+.hero-stat-row .pop-sublabel{text-align:left!important;line-height:1.15!important;width:100%!important;margin-left:0!important}
+</style>
+
+<style id="so-mobile-sleek-20260901">
+.so-mobile-menu{display:flex!important;flex-direction:column;gap:6px;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-10px);transition:opacity .3s cubic-bezier(.4,0,.2,1),transform .3s cubic-bezier(.4,0,.2,1),visibility 0s linear .3s}
+.so-mobile-menu.open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);transition:opacity .32s cubic-bezier(.4,0,.2,1),transform .32s cubic-bezier(.4,0,.2,1),visibility 0s linear 0s}
+.so-mobile-brand{display:flex;flex-direction:column;align-items:flex-start;gap:7px;padding:14px 16px;margin:0 0 14px;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.014));border:1px solid rgba(255,255,255,.09)}
+.so-mobile-brand-label{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:#7c8797;font-weight:650}
+.so-mobile-brand-logo{display:inline-flex;align-items:center;font-family:'Inter',system-ui,sans-serif;font-weight:800;letter-spacing:-.045em;font-size:1.28rem;color:#f4f2ed}
+.so-mobile-brand-logo b{color:#f4b942;font-weight:800}
+.so-mobile-menu .so-mobile-tag,.so-mobile-menu .so-nav-tag{display:none!important}
+.so-mobile-menu>a{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,system-ui,sans-serif;padding:14px 15px;border:1px solid transparent;border-radius:12px;background:transparent;color:#c3ccd6;font-size:.96rem;font-weight:560;letter-spacing:.005em;transition:background .2s ease,color .2s ease,border-color .2s ease,transform .2s ease}
+.so-mobile-menu>a:active{transform:scale(.98)}
+.so-mobile-menu>a.active{border-color:rgba(120,170,255,.28);background:rgba(120,170,255,.08);color:#fff;font-weight:650}
+.so-mobile-menu>a:not(.active):hover{background:rgba(255,255,255,.035);color:#eef1f5}
+</style><style id="so-nav-sleek-white-20260901">
+.so-nav-link{color:#f4f2ed!important;font-weight:460!important;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Inter',system-ui,sans-serif!important;letter-spacing:-.005em!important}
+.so-nav-link:hover{color:#ffffff!important}
+.so-nav-link.active{color:#ffffff!important;font-weight:520!important}
+.so-nav-secondary{color:#f4f2ed!important;font-weight:460!important;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Inter',system-ui,sans-serif!important}
+.so-nav-secondary:hover{color:#ffffff!important}
+.so-nav-link.so-nav-badged{padding:0 1px!important;border:0!important;background:none!important;border-radius:0!important;gap:0!important}
+.so-nav-link.so-nav-badged:hover{border-color:transparent!important;background:none!important}
+.so-nav-link.so-nav-badged .so-nav-tag{margin-left:6px!important;padding:2px 6px!important;border:1px solid var(--badge-border)!important;background:var(--badge-bg)!important;border-radius:999px!important}
+</style>
+</head>
 <body>
 <div class="so-nav-shell"><nav class="so-nav" aria-label="Primary navigation">
   <a class="so-nav-brand" href="index.html" aria-label="Short Open home"><span>short<b>open</b></span></a>
@@ -1387,14 +1458,15 @@ body::after{opacity:.56!important}
 </nav></div>
 <div class="so-mobile-menu" id="mobileMenu" aria-hidden="true">
   <button class="so-mobile-close" type="button" aria-label="Close menu">×</button>
+  <div class="so-mobile-brand"><span class="so-mobile-brand-label">Presented by</span><span class="so-mobile-brand-logo">short<b>open</b></span></div>
   <a href="index.html">Home</a>
   <a class="" href="analysis.html">Analysis</a>
-  <a class="prediction-nav-link" href="prediction-markets.html"><span>Prediction Markets</span><span class="so-mobile-tag purple">Beta</span></a>
+  <a class="prediction-nav-link" href="prediction-markets.html"><span>Prediction Markets</span></a>
   <a class="" href="mlb.html">MLB</a>
   <a class="" href="nfl.html">NFL</a>
-  <a class="so-nav-badged" href="worldcup.html"><span>World Cup</span><span class="so-mobile-tag gold">Limited</span></a>
+  <a class="so-nav-badged" href="worldcup.html"><span>World Cup</span></a>
   <a href="premier-league.html">Premier League</a>
-  <a class="" href="terminal.html"><span>Terminal</span><span class="so-mobile-tag purple">Beta</span></a>
+  <a class="" href="terminal.html"><span>Terminal</span></a>
   <a href="about.html">About</a><a href="subscribe.html">Subscribe</a>
 </div>
 
@@ -1504,7 +1576,7 @@ body::after{opacity:.56!important}
 <div class="pop-dot" style="background:var(--gold);box-shadow:0 0 8px rgba(244,185,66,.7)"></div>
 </div>
 <div class="pop-label">Cadence</div>
-<div class="pop-num" style="color:var(--gold);font-size:1.5rem">Weekly</div>
+<div class="pop-num" style="color:var(--gold)">Weekly</div>
 <div class="pop-sublabel">Market Notes</div>
 </div>
 </div>
@@ -1518,7 +1590,7 @@ body::after{opacity:.56!important}
 <div class="pop-dot" style="background:#3fc17a;box-shadow:0 0 8px rgba(63,193,122,.7)"></div>
 </div>
 <div class="pop-label">Updated Daily</div>
-<div class="pop-num text-emerald-400">2PM ET</div>
+<div class="pop-num text-emerald-400">3PM ET</div>
 <div class="pop-sublabel">Process First</div>
 <div class="hero-stat-live"><span class="live-dot" style="width:5px;height:5px"></span>Live now</div>
 </div>
@@ -1635,7 +1707,8 @@ body::after{opacity:.56!important}
 <div class="desk-tools">
 <div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M32 12l6 12 13 2-9.5 9 2 13L32 42l-11.5 6 2-13L13 26l13-2z"/></svg><div><b>Live Lines</b><span>EPL game cards, live odds and model calls</span></div></div>
 <div class="desk-tool"><svg viewBox="0 0 64 64"><circle cx="24" cy="24" r="12"/><circle cx="40" cy="40" r="12"/></svg><div><b>Transfer Market</b><span>Player values, transfer targets and hidden gems</span></div></div>
-<div class="desk-tool"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="20"/><circle cx="32" cy="32" r="11"/><circle cx="32" cy="32" r="2.6" stroke="none" fill="currentColor"/></svg><div><b>Matchup Lab</b><span>Selected matchup vs. same-position opponent</span></div></div></div>
+<div class="desk-tool"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="20"/><circle cx="32" cy="32" r="11"/><circle cx="32" cy="32" r="2.6" stroke="none" fill="currentColor"/></svg><div><b>Matchup Lab</b><span>Selected matchup vs. same-position opponent</span></div></div>
+<div class="desk-tool"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="21"/><path d="M22 39c2.5 2.8 6.3 4.4 10 4.4s7.5-1.6 10-4.4M25 27.5h.03M39 27.5h.03"/></svg><div><b>Props <span style="color:#ff9c9c;font-size:.48rem">BETA</span></b><span>Player prop lines with Short Open model probability</span></div></div></div>
 <span class="desk-open">Open Premier League &rarr;</span>
 </a>
 <a class="desk-panel" style="--dc:82,227,189" href="prediction-markets.html">
@@ -1699,7 +1772,7 @@ body::after{opacity:.56!important}
 <div class="post-card-accent"></div>
 <div class="p-7 pt-5">
 <h3 class="text-2xl font-black mb-3 leading-tight">Premier League Beta Has Just Launched</h3>
-<p class="text-zinc-400 text-sm leading-7 mb-4" style="display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden">Live Lines, Transfer Market and Matchup Lab bring one connected EPL workflow: inspect the match, follow player value and transfer movement, then compare position-level opponents as the season develops.</p>
+<p class="text-zinc-400 text-sm leading-7 mb-4" style="display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden">Live Lines, Transfer Market, Matchup Lab and Props bring one connected EPL workflow: inspect the match, follow player value and transfer movement, compare position-level opponents, then check a player prop against our model probability, all as the season develops.</p>
 <div class="flex items-center justify-between border-t border-white/5 pt-2 text-[.6rem] uppercase tracking-[.1em] text-zinc-600">
 <span>2026</span><span>shortopen team</span>
 </div>
@@ -1980,7 +2053,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     var v0 = chartPts[0];
     var v1 = chartPts.length > 1 ? chartPts[1] : v0;
 
-    // The middle vertex — the glow's resting point — sits below the "2PM ET"
+    // The middle vertex — the glow's resting point — sits below the "3PM ET"
     // card rather than at the chart's literal x=0, at a flat, fixed height
     // (the chart's own opening height, not an extrapolated slope — that
     // blew up into huge negative values on wide screens, since the card
@@ -1990,7 +2063,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     // Two real, already-visible markers replace the old computed vertex and
     // its connecting seam line entirely: the gold status dot in the corner
     // of the "Weekly" tab (its color already matches the glow) and the
-    // "Live now" dot on the "2PM ET" tab beneath it. No synthetic point, no
+    // "Live now" dot on the "3PM ET" tab beneath it. No synthetic point, no
     // line drawn between anything — just the ball actually landing on two
     // real dots that are already on the page.
     var midVertex = v0, weeklyDot = null;
