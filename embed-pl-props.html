@@ -242,47 +242,43 @@ button.tab{border:1px solid var(--line);background:#081019;color:#7f8d9b;border-
 button.tab.active{background:rgba(255,93,108,.13);border-color:rgba(255,93,108,.46);color:var(--red);font-weight:800}
 .tab-note{margin:2px 0 14px;color:#647486;font-size:10px;font-style:italic;line-height:1.55;min-height:14px}
 
-/* ===== PROP CARDS — data-desk ticket format. Each card now carries a
-   heat-colored left rail keyed to its own read (same ramp as the chart),
-   an inline SO Target price next to the read so the card and the chart
-   speak the same language, and the breakdown row rebuilt as a divided
-   ledger strip instead of loose gapped columns — reads as sourced data,
-   not a decorative stat block. ===== */
-.propgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:9px;margin:4px 0 6px}
-.prop-card{position:relative;overflow:hidden;padding:11px 13px 11px;border:1px solid rgba(255,255,255,.07);border-radius:11px;background:linear-gradient(155deg,rgba(255,255,255,.03),rgba(7,15,23,.97));box-shadow:inset 0 1px 0 rgba(255,255,255,.03);transition:border-color .15s,transform .15s}
-.prop-card:hover{border-color:rgba(255,255,255,.14);transform:translateY(-1px)}
-.prop-card.ceiling{border-color:rgba(244,185,66,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.03),0 0 0 1px rgba(244,185,66,.1)}
-.pc-tag{position:absolute;top:10px;right:10px;padding:3px 7px;border-radius:999px;background:rgba(244,185,66,.14);border:1px solid rgba(244,185,66,.42);color:var(--gold);font:800 6.5px var(--mono);letter-spacing:.08em;white-space:nowrap}
+/* ===== PROP CARDS — glossy Scouting Dossier system. The card keeps the
+   full input audit trail but reads vertically: identity, model verdict,
+   then formula rails. Layered highlights create a polished glass finish
+   without adding image assets or expensive continuous animation. ===== */
+.propgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin:5px 0 8px}
+.prop-card{--team-rgb:125,189,215;position:relative;isolation:isolate;overflow:hidden;min-height:248px;padding:17px 17px 15px;border:1px solid rgba(var(--team-rgb),.19);border-radius:3px 19px 3px 3px;background:radial-gradient(circle at 82% 3%,rgba(var(--team-rgb),.135),transparent 35%),linear-gradient(145deg,rgba(var(--team-rgb),.07) 0,rgba(255,255,255,.018) 30%,rgba(5,12,19,.96) 69%),#081018;box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 1px 0 0 rgba(var(--team-rgb),.07),0 12px 32px rgba(0,0,0,.26),0 2px 8px rgba(0,0,0,.28);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.prop-card:before{content:"";position:absolute;z-index:-1;inset:-45% -85% 48% -20%;transform:rotate(-10deg);background:linear-gradient(112deg,transparent 31%,rgba(var(--team-rgb),.02) 43%,rgba(var(--team-rgb),.14) 50%,rgba(255,255,255,.025) 56%,transparent 69%);transition:transform .5s ease;pointer-events:none}
+.prop-card:after{content:"SO";position:absolute;z-index:-2;right:10px;bottom:-8px;color:rgba(255,255,255,.022);font:900 64px var(--mono);letter-spacing:-.08em;pointer-events:none}
+.prop-card:hover{transform:translateY(-3px);border-color:rgba(var(--team-rgb),.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 18px 38px rgba(0,0,0,.34),0 0 26px rgba(var(--team-rgb),.085)}
+.prop-card:hover:before{transform:translate(30%,15%) rotate(-10deg)}
+.prop-card.ceiling{border-color:rgba(244,185,66,.47);box-shadow:inset 0 1px 0 rgba(255,255,255,.19),0 0 0 1px rgba(244,185,66,.1),0 15px 34px rgba(0,0,0,.3),0 0 28px rgba(244,185,66,.07)}
+.pc-tag{position:absolute;z-index:2;top:14px;right:14px;padding:4px 8px;border-radius:999px;background:linear-gradient(180deg,rgba(244,185,66,.2),rgba(244,185,66,.08));border:1px solid rgba(244,185,66,.44);box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 4px 12px rgba(0,0,0,.2);color:var(--gold);font:800 6.5px var(--mono);letter-spacing:.09em;white-space:nowrap}
 .pc-topline{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.pc-team{font:700 7.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#68788a}
-.pc-id{font:700 7px var(--mono);letter-spacing:.06em;color:#3d4b5a}
-.pc-name{margin-top:3px;font-size:12.5px;font-weight:800;letter-spacing:-.01em;color:#eef3f7;padding-right:52px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pc-sub{margin-top:2px;color:#647486;font-size:8.5px}
-.pc-metarow{margin-top:7px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
-.pc-fixture{display:flex;align-items:center;gap:4px;font:700 8px var(--mono);color:#8a98a7;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:3px 6px}
-.pc-fixture .fw{color:var(--muted2)}
-.pc-line{padding:3px 6px;border-radius:6px;background:rgba(255,255,255,.05);color:#c3ccd6;font:700 8px var(--mono);letter-spacing:.01em}
-.pc-pctrow{display:flex;align-items:center;justify-content:space-between;gap:7px;margin-top:9px}
-.pc-pctmain{display:flex;align-items:baseline;gap:5px;min-width:0}
-.pc-pct{font:900 19px var(--mono);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
-.pc-pctlabel{color:#586879;font:700 6.8px var(--mono);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
-.pc-odds{flex:0 0 auto;font:800 8.5px var(--mono);text-align:right;font-variant-numeric:tabular-nums;color:var(--gold);background:rgba(244,185,66,.08);border:1px solid rgba(244,185,66,.2);border-radius:5px;padding:2.5px 5px;white-space:nowrap}
-.pc-bar{height:4px;border-radius:3px;background:rgba(255,255,255,.06);margin-top:6px;overflow:hidden}
-.pc-bar i{display:block;height:100%;border-radius:inherit;width:var(--w);background:var(--c);transition:width .5s ease}
-
-/* model-input breakdown as a quiet divided ledger row — vertical
-   hairlines between cells and centered values, kept small so it reads
-   as supporting data rather than competing with the read number above */
-.pc-breakdown{display:flex;margin-top:9px;padding-top:8px;border-top:1px solid rgba(255,255,255,.055)}
-.pc-bd-item{flex:1;min-width:0;text-align:center}
-.pc-bd-item:not(:first-child){border-left:1px solid rgba(255,255,255,.05)}
-.pc-bd-val{font:800 9.5px var(--mono);color:#c3ccd6;font-variant-numeric:tabular-nums}
-.pc-bd-val.pos{color:var(--green)}
-.pc-bd-val.neg{color:var(--red)}
-.pc-bd-lbl{margin-top:2px;font:700 6px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:#4c5b6b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-@media(max-width:950px){.propgrid{grid-template-columns:repeat(auto-fill,minmax(184px,1fr))}}
-@media(max-width:650px){body{padding:14px}.hero{padding:24px 18px 56px}.badge{position:static;display:inline-flex;margin-top:10px}.propgrid{grid-template-columns:repeat(2,1fr);gap:8px}.prop-card{padding:10px 11px 10px}.pc-name{font-size:12px;padding-right:0}.pc-sub{font-size:8px}.pc-fixture,.pc-line{font-size:7.2px;padding:3px 5px}.pc-pctrow{margin-top:8px}.pc-pct{font-size:18px}.pc-pctlabel{font-size:6px}.pc-odds{font-size:7.5px;padding:2px 5px}.pc-breakdown{gap:0;margin-top:7px;padding-top:6px}.pc-bd-val{font-size:8.5px}.pc-bd-lbl{font-size:5.4px}button.tab{padding:7px 13px;font-size:10.5px}}
+.pc-team{font:800 7.5px var(--mono);letter-spacing:.13em;text-transform:uppercase;color:#7e93a6}
+.pc-id{font:700 7px var(--mono);letter-spacing:.07em;color:#435464}
+.pc-name{margin-top:6px;font-size:17px;font-weight:850;line-height:1.08;letter-spacing:-.035em;color:#f2f6f9;padding-right:66px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 12px rgba(255,255,255,.04)}
+.pc-sub{margin-top:4px;color:#6f8191;font-size:9px}
+.pc-metarow{margin-top:11px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pc-fixture,.pc-line{display:flex;align-items:center;gap:4px;padding:4px 7px;border:1px solid rgba(255,255,255,.075);border-radius:6px;background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.025));box-shadow:inset 0 1px 0 rgba(255,255,255,.05);font:700 8px var(--mono)}
+.pc-fixture{color:#8fa0af}.pc-fixture .fw{color:#c5d0da}.pc-line{color:#d3dbe3}
+.pc-pctrow{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:15px;padding-top:13px;border-top:1px solid rgba(255,255,255,.07)}
+.pc-pctmain{display:flex;align-items:baseline;gap:7px;min-width:0}
+.pc-pct{font:900 36px/1 var(--mono);letter-spacing:-.055em;font-variant-numeric:tabular-nums;text-shadow:0 0 20px color-mix(in srgb,currentColor 18%,transparent)}
+.pc-pctlabel{color:#67798a;font:800 6.8px var(--mono);letter-spacing:.09em;text-transform:uppercase;white-space:nowrap}
+.pc-odds{flex:0 0 auto;margin-bottom:2px;padding:4px 7px;border:1px solid rgba(244,185,66,.28);border-radius:6px;background:linear-gradient(180deg,rgba(244,185,66,.15),rgba(244,185,66,.055));box-shadow:inset 0 1px 0 rgba(255,255,255,.09);color:var(--gold);font:850 9px var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pc-verdict{min-height:37px;margin-top:8px;color:#8e9ba7;font-size:9.5px;line-height:1.5}.pc-verdict b{display:block;margin-bottom:2px;color:#cbd4dc;font:800 6.5px var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.pc-bar{height:3px;border-radius:3px;background:rgba(255,255,255,.065);margin-top:8px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.35)}
+.pc-bar i{display:block;height:100%;border-radius:inherit;width:var(--w);background:linear-gradient(90deg,color-mix(in srgb,var(--c) 72%,#fff),var(--c));box-shadow:0 0 10px var(--c);transition:width .5s ease}
+.pc-breakdown{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:14px}
+.pc-bd-item{min-width:0;padding-top:7px;border-top:2px solid rgba(255,255,255,.13);text-align:left}
+.pc-bd-item:first-child{border-top-color:var(--gold)}
+.pc-bd-item:not(:first-child){border-left:0}
+.pc-bd-val{font:850 10px var(--mono);color:#d4dce4;font-variant-numeric:tabular-nums}
+.pc-bd-val.pos{color:var(--green)}.pc-bd-val.neg{color:var(--red)}
+.pc-bd-lbl{margin-top:3px;font:750 5.8px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#566777;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:950px){.propgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){body{padding:14px}.hero{padding:24px 18px 56px}.badge{position:static;display:inline-flex;margin-top:10px}.propgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.prop-card{min-height:225px;padding:13px 12px 12px;border-radius:3px 15px 3px 3px}.prop-card:after{font-size:48px}.pc-tag{top:10px;right:9px;font-size:5.4px;padding:3px 5px}.pc-name{font-size:13px;padding-right:42px}.pc-sub{font-size:7.5px}.pc-fixture,.pc-line{font-size:6.7px;padding:3px 5px}.pc-pctrow{margin-top:11px;padding-top:10px}.pc-pct{font-size:27px}.pc-pctlabel{display:none}.pc-odds{font-size:7.3px;padding:3px 5px}.pc-verdict{min-height:33px;font-size:7.6px;line-height:1.4}.pc-verdict b{font-size:5.5px}.pc-breakdown{gap:4px;margin-top:10px}.pc-bd-item{padding-top:5px}.pc-bd-val{font-size:8px}.pc-bd-lbl{font-size:4.8px}button.tab{padding:7px 13px;font-size:10.5px}}
 </style>
 <style id="so-mobile-repair-20260819">
 @media(max-width:700px){
@@ -434,7 +430,7 @@ button.tab.active{background:rgba(255,93,108,.13);border-color:rgba(255,93,108,.
 <div class="propgrid" id="propGrid"></div>
 
 </div>
-<footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>© 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call 1-800-GAMBLER.</p></footer>
+<footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>© 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call 1-800-GAMBLER. <a href="terms.html" style="text-decoration:underline;color:inherit">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p></footer>
 
 <script>
 var DATA={
@@ -637,6 +633,20 @@ function renderChart(cat){
  document.getElementById('probChart').innerHTML=html;
 }
 
+/* Muted primary club colors tint only the glass surface. Probability heat
+   colors remain independent so model meaning is never confused with team. */
+function teamRgb(team){
+ var colors={
+  'Arsenal':'239,1,7','Bournemouth':'218,41,28','Brentford':'208,20,45',
+  'Brighton':'0,87,184','Chelsea':'3,70,148','Coventry City':'125,182,226',
+  'Everton':'0,72,135','Fulham':'205,211,216','Hull City':'241,176,0',
+  'Ipswich Town':'0,93,171','Leeds United':'214,220,228','Liverpool':'200,16,46',
+  'Man City':'108,171,221','Man Utd':'218,41,28','Newcastle':'205,210,216',
+  'Sunderland':'235,23,44'
+ };
+ return colors[team]||'125,189,215';
+}
+
 function render(cat){
  var d=DATA[cat];
  var html='';
@@ -647,13 +657,19 @@ function render(cat){
   var color=colorForPct(p.pct);
   var w=barWidth(p.pct);
   var ticket='P-'+(cat.slice(0,2).toUpperCase())+String(idx).padStart(2,'0');
-  html+='<div class="prop-card'+(p.ceiling?' ceiling':'')+'">'
+  var verdict=p.pct>=50
+   ?'The adjusted read moves this side above an even-probability threshold.'
+   :(p.pct>=43
+    ?'A live model signal, though it remains below an even-probability read.'
+    :'The visible inputs keep this side below the board’s stronger signal range.');
+  html+='<div class="prop-card'+(p.ceiling?' ceiling':'')+'" style="--team-rgb:'+teamRgb(p.team)+'">'
     +(p.ceiling?'<span class="pc-tag">MODEL CEILING</span>':'')
     +'<div class="pc-topline"><span class="pc-team">'+p.team+'</span><span class="pc-id">'+ticket+'</span></div>'
     +'<div class="pc-name">'+p.name+'</div>'
     +'<div class="pc-sub">'+p.sub+'</div>'
     +'<div class="pc-metarow"><span class="pc-fixture">'+(p.side==='H'?'vs':'@')+' <span class="fw">'+p.opp+'</span></span><span class="pc-line">'+lineText+'</span></div>'
     +'<div class="pc-pctrow"><div class="pc-pctmain"><span class="pc-pct" style="color:'+color+'">'+p.pct+'%</span><span class="pc-pctlabel">model read</span></div><span class="pc-odds">'+fmtOdds(p.pct)+'</span></div>'
+    +'<div class="pc-verdict"><b>ShortOpen read</b>'+verdict+'</div>'
     +'<div class="pc-bar"><i style="--w:'+w+';--c:'+color+'"></i></div>'
     +breakdownHtml(p,cat)
     +'</div>';

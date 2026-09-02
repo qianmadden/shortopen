@@ -17,6 +17,22 @@
     });
   }
 
+  // Lightweight, non-sensitive "was this browser signed in last time"
+  // hint. This is what lets the nav paint "My Account" immediately on a
+  // fresh page load instead of always flashing "Sign In" first and only
+  // flipping over once the real (async, network-bound) getSession() call
+  // resolves a moment later -- that flash-then-flip on every navigation
+  // was the visible "Sign In lags / nav reloads funny" behavior. The real
+  // session check still runs and is always the source of truth; this only
+  // controls the very first paint before that check comes back.
+  const HINT_KEY = 'so_auth_hint';
+  function readHint() {
+    try { return window.localStorage.getItem(HINT_KEY); } catch (e) { return null; }
+  }
+  function writeHint(signedIn) {
+    try { window.localStorage.setItem(HINT_KEY, signedIn ? 'in' : 'out'); } catch (e) { /* private mode, storage blocked, etc. */ }
+  }
+
   let client;
   try {
     client = makeClient();
@@ -38,12 +54,7 @@
     user: null
   };
 
-  // Paint the signed-out fallback immediately; getSession() upgrades the label
-  // to My Account as soon as an existing session is restored.
-  ensureNavLink(document.querySelector('.so-nav-actions'), false);
-  ensureNavLink(document.querySelector('.so-mobile-menu'), true);
-
-  function ensureNavLink(container, mobile) {
+  function ensureNavLink(container, mobile, initialLabel) {
     if (!container) return null;
     let link = container.querySelector('[data-so-auth-nav]');
     if (link) return link;
@@ -51,7 +62,7 @@
     link = document.createElement('a');
     link.href = 'account.html';
     link.dataset.soAuthNav = 'true';
-    link.textContent = 'Sign In';
+    link.textContent = initialLabel || 'Sign In';
 
     if (mobile) {
       link.className = 'so-auth-mobile-link';
@@ -63,19 +74,31 @@
     return link;
   }
 
+  // Paint immediately using last known state (from localStorage) rather than
+  // always defaulting to signed-out. getSession() below still runs right
+  // away and repaints with the real, authoritative session as soon as it
+  // resolves -- this first paint is only a best-guess to avoid the visible
+  // flash on every page load for a browser that was already signed in.
+  const hintedIn = readHint() === 'in';
+  const hintedLabel = hintedIn ? 'My Account' : 'Sign In';
+  ensureNavLink(document.querySelector('.so-nav-actions'), false, hintedLabel);
+  ensureNavLink(document.querySelector('.so-mobile-menu'), true, hintedLabel);
+  if (hintedIn) document.documentElement.dataset.soAuth = 'signed-in';
+
   function paintNav(session) {
     state.session = session || null;
     state.user = session && session.user ? session.user : null;
     const label = state.user ? 'My Account' : 'Sign In';
+    writeHint(!!state.user);
 
-    const desktop = ensureNavLink(document.querySelector('.so-nav-actions'), false);
+    const desktop = ensureNavLink(document.querySelector('.so-nav-actions'), false, label);
     if (desktop) {
       desktop.textContent = label;
       desktop.setAttribute('aria-label', label);
     }
 
     const mobileMenu = document.querySelector('.so-mobile-menu');
-    const mobile = ensureNavLink(mobileMenu, true);
+    const mobile = ensureNavLink(mobileMenu, true, label);
     if (mobile) {
       mobile.textContent = label;
       mobile.setAttribute('aria-label', label);
