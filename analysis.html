@@ -3758,6 +3758,183 @@ body::before,body::after{position:absolute!important;}
 .so-nav-link.so-nav-badged:hover{border-color:transparent!important;background:none!important}
 .so-nav-link.so-nav-badged .so-nav-tag{margin-left:6px!important;padding:2px 6px!important;border:1px solid var(--badge-border)!important;background:var(--badge-bg)!important;border-radius:999px!important}
 </style>
+<style id="so-analysis-mobile-round9-20260902">
+/* Round 9 mobile pass: stack the three rail cards vertically and narrow them,
+   fix the Latest Articles lead overlapping the "Next Reads" row, condense
+   Market Thesis further, and tighten the article shelf. This is the last
+   style block before </head> so it wins the cascade. */
+
+@media (max-width:900px){
+  /* Use the same horizontal shelf as the PL Props cards. This avoids nested
+     vertical scrolling and keeps the main page gesture seamless. */
+  #top .analysis-rail{
+    display:flex!important;
+    flex-direction:row!important;
+    align-items:stretch!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    max-height:none!important;
+    scroll-snap-type:x proximity!important;
+    scroll-padding-left:10px!important;
+    padding:10px!important;
+    gap:9px!important;
+    margin:0 auto 14px!important;
+    width:100%!important;
+    max-width:100%!important;
+    border:1px solid rgba(255,255,255,.08)!important;
+    border-radius:18px!important;
+    background:rgba(255,255,255,.015)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;
+    scrollbar-width:none!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  #top .analysis-rail::-webkit-scrollbar{display:none!important;}
+  #top .analysis-rail>.mobile-deep-dive-card,
+  #top .analysis-rail>.so-fan-stack,
+  #top .analysis-rail>.latest-rail-card{
+    flex:0 0 min(76vw,275px)!important;
+    width:min(76vw,275px)!important;
+    max-width:275px!important;
+    scroll-snap-align:start!important;
+  }
+  #top .analysis-rail .so-fan-feature-main{width:100%!important;}
+  #top .analysis-rail .latest-rail-card{width:100%!important;}
+
+  /* Fix: the lead row was being flex-shrunk shorter than its own two-line
+     title, so the title spilled visually past the card border into the
+     "Next Reads" row below it. Force it to size to its content instead. */
+  #top .analysis-rail #railLatest .latest-lead{
+    flex:0 0 auto!important;
+    height:auto!important;
+    min-height:0!important;
+    padding-bottom:12px!important;
+  }
+  #top .analysis-rail #railLatest .latest-queue-title{
+    flex:0 0 auto!important;
+    margin-top:2px!important;
+  }
+  #top .analysis-rail #railLatest .latest-queue{flex:1 1 auto!important;min-height:0!important;}
+}
+
+@media (max-width:760px){
+  /* Market Thesis: one more condensing pass on top of the existing ones.
+     Prefixed with #top to out-specificity the compound ".so-analysis-hero
+     .max-w-[1600px] > .grid > div:last-child" rule (0,4,0) that otherwise
+     pins this card's own padding regardless of source order. */
+  #top .market-thesis-card{padding:13px 12px 12px!important;border-radius:19px!important;}
+  #top .market-thesis-head{margin-bottom:7px!important;gap:8px!important;}
+  #top .market-thesis-kicker{font-size:.42rem!important;margin-bottom:4px!important;}
+  #top .market-thesis-title{font-size:1.05rem!important;}
+  #top .market-thesis-badge{font-size:.38rem!important;padding:4px 7px!important;}
+  #top .market-thesis-dek{font-size:.63rem!important;line-height:1.36!important;margin:0 0 8px!important;}
+  #top .market-thesis-principles{gap:5px!important;}
+  #top .thesis-principle{padding:7px 8px!important;gap:7px!important;min-height:0!important;grid-template-columns:22px minmax(0,1fr) 16px!important;border-radius:11px!important;}
+  #top .thesis-principle-num{width:22px!important;height:22px!important;min-width:22px!important;font-size:.42rem!important;border-radius:7px!important;}
+  #top .thesis-principle-label{font-size:.38rem!important;margin-bottom:1px!important;}
+  #top .thesis-principle-title{font-size:.66rem!important;line-height:1.14!important;}
+  #top .thesis-principle-note{font-size:.51rem!important;line-height:1.22!important;margin-top:2px!important;}
+  #top .thesis-principle-mark{width:16px!important;height:16px!important;min-width:16px!important;border-radius:6px!important;}
+  #top .thesis-principle-mark svg{width:9px!important;height:9px!important;}
+  #top .market-thesis-flow{margin-top:7px!important;padding-top:6px!important;font-size:.34rem!important;gap:4px!important;}
+
+  /* Article section: tighten the sport-block header rhythm and the shelf. */
+  #top .sport-block-label{padding:14px 0 10px!important;}
+  #top .sport-block-label:first-child{padding-top:0!important;}
+  #top #section-allsports #nba-grid,
+  #top #section-allsports #mlb-grid,
+  #top #section-allsports #nfl-grid,
+  #top #section-allsports #universal-cards-main{gap:8px!important;}
+  #top .article-card.so-dossier-card{min-height:206px!important;border-radius:13px!important;}
+  #top .dossier-head{padding:9px 10px 0!important;}
+  #top .dossier-main{padding:8px 10px 8px!important;}
+  #top .dossier-title{font-size:.80rem!important;margin-bottom:5px!important;}
+  #top .dossier-intro{font-size:.59rem!important;line-height:1.4!important;-webkit-line-clamp:2!important;}
+  #top .dossier-lenses{padding:0 10px 8px!important;gap:4px!important;margin-top:8px!important;}
+  #top .dossier-lens{padding:4px 5px!important;}
+  #top .dossier-footer{padding:6px 10px 8px!important;}
+}
+</style>
+<style id="so-analysis-mobile-props-align-20260902">
+/* Definitive mobile proportions and touch-scroll performance. */
+
+@media (max-width:650px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden;scroll-behavior:auto}
+  #top .so-analysis-hero{padding-left:10px!important;padding-right:10px!important;overflow:hidden!important}
+  #top .so-analysis-hero h1{font-size:2.15rem!important;line-height:1!important;letter-spacing:-.05em!important}
+  #top .so-analysis-hero p{font-size:.74rem!important;line-height:1.52!important}
+  #top .so-analysis-hero .mt-12.grid.md\:grid-cols-3{display:flex!important;grid-template-columns:none!important;gap:7px!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x proximity!important;scrollbar-width:none!important;padding-bottom:6px!important}
+  #top .so-analysis-hero .mt-12.grid.md\:grid-cols-3::-webkit-scrollbar{display:none!important}
+  #top .so-analysis-hero .mt-12.grid.md\:grid-cols-3 .market-card{flex:0 0 122px!important;min-width:122px!important;min-height:82px!important;padding:10px 11px!important;border-radius:11px!important;scroll-snap-align:start!important}
+  #top .feed-filters,#top .so-section-tabs{display:flex!important;gap:7px!important;max-width:100%!important;overflow-x:auto!important;overflow-y:hidden!important;flex-wrap:nowrap!important;scroll-snap-type:x proximity!important;scrollbar-width:none!important}#top .feed-filters::-webkit-scrollbar,#top .so-section-tabs::-webkit-scrollbar{display:none!important}#top .feed-filters>* ,#top .so-section-tabs>*{flex:0 0 auto!important}
+  /* Deep Dive / Trend Watch: six rich cards were stacking in a single
+     column (~3500px of scroll for the section) — the same "enormous
+     vertical stack" shape the reference page's methgrid/deskstrip fix
+     targets. Converted to the same horizontal swipe-shelf pattern; no
+     card content removed, only condensed and line-clamped like the
+     reference page's methcard paragraph. */
+  #top #ddGrid{
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    grid-template-columns:none!important;
+    overflow-x:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    scroll-snap-type:x proximity!important;
+    gap:10px!important;
+    padding-bottom:10px!important;
+    scrollbar-width:none!important;
+  }
+  #top #ddGrid::-webkit-scrollbar{display:none!important}
+  #top #ddGrid>.dd-signal-card{
+    flex:0 0 78vw!important;
+    width:78vw!important;
+    max-width:296px!important;
+    scroll-snap-align:start!important;
+  }
+  /* Tighten each card to the reference page's mobile card density
+     (~13px card padding, ~8-11px small text, per the brief). */
+  #top #ddGrid .dd-rebuild{padding:13px!important;border-radius:16px!important}
+  #top #ddGrid .dd-rebuild-top{margin-bottom:10px!important}
+  #top #ddGrid .dd-rank{font-size:.46rem!important}
+  #top #ddGrid .dd-sport-pill,#top #ddGrid .dd-fan-pill,#top #ddGrid .dd-signal-chip{font-size:.46rem!important;padding:5px 8px!important}
+  #top #ddGrid .dd-rebuild-main{grid-template-columns:1fr!important;gap:9px!important;margin-bottom:10px!important}
+  #top #ddGrid .dd-subline{font-size:.44rem!important;margin-bottom:5px!important}
+  #top #ddGrid .dd-copy-block h3{font-size:.92rem!important;line-height:1.12!important}
+  #top #ddGrid .dd-copy-block p{
+    margin:5px 0 0!important;font-size:.65rem!important;line-height:1.42!important;
+    display:-webkit-box!important;-webkit-line-clamp:4!important;-webkit-box-orient:vertical!important;overflow:hidden!important;
+  }
+  #top #ddGrid .dd-score-panel{
+    display:flex!important;align-items:center!important;gap:10px!important;
+    text-align:left!important;padding:8px 10px!important;
+  }
+  #top #ddGrid .dd-score-ring{width:48px!important;height:48px!important;margin:0!important;flex:0 0 auto!important}
+  #top #ddGrid .dd-score-ring span{font-size:.72rem!important}
+  #top #ddGrid .dd-score-ring small{font-size:.34rem!important}
+  #top #ddGrid .dd-score-label{font-size:.4rem!important;margin-bottom:2px!important}
+  #top #ddGrid .dd-score-value{font-size:.7rem!important}
+  #top #ddGrid .dd-stat-list{gap:6px!important}
+  #top #ddGrid .dd-stat-line{padding:7px 8px!important;border-radius:11px!important}
+  #top #ddGrid .dd-stat-line-top{gap:6px!important;margin-bottom:6px!important}
+  #top #ddGrid .dd-stat-line-top span{font-size:.5rem!important}
+  #top #ddGrid .dd-stat-line-top b{font-size:.58rem!important}
+  #top #ddGrid .dd-stat-line-meter{height:5px!important}
+}
+
+/* Rail card polish: give the already-approved vertical-scroll rail
+   container the same hairline-border + soft-outer-shadow depth
+   language the reference page uses on prop-card/methpanel, without
+   touching its scroll architecture. */
+@media (max-width:900px){
+  #top .analysis-rail{
+    border-color:rgba(255,255,255,.09)!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 14px 32px rgba(0,0,0,.22)!important;
+  }
+}
+@media(pointer:coarse) and (max-width:700px){
+  #top .market-card:hover,#top .dd-signal-card:hover,#top .article-card:hover{transform:none!important}
+  #top .repreview-art *,#top .so-fan-feature-meter span{animation:none!important;will-change:auto!important}
+}
+</style>
 </head>
 <body id="top">
 <!-- HERO -->
