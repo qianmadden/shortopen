@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
+<meta name="format-detection" content="telephone=no"/>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>shortopen — 2026 World Cup Final Board</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg?v=20260810"/>
@@ -13,6 +14,9 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Sans:wght@300;400;500&amp;family=DM+Mono:wght@400;500&amp;display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Sans:wght@300;400;500&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/></noscript>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/><link rel="preconnect" href="https://tltfpencvpnhghoruiwb.supabase.co" crossorigin/>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer src="auth.js?v=20260814"></script>
 <style id="so-consolidated-styles-20260720">
 /* ── ROOT TOKENS ── */
 :root {
@@ -2031,8 +2035,6 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 </style>
 
 <!-- Short Open account layer: non-blocking Supabase auth -->
-<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script defer src="auth.js?v=20260814"></script>
 <style id="so-mobile-sleek-20260901">
 .so-mobile-menu{display:flex!important;flex-direction:column;gap:6px;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-10px);transition:opacity .3s cubic-bezier(.4,0,.2,1),transform .3s cubic-bezier(.4,0,.2,1),visibility 0s linear .3s}
 .so-mobile-menu.open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);transition:opacity .32s cubic-bezier(.4,0,.2,1),transform .32s cubic-bezier(.4,0,.2,1),visibility 0s linear 0s}
@@ -2059,6 +2061,30 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 .so-nav-link.so-nav-badged:hover{border-color:transparent!important;background:none!important}
 .so-nav-link.so-nav-badged .so-nav-tag{margin-left:6px!important;padding:2px 6px!important;border:1px solid var(--badge-border)!important;background:var(--badge-bg)!important;border-radius:999px!important}
 </style>
+<style id="so-worldcup-shared-footer-fix-20260902">
+/* so-nav-lag-deep-fix-20260902 sibling fix: worldcup.html carried the shared
+   <footer class="so-footer"> markup but never got the matching CSS rules
+   copied over, so it was rendering completely unstyled (no background, no
+   border, wrong text color/size). Pulled verbatim from the canonical
+   so-footer block used on about.html/analysis.html/index.html/market.html
+   so this page matches every other so-footer page exactly, desktop and
+   mobile. */
+.so-footer{border-top:1px solid #1a2535;background:rgba(5,7,11,.85);padding:32px 24px 26px;display:flex;flex-direction:column;gap:14px}
+@media(min-width:1280px){.so-footer{padding:32px 40px 26px}}
+.footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.footer-logo{font-weight:900;font-size:1rem;color:#f0ece4;letter-spacing:-.02em}
+.footer-logo span{color:#e8a020}
+.footer-copy{font-family:'DM Sans',sans-serif;font-weight:300;font-size:.75rem;color:#4d6070;letter-spacing:.06em;margin:0}
+.footer-disclaimer{font-family:'DM Sans',sans-serif;font-weight:300;font-size:.62rem;line-height:1.65;color:rgba(255,255,255,.28);max-width:980px;border-top:1px solid rgba(255,255,255,.06);padding-top:14px;margin:0}
+@media(max-width:900px){.so-footer{padding:24px 20px 22px}.footer-top{flex-direction:column;text-align:center}}
+@media(max-width:700px){.so-footer{padding:22px 14px max(24px,env(safe-area-inset-bottom))!important}.footer-top{flex-direction:column!important;gap:8px!important;text-align:center!important}.footer-disclaimer{font-size:.6rem!important;line-height:1.62!important;text-align:left!important}}
+</style>
+<style id="so-nav-nba-coming-soon-brown">
+.so-nav-tag.brown{--badge-border:rgba(184,118,58,.34);--badge-bg:rgba(184,118,58,.09);--badge-color:#d99a56}
+.so-nav-link.so-nav-stacked{flex-direction:column;justify-content:center;align-items:center;gap:2px;padding-top:3px}
+.so-nav-link.so-nav-stacked .so-nav-tag{margin-left:0;padding:1px 6px;font-size:.38rem}
+.so-mobile-tag.brown{--mb-border:rgba(184,118,58,.35);--mb-color:#d99a56}
+</style>
 </head>
 <body>
 <!-- NAV -->
@@ -2067,6 +2093,7 @@ html.so-perf-scrolling .so-perf-anim-target::after,
   <div class="so-nav-center">
     <a class="so-nav-link" href="analysis.html">Analysis</a>
     <a class="so-nav-link prediction-nav-link" href="prediction-markets.html"><span>Prediction Markets</span><span class="so-nav-tag purple">Beta</span></a>
+    <a class="so-nav-link so-nav-stacked" href="nba.html"><span class="so-nav-tag brown">Coming Soon</span><span>NBA</span></a>
     <a class="so-nav-link" href="mlb.html">MLB</a>
     <a class="so-nav-link" href="nfl.html">NFL</a>
     <a class="so-nav-link active so-nav-badged" href="worldcup.html"><span>World Cup</span><span class="so-nav-tag gold">Limited</span></a>
@@ -2082,6 +2109,7 @@ html.so-perf-scrolling .so-perf-anim-target::after,
   <a href="index.html">Home</a>
   <a class="" href="analysis.html">Analysis</a>
   <a class="prediction-nav-link" href="prediction-markets.html"><span>Prediction Markets</span></a>
+  <a href="nba.html">NBA</a>
   <a class="" href="mlb.html">MLB</a>
   <a class="" href="nfl.html">NFL</a>
   <a class="active so-nav-badged" href="worldcup.html"><span>World Cup</span></a>
@@ -2374,11 +2402,17 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 <div class="footer-logo">short<span>open</span></div>
 <p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
 </div>
-<p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call 1-800-GAMBLER. <a href="terms.html" style="text-decoration:underline;color:inherit">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p>
+<p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span style="color:#e8c078;font-weight:600">1-800-GAMBLER</span>. <a href="terms.html" style="text-decoration:underline;color:#e8c078">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p>
 </footer>
 </div>
 <script>
-
+// so-nav-lag-deep-fix-20260902: the four IIFEs below do synchronous SVG/DOM
+// building (stadium bowl, nation cards, cell coloring, fan-dot confetti).
+// Running that during HTML parsing blocks the parser and delays
+// DOMContentLoaded (and the deferred auth.js nav repaint that waits on it).
+// Wrapping the whole block so it only runs once parsing is done lets the
+// nav go live first.
+function so_worldcup_deferredInit(){
 /* ════════════════════════════════════════════════════
    NATIONS TERRACE — SVG stadium bowl (Idea A)
 ════════════════════════════════════════════════════ */
@@ -2837,6 +2871,9 @@ html.so-perf-scrolling .so-perf-anim-target::after,
   }
   wrap.innerHTML = html;
 })();
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', so_worldcup_deferredInit, {once:true});
+else so_worldcup_deferredInit();
 </script>
 <script id="wc-section-light-setup">(function(){['.wc-games','.wc-mosaic','.wc-golden','.wc-awards','.wc-parlay'].forEach(function(sel){var el=document.querySelector(sel);if(!el)return;if(getComputedStyle(el).position==='static')el.style.position='relative';if(!el.querySelector(':scope > .wc-section-light')){var d=document.createElement('div');d.className='wc-section-light';el.insertBefore(d,el.firstChild);}});})();</script>
 <script id="so-worldcup-viewport-performance-controller">

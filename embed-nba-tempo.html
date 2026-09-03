@@ -1,0 +1,653 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="format-detection" content="telephone=no"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Tempo — NBA — shortopen</title><link rel="icon" type="image/svg+xml" href="favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="shortcut icon" href="favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"><style>
+:root{--bg:#04080d;--panel:#08111a;--panel2:#0b1620;--line:rgba(255,255,255,.075);--line2:rgba(255,255,255,.13);--text:#edf3f7;--muted:#748397;--muted2:#a2afbd;--gold:#f4b942;--green:#22d97e;--blue:#57a7ff;--brown:#c9843f;--mono:'DM Mono',monospace}
+*{box-sizing:border-box}
+body{margin:0;padding:24px;background:linear-gradient(rgba(201,132,63,.014) 1px,transparent 1px),linear-gradient(90deg,rgba(201,132,63,.014) 1px,transparent 1px),radial-gradient(circle at 15% 10%,rgba(201,132,63,.06),transparent 45%),radial-gradient(circle at 85% 15%,rgba(138,90,46,.05),transparent 45%),var(--bg);background-size:64px 64px,64px 64px,auto,auto,auto;color:var(--text);font-family:Inter,system-ui,sans-serif}
+.wrap{max-width:1500px;margin:auto}
+.hero{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,rgba(201,132,63,.06),rgba(6,13,20,.96) 55%,rgba(87,167,255,.03));padding:32px 34px 46px;min-height:170px}
+.ey{color:var(--brown);font:800 10px var(--mono);letter-spacing:.16em;text-transform:uppercase}
+h1{position:relative;font-size:clamp(2.5rem,5vw,4.6rem);line-height:.92;letter-spacing:-.055em;margin:11px 0 9px;max-width:11ch;color:var(--brown);background:linear-gradient(100deg,var(--brown) 0%,var(--brown) 42%,#fff2e0 50%,var(--brown) 58%,var(--brown) 100%);background-size:280% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:brownSweep 6.5s ease-in-out infinite}
+@keyframes brownSweep{0%{background-position:220% 0}45%{background-position:-30% 0}100%{background-position:-30% 0}}
+.hero p{max-width:680px;color:#8a98a7;line-height:1.65;font-size:.83rem}
+.badge{position:absolute;right:24px;top:18px;padding:7px 12px;border:1px solid rgba(244,185,66,.34);border-radius:999px;color:var(--gold);font:800 9px var(--mono);letter-spacing:.12em;background:rgba(4,8,13,.82);box-shadow:0 8px 24px rgba(0,0,0,.22)}
+
+/* wind-blown basketball, back and forth, synced to actual track width */
+.wind-track{position:absolute;left:0;right:0;bottom:14px;height:56px;overflow:hidden;pointer-events:none}
+.wind-lines{position:absolute;inset:0}
+.wind-lines i{position:absolute;top:50%;left:0;width:34px;height:2px;background:linear-gradient(90deg,transparent,rgba(233,167,110,.45));border-radius:2px;animation:windGust 2.6s linear infinite}
+.wind-lines i:nth-child(1){top:18%;animation-delay:0s}
+.wind-lines i:nth-child(2){top:52%;animation-delay:.7s}
+.wind-lines i:nth-child(3){top:82%;animation-delay:1.3s}
+@keyframes windGust{0%{transform:translateX(-40px) scaleX(1);opacity:0}15%{opacity:.85}50%{transform:translateX(calc(var(--btw3,900px)*.5)) scaleX(1.6)}85%{opacity:.5}100%{transform:translateX(calc(var(--btw3,900px) + 40px)) scaleX(1);opacity:0}}
+.wisp-cloud{position:absolute;inset:0;pointer-events:none;opacity:.4;filter:blur(.3px)}
+.wisp2{position:absolute;height:1px;border-radius:1px;background:linear-gradient(90deg,transparent,rgba(255,220,180,.5),transparent);animation:wispDrift 6.2s cubic-bezier(.45,.05,.55,.95) infinite}
+.wisp2.a{top:30%;width:44px;animation-delay:0s}
+.wisp2.b{top:60%;width:36px;animation-delay:.3s}
+.wisp2.c{top:75%;width:50px;animation-delay:.9s}
+@keyframes wispDrift{0%{left:2%;opacity:0}20%{opacity:.7}55%{left:60%;opacity:.5}85%{opacity:.2}100%{left:88%;opacity:0}}
+/* Ball motion: cubic-bezier bounce easing (steep drop / soft settle per bounce),
+   with rotation driven by horizontal distance traveled (circumference-matched)
+   so the roll always looks grounded rather than free-spinning. */
+.wind-ball{position:absolute;bottom:6px;left:0;width:34px;height:34px;filter:drop-shadow(0 5px 7px rgba(0,0,0,.4));animation:windBlow 6.4s cubic-bezier(.33,0,.2,1) infinite;will-change:transform}
+@keyframes windBlow{
+ 0%{transform:translateX(calc(var(--btw3,900px)*.03)) translateY(0) rotate(0deg) scale(1,1)}
+ 8%{transform:translateX(calc(var(--btw3,900px)*.14)) translateY(-30px) rotate(65deg) scale(1,1)}
+ 18%{transform:translateX(calc(var(--btw3,900px)*.27)) translateY(0) rotate(150deg) scale(1.08,.86)}
+ 19%{transform:translateX(calc(var(--btw3,900px)*.275)) translateY(-2px) rotate(153deg) scale(.96,1.04)}
+ 30%{transform:translateX(calc(var(--btw3,900px)*.42)) translateY(-16px) rotate(230deg) scale(1,1)}
+ 40%{transform:translateX(calc(var(--btw3,900px)*.56)) translateY(0) rotate(310deg) scale(1.06,.88)}
+ 41%{transform:translateX(calc(var(--btw3,900px)*.565)) translateY(-1px) rotate(312deg) scale(.97,1.03)}
+ 52%{transform:translateX(calc(var(--btw3,900px)*.68)) translateY(-9px) rotate(390deg) scale(1,1)}
+ 62%{transform:translateX(calc(var(--btw3,900px)*.79)) translateY(0) rotate(465deg) scale(1.05,.9)}
+ 74%{transform:translateX(calc(var(--btw3,900px)*.60)) translateY(-14px) rotate(390deg) scale(1,1)}
+ 88%{transform:translateX(calc(var(--btw3,900px)*.30)) translateY(0) rotate(230deg) scale(1.03,.94)}
+ 100%{transform:translateX(calc(var(--btw3,900px)*.03)) translateY(0) rotate(0deg) scale(1,1)}
+}
+@media(pointer:coarse) and (max-width:700px){.wind-ball{animation-duration:7.8s!important}.wisp2{animation-duration:7.8s!important}}
+@media(prefers-reduced-motion:reduce){.wind-ball,.wisp2,.wind-lines i{animation:none!important}}
+
+.deskstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0 0}
+.deskcell{position:relative;padding:13px 14px 12px;display:flex;flex-direction:column;gap:5px;border-radius:11px;border:1px solid rgba(255,255,255,.055);background:linear-gradient(155deg,rgba(255,255,255,.025),rgba(5,10,16,.9))}
+.deskcell .dk-dot{width:5px;height:5px;border-radius:50%;background:var(--brown);margin-bottom:1px}
+.deskcell b{font:900 1.3rem var(--mono);letter-spacing:-.02em;color:var(--brown);font-variant-numeric:tabular-nums;line-height:1}
+.deskcell span{font:700 8px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#5c6c7d}
+@media(max-width:820px){.deskstrip{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.deskstrip{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:7px;padding-bottom:8px;scrollbar-width:none}.deskstrip::-webkit-scrollbar{display:none}.deskcell{flex:0 0 130px}}
+
+.methpanel{margin:14px 0 0;border:1px solid rgba(201,132,63,.13);border-radius:14px;overflow:hidden;background:rgba(201,132,63,.02)}
+.methhead{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(201,132,63,.1);background:rgba(201,132,63,.045)}
+.methhead b{font:800 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#e8c0a5}
+.methhead span{color:#5c6c7d;font-size:10px}
+.methgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:rgba(255,255,255,.05)}
+.methcard{background:#070d14;padding:13px 15px}
+.methcard b{display:block;font-size:11px;font-weight:800;color:#c7d0da;margin-bottom:7px}
+.methcard p{margin:0;color:#647486;font-size:10px;line-height:1.6}
+@media(max-width:820px){.methgrid{grid-template-columns:1fr}}
+
+.chartrow{display:grid;grid-template-columns:1.4fr 1fr;gap:14px;margin:16px 0}
+.panel{border:1px solid var(--line);border-radius:16px;background:linear-gradient(155deg,rgba(255,255,255,.03),rgba(7,15,23,.96));overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.035);padding:16px 18px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.panel-head b{font-size:12px;font-weight:800;color:#eef3f7}
+.panel-head span{font:700 9px var(--mono);color:#586879}
+
+.barchart{display:flex;flex-direction:column;gap:5px;position:relative}
+.barrow{display:grid;grid-template-columns:34px 1fr 44px;align-items:center;gap:8px}
+.barrow .babbr{font:800 9.5px var(--mono);color:#8fa0af}
+.bartrack{position:relative;height:14px;border-radius:7px;background:rgba(255,255,255,.05);overflow:visible}
+.barfill{height:100%;border-radius:7px;background:linear-gradient(90deg,color-mix(in srgb,var(--brown) 70%,#fff),var(--brown))}
+.barval{font:800 10px var(--mono);text-align:right;color:#d4dce4}
+.avgline{position:absolute;top:-3px;bottom:-3px;width:1px;background:rgba(87,167,255,.55);z-index:2}
+.avgline:after{content:'LEAGUE AVG';position:absolute;top:-14px;left:50%;transform:translateX(-50%);font:800 6px var(--mono);color:#57a7ff;white-space:nowrap;letter-spacing:.05em}
+
+.teampicker{display:flex;align-items:center;gap:8px}
+.teampicker select{background:#081019;border:1px solid var(--line);border-radius:8px;color:var(--text);font:700 10px Inter,sans-serif;padding:5px 8px;cursor:pointer}
+.radar-profile{text-align:center}
+.radar-profile svg{width:100%;max-width:230px;height:auto}
+.radar-profile polygon.grid{fill:rgba(255,255,255,.03);stroke:rgba(255,255,255,.12);stroke-width:1}
+.radar-profile polygon.data{fill:rgba(201,132,63,.24);stroke:var(--brown);stroke-width:1.6}
+.radar-profile text{font:700 6.5px var(--mono);fill:#6f8090}
+.radar-note{margin-top:6px;font:700 8.5px var(--mono);color:#586879}
+.radar-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:12px}
+.radar-tiles .rt{padding:7px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.015);text-align:center}
+.radar-tiles .rt b{display:block;font:850 12px var(--mono);color:var(--brown)}
+.radar-tiles .rt span{display:block;margin-top:2px;font:700 6.4px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:#586879}
+
+.scatter-wrap{overflow:visible;position:relative}
+.scatter-wrap svg{width:100%;height:auto;min-width:640px}
+.scatter-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tier-legend{display:flex;gap:12px;flex-wrap:wrap;font:700 9px var(--mono);color:#8a98a7}
+.tier-legend span{display:flex;align-items:center;gap:5px}
+.tier-legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.sc-dot{cursor:pointer;transition:opacity .12s}
+.sc-dot:hover{stroke-width:2.2}
+.sc-tooltip{position:absolute;z-index:9;pointer-events:none;padding:8px 10px;border-radius:9px;border:1px solid rgba(201,132,63,.35);background:rgba(6,12,19,.97);box-shadow:0 10px 26px rgba(0,0,0,.45);font-family:var(--mono);opacity:0;transform:translate(-50%,-100%);transition:opacity .1s;white-space:nowrap}
+.sc-tooltip.show{opacity:1}
+.sc-tooltip b{display:block;font-size:11px;color:#f2f6f9;margin-bottom:4px;font-weight:800}
+.sc-tooltip .tt-row{display:flex;justify-content:space-between;gap:14px;font-size:9px;color:#8a98a7;padding:1px 0}
+.sc-tooltip .tt-row b{display:inline;margin:0;font-size:9px;color:#e8c0a5}
+
+.histwrap{position:relative;padding:34px 4px 0 30px}
+.hist-yaxis{position:absolute;left:0;top:34px;height:180px;width:26px;pointer-events:none}
+.hist-yaxis i{position:absolute;right:6px;font:700 7.5px var(--mono);color:#4c5b6b;transform:translateY(50%);font-style:normal}
+.hist-gridlines{position:absolute;left:30px;right:4px;top:34px;height:180px;pointer-events:none}
+.hist-gridlines i{position:absolute;left:0;right:0;height:1px;background:rgba(255,255,255,.055)}
+.histrow{display:flex;align-items:flex-end;gap:6px;height:180px;position:relative;z-index:1}
+.histbar{flex:1;min-width:34px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:5px}
+.histbar .hb-fill{width:100%;border-radius:6px 6px 2px 2px;background:color-mix(in srgb,var(--brown) 22%,#0a1119);border:1px solid rgba(255,255,255,.14);border-bottom:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 4px 12px rgba(201,132,63,.12);position:relative;display:flex;flex-direction:column;overflow:hidden}
+.histbar .hb-fill.hb-fill-empty{background:rgba(255,255,255,.03);height:4px}
+.hb-seg{display:flex;align-items:center;justify-content:center;font:800 7px var(--mono);letter-spacing:.02em;border-bottom:1px solid rgba(6,12,19,.55);min-height:0;overflow:hidden;white-space:nowrap;cursor:default;transition:filter .12s,transform .12s;position:relative}
+.hb-seg:last-child{border-bottom:none}
+.hb-seg:hover{filter:brightness(1.2) saturate(1.15);transform:scaleY(1.06);z-index:2}
+.histbar .hb-count{font:900 12px var(--mono);color:#eef3f7}
+.histbar .hb-label{font:750 7.5px var(--mono);color:#8fa0af;text-align:center;letter-spacing:.02em;margin-top:2px}
+.histbar .hb-range{font:700 6.4px var(--mono);color:#556575}
+.hist-mean{position:absolute;top:-12px;bottom:-58px;width:1px;background:repeating-linear-gradient(180deg,rgba(87,167,255,.75) 0 4px,transparent 4px 7px);z-index:2}
+.hist-mean-tag{position:absolute;top:-30px;transform:translateX(-50%);font:800 7px var(--mono);color:#031017;background:#57a7ff;padding:2px 6px;border-radius:5px;white-space:nowrap;letter-spacing:.04em;z-index:3;box-shadow:0 3px 8px rgba(87,167,255,.35)}
+.hist-mean-tag:after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:4px solid transparent;border-top-color:#57a7ff}
+.hist-caption{margin-top:10px;padding-top:9px;border-top:1px solid rgba(255,255,255,.06);color:#586879;font-size:9.5px;line-height:1.6;font-style:italic}
+@media(max-width:650px){.histwrap{overflow-x:auto;padding-bottom:4px}.histbar{min-width:44px}}
+
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:6px 0 4px}
+.searchbox{position:relative;flex:0 0 auto}
+.searchbox input{width:220px;padding:9px 14px 9px 34px;border-radius:999px;border:1px solid var(--line);background:#081019;color:var(--text);font-size:12px;font-family:inherit}
+.searchbox input:focus{outline:none;border-color:rgba(201,132,63,.5)}
+.searchbox svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:13px;height:13px;stroke:#5c6c7d;fill:none;stroke-width:2}
+.resultcount{margin-left:auto;color:#5c6c7d;font:700 10px var(--mono);letter-spacing:.06em}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin:8px 0 4px}
+table.rtable{width:100%;border-collapse:collapse;min-width:640px}
+table.rtable th{position:sticky;top:0;background:#0a121b;text-align:right;padding:9px 12px;font:800 9px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:#79899a;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap}
+table.rtable th:first-child{text-align:left}
+table.rtable th.active{color:var(--brown)}
+table.rtable td{padding:8px 12px;text-align:right;font-size:12px;border-bottom:1px solid rgba(255,255,255,.04);font-variant-numeric:tabular-nums;white-space:nowrap}
+table.rtable td:first-child{text-align:left}
+table.rtable tr:hover td{background:rgba(255,255,255,.015)}
+.empty-state{padding:30px;text-align:center;color:#5c6c7d;font-size:12px}
+@media(max-width:950px){.chartrow{grid-template-columns:1fr}}
+@media(max-width:650px){.histrow{overflow-x:auto;padding-bottom:4px}.radar-tiles{grid-template-columns:repeat(2,1fr)}}
+
+.chart-insight{display:flex;gap:9px;align-items:flex-start;margin-top:10px;padding:9px 12px;border-radius:10px;border:1px solid rgba(87,167,255,.16);background:rgba(87,167,255,.045)}
+.chart-insight svg{flex:0 0 auto;width:13px;height:13px;stroke:#57a7ff;fill:none;stroke-width:2;margin-top:1px}
+.chart-insight p{margin:0;color:#9fb0c2;font-size:10.5px;line-height:1.55}
+.chart-insight b{color:#e8c0a5;font-weight:800}
+
+.sc-detail{margin-top:10px;border:1px solid rgba(201,132,63,.22);border-radius:12px;background:linear-gradient(155deg,rgba(201,132,63,.05),rgba(7,15,23,.97));padding:12px 14px;display:none}
+.sc-detail.show{display:block}
+.sc-detail-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+.sc-detail-head b{font-size:12.5px;color:#eef3f7;font-weight:800}
+.sc-detail-head span{font:800 8px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px}
+.sc-detail-close{background:none;border:none;color:#5c6c7d;font-size:14px;cursor:pointer;padding:2px 4px;line-height:1}
+.sc-detail-close:hover{color:#e8c0a5}
+.sc-detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:8px}
+.sc-detail-grid div{padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05)}
+.sc-detail-grid b{display:block;font:850 12.5px var(--mono);color:var(--brown)}
+.sc-detail-grid span{display:block;margin-top:2px;font:700 6.6px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:#586879}
+.sc-hint{margin-top:6px;color:#4c5b6b;font-size:9px;font-style:italic}
+
+.histbar{position:relative}
+</style>
+<style id="so-mobile-repair-20260819">
+@media(max-width:700px){
+ html,body{width:100%;max-width:100%;overflow-x:hidden}body{padding:10px!important}.wrap{width:100%;min-width:0}.hero{padding:24px 18px 22px!important;min-height:0}.hero h1{font-size:2.65rem!important;line-height:.96}.hero p{font-size:.78rem!important;max-width:none}
+ .controls{flex-wrap:wrap}
+}
+</style><style id="so-mobile-verified-pass-20260819">
+@media(max-width:700px){
+ .hero{border-radius:16px!important;padding:23px 17px!important}.hero h1{font-size:clamp(2.15rem,11vw,2.75rem)!important}.hero p{font-size:.77rem!important;line-height:1.58!important}
+}
+@media(max-width:700px){html,body{overflow-x:hidden!important}.wrap{width:100%!important;padding:10px!important}.hero{padding:20px 14px 20px!important;border-radius:20px!important;overflow:hidden!important}.hero h1{font-size:2.15rem!important;line-height:1!important}.hero p{font-size:.74rem!important;line-height:1.52!important;max-width:100%!important}}
+</style>
+<style id="so-shared-disclaimer-footer-20260824">.so-shared-footer{width:100%;max-width:100%;margin:28px 0 0;padding:28px clamp(18px,4vw,48px) 30px;border-top:1px solid rgba(255,255,255,.08);background:rgba(4,7,12,.82);display:flex;flex-direction:column;gap:14px;clear:both}.so-shared-footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}.so-shared-footer-logo{font-family:Inter,Arial,sans-serif;font-size:1rem;font-weight:900;letter-spacing:-.02em;color:#f0ece4;text-decoration:none}.so-shared-footer-logo span{color:#e8a020}.so-shared-footer-top p{margin:0;color:#4d6070;font-size:.75rem;letter-spacing:.06em}.so-shared-footer .footer-disclaimer{max-width:1100px;margin:0;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.28);font-size:.62rem;line-height:1.68;letter-spacing:.01em}@media(max-width:700px){.so-shared-footer{margin-top:20px;padding:22px 16px max(24px,env(safe-area-inset-bottom));text-align:center}.so-shared-footer-top{flex-direction:column}.so-shared-footer .footer-disclaimer{text-align:left;font-size:.6rem;overflow-wrap:anywhere}}</style>
+</head><body><div class="wrap">
+
+<section class="hero">
+<div class="ey">NBA · Tempo</div>
+<h1>Tempo,</h1>
+<p>How fast a team actually plays, in one number — built from aggregated league data using the short open model's own tempo formula, blending raw pace with ball-movement rate into a single index for every team in the league.</p>
+<div class="badge">MODEL · BETA</div>
+<div class="wind-track" aria-hidden="true">
+ <div class="wind-lines"><i></i><i></i><i></i></div>
+ <div class="wisp-cloud"><span class="wisp2 a"></span><span class="wisp2 b"></span><span class="wisp2 c"></span></div>
+ <svg class="wind-ball" viewBox="0 0 64 64"><defs><radialGradient id="tmBallOrange" cx="34%" cy="25%" r="72%"><stop offset="0" stop-color="#ffb066"/><stop offset=".5" stop-color="#e8843d"/><stop offset="1" stop-color="#8a4614"/></radialGradient></defs><circle cx="32" cy="32" r="29" fill="url(#tmBallOrange)" stroke="#2a1608" stroke-width="2.2"/><path d="M2 32h60M32 3v58M11 11c8 8 8 34 0 42M53 11c-8 8-8 34 0 42" fill="none" stroke="#2a1608" stroke-width="2"/></svg>
+</div>
+</section>
+
+<div class="deskstrip">
+ <div class="deskcell"><i class="dk-dot"></i><b id="dsTeams">—</b><span>Teams Tracked</span></div>
+ <div class="deskcell"><i class="dk-dot"></i><b id="dsFastest">—</b><span>Fastest Pace</span></div>
+ <div class="deskcell"><i class="dk-dot"></i><b id="dsSlowest">—</b><span>Slowest Pace</span></div>
+ <div class="deskcell"><i class="dk-dot"></i><b id="dsLeague">—</b><span>League Avg Pace</span></div>
+</div>
+
+<div class="methpanel">
+ <div class="methhead"><b>Tempo Formula</b><span>Two composite reads built with our own formula on top of the raw possession data.</span></div>
+ <div class="methgrid">
+  <div class="methcard"><b>Pace (per 48)</b><p>Possessions per 48 minutes of play — the short open model's baseline read on raw speed, built from aggregated league data across every roster spot that saw the floor.</p></div>
+  <div class="methcard"><b>Tempo Index</b><p>Our own formula blending pace with ball-movement rate — a team that shares the ball quickly and limits turnovers scores higher here even at a similar raw pace.</p></div>
+  <div class="methcard"><b>Ball Movement</b><p>Assist rate weighed against turnover rate — the short open model's view of how cleanly a team's possessions convert into good, quick shots.</p></div>
+  <div class="methcard"><b>Possession Efficiency</b><p>A supplementary short open model score: points scored per possession scaled against turnover rate, isolating who scores efficiently once they get a possession — independent of how many possessions they play.</p></div>
+ </div>
+</div>
+
+<div class="chartrow">
+ <div class="panel"><div class="panel-head"><b>Pace Ranking</b><span>Possessions / 48 min · vs league avg</span></div><div class="barchart" id="barChart"></div></div>
+ <div class="panel">
+  <div class="panel-head"><b>Team Tempo Profile</b><span>Short open model · normalized</span></div>
+  <div class="teampicker" style="margin-bottom:10px"><span style="font:800 8px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#5c6c7d">Team</span><select id="profileTeam"></select></div>
+  <div class="radar-profile"><svg id="radarProfile" viewBox="0 0 170 170"></svg><div class="radar-note" id="radarNote"></div></div>
+  <div class="radar-tiles" id="radarTiles"></div>
+ </div>
+</div>
+
+<div class="panel scatter-wrap" style="margin:0 0 16px">
+ <div class="panel-head"><b>Pace vs. Tempo Index</b><span>Bubble size = points per possession · colored by tempo tier · hover any bubble for exact values. A dashed stem marks a bubble nudged vertically to stay legible — the dot on the stem is its true tempo index.</span></div>
+ <div class="scatter-scroll"><svg id="scatterChart" viewBox="0 0 920 400"></svg></div>
+ <div class="tier-legend" id="tierLegend" style="margin-top:8px"></div>
+ <div class="sc-tooltip" id="scatterTip"></div>
+ <div class="chart-insight" id="scatterInsight"></div>
+ <div class="sc-detail" id="scatterDetail"></div>
+ <div class="sc-hint">Click any bubble to pin a full stat card below.</div>
+</div>
+
+<div class="panel" id="histPanel" style="margin:0 0 16px;overflow:visible">
+ <div class="panel-head"><b>Pace Distribution</b><span>League-wide spread across 7 pace buckets</span></div>
+ <div class="histwrap">
+  <div class="hist-yaxis" id="histAxis"></div>
+  <div class="hist-gridlines" id="histGrid"></div>
+  <div class="histrow" id="histChart"></div>
+ </div>
+ <div class="hist-caption">Each bar is a pace band (possessions per 48 minutes); every team sitting in that band is stacked and labeled right inside the bar, ordered fastest to slowest. The blue marker is the short open model's league-mean pace. Built from aggregated league possession data — not a claim about any single game's tempo.</div>
+ <div class="chart-insight" id="histInsight"></div>
+</div>
+
+<div class="controls">
+ <div class="searchbox"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input type="text" id="searchInput" placeholder="Search team…" autocomplete="off"></div>
+ <span class="resultcount" id="resultCount"></span>
+</div>
+<div class="tablewrap">
+<table class="rtable">
+ <thead><tr>
+  <th data-k="team">Team</th><th data-k="pace48" class="active">Pace</th><th data-k="tempoIndex">Tempo Index</th><th data-k="ast_ratio">Ast Ratio</th><th data-k="tov_ratio">Tov Ratio</th><th data-k="pts_per_poss">Pts / Poss</th>
+ </tr></thead>
+ <tbody id="tempoBody"></tbody>
+</table>
+</div>
+
+</div>
+<footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>© 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span style="color:#e8c078;font-weight:600">1-800-GAMBLER</span>. <a href="terms.html" style="text-decoration:underline;color:#e8c078">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p></footer>
+
+<script>
+var TEMPO={"Chicago Bulls": {"abbr": "CHI", "pace48": 101.4, "roster_size": 24, "tot_min": 21154, "tot_poss": 44694, "tot_pts": 9502, "tot_ast": 1854, "tot_tov": 1064, "ast_ratio": 4.15, "tov_ratio": 2.38, "pts_per_poss": 0.213}, "Atlanta Hawks": {"abbr": "ATL", "pace48": 100.19, "roster_size": 21, "tot_min": 22479, "tot_poss": 46918, "tot_pts": 10284, "tot_ast": 2587, "tot_tov": 1177, "ast_ratio": 5.5, "tov_ratio": 2.5, "pts_per_poss": 0.219}, "Boston Celtics": {"abbr": "BOS", "pace48": 93.44, "roster_size": 18, "tot_min": 23565, "tot_poss": 45872, "tot_pts": 10125, "tot_ast": 2183, "tot_tov": 1019, "ast_ratio": 4.8, "tov_ratio": 2.2, "pts_per_poss": 0.221}, "Brooklyn Nets": {"abbr": "BKN", "pace48": 96.57, "roster_size": 21, "tot_min": 21543, "tot_poss": 43340, "tot_pts": 8669, "tot_ast": 2045, "tot_tov": 1226, "ast_ratio": 4.7, "tov_ratio": 2.8, "pts_per_poss": 0.2}, "Charlotte Hornets": {"abbr": "CHA", "pace48": 96.06, "roster_size": 21, "tot_min": 21693, "tot_poss": 43413, "tot_pts": 9513, "tot_ast": 2161, "tot_tov": 1185, "ast_ratio": 5.0, "tov_ratio": 2.7, "pts_per_poss": 0.219}, "Cleveland Cavaliers": {"abbr": "CLE", "pace48": 97.97, "roster_size": 20, "tot_min": 25571, "tot_poss": 52194, "tot_pts": 11695, "tot_ast": 2701, "tot_tov": 1370, "ast_ratio": 5.2, "tov_ratio": 2.6, "pts_per_poss": 0.224}, "Dallas Mavericks": {"abbr": "DAL", "pace48": 100.78, "roster_size": 23, "tot_min": 21610, "tot_poss": 45370, "tot_pts": 9360, "tot_ast": 2072, "tot_tov": 1147, "ast_ratio": 4.6, "tov_ratio": 2.5, "pts_per_poss": 0.206}, "Denver Nuggets": {"abbr": "DEN", "pace48": 98.12, "roster_size": 18, "tot_min": 23219, "tot_poss": 47463, "tot_pts": 10648, "tot_ast": 2514, "tot_tov": 1069, "ast_ratio": 5.3, "tov_ratio": 2.3, "pts_per_poss": 0.224}, "Detroit Pistons": {"abbr": "DET", "pace48": 96.95, "roster_size": 18, "tot_min": 25248, "tot_poss": 50997, "tot_pts": 11118, "tot_ast": 2592, "tot_tov": 1368, "ast_ratio": 5.1, "tov_ratio": 2.7, "pts_per_poss": 0.218}, "Golden State Warriors": {"abbr": "GSW", "pace48": 98.09, "roster_size": 22, "tot_min": 22942, "tot_poss": 46885, "tot_pts": 9402, "tot_ast": 2369, "tot_tov": 1229, "ast_ratio": 5.1, "tov_ratio": 2.6, "pts_per_poss": 0.201}, "Houston Rockets": {"abbr": "HOU", "pace48": 94.48, "roster_size": 15, "tot_min": 23703, "tot_poss": 46653, "tot_pts": 10029, "tot_ast": 2208, "tot_tov": 1258, "ast_ratio": 4.7, "tov_ratio": 2.7, "pts_per_poss": 0.215}, "Indiana Pacers": {"abbr": "IND", "pace48": 100.39, "roster_size": 26, "tot_min": 20862, "tot_poss": 43632, "tot_pts": 9093, "tot_ast": 2242, "tot_tov": 1121, "ast_ratio": 5.1, "tov_ratio": 2.6, "pts_per_poss": 0.208}, "LA Clippers": {"abbr": "LAC", "pace48": 95.2, "roster_size": 20, "tot_min": 21099, "tot_poss": 41846, "tot_pts": 9154, "tot_ast": 1909, "tot_tov": 1095, "ast_ratio": 4.6, "tov_ratio": 2.6, "pts_per_poss": 0.219}, "Los Angeles Lakers": {"abbr": "LAL", "pace48": 96.3, "roster_size": 18, "tot_min": 23772, "tot_poss": 47695, "tot_pts": 10456, "tot_ast": 2334, "tot_tov": 1288, "ast_ratio": 4.9, "tov_ratio": 2.7, "pts_per_poss": 0.219}, "Memphis Grizzlies": {"abbr": "MEM", "pace48": 100.35, "roster_size": 29, "tot_min": 21949, "tot_poss": 45889, "tot_pts": 9361, "tot_ast": 2275, "tot_tov": 1196, "ast_ratio": 5.0, "tov_ratio": 2.6, "pts_per_poss": 0.204}, "Miami Heat": {"abbr": "MIA", "pace48": 102.91, "roster_size": 14, "tot_min": 20522, "tot_poss": 43999, "tot_pts": 9871, "tot_ast": 2362, "tot_tov": 1069, "ast_ratio": 5.4, "tov_ratio": 2.4, "pts_per_poss": 0.224}, "Milwaukee Bucks": {"abbr": "MIL", "pace48": 97.05, "roster_size": 19, "tot_min": 20649, "tot_poss": 41751, "tot_pts": 9031, "tot_ast": 2113, "tot_tov": 1181, "ast_ratio": 5.1, "tov_ratio": 2.8, "pts_per_poss": 0.216}, "Minnesota Timberwolves": {"abbr": "MIN", "pace48": 98.89, "roster_size": 18, "tot_min": 25422, "tot_poss": 52373, "tot_pts": 10925, "tot_ast": 2404, "tot_tov": 1310, "ast_ratio": 4.6, "tov_ratio": 2.5, "pts_per_poss": 0.209}, "New Orleans Pelicans": {"abbr": "NOP", "pace48": 99.24, "roster_size": 19, "tot_min": 21577, "tot_poss": 44609, "tot_pts": 9473, "tot_ast": 2058, "tot_tov": 1103, "ast_ratio": 4.6, "tov_ratio": 2.5, "pts_per_poss": 0.212}, "New York Knicks": {"abbr": "NYK", "pace48": 95.75, "roster_size": 18, "tot_min": 26673, "tot_poss": 53207, "tot_pts": 11742, "tot_ast": 2724, "tot_tov": 1285, "ast_ratio": 5.1, "tov_ratio": 2.4, "pts_per_poss": 0.221}, "Oklahoma City Thunder": {"abbr": "OKC", "pace48": 97.48, "roster_size": 19, "tot_min": 26572, "tot_poss": 53964, "tot_pts": 11487, "tot_ast": 2502, "tot_tov": 1159, "ast_ratio": 4.6, "tov_ratio": 2.1, "pts_per_poss": 0.213}, "Orlando Magic": {"abbr": "ORL", "pace48": 98.62, "roster_size": 16, "tot_min": 22584, "tot_poss": 46401, "tot_pts": 10155, "tot_ast": 2308, "tot_tov": 1209, "ast_ratio": 5.0, "tov_ratio": 2.6, "pts_per_poss": 0.219}, "Philadelphia 76ers": {"abbr": "PHI", "pace48": 97.35, "roster_size": 20, "tot_min": 24844, "tot_poss": 50388, "tot_pts": 10627, "tot_ast": 2247, "tot_tov": 1184, "ast_ratio": 4.5, "tov_ratio": 2.3, "pts_per_poss": 0.211}, "Phoenix Suns": {"abbr": "PHX", "pace48": 96.41, "roster_size": 19, "tot_min": 22522, "tot_poss": 45238, "tot_pts": 9642, "tot_ast": 2107, "tot_tov": 1172, "ast_ratio": 4.7, "tov_ratio": 2.6, "pts_per_poss": 0.213}, "Portland Trail Blazers": {"abbr": "POR", "pace48": 99.24, "roster_size": 18, "tot_min": 22929, "tot_poss": 47405, "tot_pts": 9871, "tot_ast": 2150, "tot_tov": 1403, "ast_ratio": 4.5, "tov_ratio": 3.0, "pts_per_poss": 0.208}, "Sacramento Kings": {"abbr": "SAC", "pace48": 98.48, "roster_size": 19, "tot_min": 21021, "tot_poss": 43128, "tot_pts": 9069, "tot_ast": 2081, "tot_tov": 1117, "ast_ratio": 4.8, "tov_ratio": 2.6, "pts_per_poss": 0.21}, "San Antonio Spurs": {"abbr": "SAS", "pace48": 97.23, "roster_size": 17, "tot_min": 27325, "tot_poss": 55348, "tot_pts": 12389, "tot_ast": 2859, "tot_tov": 1353, "ast_ratio": 5.2, "tov_ratio": 2.4, "pts_per_poss": 0.224}, "Toronto Raptors": {"abbr": "TOR", "pace48": 97.07, "roster_size": 17, "tot_min": 23266, "tot_poss": 47052, "tot_pts": 10167, "tot_ast": 2591, "tot_tov": 1154, "ast_ratio": 5.5, "tov_ratio": 2.5, "pts_per_poss": 0.216}, "Utah Jazz": {"abbr": "UTA", "pace48": 102.61, "roster_size": 23, "tot_min": 21646, "tot_poss": 46275, "tot_pts": 9628, "tot_ast": 2427, "tot_tov": 1228, "ast_ratio": 5.2, "tov_ratio": 2.7, "pts_per_poss": 0.208}, "Washington Wizards": {"abbr": "WAS", "pace48": 100.68, "roster_size": 24, "tot_min": 20992, "tot_poss": 44029, "tot_pts": 9238, "tot_ast": 2048, "tot_tov": 1235, "ast_ratio": 4.7, "tov_ratio": 2.8, "pts_per_poss": 0.21}};
+var TEAMS=Object.keys(TEMPO);
+var TEAM_RGB={
+ 'Atlanta Hawks':'225,68,52','Boston Celtics':'0,122,85','Brooklyn Nets':'20,20,20','Charlotte Hornets':'0,120,140',
+ 'Chicago Bulls':'206,17,65','Cleveland Cavaliers':'134,0,56','Dallas Mavericks':'0,83,188','Denver Nuggets':'13,34,64',
+ 'Detroit Pistons':'29,66,138','Golden State Warriors':'29,66,138','Houston Rockets':'206,17,65','Indiana Pacers':'0,45,98',
+ 'LA Clippers':'200,16,46','Los Angeles Lakers':'85,37,130','Memphis Grizzlies':'93,118,169','Miami Heat':'152,0,46',
+ 'Milwaukee Bucks':'0,71,27','Minnesota Timberwolves':'12,35,64','New Orleans Pelicans':'0,22,65','New York Knicks':'0,107,182',
+ 'Oklahoma City Thunder':'0,125,195','Orlando Magic':'0,125,197','Philadelphia 76ers':'0,107,182','Phoenix Suns':'229,95,32',
+ 'Portland Trail Blazers':'224,58,62','Sacramento Kings':'91,43,130','San Antonio Spurs':'196,206,211','Toronto Raptors':'206,17,65',
+ 'Utah Jazz':'0,43,92','Washington Wizards':'0,43,92'
+};
+function hbTextColor(rgb){
+ var p=rgb.split(',').map(Number);
+ var lum=(0.299*p[0]+0.587*p[1]+0.114*p[2])/255;
+ return lum>.62?'#1a1408':'#fff8f0';
+}
+
+// short open model tempo index: blends raw pace with ball-movement rate
+// (assist ratio up, turnover ratio down), then min-max scaled to 0-100.
+var rawVals=TEAMS.map(function(t){
+ var d=TEMPO[t];
+ return d.pace48*0.6+d.ast_ratio*4.0-d.tov_ratio*2.2+d.pts_per_poss*40;
+});
+var rawMin=Math.min.apply(null,rawVals),rawMax=Math.max.apply(null,rawVals);
+TEAMS.forEach(function(t,i){
+ TEMPO[t].tempoIndex=Math.round(((rawVals[i]-rawMin)/(rawMax-rawMin))*100);
+});
+
+var paceVals=TEAMS.map(function(t){return TEMPO[t].pace48});
+var paceMax=Math.max.apply(null,paceVals),paceMin=Math.min.apply(null,paceVals);
+document.getElementById('dsTeams').textContent=TEAMS.length;document.getElementById('dsFastest').textContent=TEAMS.reduce(function(a,b){return TEMPO[b].pace48>TEMPO[a].pace48?b:a}).split(' ').slice(-1)[0];
+document.getElementById('dsSlowest').textContent=TEAMS.reduce(function(a,b){return TEMPO[b].pace48<TEMPO[a].pace48?b:a}).split(' ').slice(-1)[0];
+document.getElementById('dsLeague').textContent=(paceVals.reduce(function(a,b){return a+b},0)/paceVals.length).toFixed(1);
+
+var leagueAvgPace=paceVals.reduce(function(a,b){return a+b},0)/paceVals.length;
+
+// short open model possession-efficiency score: points per possession scaled
+// against turnover rate — a second composite, independent of pace itself.
+TEAMS.forEach(function(t){
+ var d=TEMPO[t];
+ d.possEff=Math.round((d.pts_per_poss*100*1.6-d.tov_ratio*4)*10)/10;
+});
+
+function tierOf(pace){
+ if(pace>=leagueAvgPace+1.5)return{key:'fast',label:'Fast',color:'#22d97e'};
+ if(pace<=leagueAvgPace-1.5)return{key:'slow',label:'Slow',color:'#57a7ff'};
+ return{key:'mid',label:'Medium',color:'#f4b942'};
+}
+
+function renderBarChart(){
+ var sorted=TEAMS.slice().sort(function(a,b){return TEMPO[b].pace48-TEMPO[a].pace48});
+ var avgPos=((leagueAvgPace-paceMin+1)/(paceMax-paceMin+1))*100;
+ var html='';
+ sorted.forEach(function(t){
+  var d=TEMPO[t];
+  var w=((d.pace48-paceMin+1)/(paceMax-paceMin+1))*100;
+  html+='<div class="barrow"><span class="babbr">'+d.abbr+'</span><div class="bartrack"><div class="avgline" style="left:'+avgPos.toFixed(1)+'%"></div><div class="barfill" style="width:'+w.toFixed(1)+'%"></div></div><span class="barval">'+d.pace48.toFixed(1)+'</span></div>';
+ });
+ document.getElementById('barChart').innerHTML=html;
+}
+
+var PROFILE_TRAITS=[
+ {k:'pace48',label:'PACE'},{k:'tempoIndex',label:'TEMPO IDX'},{k:'ast_ratio',label:'AST RATIO'},
+ {k:'tov_ratio_inv',label:'BALL SEC.'},{k:'pts_per_poss',label:'PTS/POSS'},{k:'possEff',label:'POSS EFF'}
+];
+var PROFILE_RANGES=(function(){
+ var ranges={};
+ PROFILE_TRAITS.forEach(function(t){
+  var vals=TEAMS.map(function(tm){
+   if(t.k==='tov_ratio_inv')return 6-TEMPO[tm].tov_ratio;
+   return TEMPO[tm][t.k];
+  });
+  ranges[t.k]={min:Math.min.apply(null,vals),max:Math.max.apply(null,vals)};
+ });
+ return ranges;
+})();
+function radarPts(vals,cx,cy,r){
+ var n=vals.length,pts=[];
+ for(var i=0;i<n;i++){
+  var ang=-Math.PI/2+i*(2*Math.PI/n);
+  var v=Math.max(0,Math.min(1,vals[i]));
+  pts.push((cx+Math.cos(ang)*r*v).toFixed(1)+','+(cy+Math.sin(ang)*r*v).toFixed(1));
+ }
+ return pts.join(' ');
+}
+function renderProfile(team){
+ var d=TEMPO[team];
+ var cx=85,cy=85,r=62;
+ var vals=PROFILE_TRAITS.map(function(t){
+  var raw=t.k==='tov_ratio_inv'?(6-d.tov_ratio):d[t.k];
+  var rg=PROFILE_RANGES[t.k];
+  return (raw-rg.min)/Math.max(.001,rg.max-rg.min)*.86+.1;
+ });
+ var gridPts=radarPts(PROFILE_TRAITS.map(function(){return 1}),cx,cy,r);
+ var dataPts=radarPts(vals,cx,cy,r);
+ var labels=PROFILE_TRAITS.map(function(t,i){
+  var ang=-Math.PI/2+i*(2*Math.PI/PROFILE_TRAITS.length);
+  var x=cx+Math.cos(ang)*(r+13),y=cy+Math.sin(ang)*(r+13);
+  return '<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" text-anchor="middle">'+t.label+'</text>';
+ }).join('');
+ document.getElementById('radarProfile').innerHTML='<polygon class="grid" points="'+gridPts+'"/><polygon class="data" points="'+dataPts+'"/>'+labels;
+ var tier=tierOf(d.pace48);
+ document.getElementById('radarNote').innerHTML='<b style="color:'+tier.color+'">'+d.abbr+'</b> vs league range across six short open model reads';
+ document.getElementById('radarTiles').innerHTML=
+  '<div class="rt"><b>'+d.pace48.toFixed(1)+'</b><span>Pace/48</span></div>'
+  +'<div class="rt"><b>'+d.tempoIndex+'</b><span>Tempo Index</span></div>'
+  +'<div class="rt"><b>'+d.possEff.toFixed(1)+'</b><span>Poss. Efficiency</span></div>'
+  +'<div class="rt"><b>'+tier.label+'</b><span>Tempo Tier</span></div>';
+}
+
+function renderScatter(){
+ var ax=TEAMS.map(function(t){return TEMPO[t].pace48});
+ var ty=TEAMS.map(function(t){return TEMPO[t].tempoIndex});
+ var axMin=Math.min.apply(null,ax)-.7,axMax=Math.max.apply(null,ax)+.7;
+ var tyMin=0,tyMax=100;
+ var W=920,H=400,PADL=46,PADR=18,PADT=16,PADB=42;
+ function px(v){return PADL+((v-axMin)/(axMax-axMin))*(W-PADL-PADR)}
+ function py(v){return H-PADB-((v-tyMin)/(tyMax-tyMin))*(H-PADT-PADB)}
+ var poss=TEAMS.map(function(t){return TEMPO[t].pts_per_poss});
+ var possMin=Math.min.apply(null,poss),possMax=Math.max.apply(null,poss);
+ var avgX=px(leagueAvgPace);
+
+ // gridlines + numeric ticks
+ var xTicks=[],xt0=Math.ceil(axMin),xt1=Math.floor(axMax);
+ for(var xv=xt0;xv<=xt1;xv+=2)xTicks.push(xv);
+ var yTicks=[0,20,40,60,80,100];
+ var grid='';
+ yTicks.forEach(function(yv){
+  var y=py(yv).toFixed(1);
+  grid+='<line x1="'+PADL+'" y1="'+y+'" x2="'+(W-PADR)+'" y2="'+y+'" stroke="rgba(255,255,255,.055)"/>'
+   +'<text x="'+(PADL-8)+'" y="'+(py(yv)+3).toFixed(1)+'" fill="#576578" font-size="8.5" text-anchor="end" font-family="DM Mono,monospace">'+yv+'</text>';
+ });
+ xTicks.forEach(function(xv){
+  var x=px(xv).toFixed(1);
+  grid+='<line x1="'+x+'" y1="'+PADT+'" x2="'+x+'" y2="'+(H-PADB)+'" stroke="rgba(255,255,255,.045)"/>'
+   +'<text x="'+x+'" y="'+(H-PADB+16)+'" fill="#576578" font-size="8.5" text-anchor="middle" font-family="DM Mono,monospace">'+xv+'</text>';
+ });
+
+ var svg=grid
+  +'<line x1="'+PADL+'" y1="'+(H-PADB)+'" x2="'+(W-PADR)+'" y2="'+(H-PADB)+'" stroke="rgba(255,255,255,.16)"/>'
+  +'<line x1="'+PADL+'" y1="'+PADT+'" x2="'+PADL+'" y2="'+(H-PADB)+'" stroke="rgba(255,255,255,.16)"/>'
+  +'<line x1="'+avgX.toFixed(1)+'" y1="'+PADT+'" x2="'+avgX.toFixed(1)+'" y2="'+(H-PADB)+'" stroke="rgba(87,167,255,.32)" stroke-dasharray="3 4"/>'
+  +'<text x="'+avgX.toFixed(1)+'" y="'+(PADT-4)+'" fill="#57a7ff" font-size="7.5" text-anchor="middle" font-family="DM Mono,monospace">LEAGUE AVG</text>'
+  +'<text x="'+(W/2)+'" y="'+(H-8)+'" fill="#748397" font-size="9.5" text-anchor="middle" font-family="DM Mono,monospace">Pace — possessions per 48 min &rarr;</text>'
+  +'<text x="14" y="'+(H/2)+'" fill="#748397" font-size="9.5" text-anchor="middle" font-family="DM Mono,monospace" transform="rotate(-90 14 '+(H/2)+')">Tempo Index (0&ndash;100) &rarr;</text>';
+
+ // points sorted by x for a simple label-collision pass
+ var pts=TEAMS.map(function(t){
+  var d=TEMPO[t];
+  var r=3.4+((d.pts_per_poss-possMin)/Math.max(.001,possMax-possMin))*4.4;
+  return {t:t,d:d,x:px(d.pace48),y:py(d.tempoIndex),r:r,tier:tierOf(d.pace48)};
+ }).sort(function(a,b){return a.x-b.x});
+
+ // de-clutter pass: nudge vertically (never horizontally, so pace stays exact)
+ // any bubbles whose circles would otherwise fuse into an unreadable blob.
+ for(var iter=0;iter<60;iter++){
+  var moved=false;
+  for(var i=0;i<pts.length;i++){
+   for(var j=i+1;j<pts.length;j++){
+    var a=pts[i],b=pts[j];
+    var dx=b.x-a.x,dy=b.y-a.y;
+    var dist=Math.sqrt(dx*dx+dy*dy)||.01;
+    var minDist=a.r+b.r+5;
+    if(dist<minDist){
+     var push=(minDist-dist)/2;
+     var dir=dy>=0?1:-1;
+     if(Math.abs(dy)<.5)dir=(i%2===0?1:-1);
+     a.y-=dir*push*.55;b.y+=dir*push*.55;
+     a.y=Math.max(PADT+a.r,Math.min(H-PADB-a.r,a.y));
+     b.y=Math.max(PADT+b.r,Math.min(H-PADB-b.r,b.y));
+     moved=true;
+    }
+   }
+  }
+  if(!moved)break;
+ }
+
+ var placed=[];
+ function boxOverlaps(bx,by,bw,bh){
+  for(var i=0;i<placed.length;i++){
+   var p=placed[i];
+   if(bx<p.x+p.w&&bx+bw>p.x&&by<p.y+p.h&&by+bh>p.y)return true;
+  }
+  return false;
+ }
+ // seed the exclusion set with every bubble's own footprint so labels
+ // route around neighboring circles, not just other labels
+ pts.forEach(function(p){placed.push({x:p.x-p.r,y:p.y-p.r,w:p.r*2,h:p.r*2})});
+ pts.forEach(function(p){
+  var lw=p.d.abbr.length*5.6+4,lh=9;
+  var candidates=[
+   {dx:-lw/2,dy:-p.r-9},{dx:-lw/2,dy:p.r+13},{dx:-lw/2,dy:-p.r-19},
+   {dx:-lw/2,dy:p.r+23},{dx:p.r+3,dy:3},{dx:-lw-p.r-3,dy:3},
+   {dx:-lw/2,dy:-p.r-29},{dx:-lw/2,dy:p.r+33},
+   {dx:p.r+3,dy:-p.r-6},{dx:-lw-p.r-3,dy:-p.r-6},
+   {dx:p.r+3,dy:p.r+16},{dx:-lw-p.r-3,dy:p.r+16},
+   {dx:-lw/2,dy:-p.r-42},{dx:-lw/2,dy:p.r+46}
+  ];
+  var chosen=candidates[0];
+  for(var i=0;i<candidates.length;i++){
+   var c=candidates[i],bx=p.x+c.dx,by=p.y+c.dy;
+   if(!boxOverlaps(bx,by,lw,lh)){chosen=c;break}
+   chosen=c;
+  }
+  p.lx=p.x+chosen.dx+lw/2;p.ly=p.y+chosen.dy+lh*.75;
+  placed.push({x:p.x+chosen.dx,y:p.y+chosen.dy,w:lw,h:lh});
+ });
+
+ pts.forEach(function(p){
+  var trueY=py(p.d.tempoIndex);
+  if(Math.abs(trueY-p.y)>2.5){
+   svg+='<line x1="'+p.x.toFixed(1)+'" y1="'+trueY.toFixed(1)+'" x2="'+p.x.toFixed(1)+'" y2="'+p.y.toFixed(1)+'" stroke="'+p.tier.color+'" stroke-width="1" stroke-dasharray="1.5 2" opacity=".55"/>'
+    +'<circle cx="'+p.x.toFixed(1)+'" cy="'+trueY.toFixed(1)+'" r="1.6" fill="'+p.tier.color+'" opacity=".8"/>';
+  }
+  svg+='<circle class="sc-dot" data-team="'+p.t+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)+'" fill="'+p.tier.color+'4a" stroke="'+p.tier.color+'" stroke-width="1.3"/>'
+   +'<text x="'+p.lx.toFixed(1)+'" y="'+p.ly.toFixed(1)+'" fill="#93a3b3" font-size="7.2" text-anchor="middle" font-family="DM Mono,monospace" pointer-events="none">'+p.d.abbr+'</text>';
+ });
+ var scatterSvgEl=document.getElementById('scatterChart');
+ scatterSvgEl.setAttribute('viewBox','0 0 '+W+' '+H);
+ scatterSvgEl.innerHTML=svg;
+ document.getElementById('tierLegend').innerHTML=
+  '<span><i style="background:#22d97e"></i>Fast tempo (pace ≥ avg+1.5)</span>'
+  +'<span><i style="background:#f4b942"></i>Medium tempo (within 1.5 of avg)</span>'
+  +'<span><i style="background:#57a7ff"></i>Slow tempo (pace ≤ avg-1.5)</span>';
+
+ var tip=document.getElementById('scatterTip'),wrap=document.querySelector('.scatter-wrap');
+ document.querySelectorAll('.sc-dot').forEach(function(dot){
+  dot.addEventListener('mouseenter',function(){
+   var d=TEMPO[dot.dataset.team];
+   tip.innerHTML='<b>'+dot.dataset.team+'</b>'
+    +'<div class="tt-row"><span>Pace</span><b>'+d.pace48.toFixed(1)+'</b></div>'
+    +'<div class="tt-row"><span>Tempo Index</span><b>'+d.tempoIndex+'</b></div>'
+    +'<div class="tt-row"><span>Pts / Poss</span><b>'+d.pts_per_poss.toFixed(3)+'</b></div>'
+    +'<div class="tt-row"><span>Ast : Tov</span><b>'+d.ast_ratio.toFixed(1)+' : '+d.tov_ratio.toFixed(1)+'</b></div>';
+   var svgEl=document.getElementById('scatterChart'),svgRect=svgEl.getBoundingClientRect(),wrapRect=wrap.getBoundingClientRect();
+   var scale=svgRect.width/W;
+   var cx=parseFloat(dot.getAttribute('cx'))*scale,cy=parseFloat(dot.getAttribute('cy'))*scale;
+   tip.style.left=(svgRect.left-wrapRect.left+cx)+'px';
+   tip.style.top=(svgRect.top-wrapRect.top+cy-10)+'px';
+   tip.classList.add('show');
+  });
+  dot.addEventListener('mouseleave',function(){tip.classList.remove('show')});
+  dot.addEventListener('click',function(e){
+   e.stopPropagation();
+   showScatterDetail(dot.dataset.team);
+  });
+ });
+
+ // analytical callout: correlation direction + biggest trend outlier + tightest pace cluster
+ var n=TEAMS.length;
+ var mx=ax.reduce(function(a,b){return a+b},0)/n,my=ty.reduce(function(a,b){return a+b},0)/n;
+ var num=0,denx=0,deny=0;
+ for(var ci=0;ci<n;ci++){var dxc=ax[ci]-mx,dyc=ty[ci]-my;num+=dxc*dyc;denx+=dxc*dxc;deny+=dyc*dyc;}
+ var r=num/Math.sqrt(denx*deny||1);
+ var slope=num/(denx||1),intercept=my-slope*mx;
+ var worstT=null,worstResid=-1;
+ TEAMS.forEach(function(t){
+  var pred=slope*TEMPO[t].pace48+intercept;
+  var resid=Math.abs(TEMPO[t].tempoIndex-pred);
+  if(resid>worstResid){worstResid=resid;worstT=t;}
+ });
+ var closestPair=null,closestDist=Infinity;
+ for(var pi=0;pi<TEAMS.length;pi++){
+  for(var pj=pi+1;pj<TEAMS.length;pj++){
+   var d1=TEMPO[TEAMS[pi]],d2=TEMPO[TEAMS[pj]];
+   var dd=Math.abs(d1.pace48-d2.pace48)+Math.abs(d1.tempoIndex-d2.tempoIndex)*.15;
+   if(dd<closestDist){closestDist=dd;closestPair=[TEAMS[pi],TEAMS[pj]];}
+  }
+ }
+ var corrWord=r>.35?'a positive relationship — faster teams tend to post higher tempo index scores':(r<-.35?'an inverse relationship — the fastest teams don’t necessarily post the highest tempo index':'only a weak relationship, meaning raw pace alone doesn’t predict the tempo index');
+ document.getElementById('scatterInsight').innerHTML=
+  '<svg viewBox="0 0 24 24"><path d="M3 3v18h18M7 15l4-5 3 3 5-7"/></svg>'
+  +'<p>Across the league, pace and tempo index show <b>'+corrWord+'</b> (r = '+r.toFixed(2)+'). '
+  +'<b>'+TEMPO[worstT].abbr+'</b> sits furthest off that trend line, running a tempo index well out of step with its raw pace. '
+  +'<b>'+TEMPO[closestPair[0]].abbr+'</b> and <b>'+TEMPO[closestPair[1]].abbr+'</b> are the closest-matched pair on this chart, nearly identical on both reads.</p>';
+}
+
+function showScatterDetail(team){
+ var d=TEMPO[team],tier=tierOf(d.pace48);
+ var box=document.getElementById('scatterDetail');
+ box.innerHTML='<div class="sc-detail-head"><b>'+team+'</b><span style="color:'+tier.color+';border:1px solid '+tier.color+'55;background:'+tier.color+'14">'+tier.label.toUpperCase()+' TEMPO</span><button type="button" class="sc-detail-close" aria-label="Close">&times;</button></div>'
+  +'<div class="sc-detail-grid">'
+  +'<div><b>'+d.pace48.toFixed(1)+'</b><span>Pace/48</span></div>'
+  +'<div><b>'+d.tempoIndex+'</b><span>Tempo Idx</span></div>'
+  +'<div><b>'+d.possEff.toFixed(1)+'</b><span>Poss Eff</span></div>'
+  +'<div><b>'+d.ast_ratio.toFixed(1)+'</b><span>Ast Ratio</span></div>'
+  +'<div><b>'+d.tov_ratio.toFixed(1)+'</b><span>Tov Ratio</span></div>'
+  +'<div><b>'+d.pts_per_poss.toFixed(3)+'</b><span>Pts/Poss</span></div>'
+  +'<div><b>'+d.tot_poss.toLocaleString()+'</b><span>Total Poss</span></div>'
+  +'<div><b>'+d.roster_size+'</b><span>Roster Used</span></div>'
+  +'</div>';
+ box.classList.add('show');
+ box.querySelector('.sc-detail-close').addEventListener('click',function(e){e.stopPropagation();box.classList.remove('show');});
+}
+
+function renderHistogram(){
+ var lo=Math.floor(paceMin)-1,hi=Math.ceil(paceMax)+1;
+ var bucketW=Math.max(1,(hi-lo)/7);
+ var buckets=[];
+ for(var i=0;i<7;i++){
+  var b0=lo+bucketW*i,b1=lo+bucketW*(i+1);
+  buckets.push({lo:b0,hi:b1,range:b0.toFixed(1)+'–'+b1.toFixed(1)});
+ }
+ buckets.forEach(function(b){
+  b.teams=TEAMS.filter(function(t){var p=TEMPO[t].pace48;return p>=b.lo&&(p<b.hi||b===buckets[buckets.length-1])}).sort(function(a,c){return TEMPO[c].pace48-TEMPO[a].pace48});
+  b.count=b.teams.length;
+ });
+ var maxC=Math.max.apply(null,buckets.map(function(b){return b.count}))||1;
+ var axisMax=Math.max(4,Math.ceil(maxC/2)*2);
+ var chartH=180;
+ var meanPct=((leagueAvgPace-lo)/(hi-lo))*100;
+ var html=buckets.map(function(b,bi){
+  var pctH=(b.count/axisMax)*chartH;
+  var minH=b.count*15;
+  var fillH=b.count?Math.min(chartH,Math.max(minH,pctH)):0;
+  var segs=b.teams.map(function(t){
+   var rgb=TEAM_RGB[t]||'184,118,58';
+   var txt=hbTextColor(rgb);
+   var bg='linear-gradient(180deg,rgba('+rgb+',.98),rgba('+rgb+',.82) 55%,rgba('+rgb+',.7))';
+   return '<span class="hb-seg" style="flex:1;background:'+bg+';color:'+txt+'" title="'+t+' — '+TEMPO[t].pace48.toFixed(1)+' pace/48">'+TEMPO[t].abbr+'</span>';
+  }).join('');
+  var fillHtml=b.count
+   ?'<div class="hb-fill" style="height:'+fillH+'px">'+segs+'</div>'
+   :'<div class="hb-fill hb-fill-empty"></div>';
+  return '<div class="histbar"><span class="hb-count">'+b.count+'</span>'+fillHtml+'<span class="hb-label">'+b.range+'</span><span class="hb-range">pace / 48</span></div>';
+ }).join('');
+ document.getElementById('histChart').innerHTML=html
+  +'<div class="hist-mean" style="left:'+meanPct.toFixed(1)+'%"></div>'
+  +'<div class="hist-mean-tag" style="left:'+meanPct.toFixed(1)+'%">AVG '+leagueAvgPace.toFixed(1)+'</div>';
+ // analytical callout: fullest band + how concentrated the middle is
+ var maxBucket=buckets.reduce(function(a,b){return b.count>a.count?b:a});
+ var edgeCount=buckets[0].count+buckets[buckets.length-1].count;
+ var midShare=Math.round((1-edgeCount/TEAMS.length)*100);
+ document.getElementById('histInsight').innerHTML=
+  '<svg viewBox="0 0 24 24"><path d="M3 3v18h18M7 15l4-5 3 3 5-7"/></svg>'
+  +'<p>The <b>'+maxBucket.range+'</b> pace band is the fullest, holding <b>'+maxBucket.count+' of '+TEAMS.length+'</b> teams. '
+  +Math.round(midShare)+'% of the league sits away from the two extreme bands, showing pace clusters tightly around the mean rather than spreading evenly across the range.</p>';
+ // numeric y-axis + gridlines, 5 evenly spaced ticks from 0 to axisMax teams
+ var ticks=[],tStep=axisMax/4;
+ for(var tv=0;tv<=axisMax+.001;tv+=tStep)ticks.push(Math.round(tv));
+ document.getElementById('histAxis').innerHTML=ticks.map(function(tv){
+  return '<i style="bottom:'+((tv/axisMax)*100).toFixed(1)+'%">'+tv+'</i>';
+ }).join('');
+ document.getElementById('histGrid').innerHTML=ticks.map(function(tv){
+  return '<i style="bottom:'+((tv/axisMax)*100).toFixed(1)+'%"></i>';
+ }).join('');
+}
+
+var sortKey='pace48',sortDir=-1;
+function renderTable(){
+ var q=document.getElementById('searchInput').value.trim().toLowerCase();
+ var list=TEAMS.filter(function(t){return !q||t.toLowerCase().indexOf(q)>-1||TEMPO[t].abbr.toLowerCase().indexOf(q)>-1});
+ list.sort(function(a,b){
+  if(sortKey==='team')return sortDir*a.localeCompare(b);
+  return sortDir*(TEMPO[a][sortKey]-TEMPO[b][sortKey]);
+ });
+ document.getElementById('resultCount').textContent=list.length+' of '+TEAMS.length+' teams';
+ var body=document.getElementById('tempoBody');
+ if(!list.length){body.innerHTML='<tr><td colspan="6" class="empty-state">No teams match your search.</td></tr>';return}
+ body.innerHTML=list.map(function(t){
+  var d=TEMPO[t];
+  return '<tr><td>'+t+' <span style="color:#586879">('+d.abbr+')</span></td><td>'+d.pace48.toFixed(1)+'</td><td>'+d.tempoIndex+'</td><td>'+d.ast_ratio.toFixed(1)+'</td><td>'+d.tov_ratio.toFixed(1)+'</td><td>'+d.pts_per_poss.toFixed(3)+'</td></tr>';
+ }).join('');
+}
+
+document.querySelectorAll('table.rtable th').forEach(function(th){
+ th.addEventListener('click',function(){
+  var k=th.getAttribute('data-k');
+  if(sortKey===k){sortDir*=-1}else{sortKey=k;sortDir=k==='team'?1:-1}
+  document.querySelectorAll('table.rtable th').forEach(function(t){t.classList.remove('active')});
+  th.classList.add('active');
+  renderTable();
+ });
+});
+document.getElementById('searchInput').addEventListener('input',renderTable);
+
+var profileSel=document.getElementById('profileTeam');
+TEAMS.slice().sort(function(a,b){return TEMPO[b].tempoIndex-TEMPO[a].tempoIndex}).forEach(function(t){
+ var o=document.createElement('option');o.value=t;o.textContent=t;profileSel.appendChild(o);
+});
+profileSel.value=TEAMS.reduce(function(a,b){return TEMPO[b].tempoIndex>TEMPO[a].tempoIndex?b:a});
+profileSel.addEventListener('change',function(){renderProfile(profileSel.value)});
+
+renderBarChart();renderProfile(profileSel.value);renderScatter();renderHistogram();renderTable();
+
+(function(){
+ var tracks=document.querySelectorAll('.wind-track');
+ function sync(){tracks.forEach(function(el){el.style.setProperty('--btw3',el.clientWidth+'px')})}
+ sync();window.addEventListener('resize',sync);
+ if('ResizeObserver' in window){var ro=new ResizeObserver(sync);tracks.forEach(function(el){ro.observe(el)})}
+})();
+</script>
+</body></html>

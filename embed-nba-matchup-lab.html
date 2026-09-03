@@ -1,0 +1,528 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="format-detection" content="telephone=no"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Matchup Labs — NBA — shortopen</title><link rel="icon" type="image/svg+xml" href="favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="shortcut icon" href="favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"><style>
+:root{--bg:#04080d;--panel:#08111a;--panel2:#0b1620;--line:rgba(255,255,255,.075);--line2:rgba(255,255,255,.13);--text:#edf3f7;--muted:#748397;--muted2:#a2afbd;--gold:#f4b942;--green:#22d97e;--blue:#57a7ff;--red:#ff5d6c;--brown:#c9843f;--mono:'DM Mono',monospace}
+*{box-sizing:border-box}
+body{margin:0;padding:24px;background:linear-gradient(rgba(87,167,255,.014) 1px,transparent 1px),linear-gradient(90deg,rgba(87,167,255,.014) 1px,transparent 1px),radial-gradient(circle at 15% 10%,rgba(201,132,63,.06),transparent 45%),radial-gradient(circle at 85% 15%,rgba(87,167,255,.05),transparent 45%),var(--bg);background-size:64px 64px,64px 64px,auto,auto,auto;color:var(--text);font-family:Inter,system-ui,sans-serif}
+.wrap{max-width:1500px;margin:auto}
+.hero{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,rgba(201,132,63,.06),rgba(6,13,20,.96) 55%,rgba(87,167,255,.03));padding:32px 34px 30px}
+.hero:after{content:'';position:absolute;right:-90px;top:-110px;width:430px;height:430px;border-radius:50%;border:1px solid rgba(201,132,63,.09);box-shadow:0 0 0 40px rgba(201,132,63,.018),0 0 0 80px rgba(87,167,255,.012)}
+.ey{color:var(--brown);font:800 10px var(--mono);letter-spacing:.16em;text-transform:uppercase}
+h1{position:relative;font-size:clamp(2.5rem,5vw,4.6rem);line-height:.92;letter-spacing:-.055em;margin:11px 0 9px;max-width:11ch;color:var(--brown);background:linear-gradient(100deg,var(--brown) 0%,var(--brown) 42%,#fff2e0 50%,var(--brown) 58%,var(--brown) 100%);background-size:280% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:brownSweep 6.5s ease-in-out infinite}
+@keyframes brownSweep{0%{background-position:220% 0}45%{background-position:-30% 0}100%{background-position:-30% 0}}
+.hero p{max-width:640px;color:#8a98a7;line-height:1.65;font-size:.83rem}
+.badge{position:absolute;right:24px;top:18px;padding:7px 12px;border:1px solid rgba(244,185,66,.34);border-radius:999px;color:var(--gold);font:800 9px var(--mono);letter-spacing:.12em;background:rgba(4,8,13,.82);box-shadow:0 8px 24px rgba(0,0,0,.22)}
+
+.hero{padding-right:420px;min-height:336px}
+.hero-side{position:absolute;right:20px;top:58px;width:392px;height:220px;z-index:3;pointer-events:none;filter:drop-shadow(0 16px 26px rgba(0,0,0,.3))}
+.lab-lines{position:absolute;inset:0;width:100%;height:100%;transform-origin:center;animation:labArmRock 12s ease-in-out infinite}
+.lab-lines path{fill:none;stroke:rgba(201,132,63,.24);stroke-width:1.2;stroke-dasharray:4 7;animation:labFlow 5s linear infinite}
+@keyframes labArmRock{0%,100%{transform:rotate(-1.4deg)}50%{transform:rotate(1.4deg)}}
+@keyframes labFlow{to{stroke-dashoffset:-22}}
+.lab-ping{fill:var(--gold);filter:drop-shadow(0 0 5px rgba(244,185,66,.9))}
+.lab-node{position:absolute;width:172px;min-height:58px;padding:9px 12px;border-radius:12px;text-align:left;background:linear-gradient(150deg,rgba(11,22,30,.86),rgba(6,13,20,.55));border:1px solid rgba(255,255,255,.09);pointer-events:auto;z-index:5}
+.lab-node span{display:block;font:800 7px var(--mono);letter-spacing:.12em;color:#607185}
+.lab-node b{display:block;margin-top:5px;font-size:12px;color:#e9f2f4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lab-node small{display:block;margin-top:3px;color:#6f8090;font:650 7.5px var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lab-node.n-a{left:0;top:0}.lab-node.n-a b{color:var(--gold)}
+.lab-node.n-b{right:0;top:0}.lab-node.n-b b{color:var(--blue)}
+.lab-node.n-c{left:0;bottom:0}.lab-node.n-c b{color:var(--green)}
+.lab-node.n-d{right:0;bottom:0}.lab-node.n-d b{color:#dce5ed}
+.lab-core{position:absolute;left:50%;top:50%;width:74px;height:74px;margin:-37px 0 0 -37px;border-radius:50%;display:grid;place-items:center;align-content:center;background:#071019;border:1px solid rgba(201,132,63,.4);box-shadow:0 0 28px rgba(201,132,63,.14),inset 0 1px 0 rgba(255,255,255,.05);z-index:3}
+.lab-core i{position:absolute;inset:-8px;border:1px dashed rgba(201,132,63,.28);border-radius:50%;animation:labSpin 14s linear infinite}
+.lab-core strong{font:900 18px var(--mono);color:#ecf6f1}
+.lab-core span{font:800 6px var(--mono);letter-spacing:.14em;color:#8a7a4a;text-transform:uppercase}
+@keyframes labSpin{to{transform:rotate(360deg)}}
+.lab-orbit-svg{position:absolute;inset:0;width:100%;height:100%;z-index:4;pointer-events:none}
+.lab-ball2{filter:drop-shadow(0 3px 6px rgba(0,0,0,.4))}
+.lab-figure{position:absolute;left:50%;top:50%;width:82px;height:92px;margin:-46px 0 0 44px;z-index:2;animation:figBob 3.4s ease-in-out infinite;pointer-events:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))}
+@keyframes figBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@media(max-width:1180px){.hero{padding-right:34px;min-height:0}.hero-side{position:relative;right:auto;top:auto;width:min(100%,392px);height:220px;margin:22px auto 0}}
+@media(max-width:650px){.hero-side{transform:scale(.86);transform-origin:center top;margin-bottom:-30px}}
+@media(prefers-reduced-motion:reduce){.lab-lines,.lab-core i,.lab-ball2,.lab-figure{animation:none!important}}
+
+.controls-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:16px 0}
+.teamsel{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:12px;border:1px solid var(--line);background:#081019}
+.teamsel span{font:800 8px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#5c6c7d}
+.teamsel select{background:none;border:0;color:var(--text);font:700 13px Inter,sans-serif;cursor:pointer}
+.teamsel select:focus{outline:none}
+.vs-badge{font:900 12px var(--mono);color:var(--gold);letter-spacing:.1em}
+
+.postabs{display:flex;gap:7px;margin:6px 0 12px;flex-wrap:wrap}
+.postab{padding:8px 15px;border-radius:999px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.02);color:#8996a4;font:750 11px Inter,sans-serif;cursor:pointer;transition:border-color .16s,background .16s,color .16s}
+.postab:hover{border-color:rgba(201,132,63,.3);color:#dfe5eb}
+.postab.active{border-color:rgba(201,132,63,.5);background:rgba(201,132,63,.12);color:#fff}
+.hint-row{margin:0 0 14px;color:#586879;font:700 9.5px var(--mono);letter-spacing:.03em}
+
+/* ===== TWO-PANEL MATCHUP CONTEXT ===== */
+.matchupgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0 22px}
+.mp-panel{border:1px solid var(--line);border-radius:16px;background:linear-gradient(155deg,rgba(255,255,255,.03),rgba(7,15,23,.96));overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+.mp-head{padding:13px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.mp-head b{font:800 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#c7d0da}
+.mp-head span{font:700 8px var(--mono);color:#586879}
+.mp-body{padding:16px}
+.mp-sub{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px}
+.mp-name{font-size:17px;font-weight:850;color:#f2f6f9;letter-spacing:-.02em}
+.mp-role{display:block;margin-top:3px;color:#7e93a6;font:700 9px var(--mono);letter-spacing:.05em;text-transform:uppercase}
+
+.gauge-row{display:flex;align-items:center;gap:16px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:14px}
+.gauge-svg{width:82px;height:82px;transform:rotate(-90deg);flex:0 0 auto}
+.gauge-svg circle{fill:none;stroke-width:8}
+.gauge-track{stroke:rgba(255,255,255,.07)}
+.gauge-fill{stroke:var(--brown);stroke-linecap:round;transition:stroke-dashoffset .5s ease}
+.gauge-txt{transform:rotate(90deg);font:900 20px var(--mono);fill:#ecf6f1}
+.gauge-info b{display:block;font:900 15px var(--mono);color:var(--gold)}
+.gauge-info span{display:block;margin-top:3px;color:#7e93a6;font-size:10.5px;line-height:1.5}
+
+.lean-wrap{margin-bottom:14px}
+.lean-head{display:flex;justify-content:space-between;font:800 8px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#5c6c7d;margin-bottom:6px}
+.lean-track{position:relative;height:8px;border-radius:8px;background:rgba(255,255,255,.06);overflow:hidden}
+.lean-center{position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(255,255,255,.25)}
+.lean-fill{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,var(--blue),var(--brown))}
+.lean-readout{margin-top:6px;font:700 9.5px var(--mono);color:#8a98a7}
+
+.radar-wrap{margin-bottom:14px;text-align:center}
+.radar-svg{width:170px;height:170px}
+.radar-svg polygon.grid{fill:rgba(255,255,255,.03);stroke:rgba(255,255,255,.12);stroke-width:1}
+.radar-svg polygon.data{fill:rgba(201,132,63,.22);stroke:var(--brown);stroke-width:1.6}
+.radar-svg text{font:700 6.5px var(--mono);fill:#6f8090}
+.radar-legend{margin-top:6px;font:700 8.5px var(--mono);color:#586879}
+.radar-legend b{color:var(--brown)}
+
+.trait-rows{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.trait-row{display:grid;grid-template-columns:56px 1fr 40px;align-items:center;gap:8px}
+.trait-row span{font:750 8.5px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:#79899a}
+.trait-bar{height:6px;border-radius:6px;background:rgba(255,255,255,.06);overflow:hidden}
+.trait-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--blue),var(--brown))}
+.trait-row b{text-align:right;font:800 10px var(--mono);color:#d4dce4}
+
+.stat-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.cmp-rows{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;padding:10px 11px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05)}
+.cmp-row{display:flex;justify-content:space-between;align-items:center;font:700 9.5px var(--mono);color:#8a98a7}
+.cmp-row b{color:#d4dce4;font-weight:800}
+.cmp-row em{font-style:normal;font-weight:800}
+.cmp-row em.up{color:var(--green)}
+.cmp-row em.down{color:var(--red)}
+.cmp-title{font:800 8px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#5c6c7d;margin-bottom:2px}
+.stat-tile{padding:8px 7px;border:1px solid rgba(255,255,255,.06);border-radius:9px;text-align:center;background:rgba(255,255,255,.015)}
+.stat-tile b{display:block;font:850 12px var(--mono);color:#d4dce4}
+.stat-tile span{display:block;margin-top:3px;font:700 6.4px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:#586879}
+.mp-read{padding:11px 12px;border-radius:10px;background:rgba(201,132,63,.045);border:1px solid rgba(201,132,63,.13);color:#8e9ba7;font-size:10.5px;line-height:1.6}
+.mp-read b{display:block;margin-bottom:4px;color:#e8c0a5;font:800 8px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+
+/* opponent panel specifics */
+.opp-score{display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:14px}
+.opp-score b{font:900 34px var(--mono);color:var(--blue);line-height:1}
+.opp-score div span{display:block;color:#7e93a6;font-size:10.5px;line-height:1.5}
+.opp-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.opp-tile{padding:9px 8px;border-radius:9px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.015);text-align:center}
+.opp-tile b{display:block;font:850 13px var(--mono);color:#d4dce4}
+.opp-tile span.lbl{display:block;margin-top:3px;font:700 6.4px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:#586879}
+.opp-tile em{display:inline-block;margin-top:5px;padding:2px 6px;border-radius:999px;font:800 6.4px var(--mono);letter-spacing:.06em;font-style:normal}
+.opp-tile em.elite{color:var(--green);background:rgba(34,217,126,.1)}
+.opp-tile em.strong{color:var(--gold);background:rgba(244,185,66,.1)}
+.opp-tile em.avg{color:#8a98a7;background:rgba(255,255,255,.06)}
+.donut-wrap{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.donut-svg{width:76px;height:76px;flex:0 0 auto}
+.donut-legend{display:flex;flex-direction:column;gap:5px}
+.donut-legend span{display:flex;align-items:center;gap:6px;font:700 9px var(--mono);color:#8a98a7}
+.donut-legend i{width:8px;height:8px;border-radius:2px;display:inline-block}
+.anchor-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px}
+.anchor-tile{padding:9px 10px;border-radius:9px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.015)}
+.anchor-tile b{display:block;font-size:11.5px;font-weight:800;color:#eef3f7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.anchor-tile span{display:block;margin-top:3px;color:#67798a;font:700 7.5px var(--mono)}
+.callout{padding:10px 12px;border-radius:10px;background:rgba(87,167,255,.06);border:1px solid rgba(87,167,255,.18);margin-bottom:12px}
+.callout b{display:block;font:900 15px var(--mono);color:var(--blue)}
+.callout span{display:block;margin-top:3px;color:#8a98a7;font-size:9.5px}
+.methodnote{margin-top:10px;font-size:8.7px;font-style:italic;color:#4a5866;line-height:1.55}
+@media(max-width:950px){.matchupgrid{grid-template-columns:1fr}.stat-tiles,.opp-tiles{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.gauge-row{flex-wrap:wrap}.radar-svg{width:150px;height:150px}}
+
+/* Roster table */
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:6px 0 4px}
+.searchbox{position:relative;flex:0 0 auto}
+.searchbox input{width:220px;padding:9px 14px 9px 34px;border-radius:999px;border:1px solid var(--line);background:#081019;color:var(--text);font-size:12px;font-family:inherit}
+.searchbox input:focus{outline:none;border-color:rgba(201,132,63,.5)}
+.searchbox svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:13px;height:13px;stroke:#5c6c7d;fill:none;stroke-width:2}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin:8px 0 4px}
+table.rtable{width:100%;border-collapse:collapse;min-width:640px}
+table.rtable th{position:sticky;top:0;background:#0a121b;text-align:right;padding:9px 12px;font:800 9px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:#79899a;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap}
+table.rtable th:first-child,table.rtable th:nth-child(2){text-align:left}
+table.rtable th.active{color:var(--brown)}
+table.rtable td{padding:8px 12px;text-align:right;font-size:12px;border-bottom:1px solid rgba(255,255,255,.04);font-variant-numeric:tabular-nums;white-space:nowrap}
+table.rtable td:first-child,table.rtable td:nth-child(2){text-align:left}
+table.rtable tr:hover td{background:rgba(255,255,255,.015)}
+table.rtable td.team{color:#8593a3;font-size:10.5px}
+
+.empty-state{padding:30px;text-align:center;color:#5c6c7d;font-size:12px}
+</style>
+<style id="so-mobile-repair-20260819">
+@media(max-width:700px){
+ html,body{width:100%;max-width:100%;overflow-x:hidden}body{padding:10px!important}.wrap{width:100%;min-width:0}.hero{padding:24px 18px 22px!important;min-height:0}.hero h1{font-size:2.65rem!important;line-height:.96}.hero p{font-size:.78rem!important;max-width:none}
+ .controls-row{flex-direction:column;align-items:stretch}
+ .matchupgrid{display:flex!important;grid-template-columns:none!important;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:6px -10px 18px;padding:2px 10px 6px}
+ .matchupgrid::-webkit-scrollbar{display:none}
+ .mp-panel{flex:0 0 88vw;scroll-snap-align:start}
+ .swipe-hint{display:flex;align-items:center;gap:6px;justify-content:center;margin:-10px 0 14px;color:#5c6c7d;font:700 9px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+}
+@media(min-width:701px){.swipe-hint{display:none}}
+</style><style id="so-mobile-verified-pass-20260819">
+@media(max-width:700px){
+ .hero{border-radius:16px!important;padding:23px 17px!important}.hero h1{font-size:clamp(2.15rem,11vw,2.75rem)!important}.hero p{font-size:.77rem!important;line-height:1.58!important}
+}
+@media(max-width:700px){html,body{overflow-x:hidden!important}.wrap{width:100%!important;padding:10px!important}.hero{padding:20px 14px 20px!important;border-radius:20px!important;overflow:hidden!important}.hero h1{font-size:2.15rem!important;line-height:1!important}.hero p{font-size:.74rem!important;line-height:1.52!important;max-width:100%!important}}
+</style>
+<style id="so-shared-disclaimer-footer-20260824">.so-shared-footer{width:100%;max-width:100%;margin:28px 0 0;padding:28px clamp(18px,4vw,48px) 30px;border-top:1px solid rgba(255,255,255,.08);background:rgba(4,7,12,.82);display:flex;flex-direction:column;gap:14px;clear:both}.so-shared-footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}.so-shared-footer-logo{font-family:Inter,Arial,sans-serif;font-size:1rem;font-weight:900;letter-spacing:-.02em;color:#f0ece4;text-decoration:none}.so-shared-footer-logo span{color:#e8a020}.so-shared-footer-top p{margin:0;color:#4d6070;font-size:.75rem;letter-spacing:.06em}.so-shared-footer .footer-disclaimer{max-width:1100px;margin:0;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.28);font-size:.62rem;line-height:1.68;letter-spacing:.01em}@media(max-width:700px){.so-shared-footer{margin-top:20px;padding:22px 16px max(24px,env(safe-area-inset-bottom));text-align:center}.so-shared-footer-top{flex-direction:column}.so-shared-footer .footer-disclaimer{text-align:left;font-size:.6rem;overflow-wrap:anywhere}}</style>
+</head><body><div class="wrap">
+
+<section class="hero">
+<div class="ey">NBA · Matchup Labs</div>
+<h1>Matchup Labs</h1>
+<p>Position-paired matchup research built from Short Open's own model. Pick two teams and compare guards against guards, forwards against forwards and centers against centers — the way a coaching staff would break down the game plan.</p>
+<div class="badge">MODEL · BETA</div>
+<div class="hero-side">
+ <svg class="lab-lines" viewBox="0 0 392 220" aria-hidden="true">
+  <path id="mlPathA" d="M86 46 Q196 86 196 110"/>
+  <path id="mlPathB" d="M306 46 Q196 86 196 110"/>
+  <path id="mlPathC" d="M86 174 Q196 134 196 110"/>
+  <path id="mlPathD" d="M306 174 Q196 134 196 110"/>
+  <circle class="lab-ping" r="3.2"><animateMotion dur="2.1s" begin="0s" repeatCount="indefinite" keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="spline" keySplines="0.3 0 0.7 1;0.3 0 0.7 1"><mpath href="#mlPathA"/></animateMotion></circle>
+  <circle class="lab-ping" r="3.2"><animateMotion dur="2.1s" begin=".5s" repeatCount="indefinite" keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="spline" keySplines="0.3 0 0.7 1;0.3 0 0.7 1"><mpath href="#mlPathB"/></animateMotion></circle>
+  <circle class="lab-ping" r="3.2"><animateMotion dur="2.1s" begin="1s" repeatCount="indefinite" keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="spline" keySplines="0.3 0 0.7 1;0.3 0 0.7 1"><mpath href="#mlPathC"/></animateMotion></circle>
+  <circle class="lab-ping" r="3.2"><animateMotion dur="2.1s" begin="1.5s" repeatCount="indefinite" keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="spline" keySplines="0.3 0 0.7 1;0.3 0 0.7 1"><mpath href="#mlPathD"/></animateMotion></circle>
+ </svg>
+ <div class="lab-node n-a"><span>ON THE COURT</span><b id="heroPlayerName">SCANNING</b><small id="heroPlayerRole">Role</small></div>
+ <div class="lab-node n-b"><span>FACING</span><b id="heroOppName">SCANNING</b><small id="heroOppNote">Position group</small></div>
+ <div class="lab-node n-c"><span>MATCHUP LEAN</span><b id="heroLeanVal">—</b><small id="heroLeanNote">Offense vs opponent</small></div>
+ <div class="lab-node n-d"><span>TOP MATCHUPS THIS WEEK</span><b id="heroTopMatch">—</b><small id="heroTopMatchNote">Highest Lab Score today</small></div>
+ <div class="lab-core"><i></i><strong id="heroLabScore">—</strong><span>lab score</span></div>
+ <svg class="lab-orbit-svg" viewBox="0 0 392 220" aria-hidden="true">
+  <path id="mlOrbitPath" d="M196,60 A50,50 0 1 0 196,160" fill="none" stroke="none"/>
+  <g class="lab-ball2"><circle r="12" fill="url(#mlBallOrange)" stroke="#2a1608" stroke-width="1.6"><animateMotion dur="4.4s" repeatCount="indefinite" keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"><mpath href="#mlOrbitPath"/></animateMotion></circle>
+   <path d="M-9 0h18M0 -9v18M-3.4 -8c3 3 3 13 0 16M3.4 -8c-3 3 -3 13 0 16" fill="none" stroke="#2a1608" stroke-width="1"><animateMotion dur="4.4s" repeatCount="indefinite" keyPoints="0;1;0" keyTimes="0;0.5;1" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"><mpath href="#mlOrbitPath"/></animateMotion></path></g>
+  <defs><radialGradient id="mlBallOrange" cx="34%" cy="25%" r="72%"><stop offset="0" stop-color="#ffb066"/><stop offset=".5" stop-color="#e8843d"/><stop offset="1" stop-color="#8a4614"/></radialGradient></defs>
+ </svg>
+ <svg class="lab-figure" viewBox="0 0 118 132" aria-hidden="true">
+  <!-- legs -->
+  <path d="M48 102 L45 128" stroke="#16222d" stroke-width="13" stroke-linecap="round"/>
+  <path d="M70 102 L73 128" stroke="#16222d" stroke-width="13" stroke-linecap="round"/>
+  <ellipse cx="43" cy="129" rx="9" ry="4.5" fill="#e8843d"/>
+  <ellipse cx="75" cy="129" rx="9" ry="4.5" fill="#e8843d"/>
+  <!-- arms (jersey sleeve blue, cuff orange, hands dark) -->
+  <path d="M43 42 L23 78" stroke="#2f6fd6" stroke-width="15" stroke-linecap="round"/>
+  <path d="M75 42 L95 78" stroke="#2f6fd6" stroke-width="15" stroke-linecap="round"/>
+  <circle cx="22" cy="80" r="7" fill="#16222d"/>
+  <circle cx="96" cy="80" r="7" fill="#16222d"/>
+  <!-- shorts -->
+  <rect x="39" y="88" width="40" height="18" rx="7" fill="#e8843d"/>
+  <!-- torso / jersey -->
+  <path d="M38 36 L80 36 L84 90 Q59 100 34 90 Z" fill="#2f6fd6" stroke="#16222d" stroke-width="2"/>
+  <rect x="38" y="38" width="6" height="46" fill="#e8843d"/>
+  <rect x="74" y="38" width="6" height="46" fill="#e8843d"/>
+  <path d="M46 36 Q59 46 72 36 L72 30 Q59 38 46 30 Z" fill="#e8843d"/>
+  <text x="59" y="72" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-weight="900" font-size="22" fill="#fff">Q</text>
+  <!-- head -->
+  <circle cx="59" cy="18" r="13" fill="#16222d" stroke="#e8843d" stroke-width="2.4"/>
+ </svg>
+</div>
+</section>
+
+<div class="controls-row">
+ <div class="teamsel"><span>Team A</span><select id="teamA"></select></div>
+ <div class="vs-badge">VS</div>
+ <div class="teamsel"><span>Team B</span><select id="teamB"></select></div>
+</div>
+
+<div class="postabs" id="posTabs">
+ <button class="postab active" type="button" data-pos="G">Guards <span class="cnt" id="cntG"></span></button>
+ <button class="postab" type="button" data-pos="F">Forwards <span class="cnt" id="cntF"></span></button>
+ <button class="postab" type="button" data-pos="C">Centers <span class="cnt" id="cntC"></span></button>
+</div>
+<div class="hint-row">Click any roster row below to load that player into the matchup context panels · currently paired against Team B's position group.</div>
+
+<div class="matchupgrid" id="matchupGrid"></div>
+<div class="swipe-hint">&larr; swipe for opponent position group &rarr;</div>
+
+<div class="controls">
+ <div class="searchbox"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input type="text" id="searchInput" placeholder="Search combined roster…" autocomplete="off"></div>
+</div>
+<div class="tablewrap">
+<table class="rtable">
+ <thead><tr>
+  <th data-k="n">Player</th><th data-k="team">Team</th><th data-k="pos">Pos</th><th data-k="ppg" class="active">PPG</th><th data-k="apg">APG</th><th data-k="rpg">RPG</th><th data-k="spg">SPG</th><th data-k="bpg">BPG</th><th data-k="ts">TS%</th>
+ </tr></thead>
+ <tbody id="rosterBody"></tbody>
+</table>
+</div>
+
+</div>
+<footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>© 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span style="color:#e8c078;font-weight:600">1-800-GAMBLER</span>. <a href="terms.html" style="text-decoration:underline;color:#e8c078">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p></footer>
+
+<script>
+var ROSTERS={"Atlanta Hawks": {"abbr": "ATL", "starters": [{"n": "Nickeil Alexander-Walker", "pos": "G", "ppg": 18.7, "apg": 3.3, "rpg": 3.1, "mpg": 33.5, "spg": 1.15, "bpg": 0.52, "ts": 60.6, "topg": 1.96}, {"n": "Jalen Johnson", "pos": "G", "ppg": 19.1, "apg": 6.6, "rpg": 8.6, "mpg": 30.8, "spg": 1.03, "bpg": 0.36, "ts": 57.9, "topg": 2.84}, {"n": "Dyson Daniels", "pos": "G", "ppg": 10.4, "apg": 5.3, "rpg": 6.1, "mpg": 30.3, "spg": 1.76, "bpg": 0.36, "ts": 54.1, "topg": 1.6}, {"n": "Onyeka Okongwu", "pos": "F", "ppg": 13.2, "apg": 2.7, "rpg": 6.6, "mpg": 28.1, "spg": 0.98, "bpg": 0.92, "ts": 59.8, "topg": 1.47}, {"n": "Zaccharie Risacher", "pos": "G", "ppg": 7.2, "apg": 0.8, "rpg": 2.9, "mpg": 17.5, "spg": 0.65, "bpg": 0.4, "ts": 55.3, "topg": 0.64}], "bench": [{"n": "CJ McCollum", "pos": "G", "ppg": 9.7, "apg": 2.0, "rpg": 1.6, "mpg": 16.2, "spg": 0.51, "bpg": 0.38, "ts": 55.5, "topg": 1.08}, {"n": "Mouhamed Gueye", "pos": "G", "ppg": 3.9, "apg": 0.8, "rpg": 3.1, "mpg": 15.9, "spg": 0.68, "bpg": 0.43, "ts": 53, "topg": 0.37}, {"n": "Vit Krejci", "pos": "G", "ppg": 4.5, "apg": 0.7, "rpg": 1.1, "mpg": 12.9, "spg": 0.41, "bpg": 0.14, "ts": 63.9, "topg": 0.33}, {"n": "Luke Kennard", "pos": "G", "ppg": 4.0, "apg": 1.1, "rpg": 1.1, "mpg": 11.1, "spg": 0.36, "bpg": 0.05, "ts": 71.4, "topg": 0.35}, {"n": "Corey Kispert", "pos": "G", "ppg": 4.1, "apg": 0.7, "rpg": 1.1, "mpg": 8.8, "spg": 0.11, "bpg": 0.07, "ts": 56.6, "topg": 0.37}, {"n": "Keaton Wallace", "pos": "G", "ppg": 2.1, "apg": 1.1, "rpg": 0.6, "mpg": 6.6, "spg": 0.27, "bpg": 0.05, "ts": 51.1, "topg": 0.31}, {"n": "Asa Newell", "pos": "G", "ppg": 2.5, "apg": 0.3, "rpg": 1.1, "mpg": 6.3, "spg": 0.19, "bpg": 0.18, "ts": 62.2, "topg": 0.25}, {"n": "Jonathan Kuminga", "pos": "G", "ppg": 3.1, "apg": 0.4, "rpg": 1.2, "mpg": 5.9, "spg": 0.19, "bpg": 0.09, "ts": 57.4, "topg": 0.3}, {"n": "Gabe Vincent", "pos": "G", "ppg": 1.3, "apg": 0.5, "rpg": 0.3, "mpg": 5.3, "spg": 0.16, "bpg": 0.03, "ts": 51.7, "topg": 0.2}]}, "Boston Celtics": {"abbr": "BOS", "starters": [{"n": "Payton Pritchard", "pos": "G", "ppg": 15.9, "apg": 4.9, "rpg": 3.7, "mpg": 33.0, "spg": 0.67, "bpg": 0.11, "ts": 58.1, "topg": 1.25}, {"n": "Derrick White", "pos": "C", "ppg": 14.8, "apg": 4.8, "rpg": 4.0, "mpg": 32.5, "spg": 1.03, "bpg": 1.2, "ts": 52.4, "topg": 1.6}, {"n": "Jaylen Brown", "pos": "F", "ppg": 24.4, "apg": 4.3, "rpg": 5.8, "mpg": 32.2, "spg": 0.86, "bpg": 0.37, "ts": 57.1, "topg": 3.12}, {"n": "Sam Hauser", "pos": "G", "ppg": 8.5, "apg": 1.3, "rpg": 3.6, "mpg": 25.2, "spg": 0.43, "bpg": 0.26, "ts": 58.9, "topg": 0.41}, {"n": "Neemias Queta", "pos": "C", "ppg": 9.2, "apg": 1.4, "rpg": 7.6, "mpg": 24.3, "spg": 0.67, "bpg": 1.16, "ts": 68, "topg": 0.89}], "bench": [{"n": "Baylor Scheierman", "pos": "G", "ppg": 5.0, "apg": 1.3, "rpg": 3.2, "mpg": 19.5, "spg": 0.53, "bpg": 0.08, "ts": 61.3, "topg": 0.53}, {"n": "Jordan Walsh", "pos": "G", "ppg": 4.1, "apg": 0.7, "rpg": 3.2, "mpg": 17.1, "spg": 0.58, "bpg": 0.36, "ts": 59.9, "topg": 0.38}, {"n": "Hugo Gonz\u00e1lez", "pos": "G", "ppg": 3.2, "apg": 0.5, "rpg": 2.7, "mpg": 15.0, "spg": 0.46, "bpg": 0.24, "ts": 55.4, "topg": 0.43}, {"n": "Luka Garza", "pos": "G", "ppg": 6.5, "apg": 0.8, "rpg": 3.2, "mpg": 14.7, "spg": 0.3, "bpg": 0.32, "ts": 68.1, "topg": 0.52}, {"n": "Anfernee Simons", "pos": "G", "ppg": 7.6, "apg": 1.3, "rpg": 1.3, "mpg": 14.1, "spg": 0.3, "bpg": 0.07, "ts": 57.8, "topg": 0.62}, {"n": "Jayson Tatum", "pos": "G", "ppg": 5.4, "apg": 1.4, "rpg": 2.5, "mpg": 8.6, "spg": 0.32, "bpg": 0.03, "ts": 55.8, "topg": 0.62}, {"n": "Nikola Vucevic", "pos": "G", "ppg": 2.1, "apg": 0.5, "rpg": 1.5, "mpg": 6.5, "spg": 0.09, "bpg": 0.16, "ts": 51.6, "topg": 0.26}, {"n": "Josh Minott", "pos": "G", "ppg": 2.1, "apg": 0.4, "rpg": 1.3, "mpg": 6.4, "spg": 0.26, "bpg": 0.13, "ts": 64.9, "topg": 0.22}, {"n": "Ron Harper Jr.", "pos": "G", "ppg": 1.5, "apg": 0.3, "rpg": 0.6, "mpg": 4.5, "spg": 0.14, "bpg": 0.1, "ts": 55.4, "topg": 0.09}]}, "Brooklyn Nets": {"abbr": "BKN", "starters": [{"n": "Nicolas Claxton", "pos": "F", "ppg": 8.9, "apg": 2.8, "rpg": 5.3, "mpg": 21.6, "spg": 0.49, "bpg": 0.85, "ts": 59.2, "topg": 1.05}, {"n": "Noah Clowney", "pos": "G", "ppg": 8.9, "apg": 1.2, "rpg": 3.0, "mpg": 20.3, "spg": 0.55, "bpg": 0.49, "ts": 55.4, "topg": 1.12}, {"n": "Michael Porter Jr.", "pos": "G", "ppg": 13.8, "apg": 1.7, "rpg": 4.0, "mpg": 19.0, "spg": 0.6, "bpg": 0.13, "ts": 59.5, "topg": 1.34}, {"n": "Terance Mann", "pos": "G", "ppg": 5.0, "apg": 2.1, "rpg": 2.2, "mpg": 17.6, "spg": 0.45, "bpg": 0.16, "ts": 56.6, "topg": 0.78}, {"n": "Drake Powell", "pos": "G", "ppg": 4.5, "apg": 1.0, "rpg": 1.2, "mpg": 16.3, "spg": 0.4, "bpg": 0.15, "ts": 52, "topg": 0.66}], "bench": [{"n": "Ziaire Williams", "pos": "G", "ppg": 6.3, "apg": 0.7, "rpg": 1.5, "mpg": 15.8, "spg": 0.84, "bpg": 0.23, "ts": 57.9, "topg": 0.65}, {"n": "Nolan Traore", "pos": "G", "ppg": 5.5, "apg": 2.3, "rpg": 1.1, "mpg": 14.9, "spg": 0.49, "bpg": 0.25, "ts": 48, "topg": 1.42}, {"n": "Danny Wolf", "pos": "G", "ppg": 5.6, "apg": 1.4, "rpg": 3.1, "mpg": 14.7, "spg": 0.33, "bpg": 0.35, "ts": 52, "topg": 0.8}, {"n": "Egor D\u00ebmin", "pos": "G", "ppg": 5.9, "apg": 1.9, "rpg": 1.8, "mpg": 14.6, "spg": 0.46, "bpg": 0.2, "ts": 56.1, "topg": 0.95}, {"n": "Day'Ron Sharpe", "pos": "G", "ppg": 5.9, "apg": 1.6, "rpg": 4.5, "mpg": 13.9, "spg": 0.74, "bpg": 0.29, "ts": 63.8, "topg": 1.16}, {"n": "Ben Saraf", "pos": "G", "ppg": 3.6, "apg": 1.6, "rpg": 1.0, "mpg": 11.7, "spg": 0.42, "bpg": 0.09, "ts": 48.5, "topg": 1.09}, {"n": "Jalen Wilson", "pos": "G", "ppg": 3.8, "apg": 0.5, "rpg": 1.3, "mpg": 10.7, "spg": 0.24, "bpg": 0.02, "ts": 53.6, "topg": 0.42}, {"n": "Tyrese Martin", "pos": "G", "ppg": 3.0, "apg": 0.8, "rpg": 1.2, "mpg": 8.2, "spg": 0.24, "bpg": 0.04, "ts": 50.8, "topg": 0.36}, {"n": "Cam Thomas", "pos": "G", "ppg": 4.1, "apg": 0.8, "rpg": 0.5, "mpg": 6.6, "spg": 0.04, "bpg": 0.02, "ts": 52.7, "topg": 0.53}]}, "Charlotte Hornets": {"abbr": "CHA", "starters": [{"n": "Kon Knueppel", "pos": "G", "ppg": 16.5, "apg": 3.0, "rpg": 4.7, "mpg": 29.0, "spg": 0.63, "bpg": 0.21, "ts": 63.3, "topg": 1.77}, {"n": "Miles Bridges", "pos": "G", "ppg": 14.4, "apg": 2.7, "rpg": 4.9, "mpg": 26.8, "spg": 0.51, "bpg": 0.37, "ts": 57, "topg": 1.18}, {"n": "Sion James", "pos": "G", "ppg": 4.8, "apg": 1.8, "rpg": 3.2, "mpg": 23.8, "spg": 0.57, "bpg": 0.22, "ts": 53.1, "topg": 0.73}, {"n": "Brandon Miller", "pos": "G", "ppg": 14.4, "apg": 2.4, "rpg": 3.5, "mpg": 22.8, "spg": 0.71, "bpg": 0.48, "ts": 57.4, "topg": 1.79}, {"n": "LaMelo Ball", "pos": "G", "ppg": 15.9, "apg": 5.6, "rpg": 3.8, "mpg": 22.8, "spg": 0.97, "bpg": 0.19, "ts": 54.6, "topg": 2.22}], "bench": [{"n": "Moussa Diabate", "pos": "F", "ppg": 6.3, "apg": 1.6, "rpg": 7.0, "mpg": 22.5, "spg": 0.62, "bpg": 0.79, "ts": 65.3, "topg": 0.8}, {"n": "Ryan Kalkbrenner", "pos": "C", "ppg": 5.7, "apg": 0.6, "rpg": 4.1, "mpg": 17.7, "spg": 0.35, "bpg": 1.11, "ts": 76.2, "topg": 0.68}, {"n": "Josh Green", "pos": "G", "ppg": 2.7, "apg": 0.5, "rpg": 1.1, "mpg": 12.3, "spg": 0.38, "bpg": 0.07, "ts": 64.5, "topg": 0.38}, {"n": "Collin Sexton", "pos": "G", "ppg": 6.5, "apg": 1.7, "rpg": 0.9, "mpg": 11.4, "spg": 0.4, "bpg": 0.09, "ts": 61.8, "topg": 0.98}, {"n": "Grant Williams", "pos": "G", "ppg": 2.8, "apg": 0.6, "rpg": 1.6, "mpg": 10.0, "spg": 0.19, "bpg": 0.2, "ts": 60.9, "topg": 0.34}, {"n": "Tre Mann", "pos": "G", "ppg": 3.2, "apg": 0.9, "rpg": 1.0, "mpg": 8.3, "spg": 0.27, "bpg": 0.05, "ts": 46.2, "topg": 0.59}, {"n": "Tidjane Sala\u00fcn", "pos": "G", "ppg": 2.4, "apg": 0.3, "rpg": 1.6, "mpg": 7.5, "spg": 0.18, "bpg": 0.08, "ts": 62.7, "topg": 0.29}, {"n": "Coby White", "pos": "G", "ppg": 3.6, "apg": 0.7, "rpg": 0.7, "mpg": 5.5, "spg": 0.05, "bpg": 0.11, "ts": 61.2, "topg": 0.44}, {"n": "Liam McNeeley", "pos": "G", "ppg": 1.5, "apg": 0.3, "rpg": 0.8, "mpg": 4.6, "spg": 0.05, "bpg": 0.03, "ts": 58.9, "topg": 0.14}]}, "Cleveland Cavaliers": {"abbr": "CLE", "starters": [{"n": "Donovan Mitchell", "pos": "G", "ppg": 26.6, "apg": 5.0, "rpg": 4.4, "mpg": 33.5, "spg": 1.37, "bpg": 0.27, "ts": 60.1, "topg": 2.69}, {"n": "Evan Mobley", "pos": "C", "ppg": 16.3, "apg": 3.3, "rpg": 8.0, "mpg": 30.3, "spg": 0.71, "bpg": 1.59, "ts": 59.9, "topg": 1.79}, {"n": "Jaylon Tyson", "pos": "G", "ppg": 10.3, "apg": 1.9, "rpg": 4.2, "mpg": 24.0, "spg": 0.63, "bpg": 0.32, "ts": 59.3, "topg": 1.21}, {"n": "Jarrett Allen", "pos": "F", "ppg": 12.0, "apg": 1.3, "rpg": 6.6, "mpg": 23.2, "spg": 0.8, "bpg": 0.86, "ts": 66.2, "topg": 1.01}, {"n": "Dean Wade", "pos": "G", "ppg": 4.6, "apg": 1.1, "rpg": 3.5, "mpg": 20.5, "spg": 0.63, "bpg": 0.26, "ts": 58.3, "topg": 0.29}], "bench": [{"n": "Sam Merrill", "pos": "G", "ppg": 8.7, "apg": 1.6, "rpg": 1.7, "mpg": 20.1, "spg": 0.45, "bpg": 0.08, "ts": 64, "topg": 0.56}, {"n": "James Harden", "pos": "G", "ppg": 9.7, "apg": 3.3, "rpg": 2.4, "mpg": 17.5, "spg": 0.58, "bpg": 0.27, "ts": 60.9, "topg": 1.84}, {"n": "Craig Porter", "pos": "G", "ppg": 3.2, "apg": 2.3, "rpg": 2.5, "mpg": 13.7, "spg": 0.63, "bpg": 0.42, "ts": 52.2, "topg": 0.69}, {"n": "De'Andre Hunter", "pos": "G", "ppg": 6.6, "apg": 1.0, "rpg": 2.0, "mpg": 13.7, "spg": 0.34, "bpg": 0.07, "ts": 55.4, "topg": 0.78}, {"n": "Nae'Qwan Tomlin", "pos": "G", "ppg": 4.2, "apg": 0.6, "rpg": 2.1, "mpg": 11.9, "spg": 0.46, "bpg": 0.37, "ts": 55, "topg": 0.33}, {"n": "Dennis Schroder", "pos": "G", "ppg": 3.7, "apg": 1.9, "rpg": 1.0, "mpg": 11.0, "spg": 0.32, "bpg": 0.1, "ts": 51.1, "topg": 0.76}, {"n": "Max Strus", "pos": "G", "ppg": 3.4, "apg": 0.7, "rpg": 1.7, "mpg": 10.3, "spg": 0.2, "bpg": 0.04, "ts": 59.1, "topg": 0.36}, {"n": "Keon Ellis", "pos": "G", "ppg": 2.9, "apg": 0.5, "rpg": 1.0, "mpg": 10.1, "spg": 0.48, "bpg": 0.26, "ts": 62.2, "topg": 0.29}, {"n": "Thomas Bryant", "pos": "G", "ppg": 4.3, "apg": 0.4, "rpg": 2.4, "mpg": 9.2, "spg": 0.22, "bpg": 0.31, "ts": 60.8, "topg": 0.33}]}, "Dallas Mavericks": {"abbr": "DAL", "starters": [{"n": "Cooper Flagg", "pos": "F", "ppg": 16.2, "apg": 3.5, "rpg": 5.1, "mpg": 26.0, "spg": 0.92, "bpg": 0.69, "ts": 54.8, "topg": 1.77}, {"n": "Max Christie", "pos": "G", "ppg": 10.4, "apg": 1.7, "rpg": 2.7, "mpg": 25.7, "spg": 0.52, "bpg": 0.3, "ts": 60.1, "topg": 1.05}, {"n": "Naji Marshall", "pos": "G", "ppg": 12.4, "apg": 2.6, "rpg": 3.8, "mpg": 25.5, "spg": 0.9, "bpg": 0.07, "ts": 59.2, "topg": 1.31}, {"n": "P.J. Washington", "pos": "F", "ppg": 8.7, "apg": 1.1, "rpg": 4.3, "mpg": 19.8, "spg": 0.6, "bpg": 0.66, "ts": 53.7, "topg": 1.03}, {"n": "Brandon Williams", "pos": "G", "ppg": 9.4, "apg": 2.8, "rpg": 2.1, "mpg": 19.0, "spg": 0.68, "bpg": 0.22, "ts": 57.2, "topg": 1.37}], "bench": [{"n": "Klay Thompson", "pos": "G", "ppg": 8.9, "apg": 1.1, "rpg": 1.6, "mpg": 18.6, "spg": 0.36, "bpg": 0.24, "ts": 54.1, "topg": 0.69}, {"n": "Daniel Gafford", "pos": "F", "ppg": 5.8, "apg": 0.6, "rpg": 4.2, "mpg": 14.4, "spg": 0.46, "bpg": 0.76, "ts": 67.7, "topg": 0.69}, {"n": "Ryan Nembhard", "pos": "G", "ppg": 4.4, "apg": 3.5, "rpg": 1.5, "mpg": 14.2, "spg": 0.27, "bpg": 0.02, "ts": 49.1, "topg": 0.93}, {"n": "Dwight Powell", "pos": "G", "ppg": 2.3, "apg": 0.7, "rpg": 2.8, "mpg": 11.5, "spg": 0.37, "bpg": 0.23, "ts": 70, "topg": 0.45}, {"n": "Caleb Martin", "pos": "G", "ppg": 2.5, "apg": 0.9, "rpg": 1.6, "mpg": 11.3, "spg": 0.44, "bpg": 0.16, "ts": 52.8, "topg": 0.44}, {"n": "Khris Middleton", "pos": "G", "ppg": 3.2, "apg": 0.7, "rpg": 1.1, "mpg": 7.2, "spg": 0.16, "bpg": 0.0, "ts": 53.7, "topg": 0.56}, {"n": "Anthony Davis", "pos": "G", "ppg": 4.5, "apg": 0.6, "rpg": 2.4, "mpg": 7.0, "spg": 0.24, "bpg": 0.36, "ts": 55, "topg": 0.45}, {"n": "Moussa Cisse", "pos": "G", "ppg": 1.9, "apg": 0.1, "rpg": 2.4, "mpg": 6.7, "spg": 0.21, "bpg": 0.49, "ts": 56.3, "topg": 0.33}, {"n": "D'Angelo Russell", "pos": "G", "ppg": 2.9, "apg": 1.1, "rpg": 0.7, "mpg": 5.8, "spg": 0.13, "bpg": 0.02, "ts": 51.2, "topg": 0.54}]}, "Denver Nuggets": {"abbr": "DEN", "starters": [{"n": "Jamal Murray", "pos": "G", "ppg": 22.5, "apg": 6.3, "rpg": 4.0, "mpg": 33.4, "spg": 0.78, "bpg": 0.34, "ts": 61, "topg": 2.02}, {"n": "Nikola Jokic", "pos": "C", "ppg": 21.5, "apg": 8.3, "rpg": 10.1, "mpg": 31.6, "spg": 1.08, "bpg": 0.64, "ts": 65.9, "topg": 2.92}, {"n": "Tim Hardaway Jr.", "pos": "G", "ppg": 12.6, "apg": 1.2, "rpg": 2.5, "mpg": 28.0, "spg": 0.51, "bpg": 0.13, "ts": 62.2, "topg": 0.52}, {"n": "Bruce Brown", "pos": "G", "ppg": 7.5, "apg": 2.0, "rpg": 3.7, "mpg": 25.6, "spg": 1.04, "bpg": 0.22, "ts": 55.9, "topg": 1.1}, {"n": "Cameron Johnson", "pos": "G", "ppg": 8.2, "apg": 1.6, "rpg": 2.5, "mpg": 20.9, "spg": 0.51, "bpg": 0.25, "ts": 62.7, "topg": 0.58}], "bench": [{"n": "Peyton Watson", "pos": "F", "ppg": 8.7, "apg": 1.2, "rpg": 2.9, "mpg": 18.9, "spg": 0.55, "bpg": 0.67, "ts": 59.4, "topg": 1.02}, {"n": "Spencer Jones", "pos": "G", "ppg": 4.3, "apg": 0.6, "rpg": 2.4, "mpg": 18.6, "spg": 0.62, "bpg": 0.4, "ts": 63.9, "topg": 0.38}, {"n": "Christian Braun", "pos": "G", "ppg": 6.3, "apg": 1.4, "rpg": 2.5, "mpg": 18.4, "spg": 0.4, "bpg": 0.19, "ts": 60.3, "topg": 0.52}, {"n": "Aaron Gordon", "pos": "G", "ppg": 6.8, "apg": 1.1, "rpg": 2.5, "mpg": 12.6, "spg": 0.23, "bpg": 0.12, "ts": 61.1, "topg": 0.43}, {"n": "Julian Strawther", "pos": "G", "ppg": 4.6, "apg": 0.7, "rpg": 1.3, "mpg": 11.1, "spg": 0.27, "bpg": 0.07, "ts": 58.5, "topg": 0.42}, {"n": "Jonas Valanciunas", "pos": "G", "ppg": 6.4, "apg": 0.9, "rpg": 3.7, "mpg": 11.0, "spg": 0.15, "bpg": 0.42, "ts": 63.1, "topg": 0.86}, {"n": "Jalen Pickett", "pos": "G", "ppg": 2.9, "apg": 1.3, "rpg": 1.3, "mpg": 9.3, "spg": 0.14, "bpg": 0.05, "ts": 54.1, "topg": 0.38}, {"n": "Zeke Nnaji", "pos": "G", "ppg": 2.2, "apg": 0.3, "rpg": 1.5, "mpg": 8.1, "spg": 0.2, "bpg": 0.26, "ts": 57.1, "topg": 0.3}, {"n": "DaRon Holmes II", "pos": "G", "ppg": 1.0, "apg": 0.2, "rpg": 0.4, "mpg": 2.6, "spg": 0.01, "bpg": 0.07, "ts": 69.4, "topg": 0.13}]}, "Detroit Pistons": {"abbr": "DET", "starters": [{"n": "Cade Cunningham", "pos": "G", "ppg": 21.2, "apg": 8.1, "rpg": 4.7, "mpg": 30.7, "spg": 1.18, "bpg": 0.68, "ts": 56.6, "topg": 3.46}, {"n": "Duncan Robinson", "pos": "G", "ppg": 12.0, "apg": 2.1, "rpg": 2.6, "mpg": 28.9, "spg": 0.67, "bpg": 0.27, "ts": 63, "topg": 0.74}, {"n": "Jalen Duren", "pos": "F", "ppg": 16.6, "apg": 1.8, "rpg": 9.4, "mpg": 27.0, "spg": 0.73, "bpg": 0.84, "ts": 67.3, "topg": 1.78}, {"n": "Ausar Thompson", "pos": "F", "ppg": 9.2, "apg": 3.0, "rpg": 5.8, "mpg": 26.3, "spg": 1.9, "bpg": 1.03, "ts": 54.1, "topg": 1.46}, {"n": "Tobias Harris", "pos": "G", "ppg": 12.0, "apg": 2.0, "rpg": 4.6, "mpg": 26.1, "spg": 0.88, "bpg": 0.41, "ts": 56.1, "topg": 0.86}], "bench": [{"n": "Daniss Jenkins", "pos": "G", "ppg": 8.8, "apg": 3.5, "rpg": 2.2, "mpg": 22.1, "spg": 0.77, "bpg": 0.22, "ts": 51.6, "topg": 1.37}, {"n": "Javonte Green", "pos": "G", "ppg": 6.6, "apg": 0.6, "rpg": 2.7, "mpg": 19.8, "spg": 1.19, "bpg": 0.33, "ts": 59.7, "topg": 0.53}, {"n": "Ronald Holland II", "pos": "G", "ppg": 7.2, "apg": 1.1, "rpg": 3.6, "mpg": 19.5, "spg": 1.05, "bpg": 0.32, "ts": 52.2, "topg": 1.09}, {"n": "Caris LeVert", "pos": "G", "ppg": 5.7, "apg": 1.9, "rpg": 1.6, "mpg": 18.2, "spg": 0.65, "bpg": 0.52, "ts": 52.3, "topg": 0.99}, {"n": "Isaiah Stewart", "pos": "C", "ppg": 7.0, "apg": 0.8, "rpg": 3.6, "mpg": 18.2, "spg": 0.19, "bpg": 1.18, "ts": 63.6, "topg": 0.82}, {"n": "Paul Reed", "pos": "F", "ppg": 6.3, "apg": 0.9, "rpg": 3.6, "mpg": 12.8, "spg": 0.64, "bpg": 0.73, "ts": 65.6, "topg": 0.71}, {"n": "Jaden Ivey", "pos": "G", "ppg": 3.0, "apg": 0.6, "rpg": 0.8, "mpg": 7.3, "spg": 0.16, "bpg": 0.13, "ts": 57, "topg": 0.38}, {"n": "Marcus Sasser", "pos": "G", "ppg": 2.5, "apg": 0.9, "rpg": 0.5, "mpg": 6.8, "spg": 0.25, "bpg": 0.04, "ts": 53.8, "topg": 0.36}, {"n": "Kevin Huerter", "pos": "G", "ppg": 2.4, "apg": 0.8, "rpg": 0.8, "mpg": 6.8, "spg": 0.33, "bpg": 0.1, "ts": 53.4, "topg": 0.27}]}, "Golden State Warriors": {"abbr": "GSW", "starters": [{"n": "Brandin Podziemski", "pos": "G", "ppg": 12.5, "apg": 3.3, "rpg": 4.6, "mpg": 28.6, "spg": 0.97, "bpg": 0.16, "ts": 58.3, "topg": 1.44}, {"n": "Draymond Green", "pos": "G", "ppg": 6.3, "apg": 4.1, "rpg": 4.1, "mpg": 21.5, "spg": 0.67, "bpg": 0.46, "ts": 54, "topg": 1.99}, {"n": "Moses Moody", "pos": "G", "ppg": 8.0, "apg": 1.1, "rpg": 2.2, "mpg": 18.5, "spg": 0.64, "bpg": 0.37, "ts": 60, "topg": 0.63}, {"n": "Will Richard", "pos": "G", "ppg": 4.8, "apg": 1.0, "rpg": 1.9, "mpg": 18.4, "spg": 0.88, "bpg": 0.1, "ts": 59.6, "topg": 0.58}, {"n": "Gui Santos", "pos": "G", "ppg": 6.9, "apg": 1.7, "rpg": 2.9, "mpg": 17.5, "spg": 0.68, "bpg": 0.24, "ts": 60.9, "topg": 1.12}], "bench": [{"n": "Gary Payton II", "pos": "G", "ppg": 6.0, "apg": 1.4, "rpg": 2.9, "mpg": 16.1, "spg": 0.74, "bpg": 0.23, "ts": 63.2, "topg": 0.68}, {"n": "Pat Spencer", "pos": "G", "ppg": 5.2, "apg": 2.5, "rpg": 1.7, "mpg": 15.6, "spg": 0.53, "bpg": 0.05, "ts": 51.6, "topg": 0.93}, {"n": "De'Anthony Melton", "pos": "G", "ppg": 6.6, "apg": 1.4, "rpg": 1.7, "mpg": 15.5, "spg": 0.84, "bpg": 0.22, "ts": 51.8, "topg": 1.0}, {"n": "Stephen Curry", "pos": "G", "ppg": 12.5, "apg": 2.2, "rpg": 1.7, "mpg": 15.3, "spg": 0.54, "bpg": 0.19, "ts": 63.7, "topg": 1.33}, {"n": "Quinten Post", "pos": "G", "ppg": 5.6, "apg": 1.0, "rpg": 3.0, "mpg": 15.0, "spg": 0.29, "bpg": 0.38, "ts": 56, "topg": 0.62}, {"n": "Jimmy Butler", "pos": "G", "ppg": 8.4, "apg": 2.0, "rpg": 2.3, "mpg": 14.4, "spg": 0.6, "bpg": 0.09, "ts": 64.7, "topg": 0.66}, {"n": "Al Horford", "pos": "G", "ppg": 4.1, "apg": 1.3, "rpg": 2.4, "mpg": 13.8, "spg": 0.33, "bpg": 0.56, "ts": 55.4, "topg": 0.46}, {"n": "Buddy Hield", "pos": "G", "ppg": 3.9, "apg": 0.7, "rpg": 1.2, "mpg": 10.5, "spg": 0.41, "bpg": 0.1, "ts": 56.2, "topg": 0.46}, {"n": "Jonathan Kuminga", "pos": "G", "ppg": 2.7, "apg": 0.5, "rpg": 1.3, "mpg": 5.5, "spg": 0.09, "bpg": 0.07, "ts": 54.3, "topg": 0.51}]}, "Houston Rockets": {"abbr": "HOU", "starters": [{"n": "Amen Thompson", "pos": "G", "ppg": 17.1, "apg": 5.0, "rpg": 7.2, "mpg": 36.2, "spg": 1.44, "bpg": 0.6, "ts": 59, "topg": 2.25}, {"n": "Kevin Durant", "pos": "F", "ppg": 22.5, "apg": 4.1, "rpg": 4.7, "mpg": 34.9, "spg": 0.7, "bpg": 0.79, "ts": 64.2, "topg": 2.8}, {"n": "Jabari Smith II", "pos": "F", "ppg": 14.5, "apg": 1.7, "rpg": 6.4, "mpg": 33.7, "spg": 0.68, "bpg": 0.82, "ts": 56.8, "topg": 1.22}, {"n": "Alperen Sengun", "pos": "G", "ppg": 17.5, "apg": 5.2, "rpg": 7.7, "mpg": 29.8, "spg": 1.05, "bpg": 0.93, "ts": 56.5, "topg": 2.7}, {"n": "Reed Sheppard", "pos": "F", "ppg": 13.0, "apg": 3.4, "rpg": 2.7, "mpg": 28.6, "spg": 1.47, "bpg": 0.65, "ts": 55.1, "topg": 1.48}], "bench": [{"n": "Tari Eason", "pos": "G", "ppg": 7.8, "apg": 1.1, "rpg": 4.6, "mpg": 21.9, "spg": 0.96, "bpg": 0.35, "ts": 52.2, "topg": 0.95}, {"n": "Josh Okogie", "pos": "G", "ppg": 4.2, "apg": 0.8, "rpg": 2.4, "mpg": 19.3, "spg": 0.77, "bpg": 0.18, "ts": 54.6, "topg": 0.48}, {"n": "Clint Capela", "pos": "F", "ppg": 3.2, "apg": 0.6, "rpg": 3.9, "mpg": 11.9, "spg": 0.4, "bpg": 0.7, "ts": 53.5, "topg": 0.46}, {"n": "Aaron Holiday", "pos": "G", "ppg": 3.6, "apg": 0.7, "rpg": 0.7, "mpg": 11.7, "spg": 0.32, "bpg": 0.07, "ts": 56.2, "topg": 0.45}, {"n": "Dorian Finney-Smith", "pos": "G", "ppg": 1.4, "apg": 0.4, "rpg": 1.1, "mpg": 9.9, "spg": 0.19, "bpg": 0.08, "ts": 43.4, "topg": 0.26}, {"n": "Steven Adams", "pos": "G", "ppg": 2.1, "apg": 0.5, "rpg": 3.0, "mpg": 9.3, "spg": 0.24, "bpg": 0.22, "ts": 53.4, "topg": 0.38}, {"n": "Jae'Sean Tate", "pos": "G", "ppg": 1.5, "apg": 0.3, "rpg": 0.9, "mpg": 6.6, "spg": 0.12, "bpg": 0.03, "ts": 55.2, "topg": 0.18}, {"n": "JD Davison", "pos": "G", "ppg": 0.8, "apg": 0.4, "rpg": 0.4, "mpg": 3.0, "spg": 0.07, "bpg": 0.07, "ts": 48.6, "topg": 0.1}, {"n": "Jeff Green", "pos": "G", "ppg": 0.7, "apg": 0.1, "rpg": 0.3, "mpg": 2.7, "spg": 0.02, "bpg": 0.02, "ts": 46.5, "topg": 0.05}]}, "Indiana Pacers": {"abbr": "IND", "starters": [{"n": "Jarace Walker", "pos": "G", "ppg": 9.5, "apg": 2.1, "rpg": 4.2, "mpg": 22.7, "spg": 0.69, "bpg": 0.29, "ts": 54.2, "topg": 1.51}, {"n": "Pascal Siakam", "pos": "G", "ppg": 16.0, "apg": 2.6, "rpg": 4.5, "mpg": 22.6, "spg": 0.76, "bpg": 0.27, "ts": 56, "topg": 1.52}, {"n": "Andrew Nembhard", "pos": "G", "ppg": 10.6, "apg": 4.7, "rpg": 1.7, "mpg": 19.8, "spg": 0.55, "bpg": 0.09, "ts": 56.6, "topg": 1.47}, {"n": "Jay Huff", "pos": "C", "ppg": 8.4, "apg": 1.3, "rpg": 3.5, "mpg": 19.4, "spg": 0.45, "bpg": 1.68, "ts": 59.6, "topg": 0.82}, {"n": "Ben Sheppard", "pos": "G", "ppg": 5.0, "apg": 1.2, "rpg": 2.1, "mpg": 16.5, "spg": 0.43, "bpg": 0.07, "ts": 56.7, "topg": 0.45}], "bench": [{"n": "Aaron Nesmith", "pos": "G", "ppg": 6.8, "apg": 0.9, "rpg": 2.0, "mpg": 15.1, "spg": 0.29, "bpg": 0.25, "ts": 56.1, "topg": 0.68}, {"n": "T.J. McConnell", "pos": "G", "ppg": 5.7, "apg": 3.1, "rpg": 1.3, "mpg": 11.5, "spg": 0.62, "bpg": 0.11, "ts": 56.8, "topg": 0.69}, {"n": "Micah Potter", "pos": "G", "ppg": 4.9, "apg": 0.8, "rpg": 2.5, "mpg": 11.1, "spg": 0.24, "bpg": 0.15, "ts": 67.9, "topg": 0.49}, {"n": "Quenton Jackson", "pos": "G", "ppg": 4.8, "apg": 1.5, "rpg": 1.2, "mpg": 10.8, "spg": 0.34, "bpg": 0.07, "ts": 58.7, "topg": 0.68}, {"n": "Bennedict Mathurin", "pos": "G", "ppg": 5.5, "apg": 0.7, "rpg": 1.7, "mpg": 10.2, "spg": 0.19, "bpg": 0.04, "ts": 58.9, "topg": 0.7}, {"n": "Kobe Brown", "pos": "G", "ppg": 2.7, "apg": 0.6, "rpg": 1.4, "mpg": 7.9, "spg": 0.14, "bpg": 0.1, "ts": 62.6, "topg": 0.41}, {"n": "Ethan Thompson", "pos": "G", "ppg": 2.5, "apg": 0.6, "rpg": 0.8, "mpg": 7.8, "spg": 0.22, "bpg": 0.1, "ts": 51.4, "topg": 0.27}, {"n": "Isaiah Jackson", "pos": "G", "ppg": 2.7, "apg": 0.3, "rpg": 2.3, "mpg": 7.7, "spg": 0.29, "bpg": 0.32, "ts": 61.4, "topg": 0.47}, {"n": "Kam Jones", "pos": "G", "ppg": 1.8, "apg": 1.3, "rpg": 0.7, "mpg": 7.3, "spg": 0.2, "bpg": 0.0, "ts": 46.8, "topg": 0.4}]}, "LA Clippers": {"abbr": "LAC", "starters": [{"n": "Kris Dunn", "pos": "G", "ppg": 6.5, "apg": 3.2, "rpg": 2.9, "mpg": 25.4, "spg": 1.43, "bpg": 0.15, "ts": 57.8, "topg": 1.2}, {"n": "Kawhi Leonard", "pos": "G", "ppg": 19.6, "apg": 2.5, "rpg": 4.4, "mpg": 23.5, "spg": 1.32, "bpg": 0.3, "ts": 62.8, "topg": 1.46}, {"n": "John Collins", "pos": "G", "ppg": 10.3, "apg": 0.8, "rpg": 4.0, "mpg": 21.3, "spg": 0.66, "bpg": 0.56, "ts": 64.3, "topg": 1.04}, {"n": "James Harden", "pos": "G", "ppg": 12.3, "apg": 3.9, "rpg": 2.3, "mpg": 19.5, "spg": 0.63, "bpg": 0.18, "ts": 59.7, "topg": 1.78}, {"n": "Brook Lopez", "pos": "F", "ppg": 6.8, "apg": 1.0, "rpg": 3.0, "mpg": 18.8, "spg": 0.51, "bpg": 0.96, "ts": 55, "topg": 0.67}], "bench": [{"n": "Kobe Sanders", "pos": "G", "ppg": 5.4, "apg": 1.2, "rpg": 1.7, "mpg": 17.1, "spg": 0.53, "bpg": 0.11, "ts": 59.8, "topg": 0.87}, {"n": "Nicolas Batum", "pos": "G", "ppg": 3.2, "apg": 0.7, "rpg": 2.0, "mpg": 16.9, "spg": 0.52, "bpg": 0.25, "ts": 60.3, "topg": 0.41}, {"n": "Jordan Miller", "pos": "G", "ppg": 6.5, "apg": 1.5, "rpg": 2.0, "mpg": 16.5, "spg": 0.47, "bpg": 0.12, "ts": 63.2, "topg": 0.69}, {"n": "Derrick Jones Jr.", "pos": "G", "ppg": 5.4, "apg": 0.8, "rpg": 1.9, "mpg": 15.2, "spg": 0.47, "bpg": 0.54, "ts": 60, "topg": 0.42}, {"n": "Ivica Zubac", "pos": "G", "ppg": 6.8, "apg": 1.1, "rpg": 5.2, "mpg": 14.8, "spg": 0.18, "bpg": 0.4, "ts": 63.6, "topg": 0.9}, {"n": "Bennedict Mathurin", "pos": "G", "ppg": 4.7, "apg": 0.7, "rpg": 1.5, "mpg": 8.9, "spg": 0.27, "bpg": 0.09, "ts": 55.1, "topg": 0.58}, {"n": "Darius Garland", "pos": "G", "ppg": 4.0, "apg": 1.2, "rpg": 0.4, "mpg": 6.0, "spg": 0.24, "bpg": 0.05, "ts": 60.2, "topg": 0.6}, {"n": "Cam Christie", "pos": "G", "ppg": 1.7, "apg": 0.3, "rpg": 0.8, "mpg": 5.6, "spg": 0.18, "bpg": 0.03, "ts": 49.4, "topg": 0.24}, {"n": "Bogdan Bogdanovic", "pos": "G", "ppg": 1.9, "apg": 0.6, "rpg": 0.6, "mpg": 5.5, "spg": 0.11, "bpg": 0.03, "ts": 52.5, "topg": 0.3}]}, "Los Angeles Lakers": {"abbr": "LAL", "starters": [{"n": "Rui Hachimura", "pos": "G", "ppg": 10.3, "apg": 0.8, "rpg": 2.9, "mpg": 27.6, "spg": 0.53, "bpg": 0.29, "ts": 62.8, "topg": 0.54}, {"n": "Luka Doncic", "pos": "G", "ppg": 23.5, "apg": 5.8, "rpg": 5.4, "mpg": 27.6, "spg": 1.15, "bpg": 0.37, "ts": 61.5, "topg": 2.8}, {"n": "LeBron James", "pos": "G", "ppg": 16.4, "apg": 5.5, "rpg": 4.7, "mpg": 26.5, "spg": 0.93, "bpg": 0.42, "ts": 58.6, "topg": 2.38}, {"n": "Jake LaRavia", "pos": "G", "ppg": 7.6, "apg": 1.6, "rpg": 3.7, "mpg": 25.7, "spg": 1.15, "bpg": 0.48, "ts": 56.4, "topg": 1.08}, {"n": "Deandre Ayton", "pos": "F", "ppg": 10.7, "apg": 0.7, "rpg": 7.3, "mpg": 24.9, "spg": 0.47, "bpg": 0.84, "ts": 66.1, "topg": 1.02}], "bench": [{"n": "Marcus Smart", "pos": "G", "ppg": 7.7, "apg": 2.6, "rpg": 2.3, "mpg": 24.4, "spg": 1.2, "bpg": 0.36, "ts": 54.3, "topg": 1.35}, {"n": "Austin Reaves", "pos": "G", "ppg": 14.4, "apg": 3.5, "rpg": 2.9, "mpg": 22.6, "spg": 0.62, "bpg": 0.3, "ts": 63.1, "topg": 1.97}, {"n": "Jaxson Hayes", "pos": "F", "ppg": 6.0, "apg": 0.7, "rpg": 3.3, "mpg": 18.4, "spg": 0.35, "bpg": 0.66, "ts": 75.1, "topg": 0.45}, {"n": "Jarred Vanderbilt", "pos": "G", "ppg": 3.3, "apg": 0.9, "rpg": 3.4, "mpg": 14.5, "spg": 0.63, "bpg": 0.2, "ts": 53.1, "topg": 0.62}, {"n": "Luke Kennard", "pos": "G", "ppg": 4.4, "apg": 1.1, "rpg": 1.3, "mpg": 13.5, "spg": 0.34, "bpg": 0.04, "ts": 65.4, "topg": 0.46}, {"n": "Gabe Vincent", "pos": "G", "ppg": 1.5, "apg": 0.4, "rpg": 0.3, "mpg": 7.0, "spg": 0.15, "bpg": 0.01, "ts": 51.1, "topg": 0.13}, {"n": "Dalton Knecht", "pos": "G", "ppg": 2.6, "apg": 0.3, "rpg": 0.9, "mpg": 6.3, "spg": 0.12, "bpg": 0.12, "ts": 57.3, "topg": 0.26}, {"n": "Maxi Kleber", "pos": "G", "ppg": 1.0, "apg": 0.3, "rpg": 0.9, "mpg": 6.1, "spg": 0.21, "bpg": 0.12, "ts": 50.6, "topg": 0.21}, {"n": "Bronny James", "pos": "G", "ppg": 1.4, "apg": 0.6, "rpg": 0.3, "mpg": 5.1, "spg": 0.21, "bpg": 0.04, "ts": 52.4, "topg": 0.32}]}, "Memphis Grizzlies": {"abbr": "MEM", "starters": [{"n": "Cam Spencer", "pos": "G", "ppg": 8.8, "apg": 4.4, "rpg": 2.0, "mpg": 21.7, "spg": 0.57, "bpg": 0.12, "ts": 64.9, "topg": 1.02}, {"n": "Jaylen Wells", "pos": "G", "ppg": 9.5, "apg": 1.2, "rpg": 2.4, "mpg": 21.2, "spg": 0.67, "bpg": 0.1, "ts": 56, "topg": 0.81}, {"n": "Cedric Coward", "pos": "G", "ppg": 9.3, "apg": 1.9, "rpg": 4.0, "mpg": 18.7, "spg": 0.44, "bpg": 0.3, "ts": 58.5, "topg": 1.15}, {"n": "Jaren Jackson Jr.", "pos": "F", "ppg": 9.5, "apg": 0.9, "rpg": 2.8, "mpg": 15.5, "spg": 0.52, "bpg": 0.75, "ts": 57.4, "topg": 1.1}, {"n": "Santi Aldama", "pos": "G", "ppg": 6.6, "apg": 1.4, "rpg": 3.2, "mpg": 15.0, "spg": 0.41, "bpg": 0.34, "ts": 57.2, "topg": 0.6}], "bench": [{"n": "GG Jackson", "pos": "G", "ppg": 7.5, "apg": 0.9, "rpg": 2.6, "mpg": 14.4, "spg": 0.34, "bpg": 0.48, "ts": 59.1, "topg": 0.93}, {"n": "Kentavious Caldwell-Pope", "pos": "G", "ppg": 4.7, "apg": 1.5, "rpg": 1.4, "mpg": 13.0, "spg": 0.47, "bpg": 0.09, "ts": 53.4, "topg": 0.67}, {"n": "Olivier-Maxence Prosper", "pos": "G", "ppg": 5.8, "apg": 0.6, "rpg": 2.1, "mpg": 12.9, "spg": 0.44, "bpg": 0.14, "ts": 66.3, "topg": 0.52}, {"n": "Jock Landale", "pos": "G", "ppg": 5.6, "apg": 0.8, "rpg": 3.2, "mpg": 12.4, "spg": 0.27, "bpg": 0.25, "ts": 59.5, "topg": 0.51}, {"n": "Javon Small", "pos": "G", "ppg": 4.4, "apg": 1.7, "rpg": 1.4, "mpg": 11.0, "spg": 0.37, "bpg": 0.1, "ts": 61.1, "topg": 0.62}, {"n": "Jahmai Mashack", "pos": "G", "ppg": 2.1, "apg": 0.8, "rpg": 0.9, "mpg": 8.8, "spg": 0.41, "bpg": 0.15, "ts": 45.7, "topg": 0.54}, {"n": "Walter Clayton Jr.", "pos": "G", "ppg": 2.5, "apg": 1.5, "rpg": 0.6, "mpg": 8.8, "spg": 0.22, "bpg": 0.1, "ts": 50.2, "topg": 0.65}, {"n": "Vince Williams Jr.", "pos": "G", "ppg": 3.0, "apg": 1.7, "rpg": 1.5, "mpg": 8.7, "spg": 0.29, "bpg": 0.18, "ts": 47.9, "topg": 0.69}, {"n": "Taylor Hendricks", "pos": "G", "ppg": 3.0, "apg": 0.3, "rpg": 1.3, "mpg": 8.4, "spg": 0.41, "bpg": 0.24, "ts": 56.1, "topg": 0.33}]}, "Miami Heat": {"abbr": "MIA", "starters": [{"n": "Bam Adebayo", "pos": "F", "ppg": 16.1, "apg": 2.5, "rpg": 8.0, "mpg": 26.5, "spg": 0.95, "bpg": 0.54, "ts": 55.1, "topg": 1.32}, {"n": "Jaime Jaquez Jr.", "pos": "G", "ppg": 12.7, "apg": 3.9, "rpg": 4.1, "mpg": 26.1, "spg": 0.55, "bpg": 0.23, "ts": 57, "topg": 1.67}, {"n": "Andrew Wiggins", "pos": "F", "ppg": 11.5, "apg": 2.0, "rpg": 3.6, "mpg": 23.0, "spg": 0.84, "bpg": 0.76, "ts": 58.6, "topg": 1.13}, {"n": "Davion Mitchell", "pos": "G", "ppg": 7.2, "apg": 5.0, "rpg": 2.0, "mpg": 22.2, "spg": 0.75, "bpg": 0.12, "ts": 58.1, "topg": 1.18}, {"n": "Pelle Larsson", "pos": "G", "ppg": 8.8, "apg": 2.6, "rpg": 2.7, "mpg": 21.2, "spg": 0.54, "bpg": 0.19, "ts": 60.5, "topg": 1.11}], "bench": [{"n": "Kel'el Ware", "pos": "F", "ppg": 9.4, "apg": 0.6, "rpg": 7.6, "mpg": 19.6, "spg": 0.66, "bpg": 0.92, "ts": 61.6, "topg": 0.68}, {"n": "Norman Powell", "pos": "G", "ppg": 13.9, "apg": 1.6, "rpg": 2.2, "mpg": 19.1, "spg": 0.7, "bpg": 0.15, "ts": 60.9, "topg": 1.22}, {"n": "Simone Fontecchio", "pos": "G", "ppg": 6.6, "apg": 1.1, "rpg": 2.3, "mpg": 13.8, "spg": 0.41, "bpg": 0.1, "ts": 58, "topg": 0.54}, {"n": "Dru Smith", "pos": "G", "ppg": 4.3, "apg": 2.0, "rpg": 1.9, "mpg": 13.4, "spg": 1.1, "bpg": 0.23, "ts": 53.2, "topg": 0.6}, {"n": "Tyler Herro", "pos": "G", "ppg": 7.4, "apg": 1.5, "rpg": 1.7, "mpg": 11.8, "spg": 0.25, "bpg": 0.13, "ts": 60.1, "topg": 0.7}, {"n": "Kasparas Jaku\u010dionis", "pos": "G", "ppg": 3.6, "apg": 1.5, "rpg": 1.5, "mpg": 11.3, "spg": 0.36, "bpg": 0.08, "ts": 61.4, "topg": 0.55}, {"n": "Nikola Jovic", "pos": "G", "ppg": 3.8, "apg": 1.1, "rpg": 1.7, "mpg": 9.5, "spg": 0.29, "bpg": 0.19, "ts": 47.9, "topg": 0.71}, {"n": "Myron Gardner", "pos": "G", "ppg": 1.8, "apg": 0.5, "rpg": 1.3, "mpg": 4.7, "spg": 0.22, "bpg": 0.09, "ts": 60.8, "topg": 0.19}, {"n": "Keshad Johnson", "pos": "G", "ppg": 1.5, "apg": 0.1, "rpg": 0.7, "mpg": 3.3, "spg": 0.16, "bpg": 0.09, "ts": 58.1, "topg": 0.14}]}, "Milwaukee Bucks": {"abbr": "MIL", "starters": [{"n": "Ryan Rollins", "pos": "G", "ppg": 14.1, "apg": 4.5, "rpg": 3.7, "mpg": 26.8, "spg": 1.21, "bpg": 0.34, "ts": 58.3, "topg": 2.21}, {"n": "A.J. Green", "pos": "G", "ppg": 8.9, "apg": 1.7, "rpg": 2.3, "mpg": 25.7, "spg": 0.43, "bpg": 0.09, "ts": 62.7, "topg": 0.82}, {"n": "Myles Turner", "pos": "C", "ppg": 9.3, "apg": 1.1, "rpg": 4.2, "mpg": 21.3, "spg": 0.55, "bpg": 1.26, "ts": 58.4, "topg": 0.91}, {"n": "Kyle Kuzma", "pos": "G", "ppg": 9.8, "apg": 2.0, "rpg": 3.4, "mpg": 21.0, "spg": 0.51, "bpg": 0.31, "ts": 58.1, "topg": 1.31}, {"n": "Bobby Portis", "pos": "G", "ppg": 10.1, "apg": 1.2, "rpg": 4.7, "mpg": 18.4, "spg": 0.45, "bpg": 0.13, "ts": 58.7, "topg": 0.73}], "bench": [{"n": "Gary Trent Jr.", "pos": "G", "ppg": 5.8, "apg": 0.9, "rpg": 0.7, "mpg": 16.0, "spg": 0.37, "bpg": 0.03, "ts": 53.3, "topg": 0.45}, {"n": "Jericho Sims", "pos": "G", "ppg": 3.7, "apg": 1.1, "rpg": 4.1, "mpg": 15.7, "spg": 0.21, "bpg": 0.19, "ts": 77.3, "topg": 0.82}, {"n": "Kevin Porter Jr.", "pos": "G", "ppg": 7.3, "apg": 3.1, "rpg": 2.2, "mpg": 14.2, "spg": 0.91, "bpg": 0.21, "ts": 56.7, "topg": 1.21}, {"n": "Giannis Antetokounmpo", "pos": "G", "ppg": 10.9, "apg": 2.2, "rpg": 3.9, "mpg": 11.7, "spg": 0.37, "bpg": 0.26, "ts": 65.8, "topg": 1.26}, {"n": "Ousmane Dieng", "pos": "G", "ppg": 3.6, "apg": 1.2, "rpg": 1.5, "mpg": 9.1, "spg": 0.25, "bpg": 0.11, "ts": 51.1, "topg": 0.74}, {"n": "Pete Nance", "pos": "G", "ppg": 2.8, "apg": 0.5, "rpg": 1.4, "mpg": 8.8, "spg": 0.15, "bpg": 0.15, "ts": 63.8, "topg": 0.29}, {"n": "Gary Harris", "pos": "G", "ppg": 1.4, "apg": 0.6, "rpg": 0.7, "mpg": 8.1, "spg": 0.3, "bpg": 0.1, "ts": 59.3, "topg": 0.21}, {"n": "Taurean Prince", "pos": "G", "ppg": 2.6, "apg": 0.5, "rpg": 0.9, "mpg": 7.0, "spg": 0.18, "bpg": 0.07, "ts": 61.6, "topg": 0.34}, {"n": "Cole Anthony", "pos": "G", "ppg": 2.6, "apg": 1.3, "rpg": 1.0, "mpg": 6.3, "spg": 0.22, "bpg": 0.11, "ts": 48.3, "topg": 0.71}]}, "Minnesota Timberwolves": {"abbr": "MIN", "starters": [{"n": "Julius Randle", "pos": "G", "ppg": 20.4, "apg": 4.7, "rpg": 6.8, "mpg": 36.0, "spg": 1.01, "bpg": 0.21, "ts": 57.2, "topg": 2.76}, {"n": "Rudy Gobert", "pos": "C", "ppg": 10.1, "apg": 1.7, "rpg": 10.8, "mpg": 32.6, "spg": 0.79, "bpg": 1.51, "ts": 64.4, "topg": 1.33}, {"n": "Jaden McDaniels", "pos": "F", "ppg": 14.1, "apg": 2.5, "rpg": 4.2, "mpg": 31.4, "spg": 0.96, "bpg": 0.89, "ts": 59.4, "topg": 1.63}, {"n": "Anthony Edwards", "pos": "F", "ppg": 21.7, "apg": 2.8, "rpg": 3.9, "mpg": 29.9, "spg": 0.97, "bpg": 0.62, "ts": 60.7, "topg": 2.19}, {"n": "Naz Reid", "pos": "F", "ppg": 13.2, "apg": 2.2, "rpg": 6.2, "mpg": 29.6, "spg": 0.89, "bpg": 0.9, "ts": 56.7, "topg": 1.56}], "bench": [{"n": "Donte DiVincenzo", "pos": "G", "ppg": 11.5, "apg": 3.6, "rpg": 3.9, "mpg": 29.4, "spg": 1.22, "bpg": 0.37, "ts": 57.1, "topg": 1.34}, {"n": "Nah'Shon Hyland", "pos": "G", "ppg": 7.1, "apg": 2.2, "rpg": 1.5, "mpg": 16.9, "spg": 0.53, "bpg": 0.2, "ts": 58.2, "topg": 0.86}, {"n": "Mike Conley", "pos": "G", "ppg": 3.3, "apg": 2.1, "rpg": 1.2, "mpg": 15.9, "spg": 0.47, "bpg": 0.15, "ts": 54, "topg": 0.43}, {"n": "Jaylen Clark", "pos": "G", "ppg": 3.1, "apg": 0.5, "rpg": 1.4, "mpg": 14.5, "spg": 0.53, "bpg": 0.11, "ts": 53, "topg": 0.25}, {"n": "Ayo Dosunmu", "pos": "G", "ppg": 5.5, "apg": 1.4, "rpg": 1.5, "mpg": 12.5, "spg": 0.36, "bpg": 0.14, "ts": 62, "topg": 0.55}, {"n": "Terrence Shannon Jr.", "pos": "G", "ppg": 3.8, "apg": 0.5, "rpg": 0.8, "mpg": 10.2, "spg": 0.2, "bpg": 0.01, "ts": 56.7, "topg": 0.35}, {"n": "Kyle Anderson", "pos": "G", "ppg": 1.1, "apg": 0.8, "rpg": 0.8, "mpg": 6.4, "spg": 0.2, "bpg": 0.13, "ts": 49, "topg": 0.23}, {"n": "Rob Dillingham", "pos": "G", "ppg": 1.3, "apg": 0.6, "rpg": 0.5, "mpg": 4.2, "spg": 0.21, "bpg": 0.03, "ts": 40.3, "topg": 0.4}, {"n": "Joan Beringer", "pos": "G", "ppg": 1.9, "apg": 0.1, "rpg": 1.1, "mpg": 4.2, "spg": 0.1, "bpg": 0.31, "ts": 67.7, "topg": 0.15}]}, "New Orleans Pelicans": {"abbr": "NOP", "starters": [{"n": "Trey Murphy III", "pos": "G", "ppg": 15.6, "apg": 2.7, "rpg": 4.1, "mpg": 27.5, "spg": 1.09, "bpg": 0.26, "ts": 61.3, "topg": 1.32}, {"n": "Saddiq Bey", "pos": "G", "ppg": 14.0, "apg": 2.0, "rpg": 4.4, "mpg": 26.0, "spg": 0.75, "bpg": 0.08, "ts": 57.9, "topg": 0.75}, {"n": "Jeremiah Fears", "pos": "G", "ppg": 12.8, "apg": 3.1, "rpg": 3.3, "mpg": 25.0, "spg": 1.07, "bpg": 0.33, "ts": 52.5, "topg": 1.96}, {"n": "Derik Queen", "pos": "F", "ppg": 10.4, "apg": 3.3, "rpg": 6.3, "mpg": 23.3, "spg": 0.92, "bpg": 0.82, "ts": 54.6, "topg": 2.09}, {"n": "Zion Williamson", "pos": "G", "ppg": 14.3, "apg": 2.2, "rpg": 3.9, "mpg": 21.3, "spg": 0.66, "bpg": 0.37, "ts": 64.3, "topg": 1.38}], "bench": [{"n": "Herbert Jones", "pos": "G", "ppg": 5.5, "apg": 1.7, "rpg": 2.1, "mpg": 18.0, "spg": 0.97, "bpg": 0.3, "ts": 49.1, "topg": 0.8}, {"n": "Yves Missi", "pos": "C", "ppg": 4.1, "apg": 0.9, "rpg": 4.2, "mpg": 16.8, "spg": 0.22, "bpg": 1.11, "ts": 55.6, "topg": 0.59}, {"n": "Karlo Matkovi\u0107", "pos": "F", "ppg": 3.9, "apg": 0.5, "rpg": 2.5, "mpg": 12.0, "spg": 0.26, "bpg": 0.6, "ts": 69.6, "topg": 0.37}, {"n": "Micah Peavy", "pos": "G", "ppg": 2.9, "apg": 0.7, "rpg": 1.3, "mpg": 11.8, "spg": 0.47, "bpg": 0.1, "ts": 45.5, "topg": 0.22}, {"n": "Jose Alvarado", "pos": "G", "ppg": 3.6, "apg": 1.4, "rpg": 1.3, "mpg": 11.4, "spg": 0.41, "bpg": 0.04, "ts": 55.7, "topg": 0.52}, {"n": "Jordan Poole", "pos": "G", "ppg": 5.8, "apg": 1.3, "rpg": 0.8, "mpg": 11.2, "spg": 0.24, "bpg": 0.16, "ts": 53, "topg": 0.76}, {"n": "Bryce McGowens", "pos": "G", "ppg": 3.7, "apg": 0.7, "rpg": 1.0, "mpg": 11.0, "spg": 0.3, "bpg": 0.1, "ts": 60.9, "topg": 0.19}, {"n": "Jordan Hawkins", "pos": "G", "ppg": 2.8, "apg": 0.5, "rpg": 1.0, "mpg": 8.3, "spg": 0.14, "bpg": 0.11, "ts": 48, "topg": 0.37}, {"n": "Dejounte Murray", "pos": "G", "ppg": 2.6, "apg": 1.0, "rpg": 0.8, "mpg": 4.4, "spg": 0.25, "bpg": 0.03, "ts": 57.9, "topg": 0.52}]}, "New York Knicks": {"abbr": "NYK", "starters": [{"n": "Jalen Brunson", "pos": "G", "ppg": 27.1, "apg": 6.8, "rpg": 3.4, "mpg": 40.4, "spg": 0.88, "bpg": 0.09, "ts": 57.9, "topg": 2.51}, {"n": "Mikal Bridges", "pos": "F", "ppg": 15.8, "apg": 3.9, "rpg": 4.1, "mpg": 38.0, "spg": 1.38, "bpg": 0.75, "ts": 59.6, "topg": 1.1}, {"n": "Karl-Anthony Towns", "pos": "C", "ppg": 19.8, "apg": 3.5, "rpg": 12.0, "mpg": 32.8, "spg": 0.98, "bpg": 0.7, "ts": 62.9, "topg": 2.6}, {"n": "OG Anunoby", "pos": "F", "ppg": 16.0, "apg": 1.9, "rpg": 5.0, "mpg": 32.0, "spg": 1.43, "bpg": 0.74, "ts": 64.1, "topg": 1.46}, {"n": "Josh Hart", "pos": "F", "ppg": 10.9, "apg": 4.4, "rpg": 7.2, "mpg": 30.2, "spg": 1.18, "bpg": 0.23, "ts": 59.2, "topg": 1.8}], "bench": [{"n": "Mitchell Robinson", "pos": "F", "ppg": 4.7, "apg": 0.6, "rpg": 6.9, "mpg": 20.1, "spg": 0.69, "bpg": 0.89, "ts": 64.9, "topg": 0.54}, {"n": "Jordan Clarkson", "pos": "G", "ppg": 7.8, "apg": 1.2, "rpg": 1.7, "mpg": 18.5, "spg": 0.37, "bpg": 0.11, "ts": 54.4, "topg": 0.87}, {"n": "Landry Shamet", "pos": "G", "ppg": 6.5, "apg": 0.9, "rpg": 1.2, "mpg": 18.5, "spg": 0.38, "bpg": 0.12, "ts": 60.5, "topg": 0.42}, {"n": "Miles McBride", "pos": "G", "ppg": 6.6, "apg": 1.4, "rpg": 1.3, "mpg": 17.0, "spg": 0.47, "bpg": 0.14, "ts": 56.1, "topg": 0.47}, {"n": "Tyler Kolek", "pos": "G", "ppg": 3.3, "apg": 2.0, "rpg": 1.1, "mpg": 9.6, "spg": 0.24, "bpg": 0.05, "ts": 53.4, "topg": 0.64}, {"n": "Mohamed Diawara", "pos": "G", "ppg": 2.8, "apg": 0.6, "rpg": 1.1, "mpg": 8.3, "spg": 0.2, "bpg": 0.07, "ts": 53.4, "topg": 0.36}, {"n": "Jose Alvarado", "pos": "G", "ppg": 2.9, "apg": 1.4, "rpg": 0.9, "mpg": 7.6, "spg": 0.43, "bpg": 0.07, "ts": 52.6, "topg": 0.44}, {"n": "Ariel Hukporti", "pos": "G", "ppg": 1.5, "apg": 0.4, "rpg": 2.1, "mpg": 7.5, "spg": 0.12, "bpg": 0.36, "ts": 59.8, "topg": 0.41}, {"n": "Guerschon Yabusele", "pos": "G", "ppg": 1.2, "apg": 0.2, "rpg": 1.0, "mpg": 5.0, "spg": 0.07, "bpg": 0.05, "ts": 50, "topg": 0.16}]}, "Oklahoma City Thunder": {"abbr": "OKC", "starters": [{"n": "Shai Gilgeous-Alexander", "pos": "G", "ppg": 27.8, "apg": 6.2, "rpg": 3.7, "mpg": 36.1, "spg": 1.25, "bpg": 0.71, "ts": 65.2, "topg": 2.16}, {"n": "Cason Wallace", "pos": "G", "ppg": 8.7, "apg": 2.6, "rpg": 3.2, "mpg": 28.7, "spg": 2.01, "bpg": 0.38, "ts": 55.3, "topg": 0.92}, {"n": "Chet Holmgren", "pos": "C", "ppg": 15.4, "apg": 1.5, "rpg": 8.1, "mpg": 28.0, "spg": 0.65, "bpg": 1.67, "ts": 65.5, "topg": 1.4}, {"n": "Luguentz Dort", "pos": "G", "ppg": 7.2, "apg": 1.2, "rpg": 3.1, "mpg": 24.8, "spg": 0.76, "bpg": 0.32, "ts": 51.9, "topg": 0.68}, {"n": "Isaiah Joe", "pos": "G", "ppg": 9.3, "apg": 1.2, "rpg": 2.2, "mpg": 21.8, "spg": 0.63, "bpg": 0.13, "ts": 64.9, "topg": 0.55}], "bench": [{"n": "Ajay Mitchell", "pos": "G", "ppg": 10.3, "apg": 2.8, "rpg": 2.5, "mpg": 21.4, "spg": 0.97, "bpg": 0.21, "ts": 58, "topg": 1.05}, {"n": "Jaylin Williams", "pos": "G", "ppg": 6.0, "apg": 2.0, "rpg": 4.6, "mpg": 21.4, "spg": 0.43, "bpg": 0.49, "ts": 59, "topg": 0.8}, {"n": "Alex Caruso", "pos": "G", "ppg": 5.6, "apg": 1.5, "rpg": 2.2, "mpg": 19.8, "spg": 1.02, "bpg": 0.26, "ts": 57.1, "topg": 0.68}, {"n": "Aaron Wiggins", "pos": "G", "ppg": 6.9, "apg": 1.3, "rpg": 2.2, "mpg": 19.2, "spg": 0.66, "bpg": 0.32, "ts": 53.1, "topg": 0.93}, {"n": "Isaiah Hartenstein", "pos": "F", "ppg": 6.3, "apg": 2.3, "rpg": 6.2, "mpg": 17.2, "spg": 0.66, "bpg": 0.51, "ts": 63.9, "topg": 1.19}, {"n": "Kenrich Williams", "pos": "G", "ppg": 4.4, "apg": 0.9, "rpg": 2.3, "mpg": 12.2, "spg": 0.35, "bpg": 0.05, "ts": 56.4, "topg": 0.49}, {"n": "Jalen Williams", "pos": "G", "ppg": 7.0, "apg": 2.1, "rpg": 1.8, "mpg": 11.9, "spg": 0.48, "bpg": 0.12, "ts": 56.3, "topg": 0.76}, {"n": "Jared McCain", "pos": "G", "ppg": 5.1, "apg": 0.5, "rpg": 1.0, "mpg": 10.7, "spg": 0.2, "bpg": 0.03, "ts": 56.9, "topg": 0.41}, {"n": "Branden Carlson", "pos": "G", "ppg": 2.7, "apg": 0.3, "rpg": 1.4, "mpg": 6.2, "spg": 0.09, "bpg": 0.3, "ts": 61.4, "topg": 0.18}]}, "Orlando Magic": {"abbr": "ORL", "starters": [{"n": "Desmond Bane", "pos": "G", "ppg": 19.5, "apg": 3.9, "rpg": 4.1, "mpg": 33.4, "spg": 1.09, "bpg": 0.43, "ts": 60.1, "topg": 1.92}, {"n": "Paolo Banchero", "pos": "G", "ppg": 19.6, "apg": 4.6, "rpg": 7.3, "mpg": 31.1, "spg": 0.67, "bpg": 0.49, "ts": 56.2, "topg": 2.7}, {"n": "Wendell Carter Jr.", "pos": "F", "ppg": 11.0, "apg": 1.9, "rpg": 6.9, "mpg": 28.2, "spg": 0.7, "bpg": 0.67, "ts": 61.7, "topg": 1.21}, {"n": "Anthony Black", "pos": "G", "ppg": 11.2, "apg": 2.7, "rpg": 2.9, "mpg": 24.4, "spg": 1.16, "bpg": 0.55, "ts": 54.3, "topg": 1.51}, {"n": "Tristan da Silva", "pos": "G", "ppg": 8.7, "apg": 1.4, "rpg": 3.3, "mpg": 23.5, "spg": 0.76, "bpg": 0.27, "ts": 57.1, "topg": 0.81}], "bench": [{"n": "Jalen Suggs", "pos": "G", "ppg": 9.5, "apg": 3.7, "rpg": 2.7, "mpg": 20.4, "spg": 1.3, "bpg": 0.48, "ts": 54.4, "topg": 1.9}, {"n": "Franz Wagner", "pos": "G", "ppg": 8.4, "apg": 1.4, "rpg": 2.2, "mpg": 13.0, "spg": 0.47, "bpg": 0.13, "ts": 58.2, "topg": 0.7}, {"n": "Goga Bitadze", "pos": "F", "ppg": 4.3, "apg": 0.9, "rpg": 3.8, "mpg": 12.8, "spg": 0.43, "bpg": 0.78, "ts": 68.5, "topg": 0.52}, {"n": "Noah Penda", "pos": "G", "ppg": 2.5, "apg": 0.8, "rpg": 2.1, "mpg": 9.3, "spg": 0.33, "bpg": 0.2, "ts": 50.7, "topg": 0.46}, {"n": "Jett Howard", "pos": "G", "ppg": 3.3, "apg": 0.5, "rpg": 1.0, "mpg": 8.7, "spg": 0.11, "bpg": 0.12, "ts": 55.7, "topg": 0.16}, {"n": "Tyus Jones", "pos": "G", "ppg": 1.6, "apg": 1.3, "rpg": 0.6, "mpg": 8.6, "spg": 0.36, "bpg": 0.03, "ts": 44.7, "topg": 0.15}, {"n": "Jevon Carter", "pos": "G", "ppg": 2.4, "apg": 0.8, "rpg": 0.7, "mpg": 8.0, "spg": 0.31, "bpg": 0.09, "ts": 51.2, "topg": 0.27}, {"n": "Jamal Cain", "pos": "G", "ppg": 2.7, "apg": 0.4, "rpg": 1.1, "mpg": 7.8, "spg": 0.14, "bpg": 0.08, "ts": 60, "topg": 0.26}, {"n": "Jonathan Isaac", "pos": "G", "ppg": 1.5, "apg": 0.2, "rpg": 1.5, "mpg": 7.0, "spg": 0.22, "bpg": 0.34, "ts": 49.6, "topg": 0.2}]}, "Philadelphia 76ers": {"abbr": "PHI", "starters": [{"n": "Tyrese Maxey", "pos": "G", "ppg": 24.6, "apg": 5.8, "rpg": 3.7, "mpg": 37.0, "spg": 1.53, "bpg": 0.65, "ts": 58.5, "topg": 2.13}, {"n": "VJ Edgecombe", "pos": "G", "ppg": 14.9, "apg": 3.9, "rpg": 5.4, "mpg": 34.9, "spg": 1.3, "bpg": 0.47, "ts": 53.6, "topg": 1.7}, {"n": "Quentin Grimes", "pos": "G", "ppg": 11.9, "apg": 3.0, "rpg": 3.3, "mpg": 29.9, "spg": 0.74, "bpg": 0.36, "ts": 58.4, "topg": 1.53}, {"n": "Kelly Oubre Jr.", "pos": "G", "ppg": 9.2, "apg": 1.0, "rpg": 3.5, "mpg": 22.9, "spg": 0.8, "bpg": 0.32, "ts": 57.4, "topg": 0.85}, {"n": "Dominick Barlow", "pos": "F", "ppg": 6.3, "apg": 1.0, "rpg": 3.9, "mpg": 21.6, "spg": 0.71, "bpg": 0.63, "ts": 59.7, "topg": 0.64}], "bench": [{"n": "Paul George", "pos": "G", "ppg": 9.0, "apg": 1.8, "rpg": 2.6, "mpg": 17.7, "spg": 0.84, "bpg": 0.23, "ts": 57.6, "topg": 0.95}, {"n": "Joel Embiid", "pos": "G", "ppg": 13.1, "apg": 2.1, "rpg": 3.8, "mpg": 16.9, "spg": 0.25, "bpg": 0.56, "ts": 59.8, "topg": 1.36}, {"n": "Andre Drummond", "pos": "F", "ppg": 4.9, "apg": 1.0, "rpg": 6.4, "mpg": 16.8, "spg": 0.46, "bpg": 0.56, "ts": 55.6, "topg": 0.77}, {"n": "Adem Bona", "pos": "F", "ppg": 4.1, "apg": 0.4, "rpg": 3.6, "mpg": 16.7, "spg": 0.34, "bpg": 0.98, "ts": 63.1, "topg": 0.74}, {"n": "Justin Edwards", "pos": "G", "ppg": 4.6, "apg": 0.9, "rpg": 1.3, "mpg": 14.9, "spg": 0.59, "bpg": 0.13, "ts": 55.9, "topg": 0.46}, {"n": "Trendon Watford", "pos": "G", "ppg": 4.0, "apg": 1.5, "rpg": 2.0, "mpg": 12.3, "spg": 0.21, "bpg": 0.24, "ts": 57.9, "topg": 0.73}, {"n": "Jabari Walker", "pos": "G", "ppg": 3.1, "apg": 0.4, "rpg": 2.2, "mpg": 10.2, "spg": 0.25, "bpg": 0.14, "ts": 55.1, "topg": 0.31}, {"n": "Jared McCain", "pos": "G", "ppg": 2.7, "apg": 0.7, "rpg": 0.8, "mpg": 8.0, "spg": 0.24, "bpg": 0.03, "ts": 50.6, "topg": 0.33}, {"n": "Cameron Payne", "pos": "G", "ppg": 1.8, "apg": 0.6, "rpg": 0.5, "mpg": 4.4, "spg": 0.26, "bpg": 0.08, "ts": 51.3, "topg": 0.12}]}, "Phoenix Suns": {"abbr": "PHX", "starters": [{"n": "Devin Booker", "pos": "G", "ppg": 19.3, "apg": 4.5, "rpg": 2.9, "mpg": 28.0, "spg": 0.57, "bpg": 0.21, "ts": 58.4, "topg": 2.4}, {"n": "Collin Gillespie", "pos": "G", "ppg": 11.6, "apg": 4.2, "rpg": 3.8, "mpg": 27.7, "spg": 1.14, "bpg": 0.19, "ts": 57.5, "topg": 1.41}, {"n": "Royce O'Neale", "pos": "G", "ppg": 8.7, "apg": 2.4, "rpg": 4.4, "mpg": 26.9, "spg": 0.95, "bpg": 0.36, "ts": 60.6, "topg": 1.19}, {"n": "Oso Ighodaro", "pos": "F", "ppg": 6.2, "apg": 2.2, "rpg": 4.9, "mpg": 23.5, "spg": 0.82, "bpg": 0.66, "ts": 63.2, "topg": 1.19}, {"n": "Dillon Brooks", "pos": "G", "ppg": 13.6, "apg": 1.2, "rpg": 2.5, "mpg": 21.3, "spg": 0.64, "bpg": 0.11, "ts": 54.3, "topg": 1.15}], "bench": [{"n": "Jordan Goodwin", "pos": "G", "ppg": 6.7, "apg": 1.6, "rpg": 3.7, "mpg": 19.6, "spg": 1.16, "bpg": 0.15, "ts": 52.3, "topg": 0.74}, {"n": "Grayson Allen", "pos": "G", "ppg": 9.5, "apg": 2.2, "rpg": 1.7, "mpg": 18.5, "spg": 0.76, "bpg": 0.16, "ts": 56.9, "topg": 0.91}, {"n": "Ryan Dunn", "pos": "G", "ppg": 4.5, "apg": 1.2, "rpg": 3.3, "mpg": 17.1, "spg": 0.66, "bpg": 0.32, "ts": 52.6, "topg": 0.65}, {"n": "Mark Williams", "pos": "F", "ppg": 7.7, "apg": 0.6, "rpg": 5.2, "mpg": 16.1, "spg": 0.6, "bpg": 0.6, "ts": 68, "topg": 0.71}, {"n": "Jalen Green", "pos": "G", "ppg": 7.2, "apg": 1.2, "rpg": 1.5, "mpg": 11.5, "spg": 0.46, "bpg": 0.1, "ts": 51, "topg": 0.93}, {"n": "Rasheer Fleming", "pos": "G", "ppg": 2.7, "apg": 0.2, "rpg": 1.4, "mpg": 8.7, "spg": 0.26, "bpg": 0.24, "ts": 52.3, "topg": 0.33}, {"n": "Jamaree Bouyea", "pos": "G", "ppg": 2.9, "apg": 0.9, "rpg": 0.9, "mpg": 7.6, "spg": 0.33, "bpg": 0.18, "ts": 52.3, "topg": 0.33}, {"n": "Khaman Maluach", "pos": "G", "ppg": 1.6, "apg": 0.1, "rpg": 1.6, "mpg": 5.8, "spg": 0.05, "bpg": 0.36, "ts": 57.9, "topg": 0.31}, {"n": "Isaiah Livers", "pos": "G", "ppg": 0.7, "apg": 0.2, "rpg": 0.7, "mpg": 4.3, "spg": 0.14, "bpg": 0.09, "ts": 47.1, "topg": 0.13}]}, "Portland Trail Blazers": {"abbr": "POR", "starters": [{"n": "Toumani Camara", "pos": "G", "ppg": 12.4, "apg": 2.3, "rpg": 4.9, "mpg": 33.3, "spg": 1.09, "bpg": 0.42, "ts": 57.4, "topg": 1.64}, {"n": "Deni Avdija", "pos": "G", "ppg": 18.5, "apg": 5.1, "rpg": 5.3, "mpg": 27.0, "spg": 0.57, "bpg": 0.48, "ts": 59.6, "topg": 2.93}, {"n": "Donovan Clingan", "pos": "C", "ppg": 10.6, "apg": 1.9, "rpg": 10.2, "mpg": 25.3, "spg": 0.49, "bpg": 1.46, "ts": 59.1, "topg": 1.08}, {"n": "Jerami Grant", "pos": "G", "ppg": 12.1, "apg": 1.3, "rpg": 2.2, "mpg": 21.3, "spg": 0.51, "bpg": 0.41, "ts": 60.3, "topg": 1.32}, {"n": "Jrue Holiday", "pos": "G", "ppg": 10.3, "apg": 3.9, "rpg": 3.0, "mpg": 19.6, "spg": 0.67, "bpg": 0.09, "ts": 56.8, "topg": 1.77}], "bench": [{"n": "Shaedon Sharpe", "pos": "G", "ppg": 11.6, "apg": 1.5, "rpg": 2.4, "mpg": 18.1, "spg": 0.76, "bpg": 0.09, "ts": 54.1, "topg": 1.6}, {"n": "Sidy Cissoko", "pos": "G", "ppg": 4.3, "apg": 1.2, "rpg": 1.9, "mpg": 17.9, "spg": 0.59, "bpg": 0.27, "ts": 51.2, "topg": 0.78}, {"n": "Kris Murray", "pos": "G", "ppg": 3.6, "apg": 0.9, "rpg": 2.3, "mpg": 16.7, "spg": 0.55, "bpg": 0.24, "ts": 54.8, "topg": 0.54}, {"n": "Robert Williams III", "pos": "F", "ppg": 4.9, "apg": 0.8, "rpg": 5.0, "mpg": 15.8, "spg": 0.42, "bpg": 1.02, "ts": 71.5, "topg": 0.56}, {"n": "Caleb Love", "pos": "G", "ppg": 5.6, "apg": 1.3, "rpg": 1.2, "mpg": 13.2, "spg": 0.31, "bpg": 0.04, "ts": 49.8, "topg": 0.68}, {"n": "Scoot Henderson", "pos": "G", "ppg": 5.5, "apg": 1.3, "rpg": 1.0, "mpg": 11.4, "spg": 0.34, "bpg": 0.11, "ts": 55.9, "topg": 0.9}, {"n": "Matisse Thybulle", "pos": "G", "ppg": 2.0, "apg": 0.3, "rpg": 0.7, "mpg": 7.6, "spg": 0.69, "bpg": 0.21, "ts": 56.6, "topg": 0.31}, {"n": "Rayan Rupert", "pos": "G", "ppg": 1.5, "apg": 0.4, "rpg": 0.9, "mpg": 7.6, "spg": 0.33, "bpg": 0.02, "ts": 44.8, "topg": 0.31}, {"n": "Vit Krejci", "pos": "G", "ppg": 1.5, "apg": 0.4, "rpg": 0.6, "mpg": 5.0, "spg": 0.11, "bpg": 0.05, "ts": 52.3, "topg": 0.12}]}, "Sacramento Kings": {"abbr": "SAC", "starters": [{"n": "DeMar DeRozan", "pos": "G", "ppg": 15.6, "apg": 3.5, "rpg": 2.5, "mpg": 27.0, "spg": 0.88, "bpg": 0.25, "ts": 59.4, "topg": 1.05}, {"n": "Maxime Raynaud", "pos": "F", "ppg": 10.1, "apg": 1.1, "rpg": 6.1, "mpg": 22.4, "spg": 0.42, "bpg": 0.43, "ts": 61.9, "topg": 1.03}, {"n": "Nique Clifford", "pos": "G", "ppg": 7.1, "apg": 2.0, "rpg": 3.1, "mpg": 22.2, "spg": 0.75, "bpg": 0.26, "ts": 50.5, "topg": 1.27}, {"n": "Russell Westbrook", "pos": "G", "ppg": 10.7, "apg": 4.7, "rpg": 3.8, "mpg": 20.9, "spg": 0.91, "bpg": 0.13, "ts": 52.8, "topg": 2.3}, {"n": "Precious Achiuwa", "pos": "G", "ppg": 8.1, "apg": 1.1, "rpg": 5.4, "mpg": 20.6, "spg": 0.71, "bpg": 0.55, "ts": 55.8, "topg": 0.71}], "bench": [{"n": "Malik Monk", "pos": "G", "ppg": 8.5, "apg": 2.0, "rpg": 1.3, "mpg": 16.8, "spg": 0.41, "bpg": 0.26, "ts": 56.8, "topg": 1.0}, {"n": "Zach LaVine", "pos": "G", "ppg": 8.2, "apg": 1.0, "rpg": 1.2, "mpg": 14.0, "spg": 0.31, "bpg": 0.11, "ts": 61.4, "topg": 0.81}, {"n": "Dennis Schroder", "pos": "G", "ppg": 5.6, "apg": 2.3, "rpg": 1.3, "mpg": 12.6, "spg": 0.35, "bpg": 0.09, "ts": 53, "topg": 0.87}, {"n": "Dylan Cardwell", "pos": "F", "ppg": 2.6, "apg": 0.7, "rpg": 3.6, "mpg": 11.9, "spg": 0.33, "bpg": 0.74, "ts": 59.2, "topg": 0.43}, {"n": "Daeqwon Plowden", "pos": "G", "ppg": 3.8, "apg": 0.5, "rpg": 1.1, "mpg": 10.4, "spg": 0.25, "bpg": 0.08, "ts": 57.1, "topg": 0.29}, {"n": "Keon Ellis", "pos": "G", "ppg": 2.6, "apg": 0.3, "rpg": 0.6, "mpg": 9.6, "spg": 0.51, "bpg": 0.24, "ts": 53.6, "topg": 0.23}, {"n": "Keegan Murray", "pos": "G", "ppg": 3.5, "apg": 0.4, "rpg": 1.5, "mpg": 9.2, "spg": 0.26, "bpg": 0.4, "ts": 49.8, "topg": 0.3}, {"n": "Devin Carter", "pos": "G", "ppg": 3.7, "apg": 1.1, "rpg": 1.4, "mpg": 8.3, "spg": 0.37, "bpg": 0.1, "ts": 50.9, "topg": 0.59}, {"n": "Drew Eubanks", "pos": "G", "ppg": 2.4, "apg": 0.2, "rpg": 1.4, "mpg": 6.5, "spg": 0.16, "bpg": 0.29, "ts": 60.5, "topg": 0.33}]}, "San Antonio Spurs": {"abbr": "SAS", "starters": [{"n": "Julian Champagnie", "pos": "F", "ppg": 12.8, "apg": 1.8, "rpg": 6.6, "mpg": 34.2, "spg": 1.01, "bpg": 0.55, "ts": 61, "topg": 0.9}, {"n": "De'Aaron Fox", "pos": "G", "ppg": 18.3, "apg": 6.3, "rpg": 3.8, "mpg": 33.2, "spg": 1.27, "bpg": 0.31, "ts": 56, "topg": 2.27}, {"n": "Devin Vassell", "pos": "G", "ppg": 13.5, "apg": 2.5, "rpg": 4.3, "mpg": 32.1, "spg": 0.95, "bpg": 0.46, "ts": 57.4, "topg": 0.9}, {"n": "Stephon Castle", "pos": "G", "ppg": 17.0, "apg": 7.1, "rpg": 5.2, "mpg": 31.7, "spg": 1.09, "bpg": 0.29, "ts": 57.7, "topg": 3.26}, {"n": "Keldon Johnson", "pos": "F", "ppg": 13.8, "apg": 1.4, "rpg": 5.7, "mpg": 30.9, "spg": 0.67, "bpg": 0.15, "ts": 59.2, "topg": 1.03}], "bench": [{"n": "Victor Wembanyama", "pos": "C", "ppg": 23.3, "apg": 2.8, "rpg": 10.7, "mpg": 29.3, "spg": 0.96, "bpg": 3.02, "ts": 62.1, "topg": 2.35}, {"n": "Dylan Harper", "pos": "G", "ppg": 12.5, "apg": 3.6, "rpg": 4.0, "mpg": 27.7, "spg": 0.84, "bpg": 0.32, "ts": 58.4, "topg": 1.47}, {"n": "Harrison Barnes", "pos": "G", "ppg": 8.9, "apg": 1.7, "rpg": 2.6, "mpg": 25.0, "spg": 0.57, "bpg": 0.14, "ts": 60, "topg": 0.73}, {"n": "Luke Kornet", "pos": "F", "ppg": 5.8, "apg": 1.6, "rpg": 5.5, "mpg": 21.3, "spg": 0.51, "bpg": 0.89, "ts": 67.5, "topg": 0.44}, {"n": "Carter Bryant", "pos": "G", "ppg": 3.9, "apg": 0.7, "rpg": 2.4, "mpg": 13.7, "spg": 0.21, "bpg": 0.32, "ts": 53.9, "topg": 0.52}, {"n": "Jeremy Sochan", "pos": "G", "ppg": 1.3, "apg": 0.3, "rpg": 0.8, "mpg": 4.9, "spg": 0.11, "bpg": 0.05, "ts": 54.2, "topg": 0.2}, {"n": "Kelly Olynyk", "pos": "G", "ppg": 1.7, "apg": 0.6, "rpg": 0.9, "mpg": 4.7, "spg": 0.21, "bpg": 0.03, "ts": 60.3, "topg": 0.31}, {"n": "Jordan McLaughlin", "pos": "G", "ppg": 1.2, "apg": 0.5, "rpg": 0.4, "mpg": 4.0, "spg": 0.24, "bpg": 0.02, "ts": 57.4, "topg": 0.19}, {"n": "Lindy Waters III", "pos": "G", "ppg": 1.2, "apg": 0.3, "rpg": 0.4, "mpg": 3.9, "spg": 0.08, "bpg": 0.01, "ts": 53.9, "topg": 0.09}]}, "Toronto Raptors": {"abbr": "TOR", "starters": [{"n": "Scottie Barnes", "pos": "C", "ppg": 17.8, "apg": 5.9, "rpg": 7.1, "mpg": 33.4, "spg": 1.34, "bpg": 1.4, "ts": 58, "topg": 2.57}, {"n": "Brandon Ingram", "pos": "F", "ppg": 18.8, "apg": 3.2, "rpg": 4.9, "mpg": 31.0, "spg": 0.67, "bpg": 0.65, "ts": 56.7, "topg": 2.16}, {"n": "Jamal Shead", "pos": "G", "ppg": 6.7, "apg": 5.3, "rpg": 1.7, "mpg": 27.5, "spg": 0.95, "bpg": 0.18, "ts": 48.8, "topg": 1.38}, {"n": "Immanuel Quickley", "pos": "G", "ppg": 12.6, "apg": 4.6, "rpg": 3.1, "mpg": 24.8, "spg": 1.01, "bpg": 0.05, "ts": 57.7, "topg": 1.12}, {"n": "Sandro Mamukelashvili", "pos": "G", "ppg": 10.2, "apg": 1.7, "rpg": 4.7, "mpg": 23.6, "spg": 0.76, "bpg": 0.48, "ts": 62.8, "topg": 0.78}], "bench": [{"n": "RJ Barrett", "pos": "G", "ppg": 13.9, "apg": 2.4, "rpg": 3.8, "mpg": 22.3, "spg": 0.56, "bpg": 0.23, "ts": 58.2, "topg": 1.36}, {"n": "Ja'Kobe Walter", "pos": "G", "ppg": 6.8, "apg": 1.1, "rpg": 2.3, "mpg": 21.1, "spg": 0.96, "bpg": 0.16, "ts": 60, "topg": 0.45}, {"n": "Collin Murray-Boyles", "pos": "F", "ppg": 6.4, "apg": 1.4, "rpg": 3.6, "mpg": 17.7, "spg": 0.67, "bpg": 0.67, "ts": 63.2, "topg": 0.79}, {"n": "Jakob Poeltl", "pos": "G", "ppg": 6.0, "apg": 1.1, "rpg": 4.0, "mpg": 15.2, "spg": 0.51, "bpg": 0.42, "ts": 69.5, "topg": 0.69}, {"n": "Gradey Dick", "pos": "G", "ppg": 5.0, "apg": 0.6, "rpg": 1.6, "mpg": 12.9, "spg": 0.49, "bpg": 0.08, "ts": 53.9, "topg": 0.47}, {"n": "Ochai Agbaji", "pos": "G", "ppg": 2.0, "apg": 0.3, "rpg": 1.0, "mpg": 7.7, "spg": 0.19, "bpg": 0.12, "ts": 49.5, "topg": 0.21}, {"n": "Jamison Battle", "pos": "G", "ppg": 2.4, "apg": 0.3, "rpg": 1.1, "mpg": 7.6, "spg": 0.08, "bpg": 0.03, "ts": 65, "topg": 0.22}, {"n": "AJ Lawson", "pos": "G", "ppg": 1.2, "apg": 0.1, "rpg": 0.5, "mpg": 3.8, "spg": 0.13, "bpg": 0.07, "ts": 54.9, "topg": 0.09}, {"n": "Jonathan Mogbo", "pos": "G", "ppg": 0.7, "apg": 0.3, "rpg": 0.7, "mpg": 3.4, "spg": 0.12, "bpg": 0.09, "ts": 62.5, "topg": 0.15}]}, "Utah Jazz": {"abbr": "UTA", "starters": [{"n": "Ace Bailey", "pos": "G", "ppg": 10.9, "apg": 1.4, "rpg": 3.3, "mpg": 22.9, "spg": 0.66, "bpg": 0.54, "ts": 53.3, "topg": 1.18}, {"n": "Kyle Filipowski", "pos": "F", "ppg": 9.7, "apg": 2.2, "rpg": 6.1, "mpg": 22.6, "spg": 0.8, "bpg": 0.43, "ts": 58.6, "topg": 1.37}, {"n": "Brice Sensabaugh", "pos": "G", "ppg": 12.3, "apg": 1.6, "rpg": 2.5, "mpg": 21.9, "spg": 0.59, "bpg": 0.13, "ts": 59, "topg": 1.36}, {"n": "Keyonte George", "pos": "G", "ppg": 14.0, "apg": 3.6, "rpg": 2.2, "mpg": 20.6, "spg": 0.64, "bpg": 0.15, "ts": 60.9, "topg": 1.82}, {"n": "Cody Williams", "pos": "G", "ppg": 6.5, "apg": 1.5, "rpg": 2.2, "mpg": 19.7, "spg": 0.56, "bpg": 0.29, "ts": 52.4, "topg": 0.8}], "bench": [{"n": "Isaiah Collier", "pos": "G", "ppg": 7.6, "apg": 4.6, "rpg": 1.6, "mpg": 18.8, "spg": 0.73, "bpg": 0.22, "ts": 56.7, "topg": 1.63}, {"n": "Lauri Markkanen", "pos": "G", "ppg": 12.3, "apg": 1.0, "rpg": 3.2, "mpg": 16.4, "spg": 0.46, "bpg": 0.23, "ts": 60.8, "topg": 0.69}, {"n": "Svi Mykhailiuk", "pos": "G", "ppg": 5.2, "apg": 1.0, "rpg": 1.4, "mpg": 13.4, "spg": 0.29, "bpg": 0.03, "ts": 62.7, "topg": 0.46}, {"n": "Jusuf Nurkic", "pos": "G", "ppg": 4.9, "apg": 2.2, "rpg": 4.7, "mpg": 12.2, "spg": 0.57, "bpg": 0.24, "ts": 54.8, "topg": 1.11}, {"n": "Walter Clayton Jr.", "pos": "G", "ppg": 3.4, "apg": 1.6, "rpg": 1.0, "mpg": 9.7, "spg": 0.26, "bpg": 0.13, "ts": 54.1, "topg": 0.63}, {"n": "John Konchar", "pos": "G", "ppg": 1.7, "apg": 0.9, "rpg": 1.6, "mpg": 8.3, "spg": 0.57, "bpg": 0.27, "ts": 53.9, "topg": 0.23}, {"n": "Kevin Love", "pos": "G", "ppg": 2.7, "apg": 0.7, "rpg": 2.4, "mpg": 8.0, "spg": 0.15, "bpg": 0.1, "ts": 56.9, "topg": 0.33}, {"n": "Elijah Harkless", "pos": "G", "ppg": 2.0, "apg": 0.8, "rpg": 0.6, "mpg": 6.4, "spg": 0.34, "bpg": 0.07, "ts": 47.1, "topg": 0.29}, {"n": "Taylor Hendricks", "pos": "G", "ppg": 1.8, "apg": 0.3, "rpg": 1.1, "mpg": 6.1, "spg": 0.14, "bpg": 0.1, "ts": 57.4, "topg": 0.22}]}, "Washington Wizards": {"abbr": "WAS", "starters": [{"n": "Carlton Carrington", "pos": "G", "ppg": 9.6, "apg": 4.2, "rpg": 3.0, "mpg": 26.4, "spg": 0.57, "bpg": 0.19, "ts": 55.6, "topg": 2.1}, {"n": "Will Riley", "pos": "G", "ppg": 8.4, "apg": 1.6, "rpg": 2.3, "mpg": 19.3, "spg": 0.59, "bpg": 0.11, "ts": 54.8, "topg": 1.03}, {"n": "Justin Champagnie", "pos": "G", "ppg": 6.6, "apg": 0.9, "rpg": 4.2, "mpg": 17.0, "spg": 0.65, "bpg": 0.47, "ts": 58.9, "topg": 0.49}, {"n": "Tre Johnson", "pos": "G", "ppg": 8.1, "apg": 1.3, "rpg": 1.9, "mpg": 16.6, "spg": 0.36, "bpg": 0.2, "ts": 53.5, "topg": 1.02}, {"n": "Bilal Coulibaly", "pos": "G", "ppg": 7.2, "apg": 1.6, "rpg": 2.7, "mpg": 16.6, "spg": 0.82, "bpg": 0.59, "ts": 53.1, "topg": 0.89}], "bench": [{"n": "Kyshawn George", "pos": "G", "ppg": 7.8, "apg": 2.4, "rpg": 2.7, "mpg": 16.0, "spg": 0.53, "bpg": 0.47, "ts": 55.9, "topg": 1.37}, {"n": "Alexandre Sarr", "pos": "F", "ppg": 8.6, "apg": 1.4, "rpg": 3.9, "mpg": 14.5, "spg": 0.43, "bpg": 1.04, "ts": 54.3, "topg": 0.9}, {"n": "Jamir Watkins", "pos": "G", "ppg": 4.0, "apg": 0.7, "rpg": 2.1, "mpg": 12.4, "spg": 0.59, "bpg": 0.27, "ts": 55.4, "topg": 0.44}, {"n": "CJ McCollum", "pos": "G", "ppg": 7.2, "apg": 1.4, "rpg": 1.4, "mpg": 12.1, "spg": 0.26, "bpg": 0.1, "ts": 57.3, "topg": 0.64}, {"n": "Anthony Gill", "pos": "G", "ppg": 3.5, "apg": 0.8, "rpg": 1.7, "mpg": 12.0, "spg": 0.34, "bpg": 0.23, "ts": 68.3, "topg": 0.4}, {"n": "Khris Middleton", "pos": "G", "ppg": 3.9, "apg": 1.2, "rpg": 1.5, "mpg": 9.1, "spg": 0.29, "bpg": 0.1, "ts": 53.2, "topg": 0.63}, {"n": "Sharife Cooper", "pos": "G", "ppg": 3.7, "apg": 1.4, "rpg": 0.9, "mpg": 9.0, "spg": 0.18, "bpg": 0.05, "ts": 61, "topg": 0.67}, {"n": "Tristan Vukcevic", "pos": "G", "ppg": 4.8, "apg": 0.6, "rpg": 1.6, "mpg": 8.2, "spg": 0.25, "bpg": 0.35, "ts": 60.2, "topg": 0.68}, {"n": "Marvin Bagley III", "pos": "G", "ppg": 4.2, "apg": 0.6, "rpg": 2.4, "mpg": 8.1, "spg": 0.22, "bpg": 0.3, "ts": 66.6, "topg": 0.48}]}};
+var TEAMS=Object.keys(ROSTERS).sort();
+var TEAM_TEMPO={"Atlanta Hawks":{"pace":100.2,"ast":5.5,"tov":2.5},"Boston Celtics":{"pace":93.4,"ast":4.8,"tov":2.2},"Brooklyn Nets":{"pace":96.6,"ast":4.7,"tov":2.8},"Charlotte Hornets":{"pace":96.1,"ast":5.0,"tov":2.7},"Cleveland Cavaliers":{"pace":98.0,"ast":5.2,"tov":2.6},"Dallas Mavericks":{"pace":100.8,"ast":4.6,"tov":2.5},"Denver Nuggets":{"pace":98.1,"ast":5.3,"tov":2.3},"Detroit Pistons":{"pace":97.0,"ast":5.1,"tov":2.7},"Golden State Warriors":{"pace":98.1,"ast":5.1,"tov":2.6},"Houston Rockets":{"pace":94.5,"ast":4.7,"tov":2.7},"Indiana Pacers":{"pace":100.4,"ast":5.1,"tov":2.6},"LA Clippers":{"pace":95.2,"ast":4.6,"tov":2.6},"Los Angeles Lakers":{"pace":96.3,"ast":4.9,"tov":2.7},"Memphis Grizzlies":{"pace":100.3,"ast":5.0,"tov":2.6},"Miami Heat":{"pace":102.9,"ast":5.4,"tov":2.4},"Milwaukee Bucks":{"pace":97.0,"ast":5.1,"tov":2.8},"Minnesota Timberwolves":{"pace":98.9,"ast":4.6,"tov":2.5},"New Orleans Pelicans":{"pace":99.2,"ast":4.6,"tov":2.5},"New York Knicks":{"pace":95.8,"ast":5.1,"tov":2.4},"Oklahoma City Thunder":{"pace":97.5,"ast":4.6,"tov":2.1},"Orlando Magic":{"pace":98.6,"ast":5.0,"tov":2.6},"Philadelphia 76ers":{"pace":97.3,"ast":4.5,"tov":2.3},"Phoenix Suns":{"pace":96.4,"ast":4.7,"tov":2.6},"Portland Trail Blazers":{"pace":99.2,"ast":4.5,"tov":3.0},"Sacramento Kings":{"pace":98.5,"ast":4.8,"tov":2.6},"San Antonio Spurs":{"pace":97.2,"ast":5.2,"tov":2.4},"Toronto Raptors":{"pace":97.1,"ast":5.5,"tov":2.5},"Utah Jazz":{"pace":102.6,"ast":5.2,"tov":2.7},"Washington Wizards":{"pace":100.7,"ast":4.7,"tov":2.8}};
+var POS_LABEL={G:'Guards',F:'Forwards',C:'Centers'};
+
+function allPlayers(team){
+ var r=ROSTERS[team];
+ return r.starters.concat(r.bench).map(function(p){var q=Object.assign({},p);q.team=team;return q});
+}
+function topByPos(team,pos){
+ var list=allPlayers(team).filter(function(p){return p.pos===pos});
+ list.sort(function(a,b){return b.ppg-a.ppg});
+ return list[0];
+}
+
+var teamASel=document.getElementById('teamA'),teamBSel=document.getElementById('teamB');
+TEAMS.forEach(function(t,i){
+ var o1=document.createElement('option');o1.value=t;o1.textContent=t;teamASel.appendChild(o1);
+ var o2=document.createElement('option');o2.value=t;o2.textContent=t;teamBSel.appendChild(o2);
+});
+teamASel.value=TEAMS.indexOf('Los Angeles Lakers')>-1?'Los Angeles Lakers':TEAMS[0];
+teamBSel.value=TEAMS.indexOf('Boston Celtics')>-1?'Boston Celtics':TEAMS[1];
+
+var activePos='G';
+document.getElementById('posTabs').addEventListener('click',function(e){
+ var btn=e.target.closest('.postab');if(!btn)return;
+ document.querySelectorAll('.postab').forEach(function(b){b.classList.remove('active')});
+ btn.classList.add('active');activePos=btn.getAttribute('data-pos');
+ var p=topByPos(teamASel.value,activePos);
+ if(p)selectPlayer(p);
+});
+
+function composite(p){return p.ppg*1.0+p.apg*1.2+p.rpg*1.0+p.spg*2+p.bpg*2-p.topg*1.3}
+
+// League-wide averages per trait/position, computed once from every roster —
+// the short open model's baseline for radar normalization and lean context.
+var ALL_POOL=TEAMS.reduce(function(acc,t){return acc.concat(allPlayers(t))},[]);
+var LEAGUE_AVG=(function(){
+ var traits=['ppg','apg','rpg','spg','bpg','ts'];
+ var sums={},n=ALL_POOL.length||1;
+ traits.forEach(function(k){sums[k]=ALL_POOL.reduce(function(a,p){return a+(p[k]||0)},0)/n});
+ return sums;
+})();
+var COMPOSITE_RANGE=(function(){
+ var vals=ALL_POOL.map(composite);
+ return{min:Math.min.apply(null,vals),max:Math.max.apply(null,vals)};
+})();
+function labScore(p){
+ var c=composite(p);
+ var pct=(c-COMPOSITE_RANGE.min)/Math.max(1,(COMPOSITE_RANGE.max-COMPOSITE_RANGE.min));
+ return Math.max(1,Math.min(99,Math.round(pct*98+1)));
+}
+function posGroupAvg(team,pos){
+ var list=allPlayers(team).filter(function(p){return p.pos===pos});
+ if(!list.length)return null;
+ var traits=['ppg','apg','rpg','spg','bpg','ts','topg'];
+ var out={count:list.length};
+ traits.forEach(function(k){out[k]=list.reduce(function(a,p){return a+(p[k]||0)},0)/list.length});
+ out.composite=composite(out);
+ return out;
+}
+function strengthLabel(val,avg){
+ var r=val/Math.max(.01,avg);
+ if(r>=1.14)return{cls:'elite',txt:'ELITE'};
+ if(r>=1.0)return{cls:'strong',txt:'STRONG'};
+ return{cls:'avg',txt:'AVG'};
+}
+
+var selected=null,oppTeamOf=null;
+function selectPlayer(p){
+ selected=p;
+ var oppTeam=(p.team===teamASel.value)?teamBSel.value:teamASel.value;
+ oppTeamOf=oppTeam;
+ activePos=p.pos;
+ document.querySelectorAll('.postab').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-pos')===p.pos)});
+ renderMatchup();
+}
+
+function radarPoints(vals,cx,cy,r){
+ var n=vals.length,pts=[];
+ for(var i=0;i<n;i++){
+  var ang=-Math.PI/2+i*(2*Math.PI/n);
+  var v=Math.max(0,Math.min(1,vals[i]/100));
+  pts.push((cx+Math.cos(ang)*r*v).toFixed(1)+','+(cy+Math.sin(ang)*r*v).toFixed(1));
+ }
+ return pts.join(' ');
+}
+function radarLabelPos(labels,cx,cy,r){
+ return labels.map(function(lab,i){
+  var ang=-Math.PI/2+i*(2*Math.PI/labels.length);
+  var x=cx+Math.cos(ang)*r,y=cy+Math.sin(ang)*r;
+  return '<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" text-anchor="middle">'+lab+'</text>';
+ }).join('');
+}
+
+function renderMatchup(){
+ if(!selected)return;
+ var p=selected,oppTeam=oppTeamOf,pos=p.pos;
+ var opp=posGroupAvg(oppTeam,pos);
+ var score=labScore(p);
+ var traitDefs=[
+  {k:'ppg',label:'PPG'},{k:'apg',label:'APG'},{k:'rpg',label:'RPG'},
+  {k:'spg',label:'SPG'},{k:'bpg',label:'BPG'},{k:'ts',label:'TS%'}
+ ];
+ var radarVals=traitDefs.map(function(t){
+  var lg=LEAGUE_AVG[t.k]||1;
+  return Math.max(8,Math.min(100,Math.round((p[t.k]/lg)*50)));
+ });
+ var cx=85,cy=85,r=64;
+ var gridPts=radarPoints([100,100,100,100,100,100],cx,cy,r);
+ var dataPts=radarPoints(radarVals,cx,cy,r);
+ var labels=radarLabelPos(traitDefs.map(function(t){return t.label}),cx,cy,r+11);
+
+ var pComposite=composite(p),oComposite=opp?opp.composite:0;
+ var leanTot=Math.max(1,pComposite+Math.max(0,oComposite));
+ var leanPct=Math.max(4,Math.min(96,Math.round((pComposite/leanTot)*100)));
+ var leanTxt=pComposite>=oComposite?p.n.split(' ').slice(-1)[0]+' profiles favorably vs this group':oppTeam.split(' ').slice(-1)[0]+"'s "+POS_LABEL[pos].toLowerCase()+' profile heavier here';
+
+ var gaugeR=33,gaugeC=2*Math.PI*gaugeR,gaugeOff=gaugeC*(1-score/100);
+
+ var traitRowsHtml=traitDefs.map(function(t,i){
+  return '<div class="trait-row"><span>'+t.label+'</span><div class="trait-bar"><i style="width:'+radarVals[i]+'%"></i></div><b>'+(t.k==='ts'?p[t.k].toFixed(1)+'%':p[t.k].toFixed(1))+'</b></div>';
+ }).join('');
+
+ var pra=p.ppg+p.apg+p.rpg,stocks=p.spg+p.bpg;
+ var statTilesHtml='<div class="stat-tile"><b>'+p.mpg.toFixed(1)+'</b><span>MPG</span></div>'
+  +'<div class="stat-tile"><b>'+p.ts.toFixed(1)+'%</b><span>TS%</span></div>'
+  +'<div class="stat-tile"><b>'+p.topg.toFixed(1)+'</b><span>TOV/G</span></div>'
+  +'<div class="stat-tile"><b>'+pra.toFixed(1)+'</b><span>PRA/G</span></div>'
+  +'<div class="stat-tile"><b>'+stocks.toFixed(2)+'</b><span>STOCKS/G</span></div>'
+  +'<div class="stat-tile"><b>'+score+'</b><span>Lab Score</span></div>';
+
+ var posAvg=posGroupAvg(p.team,pos)||{ppg:LEAGUE_AVG.ppg,apg:LEAGUE_AVG.apg,rpg:LEAGUE_AVG.rpg,ts:LEAGUE_AVG.ts};
+ function cmpRow(lbl,val,base,suf){
+  var d=val-base,cls=d>=0?'up':'down',sign=d>=0?'+':'';
+  return '<div class="cmp-row"><span>'+lbl+'</span><b>'+val.toFixed(1)+(suf||'')+'</b><em class="'+cls+'">'+sign+d.toFixed(1)+(suf||'')+' vs '+POS_LABEL[pos].toLowerCase().slice(0,-1)+' avg</em></div>';
+ }
+ var cmpRowsHtml='<div class="cmp-title">Vs league-average '+POS_LABEL[pos].toLowerCase().slice(0,-1)+' at every rostered spot</div>'
+  +cmpRow('PPG',p.ppg,LEAGUE_AVG.ppg)+cmpRow('APG',p.apg,LEAGUE_AVG.apg)+cmpRow('RPG',p.rpg,LEAGUE_AVG.rpg)+cmpRow('TS%',p.ts,LEAGUE_AVG.ts,'%');
+
+ var pTempo=TEAM_TEMPO[p.team],oTempo=TEAM_TEMPO[oppTeam];
+ var paceLine=pTempo&&oTempo?(' '+p.team+' plays at a '+pTempo.pace.toFixed(1)+'-possession pace (league table built from aggregated team-possession data) versus '+oppTeam+"'s "+oTempo.pace.toFixed(1)+' — a '+(pTempo.pace>oTempo.pace?'faster':pTempo.pace<oTempo.pace?'slower':'even')+' track that the short open model factors into expected possessions for this pairing.'):'';
+ var researchRead='<b>Research read</b>'+p.n+' projects a '+score+' Lab Score at '+POS_LABEL[pos].toLowerCase()+' against '+oppTeam+', built from scoring rate, playmaking and defensive activity blended against the league-average '+POS_LABEL[pos].toLowerCase()+' profile. '+leanTxt+' on the visible short open model inputs, posting '+pra.toFixed(1)+' combined points-rebounds-assists per game against a '+POS_LABEL[pos].toLowerCase().slice(0,-1)+'-average '+(posAvg.ppg+posAvg.apg+posAvg.rpg).toFixed(1)+'.'+paceLine;
+
+ var leftHtml='<div class="mp-head"><b>Selected Player</b><span>CLICK ANY ROW</span></div><div class="mp-body">'
+  +'<div class="mp-sub"><div><div class="mp-name">'+p.n+'</div><span class="mp-role">'+p.team+' &middot; '+POS_LABEL[pos].slice(0,-1)+' &middot; vs '+oppTeam+'</span></div></div>'
+  +'<div class="gauge-row"><svg class="gauge-svg" viewBox="0 0 76 76"><circle class="gauge-track" cx="38" cy="38" r="'+gaugeR+'"/><circle class="gauge-fill" cx="38" cy="38" r="'+gaugeR+'" stroke-dasharray="'+gaugeC.toFixed(1)+'" stroke-dashoffset="'+gaugeOff.toFixed(1)+'"/></svg>'
+  +'<div class="gauge-info"><b>'+score+' / 100</b><span>Short open model Lab Score — blends scoring rate, playmaking, rebounding and defensive activity into one read.</span></div></div>'
+  +'<div class="lean-wrap"><div class="lean-head"><span>'+POS_LABEL[pos].slice(0,-1).toUpperCase()+' GROUP</span><span>MATCHUP LEAN</span><span>'+p.n.split(' ').slice(-1)[0].toUpperCase()+'</span></div><div class="lean-track"><div class="lean-center"></div><div class="lean-fill" style="left:0;width:'+leanPct+'%"></div></div><div class="lean-readout">'+leanTxt+'</div></div>'
+  +'<div class="radar-wrap"><svg class="radar-svg" viewBox="0 0 170 170"><polygon class="grid" points="'+gridPts+'"/><polygon class="data" points="'+dataPts+'"/>'+labels+'</svg><div class="radar-legend"><b>&#9632;</b> '+p.n.split(' ').slice(-1)[0]+' vs league-average '+POS_LABEL[pos].toLowerCase().slice(0,-1)+' profile (short open model, normalized)</div></div>'
+  +'<div class="trait-rows">'+traitRowsHtml+'</div>'
+  +'<div class="stat-tiles">'+statTilesHtml+'</div>'
+  +'<div class="cmp-rows">'+cmpRowsHtml+'</div>'
+  +'<div class="mp-read">'+researchRead+'</div>'
+  +'</div>';
+
+ var oppScore=opp?Math.max(1,Math.min(99,Math.round(50+(opp.composite-COMPOSITE_RANGE.min)/Math.max(1,COMPOSITE_RANGE.max-COMPOSITE_RANGE.min)*49))):50;
+ var tilesData=opp?[
+  {v:opp.ppg,lbl:'PPG faced',avg:LEAGUE_AVG.ppg},
+  {v:opp.ts,lbl:'TS% faced',avg:LEAGUE_AVG.ts},
+  {v:opp.rpg,lbl:'RPG faced',avg:LEAGUE_AVG.rpg},
+  {v:opp.apg,lbl:'APG faced',avg:LEAGUE_AVG.apg},
+  {v:opp.spg+opp.bpg,lbl:'Stocks faced',avg:LEAGUE_AVG.spg+LEAGUE_AVG.bpg},
+  {v:opp.topg,lbl:'TOV/G faced',avg:LEAGUE_AVG.topg||opp.topg}
+ ]:[];
+ var oppTilesHtml=tilesData.map(function(t){
+  var s=strengthLabel(t.v,t.avg);
+  return '<div class="opp-tile"><b>'+t.v.toFixed(1)+(t.lbl.indexOf('TS%')>-1?'%':'')+'</b><span class="lbl">'+t.lbl+'</span><em class="'+s.cls+'">'+s.txt+'</em></div>';
+ }).join('');
+ var donutSource=tilesData.slice(0,3);
+ var donutTotal=donutSource.reduce(function(a,t){return a+t.v},0)||1;
+ var donutColors=['var(--brown)','var(--blue)','var(--green)'];
+ var offset=0,donutSegs='';
+ var circumf=2*Math.PI*30;
+ donutSource.forEach(function(t,i){
+  var frac=t.v/donutTotal;
+  var len=frac*circumf;
+  donutSegs+='<circle cx="38" cy="38" r="30" fill="none" stroke="'+donutColors[i]+'" stroke-width="12" stroke-dasharray="'+len.toFixed(1)+' '+(circumf-len).toFixed(1)+'" stroke-dashoffset="'+(-offset).toFixed(1)+'" transform="rotate(-90 38 38)"/>';
+  offset+=len;
+ });
+ var donutLegend=donutSource.map(function(t,i){return '<span><i style="background:'+donutColors[i]+'"></i>'+t.lbl+'</span>'}).join('');
+
+ var anchors=allPlayers(oppTeam).slice().sort(function(a,b){return composite(b)-composite(a)}).slice(0,4);
+ var anchorHtml=anchors.map(function(a){return '<div class="anchor-tile"><b>'+a.n+'</b><span>'+a.pos+' &middot; '+a.ppg.toFixed(1)+' PPG &middot; '+a.ts.toFixed(1)+'% TS</span></div>'}).join('');
+
+ var oTempo2=TEAM_TEMPO[oppTeam];
+ var tempoLine=oTempo2?(' '+oppTeam+' runs a '+oTempo2.pace.toFixed(1)+'-possession pace with a '+oTempo2.ast.toFixed(1)+':'+oTempo2.tov.toFixed(1)+' assist-to-turnover ratio as a team, aggregated from the short open model\'s possession-level data — a factor in how many total looks this position group sees per night.'):'';
+ var matchupRead=opp?('<b>Matchup read</b>'+oppTeam+"'s "+POS_LABEL[pos].toLowerCase()+' average '+opp.ppg.toFixed(1)+' PPG, '+opp.apg.toFixed(1)+' APG and '+opp.ts.toFixed(1)+'% true shooting across '+opp.count+' rostered player'+(opp.count===1?'':'s')+' at the spot — aggregate output context, not an individual defensive rating, framed from the short open model\'s roster comparison. Combined they log '+(opp.spg+opp.bpg).toFixed(2)+' stocks (steals+blocks) per game against a league-average '+POS_LABEL[pos].toLowerCase().slice(0,-1)+' mark of '+(LEAGUE_AVG.spg+LEAGUE_AVG.bpg).toFixed(2)+'.'+tempoLine):'<b>Matchup read</b>No '+POS_LABEL[pos].toLowerCase()+' listed on the opposing roster for this pairing.';
+
+ var rightHtml='<div class="mp-head"><b>Opponent Position Group</b><span>'+POS_LABEL[pos].toUpperCase()+'</span></div><div class="mp-body">'
+  +'<div class="opp-score"><b>'+oppScore+'</b><div><span style="color:#dce5ed;font-weight:800">'+oppTeam+' '+POS_LABEL[pos]+'</span><span>Aggregate output score — short open model read on what this position group puts up, not a defensive grade.</span></div></div>'
+  +'<div class="opp-tiles">'+(oppTilesHtml||'<div class="opp-tile"><span class="lbl">No data</span></div>')+'</div>'
+  +'<div class="donut-wrap"><svg class="donut-svg" viewBox="0 0 76 76">'+donutSegs+'</svg><div class="donut-legend">'+donutLegend+'</div></div>'
+  +'<div class="anchor-grid">'+(anchorHtml||'')+'</div>'
+  +'<div class="callout"><b>'+(opp?opp.ppg.toFixed(1):'—')+' PPG</b><span>Primary matchup metric — combined scoring rate of every '+POS_LABEL[pos].toLowerCase()+' on '+oppTeam+'\'s roster.</span></div>'
+  +'<div class="mp-read">'+matchupRead+'</div>'
+  +'<div class="methodnote">Position-group context is built by averaging every rostered player at the matching spot — it is a short open model comparison of aggregate output, not a claimed individual defensive metric.</div>'
+  +'</div>';
+
+ document.getElementById('matchupGrid').innerHTML='<div class="mp-panel">'+leftHtml+'</div><div class="mp-panel">'+rightHtml+'</div>';
+
+ document.getElementById('heroPlayerName').textContent=p.n.split(' ').slice(-1)[0];
+ document.getElementById('heroPlayerRole').textContent=p.team+' · '+POS_LABEL[pos].slice(0,-1);
+ document.getElementById('heroOppName').textContent=oppTeam.split(' ').slice(-1)[0]+' '+pos;
+ document.getElementById('heroOppNote').textContent=POS_LABEL[pos]+' faced';
+ document.getElementById('heroLeanVal').textContent=(pComposite>=oComposite?'+':'')+(pComposite-oComposite).toFixed(1);
+ document.getElementById('heroLeanNote').textContent=pComposite>=oComposite?'Favors '+p.n.split(' ').slice(-1)[0]:'Favors opponent group';
+ var topM=ALL_POOL.slice().sort(function(a,b){return labScore(b)-labScore(a)})[0];
+ document.getElementById('heroTopMatch').textContent=topM?topM.n.split(' ').slice(-1)[0]+' ('+labScore(topM)+')':'—';
+ document.getElementById('heroLabScore').textContent=score;
+}
+
+function renderCounts(){
+ var tA=teamASel.value,tB=teamBSel.value;
+ var pool=allPlayers(tA).concat(allPlayers(tB));
+ ['G','F','C'].forEach(function(pos){
+  document.getElementById('cnt'+pos).textContent=pool.filter(function(p){return p.pos===pos}).length;
+ });
+}
+
+var sortKey='ppg',sortDir=-1;
+function renderTable(){
+ var tA=teamASel.value,tB=teamBSel.value;
+ var q=document.getElementById('searchInput').value.trim().toLowerCase();
+ var pool=allPlayers(tA).concat(allPlayers(tB)).filter(function(p){return !q||p.n.toLowerCase().indexOf(q)>-1});
+ pool.sort(function(a,b){
+  if(sortKey==='n'||sortKey==='team'||sortKey==='pos')return sortDir*a[sortKey].localeCompare(b[sortKey]);
+  return sortDir*((a[sortKey]||0)-(b[sortKey]||0));
+ });
+ var body=document.getElementById('rosterBody');
+ if(!pool.length){body.innerHTML='<tr><td colspan="9" class="empty-state">No players match your search.</td></tr>';return}
+ body.innerHTML=pool.map(function(p,i){
+  return '<tr data-idx="'+i+'" data-team="'+p.team+'" data-name="'+p.n+'"><td>'+p.n+'</td><td class="team">'+p.team+'</td><td style="text-align:left">'+p.pos+'</td><td>'+p.ppg.toFixed(1)+'</td><td>'+p.apg.toFixed(1)+'</td><td>'+p.rpg.toFixed(1)+'</td><td>'+p.spg.toFixed(2)+'</td><td>'+p.bpg.toFixed(2)+'</td><td>'+p.ts.toFixed(1)+'</td></tr>';
+ }).join('');
+ body._pool=pool;
+ body.querySelectorAll('tr').forEach(function(tr){
+  tr.style.cursor='pointer';
+  tr.addEventListener('click',function(){
+   var idx=+tr.getAttribute('data-idx');
+   var p=body._pool[idx];
+   if(p)selectPlayer(p);
+  });
+ });
+}
+
+document.querySelectorAll('table.rtable th').forEach(function(th){
+ th.addEventListener('click',function(){
+  var k=th.getAttribute('data-k');
+  if(sortKey===k){sortDir*=-1}else{sortKey=k;sortDir=(k==='n'||k==='team'||k==='pos')?1:-1}
+  document.querySelectorAll('table.rtable th').forEach(function(t){t.classList.remove('active')});
+  th.classList.add('active');
+  renderTable();
+ });
+});
+
+function renderAll(){
+ renderCounts();renderTable();
+ var p=topByPos(teamASel.value,activePos)||allPlayers(teamASel.value)[0];
+ if(p)selectPlayer(p);
+}
+teamASel.addEventListener('change',renderAll);
+teamBSel.addEventListener('change',renderAll);
+document.getElementById('searchInput').addEventListener('input',renderTable);
+
+renderAll();
+</script>
+</body></html>

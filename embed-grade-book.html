@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
+<meta name="format-detection" content="telephone=no"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <title>Grade Book — shortopen</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg?v=20260810"/>
@@ -1085,7 +1086,16 @@ document.getElementById('filterAscending').addEventListener('change', renderBoar
 @media(max-width:700px){
  .shell{display:flex!important;flex-direction:column!important;align-items:stretch!important}
  .side-left{display:none!important}.main-col{order:1!important;min-width:0!important}
- .side-right{order:2!important;display:flex!important;flex-flow:row nowrap!important;gap:10px!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x proximity!important;padding:0 0 8px!important;-webkit-overflow-scrolling:touch!important;scrollbar-width:none!important}
+ .side-right{order:2!important;display:flex!important;flex-flow:row nowrap!important;align-items:flex-start!important;gap:10px!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x proximity!important;padding:0 0 8px!important;-webkit-overflow-scrolling:touch!important;scrollbar-width:none!important}
+ /* Camp Intel had no internal height cap, so its stack of field notes made it
+    the tallest card in the row -- with flex's default align-items:stretch,
+    every other card (How This Board Is Built, Archive, Top Grades, Board
+    Insights) was being force-stretched to match that height, leaving them
+    mostly empty. align-items:flex-start above lets each card size to its own
+    content instead; this caps Camp Intel itself so it scrolls internally
+    rather than turning into one endless vertical page. */
+ .side-right>.side-card{max-height:64vh!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important}
+ #campIntelList{max-height:50vh!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;padding-right:4px!important}
  .side-right::-webkit-scrollbar{display:none!important}.side-right>.side-card{flex:0 0 min(82vw,330px)!important;width:min(82vw,330px)!important;margin:0!important;scroll-snap-align:start!important}
  .hero{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:8px!important}
  .grade-orbit{position:relative!important;inset:auto!important;width:100%!important;max-width:330px!important;height:158px!important;margin:-2px auto -10px!important;transform:scale(.72)!important;transform-origin:center top!important}
@@ -1097,6 +1107,41 @@ document.getElementById('filterAscending').addEventListener('change', renderBoar
  .lv-kpis{display:flex!important;overflow-x:auto!important;gap:8px!important}.lv-kpis>*{flex:0 0 42%!important}.lv-story-grid{display:flex!important;overflow-x:auto!important;gap:8px!important}.lv-story-grid article{flex:0 0 min(78vw,300px)!important}
 }
 </style>
-<footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>© 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call 1-800-GAMBLER. <a href="terms.html" style="text-decoration:underline;color:inherit">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p></footer>
+<style id="so-gradebook-mobile-legibility-20260902">
+/* The earlier mobile passes already condensed every tab strip and turned the
+   big panel rows into swipeable decks -- this pass is a readability-only
+   follow-up: several of those tabs and data labels were shrunk down to
+   7-8px mono type to fit, which is legible on a dense desktop board but
+   genuinely small to read on a phone. Bump the smallest text up a notch
+   and give tabs a little more breathing room as touch targets, without
+   undoing the condensed/swipeable layout itself. */
+@media(max-width:700px){
+ .subnav-tab,.ptab,.postab,.dlx-tab,.dlx-back{font-size:.6rem!important;padding:8px 12px!important}
+ .subnav-pill{font-size:8.6px!important;padding:7px 10px!important}
+ .subnav-eyebrow{font-size:8.6px!important}
+ .board-search input{font-size:.72rem!important}
+ .maintable{font-size:9.6px!important}
+ .maintable th,.maintable td{padding:9px 7px!important}
+ .lv-story-grid p{font-size:9.5px!important;line-height:1.55!important}
+ .lv-story-grid span{font-size:6.6px!important}
+ .lv-mini span{font-size:6.6px!important}.lv-mini b{font-size:9.6px!important}
+ .lv-ledger-row,.lv-ledger-head{font-size:10.5px!important}
+ .detailcol p,.detail-note{font-size:11.5px!important;line-height:1.6!important}
+ .side-lbl{font-size:.66rem!important}
+ .intel-body{font-size:.72rem!important}
+ /* Grade Overview / Grade Breakdown were reading oversized relative to the
+    card width on a phone -- scale the stat numbers and donut back down a
+    notch instead of the mobile pass that had bumped the donut up further. */
+ .ov-item .v{font-size:16px!important}
+ .ov-item .l{font-size:9px!important;margin-bottom:4px!important}
+ .ov-item .s{font-size:9.5px!important}
+ .ov-grid{gap:9px!important}
+ .donut-wrap{grid-template-columns:78px minmax(0,1fr)!important;gap:10px!important}
+ .donut{width:78px!important;height:78px!important}
+ .donut-legend{font-size:9.5px!important;gap:5px!important}
+ .pair-row>.panel,.tri-row>.panel,.dual-row>.panel{padding:14px!important}
+}
+</style>
+<footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>© 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span style="color:#e8c078;font-weight:600">1-800-GAMBLER</span>. <a href="terms.html" style="text-decoration:underline;color:#e8c078">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p></footer>
 </body>
 </html>

@@ -2,6 +2,7 @@
 <html lang="en" class="so-embed">
 <head>
 <meta charset="UTF-8">
+<meta name="format-detection" content="telephone=no"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>shortopen — Strikeout Market: MLB Pitcher Prop Terminal</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="shortcut icon" href="favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -316,15 +317,24 @@
   /* ===== Sticky-3 shortopen call column, sticky-4 fair odds column ===== */
   th.so-group{position:sticky;left:340px;z-index:6;background:var(--panel);text-align:center;}
   td.sticky-3, th.sticky-3{position:sticky;left:340px;z-index:5;background:var(--panel);min-width:96px;text-align:left;}
-  td.sticky-4, th.sticky-4{position:sticky;left:436px;z-index:5;background:var(--panel);border-right:1px solid var(--border-strong);min-width:92px;text-align:right;}
+  td.sticky-4, th.sticky-4{position:sticky;left:436px;z-index:5;background:var(--panel);border-right:1px solid var(--border-strong);min-width:112px;text-align:right;}
   th.sticky-3, th.sticky-4{text-align:center;}
   tbody tr:hover td.sticky-3, tbody tr:hover td.sticky-4{background:#131a1c;}
   .fair-lbl{font-family:var(--mono);font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.05em;line-height:1.25;}
   .fair-val{font-family:var(--mono);font-size:11.5px;font-weight:700;line-height:1.25;}
   .fair-val.o{color:var(--green);} .fair-val.u{color:var(--red);}
+  /* so-strikeout-fair-probability-20260903: percentage read-out of the same
+     Shin-fair Over/Under probability the odds above already come from —
+     the site's "probability format" other prop pages already carry. */
+  .fair-pct{font-family:var(--mono);font-size:9px;font-weight:600;line-height:1.3;opacity:.85;}
+  .fair-pct.o{color:var(--green);} .fair-pct.u{color:var(--red);}
   .call-lbl{font-family:var(--mono);font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.05em;line-height:1.25;}
   .call-val{font-family:var(--mono);font-size:11.5px;font-weight:700;line-height:1.25;}
   .call-val.o{color:var(--green);} .call-val.u{color:var(--red);}
+  .call-pct{display:inline-block;margin:3px 0 2px;padding:2px 7px;border-radius:6px;font-family:var(--mono);font-size:12.5px;font-weight:800;line-height:1.3;letter-spacing:.01em}
+  .call-pct.o{color:var(--green);background:rgba(34,217,126,.14);border:1px solid rgba(34,217,126,.28)}
+  .call-pct.u{color:var(--red);background:rgba(255,77,94,.14);border:1px solid rgba(255,77,94,.28)}
+  .call-pct-lbl{margin-left:4px;font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;opacity:.75}
   .call-ev{font-family:var(--mono);font-size:9.5px;font-weight:700;line-height:1.25;}
   .call-ev.pos{color:var(--green);} .call-ev.neg{color:var(--text-faint);}
   .call-conf{font-family:var(--mono);font-size:8px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.03em;line-height:1.25;}
@@ -427,11 +437,13 @@ html.so-k-hidden *,html.so-k-hidden *::before,html.so-k-hidden *::after{animatio
   .table-scroll th.sticky-1,.table-scroll td.sticky-1{left:0!important;min-width:148px!important;width:148px!important;max-width:148px!important;z-index:8!important;background:#0d1113!important;box-shadow:8px 0 14px rgba(0,0,0,.28)}
   .table-scroll th.sticky-2,.table-scroll td.sticky-2{position:static!important;left:auto!important;min-width:112px!important;width:112px!important;max-width:112px!important;box-shadow:none!important;white-space:normal!important;overflow:hidden!important;padding-left:8px!important;padding-right:6px!important;}
   .table-scroll th.sticky-3,.table-scroll td.sticky-3{position:static!important;left:auto!important;min-width:88px!important;width:88px!important;max-width:88px!important;box-shadow:none!important;z-index:auto!important;white-space:normal!important;overflow:hidden!important;padding-left:8px!important;padding-right:6px!important;}
-  .table-scroll th.sticky-4,.table-scroll td.sticky-4{position:static!important;left:auto!important;min-width:84px!important;width:84px!important;max-width:84px!important;box-shadow:none!important;z-index:auto!important;white-space:normal!important;overflow:hidden!important;padding-left:8px!important;padding-right:6px!important;}
+  .table-scroll th.sticky-4,.table-scroll td.sticky-4{position:static!important;left:auto!important;min-width:94px!important;width:94px!important;max-width:94px!important;box-shadow:none!important;z-index:auto!important;white-space:normal!important;overflow:hidden!important;padding-left:8px!important;padding-right:6px!important;}
   .table-scroll th.so-group{position:static!important;left:auto!important;}
   .table-scroll td.sticky-2 .best-pill{font-size:9px!important;white-space:normal!important;word-break:break-word!important;}
   .table-scroll td.sticky-2 .spark-wrap{flex-wrap:wrap!important;}
   .ticker-track,.nt-track{animation-duration:70s!important}
+  .call-pct-lbl{display:none!important}
+  .call-pct{font-size:11.5px!important;padding:2px 6px!important}
 }
 </style>
 
@@ -665,252 +677,145 @@ const BOOKS = [
 
 const PROPS_DATA = [
   {
-    "name": "Jacob Misiorowski",
-    "team": "MIL",
-    "opp": "@CHC",
-    "books": {
-      "DK": [
-        7.5,
-        -101,
-        -126
-      ],
-      "FD": [
-        7.5,
-        100,
-        -128
-      ],
-      "MGM": [
-        7.5,
-        105,
-        -140
-      ],
-      "RIV": [
-        7.5,
-        -103,
-        -130
-      ],
-      "CZR": [
-        7.5,
-        100,
-        -127
-      ],
-      "HR": [
-        7.5,
-        100,
-        -130
-      ]
-    }
-  },
-  {
-    "name": "Cam Schlittler",
-    "team": "NYY",
-    "opp": "@LAA",
-    "books": {
-      "DK": [
-        7.5,
-        113,
-        -141
-      ],
-      "FD": [
-        7.5,
-        106,
-        -136
-      ],
-      "MGM": [
-        7.5,
-        115,
-        -155
-      ],
-      "RIV": [
-        7.5,
-        102,
-        -134
-      ],
-      "CZR": [
-        7.5,
-        111,
-        -140
-      ],
-      "HR": [
-        7.5,
-        110,
-        -140
-      ]
-    }
-  },
-  {
-    "name": "Dylan Cease",
-    "team": "TOR",
-    "opp": "@CLE",
-    "books": {
-      "DK": [
-        6.5,
-        -130,
-        102
-      ],
-      "FD": [
-        6.5,
-        -128,
-        100
-      ],
-      "MGM": [
-        6.5,
-        -125,
-        -105
-      ],
-      "RIV": [
-        6.5,
-        null,
-        -129
-      ],
-      "CZR": [
-        6.5,
-        -127,
-        100
-      ],
-      "HR": [
-        6.5,
-        -130,
-        100
-      ]
-    }
-  },
-  {
-    "name": "Reid Detmers",
-    "team": "LAA",
-    "opp": "NYY",
-    "books": {
-      "DK": [
-        6.5,
-        -108,
-        -118
-      ],
-      "FD": [
-        6.5,
-        -111,
-        -115
-      ],
-      "MGM": [
-        6.5,
-        -105,
-        -125
-      ],
-      "RIV": [
-        6.5,
-        -114,
-        -117
-      ],
-      "CZR": [
-        6.5,
-        -112,
-        -113
-      ],
-      "HR": [
-        6.5,
-        -110,
-        -120
-      ]
-    }
-  },
-  {
-    "name": "Yoshinobu Yamamoto",
+    "name": "Tarik Skubal",
     "team": "LAD",
     "opp": "STL",
     "books": {
       "DK": [
-        6.5,
-        119,
-        -151
+        8.5,
+        -155,
+        121
       ],
       "FD": [
-        6.5,
-        104,
-        -132
+        8.5,
+        -164,
+        128
       ],
       "MGM": [
-        6.5,
+        7.5,
         -105,
-        -125
-      ],
-      "RIV": [
-        6.5,
-        -103,
         -130
       ],
+      "RIV": [
+        8.5,
+        null,
+        108
+      ],
       "CZR": [
-        6.5,
-        106,
-        -136
+        7.5,
+        110,
+        -145
       ],
       "HR": [
-        6.5,
-        105,
-        -140
+        7.5,
+        115,
+        -145
       ]
     }
   },
   {
-    "name": "Jared Jones",
-    "team": "PIT",
-    "opp": "SF",
+    "name": "Kade Anderson",
+    "team": "SEA",
+    "opp": "ATH",
     "books": {
       "DK": [
         5.5,
-        null,
-        null
+        113,
+        -145
       ],
       "FD": [
-        4.5,
-        null,
-        null
+        5.5,
+        102,
+        -130
       ],
       "MGM": [
-        4.5,
-        null,
-        null
+        5.5,
+        -105,
+        -130
       ],
       "RIV": [
-        5.5,
+        6.5,
         null,
-        120
+        138
       ],
       "CZR": [
         5.5,
-        null,
-        null
+        107,
+        -138
       ],
-      "HR": null
+      "HR": [
+        5.5,
+        100,
+        -135
+      ]
     }
   },
   {
-    "name": "Jacob Lopez",
-    "team": "ATH",
-    "opp": "@TEX",
+    "name": "Hunter Brown",
+    "team": "HOU",
+    "opp": "CWS",
+    "books": {
+      "DK": [
+        6.5,
+        -131,
+        105
+      ],
+      "FD": [
+        6.5,
+        -130,
+        102
+      ],
+      "MGM": [
+        6.5,
+        -120,
+        -110
+      ],
+      "RIV": [
+        6.5,
+        null,
+        -106
+      ],
+      "CZR": [
+        6.5,
+        -130,
+        101
+      ],
+      "HR": [
+        6.5,
+        -130,
+        100
+      ]
+    }
+  },
+  {
+    "name": "Kevin Gausman",
+    "team": "CHC",
+    "opp": "MIL",
     "books": {
       "DK": [
         5.5,
-        -133,
-        104
+        -124,
+        -103
       ],
       "FD": [
         5.5,
-        -122,
-        -104
+        -128,
+        100
       ],
       "MGM": [
         5.5,
-        -135,
-        100
+        -120,
+        -110
       ],
       "RIV": [
         5.5,
         null,
-        -118
+        105
       ],
       "CZR": [
         5.5,
-        -124,
-        -104
+        -128,
+        100
       ],
       "HR": [
         5.5,
@@ -920,399 +825,251 @@ const PROPS_DATA = [
     }
   },
   {
-    "name": "Eury Perez",
-    "team": "MIA",
-    "opp": "@KC",
-    "books": {
-      "DK": [
-        4.5,
-        128,
-        -164
-      ],
-      "FD": [
-        4.5,
-        112,
-        -142
-      ],
-      "MGM": [
-        5.5,
-        -155,
-        115
-      ],
-      "RIV": [
-        5.5,
-        -167,
-        125
-      ],
-      "CZR": [
-        4.5,
-        122,
-        -157
-      ],
-      "HR": [
-        4.5,
-        120,
-        -155
-      ]
-    }
-  },
-  {
-    "name": "Trevor Rogers",
-    "team": "BAL",
-    "opp": "@COL",
+    "name": "Logan Henderson",
+    "team": "MIL",
+    "opp": "@CHC",
     "books": {
       "DK": [
         5.5,
-        -156,
-        122
-      ],
-      "FD": [
-        5.5,
-        -132,
-        104
-      ],
-      "MGM": [
-        5.5,
-        -160,
-        120
-      ],
-      "RIV": [
-        5.5,
-        -152,
-        115
-      ],
-      "CZR": [
-        5.5,
-        -130,
-        103
-      ],
-      "HR": [
-        5.5,
-        -135,
-        100
-      ]
-    }
-  },
-  {
-    "name": "Landen Roupp",
-    "team": "SF",
-    "opp": "@PIT",
-    "books": {
-      "DK": [
-        4.5,
-        121,
-        -154
-      ],
-      "FD": [
-        4.5,
-        116,
-        -148
-      ],
-      "MGM": [
-        4.5,
-        110,
-        -150
-      ],
-      "RIV": [
-        5.5,
-        null,
-        123
-      ],
-      "CZR": [
-        4.5,
-        116,
-        -150
-      ],
-      "HR": [
-        4.5,
-        115,
-        -150
-      ]
-    }
-  },
-  {
-    "name": "Patrick Sandoval",
-    "team": "BOS",
-    "opp": "SEA",
-    "books": {
-      "DK": [
-        5.5,
-        -130,
-        102
-      ],
-      "FD": [
-        5.5,
-        -140,
-        110
-      ],
-      "MGM": [
-        5.5,
-        -140,
-        105
-      ],
-      "RIV": [
-        5.5,
-        -132,
-        100
-      ],
-      "CZR": [
-        5.5,
-        -136,
-        106
-      ],
-      "HR": [
-        5.5,
-        -140,
-        105
-      ]
-    }
-  },
-  {
-    "name": "Hayden Wesneski",
-    "team": "HOU",
-    "opp": "CWS",
-    "books": {
-      "DK": [
-        4.5,
-        117,
-        -150
-      ],
-      "FD": [
-        4.5,
-        118,
-        -150
-      ],
-      "MGM": [
-        4.5,
-        115,
-        -155
-      ],
-      "RIV": [
-        5.5,
-        null,
-        138
-      ],
-      "CZR": [
-        4.5,
-        120,
-        -160
-      ],
-      "HR": [
-        4.5,
-        115,
-        -150
-      ]
-    }
-  },
-  {
-    "name": "Drew Anderson",
-    "team": "DET",
-    "opp": "@MIN",
-    "books": {
-      "DK": [
-        4.5,
-        -160,
-        126
-      ],
-      "FD": [
-        4.5,
-        -162,
-        126
-      ],
-      "MGM": [
-        3.5,
-        125,
-        -165
-      ],
-      "RIV": [
-        4.5,
-        null,
-        117
-      ],
-      "CZR": [
-        4.5,
-        -170,
-        130
-      ],
-      "HR": [
-        4.5,
-        -170,
-        130
-      ]
-    }
-  },
-  {
-    "name": "Cody Bradford",
-    "team": "TEX",
-    "opp": "ATH",
-    "books": {
-      "DK": [
-        4.5,
-        -142,
-        111
-      ],
-      "FD": [
-        4.5,
-        -148,
-        116
-      ],
-      "MGM": [
-        4.5,
-        -120,
-        -110
-      ],
-      "RIV": [
-        4.5,
-        null,
-        -120
-      ],
-      "CZR": [
-        4.5,
-        -150,
-        111
-      ],
-      "HR": [
-        4.5,
-        -140,
-        105
-      ]
-    }
-  },
-  {
-    "name": "Noah Cameron",
-    "team": "KC",
-    "opp": "MIA",
-    "books": {
-      "DK": [
-        4.5,
-        -104,
-        -122
-      ],
-      "FD": [
-        4.5,
-        -104,
-        -122
-      ],
-      "MGM": [
-        4.5,
-        100,
-        -135
-      ],
-      "RIV": [
-        4.5,
-        -105,
-        -127
-      ],
-      "CZR": [
-        4.5,
-        -111,
-        -118
-      ],
-      "HR": [
-        4.5,
-        -105,
-        -125
-      ]
-    }
-  },
-  {
-    "name": "Joey Cantillo",
-    "team": "CLE",
-    "opp": "TOR",
-    "books": {
-      "DK": [
-        4.5,
-        -114,
-        -112
-      ],
-      "FD": [
-        4.5,
-        -113,
+        -110,
         -113
       ],
+      "FD": [
+        5.5,
+        -111,
+        -115
+      ],
       "MGM": [
-        4.5,
-        -120,
-        -110
+        5.5,
+        -115,
+        -115
       ],
       "RIV": [
-        4.5,
+        5.5,
         null,
-        -136
+        -139
       ],
       "CZR": [
-        4.5,
+        5.5,
         -121,
-        -110
+        -108
       ],
       "HR": [
-        4.5,
+        5.5,
         -115,
         -115
       ]
     }
   },
   {
-    "name": "Bubba Chandler",
-    "team": "PIT",
-    "opp": "SF",
+    "name": "Shane McClanahan",
+    "team": "TB",
+    "opp": "@TEX",
     "books": {
       "DK": [
         4.5,
-        -133,
-        104
+        109,
+        -140
       ],
       "FD": [
         4.5,
-        -140,
-        114
+        108,
+        -138
       ],
       "MGM": [
         4.5,
-        -125,
-        100
+        -110,
+        -120
       ],
-      "RIV": null,
+      "RIV": [
+        5.5,
+        null,
+        133
+      ],
       "CZR": [
         4.5,
-        -136,
-        107
+        108,
+        -140
       ],
       "HR": [
         4.5,
+        100,
+        -130
+      ]
+    }
+  },
+  {
+    "name": "Jack Perkins",
+    "team": "ATH",
+    "opp": "@SEA",
+    "books": {
+      "DK": [
+        5.5,
+        -134,
+        105
+      ],
+      "FD": [
+        5.5,
+        -132,
+        104
+      ],
+      "MGM": [
+        5.5,
         -140,
+        105
+      ],
+      "RIV": [
+        5.5,
+        null,
+        102
+      ],
+      "CZR": [
+        5.5,
+        -134,
+        105
+      ],
+      "HR": [
+        5.5,
+        -135,
         105
       ]
     }
   },
   {
-    "name": "Grant Holmes",
-    "team": "ATL",
-    "opp": "@WSH",
+    "name": "Michael Wacha",
+    "team": "KC",
+    "opp": "MIA",
     "books": {
       "DK": [
         4.5,
-        -158,
-        124
+        118,
+        -151
       ],
       "FD": [
-        4.5,
-        -164,
-        128
+        5.5,
+        -184,
+        142
       ],
       "MGM": [
-        4.5,
-        -145,
+        5.5,
+        -175,
+        130
+      ],
+      "RIV": [
+        5.5,
+        null,
         105
+      ],
+      "CZR": [
+        4.5,
+        112,
+        -140
+      ],
+      "HR": [
+        4.5,
+        115,
+        -150
+      ]
+    }
+  },
+  {
+    "name": "Sandy Alcantara",
+    "team": "MIA",
+    "opp": "@KC",
+    "books": {
+      "DK": [
+        3.5,
+        118,
+        -150
+      ],
+      "FD": [
+        3.5,
+        102,
+        -130
+      ],
+      "MGM": [
+        3.5,
+        105,
+        -140
       ],
       "RIV": [
         4.5,
         null,
-        125
+        110
+      ],
+      "CZR": [
+        3.5,
+        103,
+        -132
+      ],
+      "HR": [
+        3.5,
+        105,
+        -135
+      ]
+    }
+  },
+  {
+    "name": "Jake Bennett",
+    "team": "BOS",
+    "opp": "@BAL",
+    "books": {
+      "DK": [
+        4.5,
+        129,
+        -165
+      ],
+      "FD": [
+        4.5,
+        106,
+        -136
+      ],
+      "MGM": [
+        4.5,
+        100,
+        -135
+      ],
+      "RIV": null,
+      "CZR": [
+        4.5,
+        110,
+        -141
+      ],
+      "HR": [
+        4.5,
+        110,
+        -145
+      ]
+    }
+  },
+  {
+    "name": "Tanner Bibee",
+    "team": "CLE",
+    "opp": "TOR",
+    "books": {
+      "DK": [
+        4.5,
+        -172,
+        134
+      ],
+      "FD": [
+        4.5,
+        -156,
+        122
+      ],
+      "MGM": [
+        4.5,
+        -185,
+        135
+      ],
+      "RIV": [
+        4.5,
+        null,
+        108
       ],
       "CZR": [
         4.5,
-        -165,
+        -155,
         121
       ],
       "HR": [
@@ -1323,116 +1080,9 @@ const PROPS_DATA = [
     }
   },
   {
-    "name": "Griffin Jax",
-    "team": "TB",
-    "opp": "NYM",
-    "books": {
-      "DK": [
-        4.5,
-        -124,
-        -103
-      ],
-      "FD": [
-        4.5,
-        -113,
-        -113
-      ],
-      "MGM": [
-        4.5,
-        -105,
-        -125
-      ],
-      "RIV": null,
-      "CZR": [
-        4.5,
-        -127,
-        -105
-      ],
-      "HR": [
-        4.5,
-        -115,
-        -115
-      ]
-    }
-  },
-  {
-    "name": "Dean Kremer",
-    "team": "MIN",
-    "opp": "DET",
-    "books": {
-      "DK": [
-        4.5,
-        -125,
-        -102
-      ],
-      "FD": [
-        4.5,
-        -130,
-        102
-      ],
-      "MGM": [
-        4.5,
-        -135,
-        100
-      ],
-      "RIV": [
-        4.5,
-        null,
-        -124
-      ],
-      "CZR": [
-        4.5,
-        -138,
-        107
-      ],
-      "HR": [
-        4.5,
-        -135,
-        100
-      ]
-    }
-  },
-  {
-    "name": "Bryce Miller",
-    "team": "SEA",
-    "opp": "@BOS",
-    "books": {
-      "DK": [
-        4.5,
-        -129,
-        101
-      ],
-      "FD": [
-        4.5,
-        -142,
-        112
-      ],
-      "MGM": [
-        4.5,
-        -135,
-        100
-      ],
-      "RIV": [
-        4.5,
-        -136,
-        102
-      ],
-      "CZR": [
-        4.5,
-        -145,
-        110
-      ],
-      "HR": [
-        4.5,
-        -140,
-        110
-      ]
-    }
-  },
-  {
-    "name": "Casey Mize",
-    "team": "SD",
-    "opp": "@CIN",
+    "name": "Luis Castillo",
+    "team": "CWS",
+    "opp": "@HOU",
     "books": {
       "DK": [
         4.5,
@@ -1441,221 +1091,188 @@ const PROPS_DATA = [
       ],
       "FD": [
         4.5,
-        -108,
-        -118
+        -138,
+        108
       ],
       "MGM": [
         4.5,
-        -105,
-        -130
+        -135,
+        100
       ],
       "RIV": [
         4.5,
         null,
-        -109
+        110
       ],
       "CZR": [
-        4.5,
-        -105,
-        -122
-      ],
-      "HR": [
-        4.5,
-        -110,
-        -120
-      ]
-    }
-  },
-  {
-    "name": "David Peterson",
-    "team": "CHC",
-    "opp": "MIL",
-    "books": {
-      "DK": [
         4.5,
         -134,
         105
       ],
-      "FD": [
+      "HR": [
         4.5,
-        -132,
-        104
-      ],
-      "MGM": [
-        4.5,
-        -140,
+        -130,
         105
-      ],
-      "RIV": [
+      ]
+    }
+  },
+  {
+    "name": "Quinn Mathews",
+    "team": "STL",
+    "opp": "@LAD",
+    "books": {
+      "DK": [
         4.5,
-        -132,
-        100
+        -109,
+        -117
       ],
-      "CZR": [
+      "FD": [
         4.5,
-        -145,
-        110
+        -102,
+        -125
       ],
-      "HR": [
+      "MGM": [
         4.5,
-        -135,
-        100
-      ]
-    }
-  },
-  {
-    "name": "Justin Hagenman",
-    "team": "NYM",
-    "opp": "@TB",
-    "books": {
-      "DK": [
-        2.5,
-        130,
-        -166
-      ],
-      "FD": [
-        3.5,
-        -172,
-        134
-      ],
-      "MGM": [
-        2.5,
-        125,
-        -165
-      ],
-      "RIV": null,
-      "CZR": [
-        3.5,
-        -176,
-        137
-      ],
-      "HR": [
-        2.5,
-        140,
-        -185
-      ]
-    }
-  },
-  {
-    "name": "Davis Martin",
-    "team": "CWS",
-    "opp": "@HOU",
-    "books": {
-      "DK": [
-        3.5,
-        -128,
-        101
-      ],
-      "FD": [
-        3.5,
-        -132,
-        104
-      ],
-      "MGM": [
-        3.5,
-        -125,
-        -105
-      ],
-      "RIV": [
-        3.5,
-        null,
-        -114
-      ],
-      "CZR": [
-        3.5,
-        -140,
-        108
-      ],
-      "HR": [
-        3.5,
-        -125,
-        -105
-      ]
-    }
-  },
-  {
-    "name": "Andrew Painter",
-    "team": "PHI",
-    "opp": "@ARI",
-    "books": {
-      "DK": [
-        3.5,
-        125,
-        -160
-      ],
-      "FD": [
-        3.5,
-        110,
-        -140
-      ],
-      "MGM": [
-        3.5,
-        105,
-        -140
-      ],
-      "RIV": [
-        3.5,
-        123,
-        -165
-      ],
-      "CZR": [
-        3.5,
-        111,
-        -141
-      ],
-      "HR": [
-        3.5,
-        115,
-        -145
-      ]
-    }
-  },
-  {
-    "name": "Tomoyuki Sugano",
-    "team": "COL",
-    "opp": "BAL",
-    "books": {
-      "DK": [
-        3.5,
-        -113,
-        -110
-      ],
-      "FD": [
-        3.5,
-        -125,
-        -102
-      ],
-      "MGM": [
-        3.5,
         -110,
         -120
       ],
       "RIV": [
-        3.5,
+        4.5,
         null,
-        -109
+        -114
       ],
       "CZR": [
-        3.5,
-        -120,
-        -108
+        4.5,
+        -108,
+        -120
       ],
       "HR": [
-        3.5,
-        -120,
-        -110
+        4.5,
+        -110,
+        -120
       ]
     }
   },
   {
-    "name": "Brandon Williamson",
-    "team": "CIN",
-    "opp": "SD",
+    "name": "Jose Soriano",
+    "team": "TOR",
+    "opp": "@CLE",
+    "books": {
+      "DK": [
+        4.5,
+        -170,
+        133
+      ],
+      "FD": [
+        4.5,
+        -180,
+        140
+      ],
+      "MGM": [
+        3.5,
+        125,
+        -165
+      ],
+      "RIV": [
+        4.5,
+        null,
+        115
+      ],
+      "CZR": [
+        3.5,
+        125,
+        -160
+      ],
+      "HR": [
+        3.5,
+        120,
+        -160
+      ]
+    }
+  },
+  {
+    "name": "Blade Tidwell",
+    "team": "SF",
+    "opp": "@PIT",
+    "books": {
+      "DK": [
+        4.5,
+        -123,
+        -103
+      ],
+      "FD": [
+        4.5,
+        -140,
+        110
+      ],
+      "MGM": [
+        4.5,
+        -160,
+        120
+      ],
+      "RIV": [
+        4.5,
+        null,
+        -112
+      ],
+      "CZR": [
+        4.5,
+        -155,
+        112
+      ],
+      "HR": [
+        4.5,
+        -140,
+        105
+      ]
+    }
+  },
+  {
+    "name": "Brandon Young",
+    "team": "BAL",
+    "opp": "BOS",
+    "books": {
+      "DK": [
+        4.5,
+        -157,
+        122
+      ],
+      "FD": [
+        4.5,
+        -164,
+        128
+      ],
+      "MGM": [
+        3.5,
+        125,
+        -165
+      ],
+      "RIV": [
+        4.5,
+        null,
+        118
+      ],
+      "CZR": [
+        4.5,
+        -162,
+        125
+      ],
+      "HR": [
+        4.5,
+        -165,
+        125
+      ]
+    }
+  },
+  {
+    "name": "Cal Quantrill",
+    "team": "TEX",
+    "opp": "TB",
     "books": {
       "DK": [
         3.5,
-        -129,
-        101
+        -140,
+        109
       ],
       "FD": [
         3.5,
@@ -1674,38 +1291,42 @@ const PROPS_DATA = [
       ],
       "CZR": [
         3.5,
-        -155,
-        112
+        -138,
+        108
       ],
       "HR": [
         3.5,
         -140,
-        110
+        105
       ]
     }
   },
   {
-    "name": "Brad Lord",
-    "team": "WSH",
-    "opp": "ATL",
+    "name": "Lake Bachar",
+    "team": "PIT",
+    "opp": "SF",
     "books": {
       "DK": [
+        2.5,
+        -163,
+        130
+      ],
+      "FD": null,
+      "MGM": null,
+      "RIV": [
         2.5,
         null,
         null
       ],
-      "FD": null,
-      "MGM": null,
-      "RIV": null,
       "CZR": [
         2.5,
-        null,
-        null
+        -179,
+        138
       ],
       "HR": [
         2.5,
         -185,
-        140
+        135
       ]
     }
   }
@@ -1955,13 +1576,14 @@ function renderTable(list){
         ${p.shortopenCall ? `
         <div class="call-lbl">${p.shortopenCall.side}</div>
         <div class="call-val ${p.shortopenCall.side==='Over'?'o':'u'}">${fmtOdds(p.shortopenCall.odds)} <span style="color:var(--text-faint);font-weight:500">${p.shortopenCall.book}</span></div>
+        ${(() => { const callProb = p.shortopenCall.side==='Over' ? p.fairOverProb : p.fairUnderProb; return callProb!=null ? `<div class="call-pct ${p.shortopenCall.side==='Over'?'o':'u'}">${(callProb*100).toFixed(1)}%<span class="call-pct-lbl">to hit</span></div>` : ''; })()}
         <div class="call-ev ${p.shortopenCall.evPct>=0?'pos':'neg'}">${p.shortopenCall.evPct>=0?'+':''}${p.shortopenCall.evPct.toFixed(1)}% EV</div>
         <div class="call-conf">${p.shortopenConfidence||'—'} confidence</div>
         ` : (p.targetModel ? `<div class="call-target">SO target</div><div class="target-lines"><span class="to">O ${fmtOdds(p.targetModel.targetOver)}+</span><br><span class="tu">U ${fmtOdds(p.targetModel.targetUnder)}+</span></div><div class="call-conf">${Math.round(p.targetModel.minEv*100)}% entry · assumed ${(p.targetModel.assumedHold*100).toFixed(1)}% hold</div>` : `<div class="call-target">SO target</div><div class="call-conf">Market line unavailable</div>`)}
       </td>
       <td class="sticky-4">
-        <div class="fair-lbl">Over</div><div class="fair-val o">${fmtOdds(p.fairOver)}</div>
-        <div class="fair-lbl" style="margin-top:5px">Under</div><div class="fair-val u">${fmtOdds(p.fairUnder)}</div>
+        <div class="fair-lbl">Over</div><div class="fair-val o">${fmtOdds(p.fairOver)}</div><div class="fair-pct o">${p.fairOverProb!=null?(p.fairOverProb*100).toFixed(1)+'%':'—'}</div>
+        <div class="fair-lbl" style="margin-top:5px">Under</div><div class="fair-val u">${fmtOdds(p.fairUnder)}</div><div class="fair-pct u">${p.fairUnderProb!=null?(p.fairUnderProb*100).toFixed(1)+'%':'—'}</div>
       </td>
     `;
 
@@ -2646,6 +2268,6 @@ const arsenal=document.createElement('div');arsenal.className='so-arsenal';arsen
 }
 @media(pointer:coarse) and (max-width:700px){.bb-card:hover,.signal-card:hover,.stat-cell:hover{transform:none!important}.k-tally,.k-score-row span,.lift-leg,.glove-group{animation-duration:8s!important}}
 </style>
-<footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>© 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call 1-800-GAMBLER. <a href="terms.html" style="text-decoration:underline;color:inherit">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p></footer>
+<footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>© 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span style="color:#e8c078;font-weight:600">1-800-GAMBLER</span>. <a href="terms.html" style="text-decoration:underline;color:#e8c078">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p></footer>
 </body>
 </html>

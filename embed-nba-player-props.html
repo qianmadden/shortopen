@@ -1,0 +1,556 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="format-detection" content="telephone=no"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Player Props — NBA — shortopen</title><link rel="icon" type="image/svg+xml" href="favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="shortcut icon" href="favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet"><style>
+:root{--bg:#04080d;--panel:#08111a;--panel2:#0b1620;--line:rgba(255,255,255,.075);--line2:rgba(255,255,255,.13);--text:#edf3f7;--muted:#748397;--muted2:#a2afbd;--gold:#f4b942;--green:#22d97e;--blue:#57a7ff;--brown:#c9843f;--brown-deep:#8a5a2e;--mono:'DM Mono',monospace}
+*{box-sizing:border-box}
+body{margin:0;padding:24px;background:linear-gradient(rgba(201,132,63,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(201,132,63,.016) 1px,transparent 1px),radial-gradient(circle at 15% 10%,rgba(201,132,63,.07),transparent 45%),radial-gradient(circle at 85% 15%,rgba(138,90,46,.055),transparent 45%),var(--bg);background-size:64px 64px,64px 64px,auto,auto,auto;color:var(--text);font-family:Inter,system-ui,sans-serif}
+.wrap{max-width:1500px;margin:auto}
+
+/* ===== HERO ===== */
+.hero{position:relative;overflow:hidden;border:1px solid rgba(201,132,63,.18);border-radius:22px;background:linear-gradient(145deg,rgba(201,132,63,.065),rgba(6,13,20,.97) 55%,rgba(138,90,46,.05));padding:34px 36px 75px;min-height:242px}
+.hero:after{content:'';position:absolute;right:-90px;top:-110px;width:430px;height:430px;border-radius:50%;border:1px solid rgba(201,132,63,.12);box-shadow:0 0 0 40px rgba(201,132,63,.02),0 0 0 80px rgba(138,90,46,.014);animation:ringPulse 5.6s ease-in-out infinite;transform:scale(1)}
+@keyframes ringPulse{0%,32%{border-color:rgba(201,132,63,.12);box-shadow:0 0 0 40px rgba(201,132,63,.02),0 0 0 80px rgba(138,90,46,.014);transform:scale(1)}38%{border-color:rgba(255,224,184,.95);border-width:2px;box-shadow:0 0 0 60px rgba(201,132,63,.28),0 0 160px 26px rgba(233,167,110,.7),0 0 260px 60px rgba(201,132,63,.32);transform:scale(1.06)}44%{border-color:rgba(233,167,110,.55);box-shadow:0 0 0 50px rgba(201,132,63,.14),0 0 100px 14px rgba(201,132,63,.35);transform:scale(1.03)}54%,100%{border-color:rgba(201,132,63,.12);box-shadow:0 0 0 40px rgba(201,132,63,.02),0 0 0 80px rgba(138,90,46,.014);transform:scale(1)}}
+.ey{color:var(--brown);font:800 10px var(--mono);letter-spacing:.16em;text-transform:uppercase;display:flex;align-items:center;gap:7px}
+.ey:before{content:'';width:6px;height:6px;border-radius:50%;background:var(--brown);box-shadow:0 0 8px rgba(201,132,63,.7)}
+h1{position:relative;font-size:clamp(2.75rem,5.5vw,5.06rem);line-height:1;letter-spacing:-.055em;margin:11px 0 9px;max-width:11ch;color:var(--brown);background:linear-gradient(100deg,var(--brown) 0%,var(--brown) 42%,#fff2e0 50%,var(--brown) 58%,var(--brown) 100%);background-size:280% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:brownSweep 6.5s ease-in-out infinite}
+@keyframes brownSweep{0%{background-position:220% 0}45%{background-position:-30% 0}100%{background-position:-30% 0}}
+.hero p{position:relative;max-width:640px;color:#8a98a7;line-height:1.65;font-size:.83rem}
+.badge{position:absolute;right:24px;top:18px;padding:7px 12px;border:1px solid rgba(244,185,66,.34);border-radius:999px;color:var(--gold);font:800 9px var(--mono);letter-spacing:.12em;background:rgba(4,8,13,.82);box-shadow:0 8px 24px rgba(0,0,0,.22)}
+
+/* court + hoop scene, right side of hero — flat silhouette style */
+.court-wrap{position:absolute;right:8px;bottom:-4px;width:286px;height:253px;pointer-events:none;z-index:3;filter:drop-shadow(0 14px 22px rgba(0,0,0,.45))}
+.court-floor{animation:courtFloorPulse 5.6s cubic-bezier(.4,0,.2,1) infinite}
+.court-floor-ring{animation:courtRingPulse 5.6s cubic-bezier(.4,0,.2,1) infinite}
+.court-floor-rim{animation:courtRimPulse 5.6s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes courtFloorPulse{0%,32%{opacity:1}38%{opacity:1;filter:brightness(1.3) saturate(1.15)}44%{opacity:1;filter:brightness(1.14)}54%,100%{opacity:1;filter:brightness(1)}}
+@keyframes courtRingPulse{0%,32%{stroke:#c9843f;opacity:.5}38%{stroke:#ffd9b0;opacity:.95;stroke-width:2.2}44%{stroke:#e9a76e;opacity:.7}54%,100%{stroke:#c9843f;opacity:.5}}
+@keyframes courtRimPulse{0%,32%{opacity:.65;stroke:#ffb066}38%{opacity:1;stroke:#ffe0b8;stroke-width:2.4}44%{opacity:.8;stroke:#ffc98a}54%,100%{opacity:.65;stroke:#ffb066}}
+@media(prefers-reduced-motion:reduce){.court-floor,.court-floor-ring,.court-floor-rim{animation:none!important}}
+.court-wrap>svg{width:100%;height:100%;overflow:visible;display:block}
+@media(max-width:1180px){.court-wrap{width:220px;height:198px}}
+@media(max-width:820px){.court-wrap{width:165px;height:149px}}
+@media(max-width:650px){.court-wrap{width:121px;height:110px;right:2px}}
+
+.silo{fill:#c9843f}
+.silo-dark{fill:#2a1608}
+.arc-trail{fill:none;stroke:#f4dfc4;stroke-width:1.6;stroke-linecap:round;stroke-dasharray:118;stroke-dashoffset:118;opacity:0;animation:arcTrail 5.6s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes arcTrail{
+ 0%,8%{stroke-dashoffset:118;opacity:0}
+ 10%{opacity:.85}
+ 36%{stroke-dashoffset:0;opacity:.85}
+ 44%{opacity:0}
+ 100%{opacity:0;stroke-dashoffset:0}
+}
+.shoot-arm{transform-origin:64px 131px;animation:shootArmSwing 5.6s ease-in-out infinite}
+.guide-arm{transform-origin:46px 133px;animation:guideArmSwing 5.6s ease-in-out infinite}
+@keyframes shootArmSwing{
+ 0%{transform:rotate(0deg)}
+ 40%{transform:rotate(22deg)}
+ 58%{transform:rotate(19deg)}
+ 100%{transform:rotate(0deg)}
+}
+@keyframes guideArmSwing{
+ 0%{transform:rotate(0deg)}
+ 40%{transform:rotate(3deg)}
+ 58%{transform:rotate(2.5deg)}
+ 100%{transform:rotate(0deg)}
+}
+@media(prefers-reduced-motion:reduce){.shoot-arm,.guide-arm{animation:none!important}}
+.prob-meter{animation:probMeterPulse 3.4s ease-in-out infinite}
+#probMeterRing{transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
+@keyframes probMeterPulse{0%,100%{opacity:.88}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.prob-meter{animation:none!important}}
+.net-flash{transform-origin:150px 70px;opacity:0;animation:netFlash 5.6s ease-in-out infinite}
+@keyframes netFlash{0%,36%{opacity:0;transform:scaleY(1)}40%{opacity:1;transform:scaleY(1.22)}47%{opacity:.5;transform:scaleY(.96)}54%,100%{opacity:0;transform:scaleY(1)}}
+.make-flash{opacity:0;transform-origin:150px 55px;animation:makeFlash 5.6s ease-out infinite}
+@keyframes makeFlash{0%,36%{opacity:0;transform:translateY(0) scale(.7)}39%{opacity:1;transform:translateY(-3px) scale(1.05)}45%{opacity:1;transform:translateY(-11px) scale(1.15)}52%{opacity:0;transform:translateY(-20px) scale(1.05)}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.make-flash{animation:none!important;opacity:0}}
+.props-ball-track{position:absolute;inset:0;overflow:visible;pointer-events:none;z-index:2}
+.props-ball{position:absolute;top:0;left:0;width:24px;height:24px;margin:-12px 0 0 -12px;filter:drop-shadow(0 5px 7px rgba(0,0,0,.4));animation:ballFlight 5.6s cubic-bezier(.4,0,.2,1) infinite;will-change:transform}
+@media(max-width:650px){.props-ball{width:16px;height:16px;margin:-8px 0 0 -8px}}
+@keyframes ballFlight{
+ 0%,8%{transform:translate(calc(var(--btw,260px)*.346),calc(var(--bth,230px)*.448)) rotate(0deg) scale(1)}
+ 16%{transform:translate(calc(var(--btw,260px)*.40),calc(var(--bth,230px)*.30)) rotate(70deg) scale(1)}
+ 26%{transform:translate(calc(var(--btw,260px)*.49),calc(var(--bth,230px)*.13)) rotate(190deg) scale(1.02)}
+ 36%{transform:translate(calc(var(--btw,260px)*.577),calc(var(--bth,230px)*.304)) rotate(330deg) scale(.95)}
+ 41%{transform:translate(calc(var(--btw,260px)*.577),calc(var(--bth,230px)*.40)) rotate(360deg) scale(.86)}
+ 48%{transform:translate(calc(var(--btw,260px)*.577),calc(var(--bth,230px)*.76)) rotate(430deg) scale(.96)}
+ 52%{transform:translate(calc(var(--btw,260px)*.577),calc(var(--bth,230px)*.89)) rotate(460deg) scale(1)}
+ 60%{transform:translate(calc(var(--btw,260px)*.49),calc(var(--bth,230px)*.80)) rotate(530deg) scale(.97)}
+ 68%{transform:translate(calc(var(--btw,260px)*.42),calc(var(--bth,230px)*.89)) rotate(590deg) scale(1)}
+ 78%{transform:translate(calc(var(--btw,260px)*.34),calc(var(--bth,230px)*.89)) rotate(660deg) scale(1)}
+ 88%{transform:translate(calc(var(--btw,260px)*.27),calc(var(--bth,230px)*.89)) rotate(720deg) scale(1)}
+ 95%{transform:translate(calc(var(--btw,260px)*.29),calc(var(--bth,230px)*.55)) rotate(750deg) scale(1)}
+ 100%{transform:translate(calc(var(--btw,260px)*.346),calc(var(--bth,230px)*.448)) rotate(720deg) scale(1)}
+}
+@media(pointer:coarse) and (max-width:700px){.props-ball,.net-flash,.arc-trail{animation-duration:7s!important}}
+@media(prefers-reduced-motion:reduce){.props-ball,.net-flash,.arc-trail{animation:none!important}.arc-trail{opacity:0}}
+
+/* ===== DESK STATS STRIP ===== */
+.deskstrip{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:16px 0 0}
+.deskcell{position:relative;padding:13px 14px 12px;display:flex;flex-direction:column;gap:5px;border-radius:11px;border:1px solid rgba(255,255,255,.055);background:linear-gradient(155deg,rgba(255,255,255,.025),rgba(5,10,16,.9));transition:border-color .15s,background .15s,transform .15s}
+.deskcell:hover{border-color:rgba(201,132,63,.28);background:linear-gradient(155deg,rgba(201,132,63,.05),rgba(5,10,16,.92));transform:translateY(-1px)}
+.deskcell .dk-dot{width:5px;height:5px;border-radius:50%;background:#3d4b5a;margin-bottom:1px}
+.deskcell b{font:900 1.3rem var(--mono);letter-spacing:-.02em;color:var(--text);font-variant-numeric:tabular-nums;line-height:1}
+.deskcell span{font:700 8px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#5c6c7d}
+.deskcell .dk-bar{height:2px;border-radius:2px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:2px}
+.deskcell .dk-bar i{display:block;height:100%;border-radius:inherit;background:#3d4b5a;width:60%}
+.deskcell.accent .dk-dot{background:var(--brown)}.deskcell.accent b{color:var(--brown)}
+.deskcell.accent2 .dk-dot{background:var(--gold)}.deskcell.accent2 b{color:var(--gold)}.deskcell.accent2 .dk-bar i{background:var(--gold)}
+.deskcell.accent3 .dk-dot{background:var(--green)}.deskcell.accent3 b{color:var(--green)}.deskcell.accent3 .dk-bar i{background:var(--green)}
+@media(max-width:820px){.deskstrip{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.deskstrip{display:flex;grid-template-columns:none;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;gap:7px;padding-bottom:8px;scrollbar-width:none}.deskstrip::-webkit-scrollbar{display:none}.deskcell{flex:0 0 122px;scroll-snap-align:start;padding:10px 12px 9px}.deskcell b{font-size:1.05rem}.deskcell span{font-size:7px}}
+
+/* ===== METHODOLOGY PANEL ===== */
+.methpanel{margin:14px 0 0;border:1px solid rgba(201,132,63,.13);border-radius:14px;overflow:hidden;background:rgba(201,132,63,.02)}
+.methhead{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(201,132,63,.1);background:rgba(201,132,63,.045)}
+.methhead b{font:800 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#e8c0a5}
+.methhead span{color:#5c6c7d;font-size:10px}
+.methgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.05)}
+.methcard{background:#070d14;padding:13px 15px}
+.methcard .mh-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}
+.methcard b{display:block;font-size:11px;font-weight:800;color:#c7d0da}
+.methcard .mh-tag{font:800 7.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--brown);background:rgba(201,132,63,.09);border:1px solid rgba(201,132,63,.18);border-radius:5px;padding:3px 6px;white-space:nowrap}
+.methcard p{margin:0;color:#647486;font-size:10px;line-height:1.6}
+.methcard p b.inline{color:#8a98a7;font-weight:700}
+@media(max-width:950px){.methgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.methhead{flex-direction:column;align-items:flex-start;padding:11px 13px;gap:4px}.methhead span{font-size:9px;line-height:1.5}.methgrid{display:flex;grid-template-columns:none;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;gap:8px;background:none;padding:10px;scrollbar-width:none}.methgrid::-webkit-scrollbar{display:none}.methcard{flex:0 0 176px;scroll-snap-align:start;border-radius:9px;border:1px solid rgba(255,255,255,.05);padding:10px 12px;height:168px;overflow:hidden}.methcard p{font-size:8.7px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;overflow:hidden}}
+
+/* ===== CONTROLS: search + sort ===== */
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:16px 0 4px}
+.searchbox{position:relative;flex:0 0 auto}
+.searchbox input{width:220px;padding:9px 14px 9px 34px;border-radius:999px;border:1px solid var(--line);background:#081019;color:var(--text);font-size:12px;font-family:inherit}
+.searchbox input:focus{outline:none;border-color:rgba(201,132,63,.5)}
+.searchbox svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:13px;height:13px;stroke:#5c6c7d;fill:none;stroke-width:2}
+.sortsel{padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:#081019;color:var(--text);font-size:12px;font-family:inherit;cursor:pointer}
+.sortsel:focus{outline:none;border-color:rgba(201,132,63,.5)}
+button.dirbtn{border:1px solid var(--line);background:#081019;color:#9fadbb;border-radius:999px;padding:9px 13px;cursor:pointer;font-size:12px;font-weight:700}
+button.dirbtn:hover{border-color:rgba(201,132,63,.4);color:var(--brown)}
+.resultcount{margin-left:auto;color:#5c6c7d;font:700 10px var(--mono);letter-spacing:.06em}
+@media(max-width:650px){.controls{flex-wrap:wrap}.searchbox input{width:150px}.resultcount{margin-left:0;flex-basis:100%}}
+
+/* ===== PROBABILITY CHART ===== */
+.chartpanel{margin:14px 0 4px;padding:18px 20px 16px;border:1px solid rgba(201,132,63,.15);border-radius:14px;background:linear-gradient(155deg,rgba(255,255,255,.025),rgba(5,10,16,.94))}
+.chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.chart-head b{font-size:13px;font-weight:800;color:#eef3f7}
+.chart-head span{display:block;margin-top:2px;color:#647486;font-size:9.5px;line-height:1.45;max-width:520px}
+.chart-legend{display:flex;align-items:center;gap:7px;font:700 9px var(--mono);color:#576578}
+.probchart{width:100%}
+.chartpanel{--gridcols:18px 150px 1fr 60px 52px}
+.pcx-axis{display:grid;grid-template-columns:var(--gridcols);gap:8px;padding:0 0 8px}
+.pcx-ticks{position:relative;height:12px;width:62%;margin:0 auto}
+.pcx-ticks i{position:absolute;top:0;transform:translateX(-50%);font:700 7.5px var(--mono);font-style:normal;color:#4c5b6b}
+.pcx-axis .pcx-lbl{font:700 7px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:#3d4b5a;align-self:end;text-align:right}
+.pcx-axis .pcx-lbl:first-of-type{text-align:left}
+.pcx-row{display:grid;grid-template-columns:var(--gridcols);align-items:center;gap:8px;padding:6.5px 0;cursor:pointer}
+.pcx-row:not(:last-child){border-bottom:1px solid rgba(255,255,255,.035)}
+.pcx-row:hover{background:rgba(255,255,255,.015)}
+.pcx-rank{font:800 9.5px var(--mono);color:#3d4b5a;font-variant-numeric:tabular-nums}
+.pcx-row:nth-child(-n+3) .pcx-rank{color:var(--gold)}
+.pcx-name{font-size:11px;font-weight:700;color:#c3ccd6;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pcx-sub{display:block;color:#576578;font-weight:600;font-size:8.5px;margin-top:1px}
+.pcx-plot{position:relative;height:14px;width:62%;margin:0 auto}
+.pcx-line{position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,.07)}
+.pcx-base{position:absolute;top:1px;bottom:1px;width:1px;background:rgba(244,185,66,.6)}
+.pcx-base:after{content:'';position:absolute;top:-2.5px;left:-2.5px;width:6px;height:6px;border-radius:50%;background:rgba(244,185,66,.6)}
+.pcx-conn{position:absolute;top:50%;height:1.4px;transform:translateY(-50%);background:rgba(201,132,63,.28)}
+.pcx-conn.neg{height:1.8px;background:rgba(201,132,63,.5)}
+.pcx-dot{position:absolute;top:50%;width:9.5px;height:9.5px;border-radius:50%;transform:translate(-50%,-50%);background:var(--brown);box-shadow:0 0 0 2px rgba(201,132,63,.16)}
+.pcx-heat{font:900 11.5px var(--mono);text-align:center;font-variant-numeric:tabular-nums;padding:3.5px 5px;border-radius:6px}
+.pcx-odds{font:800 10px var(--mono);text-align:right;font-variant-numeric:tabular-nums;color:var(--gold);background:rgba(244,185,66,.08);border:1px solid rgba(244,185,66,.2);border-radius:5px;padding:3px 6px}
+@media(max-width:960px){.chartpanel{--gridcols:14px 122px 1fr 48px}}
+@media(max-width:650px){.chart-head span{max-width:none}.chartpanel{padding:10px 10px 7px}.chartpanel{--gridcols:13px 96px 1fr 42px}.pcx-name{font-size:9.5px}.pcx-heat{font-size:9.5px;padding:2px 5px}.pcx-rank{font-size:8.5px}}
+
+/* ===== PROP CARDS ===== */
+.propgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin:5px 0 8px}
+.prop-card{--team-rgb:125,189,215;position:relative;isolation:isolate;overflow:hidden;min-height:248px;padding:17px 17px 15px;border:1px solid rgba(var(--team-rgb),.19);border-radius:3px 19px 3px 3px;background:radial-gradient(circle at 82% 3%,rgba(var(--team-rgb),.135),transparent 35%),linear-gradient(145deg,rgba(var(--team-rgb),.07) 0,rgba(255,255,255,.018) 30%,rgba(5,12,19,.96) 69%),#081018;box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 12px 32px rgba(0,0,0,.26);transition:transform .2s ease,border-color .2s ease}
+.prop-card:after{content:"SO";position:absolute;z-index:-2;right:10px;bottom:-8px;color:rgba(255,255,255,.022);font:900 64px var(--mono);letter-spacing:-.08em;pointer-events:none}
+.prop-card:hover{transform:translateY(-3px);border-color:rgba(var(--team-rgb),.35)}
+.pc-topline{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pc-team{font:800 7.5px var(--mono);letter-spacing:.13em;text-transform:uppercase;color:#7e93a6}
+.pc-id{font:700 7px var(--mono);letter-spacing:.07em;color:#435464}
+.pc-name{margin-top:6px;font-size:17px;font-weight:850;line-height:1.08;letter-spacing:-.035em;color:#f2f6f9;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pc-sub{margin-top:4px;color:#6f8191;font-size:9px}
+.pc-metarow{margin-top:11px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pc-fixture,.pc-line{display:flex;align-items:center;gap:4px;padding:4px 7px;border:1px solid rgba(255,255,255,.075);border-radius:6px;background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.025));font:700 8px var(--mono)}
+.pc-fixture{color:#8fa0af}.pc-fixture .fw{color:#c5d0da}.pc-line{color:#d3dbe3}
+.pc-pctrow{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:15px;padding-top:13px;border-top:1px solid rgba(255,255,255,.07)}
+.pc-pctmain{display:flex;align-items:baseline;gap:7px;min-width:0}
+.pc-pct{font:900 36px/1 var(--mono);letter-spacing:-.055em;font-variant-numeric:tabular-nums}
+.pc-pctlabel{color:#67798a;font:800 6.8px var(--mono);letter-spacing:.09em;text-transform:uppercase;white-space:nowrap}
+.pc-odds{flex:0 0 auto;margin-bottom:2px;padding:4px 7px;border:1px solid rgba(244,185,66,.28);border-radius:6px;background:linear-gradient(180deg,rgba(244,185,66,.15),rgba(244,185,66,.055));color:var(--gold);font:850 9px var(--mono);white-space:nowrap}
+.pc-verdict{min-height:37px;margin-top:8px;color:#8e9ba7;font-size:9.5px;line-height:1.5}.pc-verdict b{display:block;margin-bottom:2px;color:#cbd4dc;font:800 6.5px var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.pc-bar{height:3px;border-radius:3px;background:rgba(255,255,255,.065);margin-top:8px;overflow:hidden}
+.pc-bar i{display:block;height:100%;border-radius:inherit;width:var(--w);background:linear-gradient(90deg,color-mix(in srgb,var(--c) 72%,#fff),var(--c));box-shadow:0 0 10px var(--c);transition:width .5s ease}
+.pc-breakdown{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:14px}
+.pc-bd-item{min-width:0;padding-top:7px;border-top:2px solid rgba(255,255,255,.13);text-align:left}
+.pc-bd-item:first-child{border-top-color:var(--gold)}
+.pc-bd-val{font:850 10px var(--mono);color:#d4dce4;font-variant-numeric:tabular-nums}
+.pc-bd-lbl{margin-top:3px;font:750 5.8px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#566777;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ===== SCOUT CARD (redesigned prop card) ===== */
+.prop-card.scout{display:flex;flex-direction:column;min-height:326px;padding:0}
+.prop-card.scout:before{content:'';position:absolute;left:0;right:0;top:0;height:2px;z-index:2;background:linear-gradient(90deg,rgba(var(--team-rgb),.85),rgba(var(--team-rgb),.15) 65%,transparent);opacity:.8}
+.prop-card.scout:hover:before{opacity:1}
+.sc-head{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:16px 17px 0}
+.sc-idbox{min-width:0;flex:1 1 auto}
+.sc-name{font-size:16px;font-weight:850;line-height:1.16;letter-spacing:-.032em;color:#f2f6f9;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-meta{margin-top:4px;font:700 7.8px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:#7e93a6}
+.sc-conf{flex:0 0 auto;max-width:94px;text-align:center;padding:4px 7px;border-radius:7px;font:800 6.9px var(--mono);letter-spacing:.04em;text-transform:uppercase;line-height:1.35;white-space:normal}
+.sc-conf.hi{color:#22d97e;background:rgba(34,217,126,.1);border:1px solid rgba(34,217,126,.28)}
+.sc-conf.mid{color:#f4b942;background:rgba(244,185,66,.1);border:1px solid rgba(244,185,66,.28)}
+.sc-conf.lo{color:#ff5d6c;background:rgba(255,93,108,.1);border:1px solid rgba(255,93,108,.28)}
+.sc-eff{position:relative;z-index:1;margin:12px 16px 0;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.07);background:radial-gradient(circle at 50% 128%,rgba(var(--team-rgb),.14),transparent 62%),rgba(255,255,255,.015);display:flex;flex-direction:column;gap:7px}
+.sc-eff-row{display:flex;align-items:center;gap:8px}
+.sc-eff-lbl{flex:0 0 26px;font:750 7px var(--mono);letter-spacing:.05em;color:#67798a;text-transform:uppercase}
+.sc-eff-track{position:relative;flex:1 1 auto;height:5px;border-radius:3px;background:rgba(255,255,255,.07);overflow:hidden}
+.sc-eff-track i{display:block;height:100%;border-radius:inherit;width:var(--w);background:linear-gradient(90deg,color-mix(in srgb,var(--c) 65%,#fff),var(--c));box-shadow:0 0 6px var(--c)}
+.sc-eff-val{flex:0 0 32px;text-align:right;font:800 9.5px var(--mono);color:#d4dce4;font-variant-numeric:tabular-nums}
+.sc-main{position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin:11px 16px 0}
+.sc-pct{font:900 33px/1 var(--mono);letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.sc-pctwrap{display:flex;flex-direction:column}
+.sc-pctlabel{margin-top:2px;color:#67798a;font:800 6.6px var(--mono);letter-spacing:.09em;text-transform:uppercase}
+.sc-line{text-align:right;padding:4px 8px;border:1px solid rgba(255,255,255,.09);border-radius:6px;background:rgba(255,255,255,.03);font:800 9.5px var(--mono);color:#d3dbe3;white-space:nowrap}
+.sc-bar{position:relative;z-index:1;height:3px;border-radius:3px;background:rgba(255,255,255,.065);margin:9px 16px 0;overflow:hidden}
+.sc-bar i{display:block;height:100%;border-radius:inherit;width:var(--w);background:linear-gradient(90deg,color-mix(in srgb,var(--c) 72%,#fff),var(--c));box-shadow:0 0 10px var(--c)}
+.sc-stats{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin:12px 16px 0;background:rgba(255,255,255,.05);border-radius:8px;overflow:hidden}
+.sc-stat{background:#081018;padding:7px 8px;text-align:center}
+.sc-stat b{display:block;font:850 11px var(--mono);color:#d4dce4;font-variant-numeric:tabular-nums}
+.sc-stat span{display:block;margin-top:2px;font:750 6px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:#566777}
+.sc-hot{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:11px 16px 14px;padding:8px 10px;border-radius:8px;border:1px solid rgba(201,132,63,.16);background:rgba(201,132,63,.045)}
+.sc-hot b{font:800 6.8px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#c9a583}
+.sc-hot-val{font:900 13px var(--mono);color:var(--brown);font-variant-numeric:tabular-nums}
+@media(max-width:650px){.prop-card.scout{min-height:270px}.sc-head{padding:11px 12px 0}.sc-name{font-size:12.5px}.sc-meta{font-size:6.5px}.sc-conf{font-size:6px;padding:3px 6px;max-width:78px}.sc-eff{margin:8px 12px 0;padding:7px 9px;gap:5px}.sc-eff-lbl{flex-basis:20px}.sc-eff-val{flex-basis:26px;font-size:8px}.sc-main{margin:8px 12px 0}.sc-pct{font-size:24px}.sc-pctlabel{display:none}.sc-line{font-size:7.5px;padding:3px 6px}.sc-bar{margin:7px 12px 0}.sc-stats{margin:8px 12px 0}.sc-stat{padding:5px 4px}.sc-stat b{font-size:8.5px}.sc-stat span{font-size:4.8px}.sc-hot{margin:8px 12px 10px;padding:6px 8px}.sc-hot b{font-size:5.6px}.sc-hot-val{font-size:10px}}
+@media(max-width:950px){.propgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){body{padding:14px}.hero{padding:24px 18px 56px}.badge{position:static;display:inline-flex;margin-top:10px}.propgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.prop-card{min-height:225px;padding:13px 12px 12px;border-radius:3px 15px 3px 3px}.prop-card:after{font-size:48px}.pc-name{font-size:13px}.pc-sub{font-size:7.5px}.pc-fixture,.pc-line{font-size:6.7px;padding:3px 5px}.pc-pctrow{margin-top:11px;padding-top:10px}.pc-pct{font-size:27px}.pc-pctlabel{display:none}.pc-odds{font-size:7.3px;padding:3px 5px}.pc-verdict{min-height:33px;font-size:7.6px;line-height:1.4}.pc-verdict b{font-size:5.5px}.pc-breakdown{gap:4px;margin-top:10px}.pc-bd-item{padding-top:5px}.pc-bd-val{font-size:8px}.pc-bd-lbl{font-size:4.8px}}
+.empty-state{grid-column:1/-1;padding:40px 20px;text-align:center;color:#5c6c7d;font-size:12px}
+</style>
+<style id="so-mobile-repair-20260819">
+@media(max-width:700px){
+ html,body{width:100%;max-width:100%;overflow-x:hidden}body{padding:10px!important}.wrap{width:100%;min-width:0}.hero{padding:24px 18px 54px!important;min-height:0}.hero h1{font-size:2.65rem!important;line-height:.96}.hero p{font-size:.78rem!important;max-width:none}
+ .controls{display:flex!important;flex-wrap:wrap!important}
+}
+</style><style id="so-mobile-verified-pass-20260819">
+@media(max-width:700px){
+ .hero{border-radius:16px!important;padding:23px 17px!important}.hero h1{font-size:clamp(2.15rem,11vw,2.75rem)!important}.hero p{font-size:.77rem!important;line-height:1.58!important}
+}
+@media(max-width:700px){html,body{overflow-x:hidden!important}.wrap{width:100%!important;padding:10px!important}.hero{padding:20px 14px 48px!important;border-radius:20px!important;overflow:hidden!important}.hero h1{font-size:2.15rem!important;line-height:1!important}.hero p{font-size:.74rem!important;line-height:1.52!important;max-width:100%!important}}
+</style>
+<style id="so-shared-disclaimer-footer-20260824">.so-shared-footer{width:100%;max-width:100%;margin:28px 0 0;padding:28px clamp(18px,4vw,48px) 30px;border-top:1px solid rgba(255,255,255,.08);background:rgba(4,7,12,.82);display:flex;flex-direction:column;gap:14px;clear:both}.so-shared-footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}.so-shared-footer-logo{font-family:Inter,Arial,sans-serif;font-size:1rem;font-weight:900;letter-spacing:-.02em;color:#f0ece4;text-decoration:none}.so-shared-footer-logo span{color:#e8a020}.so-shared-footer-top p{margin:0;color:#4d6070;font-size:.75rem;letter-spacing:.06em}.so-shared-footer .footer-disclaimer{max-width:1100px;margin:0;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.28);font-size:.62rem;line-height:1.68;letter-spacing:.01em}@media(max-width:700px){.so-shared-footer{margin-top:20px;padding:22px 16px max(24px,env(safe-area-inset-bottom));text-align:center}.so-shared-footer-top{flex-direction:column}.so-shared-footer .footer-disclaimer{text-align:left;font-size:.6rem;overflow-wrap:anywhere}}</style>
+</head><body><div class="wrap">
+
+<section class="hero">
+<div class="ey">NBA · Player Props</div>
+<h1>Player Props</h1>
+<p>Short Open's model read on whether a player clears their scoring line — not a sportsbook price. Built from aggregated league data using our own formula, blending a player's scoring baseline with shooting efficiency and usage into one probability per game.</p>
+<div class="badge">MODEL · BETA</div>
+<div class="court-wrap" aria-hidden="true">
+ <svg viewBox="0 0 260 230">
+  <!-- court floor: warped/curved so it reads as wrapping into the ambient ring glow behind the hero, centered under the hoop -->
+  <defs>
+   <radialGradient id="courtFloorGrad" cx="66%" cy="14%" r="98%"><stop offset="0" stop-color="#7a4a24" stop-opacity=".97"/><stop offset="45%" stop-color="#5a331a" stop-opacity=".95"/><stop offset="100%" stop-color="#2c1809" stop-opacity=".92"/></radialGradient>
+  </defs>
+  <!-- court floor: one smooth, rounded, fully-filled wrap across the entire right side — no sharp peaks, no empty gaps — merging directly into the hoop pole's base -->
+  <path class="court-floor" d="M12,232 C51.33,210 89.3,185.3 130,166 C147.1,157.9 165.6,148.9 184.5,150 C203.2,151.1 222,159.6 236,172 C248.1,182.7 252.5,199.9 258,215 Q259,224 258,232 Z" fill="url(#courtFloorGrad)" stroke="#c9843f" stroke-width="1.8" stroke-opacity=".72" stroke-linejoin="round"/>
+  <!-- bright rim tracing the wrapped top edge as one continuous, tangent-matched curve — no seams anywhere along the wrap -->
+  <path class="court-floor-rim" d="M130,166 C147.1,157.9 165.6,148.9 184.5,150 C203.2,151.1 222,159.6 236,172" fill="none" stroke="#ffb066" stroke-width="1.6" stroke-linecap="round" opacity=".65"/>
+  <!-- base plate where the pole visibly plants into the floor -->
+  <ellipse class="court-floor-base" cx="184.5" cy="153" rx="16" ry="5.5" fill="#3a2211" stroke="#c9843f" stroke-width="1.3" opacity=".85"/>
+  <ellipse cx="184.5" cy="152" rx="9" ry="2.6" fill="#241408" opacity=".7"/>
+  <!-- short open probability meter — small live-style ring readout beside the shortopen circle, replacing the old freeform loop -->
+  <g class="prob-meter" transform="translate(204,199)">
+   <circle r="19" fill="rgba(6,3,1,.35)" stroke="rgba(34,217,126,.22)" stroke-width="3.4"/>
+   <circle id="probMeterRing" r="19" fill="none" stroke="#22d97e" stroke-width="3.4" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="60" transform="rotate(-90)"/>
+   <text id="probMeterPct" x="0" y="2" text-anchor="middle" font-family="'DM Mono',monospace" font-weight="800" font-size="10.5" fill="#c8ffe4">50%</text>
+   <text id="probMeterLabel" x="0" y="13" text-anchor="middle" font-family="'DM Mono',monospace" font-weight="800" font-size="6" letter-spacing=".08em" fill="#22d97e">TS</text>
+  </g>
+  <ellipse class="court-floor-ring" cx="128" cy="204" rx="27" ry="23" fill="none" stroke="#c9843f" stroke-width="1.4" opacity=".5"/>
+  <text x="128" y="208" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-weight="900" font-size="8.5" fill="#c9843f" opacity=".65" letter-spacing="-.3">shortopen</text>
+  <!-- backboard + hoop, flat silhouette/outline, upgraded assembly -->
+  <rect x="182" y="34" width="5" height="119" rx="1.5" class="silo" opacity=".85"/>
+  <rect x="150" y="30" width="36" height="28" rx="2" fill="rgba(201,132,63,.09)" stroke="#c9843f" stroke-width="2" opacity=".85"/>
+  <rect x="160" y="42" width="15" height="11" rx="1" fill="none" stroke="#e8c0a5" stroke-width="1.1" opacity=".55"/>
+  <rect x="146" y="58" width="10" height="4" rx="1" fill="#8a5a2e" opacity=".75"/>
+  <ellipse cx="150" cy="70" rx="22" ry="6" fill="none" stroke="#ff8a3d" stroke-width="3.6"/>
+  <ellipse cx="150" cy="70" rx="22" ry="6" fill="none" stroke="#ffd9b0" stroke-width="1" opacity=".55"/>
+  <g stroke="#e8c0a0" stroke-width="1" opacity=".5" fill="none">
+   <path d="M132 71l4 14M140 71l3 15M150 71l0 16M160 71l-3 15M168 71l-4 14"/>
+   <path d="M136 78l10 4M146 82l8 4M156 82l-8 4M164 78l-10 4"/>
+  </g>
+  <g class="net-flash">
+   <path d="M132 71l4 14M140 71l3 15M150 71l0 16M160 71l-3 15M168 71l-4 14" stroke="#fff2e0" stroke-width="1.3" opacity=".9" fill="none"/>
+  </g>
+  <text class="make-flash" x="150" y="52" text-anchor="middle" font-family="DM Mono,monospace" font-weight="700" font-size="13" fill="#22d97e">+3PT</text>
+  <!-- ball flight arc trail -->
+  <path class="arc-trail" d="M90,103 Q118,36 150,70"/>
+  <!-- flat silhouette shooter, lower-left, mid follow-through: head, torso, both legs, both arms -->
+  <g class="silo" transform="translate(0,8)">
+   <!-- back leg, planted -->
+   <path d="M50 168 C46 180 43 194 45 208 L52 208 C52 195 54 182 58 170 Z"/>
+   <!-- front leg, striding -->
+   <path d="M58 170 C62 183 63 196 68 208 L75 208 C71 195 68 181 66 167 Z"/>
+   <!-- torso -->
+   <path d="M45 130 C44 145 45 158 50 170 L66 168 C67 154 66 141 63 128 C57 124 50 125 45 130 Z"/>
+   <!-- head -->
+   <circle cx="55" cy="118" r="10.5"/>
+   <!-- guide arm, bent toward chest, animated through a shooting motion -->
+   <g class="guide-arm"><path d="M46 133 C36 136 30 143 27 152 L33 156 C37 148 42 142 49 138 Z"/></g>
+   <!-- shooting arm, raised in follow-through, animated through a shooting motion -->
+   <g class="shoot-arm"><path d="M60 130 C68 118 76 106 84 96 L91 101 C82 111 74 122 67 135 Z"/>
+   <!-- shooting hand -->
+   <circle cx="90" cy="97" r="4.5"/></g>
+  </g>
+ </svg>
+ <script>(function(){
+  try{
+   var stats=[['TS','true shooting'],['USG','usage'],['EFF','efficiency'],['AST%','assist rate'],['3PT%','three-point rate']];
+   var ring=document.getElementById('probMeterRing'),pctEl=document.getElementById('probMeterPct'),lblEl=document.getElementById('probMeterLabel');
+   var C=119.4;
+   function roll(){
+    var s=stats[Math.floor(Math.random()*stats.length)];
+    var pct=Math.round(30+Math.random()*45);
+    if(ring)ring.style.strokeDashoffset=(C*(1-pct/100)).toFixed(1);
+    if(pctEl)pctEl.textContent=pct+'%';
+    if(lblEl)lblEl.textContent=s[0];
+   }
+   roll();
+   if(!window.matchMedia||!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    setInterval(roll,3600);
+   }
+  }catch(e){}
+ })();</script>
+ <div class="props-ball-track" aria-hidden="true">
+  <svg class="props-ball" viewBox="0 0 64 64" aria-label="Short Open basketball"><defs><radialGradient id="soBallOrange" cx="34%" cy="25%" r="72%"><stop offset="0" stop-color="#ffb066"/><stop offset=".5" stop-color="#e8843d"/><stop offset="1" stop-color="#8a4614"/></radialGradient></defs><circle cx="32" cy="32" r="29" fill="url(#soBallOrange)" stroke="#2a1608" stroke-width="2.2"/><path d="M2 32h60M32 3v58M11 11c8 8 8 34 0 42M53 11c-8 8-8 34 0 42" fill="none" stroke="#2a1608" stroke-width="2"/></svg>
+ </div>
+</div>
+</section>
+
+<div class="deskstrip">
+ <div class="deskcell accent"><i class="dk-dot"></i><b id="dsPlayers">30</b><span>Players Tracked</span></div>
+ <div class="deskcell"><i class="dk-dot"></i><b>1</b><span>Prop Category</span></div>
+ <div class="deskcell accent2"><i class="dk-dot"></i><b id="dsAvg">—</b><span>Avg. Model Read</span><div class="dk-bar"><i id="dsAvgBar" style="width:0%"></i></div></div>
+ <div class="deskcell accent3"><i class="dk-dot"></i><b id="dsHigh">—</b><span>Highest Read</span><div class="dk-bar"><i id="dsHighBar" style="width:0%"></i></div></div>
+ <div class="deskcell"><i class="dk-dot"></i><b id="dsTop">—</b><span>League Leader</span></div>
+</div>
+
+<div class="methpanel">
+ <div class="methhead"><b>Model Methodology</b><span>The short open model blends three visible inputs into the probability shown on each card — nothing is a hidden black box.</span></div>
+ <div class="methgrid">
+  <div class="methcard"><div class="mh-row"><b>Scoring Baseline</b><span class="mh-tag">Season avg</span></div><p>Every read starts from the player's own season-long <b class="inline">points per game</b>, built from aggregated league data — the anchor the rest of the model adjusts around.</p></div>
+  <div class="methcard"><div class="mh-row"><b>Efficiency Signal</b><span class="mh-tag">TS% weighted</span></div><p>True shooting percentage nudges the read up or down from that baseline — an efficient high-volume scorer clears the line more consistently than a volume-only scorer with the same average.</p></div>
+  <div class="methcard"><div class="mh-row"><b>Usage Adjustment</b><span class="mh-tag">Role-scaled</span></div><p>Usage rate scales how much offensive control a player actually holds, tightening or loosening the read to reflect how central they are to the offense on a given night.</p></div>
+  <div class="methcard"><div class="mh-row"><b>Line Setting</b><span class="mh-tag">Model-derived</span></div><p>The points line itself is set just below the player's season average, giving our own formula a consistent over/under frame to price against for every player on the board.</p></div>
+ </div>
+</div>
+
+<div class="controls">
+ <div class="searchbox"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input type="text" id="searchInput" placeholder="Search players…" autocomplete="off"></div>
+ <select class="sortsel" id="sortSelect">
+  <option value="pct">Sort: Model Read</option>
+  <option value="ppg">Sort: Points Per Game</option>
+  <option value="apg">Sort: Assists Per Game</option>
+  <option value="rpg">Sort: Rebounds Per Game</option>
+  <option value="pra_pg">Sort: PRA Per Game</option>
+  <option value="ts_pct">Sort: True Shooting %</option>
+  <option value="usg_pct">Sort: Usage %</option>
+  <option value="hot">Sort: Hot Hand Score</option>
+  <option value="name">Sort: Name</option>
+ </select>
+ <button class="dirbtn" id="dirBtn" type="button" title="Toggle sort direction">High &rarr; Low</button>
+ <span class="resultcount" id="resultCount"></span>
+</div>
+
+<div class="chartpanel">
+ <div class="chart-head">
+  <div><b id="chartTitle">Points Probability</b><span>Ranked by the current sort — the line runs from the league scoring baseline out to each player's model read; click a row to sort by that player's read.</span></div>
+  <div class="chart-legend"><span style="display:flex;align-items:center;gap:5px"><i style="background:var(--gold);border-radius:50%;width:7px;height:7px;display:inline-block"></i>baseline</span><span style="display:flex;align-items:center;gap:5px"><i style="background:var(--brown);border-radius:50%;width:7px;height:7px;display:inline-block"></i>model read</span></div>
+ </div>
+ <div id="probChart" class="probchart"></div>
+</div>
+
+<div class="propgrid" id="propGrid"></div>
+
+</div>
+<footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>© 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span style="color:#e8c078;font-weight:600">1-800-GAMBLER</span>. <a href="terms.html" style="text-decoration:underline;color:#e8c078">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p></footer>
+
+<script>
+var PLAYERS=[{"team": "Oklahoma City Thunder", "name": "Shai Gilgeous-Alexander", "min_tot": 3285, "mpg": 36.1, "poss": 6645, "pace48": 97.1, "pts_tot": 2531, "ppg": 27.8, "ast_tot": 567, "apg": 6.2, "trb_tot": 336, "rpg": 3.7, "orb_pg": 0.8, "drb_pg": 2.9, "stl_tot": 114, "spg": 1.25, "blk_tot": 65, "bpg": 0.71, "tov_tot": 197, "topg": 2.16, "fg_pct": 53.7, "p3_pct": 37.3, "p3a_pg": 3.9, "ts_pct": 65.2, "efg_pct": 57.9, "usg_pct": 29.2, "pra_tot": 3434, "pra_pg": 37.7, "pos": "G"}, {"team": "New York Knicks", "name": "Jalen Brunson", "min_tot": 3679, "mpg": 40.4, "poss": 7295, "pace48": 95.2, "pts_tot": 2467, "ppg": 27.1, "ast_tot": 618, "apg": 6.8, "trb_tot": 307, "rpg": 3.4, "orb_pg": 0.7, "drb_pg": 2.7, "stl_tot": 80, "spg": 0.88, "blk_tot": 8, "bpg": 0.09, "tov_tot": 228, "topg": 2.51, "fg_pct": 46.7, "p3_pct": 36.8, "p3a_pg": 7.2, "ts_pct": 57.9, "efg_pct": 53, "usg_pct": 28.7, "pra_tot": 3392, "pra_pg": 37.3, "pos": "G"}, {"team": "Cleveland Cavaliers", "name": "Donovan Mitchell", "min_tot": 3045, "mpg": 33.5, "poss": 6224, "pace48": 98.1, "pts_tot": 2420, "ppg": 26.6, "ast_tot": 453, "apg": 5.0, "trb_tot": 403, "rpg": 4.4, "orb_pg": 0.9, "drb_pg": 3.6, "stl_tot": 125, "spg": 1.37, "blk_tot": 25, "bpg": 0.27, "tov_tot": 245, "topg": 2.69, "fg_pct": 47.6, "p3_pct": 35.6, "p3a_pg": 8.5, "ts_pct": 60.1, "efg_pct": 55.4, "usg_pct": 32.4, "pra_tot": 3276, "pra_pg": 36.0, "pos": "G"}, {"team": "Philadelphia 76ers", "name": "Tyrese Maxey", "min_tot": 3369, "mpg": 37.0, "poss": 6782, "pace48": 96.6, "pts_tot": 2240, "ppg": 24.6, "ast_tot": 526, "apg": 5.8, "trb_tot": 333, "rpg": 3.7, "orb_pg": 0.6, "drb_pg": 3.0, "stl_tot": 139, "spg": 1.53, "blk_tot": 59, "bpg": 0.65, "tov_tot": 194, "topg": 2.13, "fg_pct": 46.1, "p3_pct": 36.6, "p3a_pg": 7.4, "ts_pct": 58.5, "efg_pct": 53.3, "usg_pct": 27.5, "pra_tot": 3099, "pra_pg": 34.1, "pos": "G"}, {"team": "Boston Celtics", "name": "Jaylen Brown", "min_tot": 2930, "mpg": 32.2, "poss": 5790, "pace48": 94.9, "pts_tot": 2218, "ppg": 24.4, "ast_tot": 387, "apg": 4.3, "trb_tot": 532, "rpg": 5.8, "orb_pg": 1.2, "drb_pg": 4.6, "stl_tot": 78, "spg": 0.86, "blk_tot": 34, "bpg": 0.37, "tov_tot": 284, "topg": 3.12, "fg_pct": 47.5, "p3_pct": 35.2, "p3a_pg": 4.9, "ts_pct": 57.1, "efg_pct": 52.2, "usg_pct": 34.5, "pra_tot": 3137, "pra_pg": 34.5, "pos": "F"}, {"team": "Los Angeles Lakers", "name": "Luka Doncic", "min_tot": 2510, "mpg": 27.6, "poss": 5098, "pace48": 97.5, "pts_tot": 2143, "ppg": 23.5, "ast_tot": 530, "apg": 5.8, "trb_tot": 495, "rpg": 5.4, "orb_pg": 0.7, "drb_pg": 4.8, "stl_tot": 105, "spg": 1.15, "blk_tot": 34, "bpg": 0.37, "tov_tot": 255, "topg": 2.8, "fg_pct": 47.6, "p3_pct": 36.6, "p3a_pg": 7.6, "ts_pct": 61.5, "efg_pct": 56.3, "usg_pct": 35.2, "pra_tot": 3168, "pra_pg": 34.8, "pos": "G"}, {"team": "San Antonio Spurs", "name": "Victor Wembanyama", "min_tot": 2665, "mpg": 29.3, "poss": 5310, "pace48": 95.6, "pts_tot": 2124, "ppg": 23.3, "ast_tot": 258, "apg": 2.8, "trb_tot": 975, "rpg": 10.7, "orb_pg": 2.9, "drb_pg": 7.9, "stl_tot": 87, "spg": 0.96, "blk_tot": 275, "bpg": 3.02, "tov_tot": 214, "topg": 2.35, "fg_pct": 50.5, "p3_pct": 34.7, "p3a_pg": 5.1, "ts_pct": 62.1, "efg_pct": 56.1, "usg_pct": 32.8, "pra_tot": 3357, "pra_pg": 36.9, "pos": "C"}, {"team": "Houston Rockets", "name": "Kevin Durant", "min_tot": 3172, "mpg": 34.9, "poss": 6245, "pace48": 94.5, "pts_tot": 2049, "ppg": 22.5, "ast_tot": 376, "apg": 4.1, "trb_tot": 432, "rpg": 4.7, "orb_pg": 0.9, "drb_pg": 3.8, "stl_tot": 64, "spg": 0.7, "blk_tot": 72, "bpg": 0.79, "tov_tot": 255, "topg": 2.8, "fg_pct": 52.1, "p3_pct": 41.2, "p3a_pg": 5.0, "ts_pct": 64.2, "efg_pct": 58.8, "usg_pct": 26.8, "pra_tot": 2857, "pra_pg": 31.4, "pos": "F"}, {"team": "Denver Nuggets", "name": "Jamal Murray", "min_tot": 3041, "mpg": 33.4, "poss": 6200, "pace48": 97.9, "pts_tot": 2047, "ppg": 22.5, "ast_tot": 569, "apg": 6.3, "trb_tot": 360, "rpg": 4.0, "orb_pg": 0.6, "drb_pg": 3.4, "stl_tot": 71, "spg": 0.78, "blk_tot": 31, "bpg": 0.34, "tov_tot": 184, "topg": 2.02, "fg_pct": 47.2, "p3_pct": 42.3, "p3a_pg": 6.6, "ts_pct": 61, "efg_pct": 55.8, "usg_pct": 26.5, "pra_tot": 2976, "pra_pg": 32.7, "pos": "G"}, {"team": "Minnesota Timberwolves", "name": "Anthony Edwards", "min_tot": 2724, "mpg": 29.9, "poss": 5595, "pace48": 98.6, "pts_tot": 1973, "ppg": 21.7, "ast_tot": 253, "apg": 2.8, "trb_tot": 359, "rpg": 3.9, "orb_pg": 0.6, "drb_pg": 3.3, "stl_tot": 88, "spg": 0.97, "blk_tot": 56, "bpg": 0.62, "tov_tot": 199, "topg": 2.19, "fg_pct": 48.1, "p3_pct": 39, "p3a_pg": 6.3, "ts_pct": 60.7, "efg_pct": 56.1, "usg_pct": 29.2, "pra_tot": 2585, "pra_pg": 28.4, "pos": "F"}, {"team": "Denver Nuggets", "name": "Nikola Jokic", "min_tot": 2873, "mpg": 31.6, "poss": 5946, "pace48": 99.3, "pts_tot": 1954, "ppg": 21.5, "ast_tot": 754, "apg": 8.3, "trb_tot": 915, "rpg": 10.1, "orb_pg": 2.3, "drb_pg": 7.7, "stl_tot": 98, "spg": 1.08, "blk_tot": 58, "bpg": 0.64, "tov_tot": 266, "topg": 2.92, "fg_pct": 55.7, "p3_pct": 36, "p3a_pg": 3.6, "ts_pct": 65.9, "efg_pct": 60.5, "usg_pct": 27.1, "pra_tot": 3623, "pra_pg": 39.8, "pos": "C"}, {"team": "Detroit Pistons", "name": "Cade Cunningham", "min_tot": 2798, "mpg": 30.7, "poss": 5683, "pace48": 97.5, "pts_tot": 1925, "ppg": 21.2, "ast_tot": 739, "apg": 8.1, "trb_tot": 427, "rpg": 4.7, "orb_pg": 1.1, "drb_pg": 3.6, "stl_tot": 107, "spg": 1.18, "blk_tot": 62, "bpg": 0.68, "tov_tot": 315, "topg": 3.46, "fg_pct": 45.5, "p3_pct": 35.5, "p3a_pg": 5.1, "ts_pct": 56.6, "efg_pct": 51.1, "usg_pct": 31.7, "pra_tot": 3091, "pra_pg": 34.0, "pos": "G"}, {"team": "Minnesota Timberwolves", "name": "Julius Randle", "min_tot": 3274, "mpg": 36.0, "poss": 6729, "pace48": 98.7, "pts_tot": 1859, "ppg": 20.4, "ast_tot": 431, "apg": 4.7, "trb_tot": 622, "rpg": 6.8, "orb_pg": 1.9, "drb_pg": 4.9, "stl_tot": 92, "spg": 1.01, "blk_tot": 19, "bpg": 0.21, "tov_tot": 251, "topg": 2.76, "fg_pct": 46.9, "p3_pct": 30.7, "p3a_pg": 4.3, "ts_pct": 57.2, "efg_pct": 51.2, "usg_pct": 25.1, "pra_tot": 2912, "pra_pg": 32.0, "pos": "G"}, {"team": "New York Knicks", "name": "Karl-Anthony Towns", "min_tot": 2985, "mpg": 32.8, "poss": 5979, "pace48": 96.1, "pts_tot": 1806, "ppg": 19.8, "ast_tot": 320, "apg": 3.5, "trb_tot": 1090, "rpg": 12.0, "orb_pg": 3.2, "drb_pg": 8.8, "stl_tot": 89, "spg": 0.98, "blk_tot": 64, "bpg": 0.7, "tov_tot": 237, "topg": 2.6, "fg_pct": 50.9, "p3_pct": 38.2, "p3a_pg": 4.0, "ts_pct": 62.9, "efg_pct": 56.6, "usg_pct": 25.3, "pra_tot": 3216, "pra_pg": 35.3, "pos": "C"}, {"team": "LA Clippers", "name": "Kawhi Leonard", "min_tot": 2141, "mpg": 23.5, "poss": 4249, "pace48": 95.3, "pts_tot": 1784, "ppg": 19.6, "ast_tot": 232, "apg": 2.5, "trb_tot": 404, "rpg": 4.4, "orb_pg": 0.9, "drb_pg": 3.5, "stl_tot": 120, "spg": 1.32, "blk_tot": 27, "bpg": 0.3, "tov_tot": 133, "topg": 1.46, "fg_pct": 50.4, "p3_pct": 38.6, "p3a_pg": 4.8, "ts_pct": 62.8, "efg_pct": 57.2, "usg_pct": 32.6, "pra_tot": 2420, "pra_pg": 26.6, "pos": "G"}, {"team": "Orlando Magic", "name": "Paolo Banchero", "min_tot": 2833, "mpg": 31.1, "poss": 5840, "pace48": 98.9, "pts_tot": 1783, "ppg": 19.6, "ast_tot": 417, "apg": 4.6, "trb_tot": 667, "rpg": 7.3, "orb_pg": 1.2, "drb_pg": 6.1, "stl_tot": 61, "spg": 0.67, "blk_tot": 45, "bpg": 0.49, "tov_tot": 246, "topg": 2.7, "fg_pct": 45.5, "p3_pct": 30.9, "p3a_pg": 3.5, "ts_pct": 56.2, "efg_pct": 49.3, "usg_pct": 28.4, "pra_tot": 2867, "pra_pg": 31.5, "pos": "G"}, {"team": "Orlando Magic", "name": "Desmond Bane", "min_tot": 3042, "mpg": 33.4, "poss": 6256, "pace48": 98.7, "pts_tot": 1774, "ppg": 19.5, "ast_tot": 351, "apg": 3.9, "trb_tot": 371, "rpg": 4.1, "orb_pg": 1.3, "drb_pg": 2.7, "stl_tot": 99, "spg": 1.09, "blk_tot": 39, "bpg": 0.43, "tov_tot": 175, "topg": 1.92, "fg_pct": 47.6, "p3_pct": 39.6, "p3a_pg": 5.3, "ts_pct": 60.1, "efg_pct": 54.9, "usg_pct": 23.3, "pra_tot": 2496, "pra_pg": 27.4, "pos": "G"}, {"team": "Phoenix Suns", "name": "Devin Booker", "min_tot": 2546, "mpg": 28.0, "poss": 5191, "pace48": 97.9, "pts_tot": 1753, "ppg": 19.3, "ast_tot": 405, "apg": 4.5, "trb_tot": 265, "rpg": 2.9, "orb_pg": 0.8, "drb_pg": 2.1, "stl_tot": 52, "spg": 0.57, "blk_tot": 19, "bpg": 0.21, "tov_tot": 218, "topg": 2.4, "fg_pct": 45.6, "p3_pct": 32.6, "p3a_pg": 4.3, "ts_pct": 58.4, "efg_pct": 50.6, "usg_pct": 29.6, "pra_tot": 2423, "pra_pg": 26.6, "pos": "G"}, {"team": "Atlanta Hawks", "name": "Jalen Johnson", "min_tot": 2801, "mpg": 30.8, "poss": 5877, "pace48": 100.7, "pts_tot": 1738, "ppg": 19.1, "ast_tot": 597, "apg": 6.6, "trb_tot": 787, "rpg": 8.6, "orb_pg": 1.4, "drb_pg": 7.3, "stl_tot": 94, "spg": 1.03, "blk_tot": 33, "bpg": 0.36, "tov_tot": 258, "topg": 2.84, "fg_pct": 48.5, "p3_pct": 34.7, "p3a_pg": 4.1, "ts_pct": 57.9, "efg_pct": 53.4, "usg_pct": 27, "pra_tot": 3122, "pra_pg": 34.3, "pos": "G"}, {"team": "Toronto Raptors", "name": "Brandon Ingram", "min_tot": 2819, "mpg": 31.0, "poss": 5694, "pace48": 97.0, "pts_tot": 1715, "ppg": 18.8, "ast_tot": 295, "apg": 3.2, "trb_tot": 446, "rpg": 4.9, "orb_pg": 0.9, "drb_pg": 4.0, "stl_tot": 61, "spg": 0.67, "blk_tot": 59, "bpg": 0.65, "tov_tot": 197, "topg": 2.16, "fg_pct": 47, "p3_pct": 38.3, "p3a_pg": 4.0, "ts_pct": 56.7, "efg_pct": 52.2, "usg_pct": 26.7, "pra_tot": 2456, "pra_pg": 27.0, "pos": "F"}, {"team": "Atlanta Hawks", "name": "Nickeil Alexander-Walker", "min_tot": 3047, "mpg": 33.5, "poss": 6382, "pace48": 100.5, "pts_tot": 1706, "ppg": 18.7, "ast_tot": 301, "apg": 3.3, "trb_tot": 282, "rpg": 3.1, "orb_pg": 0.7, "drb_pg": 2.4, "stl_tot": 105, "spg": 1.15, "blk_tot": 47, "bpg": 0.52, "tov_tot": 178, "topg": 1.96, "fg_pct": 45.4, "p3_pct": 40, "p3a_pg": 7.4, "ts_pct": 60.6, "efg_pct": 56, "usg_pct": 22, "pra_tot": 2289, "pra_pg": 25.2, "pos": "G"}, {"team": "Portland Trail Blazers", "name": "Deni Avdija", "min_tot": 2454, "mpg": 27.0, "poss": 5093, "pace48": 99.6, "pts_tot": 1687, "ppg": 18.5, "ast_tot": 463, "apg": 5.1, "trb_tot": 482, "rpg": 5.3, "orb_pg": 1.1, "drb_pg": 4.2, "stl_tot": 52, "spg": 0.57, "blk_tot": 44, "bpg": 0.48, "tov_tot": 267, "topg": 2.93, "fg_pct": 46.1, "p3_pct": 32, "p3a_pg": 4.5, "ts_pct": 59.6, "efg_pct": 51.8, "usg_pct": 29.9, "pra_tot": 2632, "pra_pg": 28.9, "pos": "G"}, {"team": "San Antonio Spurs", "name": "De'Aaron Fox", "min_tot": 3023, "mpg": 33.2, "poss": 6130, "pace48": 97.3, "pts_tot": 1663, "ppg": 18.3, "ast_tot": 570, "apg": 6.3, "trb_tot": 349, "rpg": 3.8, "orb_pg": 1.0, "drb_pg": 2.9, "stl_tot": 116, "spg": 1.27, "blk_tot": 28, "bpg": 0.31, "tov_tot": 207, "topg": 2.27, "fg_pct": 47, "p3_pct": 32.4, "p3a_pg": 5.5, "ts_pct": 56, "efg_pct": 53, "usg_pct": 24.7, "pra_tot": 2582, "pra_pg": 28.4, "pos": "G"}, {"team": "Toronto Raptors", "name": "Scottie Barnes", "min_tot": 3036, "mpg": 33.4, "poss": 6124, "pace48": 96.8, "pts_tot": 1617, "ppg": 17.8, "ast_tot": 534, "apg": 5.9, "trb_tot": 643, "rpg": 7.1, "orb_pg": 2.0, "drb_pg": 5.1, "stl_tot": 122, "spg": 1.34, "blk_tot": 127, "bpg": 1.4, "tov_tot": 234, "topg": 2.57, "fg_pct": 50.7, "p3_pct": 31, "p3a_pg": 2.7, "ts_pct": 58, "efg_pct": 53.8, "usg_pct": 24.1, "pra_tot": 2794, "pra_pg": 30.7, "pos": "C"}, {"team": "Houston Rockets", "name": "Alperen Sengun", "min_tot": 2708, "mpg": 29.8, "poss": 5347, "pace48": 94.8, "pts_tot": 1588, "ppg": 17.5, "ast_tot": 473, "apg": 5.2, "trb_tot": 702, "rpg": 7.7, "orb_pg": 2.8, "drb_pg": 4.9, "stl_tot": 96, "spg": 1.05, "blk_tot": 85, "bpg": 0.93, "tov_tot": 246, "topg": 2.7, "fg_pct": 51.5, "p3_pct": 29.5, "p3a_pg": 1.5, "ts_pct": 56.5, "efg_pct": 53.2, "usg_pct": 28, "pra_tot": 2763, "pra_pg": 30.4, "pos": "G"}, {"team": "Houston Rockets", "name": "Amen Thompson", "min_tot": 3291, "mpg": 36.2, "poss": 6501, "pace48": 94.8, "pts_tot": 1558, "ppg": 17.1, "ast_tot": 454, "apg": 5.0, "trb_tot": 656, "rpg": 7.2, "orb_pg": 2.9, "drb_pg": 4.3, "stl_tot": 131, "spg": 1.44, "blk_tot": 55, "bpg": 0.6, "tov_tot": 205, "topg": 2.25, "fg_pct": 53, "p3_pct": 21.8, "p3a_pg": 1.4, "ts_pct": 59, "efg_pct": 54.2, "usg_pct": 21.4, "pra_tot": 2668, "pra_pg": 29.3, "pos": "G"}, {"team": "San Antonio Spurs", "name": "Stephon Castle", "min_tot": 2884, "mpg": 31.7, "poss": 5865, "pace48": 97.6, "pts_tot": 1547, "ppg": 17.0, "ast_tot": 644, "apg": 7.1, "trb_tot": 477, "rpg": 5.2, "orb_pg": 1.6, "drb_pg": 3.6, "stl_tot": 99, "spg": 1.09, "blk_tot": 26, "bpg": 0.29, "tov_tot": 297, "topg": 3.26, "fg_pct": 46.7, "p3_pct": 33.7, "p3a_pg": 3.8, "ts_pct": 57.7, "efg_pct": 51.9, "usg_pct": 25.4, "pra_tot": 2668, "pra_pg": 29.3, "pos": "G"}, {"team": "Detroit Pistons", "name": "Jalen Duren", "min_tot": 2458, "mpg": 27.0, "poss": 4993, "pace48": 97.5, "pts_tot": 1508, "ppg": 16.6, "ast_tot": 168, "apg": 1.8, "trb_tot": 857, "rpg": 9.4, "orb_pg": 3.3, "drb_pg": 6.1, "stl_tot": 66, "spg": 0.73, "blk_tot": 76, "bpg": 0.84, "tov_tot": 162, "topg": 1.78, "fg_pct": 63.4, "p3_pct": null, "p3a_pg": 0, "ts_pct": 67.3, "efg_pct": 63.4, "usg_pct": 24, "pra_tot": 2533, "pra_pg": 27.8, "pos": "F"}, {"team": "Charlotte Hornets", "name": "Kon Knueppel", "min_tot": 2636, "mpg": 29.0, "poss": 5337, "pace48": 97.2, "pts_tot": 1498, "ppg": 16.5, "ast_tot": 274, "apg": 3.0, "trb_tot": 432, "rpg": 4.7, "orb_pg": 1.2, "drb_pg": 3.6, "stl_tot": 57, "spg": 0.63, "blk_tot": 19, "bpg": 0.21, "tov_tot": 161, "topg": 1.77, "fg_pct": 47.5, "p3_pct": 42.5, "p3a_pg": 7.1, "ts_pct": 63.3, "efg_pct": 60.1, "usg_pct": 22.4, "pra_tot": 2204, "pra_pg": 24.2, "pos": "G"}, {"team": "Los Angeles Lakers", "name": "LeBron James", "min_tot": 2416, "mpg": 26.5, "poss": 4799, "pace48": 95.3, "pts_tot": 1488, "ppg": 16.4, "ast_tot": 505, "apg": 5.5, "trb_tot": 431, "rpg": 4.7, "orb_pg": 0.6, "drb_pg": 4.1, "stl_tot": 85, "spg": 0.93, "blk_tot": 38, "bpg": 0.42, "tov_tot": 217, "topg": 2.38, "fg_pct": 50.5, "p3_pct": 31.9, "p3a_pg": 3.2, "ts_pct": 58.6, "efg_pct": 54.8, "usg_pct": 28, "pra_tot": 2424, "pra_pg": 26.6, "pos": "G"}];
+
+var TEAM_RGB={
+ 'Atlanta Hawks':'225,68,52','Boston Celtics':'0,122,85','Brooklyn Nets':'20,20,20','Charlotte Hornets':'0,120,140',
+ 'Chicago Bulls':'206,17,65','Cleveland Cavaliers':'134,0,56','Dallas Mavericks':'0,83,188','Denver Nuggets':'13,34,64',
+ 'Detroit Pistons':'29,66,138','Golden State Warriors':'29,66,138','Houston Rockets':'206,17,65','Indiana Pacers':'0,45,98',
+ 'LA Clippers':'200,16,46','Los Angeles Lakers':'85,37,130','Memphis Grizzlies':'93,118,169','Miami Heat':'152,0,46',
+ 'Milwaukee Bucks':'0,71,27','Minnesota Timberwolves':'12,35,64','New Orleans Pelicans':'0,22,65','New York Knicks':'0,107,182',
+ 'Oklahoma City Thunder':'0,125,195','Orlando Magic':'0,125,197','Philadelphia 76ers':'0,107,182','Phoenix Suns':'229,95,32',
+ 'Portland Trail Blazers':'224,58,62','Sacramento Kings':'91,43,130','San Antonio Spurs':'196,206,211','Toronto Raptors':'206,17,65',
+ 'Utah Jazz':'0,43,92','Washington Wizards':'0,43,92'
+};
+function teamRgb(t){return TEAM_RGB[t]||'201,132,63'}
+function teamAbbr(t){var parts=t.split(' ');return (parts.length>2?parts[parts.length-2][0]+parts[parts.length-1].slice(0,2):t.slice(0,3)).toUpperCase()}
+
+// Short open model: probability of clearing a points line set just below
+// season average, blended with efficiency (true shooting) and role (usage).
+function modelPct(p){
+ var base=42+(p.ppg-18)*1.35;
+ var eff=(p.ts_pct-58)*0.55;
+ var usg=(p.usg_pct-27)*0.35;
+ var pct=base+eff+usg;
+ return Math.max(22,Math.min(93,Math.round(pct)));
+}
+function fmtOdds(pct){var p=pct/100;if(p>=.5)return Math.round(-(p/(1-p))*100);return '+'+Math.round(((1-p)/p)*100)}
+function hexToRgb(h){h=h.replace('#','');return[parseInt(h.substr(0,2),16),parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)]}
+function lerp(a,b,t){return Math.round(a+(b-a)*t)}
+function lerpColor(c1,c2,t){var a=hexToRgb(c1),b=hexToRgb(c2);return 'rgb('+lerp(a[0],b[0],t)+','+lerp(a[1],b[1],t)+','+lerp(a[2],b[2],t)+')'}
+function colorForPct(p){var RED='#ff5d6c',GOLD='#f4b942',GREEN='#22d97e';if(p<=40)return RED;if(p>=65)return GREEN;if(p<52)return lerpColor(RED,GOLD,(p-40)/12);return lerpColor(GOLD,GREEN,(p-52)/13)}
+function barWidth(p){var w=((p-20)/(95-20))*100;if(w<8)w=8;if(w>100)w=100;return w.toFixed(1)+'%'}
+
+// Short open model "hot hand" score: blends true-shooting efficiency with
+// usage rate into a single 0-100 read on how efficiently a player is
+// carrying offensive load right now. Labeled model output, not a source stat.
+function hotHandScore(p){
+ var effPart=(p.ts_pct-52)*1.55;
+ var usgPart=(p.usg_pct-20)*1.05;
+ var volPart=(p.pra_pg-18)*0.42;
+ var s=50+effPart+usgPart+volPart;
+ return Math.max(5,Math.min(99,Math.round(s)));
+}
+function confTier(pct){if(pct>=58)return{cls:'hi',txt:'High Conf'};if(pct>=45)return{cls:'mid',txt:'Med Conf'};return{cls:'lo',txt:'Low Conf'}}
+// Short open model factor tag: instead of a generic confidence pill, surface
+// the one real stat signal (from the player's own aggregated-data profile)
+// that stands out furthest above a typical threshold for that read.
+function factorTag(p){
+ var candidates=[
+  {score:(p.ts_pct-58)/8,label:'ELITE EFFICIENCY'},
+  {score:(p.usg_pct-27)/8,label:'HIGH USAGE ROLE'},
+  {score:(p.pra_pg-28)/10,label:'HEAVY VOLUME'},
+  {score:(p.mpg-32)/6,label:'IRON MAN MINUTES'},
+  {score:(p.apg-4)/3,label:'PRIMARY CREATOR'},
+  {score:(p.rpg-5)/4,label:'BOARD PRESENCE'},
+  {score:((p.p3a_pg||0)-4)/3,label:'HIGH VOLUME SHOOTER'}
+ ];
+ candidates.sort(function(a,b){return b.score-a.score});
+ var top=candidates[0];
+ if(top.score<.15)return{cls:'mid',txt:'BALANCED PROFILE'};
+ var cls=top.score>=1?'hi':(top.score>=.4?'mid':'lo');
+ return{cls:cls,txt:top.label};
+}
+function effBars(p,color){
+ var fg=p.fg_pct||0,p3=p.p3_pct,ts=p.ts_pct||0;
+ var rows=[['FG%',fg,70],['3P%',p3==null?0:p3,52],['TS%',ts,72]];
+ return rows.map(function(r){
+  var w=Math.max(4,Math.min(100,(r[1]/r[2])*100));
+  var val=(r[0]==='3P%'&&p3==null)?'&mdash;':r[1].toFixed(1)+'%';
+  return '<div class="sc-eff-row"><span class="sc-eff-lbl">'+r[0]+'</span><span class="sc-eff-track"><i style="--w:'+w.toFixed(1)+'%;--c:'+color+'"></i></span><span class="sc-eff-val">'+val+'</span></div>';
+ }).join('');
+}
+
+PLAYERS.forEach(function(p){p.pct=modelPct(p);p.line=(Math.round(p.ppg)-0.5).toFixed(1);p.hot=hotHandScore(p)});
+
+var searchInput=document.getElementById('searchInput'),sortSelect=document.getElementById('sortSelect'),dirBtn=document.getElementById('dirBtn');
+var sortKey='pct',sortDir=-1;
+
+function getList(){
+ var q=searchInput.value.trim().toLowerCase();
+ var list=PLAYERS.filter(function(p){return !q||p.name.toLowerCase().indexOf(q)>-1||p.team.toLowerCase().indexOf(q)>-1});
+ list.sort(function(a,b){
+  if(sortKey==='name')return sortDir*a.name.localeCompare(b.name);
+  return sortDir*((a[sortKey]||0)-(b[sortKey]||0));
+ });
+ return list;
+}
+
+function renderChart(list){
+ var baseline=42;
+ document.getElementById('chartTitle').textContent='Points Probability — sorted by '+sortSelect.options[sortSelect.selectedIndex].text.replace('Sort: ','');
+ var maxDev=Math.max.apply(null,list.map(function(p){return Math.abs(p.pct-baseline)}).concat([10]));
+ var half=Math.max(20,Math.ceil((maxDev+8)/5)*5);
+ var lo=Math.max(0,baseline-half),hi=Math.min(100,baseline+half);
+ function pos(v){return Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100)).toFixed(1)}
+ var ticks=[];var step=(hi-lo)<=45?10:15;
+ for(var t=Math.ceil(lo/step)*step;t<=hi;t+=step)ticks.push(t);
+ var html='<div class="pcx-axis"><span></span><span></span><span class="pcx-ticks">'
+  +ticks.filter(function(t){var pp=+pos(t);return pp>4&&pp<96}).map(function(t){return '<i style="left:'+pos(t)+'%">'+t+'%</i>'}).join('')
+  +'</span><span class="pcx-lbl">Read</span></div>';
+ list.slice(0,30).forEach(function(p,i){
+  var isNeg=p.pct<baseline;
+  var x1=Math.min(pos(baseline),pos(p.pct)),x2=Math.max(pos(baseline),pos(p.pct));
+  var color=colorForPct(p.pct);
+  html+='<div class="pcx-row" data-name="'+p.name+'">'
+   +'<div class="pcx-rank">'+(i+1)+'</div>'
+   +'<div class="pcx-name">'+p.name+'<span class="pcx-sub">'+p.team+' &middot; '+p.ppg.toFixed(1)+' PPG</span></div>'
+   +'<div class="pcx-plot"><div class="pcx-line"></div><div class="pcx-base" style="left:'+pos(baseline)+'%"></div>'
+   +'<div class="pcx-conn'+(isNeg?' neg':'')+'" style="left:'+x1+'%;width:'+Math.max(2,x2-x1)+'%"></div>'
+   +'<div class="pcx-dot" style="left:'+pos(p.pct)+'%"></div></div>'
+   +'<div class="pcx-heat" style="background:'+color+';color:#12080a">'+p.pct+'%</div>'
+   +'<div class="pcx-odds">'+fmtOdds(p.pct)+'</div>'
+   +'</div>';
+ });
+ document.getElementById('probChart').innerHTML=html;
+ document.getElementById('probChart').querySelectorAll('.pcx-row').forEach(function(row){
+  row.addEventListener('click',function(){
+   sortKey='pct';sortSelect.value='pct';sortDir=-1;dirBtn.textContent='High → Low';renderAll();
+  });
+ });
+}
+
+function render(list){
+ var grid=document.getElementById('propGrid');
+ if(!list.length){grid.innerHTML='<div class="empty-state">No players match your search.</div>';return}
+ var html='';
+ list.forEach(function(p,idx){
+  var color=colorForPct(p.pct);
+  var w=barWidth(p.pct);
+  var tag=factorTag(p);
+  html+='<div class="prop-card scout" style="--team-rgb:'+teamRgb(p.team)+'">'
+   +'<div class="sc-head"><div class="sc-idbox"><div class="sc-name">'+p.name+'</div><div class="sc-meta">'+teamAbbr(p.team)+' &middot; '+p.pos+' &middot; '+p.mpg.toFixed(1)+' MPG</div></div><span class="sc-conf '+tag.cls+'" title="Short open model factor read">'+tag.txt+'</span></div>'
+   +'<div class="sc-eff">'+effBars(p,color)+'</div>'
+   +'<div class="sc-main"><div class="sc-pctwrap"><span class="sc-pct" style="color:'+color+'">'+p.pct+'%</span><span class="sc-pctlabel">model read &middot; '+fmtOdds(p.pct)+'</span></div><span class="sc-line">Over '+p.line+' PTS</span></div>'
+   +'<div class="sc-bar"><i style="--w:'+w+';--c:'+color+'"></i></div>'
+   +'<div class="sc-stats">'
+   +'<div class="sc-stat"><b>'+p.ppg.toFixed(1)+'</b><span>PPG</span></div>'
+   +'<div class="sc-stat"><b>'+p.ts_pct.toFixed(1)+'%</b><span>TS%</span></div>'
+   +'<div class="sc-stat"><b>'+p.usg_pct.toFixed(1)+'%</b><span>USG%</span></div>'
+   +'<div class="sc-stat"><b>'+p.efg_pct.toFixed(1)+'%</b><span>eFG%</span></div>'
+   +'<div class="sc-stat"><b>'+p.pra_pg.toFixed(1)+'</b><span>PRA/G</span></div>'
+   +'<div class="sc-stat"><b>'+(p.p3_pct!=null?p.p3_pct.toFixed(1)+'%':'—')+'</b><span>3P%</span></div>'
+   +'</div>'
+   +'<div class="sc-hot"><b>Short Open model &middot; Hot Hand Score</b><span class="sc-hot-val">'+p.hot+'</span></div>'
+   +'</div>';
+ });
+ grid.innerHTML=html;
+}
+
+function renderAll(){
+ var list=getList();
+ document.getElementById('resultCount').textContent=list.length+' of '+PLAYERS.length+' players';
+ var pcts=list.map(function(p){return p.pct});
+ if(pcts.length){
+  var avg=Math.round(pcts.reduce(function(a,b){return a+b},0)/pcts.length);
+  var high=Math.max.apply(null,pcts);
+  document.getElementById('dsAvg').textContent=avg+'%';
+  document.getElementById('dsHigh').textContent=high+'%';
+  document.getElementById('dsAvgBar').style.width=Math.max(6,Math.min(100,avg))+'%';
+  document.getElementById('dsHighBar').style.width=Math.max(6,Math.min(100,high))+'%';
+ }
+ document.getElementById('dsPlayers').textContent=list.length;
+ var topScorer=PLAYERS.reduce(function(a,b){return b.ppg>a.ppg?b:a});
+ document.getElementById('dsTop').textContent=topScorer.name.split(' ').slice(-1)[0];
+ renderChart(list);
+ render(list);
+}
+
+searchInput.addEventListener('input',renderAll);
+sortSelect.addEventListener('change',function(){sortKey=sortSelect.value;renderAll()});
+dirBtn.addEventListener('click',function(){sortDir*=-1;dirBtn.textContent=sortDir===-1?'High → Low':'Low → High';renderAll()});
+
+(function(){
+ var tracks=document.querySelectorAll('.props-ball-track,.court-wrap');
+ function sync(){tracks.forEach(function(el){el.style.setProperty('--btw',el.clientWidth+'px');el.style.setProperty('--bth',el.clientHeight+'px')})}
+ sync();window.addEventListener('resize',sync);
+ if('ResizeObserver' in window){var ro=new ResizeObserver(sync);tracks.forEach(function(el){ro.observe(el)})}
+})();
+
+renderAll();
+</script>
+</body></html>

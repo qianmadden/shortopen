@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
+<meta name="format-detection" content="telephone=no"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <title>shortopen — Account</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg?v=20260810"/>
@@ -13,6 +14,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/></noscript>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/><link rel="preconnect" href="https://tltfpencvpnhghoruiwb.supabase.co" crossorigin/>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer src="auth.js?v=20260814"></script>
 <style>
 :root{--bg:#05070b;--panel:#09111b;--panel2:#0c1622;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.13);--text:#eef3f7;--muted:#7d8b9c;--muted2:#a7b2bf;--gold:#f4b942;--green:#3fc17a;--purple:#a78bfa;--blue:#57a7ff;--red:#f87171}
 *{box-sizing:border-box}html{color-scheme:dark;scroll-behavior:smooth}body{margin:0;min-height:100vh;overflow-x:hidden;color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(rgba(92,114,139,.026) 1px,transparent 1px),linear-gradient(90deg,rgba(92,114,139,.026) 1px,transparent 1px),radial-gradient(850px 580px at 4% 8%,rgba(244,185,66,.08),transparent 64%),radial-gradient(900px 620px at 96% 12%,rgba(167,139,250,.07),transparent 66%),linear-gradient(180deg,#05070b 0%,#07101a 50%,#05070b 100%);background-size:72px 72px,72px 72px,auto,auto,auto}a{color:inherit;text-decoration:none}button,input{font:inherit}.mono{font-family:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
@@ -46,8 +50,6 @@
   .console-line span,.console-line strong{font-size:.42rem}
 }
 </style>
-<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script defer src="auth.js?v=20260814"></script>
 <style id="so-shared-disclaimer-footer-20260824">.so-shared-footer{width:100%;max-width:100%;margin:28px 0 0;padding:28px clamp(18px,4vw,48px) 30px;border-top:1px solid rgba(255,255,255,.08);background:rgba(4,7,12,.82);display:flex;flex-direction:column;gap:14px;clear:both}.so-shared-footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}.so-shared-footer-logo{font-family:Inter,Arial,sans-serif;font-size:1rem;font-weight:900;letter-spacing:-.02em;color:#f0ece4;text-decoration:none}.so-shared-footer-logo span{color:#e8a020}.so-shared-footer-top p{margin:0;color:#4d6070;font-size:.75rem;letter-spacing:.06em}.so-shared-footer .footer-disclaimer{max-width:1100px;margin:0;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.28);font-size:.62rem;line-height:1.68;letter-spacing:.01em}@media(max-width:700px){.so-shared-footer{margin-top:20px;padding:22px 16px max(24px,env(safe-area-inset-bottom));text-align:center}.so-shared-footer-top{flex-direction:column}.so-shared-footer .footer-disclaimer{text-align:left;font-size:.6rem;overflow-wrap:anywhere}}</style>
 <style id="so-nav-sleek-white-20260901">
 .so-nav-link{color:#f4f2ed!important;font-weight:460!important;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Inter',system-ui,sans-serif!important;letter-spacing:-.005em!important}
@@ -64,6 +66,12 @@
 .so-nav-tag.gold{--badge-border:rgba(244,185,66,.24);--badge-bg:rgba(244,185,66,.06);--badge-color:#f4b942}
 .so-nav-tag.purple{--badge-border:rgba(167,139,250,.24);--badge-bg:rgba(167,139,250,.06);--badge-color:#c4b5fd}
 .so-nav-link.so-nav-badged .so-nav-tag{margin-left:6px!important;padding:2px 6px!important;border:1px solid var(--badge-border)!important;background:var(--badge-bg)!important;border-radius:999px!important}
+</style>
+<style id="so-nav-nba-coming-soon-brown">
+.so-nav-tag.brown{--badge-border:rgba(184,118,58,.34);--badge-bg:rgba(184,118,58,.09);--badge-color:#d99a56}
+.so-nav-link.so-nav-stacked{flex-direction:column;justify-content:center;align-items:center;gap:2px;padding-top:3px}
+.so-nav-link.so-nav-stacked .so-nav-tag{margin-left:0;padding:1px 6px;font-size:.38rem}
+.so-mobile-tag.brown{--mb-border:rgba(184,118,58,.35);--mb-color:#d99a56}
 </style>
 </head>
 <style id="so-account-console-style">.account-console{margin:18px 0;padding:20px;border:1px solid rgba(52,211,153,.25);border-radius:20px;background:radial-gradient(circle at 100% 0,rgba(52,211,153,.11),transparent 42%),linear-gradient(145deg,#0b1420,#070c13);box-shadow:inset 0 1px rgba(255,255,255,.035),0 22px 60px rgba(0,0,0,.26)}.console-head,.console-line{display:flex;align-items:center;justify-content:space-between;gap:10px}.console-head span{color:#71849a;font:800 .58rem 'DM Mono',monospace;letter-spacing:.13em}.console-head b{display:inline-flex;align-items:center;gap:7px;color:#34d399;font:800 .58rem 'DM Mono',monospace}.console-head b:before{content:'';width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 14px rgba(52,211,153,.75)}.console-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0}.console-grid i{position:relative;padding:13px 8px 12px;border:1px solid rgba(255,255,255,.075);border-radius:10px;background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(4,9,15,.38));color:#c0cad6;text-align:center;font:800 .55rem 'DM Mono',monospace;font-style:normal;animation:consoleIn .5s ease-out both}.console-grid i:before{content:'';display:inline-block;width:5px;height:5px;margin-right:7px;border-radius:50%;background:#34d399;box-shadow:0 0 8px rgba(52,211,153,.55);vertical-align:1px}.console-grid i:nth-child(2){animation-delay:.08s}.console-grid i:nth-child(3){animation-delay:.16s}.console-grid i:nth-child(4){animation-delay:.24s}.console-line span,.console-line strong{font:750 .5rem 'DM Mono',monospace;color:#75869a}.console-line strong{color:#f4b942}.console-line em{height:2px;flex:1;background:linear-gradient(90deg,#34d399,#6ee7c7,#a78bfa,#f4b942);position:relative}.console-line em:after{content:'';position:absolute;right:0;top:-3px;width:8px;height:8px;border-radius:50%;background:#f4b942;box-shadow:0 0 12px #f4b942}@keyframes consoleIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}@media(max-width:560px){.account-console{margin:14px 0;padding:12px}.console-head{align-items:center;flex-direction:row;gap:8px}.console-head span{font-size:.48rem;letter-spacing:.1em}.console-head b{font-size:.48rem}.console-head b:before{width:5px;height:5px}.console-grid{grid-template-columns:repeat(4,1fr);gap:5px;margin:11px 0}.console-grid i{padding:8px 3px 7px;font-size:.42rem;border-radius:8px}.console-grid i:before{width:4px;height:4px;margin-right:4px}.console-line{align-items:center;flex-direction:row}.console-line em{width:auto;flex:1}.console-line span,.console-line strong{font-size:.42rem}}</style>
@@ -116,6 +124,7 @@ h1 em{-webkit-text-fill-color:var(--gold);background:none}
   <div class="so-nav-center">
     <a class="so-nav-link" href="analysis.html">Analysis</a>
     <a class="so-nav-link prediction-nav-link" href="prediction-markets.html"><span>Prediction Markets</span><span class="so-nav-tag purple">Beta</span></a>
+    <a class="so-nav-link so-nav-stacked" href="nba.html"><span class="so-nav-tag brown">Coming Soon</span><span>NBA</span></a>
     <a class="so-nav-link" href="mlb.html">MLB</a>
     <a class="so-nav-link" href="nfl.html">NFL</a>
     <a class="so-nav-link" href="worldcup.html">World Cup</a>
@@ -128,7 +137,8 @@ h1 em{-webkit-text-fill-color:var(--gold);background:none}
 <div class="so-mobile-menu" id="mobileMenu" aria-hidden="true">
   <button class="so-mobile-close" type="button" aria-label="Close menu">×</button>
   <div class="so-mobile-brand"><span class="so-mobile-brand-label">Presented by</span><span class="so-mobile-brand-logo">short<b>open</b></span></div>
-  <a href="index.html">Home</a><a href="analysis.html">Analysis</a><a class="prediction-nav-link" href="prediction-markets.html"><span>Prediction Markets</span></a><a href="mlb.html">MLB</a><a href="nfl.html">NFL</a><a href="worldcup.html">World Cup</a><a href="premier-league.html">Premier League</a><a href="terminal.html">Terminal</a><a href="about.html">About</a><a href="subscribe.html">Subscribe</a>
+  <a href="index.html">Home</a><a href="analysis.html">Analysis</a><a class="prediction-nav-link" href="prediction-markets.html"><span>Prediction Markets</span></a><a href="nba.html">NBA</a>
+  <a href="mlb.html">MLB</a><a href="nfl.html">NFL</a><a href="worldcup.html">World Cup</a><a href="premier-league.html">Premier League</a><a href="terminal.html">Terminal</a><a href="about.html">About</a><a href="subscribe.html">Subscribe</a>
 <a href="terms.html" style="margin-top:10px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08);font-size:.72rem;font-weight:600;color:#7c8797">Terms of Service</a></div>
 
 <main class="page">
@@ -373,6 +383,6 @@ h1 em{-webkit-text-fill-color:var(--gold);background:none}
   });
 })();
 </script>
-<footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>© 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call 1-800-GAMBLER. <a href="terms.html" style="text-decoration:underline;color:inherit">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p></footer>
+<footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>© 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span style="color:#e8c078;font-weight:600">1-800-GAMBLER</span>. <a href="terms.html" style="text-decoration:underline;color:#e8c078">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p></footer>
 </body>
 </html>
