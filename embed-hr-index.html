@@ -682,7 +682,7 @@ th.th-active { color: #ffd36b !important; }
 #tbody tr.tier-avg   td:first-child::before { content:''; position:absolute; left:0; top:8%; width:3px; height:84%; border-radius:2px; background:#f07d30; box-shadow:0 0 6px 1px rgba(240,125,48,.20); opacity:.7; }
 #tbody tr.tier-below td:first-child::before { content:''; position:absolute; left:0; top:8%; width:3px; height:84%; border-radius:2px; background:#ef4444; box-shadow:0 0 5px 1px rgba(239,68,68,.16); opacity:.65; }
 #tbody tr.tier-elite { background:linear-gradient(90deg,rgba(34,197,94,.05) 0%,transparent 16%); }
-.tier-elite .pname::after{content:"ELITE";display:inline-block;margin-left:5px;font-family:"DM Mono",monospace;font-size:.36rem;font-weight:700;letter-spacing:.1em;background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.3);border-radius:3px;padding:1px 4px;vertical-align:2px}
+
 #tbody tr.tier-above { background:linear-gradient(90deg,rgba(244,185,66,.04) 0%,transparent 16%); }
 
   /* ===== shortopen shared footer (matches market.html exactly) ===== */
@@ -2716,13 +2716,14 @@ function reorderHeaderDOM(){
 }
 function buildRowHTML(p,i){
   var pct=p.hrg*100,t=tier(pct),v=variance(p),col=bcolor(pct);
+  var tierText=t[0]==='Elite'?'Elite':t[0]==='Above avg'?'Plus':t[0]==='Average'?'Average':'Below Avg';
   var tc=pct>=24?'tier-elite':pct>=17?'tier-above':pct>=10?'tier-avg':'tier-below';
   var rank=(i+1).toString().padStart(2,'0');
   var isElite=pct>=24;
   var eliteStyle=isElite?'background:linear-gradient(90deg,rgba(34,197,94,.04),transparent 70%);border-left:2px solid rgba(34,197,94,.5)':'';
   var cells={
     name:'<td class="col-player"><div class="player-cell"><div class="rank-badge">'+rank+'</div><div class="player-meta"><div class="pname">'+p.name+'</div><div class="pteam"><span class="team-dot"></span>'+p.team+'</div></div></div></td>',
-    hr:'<td class="col-hr"><div class="hr-ticket"><div><div class="hr-ticket-main" style="color:'+col+'">'+pct.toFixed(1)+'%</div><div class="hr-ticket-sub">model / game · ' +p.hrCount+' HR</div></div><span class="pill '+t[1]+'">'+t[0]+'</span></div></td>',
+    hr:'<td class="col-hr"><div class="hr-ticket"><div><div class="hr-ticket-main" style="color:'+col+'">'+pct.toFixed(1)+'%</div><div class="hr-ticket-sub">model / game · '+tierText+'</div></div></div></td>',
     power:'<td class="col-power">'+vCell(p,pct)+'</td>',
     profile:'<td class="col-profile">'+profileCell(p)+'</td>',
     contact:'<td class="col-contact">'+contactCell(p)+'</td>',
