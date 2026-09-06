@@ -4,34 +4,18 @@
 <meta charset="utf-8"/>
 <meta name="format-detection" content="telephone=no"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>shortopen — About the Short Open Model</title>
-<link rel="icon" type="image/svg+xml" href="favicon.svg?v=20260810"/>
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=20260810"/>
-<link rel="shortcut icon" href="favicon.ico?v=20260810"/>
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/><link rel="preconnect" href="https://tltfpencvpnhghoruiwb.supabase.co" crossorigin/>
-<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script defer src="auth.js?v=20260814"></script>
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20260810"/>
-<meta content="Short Open is an independent sports betting data and education platform built around one model: short the consensus, know the open, and read the market before the crowd moves the number." name="description"/>
-<meta content="shortopen, sports betting data platform, opening line value, short the consensus, market education" name="keywords"/>
+<title>shortopen — About the Short Open Model (Concept 6: Data Forward)</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link crossorigin="" href="https://cdn.jsdelivr.net" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&amp;family=DM+Sans:wght@300&amp;display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
-<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&amp;family=DM+Sans:wght@300&amp;display=swap" rel="stylesheet"/></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400&family=Roboto+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet"/></noscript>
 
 <style>
-/* ============================================================
-   shortopen — About page. Rebuilt lean: one background layer,
-   no decorative blur/glow divs, backdrop-filter only on the
-   small fixed nav (the one place it's cheap), no scroll-driven
-   observers, no dead CSS. Same look, same copy, same links.
-   ============================================================ */
 :root{
   --bg:#07101a;--text:#e8edf5;--muted:#8a96a5;--dim:#5b6b7d;
   --gold:#f4b942;--green:#3fc17a;--blue:#57a7ff;--red:#ef4444;
-  --card:rgba(13,22,36,.55);--card-b:rgba(255,255,255,.08);
-  --nav-h:62px;
+  --card:rgba(13,22,36,.6);--card-b:rgba(255,255,255,.09);
+  --nav-h:62px;--mono:'Roboto Mono',ui-monospace,monospace;
 }
 *{box-sizing:border-box}
 html{background:var(--bg)}
@@ -40,453 +24,351 @@ body{
   background:
     linear-gradient(rgba(246,250,255,.02) 1px,transparent 1px),
     linear-gradient(90deg,rgba(246,250,255,.02) 1px,transparent 1px),
-    radial-gradient(920px 580px at 8% 8%,rgba(244,185,66,.075),transparent 62%),
-    radial-gradient(980px 620px at 95% 12%,rgba(87,167,255,.07),transparent 64%),
-    radial-gradient(820px 540px at 30% 92%,rgba(63,193,122,.04),transparent 68%),
+    radial-gradient(920px 580px at 8% 8%,rgba(244,185,66,.06),transparent 62%),
+    radial-gradient(980px 620px at 95% 12%,rgba(87,167,255,.06),transparent 64%),
     linear-gradient(180deg,#06101b 0%,#071321 44%,#06101a 100%);
-  background-size:96px 96px,96px 96px,auto,auto,auto,auto;
-  background-position:0 0,0 0,center,center,center,center;
+  background-size:96px 96px,96px 96px,auto,auto,auto;
   overflow-x:hidden;
 }
 a{color:inherit}
 img,svg{display:block}
-.wrap{max-width:1600px;margin:0 auto;padding:0 24px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
 @media(min-width:1280px){.wrap{padding:0 40px}}
+.panel{background:var(--card);border:1px solid var(--card-b);border-radius:18px;box-shadow:0 16px 40px rgba(0,0,0,.22)}
 
-/* ---------- glass panels ---------- */
-.panel{
-  position:relative;background:linear-gradient(145deg,rgba(11,21,36,.62),rgba(5,10,18,.56));
-  border:1px solid rgba(255,255,255,.08);border-radius:28px;
-  box-shadow:0 16px 46px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.04);
-}
-.panel-soft{
-  background:linear-gradient(155deg,rgba(16,30,50,.52),rgba(7,12,22,.46) 55%,rgba(13,24,40,.44));
-  border:1px solid rgba(255,255,255,.10);border-radius:26px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 16px 40px rgba(0,0,0,.2);
-  transition:border-color .25s ease,transform .25s ease,box-shadow .25s ease;
-}
-.panel-soft:hover{transform:translateY(-3px);border-color:rgba(244,185,66,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 20px 48px rgba(0,0,0,.28)}
 
-/* ============================================================
-   NAV — fixed, small, the one place backdrop-filter is cheap
-   ============================================================ */
-.so-nav-shell{position:fixed;z-index:900;inset:0 0 auto;padding:16px 24px 0;pointer-events:none}
-.so-nav{pointer-events:auto;max-width:1460px;height:var(--nav-h);margin:0 auto;padding:0 14px 0 18px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:28px;border:1px solid rgba(255,255,255,.075);border-radius:19px;background:rgba(5,8,13,.82);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);box-shadow:0 18px 50px rgba(0,0,0,.28)}
-.so-nav-brand{display:inline-flex;align-items:center;width:max-content;font-weight:800;letter-spacing:-.045em;font-size:1.02rem;color:#f4f2ed;text-decoration:none}
-.so-nav-brand b{color:var(--gold);font-weight:800}
-.so-nav-center{display:flex;align-items:center;justify-content:center;gap:24px;height:100%}
-.so-nav-link{position:relative;display:inline-flex;align-items:center;gap:6px;height:100%;color:#9ba5af;font-size:.77rem;font-weight:560;letter-spacing:-.01em;white-space:nowrap;text-decoration:none;transition:color .18s ease,transform .18s ease}
-.so-nav-link:hover{color:#f3f6f8;transform:translateY(-1px)}
-.so-nav-link.active{color:#f5f7f8}
-.so-nav-link.active::after{content:"";position:absolute;left:50%;bottom:11px;width:4px;height:4px;border-radius:50%;background:var(--gold);transform:translateX(-50%)}
-.so-nav-tag{display:inline-flex;align-items:center;padding:2px 6px;border-radius:999px;border:1px solid var(--bd);background:var(--bg2);color:var(--fg);font-size:.41rem;line-height:1;font-weight:800;letter-spacing:.11em;text-transform:uppercase;white-space:nowrap}
-.so-nav-tag.gold{--bd:rgba(244,185,66,.24);--bg2:rgba(244,185,66,.06);--fg:#f4b942}
-.so-nav-tag.purple{--bd:rgba(167,139,250,.24);--bg2:rgba(167,139,250,.06);--fg:#c4b5fd}
-.so-nav-actions{justify-self:end;display:flex;align-items:center;gap:20px}
-.so-nav-secondary{font-size:.76rem;color:#98a3ae;text-decoration:none;transition:color .18s}
-.so-nav-secondary:hover,.so-nav-secondary.active{color:#fff}
-.so-nav-cta{display:inline-flex;align-items:center;justify-content:center;min-width:88px;height:35px;padding:0 16px;border-radius:999px;background:linear-gradient(155deg,#111d31,#07101d 62%);color:#9bb6d6;font-size:.66rem;font-weight:800;text-decoration:none;border:1px solid rgba(74,105,145,.46);transition:transform .18s ease,border-color .18s ease}
-.so-nav-cta:hover{transform:translateY(-1px);border-color:rgba(111,145,188,.62)}
-.so-hamburger{display:none;justify-self:end;width:38px;height:38px;border:1px solid rgba(255,255,255,.085);border-radius:12px;background:rgba(255,255,255,.025);padding:10px;cursor:pointer}
-.so-hamburger span{display:block;height:1.5px;margin:4px 0;border-radius:2px;background:#e8edf5}
-.so-mobile-menu{display:none;position:fixed;z-index:980;inset:0;padding:94px 24px 28px;background:rgba(4,7,12,.98);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);overflow-y:auto}
-.so-mobile-menu.open{display:flex;flex-direction:column;gap:8px}
-.so-mobile-close{position:absolute;top:22px;right:22px;width:42px;height:42px;border:1px solid rgba(255,255,255,.085);border-radius:13px;background:rgba(255,255,255,.03);color:#d9e1e8;font-size:1.35rem}
-.so-mobile-menu>a{position:relative;display:flex;align-items:center;justify-content:space-between;padding:15px 16px;min-height:48px;border:1px solid transparent;border-radius:14px;color:#c8d0d8;font-size:1rem;font-weight:750;text-decoration:none}
-.so-mobile-menu>a.active{border-color:rgba(244,185,66,.35);background:rgba(244,185,66,.08);color:#fff}
-.so-mobile-menu>a[href="subscribe.html"]{border-color:rgba(74,105,145,.34);background:rgba(16,31,54,.55);color:#9bb6d6}
-.so-mobile-tag{padding:3px 7px;border-radius:999px;font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--bd);color:var(--fg)}
-.so-mobile-tag.gold{--bd:rgba(244,185,66,.35);--fg:#f4b942}
-.so-mobile-tag.purple{--bd:rgba(167,139,250,.35);--fg:#c4b5fd}
-@media(max-width:1120px){.so-nav{grid-template-columns:1fr auto}.so-nav-center,.so-nav-actions{display:none}.so-hamburger{display:block;position:relative;z-index:1000}}
-@media(max-width:820px){.so-nav-shell{padding:10px 12px 0}.so-nav{height:58px;border-radius:16px;padding:0 11px 0 14px}.so-nav-brand{font-size:.96rem}}
 
-/* ============================================================
-   HERO
-   ============================================================ */
-.hero{position:relative;padding:132px 0 36px}
-.hero-grid{display:grid;gap:44px;align-items:start}
-@media(min-width:1180px){.hero-grid{grid-template-columns:1.15fr .85fr}}
-.hero-badge{display:inline-flex;align-items:center;gap:10px;border-radius:999px;border:1px solid rgba(244,185,66,.2);background:rgba(244,185,66,.1);color:#fde68a;padding:10px 18px;font-size:.72rem;text-transform:uppercase;letter-spacing:.24em;margin-bottom:22px}
-.hero-title{font-size:3.05rem;line-height:.92;font-weight:900;letter-spacing:-.025em;margin:0 0 22px}
-@media(min-width:768px){.hero-title{font-size:4.75rem}}
-.hero-lede{font-size:1.14rem;line-height:1.7;color:var(--muted);max-width:44rem;margin:0 0 24px}
 
-.name-cards{display:grid;gap:14px;margin-top:16px;margin-bottom:0}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ============ DATA FORWARD — page-specific design ============ */
+.df-hero{padding:112px 0 30px}
+.df-grid{display:grid;gap:32px;align-items:start}
+@media(min-width:1080px){.df-grid{grid-template-columns:1.1fr .9fr}}
+.df-badge{display:inline-flex;align-items:center;gap:8px;border-radius:6px;border:1px solid rgba(244,185,66,.22);background:rgba(244,185,66,.08);color:#fde68a;padding:7px 12px;font-family:var(--mono);font-size:.68rem;letter-spacing:.04em;margin-bottom:20px}
+.df-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green)}
+.df-title{font-size:2.9rem;line-height:1;font-weight:900;letter-spacing:-.025em;margin:0 0 16px}
+@media(min-width:768px){.df-title{font-size:4.2rem}}
+.df-lede{font-size:1.05rem;line-height:1.6;color:var(--muted);max-width:38rem;margin:0 0 18px}
+
+/* live-line chart card */
+.chart-card{padding:22px 24px 20px}
+.chart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.chart-title{font-size:.8rem;font-weight:700;color:#fff}
+.chart-sub{font-family:var(--mono);font-size:.66rem;color:var(--dim)}
+svg.linechart{width:100%;height:150px;overflow:visible}
+.chart-legend{display:flex;gap:18px;margin-top:12px}
+.chart-legend-item{display:flex;align-items:center;gap:7px;font-size:.7rem;color:var(--muted)}
+.chart-legend-item .dot{width:8px;height:8px;border-radius:50%}
+.chart-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(255,255,255,.08);margin-top:16px;border-radius:10px;overflow:hidden}
+.chart-stat{background:rgba(0,0,0,.22);padding:12px 10px;text-align:center}
+.chart-stat .n{font-family:var(--mono);font-size:1rem;font-weight:600;color:#fff}
+.chart-stat .l{font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);margin-top:3px}
+
+.df-section{padding:38px 0}
+.df-label-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:22px;gap:20px;flex-wrap:wrap}
+.df-eyebrow{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--gold);text-transform:uppercase}
+.df-section-title{font-size:1.85rem;font-weight:900;letter-spacing:-.02em;margin:6px 0 0;max-width:32ch}
+@media(min-width:768px){.df-section-title{font-size:2.3rem}}
+
+/* name cards */
+.name-cards{display:grid;gap:16px}
 @media(min-width:640px){.name-cards{grid-template-columns:1fr 1fr}}
-.name-card{padding:24px;border-radius:25px}
-.name-eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.22em;color:var(--dim);margin-bottom:8px}
-.name-word{font-size:1.7rem;font-weight:900;margin-bottom:10px}
-.name-sub{font-size:.78rem;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);margin-bottom:9px}
-.name-copy{font-size:.86rem;line-height:1.65;color:var(--muted)}
-.name-copy strong{color:#fff}
+.name-card{padding:26px;border-radius:16px}
+.name-eyebrow{font-family:var(--mono);font-size:.66rem;color:var(--dim);margin-bottom:10px}
+.name-word{font-size:1.8rem;font-weight:900;margin-bottom:10px}
+.name-sub{font-size:.76rem;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);margin-bottom:12px;font-weight:700}
+.name-copy{font-size:.88rem;line-height:1.7;color:var(--muted)}
+.name-copy strong{color:#fff;font-weight:650}
 
-.mindset-card{padding:28px 30px;border-radius:28px;width:100%}
-.mindset-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:18px}
-.mindset-eyebrow{font-size:.68rem;text-transform:uppercase;letter-spacing:.22em;color:var(--dim)}
-.mindset-title{margin-top:7px;font-size:1.65rem;font-weight:900}
-.mindset-flag{border-radius:999px;padding:6px 13px;font-size:.68rem;text-transform:uppercase;letter-spacing:.2em;background:rgba(244,185,66,.1);color:var(--gold);border:1px solid rgba(244,185,66,.2)}
-.mindset-rows{margin-top:20px;display:flex;flex-direction:column;gap:12px}
-.matchup-row{
-  position:relative;overflow:hidden;border-radius:16px;
-  border:1px solid rgba(255,255,255,.1);border-left:3px solid color-mix(in srgb,var(--row-accent,#f4b942) 55%,transparent);
-  background:linear-gradient(155deg,rgba(24,34,52,.6),rgba(9,14,23,.58));
-  padding:16px 19px 16px 22px;box-shadow:0 6px 18px rgba(0,0,0,.16);
-  transition:border-color .25s ease,transform .25s ease,box-shadow .25s ease,background .25s ease;
-}
-.matchup-row::before{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(220px 90px at 0% 0%,color-mix(in srgb,var(--row-accent,#f4b942) 14%,transparent),transparent 70%);
-  opacity:.7;
-}
-.matchup-row:hover{border-color:color-mix(in srgb,var(--row-accent,#f4b942) 45%,rgba(255,255,255,.12));transform:translateY(-2px);box-shadow:0 14px 30px rgba(0,0,0,.26)}
-.mindset-rows .matchup-row:nth-child(1){--row-accent:#57a7ff}
-.mindset-rows .matchup-row:nth-child(2){--row-accent:#f4b942}
-.mindset-rows .matchup-row:nth-child(3){--row-accent:#3fc17a}
-.mindset-rows .matchup-row:nth-child(4){--row-accent:#ef4444}
-.matchup-top{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
-.matchup-label{display:inline-flex;align-items:center;gap:7px;font-size:.68rem;text-transform:uppercase;letter-spacing:.14em;color:#c3cbd4}
-.matchup-label::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--row-accent,#f4b942);box-shadow:0 0 8px color-mix(in srgb,var(--row-accent,#f4b942) 70%,transparent)}
-.vs-badge{width:27px;height:27px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;background:#0a0f18;border:1px solid rgba(63,193,122,.45);box-shadow:0 0 0 3px rgba(63,193,122,.07),0 0 14px rgba(63,193,122,.28)}
-.vs-badge span{color:var(--green);font-size:.5rem;font-weight:800;letter-spacing:.02em}
-.matchup-grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.matchup-grid::before{content:'';position:absolute;left:50%;top:2px;bottom:2px;width:1px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.1),transparent)}
-.matchup-col{display:flex;align-items:flex-start;gap:8px;min-width:0}
-.matchup-col>div{min-width:0;flex:1}
-.col-icon{width:19px;height:19px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 0 1px rgba(255,255,255,.05) inset}
-.col-icon svg{width:11px;height:11px}
-.col-tag{font-size:.66rem;color:#8994a1;margin-bottom:3px}
-.col-val{display:block;width:100%;font-size:.76rem;font-weight:600;color:#fff;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* comparison table — real table component */
+.df-table-wrap{overflow-x:auto;border-radius:16px}
+table.df-table{width:100%;border-collapse:collapse;min-width:560px;font-size:.86rem}
+table.df-table thead th{text-align:left;padding:14px 20px;font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.09)}
+table.df-table thead th:nth-child(2){color:var(--blue)}
+table.df-table thead th:nth-child(3){color:var(--gold)}
+table.df-table tbody td{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.06);color:var(--muted);vertical-align:top}
+table.df-table tbody tr:last-child td{border-bottom:0}
+table.df-table tbody td:first-child{color:#fff;font-weight:700;white-space:nowrap}
+table.df-table tbody tr:hover{background:rgba(255,255,255,.02)}
 
-/* ============================================================
-   WHY IT MATTERS
-   ============================================================ */
-.why{position:relative;padding:52px 0 76px}
-.why-top{margin-bottom:36px}
-.quote-mark{font-size:4.5rem;line-height:1;font-weight:900;color:rgba(244,185,66,.18);display:block;margin-bottom:-18px}
-.why-eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.22em;color:var(--gold);margin-bottom:14px}
-.why-title{font-size:1.9rem;font-weight:900;line-height:1.15;color:#fff;margin:0 0 18px;max-width:38rem}
-@media(min-width:768px){.why-title{font-size:2.75rem}}
-.why-title .accent{background:linear-gradient(90deg,#f4b942,#fde68a);-webkit-background-clip:text;background-clip:text;color:transparent}
-.why-copy{font-size:.92rem;line-height:1.7;color:var(--muted);max-width:36rem}
-.tug-wrap{position:relative;height:16px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden;border:1px solid rgba(255,255,255,.1);margin-bottom:16px}
-.tug-l{position:absolute;left:0;top:0;bottom:0;width:46%;border-radius:999px 0 0 999px;background:linear-gradient(90deg,rgba(63,193,122,.9),rgba(63,193,122,.45));animation:tugBalanceL 4.6s ease-in-out infinite}
-.tug-r{position:absolute;right:0;top:0;bottom:0;width:54%;border-radius:0 999px 999px 0;background:linear-gradient(270deg,rgba(239,68,68,.9),rgba(239,68,68,.45));animation:tugBalanceR 4.6s ease-in-out infinite}
-@keyframes tugBalanceL{0%,100%{width:41%}50%{width:53%}}
-@keyframes tugBalanceR{0%,100%{width:59%}50%{width:47%}}
-.stat-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.stat-box{border-radius:16px;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.2);padding:16px;text-align:center}
-.stat-box .num{font-size:1.35rem;font-weight:900;margin-bottom:4px}
-.stat-box .lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--dim)}
+/* sharp vs public meter, real bar */
+.meter-card{padding:26px 28px}
+.meter-title{font-size:.8rem;font-weight:700;color:#fff;margin-bottom:16px}
+.meter-track{position:relative;height:28px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,.05);display:flex;border:1px solid rgba(255,255,255,.08)}
+.meter-fill-l{background:linear-gradient(90deg,rgba(63,193,122,.85),rgba(63,193,122,.55));display:flex;align-items:center;padding-left:10px;font-family:var(--mono);font-size:.68rem;color:#04150c;font-weight:700;animation:meterL 4.6s ease-in-out infinite}
+.meter-fill-r{background:linear-gradient(90deg,rgba(239,68,68,.55),rgba(239,68,68,.85));display:flex;align-items:center;justify-content:flex-end;padding-right:10px;font-family:var(--mono);font-size:.68rem;color:#1c0505;font-weight:700;animation:meterR 4.6s ease-in-out infinite}
+@keyframes meterL{0%,100%{width:41%}50%{width:53%}}
+@keyframes meterR{0%,100%{width:59%}50%{width:47%}}
+.meter-legend{display:flex;justify-content:space-between;margin-top:10px;font-size:.72rem}
+.meter-legend span:first-child{color:var(--green)}
+.meter-legend span:last-child{color:var(--red)}
 
-/* ============================================================
-   INFO PANEL — "What Short Open Is": Gap & Gut (with the
-   Sharp/Public reality meter folded in), What We Watch, and
-   the three identity pillars, unified into one unbroken card.
-   Desktop: 2 wider tiles on top (Gap & Gut, What We Watch),
-   3 narrower tiles below (What We Are / Not / Who It's For).
-   ============================================================ */
-.info-wrap{padding:8px 0}
-.info-panel{overflow:hidden}
-.info-grid{display:grid}
-@media(min-width:768px){
-  .info-grid{grid-template-columns:repeat(6,1fr)}
-  .info-tile{grid-column:span 3;border-right:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05)}
-  .info-tile:nth-child(2){border-right:0}
-  .info-tile:nth-child(3),.info-tile:nth-child(4),.info-tile:nth-child(5){grid-column:span 2;border-bottom:0}
-  .info-tile:nth-child(5){border-right:0}
-}
-.info-tile{padding:30px;border-bottom:1px solid rgba(255,255,255,.05);transition:background .2s ease}
-.info-tile:hover{background:rgba(255,255,255,.015)}
-.info-tile:last-child{border-bottom:0}
-.tile-eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.22em;color:var(--dim);margin-bottom:12px}
-.tile-title{font-size:1.32rem;font-weight:900;margin:0 0 12px}
-.tile-copy{font-size:.86rem;line-height:1.7;color:var(--muted)}
-.tile-word{font-size:1.5rem;font-weight:900;color:var(--green);margin-bottom:12px}
-.tile-divider{height:1px;background:rgba(255,255,255,.08);margin:20px 0 18px}
-.tile-subhead{font-size:1.05rem;font-weight:800;color:#fff;margin:0 0 14px}
-.watch-list{display:flex;flex-direction:column;gap:14px;margin-top:2px}
-.watch-item{display:flex;align-items:flex-start;gap:12px}
-.flow-node{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.62rem;flex-shrink:0;border:1px solid rgba(244,185,66,.45);background:rgba(244,185,66,.1);color:var(--gold)}
-.watch-copy{font-size:.84rem;line-height:1.55;color:var(--muted);padding-top:5px}
+/* what we watch — numbered stat row */
+.watch-row{display:grid;gap:16px}
+@media(min-width:768px){.watch-row{grid-template-columns:repeat(3,1fr)}}
+.watch-card{padding:22px}
+.watch-num{font-family:var(--mono);font-size:.7rem;color:var(--gold);margin-bottom:10px}
+.watch-card p{font-size:.86rem;line-height:1.6;color:var(--muted);margin:0}
 
-/* ============================================================
-   CLOSING CTA
-   ============================================================ */
-.closing{padding:44px 0 64px}
-.closing-panel{overflow:hidden}
-.closing-grid{padding:34px 38px;display:grid;gap:28px;text-align:left}
-@media(min-width:768px){.closing-grid{grid-template-columns:1.25fr 1fr;align-items:center;padding:40px 48px}}
-.closing-title{font-size:1.7rem;line-height:1.08;font-weight:900;margin:0 0 14px}
-@media(min-width:768px){.closing-title{font-size:2.15rem}}
+/* identity tiles */
+.id-grid{display:grid;gap:16px}
+@media(min-width:768px){.id-grid{grid-template-columns:1fr 1fr 1fr}}
+.id-tile{padding:24px}
+.id-eyebrow{font-family:var(--mono);font-size:.66rem;color:var(--dim);margin-bottom:10px;text-transform:uppercase}
+.id-tile h3{font-size:1.1rem;font-weight:900;margin:0 0 10px}
+.id-tile p{font-size:.85rem;line-height:1.65;color:var(--muted);margin:0}
+
+/* closing */
+.closing{padding:38px 0 50px}
+.closing-panel{padding:30px 34px}
+.closing-grid{display:grid;gap:24px}
+@media(min-width:768px){.closing-grid{grid-template-columns:1.2fr 1fr;align-items:center}}
+.closing-title{font-size:1.85rem;line-height:1.12;font-weight:900;margin:0 0 14px}
+@media(min-width:768px){.closing-title{font-size:2.3rem}}
 .closing-lede{font-size:.92rem;line-height:1.65;color:var(--muted);max-width:36rem;margin:0}
-.closing-right{display:flex;flex-direction:column;gap:16px}
-.closing-projections{width:100%;text-align:center}
+.closing-right{display:flex;flex-direction:column;gap:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:10px;padding:14px 22px;font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;text-decoration:none}
+.btn-gold{background:var(--gold);color:#000;text-align:center}
 .newsletter-form{display:flex;flex-direction:column;gap:8px}
-.newsletter-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.16em;color:var(--dim)}
+.newsletter-label{font-family:var(--mono);font-size:.66rem;color:var(--dim)}
 .newsletter-row{display:flex;gap:8px}
-.newsletter-input{flex:1;min-width:0;height:46px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:0 14px;color:#fff;font-size:.82rem;outline:none;transition:border-color .2s ease}
+.newsletter-input{flex:1;min-width:0;height:44px;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:0 14px;color:#fff;font-size:.82rem;outline:none;transition:border-color .2s ease}
 .newsletter-input::placeholder{color:var(--dim)}
 .newsletter-input:focus{border-color:var(--gold)}
-.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:14px;padding:13px 22px;font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.14em;text-decoration:none}
-.newsletter-submit{padding:13px 18px}
-.btn-gold{background:var(--gold);color:#000}
-.btn-ghost{background:linear-gradient(145deg,rgba(11,21,36,.62),rgba(5,10,18,.56));border:1px solid rgba(255,255,255,.08);color:#d4d4d8;font-weight:600;text-transform:none;letter-spacing:0}
+.btn-ghost{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);color:#d4d4d8;font-weight:600;text-transform:none;letter-spacing:0}
 
-/* ============================================================
-   FOOTER
-   ============================================================ */
-.so-footer{border-top:1px solid #1a2535;background:rgba(5,7,11,.85);padding:32px 24px 26px;display:flex;flex-direction:column;gap:14px}
-@media(min-width:1280px){.so-footer{padding:32px 40px 26px}}
+
+
 .footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
 .footer-logo{font-weight:900;font-size:1rem;color:#f0ece4;letter-spacing:-.02em}
 .footer-logo span{color:#e8a020}
 .footer-copy{font-family:'DM Sans',sans-serif;font-weight:300;font-size:.75rem;color:#4d6070;letter-spacing:.06em;margin:0}
 .footer-disclaimer{font-family:'DM Sans',sans-serif;font-weight:300;font-size:.62rem;line-height:1.65;color:rgba(255,255,255,.28);max-width:980px;border-top:1px solid rgba(255,255,255,.06);padding-top:14px;margin:0}
-@media(max-width:900px){.so-footer{padding:24px 20px 22px}.footer-top{flex-direction:column;text-align:center}}
+@media(max-width:900px){.footer-top{flex-direction:column;text-align:center}}
 
-/* ============================================================
-   MOBILE — hero scale-down + the two card shelves become
-   horizontally swipeable. overflow-y is left VISIBLE and each
-   card gets a max-height/auto-scroll fallback so nothing is
-   ever silently clipped, only ever scrollable.
-   ============================================================ */
-@media(max-width:900px){
-  .hero{padding-top:104px}
-}
 @media(max-width:700px){
-  .hero{padding:88px 0 32px}
-  .hero-title{font-size:2.1rem}
-  .hero-lede{font-size:.92rem}
-  .name-card,.mindset-card{padding:16px}
-  .name-word{font-size:1.35rem}
-  .mindset-title{font-size:1.3rem}
-  .matchup-row{padding:12px 14px}
-  .matchup-grid{grid-template-columns:1fr;gap:10px}
-  .matchup-grid::before{display:none}
-  .col-icon{width:18px;height:18px}
-  .col-icon svg{width:10px;height:10px}
-  .col-tag{font-size:.62rem}
-  .col-val{font-size:.74rem}
-
-  .why{padding:40px 0}
-  .why-title{font-size:1.4rem}
-
-  .info-panel{background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important}
-  .info-grid{
-    display:flex!important;gap:12px;overflow-x:auto;overflow-y:visible;
-    scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
-    scrollbar-width:none;padding-bottom:10px;
-  }
-  .info-grid::-webkit-scrollbar{display:none}
-  .info-tile{
-    flex:0 0 min(84vw,350px);width:min(84vw,350px);scroll-snap-align:start;
-    border:1px solid rgba(255,255,255,.07)!important;border-radius:22px;background:rgba(7,13,22,.78);
-    padding:20px;max-height:min(72vh,540px);overflow-y:auto;-webkit-overflow-scrolling:touch;
-  }
-  .tile-title{font-size:1.1rem}
-
-  .closing{padding:26px 0 34px}
-  .closing-grid{padding:22px 18px;gap:20px}
-  .closing-title{font-size:1.4rem}
-  .closing-lede{font-size:.82rem}
-  .btn{padding:11px 16px;font-size:.68rem}
-  .newsletter-input{height:42px}
-}
-@media(max-width:640px){
   html,body{max-width:100%;overflow-x:hidden}
   a,button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  .df-hero{padding:80px 0 22px}
+  .df-title{font-size:2.15rem}
+  .df-section{padding:28px 0}
+  .df-section-title{font-size:1.5rem}
+  .name-card{padding:18px}
+  .name-word{font-size:1.5rem}
+  table.df-table{font-size:.78rem}
+  table.df-table thead th,table.df-table tbody td{padding:12px 14px}
+  .closing-panel{padding:22px 20px}
+  .closing-title{font-size:1.55rem}
 }
-@media(prefers-reduced-motion:reduce){*{transition-duration:.001ms!important}.tug-l,.tug-r{animation:none!important}}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.001ms!important}.meter-fill-l,.meter-fill-r{animation:none!important}}
 </style>
+<style id="so-shared-disclaimer-footer-20260824"></style><style id="so-canonical-nav-round14">.so-nav-shell{position:fixed;z-index:900;inset:0 0 auto;padding:16px 24px 0;pointer-events:none}
+.so-nav{pointer-events:auto;max-width:1400px;height:60px;margin:0 auto;padding:0 14px 0 18px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(9,13,20,.86);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%)}
+.so-nav-brand{display:inline-flex;align-items:center;width:max-content;font-weight:800;letter-spacing:-.04em;font-size:1rem;color:#f4f2ed;text-decoration:none}
+.so-nav-brand b{color:#f4b942;font-weight:800}
+.so-nav-center{display:flex;align-items:center;justify-content:center;gap:22px;height:100%}
+.so-nav-link{position:relative;display:inline-flex;align-items:center;height:100%;color:#9ba5af;font-size:.76rem;font-weight:560;letter-spacing:-.01em;white-space:nowrap;text-decoration:none;transition:color .18s ease}
+.so-nav-link:hover{color:#f3f6f8}
+.so-nav-link.active{color:#f5f7f8}
+.so-nav-link.active::after{content:"";position:absolute;left:50%;bottom:9px;width:4px;height:4px;border-radius:50%;background:#f4b942;transform:translateX(-50%)}
+.so-nav-tag{display:inline-flex;align-items:center;margin-left:6px;padding:2px 6px;border-radius:999px;border:1px solid var(--badge-border);background:var(--badge-bg);color:var(--badge-color);font-size:.4rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.so-nav-tag.gold{--badge-border:rgba(244,185,66,.25);--badge-bg:rgba(244,185,66,.08);--badge-color:#f4b942}
+.so-nav-tag.purple{--badge-border:rgba(167,139,250,.3);--badge-bg:rgba(167,139,250,.08);--badge-color:#c4b5fd}
+.so-nav-actions{justify-self:end;display:flex;align-items:center;gap:18px}
+.so-nav-secondary{font-size:.76rem;color:#98a3ae;text-decoration:none}
+.so-nav-secondary:hover{color:#fff}
+.so-nav-cta{display:inline-flex;align-items:center;justify-content:center;height:34px;padding:0 16px;border-radius:999px;background:linear-gradient(155deg,#151f2f,#0a1420 62%);color:#a9c3e0;font-size:.66rem;font-weight:800;text-decoration:none;border:1px solid rgba(90,120,160,.4)}
+.so-hamburger{display:none;justify-self:end;width:36px;height:36px;border:1px solid rgba(255,255,255,.09);border-radius:10px;background:rgba(255,255,255,.03);padding:9px;cursor:pointer}
+.so-hamburger span{display:block;height:1.5px;margin:3px 0;border-radius:2px;background:#e8edf5}
+@media(max-width:1120px){.so-nav{grid-template-columns:1fr auto}.so-nav-center{display:none}.so-nav-actions{display:none}.so-hamburger{display:block}}
+@media(max-width:640px){.so-nav-shell{padding:10px 12px 0}.so-nav{height:56px;border-radius:14px}}
 
-<!-- Short Open account layer: plain deferred pair declared early in <head>
-     (see the preconnect + script tags above, right after the icon links) —
-     matches the fast pattern used on every other standalone page instead of
-     the requestIdleCallback + dynamic script-injection chain this page used
-     to run, which cost an extra idle wait plus a fully sequential (not
-     parallel) network round trip between supabase-js and auth.js. -->
-<style id="so-mobile-sleek-20260901">
-.so-mobile-menu{display:flex!important;flex-direction:column;gap:6px;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-10px);transition:opacity .3s cubic-bezier(.4,0,.2,1),transform .3s cubic-bezier(.4,0,.2,1),visibility 0s linear .3s}
-.so-mobile-menu.open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);transition:opacity .32s cubic-bezier(.4,0,.2,1),transform .32s cubic-bezier(.4,0,.2,1),visibility 0s linear 0s}
-.so-mobile-brand{display:flex;flex-direction:column;align-items:flex-start;gap:7px;padding:14px 16px;margin:0 0 14px;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.014));border:1px solid rgba(255,255,255,.09)}
-.so-mobile-brand-label{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:#7c8797;font-weight:650}
-.so-mobile-brand-logo{display:inline-flex;align-items:center;font-family:'Inter',system-ui,sans-serif;font-weight:800;letter-spacing:-.045em;font-size:1.28rem;color:#f4f2ed}
-.so-mobile-brand-logo b{color:#f4b942;font-weight:800}
-.so-mobile-menu .so-mobile-tag,.so-mobile-menu .so-nav-tag{display:none!important}
-.so-mobile-menu>a{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,system-ui,sans-serif;padding:14px 15px;border:1px solid transparent;border-radius:12px;background:transparent;color:#c3ccd6;font-size:.96rem;font-weight:560;letter-spacing:.005em;transition:background .2s ease,color .2s ease,border-color .2s ease,transform .2s ease}
-.so-mobile-menu>a:active{transform:scale(.98)}
-.so-mobile-menu>a.active{border-color:rgba(120,170,255,.28);background:rgba(120,170,255,.08);color:#fff;font-weight:650}
-.so-mobile-menu>a:not(.active):hover{background:rgba(255,255,255,.035);color:#eef1f5}
-</style>
-<style id="so-nav-sleek-white-20260901">
-.so-nav-link{color:#f4f2ed!important;font-weight:460!important;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Inter',system-ui,sans-serif!important;letter-spacing:-.005em!important}
-.so-nav-cta{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Inter',system-ui,sans-serif!important}
-@keyframes soNavActionIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
-.so-nav-actions>a,.so-mobile-menu>a{animation:soNavActionIn .3s ease both}
-.so-nav-link:hover{color:#ffffff!important}
-.so-nav-link.active{color:#ffffff!important;font-weight:520!important}
-.so-nav-secondary{color:#f4f2ed!important;font-weight:460!important;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Inter',system-ui,sans-serif!important}
-.so-nav-secondary:hover{color:#ffffff!important}
-.so-nav-link.so-nav-badged{padding:0 1px!important;border:0!important;background:none!important;border-radius:0!important;gap:0!important}
-.so-nav-link.so-nav-badged:hover{border-color:transparent!important;background:none!important}
-.so-nav-link.so-nav-badged .so-nav-tag{margin-left:6px!important;padding:2px 6px!important;border:1px solid var(--badge-border)!important;background:var(--badge-bg)!important;border-radius:999px!important}
-</style>
-<style id="so-nav-nba-coming-soon-brown">
-.so-nav-tag.brown{--badge-border:rgba(184,118,58,.34);--badge-bg:rgba(184,118,58,.09);--badge-color:#d99a56}
-.so-nav-link.so-nav-stacked{flex-direction:column;justify-content:center;align-items:center;gap:2px;padding-top:3px}
-.so-nav-link.so-nav-stacked .so-nav-tag{margin-left:0;padding:1px 6px;font-size:.38rem}
-.so-mobile-tag.brown{--mb-border:rgba(184,118,58,.35);--mb-color:#d99a56}
-</style>
-</head>
+.so-mobile-menu{display:flex;flex-direction:column;gap:6px;position:fixed;inset:0;z-index:980;padding:92px 22px 28px;background:rgba(5,8,13,.98);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-8px);transition:opacity .25s ease,transform .25s ease,visibility 0s linear .25s;overflow-y:auto}
+.so-mobile-menu.open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);transition:opacity .25s ease,transform .25s ease}
+.so-mobile-close{position:absolute;top:20px;right:20px;width:40px;height:40px;border:1px solid rgba(255,255,255,.09);border-radius:12px;background:rgba(255,255,255,.03);color:#d9e1e8;font-size:1.3rem;cursor:pointer}
+.so-mobile-brand{display:flex;flex-direction:column;align-items:center;gap:2px;margin-bottom:14px}
+.so-mobile-brand-label{font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:#59667a}
+.so-mobile-brand-logo{font-weight:800;font-size:1.1rem;color:#f4f2ed}
+.so-mobile-brand-logo b{color:#f4b942}
+.so-mobile-menu>a{padding:14px 15px;border:1px solid transparent;border-radius:12px;color:#c3ccd6;font-size:.96rem;font-weight:560;text-decoration:none;display:flex;justify-content:space-between;align-items:center}
+.so-mobile-menu>a.active{border-color:rgba(244,185,66,.3);background:rgba(244,185,66,.08);color:#fff}
+.so-mobile-menu>a:hover{background:rgba(255,255,255,.04)}
+.so-mobile-terms{margin-top:10px;padding-top:16px;border-top:1px solid rgba(255,255,255,.09);font-size:.72rem;font-weight:600;color:#7c8797}</style><style id="so-shared-disclaimer-footer-20260824">.so-shared-footer{width:100%;max-width:100%;margin:28px 0 0;padding:28px clamp(18px,4vw,48px) 30px;border-top:1px solid rgba(255,255,255,.08);background:rgba(4,7,12,.82);display:flex;flex-direction:column;gap:14px;clear:both}.so-shared-footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}.so-shared-footer-logo{font-family:Inter,Arial,sans-serif;font-size:1rem;font-weight:900;letter-spacing:-.02em;color:#f0ece4;text-decoration:none}.so-shared-footer-logo span{color:#e8a020}.so-shared-footer-top p{margin:0;color:#4d6070;font-size:.75rem;letter-spacing:.06em}.so-shared-footer .footer-disclaimer{max-width:1100px;margin:0;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.28);font-size:.62rem;line-height:1.68;letter-spacing:.01em}@media(max-width:700px){.so-shared-footer{margin-top:20px;padding:22px 16px max(24px,env(safe-area-inset-bottom));text-align:center}.so-shared-footer-top{flex-direction:column}.so-shared-footer .footer-disclaimer{text-align:left;font-size:.6rem;overflow-wrap:anywhere}}</style></head>
 <body>
 
 <div class="so-nav-shell"><nav class="so-nav" aria-label="Primary navigation">
   <a class="so-nav-brand" href="index.html" aria-label="Short Open home"><span>short<b>open</b></span></a>
   <div class="so-nav-center">
     <a class="so-nav-link" href="analysis.html">Analysis</a>
-    <a class="so-nav-link" href="prediction-markets.html"><span>Prediction Markets</span><span class="so-nav-tag purple">Beta</span></a>
-    <a class="so-nav-link so-nav-stacked" href="nba.html"><span class="so-nav-tag brown">Coming Soon</span><span>NBA</span></a>
+    <a class="so-nav-link" href="prediction-markets.html">Prediction Markets</a>
+    <a class="so-nav-link" href="nba.html">NBA</a>
     <a class="so-nav-link" href="mlb.html">MLB</a>
     <a class="so-nav-link" href="nfl.html">NFL</a>
-    <a class="so-nav-link" href="worldcup.html"><span>World Cup</span><span class="so-nav-tag gold">Limited</span></a>
+    <a class="so-nav-link" href="worldcup.html">World Cup</a>
     <a class="so-nav-link" href="premier-league.html">Premier League</a>
-    <a class="so-nav-link" href="terminal.html"><span>Terminal</span><span class="so-nav-tag purple">Beta</span></a>
+    <a class="so-nav-link" href="terminal.html">Terminal</a>
   </div>
-  <div class="so-nav-actions"><a class="so-nav-secondary active" href="about.html">About</a><a class="so-nav-cta" href="subscribe.html">Subscribe</a></div>
+  <div class="so-nav-actions"><a class="so-nav-secondary active" href="about.html">About</a><a class="so-nav-cta" href="subscribe.html">Subscribe</a><a class="so-nav-secondary" href="account.html">Sign In</a></div>
   <button class="so-hamburger" id="hamburgerBtn" type="button" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav></div>
 <div class="so-mobile-menu" id="mobileMenu" aria-hidden="true">
-  <button class="so-mobile-close" type="button" aria-label="Close menu">×</button>
+<button class="so-mobile-close" type="button" aria-label="Close menu">&times;</button><div class="so-mobile-brand"><span class="so-mobile-brand-label">Presented by</span><span class="so-mobile-brand-logo">short<b>open</b></span></div>
   <a href="index.html">Home</a>
   <a href="analysis.html">Analysis</a>
-  <a href="prediction-markets.html"><span>Prediction Markets</span><span class="so-mobile-tag purple">Beta</span></a>
+  <a href="prediction-markets.html">Prediction Markets</a>
   <a href="nba.html">NBA</a>
   <a href="mlb.html">MLB</a>
   <a href="nfl.html">NFL</a>
-  <a href="worldcup.html"><span>World Cup</span><span class="so-mobile-tag gold">Limited</span></a>
+  <a href="worldcup.html">World Cup</a>
   <a href="premier-league.html">Premier League</a>
-  <a href="terminal.html"><span>Terminal</span><span class="so-mobile-tag purple">Beta</span></a>
-  <a class="active" href="about.html">About</a>
+  <a href="terminal.html">Terminal</a>
+  <a href="about.html" class="active">About</a>
   <a href="subscribe.html">Subscribe</a>
-<a href="terms.html" style="margin-top:10px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08);font-size:.72rem;font-weight:600;color:#7c8797">Terms of Service</a></div>
+  <a href="account.html">Sign In</a>
+<a href="terms.html" style="margin-top:10px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08);font-size:.72rem;font-weight:600;color:#7c8797">Terms of Service</a>
+</div>
 
 <!-- HERO -->
-<section class="hero">
-<div class="wrap hero-grid">
+<section class="df-hero">
+<div class="wrap df-grid">
   <div>
-    <div class="hero-badge">The Model. The Philosophy.</div>
-    <h1 class="hero-title">short<span style="color:var(--gold)">open</span></h1>
-    <p class="hero-lede">We track where a line opened, what moved it, and how far public money has pushed it from the starting point. No picks, no promises — just the number, and how it got there.</p>
-    <div class="name-cards">
-      <div class="panel-soft name-card">
-        <div class="name-eyebrow">verb · markets &amp; betting</div>
-        <div class="name-word">short</div>
-        <div class="name-sub">fade the consensus</div>
-        <p class="name-copy">In markets, to <strong>short</strong> is inferring an overvalued asset will come back to earth. In betting: find the side the public has bid up, and take the other one. You don't need them to be wrong on the outcome — they just need to be wrong on the price.</p>
-      </div>
-      <div class="panel-soft name-card">
-        <div class="name-eyebrow">noun · betting markets</div>
-        <div class="name-word" style="color:var(--gold)">open</div>
-        <div class="name-sub">know the line first</div>
-        <p class="name-copy">The <strong>open</strong> is the first number the market puts up — set before bets arrive, before an injury report gets overreacted to, before a highlight clip becomes a wager. <strong>Every read starts the same way: what changed since the open, and why.</strong></p>
-      </div>
-    </div>
+    <div class="df-badge">Model live &middot; updated pregame</div>
+    <h1 class="df-title">short<span style="color:var(--gold)">open</span></h1>
+    <p class="df-lede">We track where a line opened, what moved it, and how far public money has pushed it from the starting point. No picks, no promises — just the number, and how it got there.</p>
   </div>
-
-  <div class="panel-soft mindset-card">
-    <div class="mindset-head">
-      <div><div class="mindset-eyebrow">Two Markets</div><div class="mindset-title">One Mindset.</div></div>
-      <div class="mindset-flag">shortopen</div>
+  <div class="panel chart-card">
+    <div class="chart-head"><div class="chart-title">Sample Line Movement</div><div class="chart-sub">OPEN → CURRENT</div></div>
+    <svg class="linechart" viewBox="0 0 300 130" preserveAspectRatio="none">
+      <line x1="0" y1="32" x2="300" y2="32" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <line x1="0" y1="65" x2="300" y2="65" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <line x1="0" y1="98" x2="300" y2="98" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <polyline points="0,90 40,88 80,70 120,74 160,52 200,40 240,30 300,20" fill="none" stroke="#f4b942" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="0" cy="90" r="3.5" fill="#57a7ff"/>
+      <circle cx="300" cy="20" r="3.5" fill="#f4b942"/>
+    </svg>
+    <div class="chart-legend">
+      <div class="chart-legend-item"><span class="dot" style="background:#57a7ff"></span>Open line</div>
+      <div class="chart-legend-item"><span class="dot" style="background:#f4b942"></span>Current line</div>
     </div>
-    <div class="mindset-rows">
-      <div class="matchup-row">
-        <div class="matchup-top"><span class="matchup-label">The Move</span><span class="vs-badge"><span>VS</span></span></div>
-        <div class="matchup-grid">
-          <div class="matchup-col"><span class="col-icon" style="background:rgba(87,167,255,.12);color:#57a7ff"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.4" viewBox="0 0 24 24"><path d="M3 17l5-5 4 4 8-9"></path><path d="M15 7h6v6"></path></svg></span><div><div class="col-tag">Financial</div><div class="col-val">Short — against consensus</div></div></div>
-          <div class="matchup-col"><span class="col-icon" style="background:rgba(244,185,66,.12);color:var(--gold)"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.4" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg></span><div><div class="col-tag">Sports</div><div class="col-val">Fade — against the favorite</div></div></div>
-        </div>
-      </div>
-      <div class="matchup-row">
-        <div class="matchup-top"><span class="matchup-label">The Edge</span><span class="vs-badge"><span>VS</span></span></div>
-        <div class="matchup-grid">
-          <div class="matchup-col"><span class="col-icon" style="background:rgba(87,167,255,.12);color:#57a7ff"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.4" viewBox="0 0 24 24"><path d="M3 17l5-5 4 4 8-9"></path><path d="M15 7h6v6"></path></svg></span><div><div class="col-tag">Financial</div><div class="col-val">Open — before the volume</div></div></div>
-          <div class="matchup-col"><span class="col-icon" style="background:rgba(244,185,66,.12);color:var(--gold)"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.4" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg></span><div><div class="col-tag">Sports</div><div class="col-val">Public — after consensus</div></div></div>
-        </div>
-      </div>
-      <div class="matchup-row">
-        <div class="matchup-top"><span class="matchup-label">The Timing</span><span class="vs-badge"><span>VS</span></span></div>
-        <div class="matchup-grid">
-          <div class="matchup-col"><span class="col-icon" style="background:rgba(87,167,255,.12);color:#57a7ff"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.4" viewBox="0 0 24 24"><path d="M3 17l5-5 4 4 8-9"></path><path d="M15 7h6v6"></path></svg></span><div><div class="col-tag">Financial</div><div class="col-val">Earnings & news move price</div></div></div>
-          <div class="matchup-col"><span class="col-icon" style="background:rgba(244,185,66,.12);color:var(--gold)"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.4" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg></span><div><div class="col-tag">Sports</div><div class="col-val">Injuries & news move lines</div></div></div>
-        </div>
-      </div>
-      <div class="matchup-row">
-        <div class="matchup-top"><span class="matchup-label">The Discipline</span><span class="vs-badge"><span>VS</span></span></div>
-        <div class="matchup-grid">
-          <div class="matchup-col"><span class="col-icon" style="background:rgba(87,167,255,.12);color:#57a7ff"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.4" viewBox="0 0 24 24"><path d="M3 17l5-5 4 4 8-9"></path><path d="M15 7h6v6"></path></svg></span><div><div class="col-tag">Financial</div><div class="col-val">Position size for variance</div></div></div>
-          <div class="matchup-col"><span class="col-icon" style="background:rgba(244,185,66,.12);color:var(--gold)"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.4" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg></span><div><div class="col-tag">Sports</div><div class="col-val">Bet size for variance</div></div></div>
-        </div>
-      </div>
+    <div class="chart-stats">
+      <div class="chart-stat"><div class="n">-2.5</div><div class="l">Open</div></div>
+      <div class="chart-stat"><div class="n">-4.5</div><div class="l">Current</div></div>
+      <div class="chart-stat"><div class="n" style="color:var(--red)">+2.0</div><div class="l">Gap</div></div>
     </div>
   </div>
 </div>
 </section>
 
-<!-- WHY IT MATTERS -->
-<section class="why">
-<div class="wrap">
-  <div class="why-top">
-    <span class="quote-mark">&ldquo;</span>
-    <div class="why-eyebrow">Why It Matters</div>
-    <p class="why-title">Crowds move stock prices the same way they <span class="accent">move betting lines.</span></p>
-    <p class="why-copy">Public money load up on favorites, star players, and national narrative. That demand moves the line — it is not new information, just more people betting the same side.</p>
+<!-- NAME -->
+<section class="df-section wrap">
+  <div class="df-label-row">
+    <div><div class="df-eyebrow">// the name</div><h2 class="df-section-title">Two definitions, one framework.</h2></div>
   </div>
-</div>
+  <div class="name-cards">
+    <div class="panel name-card">
+      <div class="name-eyebrow">verb · markets &amp; betting</div>
+      <div class="name-word">short</div>
+      <div class="name-sub">fade the consensus</div>
+      <p class="name-copy">In markets, to <strong>short</strong> is inferring an overvalued asset will come back to earth. In betting: find the side the public has bid up, and take the other one. You don't need them to be wrong on the outcome — they just need to be wrong on the price.</p>
+    </div>
+    <div class="panel name-card">
+      <div class="name-eyebrow">noun · betting markets</div>
+      <div class="name-word" style="color:var(--gold)">open</div>
+      <div class="name-sub">know the line first</div>
+      <p class="name-copy">The <strong>open</strong> is the first number the market puts up — set before bets arrive, before an injury report gets overreacted to, before a highlight clip becomes a wager. <strong>Every read starts the same way: what changed since the open, and why.</strong></p>
+    </div>
+  </div>
 </section>
 
-<!-- WHAT SHORT OPEN IS — Gap & Gut (with the Sharp/Public reality meter folded
-     in), What We Watch, and the three identity pillars, unified into one panel. -->
-<section class="wrap info-wrap">
-  <div class="panel info-panel">
-    <div class="info-grid">
-      <div class="info-tile">
-        <div class="tile-eyebrow">Gap And Gut</div>
-        <div class="tile-word">G&amp;G</div>
-        <p class="tile-copy">We check every number against the open, it's normal to use instincts, but trust the gap — it is the same process every time, no matter who's playing.</p>
-        <div class="tile-divider"></div>
-        <div class="tile-subhead">Lines move for two reasons.</div>
-        <div class="tug-wrap"><div class="tug-l"></div><div class="tug-r"></div></div>
-        <div class="stat-pair">
-          <div class="stat-box"><div class="num" style="color:var(--green)">Sharp</div><div class="lbl">Real information</div></div>
-          <div class="stat-box"><div class="num" style="color:var(--red)">Public</div><div class="lbl">Crowd behavior</div></div>
-        </div>
+<!-- COMPARISON TABLE -->
+<section class="df-section wrap">
+  <div class="df-label-row">
+    <div><div class="df-eyebrow">// two markets, one mindset</div><h2 class="df-section-title">Financial markets and sports betting, side by side.</h2></div>
+  </div>
+  <div class="panel df-table-wrap">
+    <table class="df-table">
+      <thead><tr><th>Dimension</th><th>Financial Markets</th><th>Sports Betting</th></tr></thead>
+      <tbody>
+        <tr><td>The Move</td><td>Short — against consensus</td><td>Fade — against the favorite</td></tr>
+        <tr><td>The Edge</td><td>Open — before the volume</td><td>Public — after consensus</td></tr>
+        <tr><td>The Timing</td><td>Earnings &amp; news move price</td><td>Injuries &amp; news move lines</td></tr>
+        <tr><td>The Discipline</td><td>Position size for variance</td><td>Bet size for variance</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- WHY IT MATTERS / SHARP VS PUBLIC -->
+<section class="df-section wrap">
+  <div class="df-label-row">
+    <div><div class="df-eyebrow">// why it matters</div><h2 class="df-section-title">Lines move for two reasons. We measure both.</h2></div>
+  </div>
+  <div class="df-grid" style="grid-template-columns:1fr 1fr">
+    <div class="panel meter-card">
+      <div class="meter-title">Sharp vs. Public Pressure</div>
+      <div class="meter-track">
+        <div class="meter-fill-l">SHARP</div>
+        <div class="meter-fill-r">PUBLIC</div>
       </div>
-      <div class="info-tile">
-        <div class="tile-eyebrow">What We Watch</div>
-        <h2 class="tile-title">Three things before the number.</h2>
-        <div class="watch-list">
-          <div class="watch-item"><div class="flow-node">01</div><div class="watch-copy">Where it opened, and how far it's moved since.</div></div>
-          <div class="watch-item"><div class="flow-node">02</div><div class="watch-copy">Whether the shift is tied to facts or news.</div></div>
-          <div class="watch-item"><div class="flow-node">03</div><div class="watch-copy">Whether the metrics matches the boost, or it's just noise from the public.</div></div>
-        </div>
-      </div>
-      <div class="info-tile">
-        <div class="tile-eyebrow">What We Are</div>
-        <h2 class="tile-title">Independent betting research.</h2>
-        <p class="tile-copy">Short Open pulls together line data, projections, and player props — all pointed at one question: what did the market know at the open that the crowd hadn't priced in yet?</p>
-      </div>
-      <div class="info-tile">
-        <div class="tile-eyebrow">What We Are Not</div>
-        <h2 class="tile-title">Not a tout shop.</h2>
-        <p class="tile-copy">No locks, no guaranteed winners, no reason to bet more than you planned to. The goal is the opposite of hype: slow down, look at the number, and understand why it is what it is.</p>
-      </div>
-      <div class="info-tile">
-        <div class="tile-eyebrow">Who It Is For</div>
-        <h2 class="tile-title">People who study the number.</h2>
-        <p class="tile-copy">Bettors who already pay attention to props, line movement, and ownership — but want it organized in a way that's easier to act on.</p>
-      </div>
+      <div class="meter-legend"><span>Real information</span><span>Crowd behavior</span></div>
     </div>
+    <div class="panel meter-card">
+      <div class="meter-title" style="margin-bottom:10px">The Thesis</div>
+      <p style="font-size:.86rem;line-height:1.7;color:var(--muted);margin:0">Public money loads up on favorites, star players, and national narrative. That demand moves the line — it is not new information, just more people betting the same side.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WE WATCH -->
+<section class="df-section wrap">
+  <div class="df-label-row">
+    <div><div class="df-eyebrow">// what we watch</div><h2 class="df-section-title">Three checks before we look at anything else.</h2></div>
+  </div>
+  <div class="watch-row">
+    <div class="panel watch-card"><div class="watch-num">01 // OPEN VS NOW</div><p>Where it opened, and how far it's moved since.</p></div>
+    <div class="panel watch-card"><div class="watch-num">02 // CAUSE</div><p>Whether the shift is tied to facts or news.</p></div>
+    <div class="panel watch-card"><div class="watch-num">03 // FIT</div><p>Whether the metrics match the boost, or it's just noise from the public.</p></div>
+  </div>
+</section>
+
+<!-- IDENTITY -->
+<section class="df-section wrap">
+  <div class="df-label-row">
+    <div><div class="df-eyebrow">// what shortopen is</div><h2 class="df-section-title">A working definition.</h2></div>
+  </div>
+  <div class="id-grid">
+    <div class="panel id-tile"><div class="id-eyebrow">What We Are</div><h3>Independent betting research.</h3><p>Shortopen pulls together line data, projections, and player props — all pointed at one question: what did the market know at the open that the crowd hadn't priced in yet?</p></div>
+    <div class="panel id-tile"><div class="id-eyebrow">What We Are Not</div><h3>Not a tout shop.</h3><p>No locks, no guaranteed winners, no reason to bet more than you planned to. The goal is the opposite of hype: slow down, look at the number, and understand why it is what it is.</p></div>
+    <div class="panel id-tile"><div class="id-eyebrow">Who It Is For</div><h3>People who study the number.</h3><p>Bettors who already pay attention to props, line movement, and ownership — but want it organized in a way that's easier to act on.</p></div>
   </div>
 </section>
 
@@ -494,31 +376,26 @@ img,svg{display:block}
 <section class="wrap closing">
   <div class="panel closing-panel">
     <div class="closing-grid">
-      <div class="closing-left">
+      <div>
         <h2 class="closing-title">The market is readable.<br/><span style="color:var(--gold)">The story talks over it.</span></h2>
         <p class="closing-lede">Most line moves aren't new information — they're everyone watching the same highlight, reading the same headline, and landing on the same bet. Knowing where a line opened, and being able to explain it, is the edge between reacting to a market and reading it. What you do with that is entirely up to you.</p>
       </div>
       <div class="closing-right">
-        <a class="btn btn-gold closing-projections" href="optimizer.html">See the Projections</a>
-        <form class="newsletter-form" action="subscribe.html" method="get">
-          <label class="newsletter-label" for="closing-email">Join the newsletter</label>
+        <a class="btn btn-gold" href="optimizer.html">See the Projections</a>
+        <form class="newsletter-form" id="closingNewsletterForm">
+          <label class="newsletter-label" for="closing-email">JOIN THE NEWSLETTER</label>
           <div class="newsletter-row">
             <input class="newsletter-input" id="closing-email" name="email" type="email" placeholder="you@email.com" required>
-            <button class="btn btn-ghost newsletter-submit" type="submit">Join</button>
+            <button class="btn btn-ghost" type="submit">Join</button>
           </div>
+          <p id="closingNewsletterStatus" style="display:none;margin:0;font-size:.7rem;font-weight:600"></p>
         </form>
       </div>
     </div>
   </div>
 </section>
 
-<footer class="so-footer">
-  <div class="footer-top">
-    <div class="footer-logo">short<span>open</span></div>
-    <p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
-  </div>
-  <p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span style="color:#e8c078;font-weight:600">1-800-GAMBLER</span>. <a href="terms.html" style="text-decoration:underline;color:#e8c078">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p>
-</footer>
+<footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>&copy; 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or &ldquo;you&rsquo;d earn&rdquo; calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span style="color:#e8c078;font-weight:600">1-800-GAMBLER</span>. <a href="terms.html" style="text-decoration:underline;color:#e8c078">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p></footer>
 
 <script>
 (function(){
@@ -531,16 +408,42 @@ img,svg{display:block}
   menu.addEventListener('click',function(e){if(e.target.closest('a'))setMenu(false);});
 })();
 </script>
-<style id="so-pl-mobile-parity-final-20260902">
-@media(max-width:700px){
- html,body{width:100%!important;max-width:100%!important;overflow-x:hidden!important}.wrap{width:100%!important;max-width:100%!important;padding-left:10px!important;padding-right:10px!important}.so-nav-shell{padding:0 10px!important}.so-mobile-menu{max-width:100%!important}
- .hero{padding:10px 0 18px!important;overflow:hidden!important}.hero-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:13px!important;padding:20px 14px 15px!important;border-radius:20px!important;overflow:hidden!important}.hero-badge{font-size:.5rem!important}.hero-title{font-size:2.15rem!important;line-height:1!important;letter-spacing:-.05em!important}.hero-lede{max-width:100%!important;margin-top:11px!important;font-size:.74rem!important;line-height:1.52!important}
- .name-cards,.mindset-rows,.watch-list,.info-grid{display:flex!important;flex-direction:row!important;grid-template-columns:none!important;gap:9px!important;max-width:100%!important;padding:0 0 7px!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x proximity!important;-webkit-overflow-scrolling:touch!important;scrollbar-width:none!important;align-items:flex-start!important}.name-cards::-webkit-scrollbar,.mindset-rows::-webkit-scrollbar,.watch-list::-webkit-scrollbar,.info-grid::-webkit-scrollbar{display:none!important}.name-card,.matchup-row,.watch-item,.info-tile{flex:0 0 min(76vw,275px)!important;min-width:0!important;padding:12px!important;border-radius:16px!important;scroll-snap-align:start!important}
- .mindset-card,.why,.info-panel,.closing-panel{margin-top:14px!important;padding:15px!important;border-radius:18px!important}.mindset-head,.why-top{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px!important}.closing-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:16px!important}.mindset-title,.why-title,.closing-title{font-size:1.25rem!important;line-height:1.1!important}.mindset-flag{justify-self:start!important}.matchup-grid{min-width:0!important}.matchup-col{padding:8px!important}.matchup-col .col-val{font-size:.76rem!important}.why-copy,.closing-lede,.tile-copy{font-size:.68rem!important;line-height:1.5!important}.tug-wrap{min-height:0!important}.info-wrap{padding:20px 10px!important}
- .closing-right{gap:14px!important}.closing-projections{width:100%!important;padding:15px 18px!important;font-size:.74rem!important;min-height:48px!important}
- .so-footer{padding:22px 14px max(24px,env(safe-area-inset-bottom))!important}.footer-top{flex-direction:column!important;gap:8px!important;text-align:center!important}.footer-disclaimer{font-size:.6rem!important;line-height:1.62!important;text-align:left!important}
-}
-@media(pointer:coarse) and (max-width:700px){.name-card:hover,.info-tile:hover,.watch-item:hover{transform:none!important}}
-</style>
+<script>
+(function(){
+  var form=document.getElementById('closingNewsletterForm');
+  if(!form)return;
+  form.addEventListener('submit',async function(e){
+    e.preventDefault();
+    var btn=form.querySelector('button[type="submit"]');
+    var input=document.getElementById('closing-email');
+    var status=document.getElementById('closingNewsletterStatus');
+    var email=input.value.trim();
+    btn.disabled=true;btn.textContent='Joining…';
+    status.style.display='none';status.textContent='';
+    try{
+      var response=await fetch('https://tltfpencvpnhghoruiwb.supabase.co/functions/v1/subscribe-beehiiv',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email:email,full_name:'',referral:'about-closing'})
+      });
+      var result=null;
+      try{result=await response.json();}catch(_e){}
+      if(!response.ok||!result||result.success!==true){
+        throw new Error((result&&result.error)||'Could not subscribe right now. Please try again.');
+      }
+      btn.textContent='Joined';
+      input.disabled=true;
+      status.style.display='block';
+      status.style.color='#34d399';
+      status.textContent='Thanks — check your inbox for a confirmation.';
+    }catch(err){
+      btn.disabled=false;btn.textContent='Join';
+      status.style.display='block';
+      status.style.color='#f87171';
+      status.textContent=(err&&err.message)?err.message:'Could not subscribe right now. Please try again.';
+    }
+  });
+})();
+</script>
 </body>
 </html>
