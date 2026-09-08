@@ -7,16 +7,12 @@
 <style>
 :root{--bg:#050a13;--gold:#f4b942;--green:#3fc17a;--red:#ef4444;--blue:#57a7ff;--muted:#738296;--text:#e8edf5;}
 *{box-sizing:border-box}
-html{background:#04070d;}
+html{background:#0a0e16;}
 body{margin:0;padding-top:92px;color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   background:
-    linear-gradient(rgba(246,250,255,.020) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(246,250,255,.018) 1px,transparent 1px),
-    radial-gradient(920px 560px at 7% 8%,rgba(244,185,66,.070),transparent 66%),
-    radial-gradient(900px 580px at 96% 12%,rgba(68,111,168,.070),transparent 66%),
-    radial-gradient(760px 520px at 12% 76%,rgba(63,193,122,.032),transparent 70%),
-    linear-gradient(180deg,#03060b 0%,#050a13 24%,#071324 52%,#04070d 100%);
-  background-size:56px 56px,56px 56px,auto,auto,auto,auto;
+    radial-gradient(ellipse 1200px 600px at 15% -10%, rgba(62,207,255,.08), transparent 60%),
+    radial-gradient(ellipse 900px 500px at 100% 0%, rgba(79,124,255,.06), transparent 60%),
+    #0a0e16;
   background-attachment:scroll;overflow-x:hidden;}
 a{text-decoration:none;color:inherit}
 img,svg{display:block}
@@ -254,6 +250,29 @@ div[style*="grid-template-columns"]{min-width:0}
   div[style*="grid-template-columns"] > *{min-width:0}
   .pop-card{padding:14px 12px!important}
   .pop-num{font-size:1.3rem!important}
+
+  /* hero sub copy: keep it clearly smaller than the H1 */
+  .hero-sub{font-size:.92rem!important;line-height:1.55!important;margin:0 0 26px!important}
+
+  /* hero CTAs: more compact tap targets on mobile */
+  .hero-cta{padding:12px 18px!important;font-size:.72rem!important;letter-spacing:.08em!important}
+
+  /* "Start Here" (three kinds of bettor) card: >=15% more compact on mobile */
+  .start-here-card{padding:1.6rem 1.35rem!important}
+  .sh-head{gap:12px!important;padding-bottom:14px!important;margin-bottom:16px!important}
+  .sh-eyebrow{font-size:.6rem!important;margin-bottom:3px!important}
+  .sh-title{font-size:1.15rem!important;line-height:1.25!important}
+  .sh-tiles{gap:9px!important}
+  .sh-tile{padding:12px!important}
+  .sh-tile-cat{font-size:.53rem!important;margin-bottom:4px!important}
+  .sh-tile-title{font-size:.83rem!important;margin-bottom:3px!important}
+  .sh-tile-desc{font-size:.66rem!important;line-height:1.4!important;margin-bottom:7px!important}
+  .sh-tile-cta{font-size:.6rem!important}
+
+  /* Today's Open Board: swipeable horizontal row instead of stacked grid */
+  #openBoardGrid{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden;gap:12px!important;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 -16px!important;padding:2px 16px 12px!important}
+  #openBoardGrid::-webkit-scrollbar{display:none}
+  #openBoardGrid > div{flex:0 0 78vw!important;max-width:320px;min-width:220px;scroll-snap-align:start}
 }
 </style>
 <style id="so-shared-disclaimer-footer-20260824"></style><style id="so-canonical-nav-round14">.so-nav-shell{position:fixed;z-index:900;inset:0 0 auto;padding:16px 24px 0;pointer-events:none}
@@ -287,7 +306,7 @@ div[style*="grid-template-columns"]{min-width:0}
 .so-mobile-menu>a{padding:14px 15px;border:1px solid transparent;border-radius:12px;color:#c3ccd6;font-size:.96rem;font-weight:560;text-decoration:none;display:flex;justify-content:space-between;align-items:center}
 .so-mobile-menu>a.active{border-color:rgba(244,185,66,.3);background:rgba(244,185,66,.08);color:#fff}
 .so-mobile-menu>a:hover{background:rgba(255,255,255,.04)}
-.so-mobile-terms{margin-top:10px;padding-top:16px;border-top:1px solid rgba(255,255,255,.09);font-size:.72rem;font-weight:600;color:#7c8797}</style><style id="so-shared-disclaimer-footer-20260824">.so-shared-footer{width:100%;max-width:100%;margin:28px 0 0;padding:28px clamp(18px,4vw,48px) 30px;border-top:1px solid rgba(255,255,255,.08);background:rgba(4,7,12,.82);display:flex;flex-direction:column;gap:14px;clear:both}.so-shared-footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}.so-shared-footer-logo{font-family:Inter,Arial,sans-serif;font-size:1rem;font-weight:900;letter-spacing:-.02em;color:#f0ece4;text-decoration:none}.so-shared-footer-logo span{color:#e8a020}.so-shared-footer-top p{margin:0;color:#4d6070;font-size:.75rem;letter-spacing:.06em}.so-shared-footer .footer-disclaimer{max-width:1100px;margin:0;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.28);font-size:.62rem;line-height:1.68;letter-spacing:.01em}@media(max-width:700px){.so-shared-footer{margin-top:20px;padding:22px 16px max(24px,env(safe-area-inset-bottom));text-align:center}.so-shared-footer-top{flex-direction:column}.so-shared-footer .footer-disclaimer{text-align:left;font-size:.6rem;overflow-wrap:anywhere}}</style></head>
+.so-mobile-terms{margin-top:10px;padding-top:16px;border-top:1px solid rgba(255,255,255,.09);font-size:.72rem;font-weight:600;color:#7c8797}</style><style id="so-shared-disclaimer-footer-20260824">.so-shared-footer{width:100%;max-width:100%;margin-top:8px;margin-left:0;margin-right:0;margin-bottom:0;padding:22px 20px 30px;border-top:1px solid rgba(255,255,255,.09);background:transparent;display:flex;flex-direction:column;gap:10px;clear:both}.so-shared-footer-top{max-width:1440px;width:100%;margin:0 auto 10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;text-align:left}.so-shared-footer-logo{font-family:Inter,Arial,sans-serif;font-size:16px;font-weight:800;letter-spacing:-.02em;color:#fff;text-decoration:none;text-align:left}.so-shared-footer-logo span{color:#f4b942}.so-shared-footer-top p,.footer-copy{margin:0;color:#6f7f97;font-size:11.5px;letter-spacing:normal}.so-shared-footer .footer-disclaimer,.footer-disclaimer{max-width:1440px;margin:0 auto;padding-top:0;border-top:none;color:#6f7f97;font-size:10.5px;line-height:1.6;letter-spacing:normal}@media(max-width:700px){.so-shared-footer{margin-top:20px;padding:22px 16px max(24px,env(safe-area-inset-bottom));text-align:center}.so-shared-footer-top{flex-direction:column}.so-shared-footer .footer-disclaimer,.footer-disclaimer{text-align:left;font-size:.6rem;overflow-wrap:anywhere}}</style></head>
 <body>
 
 <div class="so-top-blend" aria-hidden="true"></div>
@@ -433,30 +452,30 @@ div[style*="grid-template-columns"]{min-width:0}
 
 </div>
 
-<div class="glass market-card" style="border-radius:36px;padding:2rem;position:relative;max-width:560px;margin-left:auto">
+<div class="glass market-card start-here-card" style="border-radius:36px;padding:2rem;position:relative;max-width:560px;margin-left:auto">
 <div class="card-sheen" aria-hidden="true"></div>
-<div style="display:flex;align-items:center;gap:16px;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:19px;margin-bottom:22px">
+<div class="sh-head" style="display:flex;align-items:center;gap:16px;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:19px;margin-bottom:22px">
 <div class="who-mark"><span>SO</span></div>
 <div>
-<div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.22em;color:#6b7684;margin-bottom:4px">Start Here</div>
-<div style="font-size:1.4rem;font-weight:900;line-height:1.3">Three kinds of bettor.<br/><span style="color:var(--gold)">Pick the one that's you.</span></div>
+<div class="sh-eyebrow" style="font-size:.7rem;text-transform:uppercase;letter-spacing:.22em;color:#6b7684;margin-bottom:4px">Start Here</div>
+<div class="sh-title" style="font-size:1.4rem;font-weight:900;line-height:1.3">Three kinds of bettor.<br/><span style="color:var(--gold)">Pick the one that's you.</span></div>
 </div>
 </div>
-<div style="display:flex;flex-direction:column;gap:12px"><a href="about.html" class="tile-pop" style="--tile-accent:#57a7ff;display:block;text-decoration:none;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.2);border-radius:16px;padding:16px;position:relative;overflow:hidden">
-<div style="font-size:.62rem;text-transform:uppercase;letter-spacing:.14em;color:#57a7ff;margin-bottom:6px;font-weight:800">New Here</div>
-<div style="font-size:.98rem;font-weight:800;color:#f2f5f8;margin-bottom:5px">Show me how this works</div>
-<div style="font-size:.76rem;color:#8a97a6;line-height:1.5;margin-bottom:10px">A two-minute tour of how we read a line before you dig into a desk.</div>
-<span style="font-size:.68rem;font-weight:700;color:#57a7ff">Take the tour &rarr;</span>
-</a><a href="mlb.html" class="tile-pop" style="--tile-accent:#f4b942;display:block;text-decoration:none;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.2);border-radius:16px;padding:16px;position:relative;overflow:hidden">
-<div style="font-size:.62rem;text-transform:uppercase;letter-spacing:.14em;color:#f4b942;margin-bottom:6px;font-weight:800">I bet props</div>
-<div style="font-size:.98rem;font-weight:800;color:#f2f5f8;margin-bottom:5px">Take me to player props</div>
-<div style="font-size:.76rem;color:#8a97a6;line-height:1.5;margin-bottom:10px">Straight to the prop and pick surface &mdash; MLB, NFL, and Premier League desks.</div>
-<span style="font-size:.68rem;font-weight:700;color:#f4b942">Browse props &rarr;</span>
-</a><a href="terminal.html" class="tile-pop" style="--tile-accent:#3fc17a;display:block;text-decoration:none;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.2);border-radius:16px;padding:16px;position:relative;overflow:hidden">
-<div style="font-size:.62rem;text-transform:uppercase;letter-spacing:.14em;color:#3fc17a;margin-bottom:6px;font-weight:800">I want the model</div>
-<div style="font-size:.98rem;font-weight:800;color:#f2f5f8;margin-bottom:5px">Show me the research behind it</div>
-<div style="font-size:.76rem;color:#8a97a6;line-height:1.5;margin-bottom:10px">Line movement, model probability, and the process notes behind every number.</div>
-<span style="font-size:.68rem;font-weight:700;color:#3fc17a">Open the terminal &rarr;</span>
+<div class="sh-tiles" style="display:flex;flex-direction:column;gap:12px"><a href="about.html" class="tile-pop sh-tile" style="--tile-accent:#57a7ff;display:block;text-decoration:none;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.2);border-radius:16px;padding:16px;position:relative;overflow:hidden">
+<div class="sh-tile-cat" style="font-size:.62rem;text-transform:uppercase;letter-spacing:.14em;color:#57a7ff;margin-bottom:6px;font-weight:800">New Here</div>
+<div class="sh-tile-title" style="font-size:.98rem;font-weight:800;color:#f2f5f8;margin-bottom:5px">Show me how this works</div>
+<div class="sh-tile-desc" style="font-size:.76rem;color:#8a97a6;line-height:1.5;margin-bottom:10px">A two-minute tour of how we read a line before you dig into a desk.</div>
+<span class="sh-tile-cta" style="font-size:.68rem;font-weight:700;color:#57a7ff">Take the tour &rarr;</span>
+</a><a href="mlb.html" class="tile-pop sh-tile" style="--tile-accent:#f4b942;display:block;text-decoration:none;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.2);border-radius:16px;padding:16px;position:relative;overflow:hidden">
+<div class="sh-tile-cat" style="font-size:.62rem;text-transform:uppercase;letter-spacing:.14em;color:#f4b942;margin-bottom:6px;font-weight:800">I bet props</div>
+<div class="sh-tile-title" style="font-size:.98rem;font-weight:800;color:#f2f5f8;margin-bottom:5px">Take me to player props</div>
+<div class="sh-tile-desc" style="font-size:.76rem;color:#8a97a6;line-height:1.5;margin-bottom:10px">Straight to the prop and pick surface &mdash; MLB, NFL, and Premier League desks.</div>
+<span class="sh-tile-cta" style="font-size:.68rem;font-weight:700;color:#f4b942">Browse props &rarr;</span>
+</a><a href="terminal.html" class="tile-pop sh-tile" style="--tile-accent:#3fc17a;display:block;text-decoration:none;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.2);border-radius:16px;padding:16px;position:relative;overflow:hidden">
+<div class="sh-tile-cat" style="font-size:.62rem;text-transform:uppercase;letter-spacing:.14em;color:#3fc17a;margin-bottom:6px;font-weight:800">I want the model</div>
+<div class="sh-tile-title" style="font-size:.98rem;font-weight:800;color:#f2f5f8;margin-bottom:5px">Show me the research behind it</div>
+<div class="sh-tile-desc" style="font-size:.76rem;color:#8a97a6;line-height:1.5;margin-bottom:10px">Line movement, model probability, and the process notes behind every number.</div>
+<span class="sh-tile-cta" style="font-size:.68rem;font-weight:700;color:#3fc17a">Open the terminal &rarr;</span>
 </a></div>
 </div>
 
@@ -510,47 +529,30 @@ div[style*="grid-template-columns"]{min-width:0}
 <div><div class="section-kicker">Live Read</div><h2 class="section-title">Today's Open Board</h2></div>
 <a class="glass view-all" href="analysis.html">Full board &rarr;</a>
 </div>
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
-<div class="glass market-card" style="border-radius:22px;padding:20px;position:relative">
-<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-<span style="font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:rgba(87,167,255,.12);color:rgb(87,167,255);border:1px solid rgba(87,167,255,.3);border-radius:4px;padding:3px 8px">NFL</span>
-<span style="font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4d6070">Total</span>
+<div id="openBoardGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+<div class="glass market-card ob-card" style="border-radius:22px;padding:20px;position:relative">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:rgba(244,185,66,.12);color:rgb(244,185,66);border:1px solid rgba(244,185,66,.3);border-radius:4px;padding:3px 8px">MLB</span><span style="font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4d6070">Market Price</span></div>
+<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">Mets–Marlins moneyline is today’s tightest game market.</h3>
+<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">NYM +108 / MIA -126 carries a 3.8% two-way margin—the lowest hold across today’s posted moneylines, run lines, and totals.</p>
+<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a"><span>NYM +108</span><span>MIA -126</span></div>
 </div>
-<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">Buyers pushed this total 2.5 points off the book.</h3>
-<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">Opened 44.5, now sitting at 47.0. The move came almost entirely from one side &mdash; here's the read on whether the number still has value on it.</p>
-<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a">
-<span>Opened 44.5</span><span>Now 47.0</span>
+<div class="glass market-card ob-card" style="border-radius:22px;padding:20px;position:relative">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:rgba(87,167,255,.12);color:rgb(87,167,255);border:1px solid rgba(87,167,255,.3);border-radius:4px;padding:3px 8px">Strikeouts</span><span style="font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4d6070">Best Edge</span></div>
+<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">Drew Anderson Over 4.5 Ks is the cleanest strikeout edge.</h3>
+<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">The four-book comparison prices the over at 52.4% fair. BetMGM’s -105 quote is the best available, a +1.2-point edge versus implied.</p>
+<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a"><span>BetMGM -105</span><span>+1.2 pts</span></div>
 </div>
-</div><div class="glass market-card" style="border-radius:22px;padding:20px;position:relative">
-<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-<span style="font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:rgba(244,185,66,.12);color:rgb(244,185,66);border:1px solid rgba(244,185,66,.3);border-radius:4px;padding:3px 8px">MLB</span>
-<span style="font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4d6070">Line Movement</span>
+<div class="glass market-card ob-card" style="border-radius:22px;padding:20px;position:relative">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:rgba(63,193,122,.12);color:rgb(63,193,122);border:1px solid rgba(63,193,122,.3);border-radius:4px;padding:3px 8px">Home Runs</span><span style="font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4d6070">Top Model</span></div>
+<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">Shohei Ohtani leads the home-run model at 30.5%.</h3>
+<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">His four-book market consensus is 28.2%. FanDuel shows the best current price at +265 against Cincinnati.</p>
+<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a"><span>Model 30.5%</span><span>FD +265</span></div>
 </div>
-<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">A -142 favorite that opened at -128.</h3>
-<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">Sharp money arrived early on this one. We track the timing and size of the move against our own model price before deciding if it's still live.</p>
-<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a">
-<span>Opened -128</span><span>Now -142</span>
-</div>
-</div><div class="glass market-card" style="border-radius:22px;padding:20px;position:relative">
-<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-<span style="font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:rgba(63,193,122,.12);color:rgb(63,193,122);border:1px solid rgba(63,193,122,.3);border-radius:4px;padding:3px 8px">Prediction Mkts</span>
-<span style="font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4d6070">Model Check</span>
-</div>
-<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">A futures price the field hasn't caught up to.</h3>
-<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">Our model flagged a gap between the public price and the modeled probability. This is what "the edge is in the research" looks like in practice.</p>
-<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a">
-<span>Model vs. Market</span><span>Tracking</span>
-</div>
-</div><div class="glass market-card" style="border-radius:22px;padding:20px;position:relative">
-<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-<span style="font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:rgba(255,77,77,.12);color:rgb(255,77,77);border:1px solid rgba(255,77,77,.3);border-radius:4px;padding:3px 8px">PGA</span>
-<span style="font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4d6070">Steam</span>
-</div>
-<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">An outright that moved without a headline.</h3>
-<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">No news, no injury, no lineup change &mdash; just money. When a price moves with nothing to explain it, that itself is the signal worth reading.</p>
-<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a">
-<span>Steam Alert</span><span>Live</span>
-</div>
+<div class="glass market-card ob-card" style="border-radius:22px;padding:20px;position:relative">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:rgba(255,77,77,.12);color:rgb(255,77,77);border:1px solid rgba(255,77,77,.3);border-radius:4px;padding:3px 8px">Matchup Lab</span><span style="font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4d6070">Top Score</span></div>
+<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">Cal Raleigh posts a 75.2 Matchup Lab score.</h3>
+<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">Raleigh carries a 27.0% adjusted home-run probability versus Texas, with DraftKings offering the board-best +285.</p>
+<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a"><span>Lab 75.2</span><span>DK +285</span></div>
 </div>
 </div>
 <div style="margin-top:16px;display:grid;grid-template-columns:2fr 1fr;gap:16px">
@@ -572,7 +574,39 @@ div[style*="grid-template-columns"]{min-width:0}
 </section>
 
 
-<footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>&copy; 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or &ldquo;you&rsquo;d earn&rdquo; calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span style="color:#e8c078;font-weight:600">1-800-GAMBLER</span>. <a href="terms.html" style="text-decoration:underline;color:#e8c078">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p></footer>
+<style id="so-canonical-footer-v3">
+footer.so-footer{display:block!important;box-sizing:border-box!important;width:100%!important;max-width:none!important;margin:8px 0 0 0!important;padding:22px 20px 30px!important;border:0!important;border-top:1px solid rgba(255,255,255,.09)!important;background:transparent!important;box-shadow:none!important;position:static!important;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif!important;text-align:left!important;}
+footer.so-footer *{box-sizing:border-box!important;}
+footer.so-footer .footer-top{max-width:1440px!important;width:100%!important;margin:0 auto 10px auto!important;display:flex!important;flex-direction:row!important;justify-content:space-between!important;align-items:center!important;flex-wrap:wrap!important;gap:8px!important;text-align:left!important;padding:0!important;border:0!important;background:transparent!important;}
+footer.so-footer .footer-logo{font-size:16px!important;font-weight:800!important;color:#fff!important;text-align:left!important;margin:0!important;padding:0!important;letter-spacing:normal!important;line-height:normal!important;text-transform:none!important;}
+footer.so-footer .footer-logo span{color:#f4b942!important;}
+footer.so-footer .footer-copy{font-size:11.5px!important;color:#6f7f97!important;margin:0!important;padding:0!important;font-weight:400!important;text-align:right!important;line-height:normal!important;text-transform:none!important;letter-spacing:normal!important;}
+footer.so-footer .footer-disclaimer,footer.so-footer .footer-legal{max-width:1440px!important;width:100%!important;margin:0 auto!important;padding:0!important;border:0!important;font-size:10.5px!important;color:#6f7f97!important;line-height:1.6!important;text-align:left!important;font-weight:400!important;text-transform:none!important;letter-spacing:normal!important;background:transparent!important;}
+@media(max-width:700px){
+footer.so-footer .footer-top{flex-direction:column!important;align-items:flex-start!important;gap:8px!important;}
+footer.so-footer .footer-copy{text-align:left!important;}
+}
+</style>
+<style id="so-canonical-footer-v3">
+footer.so-footer{display:block!important;box-sizing:border-box!important;width:100%!important;max-width:none!important;margin:8px 0 0 0!important;padding:22px 20px 30px!important;border:0!important;border-top:1px solid rgba(255,255,255,.09)!important;background:transparent!important;box-shadow:none!important;position:static!important;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif!important;text-align:left!important;}
+footer.so-footer *{box-sizing:border-box!important;}
+footer.so-footer .footer-top{max-width:1360px!important;width:100%!important;margin:0 auto 10px auto!important;display:flex!important;flex-direction:row!important;justify-content:space-between!important;align-items:center!important;flex-wrap:wrap!important;gap:8px!important;text-align:left!important;padding:0!important;border:0!important;background:transparent!important;}
+footer.so-footer .footer-logo{font-size:16px!important;font-weight:800!important;color:#fff!important;text-align:left!important;margin:0!important;padding:0!important;letter-spacing:normal!important;line-height:normal!important;text-transform:none!important;}
+footer.so-footer .footer-logo span{color:#f4b942!important;}
+footer.so-footer .footer-copy{font-size:11.5px!important;color:#6f7f97!important;margin:0!important;padding:0!important;font-weight:400!important;text-align:right!important;line-height:normal!important;text-transform:none!important;letter-spacing:normal!important;}
+footer.so-footer .footer-disclaimer,footer.so-footer .footer-legal{max-width:1360px!important;width:100%!important;margin:0 auto!important;padding:0!important;border:0!important;font-size:10.5px!important;color:#6f7f97!important;line-height:1.6!important;text-align:left!important;font-weight:400!important;text-transform:none!important;letter-spacing:normal!important;background:transparent!important;}
+@media(max-width:700px){
+footer.so-footer .footer-top{flex-direction:column!important;align-items:flex-start!important;gap:8px!important;}
+footer.so-footer .footer-copy{text-align:left!important;}
+}
+</style>
+<footer class="so-footer">
+<div class="footer-top">
+<div class="footer-logo">short<span>open</span></div>
+<p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+</div>
+<p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span style="color:#e8c078;font-weight:600">1-800-GAMBLER</span>. <a href="terms.html" style="text-decoration:underline;color:#e8c078">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p>
+</footer>
 
 <script>
 (function(){

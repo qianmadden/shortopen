@@ -1,0 +1,2596 @@
+<!DOCTYPE html>
+<html lang="en" class="so-embed">
+<head>
+<meta charset="UTF-8">
+<meta name="format-detection" content="telephone=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>shortopen — Strikeout Market: MLB Pitcher Prop Terminal</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="shortcut icon" href="favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<meta name="description" content="Live MLB strikeout prop board across DraftKings, FanDuel, BetMGM and Caesars. Best price highlighting, steam detection, and a bet slip payout calculator.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
+<style>
+  :root{
+    --bg:#06080a;
+    --panel:#0d1113;
+    --panel-2:#111719;
+    --panel-3:#151c1f;
+    --border:rgba(255,255,255,0.08);
+    --border-strong:rgba(255,255,255,0.16);
+    --text:#e7edf0;
+    --text-dim:#8a969c;
+    --text-faint:#4c565b;
+    --green:#22d97e;
+    --green-dim:rgba(34,217,126,0.14);
+    --green-line:rgba(34,217,126,0.35);
+    --red:#ff4d5e;
+    --red-dim:rgba(255,77,94,0.14);
+    --amber:#ffb43a;
+    --amber-dim:rgba(255,180,58,0.15);
+    --mono:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --radius:8px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 500px at 15% -10%, rgba(34,217,126,0.06), transparent 60%),
+      radial-gradient(900px 400px at 100% 0%, rgba(255,77,94,0.05), transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:96px;
+  }
+  a{color:inherit;text-decoration:none;}
+  ::selection{background:var(--green-dim);color:var(--green);}
+
+  /* ===== Ticker bar ===== */
+  .ticker-bar{
+    position:sticky;top:62px;z-index:60;margin-top:62px;
+    display:flex;align-items:center;gap:18px;
+    background:#000;
+    border-bottom:1px solid var(--border);
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.03em;
+    color:var(--text-dim);
+    padding:0 16px;
+    height:30px;
+    overflow:hidden;
+    white-space:nowrap;
+  }
+  .ticker-bar .fixed-left{display:flex;align-items:center;gap:14px;flex-shrink:0;padding-right:14px;border-right:1px solid var(--border);}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 1.8s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+  .market-open{color:var(--green);font-weight:600;}
+  .ticker-track-wrap{flex:1;overflow:hidden;position:relative;height:100%;display:flex;align-items:center;}
+  .ticker-track{display:flex;gap:36px;animation:scroll-left 42s linear infinite;white-space:nowrap;}
+  .ticker-track span{color:var(--text-faint);}
+  .ticker-track b{color:var(--text);font-weight:600;}
+  .ticker-track .up{color:var(--green);}
+  .ticker-track .dn{color:var(--red);}
+  @keyframes scroll-left{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  .build-tag{flex-shrink:0;color:var(--text-faint);}
+
+  /* ===== Nav (shortopen shared theme) ===== */
+  nav.site-nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 24px;height:62px;
+    background:rgba(6,8,10,0.94);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-logo{font-family:'Inter',var(--sans);font-weight:900;font-size:1.15rem;color:var(--text);letter-spacing:-.02em;text-decoration:none;}
+  .nav-logo span{color:var(--green);}
+.mobile-menu{display:none!important;position:fixed!important;top:0!important;left:0!important;right:0!important;bottom:0!important;background:rgba(6,8,10,.98)!important;backdrop-filter:blur(20px)!important;-webkit-backdrop-filter:blur(20px)!important;z-index:150!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;overflow-y:auto!important;overscroll-behavior:contain!important;}
+.mobile-menu.open{display:flex!important;}
+.mobile-menu-close{position:absolute!important;top:22px!important;right:22px!important;background:transparent!important;border:none!important;color:#4c565b!important;font-size:1.3rem!important;line-height:1!important;cursor:pointer!important;padding:8px!important;}
+  /* World Cup — gold limited-edition tab */
+  
+  
+  
+  
+  @keyframes soBetaPulse{0%,100%{opacity:1}50%{opacity:.55}}
+  
+
+  /* ===== Hero ===== */
+  .hero{padding:44px 24px 28px;max-width:1400px;margin:0 auto;}
+  .eyebrow{
+    display:flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:12px;color:var(--green);
+    text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;
+  }
+  .eyebrow::before{content:'◆';font-size:9px;}
+  h1{
+    font-size:clamp(28px,4.2vw,44px);
+    font-weight:800;
+    line-height:1.05;
+    margin:0 0 12px;
+    letter-spacing:-.02em;
+  }
+  h1 .k{font-family:var(--mono);color:var(--text-dim);}
+  .hero p{color:var(--text-dim);max-width:640px;font-size:15px;line-height:1.6;margin:0 0 26px;}
+
+  .stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+  .stat-cell{background:var(--panel);padding:16px 18px;}
+  .stat-cell .lbl{font-size:11px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);margin-bottom:8px;}
+  .stat-cell .val{font-family:var(--mono);font-size:24px;font-weight:700;}
+  .stat-cell .sub{font-size:11px;color:var(--text-dim);margin-top:4px;}
+  .stat-cell .val.green{color:var(--green);}
+  .stat-cell .val.amber{color:var(--amber);}
+  .stat-cell .val.violet{color:#b18cff;}
+  @media (max-width:1100px){.stat-row{grid-template-columns:repeat(3,1fr);}}
+  @media (max-width:800px){.stat-row{grid-template-columns:repeat(2,1fr);}}
+
+  /* ===== Controls ===== */
+  .controls{
+    max-width:1400px;margin:0 auto;padding:0 24px 18px;
+    display:flex;flex-wrap:wrap;align-items:center;gap:12px;
+  }
+  .search-wrap{position:relative;flex:1;min-width:220px;max-width:320px;}
+  .search-wrap input{
+    width:100%;background:var(--panel);border:1px solid var(--border);color:var(--text);
+    font-family:var(--mono);font-size:13px;padding:9px 12px 9px 30px;border-radius:6px;
+  }
+  .search-wrap input:focus{outline:none;border-color:var(--green);}
+  .search-wrap::before{content:'⌕';position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-faint);font-size:14px;}
+  select#sortSel{
+    background:var(--panel);border:1px solid var(--border);color:var(--text);
+    font-family:var(--mono);font-size:12px;padding:9px 10px;border-radius:6px;
+  }
+  .book-toggles{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto;}
+  .book-chip{
+    display:flex;align-items:center;gap:6px;
+    font-family:var(--mono);font-size:11px;color:var(--text-dim);
+    border:1px solid var(--border);padding:6px 10px;border-radius:20px;cursor:pointer;user-select:none;
+    background:var(--panel);
+  }
+  .book-chip .sw{width:8px;height:8px;border-radius:50%;}
+  .book-chip.off{opacity:.35;}
+  .legend{display:flex;gap:16px;max-width:1400px;margin:0 auto;padding:0 24px 14px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:var(--text-faint);}
+  .legend .lg-sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px;}
+
+  /* ===== Table ===== */
+  .board{max-width:1400px;margin:0 auto;padding:0 24px 40px;}
+  .table-frame{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--panel);}
+  .table-scroll{overflow-x:auto;}
+  table{border-collapse:separate;border-spacing:0;font-family:var(--mono);font-size:12.5px;min-width:1320px;width:100%;}
+  thead th{
+    background:var(--panel-2);color:var(--text-dim);font-weight:600;
+    text-transform:uppercase;letter-spacing:.06em;font-size:10.5px;
+    padding:10px 10px;border-bottom:1px solid var(--border);white-space:nowrap;
+  }
+  thead tr.book-row th{
+    padding:8px 10px;font-size:10px;border-bottom:1px solid var(--border);
+  }
+  thead tr.sub-row th{
+    font-size:9.5px;color:var(--text-faint);font-weight:500;padding:6px 8px;
+    border-bottom:1px solid var(--border-strong);background:var(--panel);
+  }
+  th.book-group{text-align:center;border-left:1px solid var(--border);}
+  .book-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;}
+  td{padding:9px 10px;border-bottom:1px solid var(--border);white-space:nowrap;color:var(--text);}
+  tbody tr:hover td{background:rgba(255,255,255,0.02);}
+  tbody tr:last-child td{border-bottom:none;}
+
+  td.sticky-1, th.sticky-1{position:sticky;left:0;z-index:5;background:var(--panel);min-width:190px;}
+  td.sticky-2, th.sticky-2{position:sticky;left:190px;z-index:5;background:var(--panel);border-right:1px solid var(--border-strong);min-width:150px;}
+  tbody tr:hover td.sticky-1, tbody tr:hover td.sticky-2{background:#131a1c;}
+
+  .player-name{font-family:var(--sans);font-weight:700;font-size:13px;color:var(--text);}
+  .player-sub{font-family:var(--mono);font-size:10.5px;color:var(--text-dim);margin-top:2px;}
+  .team-badge{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text-dim);}
+
+  .cline{font-weight:700;font-size:13px;}
+  .steam-badge{
+    display:inline-flex;align-items:center;gap:3px;font-size:9px;color:var(--amber);
+    background:var(--amber-dim);border:1px solid rgba(255,180,58,0.4);padding:2px 6px;border-radius:10px;margin-left:6px;
+  }
+  .best-pill{
+    display:block;font-size:10px;margin-top:3px;color:var(--text-dim);
+  }
+  .best-pill b{color:var(--green);}
+  .best-pill.u b{color:var(--red);}
+
+  td.book-cell{border-left:1px solid var(--border);text-align:center;cursor:pointer;}
+  td.book-cell.line{font-weight:600;cursor:default;}
+  td.book-cell.line.diverge{color:var(--amber);}
+  td.odds{transition:background .12s;touch-action:manipulation;}
+  td.odds:hover{background:rgba(255,255,255,0.05);}
+  td.odds.best{background:var(--green-dim);color:var(--green);font-weight:700;border-radius:4px;box-shadow:inset 0 0 0 1px var(--green-line);}
+  td.odds.dash{color:var(--text-faint);cursor:default;}
+  td.odds.picked{background:var(--amber-dim);color:var(--amber);box-shadow:inset 0 0 0 1px rgba(255,180,58,0.5);}
+
+  .col-hidden{display:none;}
+
+  /* ===== Bet Slip ===== */
+  .slip-fab{
+    position:fixed;right:20px;bottom:20px;z-index:70;
+    background:var(--green);color:#04140b;font-family:var(--mono);font-weight:700;font-size:13px;
+    padding:12px 18px;border-radius:30px;cursor:pointer;box-shadow:0 8px 24px rgba(34,217,126,0.35);
+    display:flex;align-items:center;gap:8px;border:none;
+  }
+  .slip-drawer{
+    position:fixed;bottom:0;left:0;right:0;z-index:80;
+    background:#0a0f11;border-top:1px solid var(--border-strong);
+    transform:translateY(100%);transition:transform .25s ease;
+    max-height:70vh;overflow-y:auto;
+  }
+  .slip-drawer.open{transform:translateY(0);}
+  .slip-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:#0a0f11;
+  }
+  .slip-head .t{font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:.03em;}
+  .slip-head .t b{color:var(--green);}
+  .slip-close{background:none;border:1px solid var(--border-strong);color:var(--text-dim);border-radius:6px;padding:6px 10px;cursor:pointer;font-family:var(--mono);font-size:12px;}
+  .slip-body{padding:14px 20px;}
+  .slip-empty{color:var(--text-faint);font-family:var(--mono);font-size:12px;padding:20px 0;text-align:center;}
+  .pick-row{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:12px;gap:10px;
+  }
+  .pick-row .pinfo{display:flex;flex-direction:column;gap:2px;overflow:hidden;}
+  .pick-row .pinfo .nm{color:var(--text);font-weight:600;font-family:var(--sans);}
+  .pick-row .pinfo .dt{color:var(--text-dim);font-size:11px;}
+  .pick-row .pval{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+  .pick-row .odd{font-weight:700;}
+  .pick-row .odd.o{color:var(--green);}
+  .pick-row .odd.u{color:var(--red);}
+  .pick-row .edge{font-size:10px;color:var(--text-dim);min-width:64px;text-align:right;}
+  .rm{background:none;border:none;color:var(--text-faint);cursor:pointer;font-size:16px;line-height:1;}
+  .rm:hover{color:var(--red);}
+  .slip-foot{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    padding:16px 20px;border-top:1px solid var(--border);background:var(--panel);
+  }
+  .stake-ctrl{display:flex;align-items:center;gap:6px;font-family:var(--mono);}
+  .stake-ctrl button{width:26px;height:26px;border-radius:5px;border:1px solid var(--border-strong);background:var(--panel-2);color:var(--text);cursor:pointer;font-size:14px;}
+  .stake-ctrl .amt{min-width:64px;text-align:center;font-weight:700;}
+  .payout-block{text-align:right;font-family:var(--mono);}
+  .payout-block .plabel{font-size:10px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.06em;}
+  .payout-block .pval{font-size:20px;font-weight:800;color:var(--green);}
+  .clear-btn{font-family:var(--mono);font-size:11px;color:var(--text-dim);border:1px solid var(--border);background:none;padding:8px 12px;border-radius:6px;cursor:pointer;}
+  .clear-btn:hover{color:var(--red);border-color:var(--red);}
+  .slip-note{font-size:10px;color:var(--text-faint);padding:0 20px 16px;max-width:900px;}
+
+  /* ===== Today's Best Bets ===== */
+  .bb-wrap{max-width:1400px;margin:0 auto;padding:0 24px 22px;}
+  .bb-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+  .bb-head .lbl{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);}
+  .bb-head .tag{font-family:var(--mono);font-size:9.5px;color:var(--green);background:var(--green-dim);border:1px solid var(--green-line);padding:2px 8px;border-radius:20px;}
+  .bb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  @media(max-width:900px){.bb-grid{grid-template-columns:1fr;}}
+  .bb-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;transition:border-color .15s;}
+  .bb-card:hover{border-color:var(--green-line);}
+  .bb-card .nm{font-weight:700;font-size:13.5px;color:var(--text);}
+  .bb-card .sub{font-family:var(--mono);font-size:10.5px;color:var(--text-dim);margin-top:2px;}
+  .bb-card .row{display:flex;align-items:baseline;justify-content:space-between;margin-top:10px;}
+  .bb-card .price{font-family:var(--mono);font-weight:800;font-size:19px;color:var(--green);}
+  .bb-card .edge{font-family:var(--mono);font-size:10.5px;color:var(--amber);}
+  .bb-card .why{font-size:10.5px;color:var(--text-dim);margin-top:6px;line-height:1.5;}
+
+  /* ===== Live Signals rail ===== */
+  .signals-wrap{max-width:1400px;margin:0 auto;padding:0 24px 18px;}
+  .signals-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;}
+  .signal-card{flex:0 0 auto;min-width:190px;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:10px 12px;cursor:pointer;}
+  .signal-card:hover{border-color:var(--amber);}
+  .signal-card .nm{font-weight:700;font-size:12.5px;}
+  .signal-card .mv{font-family:var(--mono);font-size:11px;color:var(--amber);margin-top:4px;}
+  .signal-card .mv b{color:var(--text);}
+
+  /* ===== Notes ticker (second thin ticker) ===== */
+  .notes-ticker{position:sticky;top:calc(62px + 30px);z-index:59;display:flex;align-items:center;gap:14px;background:#000;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10.5px;color:var(--text-dim);padding:0 16px;height:24px;overflow:hidden;white-space:nowrap;}
+  .notes-ticker .nt-lbl{flex-shrink:0;color:var(--amber);font-weight:700;padding-right:12px;border-right:1px solid var(--border);}
+  .notes-ticker .nt-track-wrap{flex:1;overflow:hidden;height:100%;display:flex;align-items:center;}
+  .notes-ticker .nt-track{display:flex;gap:30px;animation:scroll-left 55s linear infinite;white-space:nowrap;}
+  .notes-ticker .nt-track b{color:var(--text);}
+
+  /* ===== Filter chips ===== */
+  .chip-row{max-width:1400px;margin:0 auto;padding:0 24px 12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .fchip{font-family:var(--mono);font-size:11px;color:var(--text-dim);border:1px solid var(--border);background:var(--panel);padding:6px 12px;border-radius:20px;cursor:pointer;user-select:none;display:flex;align-items:center;gap:5px;}
+  .fchip:hover{border-color:var(--border-strong);color:var(--text);}
+  .fchip.on{color:#04140b;background:var(--green);border-color:var(--green);font-weight:700;}
+  .fchip .ct{opacity:.7;font-size:10px;}
+
+  /* ===== Player cell extras: star / caret ===== */
+  .pname-row{display:flex;align-items:center;gap:6px;}
+  .star-btn,.caret-btn{background:none;border:none;cursor:pointer;font-size:13px;color:var(--text-faint);padding:0;line-height:1;touch-action:manipulation;}
+  .star-btn.on{color:var(--amber);}
+  .caret-btn{transition:transform .15s;}
+  .caret-btn.open{transform:rotate(90deg);}
+  .live-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:8.5px;font-weight:800;color:#ff4d5e;background:var(--red-dim);border:1px solid rgba(255,77,94,.4);padding:1px 6px;border-radius:8px;margin-left:6px;}
+  .rookie-tag{color:var(--amber);font-size:9.5px;font-family:var(--mono);font-weight:800;}
+  .live-badge .ld{width:5px;height:5px;border-radius:50%;background:var(--red);animation:pulse 1.4s infinite;}
+
+  /* ===== Sparkline ===== */
+  .spark-wrap{display:flex;align-items:center;gap:5px;margin-top:4px;}
+  .spark-wrap svg{display:block;}
+  .spark-lbl{font-family:var(--mono);font-size:9px;color:var(--text-faint);}
+  .spark-lbl.up{color:var(--green);} .spark-lbl.dn{color:var(--red);}
+
+  /* ===== Sticky-3 shortopen call column, sticky-4 fair odds column ===== */
+  th.so-group{position:sticky;left:340px;z-index:6;background:var(--panel);text-align:center;}
+  td.sticky-3, th.sticky-3{position:sticky;left:340px;z-index:5;background:var(--panel);min-width:96px;text-align:left;}
+  td.sticky-4, th.sticky-4{position:sticky;left:436px;z-index:5;background:var(--panel);border-right:1px solid var(--border-strong);min-width:112px;text-align:right;}
+  th.sticky-3, th.sticky-4{text-align:center;}
+  tbody tr:hover td.sticky-3, tbody tr:hover td.sticky-4{background:#131a1c;}
+  .fair-lbl{font-family:var(--mono);font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.05em;line-height:1.25;}
+  .fair-val{font-family:var(--mono);font-size:11.5px;font-weight:700;line-height:1.25;}
+  .fair-val.o{color:var(--green);} .fair-val.u{color:var(--red);}
+  /* so-strikeout-fair-probability-20260903: percentage read-out of the same
+     Shin-fair Over/Under probability the odds above already come from —
+     the site's "probability format" other prop pages already carry. */
+  .fair-pct{font-family:var(--mono);font-size:9px;font-weight:600;line-height:1.3;opacity:.85;}
+  .fair-pct.o{color:var(--green);} .fair-pct.u{color:var(--red);}
+  .call-lbl{font-family:var(--mono);font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.05em;line-height:1.25;}
+  .call-val{font-family:var(--mono);font-size:11.5px;font-weight:700;line-height:1.25;}
+  .call-val.o{color:var(--green);} .call-val.u{color:var(--red);}
+  .call-pct{display:inline-block;margin:3px 0 2px;padding:2px 7px;border-radius:6px;font-family:var(--mono);font-size:12.5px;font-weight:800;line-height:1.3;letter-spacing:.01em}
+  .call-pct.o{color:var(--green);background:rgba(34,217,126,.14);border:1px solid rgba(34,217,126,.28)}
+  .call-pct.u{color:var(--red);background:rgba(255,77,94,.14);border:1px solid rgba(255,77,94,.28)}
+  .call-pct-lbl{margin-left:4px;font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;opacity:.75}
+  .call-ev{font-family:var(--mono);font-size:9.5px;font-weight:700;line-height:1.25;}
+  .call-ev.pos{color:var(--green);} .call-ev.neg{color:var(--text-faint);}
+  .call-conf{font-family:var(--mono);font-size:8px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.03em;line-height:1.25;}
+  .call-target{display:inline-flex;margin-bottom:3px;padding:2px 5px;border:1px dashed rgba(244,185,66,.42);border-radius:5px;background:rgba(244,185,66,.07);color:var(--amber);font-family:var(--mono);font-size:7.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;}
+  .target-lines{font-family:var(--mono);font-size:9.5px;font-weight:750;line-height:1.4;white-space:nowrap;}
+  .target-lines .to{color:var(--green)}.target-lines .tu{color:var(--red)}
+  .modeled-quote{background:linear-gradient(180deg,rgba(244,185,66,.065),rgba(244,185,66,.025))!important;color:var(--amber)!important;box-shadow:inset 0 0 0 1px rgba(244,185,66,.20);cursor:default!important;}
+  .modeled-quote small{display:block;margin-top:2px;color:rgba(244,185,66,.62);font:700 6.5px var(--mono);letter-spacing:.06em;white-space:nowrap;}
+
+  /* ===== Matchup expand row ===== */
+  tr.matchup-row{display:none;}
+  tr.matchup-row.open{display:table-row;}
+  tr.matchup-row td{background:var(--panel-2);border-bottom:1px solid var(--border-strong);padding:12px 16px;}
+  .mrow-grid{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start;font-family:var(--sans);}
+  .mrow-cell .lbl{font-size:9.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.07em;font-family:var(--mono);margin-bottom:4px;}
+  .mrow-cell .val{font-size:12.5px;color:var(--text);}
+  .mrow-notes{display:flex;gap:6px;flex-wrap:wrap;}
+  .mrow-note-tag{font-family:var(--mono);font-size:9.5px;color:var(--amber);background:var(--amber-dim);border:1px solid rgba(255,180,58,.35);padding:2px 8px;border-radius:10px;}
+  .form5{display:flex;align-items:flex-end;gap:3px;height:34px;}
+  .form5 .fb{width:9px;background:var(--border-strong);border-radius:2px 2px 0 0;}
+  .form5 .fb.hit{background:var(--green);}
+  .form5 .fb.miss{background:var(--red);}
+  .live-track{margin-top:4px;}
+  .live-track .bar{height:5px;border-radius:99px;background:var(--border);overflow:hidden;width:160px;}
+  .live-track .bar i{display:block;height:100%;background:var(--green);border-radius:99px;}
+  .live-track .lt-lbl{font-family:var(--mono);font-size:9.5px;color:var(--text-dim);margin-top:3px;}
+
+  /* ===== CLV tracker ===== */
+  .clv-wrap{max-width:1400px;margin:0 auto;padding:0 24px 40px;}
+  .clv-frame{border:1px solid var(--border);border-radius:10px;background:var(--panel);padding:16px 18px;}
+  .clv-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
+  .clv-head .lbl{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);}
+  .clv-clear{font-family:var(--mono);font-size:10.5px;color:var(--text-dim);border:1px solid var(--border);background:none;padding:5px 10px;border-radius:6px;cursor:pointer;}
+  .clv-clear:hover{color:var(--red);border-color:var(--red);}
+  .clv-empty{font-family:var(--mono);font-size:11.5px;color:var(--text-faint);padding:14px 0;}
+  .clv-row{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr .8fr;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:11.5px;}
+  .clv-row:last-child{border-bottom:none;}
+  .clv-row .p{font-family:var(--sans);font-weight:700;color:var(--text);font-size:12.5px;}
+  .clv-row .p small{display:block;font-family:var(--mono);font-weight:400;color:var(--text-dim);font-size:10px;}
+  .clv-row .pos{color:var(--green);} .clv-row .neg{color:var(--red);}
+  .log-clv-btn{font-family:var(--mono);font-size:9.5px;color:var(--green);border:1px solid var(--green-line);background:var(--green-dim);padding:4px 8px;border-radius:6px;cursor:pointer;margin-left:8px;}
+  .log-clv-btn:hover{background:rgba(34,217,126,.24);}
+
+  /* ===== Toasts ===== */
+  .toast-wrap{position:fixed;top:70px;right:16px;z-index:200;display:flex;flex-direction:column;gap:8px;}
+  .toast{background:var(--panel-3);border:1px solid var(--green-line);border-left:3px solid var(--green);border-radius:8px;padding:10px 14px;font-family:var(--mono);font-size:11.5px;color:var(--text);box-shadow:0 8px 20px rgba(0,0,0,.4);max-width:280px;animation:toastIn .2s ease;}
+  @keyframes toastIn{from{opacity:0;transform:translateX(16px);}to{opacity:1;transform:translateX(0);}}
+
+  /* ===== Footer (shared shortopen identity) ===== */
+  footer.so-footer{max-width:1400px;margin:20px auto 0;padding:28px 24px 34px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:14px;}
+  .so-footer .footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+  .so-footer .footer-logo{font-family:var(--mono);font-weight:700;font-size:14px;color:var(--text);letter-spacing:.02em;}
+  .so-footer .footer-logo span{color:var(--green);}
+  .so-footer .footer-copy{font-size:11px;color:var(--text-faint);letter-spacing:.04em;}
+  .so-footer .footer-disclaimer{font-size:11px;line-height:1.7;color:var(--text-faint);max-width:1000px;border-top:1px solid var(--border);padding-top:14px;}
+  @media(max-width:900px){footer.so-footer{padding:22px 20px 26px;text-align:center;}.so-footer .footer-top{flex-direction:column;gap:10px;}}
+/* Hat label, circular K-probability gauge, numbers-first market lean. */
+.hat-word{font-size:5.4px!important;letter-spacing:.05em!important;font-weight:800!important}
+.gauge-label{fill:#5f8c78;font:800 5.4px var(--mono);letter-spacing:.09em}
+.gauge-track{fill:none;stroke:rgba(25,228,134,.16);stroke-width:5}
+.gauge-fill{fill:none;stroke:#19e486;stroke-width:5;stroke-linecap:round;stroke-dasharray:131.9;filter:drop-shadow(0 0 4px rgba(25,228,134,.55));animation:gaugeLoad 6.2s cubic-bezier(.4,0,.2,1) infinite}
+.gauge-pct{fill:#dfffee;font:900 11px var(--mono);text-anchor:middle;animation:gaugePct 6.2s ease-in-out infinite}
+.gauge-k{fill:#19e486;font:900 22px var(--mono);text-anchor:middle;opacity:0;filter:drop-shadow(0 0 8px rgba(25,228,134,.85));animation:gaugeK 6.2s cubic-bezier(.34,1.4,.4,1) infinite}
+.gauge-name{fill:#6f857b;font:700 6.5px var(--mono);letter-spacing:.05em;text-anchor:middle}
+.so-arsenal{position:absolute;right:566px;top:54px;width:100px;height:330px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.so-arsenal-title{color:#658578;font:800 7px var(--mono);letter-spacing:.12em;text-align:center;margin-bottom:2px}
+.so-arsenal-tag{border:1px solid rgba(0,255,136,.2);background:rgba(9,27,20,.5);border-radius:8px;padding:7px 5px;text-align:center;font:800 8.5px var(--mono);color:#8fe6bb;letter-spacing:.02em}
+.so-arsenal-note{color:#4c6357;font:600 6.5px var(--mono);text-align:center;line-height:1.4;margin-top:4px}
+@media(max-width:1330px){.so-arsenal{display:none}}
+.gauge-ring-flash{fill:none;stroke:#19e486;stroke-width:1;opacity:0;animation:gaugeRingFlash 6.2s ease-out infinite}
+.ou-sequence{margin-top:12px;padding:11px 10px 9px;border-top:1px solid rgba(255,255,255,.07)}
+.ou-sequence>span{display:block;color:#648174;font:800 7px var(--mono);letter-spacing:.12em}
+.ou-numbers{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;margin-top:9px}
+.ou-box{text-align:center;padding:6px 4px;border-radius:7px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02);transition:border-color .35s,background .35s}
+.ou-box.lean{border-color:rgba(25,228,134,.4);background:rgba(25,228,134,.08)}
+.ou-figure{display:block;font:900 15px var(--mono);color:#dfffee;transition:color .3s}
+.ou-figure.flash-up{color:#19e486}
+.ou-figure.flash-dn{color:#ff6d7c}
+.ou-box span{display:block;margin-top:2px;color:#6b8378;font:800 7px var(--mono);letter-spacing:.1em}
+.ou-box.lean span{color:#19e486}
+.ou-vs{color:#3f5449;font:800 8px var(--mono)}
+.ou-split{position:relative;height:3px;margin-top:9px;border-radius:3px;background:rgba(255,109,124,.28);overflow:hidden}
+.ou-split i{display:block;height:100%;background:#19e486;box-shadow:0 0 8px rgba(25,228,134,.5);transition:width 1.1s cubic-bezier(.4,0,.2,1)}
+.ou-sequence small{display:block;margin-top:6px;color:#496357;font:700 6px var(--mono);text-align:center}
+@keyframes gaugeLoad{0%,6%{stroke-dashoffset:131.9}62%,84%{stroke-dashoffset:2}100%{stroke-dashoffset:131.9}}
+@keyframes gaugePct{0%,6%{opacity:0;transform:scale(.8)}14%,56%{opacity:1;transform:scale(1)}66%,100%{opacity:0;transform:scale(.8)}}
+@keyframes gaugeK{0%,62%{opacity:0;transform:scale(.35) rotate(-16deg)}70%{opacity:1;transform:scale(1.3) rotate(5deg)}78%,90%{opacity:1;transform:scale(1) rotate(0)}100%{opacity:0;transform:scale(.35) rotate(-16deg)}}
+@keyframes gaugeRingFlash{0%,64%{opacity:0;stroke-width:1}68%{opacity:.9;stroke-width:9}80%,100%{opacity:0;stroke-width:1}}
+</style>
+<style id="so-final-scroll-speed-20260725">
+.table-frame{overflow:hidden!important;contain:layout paint}
+.table-scroll{overflow-x:scroll!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-x pan-y!important;overscroll-behavior-x:contain;scrollbar-gutter:stable;cursor:grab;max-width:100%}
+.table-scroll.so-dragging{cursor:grabbing;user-select:none}
+.table-scroll table{min-width:1320px!important}
+.market-wrap,.stats-wrap,.clv-wrap{content-visibility:visible;contain:none}
+html.so-k-hidden *,html.so-k-hidden *::before,html.so-k-hidden *::after{animation-play-state:paused!important}
+@media(max-width:700px){
+  nav.site-nav{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .table-scroll{margin-right:0!important;padding-bottom:8px}
+  .table-scroll th.sticky-1,.table-scroll td.sticky-1{left:0!important;min-width:148px!important;width:148px!important;max-width:148px!important;z-index:8!important;background:#0d1113!important;box-shadow:8px 0 14px rgba(0,0,0,.28)}
+  .table-scroll th.sticky-2,.table-scroll td.sticky-2{position:static!important;left:auto!important;min-width:112px!important;width:112px!important;max-width:112px!important;box-shadow:none!important;white-space:normal!important;overflow:hidden!important;padding-left:8px!important;padding-right:6px!important;}
+  .table-scroll th.sticky-3,.table-scroll td.sticky-3{position:static!important;left:auto!important;min-width:88px!important;width:88px!important;max-width:88px!important;box-shadow:none!important;z-index:auto!important;white-space:normal!important;overflow:hidden!important;padding-left:8px!important;padding-right:6px!important;}
+  .table-scroll th.sticky-4,.table-scroll td.sticky-4{position:static!important;left:auto!important;min-width:94px!important;width:94px!important;max-width:94px!important;box-shadow:none!important;z-index:auto!important;white-space:normal!important;overflow:hidden!important;padding-left:8px!important;padding-right:6px!important;}
+  .table-scroll th.so-group{position:static!important;left:auto!important;}
+  .table-scroll td.sticky-2 .best-pill{font-size:9px!important;white-space:normal!important;word-break:break-word!important;}
+  .table-scroll td.sticky-2 .spark-wrap{flex-wrap:wrap!important;}
+  .ticker-track,.nt-track{animation-duration:70s!important}
+  .call-pct-lbl{display:none!important}
+  .call-pct{font-size:11.5px!important;padding:2px 6px!important}
+}
+</style>
+
+
+
+<style id="so-embed-shell">
+html.so-embed .ticker-bar{top:0;margin-top:0;}
+html.so-embed .notes-ticker{top:30px;}
+html.so-embed.so-workspace-unloading *,html.so-embed.so-workspace-unloading *::before,html.so-embed.so-workspace-unloading *::after{animation-play-state:paused!important;transition:none!important;}
+</style>
+
+<script id="so-embed-lifecycle">
+(function(){
+  'use strict';
+  var stopped=false;
+  function stopWorkspace(){
+    if(stopped)return;stopped=true;
+    document.documentElement.classList.add('so-workspace-unloading');
+    try{document.getAnimations({subtree:true}).forEach(function(a){a.cancel();});}catch(_e){}
+    try{window.dispatchEvent(new Event('shortopen:workspace-unload'));}catch(_e){}
+  }
+  window.addEventListener('message',function(e){if(e&&e.data&&e.data.type==='shortopen:workspace-unload')stopWorkspace();},{passive:true});
+  window.addEventListener('pagehide',stopWorkspace,{once:true});
+})();
+</script>
+<style id="so-mobile-repair-20260819">
+@media(max-width:700px){
+ html,body{width:100%;max-width:100%;overflow-x:hidden}.ticker-bar,.notes-ticker{overflow:hidden}.ticker-track-wrap{min-width:0}.hero{padding:24px 14px 18px!important;max-width:100%;overflow:hidden}.hero>div[style*="position:absolute"]{position:static!important;display:inline-flex;margin-bottom:12px}.hero h1{font-size:2.45rem!important;line-height:1!important;overflow-wrap:anywhere}.hero p{font-size:.82rem!important;max-width:none}
+ .stat-row{display:flex!important;overflow-x:auto!important;border-radius:12px;scroll-snap-type:x proximity}.stat-cell{flex:0 0 48%!important;scroll-snap-align:start}.so-pitcher-stage{width:100%!important;height:315px!important;margin-top:18px!important;overflow:hidden}.pitcher-svg{left:50%!important;top:27px!important;width:300px!important;transform:translateX(-50%) scale(.82)!important;transform-origin:center top!important}.k-scoreboard{display:none!important}
+ .bb-wrap,.signals-wrap,.chip-row,.legend,.board,.clv-wrap{padding-left:12px!important;padding-right:12px!important}.bb-grid{grid-template-columns:1fr!important}.bb-card,.best-bet{min-width:0}.signals-scroll,.chip-row{flex-wrap:nowrap!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch}.chip-row>*{flex:0 0 auto}
+ .table-frame,.table-scroll{max-width:100%;overflow-x:auto!important;-webkit-overflow-scrolling:touch}.table-scroll table{min-width:1160px!important}.table-scroll th.sticky-1,.table-scroll td.sticky-1{min-width:132px!important;width:132px!important;max-width:132px!important}.controls,.filter-row,.toolbar{overflow-x:auto!important;flex-wrap:nowrap!important}.controls>*{flex:0 0 auto}.clv-row{min-width:650px}.clv-card{overflow-x:auto}
+}
+</style><style id="so-mobile-verified-pass-20260819">
+@media(max-width:700px){
+ body{padding-bottom:42px!important}.hero{margin:0!important}.hero h1{font-size:clamp(2rem,10vw,2.55rem)!important;max-width:100%}.hero p{font-size:.78rem!important;line-height:1.58!important;margin-bottom:18px!important}.stat-row{margin-top:12px!important}.stat-cell{padding:14px 12px!important}.so-pitcher-stage{height:292px!important;border-radius:16px!important}.pitcher-svg{top:18px!important;transform:translateX(-50%) scale(.78)!important}.bb-grid{gap:10px!important}.bb-card,.best-bet{padding:16px!important}.ticker-bar,.notes-ticker{contain:layout paint}.table-scroll{scrollbar-width:thin}
+}
+@media(pointer:coarse) and (max-width:700px){.k-tally,.k-score-row span,.lift-leg,.glove-group{animation-duration:7s!important}.bb-card:hover,.signal-card:hover{transform:none!important}}
+@media(max-width:700px){html,body{overflow-x:hidden!important}.hero{padding:20px 12px 14px!important;min-height:0!important}.hero h1{font-size:2rem!important;line-height:1!important}.hero p{font-size:.72rem!important;line-height:1.5!important;max-width:100%!important}.so-pitcher-stage{width:100%!important;height:270px!important;transform:none!important;margin-bottom:0!important}.pitcher-svg{transform:translateX(-50%) scale(1)!important}.stat-row,.stats{display:flex!important;overflow-x:auto!important;gap:8px!important}.stat-cell,.stats>*{flex:0 0 44%!important;padding:10px!important}.legend,.controls,.filter-row{overflow-x:auto!important;flex-wrap:nowrap!important}.legend>*,.controls>*,.filter-row>*{flex:0 0 auto!important}.board{padding:0 8px 24px!important}.table-frame,.table-scroll{overflow-x:auto!important}.table-scroll table{min-width:1080px!important;font-size:10px!important}.table-scroll th,.table-scroll td{padding:7px 5px!important}.table-scroll th.sticky-1,.table-scroll td.sticky-1{position:sticky!important;left:0!important;min-width:112px!important;width:112px!important;max-width:112px!important;z-index:9!important;overflow:hidden!important;background:#0d1113!important}.table-scroll th.sticky-2,.table-scroll td.sticky-2{position:static!important;left:auto!important;min-width:96px!important;width:96px!important;max-width:96px!important;z-index:auto!important;box-shadow:none!important;overflow:hidden!important}.player-name{font-size:10.5px!important;line-height:1.22!important;white-space:normal!important;overflow-wrap:anywhere!important}.player-sub{font-size:7.5px!important;white-space:normal!important;overflow-wrap:anywhere!important;line-height:1.3!important;margin-top:3px!important}.consensus-line{font-size:14px!important}.clv-row{min-width:620px!important}}
+th.so-sortable{cursor:pointer;user-select:none;transition:color .16s ease,background .16s ease}th.so-sortable:hover,th.so-sortable:focus-visible{color:#dfffee;background:rgba(31,221,132,.07);outline:none}th.so-sortable::after{content:'';display:inline-block;width:6px;height:8px;margin-left:5px;vertical-align:middle;background:linear-gradient(135deg,transparent 48%,#596a72 49% 58%,transparent 59%) top/6px 4px no-repeat,linear-gradient(315deg,transparent 48%,#596a72 49% 58%,transparent 59%) bottom/6px 4px no-repeat;opacity:.8}th.so-sortable[aria-sort="ascending"]::after{background:linear-gradient(135deg,transparent 48%,#31dd84 49% 58%,transparent 59%) top/6px 4px no-repeat}th.so-sortable[aria-sort="descending"]::after{background:linear-gradient(315deg,transparent 48%,#31dd84 49% 58%,transparent 59%) bottom/6px 4px no-repeat}
+</style><style id="so-mobile-final-nine-pass">@media(max-width:700px){html,body{max-width:100%;overflow-x:hidden}table{max-width:none}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap,.article-grid,.cards-scroll{max-width:100%;-webkit-overflow-scrolling:touch}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap{overflow-x:auto}.hero h1{overflow-wrap:anywhere}.controls,.filter-row,.hub-tabs,.tab-row,.section-tabs{max-width:100%;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}.controls>* ,.filter-row>* ,.hub-tabs>* ,.tab-row>* ,.section-tabs>*{flex:0 0 auto}}@media(pointer:coarse) and (max-width:700px){*{scroll-behavior:auto}.table,.table-scroll,.table-frame,.table-wrap,#tableWrap{scroll-snap-type:none}}</style><style id="so-shared-disclaimer-footer-20260824">.so-shared-footer{width:100%;max-width:100%;margin:28px 0 0;padding:28px clamp(18px,4vw,48px) 30px;border-top:1px solid rgba(255,255,255,.08);background:rgba(4,7,12,.82);display:flex;flex-direction:column;gap:14px;clear:both}.so-shared-footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}.so-shared-footer-logo{font-family:Inter,Arial,sans-serif;font-size:1rem;font-weight:900;letter-spacing:-.02em;color:#f0ece4;text-decoration:none}.so-shared-footer-logo span{color:#e8a020}.so-shared-footer-top p{margin:0;color:#4d6070;font-size:.75rem;letter-spacing:.06em}.so-shared-footer .footer-disclaimer{max-width:1100px;margin:0;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.28);font-size:.62rem;line-height:1.68;letter-spacing:.01em}@media(max-width:700px){.so-shared-footer{margin-top:20px;padding:22px 16px max(24px,env(safe-area-inset-bottom));text-align:center}.so-shared-footer-top{flex-direction:column}.so-shared-footer .footer-disclaimer{text-align:left;font-size:.6rem;overflow-wrap:anywhere}}</style>
+
+<style id="shortopen-selected-strikeout">
+/* The uploaded page remains the complete mobile authority. */
+@media(min-width:701px){
+ body.final-minimal-tape{
+  --bg:#05090b;--panel:#091113;--panel-2:#0c1719;--panel-3:#101d1f;
+  --border:rgba(126,202,167,.12);--border-strong:rgba(126,202,167,.25);
+  --green:#2ee69a;--green-dim:rgba(46,230,154,.11);--green-line:rgba(46,230,154,.35);
+  --amber:#e7b34d;--amber-dim:rgba(231,179,77,.12);
+  background:linear-gradient(90deg,rgba(231,179,77,.03) 1px,transparent 1px) 0 0/88px 100%,radial-gradient(900px 500px at 12% 0,rgba(46,230,154,.065),transparent 64%),#05090b;
+ }
+ .final-minimal-tape .notes-ticker{display:none}
+ .final-minimal-tape .ticker-bar{height:38px;background:#030607;border-bottom:1px solid rgba(231,179,77,.18)}
+ .final-minimal-tape .hero{margin-top:0;border-bottom:1px solid rgba(231,179,77,.17);padding-top:52px!important;background:radial-gradient(560px 330px at 86% 42%,rgba(46,230,154,.11),transparent 70%),#05090b!important}
+ .final-minimal-tape .hero h1{font-size:clamp(2.2rem,4.8vw,5rem);font-weight:650;letter-spacing:-.065em}
+ .final-minimal-tape .hero p{color:#9aa5a5}
+ .final-minimal-tape .stat-row{display:flex;gap:0;border:0;border-top:1px solid rgba(231,179,77,.16);border-bottom:1px solid rgba(231,179,77,.16);border-radius:0;background:rgba(8,17,18,.68)}
+ .final-minimal-tape .stat-cell{flex:1;background:transparent;border-right:1px solid rgba(126,202,167,.12);padding:15px 17px}
+ .final-minimal-tape .stat-cell:last-child{border-right:0}
+ .final-overview{max-width:1480px;margin:0 auto;padding:28px 24px 24px;display:grid;grid-template-columns:minmax(0,1.58fr) minmax(330px,1fr);gap:22px;align-items:start}
+ .final-overview>.bb-wrap,.final-overview>.signals-wrap{max-width:none;margin:0;padding:0}
+ .final-overview .bb-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+ .final-overview .bb-card{border:1px solid rgba(255,255,255,.10);border-radius:16px;padding:18px;background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.018));box-shadow:inset 0 1px rgba(255,255,255,.07),0 16px 38px rgba(0,0,0,.24);backdrop-filter:blur(14px)}
+ .final-overview .bb-card:hover{border-color:rgba(46,230,154,.34)}
+ .final-overview .signals-wrap{padding:22px!important;border:1px solid rgba(255,255,255,.09);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012));box-shadow:inset 0 1px rgba(255,255,255,.055)}
+ .final-overview .signals-scroll{display:grid;grid-template-columns:1fr;gap:12px;max-height:372px;overflow:auto;padding:0 4px 0 0}
+ .final-overview .signal-card{min-width:0;border:1px solid rgba(255,255,255,.10);border-radius:14px;background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018));padding:14px 16px;box-shadow:inset 0 1px rgba(255,255,255,.05)}
+ .final-minimal-tape .fchip,.final-minimal-tape .book-chip{border-radius:4px;text-transform:uppercase;letter-spacing:.065em;background:#091113}
+ .final-minimal-tape .search-wrap input,.final-minimal-tape select#sortSel{border-radius:4px;background:#091113}
+ .final-minimal-tape .legend{border-bottom:1px solid rgba(231,179,77,.11);padding-bottom:18px}
+ .final-minimal-tape .table-frame{border-color:rgba(231,179,77,.18);border-radius:4px;background:#060a0b;box-shadow:0 22px 60px rgba(0,0,0,.34)}
+ .final-minimal-tape table{min-width:1210px}
+ .final-minimal-tape thead th{background:#0b1517;color:#94a6a6}
+ .final-minimal-tape thead tr.sub-row th{background:#071012}
+ .final-minimal-tape tbody tr:nth-child(even) td{background-color:rgba(255,255,255,.013)}
+ .final-minimal-tape td{padding-top:12px;padding-bottom:12px}
+ /* Green fill is sufficient: no underline on best-price cells. */
+ .final-minimal-tape td.odds.best{border-radius:3px;background:rgba(46,230,154,.12);color:var(--green);box-shadow:inset 0 0 0 1px rgba(46,230,154,.30)}
+ .final-minimal-tape th.so-group{left:340px;min-width:264px}
+ .final-minimal-tape td.sticky-3,.final-minimal-tape th.sticky-3{left:340px;min-width:132px;width:132px;padding-left:14px;padding-right:14px}
+ .final-minimal-tape td.sticky-4,.final-minimal-tape th.sticky-4{left:472px;min-width:132px;width:132px;padding-left:14px;padding-right:14px}
+ .final-minimal-tape .call-lbl,.final-minimal-tape .fair-lbl{font-size:10px;letter-spacing:.07em}
+ .final-minimal-tape .call-val,.final-minimal-tape .fair-val{font-size:14px;line-height:1.3}
+ .final-minimal-tape .fair-pct{font-size:11px;line-height:1.35}
+ .final-minimal-tape .call-pct{font-size:14px;padding:3px 8px}
+ .final-minimal-tape .call-ev{font-size:10.5px}.final-minimal-tape .call-conf{font-size:9px}
+ .final-minimal-tape .so-target-price{display:block;color:var(--amber);font:750 13px/1.2 var(--mono);letter-spacing:.02em;white-space:nowrap}
+ .final-minimal-tape .modeled-quote small{margin-top:5px;font-size:7px;letter-spacing:.1em}
+ .final-minimal-tape .modeled-quote{background:linear-gradient(180deg,rgba(231,179,77,.08),rgba(231,179,77,.025))!important;box-shadow:inset 0 0 0 1px rgba(231,179,77,.24)}
+ .final-minimal-tape .clv-frame{border-width:1px 0;border-radius:0;background:transparent}
+}
+@media(max-width:700px){.final-overview{display:contents}}
+</style>
+</head>
+<body class="final-minimal-tape">
+
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <!-- Ticker Bar -->
+  <div class="ticker-bar">
+    <div class="fixed-left">
+      <span class="dot"></span>
+      <span class="market-open">MARKET OPEN</span>
+      <span id="clockET">--:--:-- ET</span>
+    </div>
+    <div class="ticker-track-wrap">
+      <div class="ticker-track" id="tickerTrack"></div>
+    </div>
+    <div class="build-tag">SHORTopen · FINAL · MINIMAL TAPE</div>
+  </div>
+
+  <!-- Notes ticker (bullpen / lineup flags) -->
+  <div class="notes-ticker">
+    <span class="nt-lbl">NOTES</span>
+    <div class="nt-track-wrap">
+      <div class="nt-track" id="notesTrack"></div>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  
+  <!-- Mobile menu -->
+  
+
+  <!-- Hero -->
+  <div class="hero"><div style="position:absolute;right:24px;top:18px;padding:7px 12px;border:1px solid rgba(244,185,66,.34);border-radius:999px;color:#f4b942;font:700 .55rem DM Mono,monospace;letter-spacing:.12em">PREMIUM · K MARKET</div>
+    <div class="eyebrow">MLB Player Props · Short the Consensus</div>
+    <h1>Strikeout Props <span class="k">// K-Market</span></h1>
+    <p>Every pitcher strikeout line across four core books, read the way a desk reads order flow. Green marks the best price on the board. Amber marks a book whose line has broken from consensus — that's where the market disagrees with itself.</p>
+
+    <div class="stat-row">
+      <div class="stat-cell">
+        <div class="lbl">Books in Agreement</div>
+        <div class="val" id="statAgree">--</div>
+        <div class="sub" id="statAgreeSub">Book lines matching consensus</div>
+      </div>
+      <div class="stat-cell">
+        <div class="lbl">Tightest Spread</div>
+        <div class="val amber" id="statTight">--</div>
+        <div class="sub" id="statTightSub">—</div>
+      </div>
+      <div class="stat-cell">
+        <div class="lbl">Shortopen Spread</div>
+        <div class="val violet" id="statShortopen">--</div>
+        <div class="sub" id="statShortopenSub">—</div>
+      </div>
+      <div class="stat-cell">
+        <div class="lbl">Best Value · Over</div>
+        <div class="val green" id="statBestOver">--</div>
+        <div class="sub" id="statBestOverName">—</div>
+      </div>
+      <div class="stat-cell">
+        <div class="lbl">Best Value · Under</div>
+        <div class="val green" id="statBestUnder">--</div>
+        <div class="sub" id="statBestUnderName">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Today's Best Bets -->
+  <div class="bb-wrap">
+    <div class="bb-head"><span class="lbl">Today's Best Bets</span><span class="tag">Model Edge</span></div>
+    <div class="bb-grid" id="bestBets"></div>
+    <div class="longshot-block">
+      <div class="bb-head longshot-head"><span class="lbl">Today's Long Shot EVs</span><span class="tag">High Variance</span></div>
+      <div class="bb-grid longshot-grid" id="longshotBets"></div>
+    </div>
+  </div>
+
+  <!-- Live Signals rail -->
+  <div class="signals-wrap">
+    <div class="bb-head"><span class="lbl">Live Signals</span><span class="tag" id="signalsCount">0 Active</span></div>
+    <div class="signals-scroll" id="signalsRail"></div>
+  </div>
+
+  <!-- Filter chips -->
+  <div class="chip-row" id="chipRow"></div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="search-wrap">
+      <input id="searchBox" type="text" placeholder="Search pitcher, team, opp…">
+    </div>
+    <select id="sortSel">
+      <option value="line_desc">Sort: Line (High → Low)</option>
+      <option value="line_asc">Sort: Line (Low → High)</option>
+      <option value="steam_desc">Sort: Steam Alerts First</option>
+      <option value="best_over">Sort: Best Over Value</option>
+      <option value="best_under">Sort: Best Under Value</option>
+      <option value="name_asc">Sort: Name (A → Z)</option>
+    </select>
+    <div class="book-toggles" id="bookToggles"></div>
+  </div>
+  <div class="legend">
+    <div><span class="lg-sw" style="background:var(--green-dim);box-shadow:inset 0 0 0 1px var(--green-line);"></span>Best price on board</div>
+    <div><span class="lg-sw" style="background:var(--amber-dim);"></span>Steam / line diverges from consensus</div>
+    <div><span class="lg-sw" style="background:transparent;box-shadow:inset 0 0 0 1px var(--border-strong);"></span>Click any price to add to slip</div>
+    <div><span class="lg-sw" style="background:rgba(244,185,66,.07);box-shadow:inset 0 0 0 1px rgba(244,185,66,.42);border-style:dashed;"></span>Target = ShortOpen model price, not a live quote</div>
+  </div>
+
+  <!-- Board -->
+  <div class="board">
+    <div class="table-frame">
+      <div class="table-scroll">
+        <table id="propsTable">
+          <thead>
+            <tr class="book-row">
+              <th class="sticky-1 so-sortable" tabindex="0" data-sort-key="name" rowspan="2">Pitcher</th>
+              <th class="sticky-2 so-sortable" tabindex="0" data-sort-key="line" rowspan="2">Consensus K Line</th>
+              <th class="so-group" colspan="2">◆ Shortopen</th>
+              <th class="book-group" colspan="3" data-book="DK"><span class="book-dot" style="background:#53c531"></span>DraftKings</th>
+              <th class="book-group" colspan="3" data-book="FD"><span class="book-dot" style="background:#1493ff"></span>FanDuel</th>
+              <th class="book-group" colspan="3" data-book="MGM"><span class="book-dot" style="background:#b4975a"></span>BetMGM</th>
+              
+              <th class="book-group" colspan="3" data-book="CZR"><span class="book-dot" style="background:#c9a227"></span>Caesars</th>
+              
+            </tr>
+            <tr class="sub-row">
+              <th class="sticky-3 so-sortable" tabindex="0" data-sort-key="call">Call</th><th class="sticky-4 so-sortable" tabindex="0" data-sort-key="fair">Fair</th>
+              <th class="so-sortable" tabindex="0" data-sort-key="book:DK:line" data-book="DK">K</th><th class="so-sortable" tabindex="0" data-sort-key="book:DK:under" data-book="DK">U</th><th class="so-sortable" tabindex="0" data-sort-key="book:DK:over" data-book="DK">O</th>
+              <th class="so-sortable" tabindex="0" data-sort-key="book:FD:line" data-book="FD">K</th><th class="so-sortable" tabindex="0" data-sort-key="book:FD:under" data-book="FD">U</th><th class="so-sortable" tabindex="0" data-sort-key="book:FD:over" data-book="FD">O</th>
+              <th class="so-sortable" tabindex="0" data-sort-key="book:MGM:line" data-book="MGM">K</th><th class="so-sortable" tabindex="0" data-sort-key="book:MGM:under" data-book="MGM">U</th><th class="so-sortable" tabindex="0" data-sort-key="book:MGM:over" data-book="MGM">O</th>
+              
+              <th class="so-sortable" tabindex="0" data-sort-key="book:CZR:line" data-book="CZR">K</th><th class="so-sortable" tabindex="0" data-sort-key="book:CZR:under" data-book="CZR">U</th><th class="so-sortable" tabindex="0" data-sort-key="book:CZR:over" data-book="CZR">O</th>
+              
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLV Tracker -->
+  <div class="clv-wrap">
+    <div class="clv-frame">
+      <div class="clv-head">
+        <span class="lbl">CLV Tracker</span>
+        <button class="clv-clear" id="clvClear">Clear log</button>
+      </div>
+      <div id="clvBody"></div>
+    </div>
+  </div>
+
+  <!-- Bet Slip -->
+  <button class="slip-fab" id="slipFab">SLIP · <span id="fabCount">0</span></button>
+  <div class="slip-drawer" id="slipDrawer">
+    <div class="slip-head">
+      <div class="t">YOUR SLIP · <b id="slipCount">0</b> picks</div>
+      <button class="slip-close" id="slipCloseBtn">Close ✕</button>
+    </div>
+    <div class="slip-body" id="slipBody">
+      <div class="slip-empty">No picks yet. Click a price on the board to add it here.</div>
+    </div>
+    <div class="slip-foot">
+      <div class="stake-ctrl">
+        <span style="color:var(--text-faint);font-size:11px;">STAKE</span>
+        <button id="stakeMinus">−</button>
+        <span class="amt" id="stakeAmt">$10</span>
+        <button id="stakePlus">+</button>
+      </div>
+      <div class="payout-block">
+        <div class="plabel">Payout if all hit</div>
+        <div class="pval" id="payoutVal">$0.00</div>
+      </div>
+      <button class="clear-btn" id="clearSlip">Clear</button>
+    </div>
+    <div class="slip-note">Payout shown is a parlay estimate at your stake across the picks selected. "Edge vs. mid" compares your price to the average price across books for that side — it is a market-comparison figure, not a win-probability forecast. Estimates only, not a real-money wager — use this board to place bets at your sportsbook of choice.</div>
+  </div>
+
+  
+
+<script>
+/* =====================================================================
+   PROPS_DATA — this is the only block you need to touch to refresh odds.
+   Feed me a new screenshot / export and I will regenerate this array.
+   Only DraftKings, FanDuel, BetMGM and Caesars are used; other sportsbook quotes are ignored.
+   Format per book: [line, underOdds, overOdds]  (American odds)
+===================================================================== */
+const BOOKS = [
+  {id:"DK", name:"DraftKings", color:"#53c531"},
+  {id:"FD", name:"FanDuel", color:"#1493ff"},
+  {id:"MGM", name:"BetMGM", color:"#b4975a"},
+  {id:"CZR", name:"Caesars", color:"#c9a227"}
+];
+
+const PROPS_DATA = [
+  {
+    "name": "Jacob Misiorowski",
+    "team": "MIL",
+    "opp": "CHC",
+    "books": {
+      "DK": [
+        8.5,
+        -136,
+        106
+      ],
+      "FD": [
+        8.5,
+        -146,
+        114
+      ],
+      "MGM": [
+        8.5,
+        -150,
+        110
+      ],
+      "CZR": [
+        8.5,
+        -145,
+        113
+      ]
+    }
+  },
+  {
+    "name": "Tarik Skubal",
+    "team": "LAD",
+    "opp": "CIN",
+    "books": {
+      "DK": [
+        8.5,
+        -117,
+        -109
+      ],
+      "FD": [
+        8.5,
+        -125,
+        -102
+      ],
+      "MGM": [
+        8.5,
+        -135,
+        100
+      ],
+      "CZR": [
+        8.5,
+        -125,
+        -102
+      ]
+    }
+  },
+  {
+    "name": "Cam Schlittler",
+    "team": "NYY",
+    "opp": "COL",
+    "books": {
+      "DK": [
+        7.5,
+        106,
+        -135
+      ],
+      "FD": [
+        7.5,
+        102,
+        -130
+      ],
+      "MGM": [
+        7.5,
+        105,
+        -140
+      ],
+      "CZR": [
+        7.5,
+        108,
+        -130
+      ]
+    }
+  },
+  {
+    "name": "Sean Burke",
+    "team": "CWS",
+    "opp": "PIT",
+    "books": {
+      "DK": [
+        6.5,
+        -125,
+        -101
+      ],
+      "FD": [
+        6.5,
+        -130,
+        102
+      ],
+      "MGM": [
+        6.5,
+        -135,
+        100
+      ],
+      "CZR": [
+        6.5,
+        -130,
+        104
+      ]
+    }
+  },
+  {
+    "name": "Patrick Sandoval",
+    "team": "BOS",
+    "opp": "LAA",
+    "books": {
+      "DK": [
+        5.5,
+        117,
+        -145
+      ],
+      "FD": [
+        5.5,
+        114,
+        -148
+      ],
+      "MGM": [
+        5.5,
+        100,
+        -135
+      ],
+      "CZR": [
+        5.5,
+        112,
+        -141
+      ]
+    }
+  },
+  {
+    "name": "Drew Anderson",
+    "team": "DET",
+    "opp": "MIN",
+    "books": {
+      "DK": [
+        4.5,
+        106,
+        -136
+      ],
+      "FD": [
+        4.5,
+        104,
+        -132
+      ],
+      "MGM": [
+        4.5,
+        -110,
+        -105
+      ],
+      "CZR": [
+        4.5,
+        -103,
+        -125
+      ]
+    }
+  },
+  {
+    "name": "Tanner Bibee",
+    "team": "CLE",
+    "opp": "@BAL",
+    "books": {
+      "DK": [
+        5.5,
+        -144,
+        113
+      ],
+      "FD": [
+        5.5,
+        -160,
+        124
+      ],
+      "MGM": [
+        5.5,
+        -155,
+        115
+      ],
+      "CZR": [
+        5.5,
+        -155,
+        118
+      ]
+    }
+  },
+  {
+    "name": "Reid Detmers",
+    "team": "LAA",
+    "opp": "@BOS",
+    "books": {
+      "DK": [
+        5.5,
+        104,
+        -133
+      ],
+      "FD": [
+        5.5,
+        110,
+        -140
+      ],
+      "MGM": [
+        5.5,
+        105,
+        -145
+      ],
+      "CZR": [
+        5.5,
+        107,
+        -137
+      ]
+    }
+  },
+  {
+    "name": "Sean Manaea",
+    "team": "NYM",
+    "opp": "@MIA",
+    "books": {
+      "DK": [
+        5.5,
+        null,
+        null
+      ],
+      "FD": [
+        5.5,
+        -154,
+        120
+      ],
+      "MGM": [
+        5.5,
+        -160,
+        120
+      ],
+      "CZR": [
+        5.5,
+        -152,
+        119
+      ]
+    }
+  },
+  {
+    "name": "Quinn Mathews",
+    "team": "STL",
+    "opp": "@SF",
+    "books": {
+      "DK": [
+        5.5,
+        -152,
+        119
+      ],
+      "FD": [
+        5.5,
+        -148,
+        116
+      ],
+      "MGM": [
+        4.5,
+        115,
+        -155
+      ],
+      "CZR": [
+        5.5,
+        -152,
+        118
+      ]
+    }
+  },
+  {
+    "name": "Casey Mize",
+    "team": "SD",
+    "opp": "WSH",
+    "books": {
+      "DK": [
+        4.5,
+        -116,
+        -109
+      ],
+      "FD": [
+        4.5,
+        -122,
+        -104
+      ],
+      "MGM": null,
+      "CZR": [
+        4.5,
+        -122,
+        -105
+      ]
+    }
+  },
+  {
+    "name": "Landen Roupp",
+    "team": "SF",
+    "opp": "STL",
+    "books": {
+      "DK": [
+        4.5,
+        127,
+        -163
+      ],
+      "FD": [
+        5.5,
+        -170,
+        132
+      ],
+      "MGM": [
+        5.5,
+        -140,
+        105
+      ],
+      "CZR": [
+        5.5,
+        -170,
+        125
+      ]
+    }
+  },
+  {
+    "name": "Jose Soriano",
+    "team": "TOR",
+    "opp": "@ATH",
+    "books": {
+      "DK": [
+        5.5,
+        -138,
+        108
+      ],
+      "FD": [
+        5.5,
+        -142,
+        112
+      ],
+      "MGM": null,
+      "CZR": [
+        5.5,
+        -148,
+        115
+      ]
+    }
+  },
+  {
+    "name": "Sandy Alcantara",
+    "team": "MIA",
+    "opp": "NYM",
+    "books": {
+      "DK": [
+        4.5,
+        null,
+        null
+      ],
+      "FD": [
+        4.5,
+        -113,
+        -113
+      ],
+      "MGM": [
+        4.5,
+        -125,
+        -105
+      ],
+      "CZR": [
+        4.5,
+        -120,
+        -110
+      ]
+    }
+  },
+  {
+    "name": "Bubba Chandler",
+    "team": "PIT",
+    "opp": "@CWS",
+    "books": {
+      "DK": [
+        4.5,
+        -122,
+        -105
+      ],
+      "FD": [
+        4.5,
+        -128,
+        100
+      ],
+      "MGM": [
+        4.5,
+        -115,
+        -115
+      ],
+      "CZR": [
+        4.5,
+        -122,
+        -105
+      ]
+    }
+  },
+  {
+    "name": "Gabriel Hughes",
+    "team": "COL",
+    "opp": "@NYY",
+    "books": {
+      "DK": [
+        4.5,
+        -170,
+        133
+      ],
+      "FD": [
+        4.5,
+        -162,
+        126
+      ],
+      "MGM": [
+        4.5,
+        -160,
+        120
+      ],
+      "CZR": [
+        4.5,
+        -160,
+        126
+      ]
+    }
+  },
+  {
+    "name": "Dean Kremer",
+    "team": "MIN",
+    "opp": "@DET",
+    "books": {
+      "DK": [
+        4.5,
+        -120,
+        -103
+      ],
+      "FD": [
+        4.5,
+        -122,
+        -104
+      ],
+      "MGM": [
+        4.5,
+        -125,
+        -105
+      ],
+      "CZR": [
+        4.5,
+        -124,
+        -103
+      ]
+    }
+  },
+  {
+    "name": "Nick Lodolo",
+    "team": "CIN",
+    "opp": "@LAD",
+    "books": {
+      "DK": [
+        3.5,
+        128,
+        -162
+      ],
+      "FD": [
+        3.5,
+        120,
+        -154
+      ],
+      "MGM": [
+        4.5,
+        -155,
+        115
+      ],
+      "CZR": [
+        3.5,
+        121,
+        -155
+      ]
+    }
+  },
+  {
+    "name": "Andrew Painter",
+    "team": "PHI",
+    "opp": "HOU",
+    "books": {
+      "DK": [
+        4.5,
+        117,
+        -149
+      ],
+      "FD": [
+        4.5,
+        -102,
+        -125
+      ],
+      "MGM": [
+        4.5,
+        -105,
+        -125
+      ],
+      "CZR": [
+        4.5,
+        105,
+        -134
+      ]
+    }
+  },
+  {
+    "name": "Freddy Peralta",
+    "team": "TB",
+    "opp": "@ATL",
+    "books": {
+      "DK": [
+        4.5,
+        -104,
+        -123
+      ],
+      "FD": [
+        4.5,
+        -111,
+        -115
+      ],
+      "MGM": null,
+      "CZR": [
+        4.5,
+        -107,
+        -117
+      ]
+    }
+  },
+  {
+    "name": "David Peterson",
+    "team": "CHC",
+    "opp": "@MIL",
+    "books": {
+      "DK": [
+        4.5,
+        -148,
+        116
+      ],
+      "FD": [
+        4.5,
+        -156,
+        122
+      ],
+      "MGM": [
+        4.5,
+        -140,
+        105
+      ],
+      "CZR": [
+        4.5,
+        -148,
+        115
+      ]
+    }
+  },
+  {
+    "name": "AJ Smith-Shawver",
+    "team": "ATL",
+    "opp": "TB",
+    "books": {
+      "DK": [
+        3.5,
+        105,
+        -134
+      ],
+      "FD": [
+        3.5,
+        110,
+        -140
+      ],
+      "MGM": null,
+      "CZR": [
+        3.5,
+        100,
+        -130
+      ]
+    }
+  },
+  {
+    "name": "Michael Wacha",
+    "team": "KC",
+    "opp": "ARI",
+    "books": {
+      "DK": [
+        4.5,
+        -156,
+        122
+      ],
+      "FD": [
+        4.5,
+        -164,
+        128
+      ],
+      "MGM": [
+        4.5,
+        -140,
+        105
+      ],
+      "CZR": [
+        4.5,
+        -157,
+        123
+      ]
+    }
+  },
+  {
+    "name": "Brandon Young",
+    "team": "BAL",
+    "opp": "CLE",
+    "books": {
+      "DK": [
+        3.5,
+        105,
+        -131
+      ],
+      "FD": [
+        3.5,
+        106,
+        -136
+      ],
+      "MGM": [
+        3.5,
+        110,
+        -150
+      ],
+      "CZR": [
+        3.5,
+        104,
+        -132
+      ]
+    }
+  },
+  {
+    "name": "Corbin Burnes",
+    "team": "ARI",
+    "opp": "@KC",
+    "books": {
+      "DK": [
+        2.5,
+        137,
+        -175
+      ],
+      "FD": [
+        2.5,
+        136,
+        -174
+      ],
+      "MGM": [
+        3.5,
+        -190,
+        140
+      ],
+      "CZR": [
+        2.5,
+        128,
+        -165
+      ]
+    }
+  },
+  {
+    "name": "Jack Perkins",
+    "team": "ATH",
+    "opp": "TOR",
+    "books": {
+      "DK": [
+        3.5,
+        123,
+        -158
+      ],
+      "FD": [
+        3.5,
+        124,
+        -156
+      ],
+      "MGM": null,
+      "CZR": [
+        3.5,
+        120,
+        -150
+      ]
+    }
+  },
+  {
+    "name": "Hayden Wesneski",
+    "team": "HOU",
+    "opp": "@PHI",
+    "books": {
+      "DK": [
+        3.5,
+        -105,
+        -122
+      ],
+      "FD": [
+        3.5,
+        102,
+        -130
+      ],
+      "MGM": [
+        3.5,
+        100,
+        -135
+      ],
+      "CZR": [
+        3.5,
+        -107,
+        -121
+      ]
+    }
+  }
+];
+
+
+/* ===================== Helpers ===================== */
+function americanToDecimal(o){ if(o===null||o===undefined) return null; return o>0 ? 1+o/100 : 1+100/Math.abs(o); }
+function impliedProb(o){ const d=americanToDecimal(o); return d? 1/d : null; }
+function fmtOdds(o){ if(o===null||o===undefined) return '—'; return o>0 ? '+'+o : String(o); }
+function americanFromProb(p){
+  if(p===null||p===undefined||p<=0||p>=1) return null;
+  return p>=0.5 ? Math.round(-100*p/(1-p)) : Math.round(100*(1-p)/p);
+}
+function americanFromDecimal(d){
+  if(d===null||d===undefined||d<=1) return null;
+  return d>=2 ? Math.round((d-1)*100) : Math.round(-100/(d-1));
+}
+function playAtOdds(fairProb,minEv=.03){
+  if(fairProb===null||fairProb===undefined||fairProb<=0||fairProb>=1) return null;
+  return americanFromDecimal((1+minEv)/fairProb);
+}
+function estimatedCounterpartOdds(observedOdds,assumedHold=.045){
+  const observedProb=impliedProb(observedOdds);
+  if(observedProb==null) return null;
+  const missingQuotedProb=1+assumedHold-observedProb;
+  return missingQuotedProb>0&&missingQuotedProb<1 ? americanFromProb(missingQuotedProb) : null;
+}
+
+/* ===== shortopen fair-price / EV layer =====
+   Replaces proportional devigging with Shin's method (corrects the
+   favorite-longshot bias proportional splitting ignores), and replaces
+   the flat "+2pt margin" Shortopen Spread hack with a real EV call:
+   every book's price checked against the Shin-fair probability, best
+   EV wins regardless of which book it's on -- nothing here is pinned
+   to a specific sportsbook. */
+function fairProbsShin(rawProbs, tol=1e-10, maxIter=100){
+  const S = rawProbs.reduce((a,b)=>a+b,0);
+  function shinAt(z){
+    return rawProbs.map(pi => (Math.sqrt(z*z + 4*(1-z)*pi*pi/S) - z) / (2*(1-z)));
+  }
+  let lo=0, hi=0.5;
+  for(let i=0;i<maxIter;i++){
+    const mid=(lo+hi)/2, probs=shinAt(mid), sum=probs.reduce((a,b)=>a+b,0);
+    if(Math.abs(sum-1)<tol) return probs;
+    if(sum>1) lo=mid; else hi=mid;
+  }
+  return shinAt((lo+hi)/2);
+}
+function evPercent(americanOdds, fairProb){
+  const dec = americanToDecimal(americanOdds);
+  if(dec==null || fairProb==null) return null;
+  return (dec*fairProb - 1) * 100;
+}
+function confidenceTag(bookCount, spreadCents){
+  if(bookCount<3) return 'Low';
+  if(spreadCents==null) return 'Medium';
+  if(spreadCents<=1.5) return 'High';
+  if(spreadCents<=3.5) return 'Medium';
+  return 'Low';
+}
+// booksAtLine: [{book, under, over}] filtered to the SAME line already
+function shortopenCall(booksAtLine){
+  const quotes = booksAtLine.filter(b=>b.under!=null && b.over!=null);
+  if(!quotes.length) return null;
+  const perBook = quotes.map(b=>{
+    const [pu, po] = fairProbsShin([impliedProb(b.under), impliedProb(b.over)]);
+    return {book:b.book, under:b.under, over:b.over, pu, po};
+  });
+  const fairUnderProb = perBook.reduce((a,b)=>a+b.pu,0)/perBook.length;
+  const fairOverProb  = perBook.reduce((a,b)=>a+b.po,0)/perBook.length;
+  let bestUnder=null, bestOver=null;
+  perBook.forEach(b=>{
+    const evU = evPercent(b.under, fairUnderProb), evO = evPercent(b.over, fairOverProb);
+    if(!bestUnder || evU>bestUnder.evPct) bestUnder = {book:b.book, odds:b.under, evPct:evU};
+    if(!bestOver  || evO>bestOver.evPct)  bestOver  = {book:b.book, odds:b.over,  evPct:evO};
+  });
+  const spreadUnder = (Math.max(...perBook.map(b=>impliedProb(b.under))) - Math.min(...perBook.map(b=>impliedProb(b.under))))*100;
+  const spreadOver  = (Math.max(...perBook.map(b=>impliedProb(b.over)))  - Math.min(...perBook.map(b=>impliedProb(b.over))))*100;
+  const confidence = confidenceTag(quotes.length, Math.max(spreadUnder, spreadOver));
+  const call = bestOver.evPct >= bestUnder.evPct ? {side:'Over', ...bestOver} : {side:'Under', ...bestUnder};
+  return { fairUnderProb, fairOverProb, fairUnder: americanFromProb(fairUnderProb), fairOver: americanFromProb(fairOverProb), call, confidence, bookCount: quotes.length };
+}
+
+// Fallback for one-sided source feeds. Observed Over quotes stay observed;
+// this derives a separate fair/target layer and never writes an estimated
+// Under into a sportsbook cell or the bet slip.
+function modeledTargetFromOvers(booksAtLine,assumedHold=.045,minEv=.03){
+  const quotes=booksAtLine.filter(b=>b.over!=null);
+  if(!quotes.length) return null;
+  const modeled=quotes.map(b=>{
+    const rawOver=impliedProb(b.over),rawUnder=1+assumedHold-rawOver;
+    if(rawUnder<=0||rawUnder>=1) return null;
+    const [pu,po]=fairProbsShin([rawUnder,rawOver]);
+    return {pu,po};
+  }).filter(Boolean);
+  if(!modeled.length) return null;
+  const fairUnderProb=modeled.reduce((a,b)=>a+b.pu,0)/modeled.length;
+  const fairOverProb=modeled.reduce((a,b)=>a+b.po,0)/modeled.length;
+  return {fairUnderProb,fairOverProb,fairUnder:americanFromProb(fairUnderProb),fairOver:americanFromProb(fairOverProb),targetUnder:playAtOdds(fairUnderProb,minEv),targetOver:playAtOdds(fairOverProb,minEv),assumedHold,minEv,bookCount:modeled.length};
+}
+
+function mode(arr){
+  const counts = {};
+  let best=null, bestCt=0;
+  arr.forEach(v=>{
+    if(v===null||v===undefined) return;
+    counts[v]=(counts[v]||0)+1;
+    if(counts[v]>bestCt){bestCt=counts[v]; best=v;}
+  });
+  return best;
+}
+
+// enrich each player with computed consensus / best price / steam data
+const ROOKIES = new Set([]);
+const LIVE_NOW = new Set([]);
+const NOTE_POOL = ['Short-hook risk on low pitch count','Opponent lineup missing 2 regulars','Extra rest since last start','Bullpen banged up behind him','Coming off a rain-shortened outing','Facing this lineup for the first time this year'];
+const PARKS = ['Hitter-friendly park','Pitcher-friendly park','Neutral park'];
+const WEATHERS = ['Dome, climate controlled','Wind in 8mph, 71°F','Clear, 82°F, calm','Wind out 6mph, 76°F','Overcast, 68°F'];
+
+function seededRand(seed){ let x=Math.sin(seed)*10000; return x-Math.floor(x); }
+
+PROPS_DATA.forEach((p,i)=>{
+  const lines = BOOKS.map(b=> p.books[b.id] ? p.books[b.id][0] : null);
+  const pricedLines = BOOKS.map(b=>p.books[b.id]).filter(row=>row && (row[1]!=null || row[2]!=null)).map(row=>row[0]);
+  p.consensusLine = mode(pricedLines.length ? pricedLines : lines);
+  p.steamCount = lines.filter(l=> l!==null && l!==p.consensusLine).length;
+
+  let bestOver=-Infinity, bestOverBook=null, bestUnder=-Infinity, bestUnderBook=null;
+  BOOKS.forEach(b=>{
+    const row = p.books[b.id];
+    if(!row) return;
+    const [,u,o] = row;
+    if(u!==null && u>bestUnder){bestUnder=u; bestUnderBook=b.id;}
+    if(o!==null && o>bestOver){bestOver=o; bestOverBook=b.id;}
+  });
+  p.bestOver = bestOverBook? {odds:bestOver, book:bestOverBook} : null;
+  p.bestUnder = bestUnderBook? {odds:bestUnder, book:bestUnderBook} : null;
+
+  // No-vig fair odds at the consensus line, via Shin's method, plus a
+  // real EV call scanned across every book quoting that line (not
+  // pinned to any one sportsbook -- whichever book has the best EV
+  // against the fair number wins the call).
+  const booksAtLine = BOOKS.map(b=>{
+    const row=p.books[b.id];
+    if(!row || row[0]!==p.consensusLine) return null;
+    return {book:b.id, under:row[1], over:row[2]};
+  }).filter(Boolean);
+  const so = shortopenCall(booksAtLine);
+  const targetModel = so ? null : modeledTargetFromOvers(booksAtLine);
+  p.targetModel = targetModel;
+  p.fairOverProb = so ? so.fairOverProb : (targetModel ? targetModel.fairOverProb : null);
+  p.fairUnderProb = so ? so.fairUnderProb : (targetModel ? targetModel.fairUnderProb : null);
+  p.fairOver = so ? so.fairOver : (targetModel ? targetModel.fairOver : null);
+  p.fairUnder = so ? so.fairUnder : (targetModel ? targetModel.fairUnder : null);
+
+  // Shortopen Call — replaces the old flat "+2pt margin" hack. This is
+  // the single judgment: best EV side, whichever book offers it, as a
+  // percentage relative to the Shin-fair price, plus a confidence tag
+  // driven by how many books quote this line and how tightly they agree.
+  p.shortopenCall = so ? so.call : null;         // {side, book, odds, evPct}
+  p.shortopenConfidence = so ? so.confidence : null;
+  // Kept for back-compat with any code still reading soOver/soUnder:
+  // now genuinely the best-EV price on each side, not a flat markup.
+  p.soOver = so && so.call.side==='Over' ? so.call.odds : (p.bestOver ? p.bestOver.odds : null);
+  p.soUnder = so && so.call.side==='Under' ? so.call.odds : (p.bestUnder ? p.bestUnder.odds : null);
+
+  // Opening line (simulated) for the sparkline
+  const wobble = (seededRand(i*7.3+1)-0.5)*2;
+  p.openLine = p.consensusLine!==null ? +(p.consensusLine - wobble).toFixed(1) : null;
+
+  // Matchup context (simulated)
+  p.oppKRate = +(19 + seededRand(i*3.1+2)*8).toFixed(1);
+  p.park = PARKS[Math.floor(seededRand(i*5.2+3)*PARKS.length)];
+  p.weather = WEATHERS[Math.floor(seededRand(i*2.7+4)*WEATHERS.length)];
+  p.notes = [];
+  if(seededRand(i*1.9+5) > 0.55) p.notes.push(NOTE_POOL[Math.floor(seededRand(i*4.4+6)*NOTE_POOL.length)]);
+  if(p.consensusLine!==null && p.consensusLine<=4.5 && seededRand(i*6.1+7)>0.5) p.notes.push('Short-hook risk on low pitch count');
+  p.notes = [...new Set(p.notes)];
+
+  // Last-5 starts K totals (simulated around the current line)
+  const base = p.consensusLine || 5;
+  p.last5 = Array.from({length:5}, (_,j)=> Math.max(1, Math.round(base + (seededRand(i*9.3+j+8)-0.5)*4)));
+
+  p.rookie = ROOKIES.has(p.name);
+  p.home = !p.opp.startsWith('@');
+
+  // Live in-game state (simulated for a few pitchers)
+  if(LIVE_NOW.has(p.name)){
+    p.live = true;
+    p.inningsPitched = +(2 + seededRand(i*8.8+9)*3).toFixed(1);
+    p.currentKs = Math.max(0, Math.round((base * (p.inningsPitched/6)) + (seededRand(i*1.2+10)-0.3)*2));
+  } else {
+    p.live = false;
+  }
+});
+
+/* ===================== Persistent state (localStorage) ===================== */
+function loadSet(key){ try{ return new Set(JSON.parse(localStorage.getItem(key)||'[]')); }catch(e){ return new Set(); } }
+function saveSet(key,set){ localStorage.setItem(key, JSON.stringify([...set])); }
+let watchlist = loadSet('so_watchlist');
+let clvLog = (()=>{ try{ return JSON.parse(localStorage.getItem('so_clv_log')||'[]'); }catch(e){ return []; } })();
+function saveClvLog(){ localStorage.setItem('so_clv_log', JSON.stringify(clvLog)); }
+let quickFilter = 'all';
+let expandedRows = new Set();
+
+/* ===================== Rendering ===================== */
+const tableBody = document.getElementById('tableBody');
+let activeBooks = new Set(BOOKS.map(b=>b.id));
+let slip = []; // {player, side, book, odds, line}
+let stake = 10;
+
+function bookName(id){ return BOOKS.find(b=>b.id===id).name; }
+
+function renderTable(list){
+  tableBody.innerHTML = '';
+  list.forEach(p=>{
+    const tr = document.createElement('tr');
+
+    const steamHtml = p.steamCount>0 ? `<span class="steam-badge">${p.steamCount} STEAM</span>` : '';
+    const bestOverHtml = p.bestOver ? `<span class="best-pill">Best O <b>${fmtOdds(p.bestOver.odds)}</b> · ${p.bestOver.book}</span>` : '';
+    const bestUnderHtml = p.bestUnder ? `<span class="best-pill u">Best U <b>${fmtOdds(p.bestUnder.odds)}</b> · ${p.bestUnder.book}</span>` : '';
+    const liveHtml = p.live ? `<span class="live-badge"><span class="ld"></span>LIVE ${p.currentKs}K · ${p.inningsPitched}IP</span>` : '';
+    const watching = watchlist.has(p.name);
+    const isOpen = expandedRows.has(p.name);
+
+    const spark = sparklineSvg(p.openLine, p.consensusLine);
+    const moveDir = p.consensusLine!==null && p.openLine!==null ? (p.consensusLine>p.openLine?'up':(p.consensusLine<p.openLine?'dn':'')) : '';
+    const moveTxt = p.openLine!==null ? `${p.openLine.toFixed(1)}→${p.consensusLine.toFixed(1)}` : '';
+
+    let html = `
+      <td class="sticky-1">
+        <div class="pname-row">
+          <button class="caret-btn${isOpen?' open':''}" title="Matchup detail" onclick="toggleMatchup('${p.name}')">▸</button>
+          <button class="star-btn${watching?' on':''}" title="Watchlist" onclick="toggleWatchlist('${p.name}')">★</button>
+          <div class="player-name">${p.name}${p.rookie?' <span class="rookie-tag">R</span>':''}</div>
+        </div>
+        <div class="player-sub"><span class="team-badge">${p.team}</span> vs ${p.opp}</div>
+        ${liveHtml}
+      </td>
+      <td class="sticky-2">
+        <span class="cline">${p.consensusLine!==null? `${p.consensusLine.toFixed(1)} K`:'SO TARGET'}</span>${steamHtml}
+        <div class="spark-wrap">${spark}<span class="spark-lbl ${moveDir}">${moveTxt}</span></div>
+        ${bestOverHtml}${bestUnderHtml}
+      </td>
+      <td class="sticky-3">
+        ${p.shortopenCall ? `
+        <div class="call-lbl">${p.shortopenCall.side}</div>
+        <div class="call-val ${p.shortopenCall.side==='Over'?'o':'u'}">${fmtOdds(p.shortopenCall.odds)} <span style="color:var(--text-faint);font-weight:500">${p.shortopenCall.book}</span></div>
+        ${(() => { const callProb = p.shortopenCall.side==='Over' ? p.fairOverProb : p.fairUnderProb; return callProb!=null ? `<div class="call-pct ${p.shortopenCall.side==='Over'?'o':'u'}">${(callProb*100).toFixed(1)}%<span class="call-pct-lbl">to hit</span></div>` : ''; })()}
+        <div class="call-ev ${p.shortopenCall.evPct>=0?'pos':'neg'}">${p.shortopenCall.evPct>=0?'+':''}${p.shortopenCall.evPct.toFixed(1)}% EV</div>
+        <div class="call-conf">${p.shortopenConfidence||'—'} confidence</div>
+        ` : (p.targetModel ? `<div class="call-target">SO target</div><div class="target-lines"><span class="to">O ${fmtOdds(p.targetModel.targetOver)}+</span><br><span class="tu">U ${fmtOdds(p.targetModel.targetUnder)}+</span></div><div class="call-conf">${Math.round(p.targetModel.minEv*100)}% entry · assumed ${(p.targetModel.assumedHold*100).toFixed(1)}% hold</div>` : `<div class="call-target">SO target</div><div class="call-conf">Market line unavailable</div>`)}
+      </td>
+      <td class="sticky-4">
+        <div class="fair-lbl">Over</div><div class="fair-val o">${fmtOdds(p.fairOver)}</div><div class="fair-pct o">${p.fairOverProb!=null?(p.fairOverProb*100).toFixed(1)+'%':'—'}</div>
+        <div class="fair-lbl" style="margin-top:5px">Under</div><div class="fair-val u">${fmtOdds(p.fairUnder)}</div><div class="fair-pct u">${p.fairUnderProb!=null?(p.fairUnderProb*100).toFixed(1)+'%':'—'}</div>
+      </td>
+    `;
+
+    BOOKS.forEach(b=>{
+      const row = p.books[b.id];
+      const hiddenCls = activeBooks.has(b.id) ? '' : ' col-hidden';
+      if(!row){
+        html += `<td class="book-cell line modeled-quote${hiddenCls}" data-book="${b.id}"><span class="so-target-price">∿—</span><small>SO TARGET</small></td>
+                 <td class="book-cell odds modeled-quote${hiddenCls}" data-book="${b.id}"><span class="so-target-price">∿—</span><small>SO TARGET</small></td>
+                 <td class="book-cell odds modeled-quote${hiddenCls}" data-book="${b.id}"><span class="so-target-price">∿—</span><small>SO TARGET</small></td>`;
+        return;
+      }
+      const [line,u,o] = row;
+      const divergeCls = (line!==p.consensusLine) ? ' diverge' : '';
+      const uBest = p.bestUnder && p.bestUnder.book===b.id ? ' best' : '';
+      const oBest = p.bestOver && p.bestOver.book===b.id ? ' best' : '';
+      const uDash = u===null ? ' dash' : '';
+      const oDash = o===null ? ' dash' : '';
+      const uEstimate = u===null && o!==null ? estimatedCounterpartOdds(o) : null;
+      const oEstimate = o===null && u!==null ? estimatedCounterpartOdds(u) : null;
+
+      html += `<td class="book-cell line${divergeCls}${hiddenCls}" data-book="${b.id}">${line.toFixed(1)}</td>`;
+      html += uEstimate!==null ? `<td class="book-cell odds modeled-quote${hiddenCls}" data-book="${b.id}" title="ShortOpen target derived from the observed Over price using an assumed 4.5% total hold; not a live sportsbook quote"><span class="so-target-price">∿${fmtOdds(uEstimate)}</span><small>SO TARGET</small></td>` : u===null ? `<td class="book-cell odds modeled-quote${hiddenCls}" data-book="${b.id}"><span class="so-target-price">∿—</span><small>SO TARGET</small></td>` : `<td class="book-cell odds${uBest}${uDash}${hiddenCls}" data-book="${b.id}"
+                  data-player="${p.name}" data-team="${p.team}" data-opp="${p.opp}" data-side="Under" data-book-id="${b.id}"
+                  data-line="${line}" data-odds="${u!==null?u:''}">${fmtOdds(u)}</td>`;
+      html += oEstimate!==null ? `<td class="book-cell odds modeled-quote${hiddenCls}" data-book="${b.id}" title="ShortOpen target derived from the observed Under price using an assumed 4.5% total hold; not a live sportsbook quote"><span class="so-target-price">∿${fmtOdds(oEstimate)}</span><small>SO TARGET</small></td>` : o===null ? `<td class="book-cell odds modeled-quote${hiddenCls}" data-book="${b.id}"><span class="so-target-price">∿—</span><small>SO TARGET</small></td>` : `<td class="book-cell odds${oBest}${oDash}${hiddenCls}" data-book="${b.id}"
+                  data-player="${p.name}" data-team="${p.team}" data-opp="${p.opp}" data-side="Over" data-book-id="${b.id}"
+                  data-line="${line}" data-odds="${o!==null?o:''}">${fmtOdds(o)}</td>`;
+    });
+
+    tr.innerHTML = html;
+    tableBody.appendChild(tr);
+
+    const mtr = document.createElement('tr');
+    mtr.className = 'matchup-row' + (isOpen ? ' open' : '');
+    mtr.id = `mrow-${cssSafe(p.name)}`;
+    mtr.innerHTML = `<td colspan="16">${matchupRowHtml(p)}</td>`;
+    tableBody.appendChild(mtr);
+  });
+
+  attachCellHandlers();
+  refreshPickedHighlights();
+}
+
+function cssSafe(name){ return name.replace(/[^a-z0-9]/gi,'_'); }
+
+function sparklineSvg(open, cur){
+  if(open===null || cur===null) return '<svg width="30" height="14"></svg>';
+  const lo = Math.min(open,cur)-0.5, hi = Math.max(open,cur)+0.5;
+  const y = v => 12 - ((v-lo)/(hi-lo||1))*10;
+  const color = cur>open ? 'var(--green)' : (cur<open ? 'var(--red)' : 'var(--text-faint)');
+  return `<svg width="30" height="14" viewBox="0 0 30 14"><line x1="2" y1="${y(open)}" x2="28" y2="${y(cur)}" stroke="${color}" stroke-width="2" stroke-linecap="round"/><circle cx="2" cy="${y(open)}" r="1.6" fill="var(--text-faint)"/><circle cx="28" cy="${y(cur)}" r="1.8" fill="${color}"/></svg>`;
+}
+
+function matchupRowHtml(p){
+  const notesHtml = p.notes.length ? p.notes.map(n=>`<span class="mrow-note-tag">${n}</span>`).join('') : '<span style="color:var(--text-faint);font-size:10.5px">No flags</span>';
+  const maxLast5 = Math.max(...p.last5, p.consensusLine||0);
+  const form5Html = p.last5.map(v=>{
+    const h = Math.max(6, (v/maxLast5)*32);
+    const cls = p.consensusLine!==null ? (v>p.consensusLine?'hit':'miss') : '';
+    return `<div class="fb ${cls}" style="height:${h}px" title="${v} K"></div>`;
+  }).join('');
+  const liveHtml = p.live ? `
+    <div class="mrow-cell">
+      <div class="lbl">Live tracker</div>
+      <div class="live-track">
+        <div class="bar"><i style="width:${Math.min(100, (p.currentKs/(p.consensusLine||1))*100)}%"></i></div>
+        <div class="lt-lbl">${p.currentKs} K through ${p.inningsPitched} IP · line ${p.consensusLine.toFixed(1)}</div>
+      </div>
+    </div>` : '';
+  return `
+    <div class="mrow-grid">
+      <div class="mrow-cell"><div class="lbl">Opp K rate</div><div class="val">${p.oppKRate}%</div></div>
+      <div class="mrow-cell"><div class="lbl">Park factor</div><div class="val">${p.park}</div></div>
+      <div class="mrow-cell"><div class="lbl">Weather</div><div class="val">${p.weather}</div></div>
+      <div class="mrow-cell"><div class="lbl">Venue</div><div class="val">${p.home?'Home':'Away'}</div></div>
+      <div class="mrow-cell"><div class="lbl">Last 5 starts (K)</div><div class="form5">${form5Html}</div></div>
+      <div class="mrow-cell"><div class="lbl">Notes</div><div class="mrow-notes">${notesHtml}</div></div>
+      ${liveHtml}
+    </div>
+  `;
+}
+
+function toggleMatchup(name){
+  if(expandedRows.has(name)) expandedRows.delete(name); else expandedRows.add(name);
+  const row = document.getElementById(`mrow-${cssSafe(name)}`);
+  if(row) row.classList.toggle('open');
+  const btn = [...document.querySelectorAll('.caret-btn')].find(b=> b.getAttribute('onclick')===`toggleMatchup('${name}')`);
+  if(btn) btn.classList.toggle('open');
+}
+
+function toggleWatchlist(name){
+  if(watchlist.has(name)) watchlist.delete(name); else watchlist.add(name);
+  saveSet('so_watchlist', watchlist);
+  rerender(); renderChips(); renderSignalsRail();
+}
+
+function attachCellHandlers(){
+  document.querySelectorAll('td.odds:not(.dash)').forEach(td=>{
+    td.onclick = ()=>{
+      const odds = td.dataset.odds;
+      if(odds==='') return;
+      togglePick({
+        player: td.dataset.player,
+        team: td.dataset.team,
+        opp: td.dataset.opp,
+        side: td.dataset.side,
+        book: td.dataset.bookId,
+        line: parseFloat(td.dataset.line),
+        odds: parseInt(odds,10)
+      });
+    };
+  });
+}
+
+/* ===================== Stat cards ===================== */
+function spreadCentsFor(p, side){
+  const key = side==='Over' ? 2 : 1;
+  const oddsArr = BOOKS.map(b=>{ const row=p.books[b.id]; return row ? row[key] : null; }).filter(v=>v!==null);
+  if(oddsArr.length<2) return null;
+  const probs = oddsArr.map(impliedProb);
+  return (Math.max(...probs) - Math.min(...probs)) * 100;
+}
+
+function renderStats(){
+  // Books in agreement — share of all book-quoted lines that match each pitcher's consensus line
+  let totalQuotes=0, matching=0;
+  PROPS_DATA.forEach(p=>{
+    BOOKS.forEach(b=>{
+      const row = p.books[b.id];
+      if(!row) return;
+      totalQuotes++;
+      if(row[0]===p.consensusLine) matching++;
+    });
+  });
+  const agreePct = totalQuotes ? Math.round((matching/totalQuotes)*100) : 0;
+  document.getElementById('statAgree').textContent = agreePct+'%';
+  document.getElementById('statAgreeSub').textContent = `${matching} of ${totalQuotes} book lines match consensus`;
+
+  // Tightest spread — smallest best-vs-worst price gap (in cents) across the board
+  let tight=null;
+  PROPS_DATA.forEach(p=>{
+    ['Over','Under'].forEach(side=>{
+      const c = spreadCentsFor(p, side);
+      if(c!==null && (!tight || c<tight.cents)) tight = {p, side, cents:c};
+    });
+  });
+  if(tight){
+    document.getElementById('statTight').textContent = tight.cents.toFixed(1)+'¢';
+    document.getElementById('statTightSub').textContent = `${tight.p.name} · ${tight.side}`;
+  }
+
+  // Shortopen Call — the single highest +EV price on the board, vs. its
+  // own Shin-fair probability (not a flat markup). Book-agnostic: this
+  // is whichever book that day actually offers the best number.
+  let best=null;
+  PROPS_DATA.forEach(p=>{
+    if(!p.shortopenCall) return;
+    if(!best || p.shortopenCall.evPct>best.call.evPct) best = {p, call:p.shortopenCall, confidence:p.shortopenConfidence};
+  });
+  if(best){
+    document.getElementById('statShortopen').textContent = fmtOdds(best.call.odds);
+    const sign = best.call.evPct>=0 ? '+' : '';
+    document.getElementById('statShortopenSub').textContent = `${best.p.name} · ${best.call.side} · ${best.call.book} · ${sign}${best.call.evPct.toFixed(1)}% EV vs fair · ${best.confidence} confidence`;
+  }
+
+  let topOver=null, topUnder=null;
+  PROPS_DATA.forEach(p=>{
+    if(p.bestOver && (!topOver || p.bestOver.odds>topOver.odds)) topOver={...p.bestOver, name:p.name};
+    if(p.bestUnder && (!topUnder || p.bestUnder.odds>topUnder.odds)) topUnder={...p.bestUnder, name:p.name};
+  });
+  if(topOver){
+    document.getElementById('statBestOver').textContent = fmtOdds(topOver.odds);
+    document.getElementById('statBestOverName').textContent = `${topOver.name} · ${topOver.book}`;
+  }
+  if(topUnder){
+    document.getElementById('statBestUnder').textContent = fmtOdds(topUnder.odds);
+    document.getElementById('statBestUnderName').textContent = `${topUnder.name} · ${topUnder.book}`;
+  }
+}
+
+/* ===================== Ticker ===================== */
+function renderTicker(){
+  const items = [...PROPS_DATA]
+    .sort((a,b)=> (b.bestOver? b.bestOver.odds:-999) - (a.bestOver? a.bestOver.odds:-999))
+    .slice(0,14)
+    .map(p=>{
+      const steam = p.steamCount>0 ? `<span class="up">STEAM</span>` : '';
+      return `<span><b>${p.team}</b> ${p.name.split(' ').slice(-1)[0]} · ${p.consensusLine!==null?p.consensusLine.toFixed(1):'--'}K
+        <span class="up">O${p.bestOver?fmtOdds(p.bestOver.odds):'--'}</span> /
+        <span class="dn">U${p.bestUnder?fmtOdds(p.bestUnder.odds):'--'}</span> ${steam}</span>`;
+    }).join('<span style="color:var(--text-faint)">·</span>');
+  document.getElementById('tickerTrack').innerHTML = items + '<span style="color:var(--text-faint)">·</span>' + items;
+}
+
+/* ===================== Book toggles ===================== */
+function renderBookToggles(){
+  const wrap = document.getElementById('bookToggles');
+  wrap.innerHTML = BOOKS.map(b=>`
+    <div class="book-chip" data-book="${b.id}">
+      <span class="sw" style="background:${b.color}"></span>${b.id}
+    </div>
+  `).join('');
+  wrap.querySelectorAll('.book-chip').forEach(chip=>{
+    chip.onclick = ()=>{
+      const id = chip.dataset.book;
+      if(activeBooks.has(id)){ activeBooks.delete(id); chip.classList.add('off'); }
+      else{ activeBooks.add(id); chip.classList.remove('off'); }
+      // Hide the header cells too (both the merged book-name th and the
+      // per-column K/U/O sub-headers), not just the body cells -- toggling
+      // only body cells left the header row in place, so every book except
+      // the last one just went blank instead of the column actually
+      // collapsing. Hiding both makes every book toggle look the same.
+      document.querySelectorAll(`[data-book="${id}"]`).forEach(el=>{
+        if(el.tagName==='TD' && el.classList.contains('book-cell')){
+          el.classList.toggle('col-hidden', !activeBooks.has(id));
+        } else if(el.tagName==='TH'){
+          el.classList.toggle('col-hidden', !activeBooks.has(id));
+        }
+      });
+    };
+  });
+}
+
+let headerSort={key:"",dir:-1};
+/* ===================== Filter / Sort ===================== */
+function getFilteredSorted(){
+  const q = document.getElementById('searchBox').value.trim().toLowerCase();
+  let list = PROPS_DATA.filter(p=>
+    !q || p.name.toLowerCase().includes(q) || p.team.toLowerCase().includes(q) || p.opp.toLowerCase().includes(q)
+  );
+  switch(quickFilter){
+    case 'watchlist': list = list.filter(p=> watchlist.has(p.name)); break;
+    case 'aces': list = list.filter(p=> (p.consensusLine||0) >= 6.5); break;
+    case 'home': list = list.filter(p=> p.home); break;
+    case 'rookies': list = list.filter(p=> p.rookie); break;
+  }
+  const sortVal = document.getElementById('sortSel').value;
+  list = [...list];
+  if(headerSort.key){
+    const val=(p,key)=>{if(key==='name')return p.name.toLowerCase();if(key==='line')return p.consensusLine||0;if(key==='call')return p.shortopenCall?p.shortopenCall.evPct:-Infinity;if(key==='fair')return p.fairOverProb||0;if(key.indexOf('book:')===0){const q=key.split(':'),v=p.books[q[1]];if(!v)return -Infinity;return v[q[2]==='line'?0:q[2]==='under'?1:2]??-Infinity}return 0};
+    list.sort((a,b)=>{const av=val(a,headerSort.key),bv=val(b,headerSort.key);return (typeof av==='string'?av.localeCompare(bv):av-bv)*headerSort.dir});
+  } else switch(sortVal){
+    case 'line_desc': list.sort((a,b)=> (b.consensusLine||0)-(a.consensusLine||0)); break;
+    case 'line_asc': list.sort((a,b)=> (a.consensusLine||0)-(b.consensusLine||0)); break;
+    case 'steam_desc': list.sort((a,b)=> b.steamCount-a.steamCount); break;
+    case 'best_over': list.sort((a,b)=> (b.bestOver?b.bestOver.odds:-999)-(a.bestOver?a.bestOver.odds:-999)); break;
+    case 'best_under': list.sort((a,b)=> (b.bestUnder?b.bestUnder.odds:-999)-(a.bestUnder?a.bestUnder.odds:-999)); break;
+    case 'name_asc': list.sort((a,b)=> a.name.localeCompare(b.name)); break;
+  }
+  if(!headerSort.key) list.sort((a,b)=> (watchlist.has(b.name)?1:0) - (watchlist.has(a.name)?1:0));
+  return list;
+}
+
+function rerender(){ renderTable(getFilteredSorted()); }
+
+/* ===================== Filter chips ===================== */
+function renderChips(){
+  const chips = [
+    {id:'all', label:'All'},
+    {id:'watchlist', label:'⭐ Watchlist', count: watchlist.size},
+    {id:'aces', label:'Aces only', count: PROPS_DATA.filter(p=>(p.consensusLine||0)>=6.5).length},
+    {id:'home', label:'Home favorites', count: PROPS_DATA.filter(p=>p.home).length},
+    {id:'rookies', label:'Rookie debuts', count: PROPS_DATA.filter(p=>p.rookie).length}
+  ];
+  document.getElementById('chipRow').innerHTML = chips.map(c=>
+    `<button class="fchip${quickFilter===c.id?' on':''}" onclick="setQuickFilter('${c.id}')">${c.label}${c.count!==undefined?` <span class="ct">${c.count}</span>`:''}</button>`
+  ).join('');
+}
+function setQuickFilter(id){ quickFilter = id; renderChips(); rerender(); }
+
+/* ===================== Today's Best Bets ===================== */
+function renderBestBets(){
+  // Only surface calls with at least Medium confidence (3+ books quoting
+  // the line, reasonable agreement) -- a Low-confidence gap is more
+  // likely one outlier book than a real mispricing, and shouldn't
+  // headline the page.
+  const edges = [];
+  PROPS_DATA.forEach(p=>{
+    if(p.shortopenConfidence==='Low') return;
+    if(p.bestOver && p.fairOverProb!==null){
+      edges.push({p, side:'Over', odds:p.bestOver.odds, book:p.bestOver.book, edge:(p.fairOverProb - impliedProb(p.bestOver.odds))*100, evPct: evPercent(p.bestOver.odds, p.fairOverProb)});
+    }
+    if(p.bestUnder && p.fairUnderProb!==null){
+      edges.push({p, side:'Under', odds:p.bestUnder.odds, book:p.bestUnder.book, edge:(p.fairUnderProb - impliedProb(p.bestUnder.odds))*100, evPct: evPercent(p.bestUnder.odds, p.fairUnderProb)});
+    }
+  });
+  edges.sort((a,b)=> b.evPct-a.evPct);
+  const top = edges.slice(0,3);
+  document.getElementById('bestBets').innerHTML = top.map(e=>{
+    const steamNote = e.p.steamCount>0 ? `Line has moved at ${e.p.steamCount} book${e.p.steamCount>1?'s':''} — ` : '';
+    const sign = e.evPct>=0 ? '+' : '';
+    return `
+    <div class="bb-card" onclick="document.getElementById('searchBox').value='${e.p.name}';rerender();document.querySelector('.board').scrollIntoView({behavior:'smooth'})">
+      <div class="nm">${e.p.name} <span style="color:var(--text-dim);font-weight:400">${e.side}</span></div>
+      <div class="sub">${e.p.team} vs ${e.p.opp} · ${e.p.consensusLine.toFixed(1)} K line · ${e.p.shortopenConfidence} confidence</div>
+      <div class="row"><span class="price">${fmtOdds(e.odds)}</span><span class="edge">${sign}${e.evPct.toFixed(1)}% EV</span></div>
+      <div class="why">${steamNote}best price at ${bookName(e.book)} (Shortopen fair: ${e.side==='Over'?fmtOdds(e.p.fairOver):fmtOdds(e.p.fairUnder)}) — all four books checked, not one favored.</div>
+    </div>`;
+  }).join('') || '<div class="clv-empty">Not enough data yet.</div>';
+}
+
+/* ===================== Today's Long Shot EVs ===================== */
+function renderLongshotBets(){
+  // Long shots are distinct players with the lowest modeled chance of hitting.
+  // Core best-bet players are excluded so the two shelves never repeat.
+  const bestBetPlayers = new Set();
+  const coreEdges = [];
+  PROPS_DATA.forEach(p=>{
+    if(p.shortopenConfidence==='Low') return;
+    if(p.bestOver && p.fairOverProb!==null) coreEdges.push({p,evPct:evPercent(p.bestOver.odds,p.fairOverProb)});
+    if(p.bestUnder && p.fairUnderProb!==null) coreEdges.push({p,evPct:evPercent(p.bestUnder.odds,p.fairUnderProb)});
+  });
+  coreEdges.sort((a,b)=>b.evPct-a.evPct).slice(0,3).forEach(e=>bestBetPlayers.add(e.p.name));
+  const edges = [];
+  PROPS_DATA.forEach(p=>{
+    if(bestBetPlayers.has(p.name)) return;
+    if(p.bestOver && p.fairOverProb!==null){
+      const evPct=evPercent(p.bestOver.odds,p.fairOverProb);
+      edges.push({p,side:'Over',odds:p.bestOver.odds,book:p.bestOver.book,evPct,prob:p.fairOverProb});
+    }
+    if(p.bestUnder && p.fairUnderProb!==null){
+      const evPct=evPercent(p.bestUnder.odds,p.fairUnderProb);
+      edges.push({p,side:'Under',odds:p.bestUnder.odds,book:p.bestUnder.book,evPct,prob:p.fairUnderProb});
+    }
+  });
+  // Lowest modeled probability first; longer American odds break ties.
+  edges.sort((a,b)=>a.prob-b.prob || b.odds-a.odds);
+  const seenPlayers=new Set();
+  const top=[];
+  for(const edge of edges){
+    if(seenPlayers.has(edge.p.name)) continue;
+    seenPlayers.add(edge.p.name);top.push(edge);
+    if(top.length===3) break;
+  }
+  document.getElementById('longshotBets').innerHTML=top.map(e=>{
+    const sign=e.evPct>=0?'+':'';
+    const fair=e.side==='Over'?e.p.fairOver:e.p.fairUnder;
+    return `
+    <div class="bb-card longshot-card" onclick="document.getElementById('searchBox').value='${e.p.name}';rerender();document.querySelector('.board').scrollIntoView({behavior:'smooth'})">
+      <div class="nm">${e.p.name} <span style="color:var(--text-dim);font-weight:400">${e.side}</span></div>
+      <div class="sub">${e.p.team} vs ${e.p.opp} · ${e.p.consensusLine.toFixed(1)} K line · ${bookName(e.book)}</div>
+      <div class="row"><span class="price">${fmtOdds(e.odds)}</span><span class="edge">${(e.prob*100).toFixed(1)}% model chance</span></div>
+      <div class="why">Exact ${bookName(e.book)} board price · Shortopen fair ${fmtOdds(fair)} · ${sign}${e.evPct.toFixed(1)}% EV. Lowest-probability outcome shelf; high variance, not a core play.</div>
+    </div>`;
+  }).join('') || '<div class="clv-empty">No positive-EV plus-money long shots available.</div>';
+}
+
+/* ===================== Live Signals rail ===================== */
+function renderSignalsRail(){
+  const movers = PROPS_DATA.filter(p=> p.steamCount>0 && p.openLine!==null)
+    .map(p=> ({p, delta: Math.abs((p.consensusLine||0) - p.openLine)}))
+    .sort((a,b)=> b.delta-a.delta)
+    .slice(0,6);
+  document.getElementById('signalsCount').textContent = `${movers.length} Active`;
+  document.getElementById('signalsRail').innerHTML = movers.map(m=>{
+    const dir = m.p.consensusLine > m.p.openLine ? 'up' : 'dn';
+    const arrow = dir==='up' ? '▲' : '▼';
+    const side = dir==='up' ? 'Over' : 'Under';
+    const quote = dir==='up' ? m.p.bestOver : m.p.bestUnder;
+    const odds = quote ? quote.odds : null;
+    const probability = odds===null ? null : impliedProb(odds)*100;
+    return `
+    <div class="signal-card" onclick="document.getElementById('searchBox').value='${m.p.name}';rerender();document.querySelector('.board').scrollIntoView({behavior:'smooth'})">
+      <div class="signal-top"><div class="nm">${m.p.name}</div>${probability===null?'':`<div class="signal-prob"><b>${probability.toFixed(1)}%</b><small>IMPLIED</small></div>`}</div>
+      <div class="mv">${arrow} ${m.p.openLine.toFixed(1)} → <b>${m.p.consensusLine.toFixed(1)}</b> K · ${m.p.steamCount} book${m.p.steamCount>1?'s':''}</div>
+      <div class="signal-foot"><span>${side} signal</span>${odds===null?'':`<b>${fmtOdds(odds)}</b>`}</div>
+    </div>`;
+  }).join('') || '<div class="clv-empty">No active line moves right now.</div>';
+}
+
+/* ===================== Notes ticker ===================== */
+function renderNotesTicker(){
+  const items = PROPS_DATA.filter(p=>p.notes.length).slice(0,16).map(p=>
+    `<span><b>${p.team}</b> ${p.name.split(' ').slice(-1)[0]} — ${p.notes[0]}</span>`
+  );
+  const html = items.join('<span style="color:var(--text-faint)"> · </span>');
+  document.getElementById('notesTrack').innerHTML = html + '<span style="color:var(--text-faint)"> · </span>' + html;
+}
+
+/* ===================== CLV tracker ===================== */
+function logPickForCLV(pk){
+  clvLog.push({...pk, ts: Date.now()});
+  saveClvLog();
+  renderCLVTracker();
+  showToast(`Logged ${pk.player} ${pk.side} ${fmtOdds(pk.odds)} to your CLV tracker.`);
+}
+
+function currentFairOddsFor(playerName, side){
+  const p = PROPS_DATA.find(pp=>pp.name===playerName);
+  if(!p) return null;
+  return side==='Over' ? p.fairOver : p.fairUnder;
+}
+
+function renderCLVTracker(){
+  const body = document.getElementById('clvBody');
+  if(!clvLog.length){
+    body.innerHTML = '<div class="clv-empty">No bets logged yet. Use "Log to CLV" on a slip pick to start tracking closing-line value.</div>';
+    return;
+  }
+  body.innerHTML = [...clvLog].reverse().map((e,revIdx)=>{
+    const idx = clvLog.length-1-revIdx;
+    const fairNow = currentFairOddsFor(e.player, e.side);
+    let clvHtml = '<span>—</span>';
+    if(fairNow!==null){
+      const takenP = impliedProb(e.odds), fairP = impliedProb(fairNow);
+      const clv = (fairP - takenP) * 100;
+      const sign = clv>=0 ? '+' : '';
+      clvHtml = `<span class="${clv>=0?'pos':'neg'}">${sign}${clv.toFixed(1)}%</span>`;
+    }
+    return `
+      <div class="clv-row">
+        <div class="p">${e.player}<small>${e.side} ${e.line} K · ${bookName(e.book)}</small></div>
+        <div>Odds taken<br><b>${fmtOdds(e.odds)}</b></div>
+        <div>Fair now<br><b>${fairNow!==null?fmtOdds(fairNow):'—'}</b></div>
+        <div>CLV<br>${clvHtml}</div>
+        <div style="text-align:right"><button class="clv-clear" style="padding:4px 8px" onclick="removeClvEntry(${idx})">✕</button></div>
+      </div>`;
+  }).join('');
+}
+
+function removeClvEntry(idx){
+  clvLog.splice(idx,1);
+  saveClvLog();
+  renderCLVTracker();
+}
+
+document.getElementById('clvClear').onclick = ()=>{ clvLog=[]; saveClvLog(); renderCLVTracker(); };
+
+/* ===================== Toasts ===================== */
+function showToast(msg){
+  const wrap = document.getElementById('toastWrap');
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transition='opacity .3s'; setTimeout(()=>el.remove(),300); }, 4200);
+}
+
+
+
+document.getElementById('searchBox').addEventListener('input', rerender);
+document.getElementById('sortSel').addEventListener('change',()=>{headerSort={key:'',dir:-1};rerender()});document.querySelectorAll('th[data-sort-key]').forEach(th=>{const go=()=>{headerSort=headerSort.key===th.dataset.sortKey?{key:headerSort.key,dir:-headerSort.dir}:{key:th.dataset.sortKey,dir:(th.dataset.sortKey==='name'?1:-1)};document.querySelectorAll('th[data-sort-key]').forEach(z=>z.setAttribute('aria-sort',z.dataset.sortKey===headerSort.key?(headerSort.dir===1?'ascending':'descending'):'none'));rerender()};th.addEventListener('click',go);th.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
+
+/* ===================== Bet Slip ===================== */
+function pickKey(pk){ return `${pk.player}|${pk.side}|${pk.book}`; }
+
+function togglePick(pk){
+  const key = pickKey(pk);
+  const idx = slip.findIndex(s=> pickKey(s)===key);
+  if(idx>-1){ slip.splice(idx,1); }
+  else{ slip.push(pk); }
+  renderSlip();
+  refreshPickedHighlights();
+  if(slip.length>0) openSlip();
+}
+
+function refreshPickedHighlights(){
+  document.querySelectorAll('td.odds').forEach(td=>{
+    if(!td.dataset.player) return;
+    const key = `${td.dataset.player}|${td.dataset.side}|${td.dataset.bookId}`;
+    td.classList.toggle('picked', slip.some(s=> pickKey(s)===key));
+  });
+}
+
+function avgImpliedProbForSide(playerName, side){
+  const p = PROPS_DATA.find(pp=>pp.name===playerName);
+  if(!p) return null;
+  const probs = BOOKS.map(b=>{
+    const row = p.books[b.id];
+    if(!row) return null;
+    const val = side==='Over' ? row[2] : row[1];
+    return impliedProb(val);
+  }).filter(v=>v!==null);
+  if(!probs.length) return null;
+  return probs.reduce((a,b)=>a+b,0)/probs.length;
+}
+
+function renderSlip(){
+  const body = document.getElementById('slipBody');
+  document.getElementById('slipCount').textContent = slip.length;
+  document.getElementById('fabCount').textContent = slip.length;
+
+  if(slip.length===0){
+    body.innerHTML = '<div class="slip-empty">No picks yet. Click a price on the board to add it here.</div>';
+  } else {
+    body.innerHTML = slip.map(pk=>{
+      const avgP = avgImpliedProbForSide(pk.player, pk.side);
+      const myP = impliedProb(pk.odds);
+      let edgeHtml = '<span class="edge">—</span>';
+      if(avgP!==null && myP!==null){
+        const edge = (avgP - myP) * 100;
+        const sign = edge>=0 ? '+' : '';
+        const color = edge>=0 ? 'var(--green)' : 'var(--red)';
+        edgeHtml = `<span class="edge" style="color:${color}">${sign}${edge.toFixed(1)}% vs mid</span>`;
+      }
+      return `
+        <div class="pick-row" data-key="${pickKey(pk)}">
+          <div class="pinfo">
+            <div class="nm">${pk.player} <span style="color:var(--text-dim);font-weight:400;">(${pk.team} vs ${pk.opp})</span></div>
+            <div class="dt">${pk.side} ${pk.line} K · ${bookName(pk.book)}</div>
+          </div>
+          <div class="pval">
+            <span class="odd ${pk.side==='Over'?'o':'u'}">${fmtOdds(pk.odds)}</span>
+            ${edgeHtml}
+            <button class="log-clv-btn" data-key="${pickKey(pk)}">Log to CLV</button>
+            <button class="rm" data-key="${pickKey(pk)}">✕</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+    body.querySelectorAll('.rm').forEach(btn=>{
+      btn.onclick = ()=>{
+        const key = btn.dataset.key;
+        slip = slip.filter(s=> pickKey(s)!==key);
+        renderSlip();
+        refreshPickedHighlights();
+      };
+    });
+    body.querySelectorAll('.log-clv-btn').forEach(btn=>{
+      btn.onclick = ()=>{
+        const key = btn.dataset.key;
+        const pk = slip.find(s=> pickKey(s)===key);
+        if(pk) logPickForCLV(pk);
+      };
+    });
+  }
+  renderPayout();
+}
+
+function renderPayout(){
+  document.getElementById('stakeAmt').textContent = '$'+stake;
+  let decimalProduct = 1;
+  slip.forEach(pk=>{ decimalProduct *= americanToDecimal(pk.odds); });
+  const payout = slip.length ? stake * decimalProduct : 0;
+  document.getElementById('payoutVal').textContent = '$'+payout.toFixed(2);
+}
+
+document.getElementById('stakeMinus').onclick = ()=>{ stake = Math.max(1, stake-5); renderPayout(); };
+document.getElementById('stakePlus').onclick = ()=>{ stake = stake+5; renderPayout(); };
+document.getElementById('clearSlip').onclick = ()=>{ slip=[]; renderSlip(); refreshPickedHighlights(); };
+
+const slipDrawer = document.getElementById('slipDrawer');
+function openSlip(){ slipDrawer.classList.add('open'); }
+function closeSlip(){ slipDrawer.classList.remove('open'); }
+document.getElementById('slipFab').onclick = ()=> slipDrawer.classList.toggle('open');
+document.getElementById('slipCloseBtn').onclick = closeSlip;
+
+/* ===================== Clock ===================== */
+function tickClock(){
+  const now = new Date();
+  const et = new Date(now.toLocaleString('en-US', {timeZone:'America/New_York'}));
+  const hh = String(et.getHours()).padStart(2,'0');
+  const mm = String(et.getMinutes()).padStart(2,'0');
+  const ss = String(et.getSeconds()).padStart(2,'0');
+  document.getElementById('clockET').textContent = `${hh}:${mm}:${ss} ET`;
+}
+setInterval(tickClock,1000); tickClock();
+
+/* ===================== Mobile menu ===================== */
+function toggleMobileMenu(){
+  document.getElementById('hamburgerBtn').classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+/* ===================== Init ===================== */
+renderStats();
+renderTicker();
+renderNotesTicker();
+renderBookToggles();
+renderChips();
+renderBestBets();
+renderLongshotBets();
+renderSignalsRail();
+rerender();
+renderSlip();
+renderCLVTracker();
+</script>
+<script id="so-final-scroll-speed-20260725-js">
+(function(){
+  function boot(){
+    var scroller=document.querySelector('.table-scroll');
+    if(scroller){
+      var down=false,startX=0,startLeft=0,moved=false,pid=null;
+      scroller.addEventListener('pointerdown',function(e){if(e.pointerType==='touch')return;down=true;moved=false;startX=e.clientX;startLeft=scroller.scrollLeft;pid=e.pointerId;});
+      scroller.addEventListener('pointermove',function(e){if(!down)return;var dx=e.clientX-startX;if(Math.abs(dx)>4){if(!moved){moved=true;scroller.classList.add('so-dragging');scroller.setPointerCapture&&scroller.setPointerCapture(pid);}scroller.scrollLeft=startLeft-dx;}});
+      function up(){down=false;scroller.classList.remove('so-dragging')}
+      scroller.addEventListener('pointerup',up);scroller.addEventListener('pointercancel',up);scroller.addEventListener('mouseleave',up);
+      scroller.addEventListener('click',function(e){if(moved){e.preventDefault();e.stopPropagation();moved=false;}},true);
+    }
+    function vis(){document.documentElement.classList.toggle('so-k-hidden',document.hidden)}
+    vis();document.addEventListener('visibilitychange',vis,{passive:true});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
+<style id="so-strikeout-pitcher-v3">
+.hero{position:relative;padding-right:min(53vw,760px)!important;background:radial-gradient(560px 330px at 86% 42%,rgba(0,255,136,.105),transparent 70%),linear-gradient(145deg,#06110d,#071019 64%,#06130e)!important}.so-pitcher-stage{position:absolute;right:24px;top:54px;width:530px;height:330px;border:1px solid rgba(0,255,136,.2);border-radius:18px;background:radial-gradient(260px 230px at 38% 45%,rgba(34,217,126,.10),transparent 70%),linear-gradient(155deg,rgba(7,29,21,.72),rgba(5,12,17,.86));overflow:hidden}.so-pitcher-stage:before{content:'SHORT OPEN · PITCH SEQUENCE';position:absolute;left:18px;top:15px;color:#658578;font:800 8px var(--mono);letter-spacing:.14em}.pitcher-svg{position:absolute;left:12px;top:26px;width:315px;height:305px}.pitcher-head{fill:#17231e;stroke:#0b120e;stroke-width:2}.pitcher-cap{fill:#050806;stroke:#18dd83;stroke-width:3}.pitcher-cap-brim{fill:#13d87b}.pitcher-jersey{fill:#07100c;stroke:#17db81;stroke-width:3}.pitcher-jersey-panel{fill:#0c2419}.pitcher-belt{fill:#0b1711;stroke:#17db81;stroke-width:1.5}.pitcher-leg{fill:none;stroke:#d6ded8;stroke-width:20;stroke-linecap:round}.pitcher-shoe{fill:#07100c;stroke:#17db81;stroke-width:2.5}.pitcher-arm{fill:none;stroke:#16271f;stroke-width:15;stroke-linecap:round}.pitcher-ball{fill:#f4f7f4;stroke:#c7d0d6;stroke-width:2}.ball-seam{fill:none;stroke:#e05a5a;stroke-width:1.4;stroke-linecap:round}.pitcher-glove{fill:#b87535;stroke:#7a4d22;stroke-width:3}.glove-thumb{fill:#b87535;stroke:#7a4d22;stroke-width:2.5}.glove-web{fill:none;stroke:#5c3b1c;stroke-width:1.6;stroke-linecap:round}.hat-word{fill:url(#hatGradSO);font:800 8.5px 'Inter',sans-serif;letter-spacing:.13em;paint-order:stroke;stroke:rgba(5,10,8,.4);stroke-width:.4px}.mound-grass{fill:#0d2318;opacity:.6}.pitcher-mound{fill:url(#moundGrad);stroke:rgba(0,0,0,.25);stroke-width:1.5}.mound-rubber{fill:#eef3ee;stroke:#c3cac3;stroke-width:1}.mound-word{fill:#5c3f22;font:800 10px 'Inter',sans-serif;letter-spacing:.16em;opacity:.85}.jersey-word{fill:#6ef0aa;font:900 10px var(--mono);letter-spacing:.1em}.k-tally{fill:#19e486;font:900 15px var(--mono);opacity:0;animation:kJerseyAdd 8s steps(1,end) infinite}.k2{animation-delay:.7s}.k3{animation-delay:1.4s}.k4{animation-delay:2.1s}.k5{animation-delay:2.8s}.k6{animation-delay:3.5s}.k7{animation-delay:4.2s}.k8{animation-delay:4.9s}.lift-leg{transform-origin:164px 184px;animation:legSet 5s ease-in-out infinite}.glove-group{transform-origin:248px 119px;animation:gloveSet 5s ease-in-out infinite}.k-scoreboard{position:absolute;right:17px;top:50px;width:190px}.k-score-label{color:#648174;font:800 7px var(--mono);letter-spacing:.12em}.k-score-row{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}.k-score-row span{height:47px;border:1px solid rgba(0,255,136,.2);border-radius:10px;background:#091b14;display:grid;place-items:center;color:#19e486;font:900 23px var(--mono);opacity:0;animation:kBoardAdd 8s cubic-bezier(.2,.8,.25,1) infinite}.k-score-row span:nth-child(2){animation-delay:.7s}.k-score-row span:nth-child(3){animation-delay:1.4s}.k-score-row span:nth-child(4){animation-delay:2.1s}.k-score-row span:nth-child(5){animation-delay:2.8s}.k-score-row span:nth-child(6){animation-delay:3.5s}.k-score-row span:nth-child(7){animation-delay:4.2s}.k-score-row span:nth-child(8){animation-delay:4.9s}.k-score-row .back{transform:scaleX(-1)}.k-count{margin-top:13px;padding:10px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;color:#6f857b;font:700 8px var(--mono)}.k-count b{color:#19e486;font-size:12px}@keyframes kJerseyAdd{0%,6%{opacity:0;transform:scale(.3) translateY(7px)}11%{opacity:1;transform:scale(1.22) translateY(-2px);filter:drop-shadow(0 0 7px rgba(25,228,134,.9))}18%,82%{opacity:1;transform:scale(1) translateY(0);filter:drop-shadow(0 0 2px rgba(25,228,134,.4))}92%,100%{opacity:0;transform:scale(1.28) translateY(-9px);filter:drop-shadow(0 0 0 rgba(25,228,134,0))}}@keyframes kBoardAdd{0%,8%{opacity:0;translate:0 -10px;rotate:-8deg}13%,87%{opacity:1;translate:0 0;rotate:0}100%{opacity:0;translate:0 8px}}@keyframes legSet{0%,100%{transform:rotate(0)}45%,60%{transform:rotate(-8deg) translateY(-8px)}}@keyframes gloveSet{0%,100%{transform:translate(0,0)}45%,60%{transform:translate(4px,-7px)}}
+@media(max-width:1150px){.hero{padding-right:24px!important}.so-pitcher-stage{position:relative;right:auto;top:auto;width:100%;margin-top:22px}}@media(max-width:650px){.so-pitcher-stage{height:305px}.pitcher-svg{left:-20px;transform:scale(.87);transform-origin:left top}.k-scoreboard{width:155px}.k-score-row{gap:5px}.k-score-row span{height:39px;font-size:19px}}@media(prefers-reduced-motion:reduce){.k-tally,.k-score-row span,.lift-leg,.glove-group{animation:none!important;opacity:1}}
+</style>
+<script id="so-strikeout-pitcher-script-v3">
+(function(){const hero=document.querySelector('.hero');if(!hero||hero.querySelector('.so-pitcher-stage'))return;const stage=document.createElement('div');stage.className='so-pitcher-stage';stage.innerHTML='<svg class="pitcher-svg" viewBox="0 0 310 345" aria-label="Short Open pitcher in the set position"><defs><linearGradient id="hatGradSO" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#eafff2"/><stop offset="55%" stop-color="#8ff5c0"/><stop offset="100%" stop-color="#eafff2"/></linearGradient><radialGradient id="moundGrad" cx="50%" cy="30%" r="75%"><stop offset="0%" stop-color="#c9985f"/><stop offset="55%" stop-color="#a97542"/><stop offset="100%" stop-color="#8a5c34"/></radialGradient></defs><ellipse class="mound-grass" cx="150" cy="330" rx="170" ry="20"/><ellipse class="pitcher-mound" cx="150" cy="328" rx="148" ry="15"/><text class="mound-word" x="150" y="323" text-anchor="middle">SHORTOPEN</text><rect class="mound-rubber" x="128" y="266" width="34" height="8" rx="2"/><path class="pitcher-leg" d="M136 184 Q131 224 128 258"/><ellipse class="pitcher-shoe" cx="127" cy="264" rx="17" ry="9"/><g class="lift-leg"><path class="pitcher-leg" d="M164 184 Q196 198 206 228 Q211 250 200 262"/><ellipse class="pitcher-shoe" cx="199" cy="266" rx="15" ry="9" transform="rotate(-18 199 266)"/></g><rect class="pitcher-jersey" x="110" y="86" width="80" height="100" rx="20"/><rect class="pitcher-jersey-panel" x="140" y="86" width="20" height="100" rx="10"/><rect class="pitcher-belt" x="110" y="176" width="80" height="9" rx="4"/><path class="pitcher-arm" d="M126 100 Q92 88 58 72"/><circle class="pitcher-ball" cx="53" cy="69" r="8"/><path class="ball-seam" d="M47 64 Q53 69 47 75 M59 63 Q53 69 59 76"/><circle class="pitcher-head" cx="150" cy="50" r="29"/><path class="pitcher-cap" d="M121 48 Q124 15 150 13 Q177 15 180 48 Q151 38 121 48 Z"/><path class="pitcher-cap-brim" d="M150 39 Q193 34 212 49 Q196 60 163 51 Z"/><path id="hatCurveSO" d="M126,36 Q150,19 174,36" fill="none"/><text class="hat-word" text-anchor="middle"><textPath href="#hatCurveSO" xlink:href="#hatCurveSO" startOffset="50%">SHORT OPEN</textPath></text><path class="pitcher-arm" d="M174 100 Q216 96 247 117"/><g class="glove-group"><circle class="pitcher-glove" cx="248" cy="119" r="18"/><path class="glove-web" d="M235 111 Q248 130 261 111 M234 121 Q248 108 262 121 M238 128 L258 110"/><circle class="glove-thumb" cx="233" cy="126" r="7"/></g><text class="jersey-word" x="150" y="112" text-anchor="middle">K CLUB</text>'+[[128,128,-10],[168,128,8],[125,152,-14],[172,152,12],[135,175,-8],[163,175,10]].map((p,i)=>'<g transform="rotate('+p[2]+' '+p[0]+' '+p[1]+')"><text class="k-tally k'+(i+1)+'" x="'+p[0]+'" y="'+p[1]+'" style="transform-origin:'+p[0]+'px '+p[1]+'px">'+(i%2?'ꓘ':'K')+'</text></g>').join('')+'</svg><div class="k-scoreboard"><div class="k-score-label">STRIKEOUT TALLY · LIVE SEQUENCE</div><div class="k-score-row">'+['K','K','K','K','K','K','K','K'].map((k,i)=>'<span class="'+(i%2?'back':'')+'">K</span>').join('')+'</div><div class="k-count"><span>JERSEY ROW</span><b>K / ꓘ</b></div></div>';hero.appendChild(stage);
+const arsenal=document.createElement('div');arsenal.className='so-arsenal';arsenal.innerHTML='<div class="so-arsenal-title">ARSENAL REFERENCE</div>'+['Fastball','2-Seam','Slider','Splitter','Knuckle Curve'].map(p=>'<div class="so-arsenal-tag">'+p+'</div>').join('')+'<div class="so-arsenal-note">Pitch types checked when reading K-line matchups</div>';hero.appendChild(arsenal);
+})();
+</script>
+<script id="so-strikeout-final-polish">
+(function(){
+ const stage=document.querySelector('.so-pitcher-stage'); if(!stage)return;
+ const set=(sel,attrs)=>{const el=stage.querySelector(sel);if(el)Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v))};
+ set('.mound-grass',{cy:'286'});set('.pitcher-mound',{cy:'284'});set('.mound-word',{y:'288'});set('.mound-rubber',{y:'271'});
+ stage.querySelectorAll('.k-tally').forEach(el=>el.closest('g').style.display='none');
+ const jersey=stage.querySelector('.jersey-word');
+ if(jersey){jersey.setAttribute('y','104');jersey.textContent='K CLUB';jersey.insertAdjacentHTML('afterend','<text class="gauge-label" x="150" y="118" text-anchor="middle">TOP CALL FAIR %</text><g><circle class="gauge-track" cx="150" cy="147" r="21"/><circle class="gauge-fill" cx="150" cy="147" r="21" transform="rotate(-90 150 147)"/><circle class="gauge-ring-flash" cx="150" cy="147" r="25"/><text class="gauge-pct" x="150" y="151">0%</text><text class="gauge-k" x="150" y="157">K</text></g><text class="gauge-name" x="150" y="172" text-anchor="middle">—</text>')}
+ const count=stage.querySelector('.k-count');
+ if(count){count.querySelector('span').textContent='STRIKEOUT ROW';count.insertAdjacentHTML('afterend','<div class="ou-sequence"><span id="ouFeedLabel">TOP SHORTOPEN CALLS · REAL DATA</span><div class="ou-numbers"><div class="ou-box lean" id="ouOverBox"><b class="ou-figure" id="ouOverNum">—</b><span>OVER</span></div><div class="ou-vs">vs</div><div class="ou-box" id="ouUnderBox"><b class="ou-figure" id="ouUnderNum">—</b><span>UNDER</span></div></div><div class="ou-split"><i id="ouSplitBar" style="width:50%"></i></div><small id="ouFeedSub">Fair probability, best current price — not a live line</small></div>')}
+
+ // Pull real picks off PROPS_DATA (already processed by rerender() earlier in
+ // the page) instead of decorating the hero with fabricated/random numbers.
+ // Ranked by EV% on the Shortopen Call so the figure always reflects an
+ // actual computed read, not a flourish.
+ function realPicks(){
+   if(typeof PROPS_DATA==='undefined') return [];
+   return PROPS_DATA.filter(p=>p.shortopenCall && p.shortopenConfidence!=='Low')
+     .map(p=>({
+       name:p.name,
+       side:p.shortopenCall.side,
+       prob: p.shortopenCall.side==='Over' ? p.fairOverProb : p.fairUnderProb,
+       evPct: p.shortopenCall.evPct
+     }))
+     .filter(x=>x.prob!=null)
+     .sort((a,b)=>b.evPct-a.evPct);
+ }
+
+ function animateCountUp(el,from,to,ms){
+   if(!el)return;
+   const start=performance.now();
+   function step(now){
+     const t=Math.min(1,(now-start)/ms);
+     const eased=1-Math.pow(1-t,3);
+     const val=Math.round(from+(to-from)*eased);
+     el.textContent=val+'%';
+     if(t<1)requestAnimationFrame(step);
+   }
+   requestAnimationFrame(step);
+ }
+
+ let feedIdx=0;
+ function tickFeed(){
+   const picks=realPicks();
+   const pctEl=stage.querySelector('.gauge-pct'),nameEl=stage.querySelector('.gauge-name');
+   const overBox=stage.querySelector('#ouOverBox'),underBox=stage.querySelector('#ouUnderBox'),overNum=stage.querySelector('#ouOverNum'),underNum=stage.querySelector('#ouUnderNum'),split=stage.querySelector('#ouSplitBar');
+   if(!picks.length){ if(pctEl)pctEl.textContent='—'; if(nameEl)nameEl.textContent='No qualifying calls yet'; return; }
+   const top=picks[0];
+   const topPct=Math.round(top.prob*100);
+   animateCountUp(pctEl,0,topPct,1200);
+   if(nameEl)nameEl.textContent=top.name.split(' ').pop()+' · '+top.side;
+
+   // Cycle through the next few real picks for the OU feed so it still
+   // feels "live" without inventing any numbers.
+   const cyclePicks=picks.slice(0,Math.min(6,picks.length));
+   const pick=cyclePicks[feedIdx%cyclePicks.length];
+   feedIdx++;
+   const over = pick.side==='Over' ? Math.round(pick.prob*100) : 100-Math.round(pick.prob*100);
+   const under = 100-over;
+   if(!overNum||!underNum)return;
+   const wasOver=parseInt(overNum.textContent)||over,dir=over>wasOver?'flash-up':over<wasOver?'flash-dn':'';
+   overNum.textContent=over+'%';underNum.textContent=under+'%';
+   const feedLabel=stage.querySelector('#ouFeedSub'); if(feedLabel)feedLabel.textContent=pick.name+' · fair '+(pick.side==='Over'?'Over':'Under')+' probability';
+   if(split)split.style.width=over+'%';
+   if(overBox)overBox.classList.toggle('lean',over>=under);
+   if(underBox)underBox.classList.toggle('lean',under>over);
+   if(dir){overNum.classList.remove('flash-up','flash-dn');void overNum.offsetWidth;overNum.classList.add(dir);underNum.classList.remove('flash-up','flash-dn');void underNum.offsetWidth;underNum.classList.add(dir==='flash-up'?'flash-dn':'flash-up')}
+ }
+ tickFeed();
+ if(!matchMedia('(prefers-reduced-motion: reduce)').matches)setInterval(tickFeed,6200);
+})();
+</script>
+<style id="so-strikeout-mobile-consolidated-20260822">
+@media(max-width:700px){
+ html,body{width:100%!important;max-width:100%!important;overflow-x:hidden!important}.board{width:100%!important;max-width:100%!important;padding:10px!important}
+ .table-frame,.table-scroll{width:100%!important;max-width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}.table-scroll table{width:max-content!important;min-width:1240px!important;table-layout:fixed!important}
+ .clv-grid{grid-template-columns:minmax(0,1fr)!important}.clv-wrap{overflow:hidden!important}
+ /* Per-player sparkline chart (open->consensus line movement) in the sticky-2
+    column was being squeezed to 96px by an earlier @media(max-width:700px)
+    block (line ~471), which won cascade over an even-earlier 112px rule (same
+    specificity, later source order). At 96px the 30x14 sparkline SVG, the
+    consensus-line number, the movement label, and both best-odds pills were
+    all stacked/wrapped into a column narrower than the sparkline's own natural
+    reading width. Widened the column and enlarged the sparkline + labels here
+    (last block in file, wins cascade) so the chart is actually legible. */
+ .table-scroll th.sticky-2,.table-scroll td.sticky-2{min-width:136px!important;width:136px!important;max-width:136px!important;padding:8px 8px 8px 10px!important;white-space:normal!important}
+ .table-scroll td.sticky-2 .cline{font-size:14.5px!important;font-weight:700!important;display:inline-block!important}
+ .table-scroll td.sticky-2 .spark-wrap{flex-wrap:nowrap!important;gap:6px!important;margin-top:6px!important}
+ .table-scroll td.sticky-2 .spark-wrap svg{width:44px!important;height:21px!important;flex:0 0 auto!important}
+ .table-scroll td.sticky-2 .spark-lbl{font-size:10.5px!important;white-space:nowrap!important}
+ .table-scroll td.sticky-2 .best-pill{font-size:10px!important;line-height:1.4!important;display:block!important;margin-top:4px!important;white-space:normal!important;word-break:break-word!important}
+ .bb-grid{display:flex!important;grid-template-columns:none!important;overflow-x:auto!important;overflow-y:hidden!important;flex-wrap:nowrap!important;gap:10px!important;scroll-snap-type:x proximity!important;padding-bottom:4px!important;-webkit-overflow-scrolling:touch!important}
+ .bb-card{flex:0 0 78%!important;max-width:300px!important;scroll-snap-align:start!important}
+ /* The pitcher-figure frame was sized/scaled by several stacked mobile blocks
+    earlier in this file (all width/height on .so-pitcher-stage + .pitcher-svg),
+    but none of them accounted for the SVG's real aspect ratio (viewBox 310x345).
+    Net effect: the 270px-tall frame clipped ~35px off the bottom of a 305px-tall
+    figure (legs/mound cut off), while the figure itself only filled ~85% of the
+    frame's width with dead margin on both sides. Re-sized here (last block in
+    the file, wins cascade) to the correct 310:345 aspect, filling the frame
+    edge-to-edge like the "tightest spread" stat-row above it, with the whole
+    figure visible instead of cropped. */
+ .so-pitcher-stage{width:100%!important;height:366px!important;margin-top:16px!important;overflow:hidden!important;border-radius:16px!important}
+ .pitcher-svg{position:absolute!important;left:50%!important;top:12px!important;width:312px!important;height:347px!important;transform:translateX(-50%)!important;transform-origin:center top!important}
+}
+</style>
+<style id="so-strikeout-mobile-quality-20260824">
+@media(max-width:700px){
+ .table-scroll table{min-width:970px!important;font-size:9px!important}.table-scroll th,.table-scroll td{padding:7px 4px!important}
+ .table-scroll th.sticky-1,.table-scroll td.sticky-1{min-width:104px!important;width:104px!important;max-width:104px!important;padding-left:7px!important;padding-right:5px!important}
+ .table-scroll th.sticky-2,.table-scroll td.sticky-2{min-width:116px!important;width:116px!important;max-width:116px!important;padding:7px 5px!important}.table-scroll td.sticky-2 .cline{font-size:13px!important}.table-scroll td.sticky-2 .spark-wrap svg{width:36px!important;height:18px!important}.table-scroll td.sticky-2 .spark-lbl{font-size:9px!important}.table-scroll td.sticky-2 .best-pill{font-size:8.5px!important}
+ .player-name{font-size:9.5px!important}.player-sub{font-size:7px!important}.bb-card{flex-basis:min(76vw,280px)!important;padding:13px!important}.bb-card h3,.best-bet h3{font-size:1rem!important}.bb-card p,.best-bet p{font-size:.7rem!important;line-height:1.45!important}.stat-cell{flex-basis:min(42vw,150px)!important;padding:10px!important}
+ .so-pitcher-stage{height:326px!important}.pitcher-svg{top:6px!important;width:288px!important;height:321px!important}.k-scoreboard{display:none!important}.slip-fab{right:12px!important;bottom:max(12px,env(safe-area-inset-bottom))!important;padding:11px 17px!important;font-size:12px!important}.legend{padding-bottom:5px!important;overscroll-behavior-x:contain!important}
+}
+</style>
+<style id="so-strikeout-mobile-hero-frame-20260824">@media(max-width:700px){html body .hero .so-pitcher-stage{width:100%!important;height:261px!important;margin-top:14px!important}html body .hero .so-pitcher-stage .pitcher-svg{left:50%!important;top:4px!important;width:230px!important;height:257px!important;transform:translateX(-50%)!important;transform-origin:center top!important}}</style>
+<style id="so-strikeout-mobile-hero-frame-final-20260824">
+@media(max-width:700px){html body .hero .so-pitcher-stage{height:196px!important;margin-top:12px!important}html body .hero .so-pitcher-stage .pitcher-svg{left:50%!important;top:3px!important;width:161px!important;height:180px!important;transform:translateX(-50%)!important;transform-origin:center top!important}}
+</style>
+<style id="so-pl-mobile-parity-final-20260902">
+@media(max-width:700px){
+ html,body{width:100%!important;max-width:100%!important;overflow-x:hidden!important}body{padding-bottom:48px!important}.ticker-bar{position:sticky!important;top:0!important;margin-top:0!important;height:30px!important;padding:0 10px!important;font-size:9px!important}.ticker-bar .fixed-left{gap:8px!important;padding-right:9px!important}.build-tag{display:none!important}.notes-ticker{height:27px!important;font-size:8px!important}
+ .hero{display:block!important;width:100%!important;max-width:100%!important;min-height:0!important;margin:0!important;padding:20px 12px 14px!important;overflow:hidden!important}.hero>div[style*="position:absolute"]{position:static!important;display:inline-flex!important;margin:0 0 11px!important;padding:5px 8px!important;font-size:.43rem!important}.eyebrow{margin-bottom:10px!important;font-size:.52rem!important}.hero h1{font-size:2.15rem!important;line-height:1!important;letter-spacing:-.045em!important}.hero p{max-width:100%!important;margin-bottom:14px!important;font-size:.74rem!important;line-height:1.52!important}
+ .stat-row{display:flex!important;grid-template-columns:none!important;gap:7px!important;margin-top:10px!important;padding-bottom:6px!important;border:0!important;background:none!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x proximity!important;scrollbar-width:none!important}.stat-row::-webkit-scrollbar{display:none!important}.stat-cell{flex:0 0 122px!important;min-width:122px!important;min-height:82px!important;padding:10px 11px!important;border:1px solid var(--border)!important;border-radius:11px!important;scroll-snap-align:start!important}.stat-cell .lbl{margin-bottom:5px!important;font-size:7px!important}.stat-cell .val{font-size:1.05rem!important}.stat-cell .sub{font-size:7px!important;line-height:1.35!important}
+ html body .hero .so-pitcher-stage{width:100%!important;height:225px!important;margin:12px 0 0!important;border-radius:16px!important;overflow:hidden!important}html body .hero .so-pitcher-stage .pitcher-svg{left:50%!important;top:3px!important;width:190px!important;height:212px!important;transform:translateX(-50%)!important;transform-origin:center top!important}.k-scoreboard{display:none!important}
+ .bb-wrap,.signals-wrap,.chip-row,.controls,.legend,.board,.clv-wrap{width:100%!important;max-width:100%!important;padding-left:10px!important;padding-right:10px!important}.bb-grid,.signals-scroll,.chip-row,.controls,.legend,.book-toggles{display:flex!important;grid-template-columns:none!important;gap:7px!important;overflow-x:auto!important;overflow-y:hidden!important;flex-wrap:nowrap!important;-webkit-overflow-scrolling:touch!important;scroll-snap-type:x proximity!important;scrollbar-width:none!important}.bb-grid::-webkit-scrollbar,.signals-scroll::-webkit-scrollbar,.chip-row::-webkit-scrollbar,.controls::-webkit-scrollbar,.legend::-webkit-scrollbar,.book-toggles::-webkit-scrollbar{display:none!important}.bb-card,.best-bet{flex:0 0 min(76vw,275px)!important;max-width:275px!important;padding:12px!important;scroll-snap-align:start!important}.signal-card{flex:0 0 min(72vw,250px)!important;scroll-snap-align:start!important}.chip-row>* ,.controls>* ,.legend>* ,.book-toggles>*{flex:0 0 auto!important}.controls{align-items:center!important;padding-top:4px!important;padding-bottom:10px!important}.search-wrap{flex:0 0 min(72vw,270px)!important;min-width:0!important}.book-toggles{margin-left:0!important;max-width:none!important}.legend{padding-bottom:6px!important;white-space:nowrap!important}
+ .board{padding-top:0!important;padding-bottom:24px!important}.table-frame,.table-scroll{width:100%!important;max-width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}.table-scroll table{width:max-content!important;min-width:970px!important;table-layout:fixed!important;font-size:9px!important}.table-scroll th,.table-scroll td{padding:7px 4px!important}.table-scroll th.sticky-1,.table-scroll td.sticky-1{position:sticky!important;left:0!important;z-index:9!important;min-width:108px!important;width:108px!important;max-width:108px!important;background:var(--panel)!important}.table-scroll th.sticky-2,.table-scroll td.sticky-2{position:static!important;left:auto!important;min-width:116px!important;width:116px!important;max-width:116px!important}.player-name{font-size:9.7px!important;line-height:1.2!important;white-space:normal!important}.player-sub{font-size:7px!important;line-height:1.25!important;white-space:normal!important}.clv-frame{max-width:100%!important;overflow-x:auto!important}.clv-row{min-width:620px!important}
+ .slip-fab{right:12px!important;bottom:max(12px,env(safe-area-inset-bottom))!important;padding:11px 17px!important;font-size:12px!important}
+}
+@media(pointer:coarse) and (max-width:700px){.bb-card:hover,.signal-card:hover,.stat-cell:hover{transform:none!important}.k-tally,.k-score-row span,.lift-leg,.glove-group{animation-duration:8s!important}}
+</style>
+<style id="so-canonical-footer-v3">
+footer.so-footer{display:block!important;box-sizing:border-box!important;width:100%!important;max-width:none!important;margin:8px 0 0 0!important;padding:22px 20px 30px!important;border:0!important;border-top:1px solid rgba(255,255,255,.09)!important;background:transparent!important;box-shadow:none!important;position:static!important;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif!important;text-align:left!important;}
+footer.so-footer *{box-sizing:border-box!important;}
+footer.so-footer .footer-top{max-width:1440px!important;width:100%!important;margin:0 auto 10px auto!important;display:flex!important;flex-direction:row!important;justify-content:space-between!important;align-items:center!important;flex-wrap:wrap!important;gap:8px!important;text-align:left!important;padding:0!important;border:0!important;background:transparent!important;}
+footer.so-footer .footer-logo{font-size:16px!important;font-weight:800!important;color:#fff!important;text-align:left!important;margin:0!important;padding:0!important;letter-spacing:normal!important;line-height:normal!important;text-transform:none!important;}
+footer.so-footer .footer-logo span{color:#f4b942!important;}
+footer.so-footer .footer-copy{font-size:11.5px!important;color:#6f7f97!important;margin:0!important;padding:0!important;font-weight:400!important;text-align:right!important;line-height:normal!important;text-transform:none!important;letter-spacing:normal!important;}
+footer.so-footer .footer-disclaimer,footer.so-footer .footer-legal{max-width:1440px!important;width:100%!important;margin:0 auto!important;padding:0!important;border:0!important;font-size:10.5px!important;color:#6f7f97!important;line-height:1.6!important;text-align:left!important;font-weight:400!important;text-transform:none!important;letter-spacing:normal!important;background:transparent!important;}
+@media(max-width:700px){
+footer.so-footer .footer-top{flex-direction:column!important;align-items:flex-start!important;gap:8px!important;}
+footer.so-footer .footer-copy{text-align:left!important;}
+}
+</style>
+<style id="so-canonical-footer-v3">
+footer.so-footer{display:block!important;box-sizing:border-box!important;width:100%!important;max-width:none!important;margin:8px 0 0 0!important;padding:22px 20px 30px!important;border:0!important;border-top:1px solid rgba(255,255,255,.09)!important;background:transparent!important;box-shadow:none!important;position:static!important;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif!important;text-align:left!important;}
+footer.so-footer *{box-sizing:border-box!important;}
+footer.so-footer .footer-top{max-width:1360px!important;width:100%!important;margin:0 auto 10px auto!important;display:flex!important;flex-direction:row!important;justify-content:space-between!important;align-items:center!important;flex-wrap:wrap!important;gap:8px!important;text-align:left!important;padding:0!important;border:0!important;background:transparent!important;}
+footer.so-footer .footer-logo{font-size:16px!important;font-weight:800!important;color:#fff!important;text-align:left!important;margin:0!important;padding:0!important;letter-spacing:normal!important;line-height:normal!important;text-transform:none!important;}
+footer.so-footer .footer-logo span{color:#f4b942!important;}
+footer.so-footer .footer-copy{font-size:11.5px!important;color:#6f7f97!important;margin:0!important;padding:0!important;font-weight:400!important;text-align:right!important;line-height:normal!important;text-transform:none!important;letter-spacing:normal!important;}
+footer.so-footer .footer-disclaimer,footer.so-footer .footer-legal{max-width:1360px!important;width:100%!important;margin:0 auto!important;padding:0!important;border:0!important;font-size:10.5px!important;color:#6f7f97!important;line-height:1.6!important;text-align:left!important;font-weight:400!important;text-transform:none!important;letter-spacing:normal!important;background:transparent!important;}
+@media(max-width:700px){
+footer.so-footer .footer-top{flex-direction:column!important;align-items:flex-start!important;gap:8px!important;}
+footer.so-footer .footer-copy{text-align:left!important;}
+}
+</style>
+<footer class="so-footer">
+<div class="footer-top">
+<div class="footer-logo">short<span>open</span></div>
+<p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+</div>
+<p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span style="color:#e8c078;font-weight:600">1-800-GAMBLER</span>. <a href="terms.html" style="text-decoration:underline;color:#e8c078">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p>
+</footer>
+
+<script id="shortopen-final-overview-layout">
+(function(){
+ const best=document.querySelector('.bb-wrap'),signals=document.querySelector('.signals-wrap');
+ if(!best||!signals||best.parentElement.classList.contains('final-overview'))return;
+ const overview=document.createElement('section');overview.className='final-overview';
+ best.parentNode.insertBefore(overview,best);overview.append(best,signals);
+})();
+</script>
+<style id="shortopen-final-polish-20260907">
+.final-minimal-tape .hero h1 .k{color:#56e6ac!important;text-shadow:0 0 22px rgba(46,230,154,.18)}
+.final-minimal-tape .fchip{color:#91a19f!important;border-color:rgba(139,171,161,.20)!important;background:linear-gradient(180deg,rgba(18,31,31,.86),rgba(7,14,15,.94))!important;box-shadow:inset 0 1px rgba(255,255,255,.035)!important}
+.final-minimal-tape .fchip:hover{color:#d8e7e2!important;border-color:rgba(46,230,154,.34)!important}
+.final-minimal-tape .fchip.on{color:#eafff6!important;border-color:rgba(46,230,154,.82)!important;background:linear-gradient(180deg,rgba(46,230,154,.25),rgba(20,86,61,.24))!important;box-shadow:inset 0 1px rgba(255,255,255,.12),0 0 20px rgba(46,230,154,.10)!important}
+.final-minimal-tape .fchip .ct{color:inherit!important;opacity:.76}
+.longshot-block{margin-top:22px}
+.longshot-head .tag{color:#ffd078!important;border-color:rgba(244,185,66,.35)!important;background:rgba(244,185,66,.08)!important}
+.longshot-card .price{color:#f4b942!important}
+.longshot-card{border-color:rgba(244,185,66,.16)!important}
+@media(min-width:701px){
+ .final-overview{align-items:stretch!important}
+ .final-overview>.bb-wrap{display:flex;min-width:0;flex-direction:column;justify-content:flex-start}
+ .final-overview .bb-head{margin-bottom:11px}
+ .final-overview .bb-card{position:relative;overflow:hidden;background:linear-gradient(150deg,rgba(255,255,255,.075),rgba(255,255,255,.016) 56%,rgba(46,230,154,.018))!important;box-shadow:inset 0 1px rgba(255,255,255,.10),0 14px 32px rgba(0,0,0,.24)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;contain:layout paint}
+ .final-overview .bb-card:before,.final-overview .signal-card:before{content:'';position:absolute;inset:0 auto auto 0;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);pointer-events:none}
+ .final-overview .longshot-card{background:linear-gradient(150deg,rgba(244,185,66,.085),rgba(255,255,255,.018) 58%,rgba(244,185,66,.018))!important}
+ .final-overview .signals-wrap{height:100%;min-height:100%;position:relative;overflow:hidden;border-color:rgba(255,255,255,.13)!important;background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.012) 65%,rgba(46,230,154,.02))!important;box-shadow:inset 0 1px rgba(255,255,255,.10),0 16px 38px rgba(0,0,0,.24)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;contain:layout paint}
+ .final-overview .signals-wrap:before{content:'';position:absolute;top:-80px;right:-70px;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,rgba(46,230,154,.10),transparent 68%);pointer-events:none}
+ .final-overview .signals-scroll{position:relative;max-height:none!important;overflow:visible!important}
+ .final-overview .signal-card{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018))!important;box-shadow:inset 0 1px rgba(255,255,255,.075)!important}
+}
+@media(max-width:700px){
+ .longshot-block{margin-top:18px}
+ .longshot-head{padding-right:2px}
+ .final-overview .bb-card,.final-overview .signals-wrap,.final-overview .signal-card{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important}
+}
+.final-minimal-tape tbody tr{content-visibility:auto;contain-intrinsic-size:1px 76px}
+</style>
+<style id="shortopen-hero-background-blend-20260908">
+.final-minimal-tape .hero{
+ background:
+  radial-gradient(620px 390px at 79% 38%,rgba(24,153,103,.11),transparent 70%),
+  radial-gradient(520px 330px at 18% 0,rgba(16,58,64,.12),transparent 72%),
+  linear-gradient(180deg,#050a0c 0%,#061012 72%,#061012 100%)!important;
+ border-bottom-color:rgba(231,179,77,.10)!important;
+ box-shadow:none!important;
+}
+@media(max-width:700px){
+ .final-minimal-tape .hero{
+  background:radial-gradient(360px 240px at 54% 70%,rgba(24,153,103,.10),transparent 72%),linear-gradient(180deg,#050a0c,#061012)!important;
+ }
+}
+</style>
+<style id="shortopen-market-seamless-board-20260908">
+/* Align the signal rail to the two-card shelf and use a balanced 3-by-2 read. */
+@media(min-width:1041px){
+ .final-overview{grid-template-columns:minmax(0,1.72fr) minmax(420px,.98fr)!important;align-items:stretch!important}
+ .final-overview .signals-wrap{height:auto!important;min-height:0!important;padding:20px!important;display:flex!important;flex-direction:column!important}
+ .final-overview .signals-scroll{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(3,minmax(0,1fr))!important;gap:10px!important;height:100%!important;max-height:none!important;overflow:hidden!important;padding:0!important}
+ .final-overview .signal-card{min-width:0!important;min-height:0!important;padding:11px 13px!important;border-radius:12px!important;display:flex!important;flex-direction:column!important;justify-content:center!important}
+ .final-overview .signal-card .nm{font-size:12px!important;line-height:1.25!important}
+ .final-overview .signal-card .mv{font-size:9.5px!important;line-height:1.35!important}
+}
+@media(min-width:701px) and (max-width:1040px){
+ .final-overview{grid-template-columns:1fr!important;align-items:start!important}
+ .final-overview .signals-wrap{height:auto!important;min-height:0!important}
+ .final-overview .signals-scroll{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important;max-height:none!important;overflow:visible!important}
+}
+
+/* A quieter, continuous market board: lighter dividers, one surface, clear sticky anchors. */
+.final-minimal-tape .chip-row,.final-minimal-tape .controls,.final-minimal-tape .legend,.final-minimal-tape .board{max-width:1480px!important}
+.final-minimal-tape .table-frame{
+ border:1px solid rgba(144,183,168,.17)!important;
+ border-radius:14px!important;
+ background:linear-gradient(180deg,rgba(9,17,19,.98),rgba(5,10,12,.99))!important;
+ box-shadow:inset 0 1px rgba(255,255,255,.035),0 22px 54px rgba(0,0,0,.26)!important;
+}
+.final-minimal-tape .table-scroll{scrollbar-width:thin;scrollbar-color:rgba(46,230,154,.26) transparent}
+.final-minimal-tape .table-scroll::-webkit-scrollbar{height:7px}
+.final-minimal-tape .table-scroll::-webkit-scrollbar-track{background:transparent}
+.final-minimal-tape .table-scroll::-webkit-scrollbar-thumb{background:rgba(46,230,154,.22);border-radius:99px}
+.final-minimal-tape thead th{background:#0a1416!important;border-bottom-color:rgba(147,181,170,.13)!important}
+.final-minimal-tape thead tr.sub-row th{background:#071012!important;color:#71827f!important}
+.final-minimal-tape th.book-group,.final-minimal-tape td.book-cell{border-left-color:rgba(145,178,167,.09)!important}
+.final-minimal-tape td{border-bottom-color:rgba(145,178,167,.085)!important;background:transparent;transition:background-color .14s ease,color .14s ease}
+.final-minimal-tape tbody tr:nth-child(even) td{background-color:rgba(255,255,255,.009)!important}
+.final-minimal-tape tbody tr:hover td{background-color:rgba(46,230,154,.025)!important}
+.final-minimal-tape td.sticky-1,.final-minimal-tape td.sticky-2,.final-minimal-tape td.sticky-3,.final-minimal-tape td.sticky-4{background:#081113!important}
+.final-minimal-tape tbody tr:nth-child(even) td.sticky-1,.final-minimal-tape tbody tr:nth-child(even) td.sticky-2,.final-minimal-tape tbody tr:nth-child(even) td.sticky-3,.final-minimal-tape tbody tr:nth-child(even) td.sticky-4{background:#091315!important}
+.final-minimal-tape tbody tr:hover td.sticky-1,.final-minimal-tape tbody tr:hover td.sticky-2,.final-minimal-tape tbody tr:hover td.sticky-3,.final-minimal-tape tbody tr:hover td.sticky-4{background:#0b1818!important}
+.final-minimal-tape td.odds.best{background:rgba(46,230,154,.13)!important;color:#3cf0a3!important;box-shadow:inset 0 0 0 1px rgba(46,230,154,.28)!important}
+.final-minimal-tape .player-name{letter-spacing:-.01em}
+@media(max-width:700px){
+ .final-minimal-tape .table-frame{border-radius:11px!important;box-shadow:none!important}
+ .final-minimal-tape .signals-wrap{min-height:0!important;height:auto!important}
+}
+</style>
+<style id="shortopen-hero-signal-refinement-20260908">
+@media(min-width:1151px){
+  .final-minimal-tape .hero .so-pitcher-stage{top:auto!important;bottom:28px!important;}
+  .final-minimal-tape .hero .so-arsenal{top:auto!important;bottom:28px!important;}
+}
+.final-overview .signals-wrap{
+  border-color:rgba(126,226,183,.18)!important;
+  background:radial-gradient(240px 180px at 100% 0,rgba(46,230,154,.085),transparent 72%),linear-gradient(145deg,rgba(255,255,255,.066),rgba(255,255,255,.014) 64%)!important;
+}
+.final-overview .signals-scroll{align-content:stretch!important;}
+.final-overview .signal-card{
+  border-color:rgba(151,203,182,.14)!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(8,20,19,.82))!important;
+  transition:border-color .18s ease,background .18s ease,transform .18s ease!important;
+}
+.final-overview .signal-card:hover{
+  border-color:rgba(46,230,154,.40)!important;
+  background:linear-gradient(145deg,rgba(46,230,154,.085),rgba(8,20,19,.88))!important;
+  transform:translateY(-1px);
+}
+.signal-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.signal-prob{min-width:54px;padding:6px 7px 5px;border:1px solid rgba(46,230,154,.25);border-radius:10px;background:rgba(46,230,154,.075);text-align:right;}
+.signal-prob b{display:block;color:#54edaf;font:800 12px/1 var(--mono);}
+.signal-prob small{display:block;margin-top:4px;color:#718d82;font:700 6px/1 var(--mono);letter-spacing:.12em;}
+.signal-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:9px;padding-top:8px;border-top:1px solid rgba(151,203,182,.10);}
+.signal-foot span{color:#738680;font:700 7px/1 var(--mono);letter-spacing:.10em;text-transform:uppercase;}
+.signal-foot b{color:#dbe9e3;font:800 10px/1 var(--mono);}
+@media(max-width:700px){
+  .signal-prob{min-width:51px;}
+  .signal-card{min-height:112px!important;}
+}
+</style>
+</body>
+</html>

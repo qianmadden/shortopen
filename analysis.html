@@ -10,13 +10,19 @@
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
-  --bg:#070b12;--panel:#0d131e;--panel2:#0f1620;--border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.16);
+  --bg:#07101a;--panel:#0d131e;--panel2:#0f1620;--border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.16);
   --text:#e8edf5;--muted:#8b96a8;--muted2:#59667a;
   --gold:#f4b942;--green:#34d399;--red:#f87171;--blue:#60a5fa;--purple:#a78bfa;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;padding-top:94px}
+html{background:#0a0e16}
+body{color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;padding-top:94px;
+  background:
+    radial-gradient(ellipse 1200px 600px at 15% -10%, rgba(62,207,255,.08), transparent 60%),
+    radial-gradient(ellipse 900px 500px at 100% 0%, rgba(79,124,255,.06), transparent 60%),
+    #0a0e16;
+}
 a{color:inherit}
 img{max-width:100%}
 .mono{font-family:"Roboto Mono",ui-monospace,monospace}
@@ -88,6 +94,12 @@ h1.hero-title{font-size:clamp(1.9rem,4vw,2.7rem);line-height:1.1;letter-spacing:
 .proof-stat .num.green{color:var(--green)}
 .proof-stat .num.gold{color:var(--gold)}
 .proof-stat .label{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);margin-top:3px}
+@media(max-width:640px){
+  .proof-stats{gap:10px 16px!important;padding-top:12px!important}
+  .proof-stat{flex:1 1 30%;min-width:0}
+  .proof-stat .num{font-size:1.15rem!important}
+  .proof-stat .label{font-size:.56rem!important;line-height:1.3!important;margin-top:2px!important}
+}
 
 /* Tabs */
 .tabs{position:sticky;top:96px;z-index:20;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:14px 16px;margin-bottom:24px;border:1px solid var(--border);border-radius:14px;background:rgba(13,19,30,.92);backdrop-filter:blur(10px)}
@@ -205,7 +217,7 @@ section.section.bordered{border-top:1px solid var(--border)}
 .so-mobile-menu>a{padding:14px 15px;border:1px solid transparent;border-radius:12px;color:#c3ccd6;font-size:.96rem;font-weight:560;text-decoration:none;display:flex;justify-content:space-between;align-items:center}
 .so-mobile-menu>a.active{border-color:rgba(244,185,66,.3);background:rgba(244,185,66,.08);color:#fff}
 .so-mobile-menu>a:hover{background:rgba(255,255,255,.04)}
-.so-mobile-terms{margin-top:10px;padding-top:16px;border-top:1px solid rgba(255,255,255,.09);font-size:.72rem;font-weight:600;color:#7c8797}</style><style id="so-shared-disclaimer-footer-20260824">.so-shared-footer{width:100%;max-width:100%;margin:28px 0 0;padding:28px clamp(18px,4vw,48px) 30px;border-top:1px solid rgba(255,255,255,.08);background:rgba(4,7,12,.82);display:flex;flex-direction:column;gap:14px;clear:both}.so-shared-footer-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}.so-shared-footer-logo{font-family:Inter,Arial,sans-serif;font-size:1rem;font-weight:900;letter-spacing:-.02em;color:#f0ece4;text-decoration:none}.so-shared-footer-logo span{color:#e8a020}.so-shared-footer-top p{margin:0;color:#4d6070;font-size:.75rem;letter-spacing:.06em}.so-shared-footer .footer-disclaimer{max-width:1100px;margin:0;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.28);font-size:.62rem;line-height:1.68;letter-spacing:.01em}@media(max-width:700px){.so-shared-footer{margin-top:20px;padding:22px 16px max(24px,env(safe-area-inset-bottom));text-align:center}.so-shared-footer-top{flex-direction:column}.so-shared-footer .footer-disclaimer{text-align:left;font-size:.6rem;overflow-wrap:anywhere}}</style></head>
+.so-mobile-terms{margin-top:10px;padding-top:16px;border-top:1px solid rgba(255,255,255,.09);font-size:.72rem;font-weight:600;color:#7c8797}</style><style id="so-shared-disclaimer-footer-20260824">.so-shared-footer{width:100%;max-width:100%;margin-top:8px;margin-left:0;margin-right:0;margin-bottom:0;padding:22px 20px 30px;border-top:1px solid rgba(255,255,255,.09);background:transparent;display:flex;flex-direction:column;gap:10px;clear:both}.so-shared-footer-top{max-width:1440px;width:100%;margin:0 auto 10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;text-align:left}.so-shared-footer-logo{font-family:Inter,Arial,sans-serif;font-size:16px;font-weight:800;letter-spacing:-.02em;color:#fff;text-decoration:none;text-align:left}.so-shared-footer-logo span{color:#f4b942}.so-shared-footer-top p,.footer-copy{margin:0;color:#6f7f97;font-size:11.5px;letter-spacing:normal}.so-shared-footer .footer-disclaimer,.footer-disclaimer{max-width:1440px;margin:0 auto;padding-top:0;border-top:none;color:#6f7f97;font-size:10.5px;line-height:1.6;letter-spacing:normal}@media(max-width:700px){.so-shared-footer{margin-top:20px;padding:22px 16px max(24px,env(safe-area-inset-bottom));text-align:center}.so-shared-footer-top{flex-direction:column}.so-shared-footer .footer-disclaimer,.footer-disclaimer{text-align:left;font-size:.6rem;overflow-wrap:anywhere}}</style></head>
 <body id="top">
 
 <div class="so-nav-shell"><nav class="so-nav" aria-label="Primary navigation">
@@ -324,7 +336,39 @@ section.section.bordered{border-top:1px solid var(--border)}
 
 </div>
 
-<footer class="so-shared-footer"><div class="so-shared-footer-top"><a href="index.html" class="so-shared-footer-logo">short<span>open</span></a><p>&copy; 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or &ldquo;you&rsquo;d earn&rdquo; calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span style="color:#e8c078;font-weight:600">1-800-GAMBLER</span>. <a href="terms.html" style="text-decoration:underline;color:#e8c078">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p></footer>
+<style id="so-canonical-footer-v3">
+footer.so-footer{display:block!important;box-sizing:border-box!important;width:100%!important;max-width:none!important;margin:8px 0 0 0!important;padding:22px 20px 30px!important;border:0!important;border-top:1px solid rgba(255,255,255,.09)!important;background:transparent!important;box-shadow:none!important;position:static!important;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif!important;text-align:left!important;}
+footer.so-footer *{box-sizing:border-box!important;}
+footer.so-footer .footer-top{max-width:1440px!important;width:100%!important;margin:0 auto 10px auto!important;display:flex!important;flex-direction:row!important;justify-content:space-between!important;align-items:center!important;flex-wrap:wrap!important;gap:8px!important;text-align:left!important;padding:0!important;border:0!important;background:transparent!important;}
+footer.so-footer .footer-logo{font-size:16px!important;font-weight:800!important;color:#fff!important;text-align:left!important;margin:0!important;padding:0!important;letter-spacing:normal!important;line-height:normal!important;text-transform:none!important;}
+footer.so-footer .footer-logo span{color:#f4b942!important;}
+footer.so-footer .footer-copy{font-size:11.5px!important;color:#6f7f97!important;margin:0!important;padding:0!important;font-weight:400!important;text-align:right!important;line-height:normal!important;text-transform:none!important;letter-spacing:normal!important;}
+footer.so-footer .footer-disclaimer,footer.so-footer .footer-legal{max-width:1440px!important;width:100%!important;margin:0 auto!important;padding:0!important;border:0!important;font-size:10.5px!important;color:#6f7f97!important;line-height:1.6!important;text-align:left!important;font-weight:400!important;text-transform:none!important;letter-spacing:normal!important;background:transparent!important;}
+@media(max-width:700px){
+footer.so-footer .footer-top{flex-direction:column!important;align-items:flex-start!important;gap:8px!important;}
+footer.so-footer .footer-copy{text-align:left!important;}
+}
+</style>
+<style id="so-canonical-footer-v3">
+footer.so-footer{display:block!important;box-sizing:border-box!important;width:100%!important;max-width:none!important;margin:8px 0 0 0!important;padding:22px 20px 30px!important;border:0!important;border-top:1px solid rgba(255,255,255,.09)!important;background:transparent!important;box-shadow:none!important;position:static!important;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif!important;text-align:left!important;}
+footer.so-footer *{box-sizing:border-box!important;}
+footer.so-footer .footer-top{max-width:1360px!important;width:100%!important;margin:0 auto 10px auto!important;display:flex!important;flex-direction:row!important;justify-content:space-between!important;align-items:center!important;flex-wrap:wrap!important;gap:8px!important;text-align:left!important;padding:0!important;border:0!important;background:transparent!important;}
+footer.so-footer .footer-logo{font-size:16px!important;font-weight:800!important;color:#fff!important;text-align:left!important;margin:0!important;padding:0!important;letter-spacing:normal!important;line-height:normal!important;text-transform:none!important;}
+footer.so-footer .footer-logo span{color:#f4b942!important;}
+footer.so-footer .footer-copy{font-size:11.5px!important;color:#6f7f97!important;margin:0!important;padding:0!important;font-weight:400!important;text-align:right!important;line-height:normal!important;text-transform:none!important;letter-spacing:normal!important;}
+footer.so-footer .footer-disclaimer,footer.so-footer .footer-legal{max-width:1360px!important;width:100%!important;margin:0 auto!important;padding:0!important;border:0!important;font-size:10.5px!important;color:#6f7f97!important;line-height:1.6!important;text-align:left!important;font-weight:400!important;text-transform:none!important;letter-spacing:normal!important;background:transparent!important;}
+@media(max-width:700px){
+footer.so-footer .footer-top{flex-direction:column!important;align-items:flex-start!important;gap:8px!important;}
+footer.so-footer .footer-copy{text-align:left!important;}
+}
+</style>
+<footer class="so-footer">
+<div class="footer-top">
+<div class="footer-logo">short<span>open</span></div>
+<p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p>
+</div>
+<p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span style="color:#e8c078;font-weight:600">1-800-GAMBLER</span>. <a href="terms.html" style="text-decoration:underline;color:#e8c078">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p>
+</footer>
 
 <script>
 (function(){
