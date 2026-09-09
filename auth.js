@@ -56,8 +56,23 @@
 
   function ensureNavLink(container, mobile, initialLabel) {
     if (!container) return null;
-    let link = container.querySelector('[data-so-auth-nav]');
-    if (link) return link;
+
+    // Prefer the auth marker, but adopt an existing static account link when
+    // a page has already rendered one. This keeps progressive enhancement
+    // intact and prevents a second "Sign In" link when auth.js loads.
+    const accountLinks = Array.from(container.querySelectorAll(
+      '[data-so-auth-nav], a[href="account.html"], a[href="./account.html"], a[href$="/account.html"]'
+    ));
+    let link = accountLinks[0] || null;
+
+    if (link) {
+      link.dataset.soAuthNav = 'true';
+      // Clean up duplicates left by an older cached copy of auth.js.
+      accountLinks.slice(1).forEach(function (duplicate) {
+        duplicate.remove();
+      });
+      return link;
+    }
 
     link = document.createElement('a');
     link.href = 'account.html';

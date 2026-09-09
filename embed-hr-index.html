@@ -26,7 +26,7 @@
   --shadow:0 1px 0 rgba(255,255,255,.02) inset, 0 8px 24px -12px rgba(0,0,0,.6);
 }
 *{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
+html,body{margin:0;padding:0;overflow-x:hidden;}
 body{
   background:
     radial-gradient(ellipse 1200px 600px at 15% -10%, rgba(62,207,255,.08), transparent 60%),
@@ -193,7 +193,7 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border-radius:50%;bac
 .calc-output{display:flex;flex-direction:column;gap:14px;}
 .hrg-readout{
   background:radial-gradient(ellipse at top left,rgba(62,207,255,.14),transparent 65%),var(--panel2);
-  border:1px solid var(--border-soft);border-radius:12px;padding:16px 18px;text-align:left;position:relative;
+  border:1px solid var(--border-soft);border-radius:12px;padding:18px 20px 22px;text-align:left;position:relative;
 }
 .hrg-readout .k{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);}
 .hrg-big{font-size:46px;font-weight:800;letter-spacing:-.02em;color:var(--accent);text-shadow:0 0 24px rgba(62,207,255,.35);font-variant-numeric:tabular-nums;line-height:1.05;margin-top:4px;}
@@ -202,14 +202,14 @@ input[type=range]::-moz-range-thumb{width:28px;height:28px;border-radius:50%;bac
 .meter{height:10px;border-radius:6px;background:#141d2c;overflow:hidden;margin-top:12px;border:1px solid var(--border-soft);}
 .meter-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .35s ease;}
 
-.pa-chain{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;}
+.pa-chain{display:flex;gap:20px;flex-wrap:wrap;margin-top:24px;}
 .pa-node{
-  width:34px;height:34px;border-radius:50%;border:1px solid var(--border-soft);background:var(--panel);
-  display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--text2);
-  flex-direction:column;line-height:1.1;position:relative;flex:none;
+  width:48px;height:48px;border-radius:50%;border:1px solid var(--border-soft);background:var(--panel);
+  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--text2);
+  flex-direction:column;line-height:1.2;position:relative;flex:none;
 }
-.pa-node .n{font-size:7px;color:var(--text3);text-transform:uppercase;}
-.pa-node .p{font-size:9.5px;color:var(--text);}
+.pa-node .n{font-size:8.5px;color:var(--text3);text-transform:uppercase;margin-bottom:1px;}
+.pa-node .p{font-size:12px;color:var(--text);}
 .pa-node.final{border-color:var(--accent);box-shadow:0 0 0 3px rgba(62,207,255,.14);}
 .pa-node.final .p{color:var(--accent);}
 
@@ -390,10 +390,6 @@ table.board tbody tr:hover{background:rgba(62,207,255,.05);}
   .team-grid{grid-template-columns:repeat(2,1fr);}
   .hero h1{font-size:19px;}
   .topbar{padding:12px;}
-  .bat-hero{grid-template-columns:1fr;padding:18px 4px 12px;gap:16px;}
-  .bh-title{font-size:30px;}
-  .bh-cage{min-height:190px;}
-  .bh-lede{font-size:12.5px;}
 }
 .topbar2{display:flex;align-items:center;justify-content:space-between;padding:14px 4px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:10px;}
 .brand2{font-weight:800;font-size:15px;color:#fff;letter-spacing:-.01em;}
@@ -416,15 +412,18 @@ table.board tbody tr:hover{background:rgba(62,207,255,.05);}
 .bh-zone{position:absolute;left:11%;top:20%;width:88px;height:118px;box-sizing:border-box;border:2px solid rgba(231,237,247,.3);display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);}
 .bh-zone i{border:1px solid rgba(231,237,247,.09);}
 .bh-zone .bh-spot{position:absolute;inset:0;margin:auto;width:10px;height:10px;border-radius:50%;background:var(--amber);box-shadow:0 0 12px 3px rgba(244,185,66,.7);}
+.bh-zone-callout{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transform:scale(.72);transition:opacity .3s ease,transform .3s ease;z-index:4;}
+.bh-zone-callout.show{opacity:1;transform:scale(1);}
+.bh-zone-callout span{background:rgba(8,13,21,.86);border:1px solid rgba(244,185,66,.5);color:#ffd98a;font:800 7.5px 'DM Mono',monospace,'Inter',sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:4px 7px;border-radius:6px;white-space:nowrap;box-shadow:0 0 14px rgba(244,185,66,.28);}
 .bh-batter{position:absolute;right:16%;top:16%;width:100px;height:142px;}
 .bh-batter i{position:absolute;background:#131f26;border:1px solid rgba(34,197,94,.28);display:block;}
 .bh-batter .bh-head{width:20px;height:20px;border-radius:50%;left:30px;top:0;z-index:3;}
 .bh-batter .bh-body{width:30px;height:48px;left:25px;top:19px;border-radius:15px 15px 8px 8px;transform:rotate(5deg);z-index:2;}
-.bh-batter .bh-arm-back{width:9px;height:32px;left:19px;top:23px;border-radius:7px;transform:rotate(-36deg);transform-origin:top;z-index:1;}
-.bh-batter .bh-arm-front{width:9px;height:26px;left:49px;top:21px;border-radius:7px;transform:rotate(45deg);transform-origin:top;z-index:3;}
+.bh-batter .bh-arm-back{width:8px;height:35px;left:19px;top:23px;border-radius:7px;transform:rotate(22deg);transform-origin:top;z-index:1;}
+.bh-batter .bh-arm-front{width:8px;height:32px;left:49px;top:21px;border-radius:7px;transform:rotate(-38deg);transform-origin:top;z-index:4;}
 .bh-batter .bh-leg1{width:11px;height:58px;left:27px;top:63px;border-radius:8px;transform:rotate(-13deg);}
 .bh-batter .bh-leg2{width:11px;height:58px;left:43px;top:63px;border-radius:8px;transform:rotate(16deg);}
-.bh-batter .bh-bat{background:none;border:0;left:65px;top:-19px;width:10px;height:58px;transform:rotate(-12deg);transform-origin:bottom center;z-index:4;}
+.bh-batter .bh-bat{background:none;border:0;left:68px;top:-4px;width:10px;height:50px;transform:rotate(-15deg);transform-origin:bottom center;z-index:3;}
 .bh-batter .bh-bat .bh-bat-handle{position:absolute;left:3px;bottom:0;width:4px;height:24px;border-radius:3px;background:#8a6a3a;border:1px solid rgba(244,185,66,.4);}
 .bh-batter .bh-bat .bh-bat-barrel{position:absolute;left:0;bottom:22px;width:10px;height:32px;border-radius:9px 9px 5px 5px;background:linear-gradient(0deg,#a9835a,#8a6a3a);border:1px solid rgba(244,185,66,.55);}
 .bh-logo{position:absolute;right:9%;top:58%;font-size:1.6rem;opacity:.55;filter:grayscale(1);}
@@ -436,10 +435,94 @@ table.board tbody tr:hover{background:rgba(62,207,255,.05);}
 .bh-read{position:absolute;left:16px;bottom:14px;right:16px;display:flex;justify-content:space-between;align-items:end;gap:10px;}
 .bh-read b{font-size:1.05rem;color:#fff;}
 .bh-read small{display:block;color:var(--text3);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;margin-top:3px;}
-.bh-velo-wrap{display:flex;align-items:baseline;gap:6px;}
-.bh-velo-tag{font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--green);}
-.bh-velo{font-variant-numeric:tabular-nums;color:var(--green);font-weight:800;font-size:1.5rem;}
+.bh-velo-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:2px;}
+.bh-velo-tag{font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);}
+.bh-velo{font-variant-numeric:tabular-nums;color:var(--green);font-weight:800;font-size:1.5rem;line-height:1;}
 @media (prefers-reduced-motion:reduce){.bh-ball{animation:none;opacity:.9;}.pulse2{animation:none;}}
+
+/* ============ MOBILE (<=480px) — hero, stat cards, calculator, radar, comparison ============ */
+@media (max-width:480px){
+  /* --- Hero: fix word-wrap collapse + oversized/overlapping illustration --- */
+  .bat-hero{grid-template-columns:1fr;padding:16px 2px 10px;gap:12px;}
+  .bh-title{font-size:28px;}
+  .bh-lede{max-width:100%;font-size:12.5px;line-height:1.6;}
+  .bh-facts{gap:6px;margin-top:10px;}
+  .bh-facts span{padding:4px 8px;font-size:9.5px;}
+  .bh-facts b{font-size:9.5px;}
+  .bh-cage{min-height:130px;}
+  .bh-zone{transform:scale(.6);transform-origin:top left;}
+  .bh-batter{transform:scale(.68);transform-origin:top right;}
+  .bh-logo{display:none;}
+  .bh-ball:after{width:50px;}
+  .bh-read{left:10px;right:10px;bottom:8px;}
+  .bh-read b{font-size:.85rem;}
+  .bh-read small{font-size:8.5px;}
+  .bh-velo{font-size:1.15rem;}
+  .bh-velo-tag{font-size:6.6px;}
+
+  /* --- 6 stat cards in mobile hero strip: compact 2-col sizing --- */
+  .strip{gap:6px;margin-bottom:12px;}
+  .strip-tile{padding:8px 9px;border-radius:8px;}
+  .strip-label{font-size:9px;margin-bottom:3px;}
+  .strip-value{font-size:15px;}
+  .strip-value small{font-size:9.5px;}
+  .strip-sub{font-size:9px;}
+
+  /* --- Card headers: never overlap/clip title or tag --- */
+  .card-head{flex-wrap:wrap;padding:10px 12px;row-gap:4px;}
+  .card-title-sub{white-space:normal;}
+
+  /* --- HR Calculator: tighten heights/spacing to kill vertical scroll --- */
+  .card-body{padding:12px;}
+  .calc-grid{gap:12px;}
+  .calc-controls{gap:10px;}
+  .field label{margin-bottom:4px;}
+  select.player-select{padding:8px 30px 8px 10px;font-size:13px;}
+  .search-input{padding:8px 10px;margin-top:6px;font-size:12.5px;}
+  .player-id-row{gap:6px;}
+  .id-chip{padding:6px 9px;min-width:88px;}
+  .id-chip .v{font-size:13px;}
+  .slider-block{padding:9px 10px;border-radius:8px;}
+  .slider-top{margin-bottom:6px;}
+  .slider-top .val{font-size:14px;}
+  input[type=range]{height:26px;}
+  input[type=range]::-webkit-slider-thumb{width:22px;height:22px;margin-top:-8px;}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px;}
+  .park-label{margin-top:6px;font-size:11px;}
+  .formula-box{padding:9px 10px;font-size:10px;line-height:1.7;}
+  .calc-output{gap:10px;}
+  .hrg-readout{padding:12px 13px;}
+  .hrg-big{font-size:32px;}
+  .hrg-meta{gap:8px;margin-top:4px;font-size:10.5px;}
+  .meter{margin-top:8px;}
+  .pa-chain{margin-top:8px;gap:4px;}
+  .pa-chain{gap:12px;margin-top:14px;}
+  .pa-node{width:36px;height:36px;}
+  .pa-node .n{font-size:7px;}
+  .pa-node .p{font-size:9.5px;}
+  .stat-tiles{gap:6px;}
+  .stat-tile{padding:7px 8px;}
+  .stat-tile .k{font-size:8.5px;}
+  .stat-tile .v{font-size:13px;}
+  .model-note{padding:9px 10px;font-size:11px;}
+
+  /* --- Radar/pentagon chart: shrink, stack, no right-edge overflow --- */
+  .radar-wrap{flex-direction:column;align-items:stretch;gap:8px;}
+  .radar-wrap #radarSvgWrap{display:flex;justify-content:center;width:100%;}
+  .radar-wrap #radarSvgWrap svg{width:150px;height:150px;max-width:100%;}
+  .radar-legend{min-width:0;width:100%;font-size:10.5px;box-sizing:border-box;padding-right:2px;}
+
+  /* --- Player Comparison: compress rows, keep values on-screen --- */
+  .cmp-pickers{gap:8px;margin-bottom:10px;}
+  .cmp-row{padding:6px 0;gap:2px;}
+  .cmp-val{font-size:13.5px;padding:4px 6px;}
+  .cmp-metric{font-size:9px;}
+  .cmp-radar-wrap{gap:8px;margin-top:10px;}
+  .cmp-radar-wrap svg{width:120px !important;height:120px !important;max-width:44%;}
+  .cmp-radar-wrap > div:last-child svg{width:140px !important;height:140px !important;max-width:100%;}
+  .cmp-radar-wrap > div{max-width:100%;box-sizing:border-box;}
+  .cmp-radar-wrap > div:last-child{flex-basis:100%;}
+}
 </style>
 </head>
 <body>
@@ -458,11 +541,11 @@ table.board tbody tr:hover{background:rgba(62,207,255,.05);}
     <div class="bh-facts"><span><b>Qualified Hitter Board</b><small>142 tracked</small></span><span>20+ talent fields</span><span>Live bat-power model</span></div>
   </div>
   <div class="bh-cage" aria-label="Animated home run graphic">
-    <div class="bh-zone"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="bh-spot"></span></div>
+    <div class="bh-zone"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="bh-spot"></span><span class="bh-zone-callout" id="bhZoneCallout"><span id="bhZoneCalloutText"></span></span></div>
     <div class="bh-batter"><i class="bh-leg1"></i><i class="bh-leg2"></i><i class="bh-arm-back"></i><i class="bh-body"></i><i class="bh-arm-front"></i><i class="bh-head"></i><i class="bh-bat"><b class="bh-bat-handle"></b><b class="bh-bat-barrel"></b></i></div>
     <span class="bh-logo">shortopen</span>
     <div class="bh-ball"></div><div class="bh-ball b2"></div><div class="bh-ball b3"></div>
-    <div class="bh-read"><div><b>Damage over noise.</b><small>Contact · power · impact · production</small></div><div class="bh-velo-wrap"><span class="bh-velo-tag">EV</span><span class="bh-velo" id="bhVelo">108.4</span></div></div>
+    <div class="bh-read"><div><b>Damage over noise.</b><small>Contact · power · impact · production</small></div><div class="bh-velo-wrap"><span class="bh-velo-tag">Exit Velocity</span><span class="bh-velo" id="bhVelo">108.4</span></div></div>
   </div>
 </section>
 
@@ -1525,6 +1608,29 @@ function init(){
   renderTeamGrid();
   renderWalkthrough();
   initHeroVelo();
+  initZoneCallouts();
+}
+function initZoneCallouts(){
+  var wrap=document.getElementById('bhZoneCallout'), textEl=document.getElementById('bhZoneCalloutText');
+  var balls=document.querySelectorAll('.bh-ball');
+  if(!wrap||!textEl||!balls.length)return;
+  var outcomes=['Fly Ball','Bunt','Drag Bunt','Home Run','Single','Double','Triple','Sac Fly'];
+  var hideTimer, busy=false;
+  function fire(){
+    if(document.hidden||busy)return;
+    busy=true;
+    textEl.textContent=outcomes[Math.floor(Math.random()*outcomes.length)];
+    wrap.classList.add('show');
+    clearTimeout(hideTimer);
+    hideTimer=setTimeout(function(){
+      wrap.classList.remove('show');
+      setTimeout(function(){busy=false;},300);
+    },850);
+  }
+  balls.forEach(function(b){
+    b.addEventListener('animationiteration',fire);
+    b.addEventListener('animationstart',fire);
+  });
 }
 function initHeroVelo(){
   var el=document.getElementById('bhVelo');
