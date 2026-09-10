@@ -701,6 +701,20 @@ html body .hero-stat-value{
 </div>
 </div>
 
+<!-- QUALIFIER ROUNDS — RESULTS -->
+<div class="date-divider"><span class="date-divider-label">Champions League &middot; Qualifier Rounds · Results</span><div class="date-divider-line"></div></div>
+<div class="games-list">
+  <div class="col-header-row">
+    <div class="col-hdr">Matchup</div>
+    <div class="col-hdr">Win-Draw-Win</div>
+    <div class="col-hdr">Handicap</div>
+    <div class="col-hdr">Moneyline</div>
+    <div class="col-hdr">Total Goals</div>
+    <div class="col-hdr">Closing Reference</div>
+  </div>
+  <div id="clFinalCards"></div>
+</div>
+
 <!-- QUALIFIER ROUNDS — UPCOMING -->
 <div class="date-divider"><span class="date-divider-label">Champions League &middot; Qualifier Rounds · Upcoming</span><div class="date-divider-line"></div></div>
 <div class="games-list">
@@ -1018,18 +1032,6 @@ UPCOMING_GAMES.forEach(g => {
 //  array so the two leagues never mix data. No finals yet this season.
 // ════════════════════════════════════════════════════════════════
 const CL_UPCOMING_GAMES = [
-  { home: 'Stuttgart', homeAbbr: 'STU', away: 'Viking', awayAbbr: 'VIK', date: 'Tue Sep 16 · 12:45 PM ET', mlHome: -450, mlDraw: 600, mlAway: 1000,
-    handiHome: 'STU -2', handiHomeJuice: '-110', handiAway: 'VIK +2', handiAwayJuice: '-110', total: 'O/U 3', totalOverJuice: '-115', totalUnderJuice: '-105' },
-  { home: 'Barcelona', homeAbbr: 'BAR', away: 'Feyenoord', awayAbbr: 'FEY', date: 'Tue Sep 16 · 12:45 PM ET', mlHome: -1250, mlDraw: 1200, mlAway: 2500,
-    handiHome: 'BAR -3', handiHomeJuice: '-115', handiAway: 'FEY +3', handiAwayJuice: '-105', total: 'O/U 3.5', totalOverJuice: '-120', totalUnderJuice: '+100' },
-  { home: 'Paris St-G', homeAbbr: 'PSG', away: 'Slovan Bratislava', awayAbbr: 'SVK', date: 'Tue Sep 16 · 3:00 PM ET', mlHome: -2000, mlDraw: 1900, mlAway: 4000,
-    handiHome: 'PSG -3', handiHomeJuice: '-120', handiAway: 'SVK +3', handiAwayJuice: '+100', total: 'O/U 3.5', totalOverJuice: '-115', totalUnderJuice: '-105' },
-  { home: 'Liverpool', homeAbbr: 'LIV', away: 'Atletico Madrid', awayAbbr: 'ATM', date: 'Tue Sep 16 · 3:00 PM ET', mlHome: -145, mlDraw: 300, mlAway: 370,
-    handiHome: 'LIV -0.5', handiHomeJuice: '-115', handiAway: 'ATM +0.5', handiAwayJuice: '-105', total: 'O/U 2.5', totalOverJuice: '-110', totalUnderJuice: '-110' },
-  { home: 'Sporting Lisbon', homeAbbr: 'SPO', away: 'Galatasaray', awayAbbr: 'GAL', date: 'Tue Sep 16 · 3:00 PM ET', mlHome: -130, mlDraw: 300, mlAway: 330,
-    handiHome: 'SPO DNB', handiHomeJuice: '-110', handiAway: 'GAL DNB', handiAwayJuice: '-110', total: 'O/U 2.5', totalOverJuice: '-110', totalUnderJuice: '-110' },
-  { home: 'Napoli', homeAbbr: 'NAP', away: 'Arsenal', awayAbbr: 'ARS', date: 'Tue Sep 16 · 3:00 PM ET', mlHome: 470, mlDraw: 270, mlAway: -155,
-    handiHome: 'NAP +0.5', handiHomeJuice: '+100', handiAway: 'ARS -0.5', handiAwayJuice: '-120', total: 'O/U 2.5', totalOverJuice: '-110', totalUnderJuice: '-110' },
   { home: 'PSV', homeAbbr: 'PSV', away: 'Shakhtar', awayAbbr: 'SHK', date: 'Thu Sep 18 · 12:45 PM ET', mlHome: -240, mlDraw: 420, mlAway: 550,
     handiHome: 'PSV -1', handiHomeJuice: '-110', handiAway: 'SHK +1', handiAwayJuice: '-110', total: 'O/U 3', totalOverJuice: '-110', totalUnderJuice: '-110' },
   { home: 'Fenerbahce', homeAbbr: 'FEN', away: 'Roma', awayAbbr: 'ROM', date: 'Thu Sep 18 · 12:45 PM ET', mlHome: 230, mlDraw: 240, mlAway: 115,
@@ -1043,7 +1045,55 @@ const CL_UPCOMING_GAMES = [
   { home: 'Como', homeAbbr: 'COM', away: 'RB Leipzig', awayAbbr: 'LEI', date: 'Thu Sep 18 · 3:00 PM ET', mlHome: -120, mlDraw: 290, mlAway: 300,
     handiHome: 'COM DNB', handiHomeJuice: '-110', handiAway: 'LEI DNB', handiAwayJuice: '-110', total: 'O/U 2.5', totalOverJuice: '-110', totalUnderJuice: '-110' }
 ];
-const CL_FINAL_GAMES = [];
+
+// Tue Sep 16 qualifier-round fixtures — full time. Kept in this shape
+// (mirrors FINAL_GAMES above) so buildFinalCard renders them the same
+// way as the EPL final board. Re-populate CL_UPCOMING_GAMES / clear this
+// array once the Thu Sep 18 leg is also final, per the standing request.
+const CL_FINAL_GAMES = [
+  { home: 'Stuttgart', homeAbbr: 'STU', away: 'Viking', awayAbbr: 'VIK', date: 'Tue Sep 16 · 12:45 PM ET',
+    scoreHome: 3, scoreAway: 1, scorers: 'VIK: Z. Tripic 22\' &nbsp;&middot;&nbsp; STU: E. Demirovic 20\', 26\', 32\'',
+    closeHandiHome: 'STU -2', closeHandiHomeJuice: '-110', closeHandiAway: 'VIK +2', closeHandiAwayJuice: '-110',
+    closeMlAway: '+1000', closeMlDraw: '+600', closeMlHome: '-450',
+    closeTotal: 'O/U 3', closeTotalOverJuice: '-115', closeTotalUnderJuice: '-105',
+    note: 'Stuttgart were priced as a heavy -450 home favorite, and Ermedin Demirovic delivered on it in a hurry, scoring three times in a 12-minute span to put the game away before Viking\u2019s Tripic pulled one back. The favorite covered and the total cleared comfortably.'
+  },
+  { home: 'Barcelona', homeAbbr: 'BAR', away: 'Feyenoord', awayAbbr: 'FEY', date: 'Tue Sep 16 · 12:45 PM ET',
+    scoreHome: 5, scoreAway: 1, scorers: 'FEY: S. Steijn 82\' &nbsp;&middot;&nbsp; BAR: Raphinha 3\', 57\', K. Adeyemi 22\', L. Yamal 77\', G. Jesus 85\'',
+    closeHandiHome: 'BAR -3', closeHandiHomeJuice: '-115', closeHandiAway: 'FEY +3', closeHandiAwayJuice: '-105',
+    closeMlAway: '+2500', closeMlDraw: '+1200', closeMlHome: '-1250',
+    closeTotal: 'O/U 3.5', closeTotalOverJuice: '-120', closeTotalUnderJuice: '+100',
+    note: 'Barcelona opened as the board\u2019s biggest home favorite at -1250, and a Raphinha brace bookended a 5-1 rout that blew well past the 3.5 total. Feyenoord\u2019s lone reply from Steijn in the 82nd never threatened the favorite covering in stride.'
+  },
+  { home: 'Paris St-G', homeAbbr: 'PSG', away: 'Slovan Bratislava', awayAbbr: 'SVK', date: 'Tue Sep 16 · 3:00 PM ET',
+    scoreHome: 6, scoreAway: 1, scorers: 'SVK: S. Camara 58\' &nbsp;&middot;&nbsp; PSG: O. Demb\u00e9l\u00e9 17\', 23\', F. Torres 31\', 47\', 57\', F. Ruiz 87\'',
+    closeHandiHome: 'PSG -3', closeHandiHomeJuice: '-120', closeHandiAway: 'SVK +3', closeHandiAwayJuice: '+100',
+    closeMlAway: '+4000', closeMlDraw: '+1900', closeMlHome: '-2000',
+    closeTotal: 'O/U 3.5', closeTotalOverJuice: '-115', closeTotalUnderJuice: '-105',
+    note: 'PSG\u2019s -2000 price was the shortest number on the board, and a Ferran Torres hat trick alongside two from Demb\u00e9l\u00e9 produced a 6-1 rout that cleared the 3.5 total by three goals before Slovan\u2019s late consolation.'
+  },
+  { home: 'Liverpool', homeAbbr: 'LIV', away: 'Atletico Madrid', awayAbbr: 'ATM', date: 'Tue Sep 16 · 3:00 PM ET',
+    scoreHome: 2, scoreAway: 1, scorers: 'ATM: M. Llorente 17\' &nbsp;&middot;&nbsp; LIV: D. Szoboszlai 40\', A. Mac Allister 50\'',
+    closeHandiHome: 'LIV -0.5', closeHandiHomeJuice: '-115', closeHandiAway: 'ATM +0.5', closeHandiAwayJuice: '-105',
+    closeMlAway: '+370', closeMlDraw: '+300', closeMlHome: '-145',
+    closeTotal: 'O/U 2.5', closeTotalOverJuice: '-110', closeTotalUnderJuice: '-110',
+    note: 'Liverpool were modest -145 favorites over an Atletico side getting +370, and Llorente\u2019s early opener for the visitors briefly put that number in doubt. Szoboszlai and Mac Allister\u2019s second-half goals turned it around for a 2-1 home win that paid the favorite without covering by much.'
+  },
+  { home: 'Sporting Lisbon', homeAbbr: 'SPO', away: 'Galatasaray', awayAbbr: 'GAL', date: 'Tue Sep 16 · 3:00 PM ET',
+    scoreHome: 3, scoreAway: 1, scorers: 'GAL: G. In\u00e1cio 5\' OG &nbsp;&middot;&nbsp; SPO: G. Catamo 27\', L. Su\u00e1rez 57\' Pen, R. Zalazar 63\'',
+    closeHandiHome: 'SPO DNB', closeHandiHomeJuice: '-110', closeHandiAway: 'GAL DNB', closeHandiAwayJuice: '-110',
+    closeMlAway: '+330', closeMlDraw: '+300', closeMlHome: '-130',
+    closeTotal: 'O/U 2.5', closeTotalOverJuice: '-110', closeTotalUnderJuice: '-110',
+    note: 'Sporting were priced close to a coin flip at -130 with Galatasaray at +330, and an early own goal gifted the visitors a lead nobody saw coming. Sporting answered with three of their own \u2014 Catamo, a Su\u00e1rez penalty, and Zalazar \u2014 to complete a 3-1 comeback that covered comfortably.'
+  },
+  { home: 'Napoli', homeAbbr: 'NAP', away: 'Arsenal', awayAbbr: 'ARS', date: 'Tue Sep 16 · 3:00 PM ET',
+    scoreHome: 0, scoreAway: 1, scorers: 'ARS: M. \u00d8degaard 75\'',
+    closeHandiHome: 'NAP +0.5', closeHandiHomeJuice: '+100', closeHandiAway: 'ARS -0.5', closeHandiAwayJuice: '-120',
+    closeMlAway: '-155', closeMlDraw: '+270', closeMlHome: '+470',
+    closeTotal: 'O/U 2.5', closeTotalOverJuice: '-110', closeTotalUnderJuice: '-110',
+    note: 'Napoli opened as the home underdog at +470 with Arsenal favored at -155, and the board got the direction right even if the margin stayed thin \u2014 a single Martin \u00d8degaard strike in the 75th was enough for a clean 1-0 road win.'
+  }
+];
 
 // Outright "Winner 2026/27" futures board — a straight market snapshot,
 // no de-vig/margin-adjustment applied (that method only works on
@@ -1273,6 +1323,8 @@ function buildHeroBoardRow(g, rank) {
   if (statCalls) statCalls.textContent = calledGames.length;
 
   // ── Champions League — Qualifier Rounds board (same pipeline, own data) ──
+  const clFinalWrap = document.getElementById('clFinalCards');
+  if (clFinalWrap) CL_FINAL_GAMES.forEach(g => clFinalWrap.appendChild(buildFinalCard(g)));
   const clUpWrap = document.getElementById('clUpcomingCards');
   if (clUpWrap) CL_UPCOMING_GAMES.forEach(g => clUpWrap.appendChild(buildUpcomingCard(g)));
   const clBoardRows = document.getElementById('heroBoardRowsCL');
