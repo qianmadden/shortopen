@@ -5,6 +5,8 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="#0a0e16" name="theme-color"/>
 <title>shortopen &mdash; Read the Market Before the Crowd</title>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer src="auth.js?v=20260910-account"></script>
 <style>
 :root{--bg:#050a13;--gold:#f4b942;--green:#3fc17a;--red:#ef4444;--blue:#57a7ff;--muted:#738296;--text:#e8edf5;}
 *{box-sizing:border-box}
@@ -347,7 +349,7 @@ div[style*="grid-template-columns"]{min-width:0}
     <a class="so-nav-link" href="premier-league.html">Premier League</a>
     <a class="so-nav-link" href="terminal.html">Terminal</a>
   </div>
-  <div class="so-nav-actions"><a class="so-nav-secondary" href="about.html">About</a><a class="so-nav-cta" href="subscribe.html">Subscribe</a><a class="so-nav-secondary" href="account.html">Sign In</a></div>
+  <div class="so-nav-actions"><a class="so-nav-secondary" href="about.html">About</a><a class="so-nav-cta" href="subscribe.html">Subscribe</a><a class="so-nav-secondary" href="account.html" data-so-auth-nav="true">Sign In</a></div>
   <button class="so-hamburger" id="hamburgerBtn" type="button" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav></div>
 <div class="so-mobile-menu" id="mobileMenu" aria-hidden="true">
@@ -363,7 +365,7 @@ div[style*="grid-template-columns"]{min-width:0}
   <a href="terminal.html">Terminal</a>
   <a href="about.html">About</a>
   <a href="subscribe.html">Subscribe</a>
-  <a href="account.html">Sign In</a>
+  <a href="account.html" data-so-auth-nav="true">Sign In</a>
 <a href="terms.html" style="margin-top:10px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08);font-size:.72rem;font-weight:600;color:#7c8797">Terms of Service</a>
 </div>
 
@@ -555,36 +557,36 @@ div[style*="grid-template-columns"]{min-width:0}
 <a class="glass view-all" href="analysis.html">Full board &rarr;</a>
 </div>
 <aside class="so-launch-board" aria-label="New market announcements">
-  <div class="so-launch-intro"><span class="so-launch-live"><i></i> Opening Bell</span><strong>MLB Board + Champions League Props</strong><small>Fresh prices can move quickly.</small></div>
+  <div class="so-launch-intro"><span class="so-launch-live"><i></i> Opening Bell</span><strong>MLB Board + Champions League Results</strong><small>Fresh prices and final scores in one read.</small></div>
   <a class="so-launch-item" href="premier-league.html">
-    <span>Champions League · Prop Launch</span><b>Marcus Rashford +0.5 goals vs. Sabah.</b>
-    <p>Sabah is a favorable scoring opener for the left winger; the prop board is live now.</p><em>&rarr;</em>
+    <span>Champions League · Results Updated</span><b>Manchester United closes the round with a 4–0 win.</b>
+    <p>All six remaining cards are final, including Bayern 5–0 and Lens 3–2 away.</p><em>&rarr;</em>
   </a>
   <a class="so-launch-item nfl" href="mlb.html">
-    <span>MLB · Five Games Live</span><b>Game lines and player props are open.</b>
-    <p>Today’s five-game slate is loaded across Market, Strikeouts, Home Runs and Matchup Lab.</p><em>&rarr;</em>
+    <span>MLB · 15 Games Live</span><b>Game lines and player props are open.</b>
+    <p>Today’s full slate is loaded across Market, Strikeouts, Home Runs and Matchup Lab.</p><em>&rarr;</em>
   </a>
 </aside>
 <div id="openBoardGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px"><div class="glass market-card ob-card" style="border-radius:22px;padding:20px;position:relative">
 <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:#f4b9421f;color:#f4b942;border:1px solid #f4b9424d;border-radius:4px;padding:3px 8px">MLB</span><span style="font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4d6070">Market Price</span></div>
-<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">ATL ML -126 is the tightest market.</h3>
-<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">TB at ATL carries the slate’s lowest two-way margin.</p>
-<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a"><span>TB @ ATL</span><span>3.8% margin</span></div>
+<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">CWS ML -112 is the tightest market.</h3>
+<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">CWS at STL carries the slate’s lowest two-way margin.</p>
+<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a"><span>CWS @ STL</span><span>3.8% margin</span></div>
 </div><div class="glass market-card ob-card" style="border-radius:22px;padding:20px;position:relative">
 <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:#57a7ff1f;color:#57a7ff;border:1px solid #57a7ff4d;border-radius:4px;padding:3px 8px">Strikeouts</span><span style="font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4d6070">Best Edge</span></div>
-<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">Zack Wheeler Over 6.5 strikeouts.</h3>
-<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">BetMGM posts -105; the four-book fair probability is 51.0%.</p>
-<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a"><span>BetMGM -105</span><span>+-0.2 pts</span></div>
+<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">George Kirby Over 4.5 strikeouts.</h3>
+<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">BetMGM posts -105; the four-book fair probability is 52.6%.</p>
+<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a"><span>BetMGM -105</span><span>+1.4 pts</span></div>
 </div><div class="glass market-card ob-card" style="border-radius:22px;padding:20px;position:relative">
 <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:#3fc17a1f;color:#3fc17a;border:1px solid #3fc17a4d;border-radius:4px;padding:3px 8px">Home Runs</span><span style="font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4d6070">Top Model</span></div>
-<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">Kyle Schwarber to hit a home run.</h3>
-<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">The model projects 38.5% against HOU; FanDuel has +190.</p>
-<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a"><span>FanDuel +190</span><span>Model 38.5%</span></div>
+<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">Cal Raleigh to hit a home run.</h3>
+<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">The model projects 36.0% against ATH; DraftKings has +203.</p>
+<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a"><span>DraftKings +203</span><span>Model 36.0%</span></div>
 </div><div class="glass market-card ob-card" style="border-radius:22px;padding:20px;position:relative">
 <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:#ff4d4d1f;color:#ff4d4d;border:1px solid #ff4d4d4d;border-radius:4px;padding:3px 8px">Matchup Lab</span><span style="font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4d6070">Top Score</span></div>
-<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">Kyle Schwarber leads the Matchup Lab.</h3>
-<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">The PHI hitter grades 77.9 against Cristian Javier.</p>
-<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a"><span>Lab 77.9</span><span>Model 38.5%</span></div>
+<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">Cal Raleigh leads the Matchup Lab.</h3>
+<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">The SEA hitter grades 76.8 against Jeffrey Springs.</p>
+<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a"><span>Lab 76.8</span><span>Model 36.0%</span></div>
 </div></div>
 <div style="margin-top:16px;display:grid;grid-template-columns:2fr 1fr;gap:16px">
 <div class="glass market-card" style="border-radius:22px;padding:24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
