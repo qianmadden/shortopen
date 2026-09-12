@@ -573,6 +573,48 @@ var DATA={
  }
 };
 
+/* Matchweek 4 fixture context, synchronized with embed-pl-live-lines.html.
+   The three-way prices are converted to a no-margin baseline before the
+   player-level form adjustment is applied. */
+var MW4_FIXTURES={
+ 'Liverpool':{opp:'Fulham',side:'H',date:'SEP 12',winP:66.6},
+ 'Fulham':{opp:'Liverpool',side:'A',date:'SEP 12',winP:14.2},
+ 'Crystal Palace':{opp:'Ipswich Town',side:'H',date:'SEP 12',winP:50.9},
+ 'Ipswich Town':{opp:'Crystal Palace',side:'A',date:'SEP 12',winP:23.9},
+ 'Bournemouth':{opp:'Brentford',side:'H',date:'SEP 12',winP:38.1},
+ 'Brentford':{opp:'Bournemouth',side:'A',date:'SEP 12',winP:35.2},
+ 'Chelsea':{opp:'Hull City',side:'H',date:'SEP 12',winP:77.3},
+ 'Hull City':{opp:'Chelsea',side:'A',date:'SEP 12',winP:8.4},
+ 'Aston Villa':{opp:'Nottingham Forest',side:'H',date:'SEP 12',winP:42.5},
+ 'Nottingham Forest':{opp:'Aston Villa',side:'A',date:'SEP 12',winP:29.2},
+ 'Tottenham Hotspur':{opp:'Everton',side:'H',date:'SEP 12',winP:47.0},
+ 'Everton':{opp:'Tottenham Hotspur',side:'A',date:'SEP 12',winP:26.1},
+ 'Sunderland':{opp:'Arsenal',side:'H',date:'SEP 12',winP:13.3},
+ 'Arsenal':{opp:'Sunderland',side:'A',date:'SEP 12',winP:64.7},
+ 'Coventry City':{opp:'Brighton',side:'H',date:'SEP 13',winP:23.7},
+ 'Brighton':{opp:'Coventry City',side:'A',date:'SEP 13',winP:51.3},
+ 'Man Utd':{opp:'Man City',side:'H',date:'SEP 13',winP:30.4},
+ 'Man City':{opp:'Man Utd',side:'A',date:'SEP 13',winP:44.8},
+ 'Leeds United':{opp:'Newcastle',side:'H',date:'SEP 14',winP:38.4},
+ 'Newcastle':{opp:'Leeds United',side:'A',date:'SEP 14',winP:34.8}
+};
+function fixtureBonus(winP){
+ if(winP>=70)return 4; if(winP>=60)return 2.5; if(winP>=50)return 1;
+ if(winP>=40)return 0; if(winP>=30)return -1; if(winP>=20)return -2.5;
+ return -4.5;
+}
+Object.keys(DATA).forEach(function(cat){
+ DATA[cat].players.forEach(function(p){
+  var f=MW4_FIXTURES[p.team]; if(!f)return;
+  p.opp=f.opp; p.side=f.side; p.date=f.date; p.winP=f.winP; p.fbon=fixtureBonus(f.winP);
+  if(cat==='cleansheets') p.pct=Math.round(p.base-p.csbon+p.fbon);
+  else if(cat==='passes') p.pct=Math.round(p.base+p.fbon);
+  else p.pct=Math.round(p.base+(p.form||0)+p.fbon);
+ });
+});
+DATA.goals.note='Matchweek 4 baseline: over/under 0.5 goals, adjusted for player production and the current matchup price.';
+DATA.assists.note='Matchweek 4 baseline: over/under 0.5 assists, adjusted for player production and the current matchup price.';
+
 function hexToRgb(h){h=h.replace('#','');return[parseInt(h.substr(0,2),16),parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)]}
 function lerp(a,b,t){return Math.round(a+(b-a)*t)}
 function lerpColor(c1,c2,t){var a=hexToRgb(c1),b=hexToRgb(c2);return 'rgb('+lerp(a[0],b[0],t)+','+lerp(a[1],b[1],t)+','+lerp(a[2],b[2],t)+')'}
@@ -727,9 +769,9 @@ function render(cat){
     +'<div class="pc-topline"><span class="pc-team">'+p.team+'</span><span class="pc-id">'+ticket+'</span></div>'
     +'<div class="pc-name">'+p.name+'</div>'
     +'<div class="pc-sub">'+p.sub+'</div>'
-    +'<div class="pc-metarow"><span class="pc-fixture">'+(p.side==='H'?'vs':'@')+' <span class="fw">'+p.opp+'</span></span><span class="pc-line">'+lineText+'</span></div>'
+    +'<div class="pc-metarow"><span class="pc-fixture">'+(p.side==='H'?'vs':'@')+' <span class="fw">'+p.opp+'</span><small>'+((p.date||'')?' · '+p.date:'')+'</small></span><span class="pc-line">'+lineText+'</span></div>'
     +'<div class="pc-pctrow"><div class="pc-pctmain"><span class="pc-pct" style="color:'+color+'">'+p.pct+'%</span><span class="pc-pctlabel">model read</span></div><span class="pc-odds">'+fmtOdds(p.pct)+'</span></div>'
-    +'<div class="pc-verdict"><b>ShortOpen read</b>'+verdict+'</div>'
+    +'<div class="pc-verdict"><b>ShortOpen read · '+(p.pct>=50?'OVER':'UNDER')+'</b>'+verdict+'</div>'
     +'<div class="pc-bar"><i style="--w:'+w+';--c:'+color+'"></i></div>'
     +breakdownHtml(p,cat)
     +'</div>';
@@ -775,4 +817,34 @@ document.getElementById('tabs').addEventListener('click',function(e){
 
 render('goals');
 </script>
+<style id="so-pl-mw4-clarity-20260911">
+.pc-fixture small{color:#6f8395;font:800 6px var(--mono);letter-spacing:.07em}.pc-verdict b{letter-spacing:.07em}.pc-line{font-weight:850}.pc-pct{font-variant-numeric:tabular-nums}
+</style>
+<style id="so-pl-prop-dark-ledger-20260911">
+/* Restrained dark-ledger treatment: team color is reduced to one quiet edge. */
+.prop-card{border:1px solid rgba(151,169,184,.13)!important;border-radius:12px!important;background:linear-gradient(155deg,#0b1219 0%,#080e14 58%,#060a0f 100%)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 10px 24px rgba(0,0,0,.22)!important}
+.prop-card:before{inset:0 auto 0 0!important;width:2px!important;transform:none!important;background:rgba(var(--team-rgb),.36)!important;opacity:.55!important}
+.prop-card:after{display:none!important}.prop-card:hover{transform:translateY(-2px)!important;border-color:rgba(179,194,205,.22)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 14px 28px rgba(0,0,0,.28)!important}.prop-card:hover:before{transform:none!important}
+.prop-card.ceiling{border-color:rgba(244,185,66,.22)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 10px 24px rgba(0,0,0,.24)!important}
+.pc-team,.pc-id,.pc-sub{color:#718494!important}.pc-name{color:#e8eef2!important}.pc-fixture,.pc-line,.pc-odds{border-color:rgba(255,255,255,.075)!important;background:rgba(255,255,255,.025)!important;color:#aebdc8!important;box-shadow:none!important}
+.pc-pct{color:#edf3f6!important;text-shadow:none!important}.pc-pctlabel{color:#617586!important}.pc-verdict{border-color:rgba(255,255,255,.07)!important;background:rgba(255,255,255,.018)!important;color:#8799a7!important}.pc-verdict b{color:#c9d4dc!important}
+.pc-bar{height:2px!important;background:rgba(255,255,255,.07)!important}.pc-bar i{background:#8da0af!important;box-shadow:none!important}
+.pc-bd-item{border-color:rgba(255,255,255,.06)!important}.pc-bd-val{color:#cbd6dd!important}.pc-bd-lbl{color:#627484!important}.pc-tag{background:#171a19!important;border-color:rgba(244,185,66,.2)!important;color:#c7a75c!important;box-shadow:none!important}
+@media(max-width:650px){.prop-card{border-radius:10px!important}.pc-pct{font-size:25px!important}}
+</style>
+<style id="so-pl-prop-inviting-glass-20260911">
+html,body,.prop-card{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"kern" 1,"tnum" 1}
+.prop-card{border:1px solid rgba(157,181,199,.20)!important;border-radius:18px!important;background:radial-gradient(circle at 92% 0%,rgba(var(--team-rgb),.075),transparent 34%),linear-gradient(150deg,rgba(17,29,40,.985),rgba(8,15,22,.99) 66%,rgba(6,11,17,.995))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.085),0 13px 28px rgba(0,0,0,.24)!important}
+.prop-card:before{inset:0 16px auto 16px!important;width:auto!important;height:1px!important;background:linear-gradient(90deg,transparent,rgba(244,185,66,.62),rgba(109,194,232,.40),transparent)!important;opacity:.75!important}
+.prop-card:hover{transform:translateY(-3px)!important;border-color:rgba(185,204,218,.30)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.11),0 18px 36px rgba(0,0,0,.30)!important}
+.prop-card.ceiling{border-color:rgba(244,185,66,.31)!important;background:radial-gradient(circle at 90% 0%,rgba(244,185,66,.08),transparent 36%),linear-gradient(150deg,rgba(18,29,39,.99),rgba(8,15,22,.99) 66%)!important}
+.pc-topline{padding-bottom:8px!important;border-bottom:1px solid rgba(255,255,255,.055)}.pc-team{display:flex;align-items:center;gap:7px;color:#a5bac9!important}.pc-team:before{content:"";width:5px;height:5px;border-radius:50%;background:rgba(var(--team-rgb),.85);box-shadow:0 0 8px rgba(var(--team-rgb),.28)}
+.pc-name{margin-top:13px!important;color:#f0f4f7!important;font-weight:830!important;letter-spacing:-.018em}.pc-sub{color:#7f93a2!important}
+.pc-fixture,.pc-line{border-color:rgba(151,177,197,.11)!important;border-radius:7px!important;background:rgba(135,166,188,.045)!important;color:#b9c8d2!important}.pc-line{color:#d8bd78!important}
+.pc-pctrow{border-top-color:rgba(255,255,255,.06)!important}.pc-pct{color:#f3d27c!important;text-shadow:0 0 18px rgba(244,185,66,.10)!important}.pc-odds{border-color:rgba(244,185,66,.15)!important;background:rgba(244,185,66,.055)!important;color:#d5c28e!important}
+.pc-verdict{border-color:rgba(110,177,210,.10)!important;border-radius:9px!important;background:linear-gradient(90deg,rgba(84,154,190,.075),rgba(255,255,255,.018))!important;color:#9aabb7!important}.pc-verdict b{color:#dbe5eb!important}
+.pc-bar{height:3px!important;border-radius:99px!important;background:rgba(255,255,255,.07)!important}.pc-bar i{border-radius:99px!important;background:linear-gradient(90deg,#8aa5b6,#e5bd5d)!important;box-shadow:none!important}
+.pc-bd-item{border-top-color:rgba(255,255,255,.07)!important}.pc-bd-val{color:#dce5ea!important}.pc-bd-lbl{color:#718391!important}.pc-tag{border-color:rgba(244,185,66,.22)!important;border-radius:6px!important;background:rgba(244,185,66,.07)!important;color:#d8b85f!important}
+@media(max-width:650px){.prop-card{border-radius:14px!important}.pc-name{margin-top:10px!important}.pc-pct{font-size:26px!important}}
+</style>
 </body></html>
