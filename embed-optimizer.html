@@ -5223,7 +5223,94 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 #panel-nfl .nfl-own-track b{display:block;width:var(--own);height:100%;border-radius:inherit;background:linear-gradient(90deg,#318cff,#69d5ff)}
 #panel-nfl .nfl-game-total-plain{color:#dce7ef;font:900 13px 'DM Mono',monospace;font-variant-numeric:tabular-nums}
 @media(max-width:700px){#panel-nfl #nflPoolTable[data-view="all"]{min-width:1190px!important}#panel-nfl .nfl-own-track{width:58px}}
-</style></head>
+</style><style id="so-editorial-restyle-v9-cohesion">
+/* Join the terminal row and the ownership/value row into one continuous desk. */
+@media(min-width:1181px){
+  #mlbOwnershipPanel .so-kt-main{border-radius:20px 20px 0 0!important;border-bottom:0!important;box-shadow:0 12px 34px rgba(0,0,0,.28)!important;}
+  #mlbOwnershipPanel #soOwnLevRow{gap:0!important;margin:-1px 0 10px!important;border:1px solid rgba(255,255,255,.055)!important;border-top:1px solid rgba(0,232,124,.16)!important;border-radius:0 0 20px 20px!important;overflow:hidden!important;background:#080d13!important;}
+  #mlbOwnershipPanel #soOwnLevRow>#soExposurePair{margin:0!important;padding:0!important;}
+  #mlbOwnershipPanel #soOwnLevRow>.so-levval-outer{margin:0!important;padding:0!important;border-left:1px solid rgba(255,255,255,.07)!important;}
+  #mlbOwnershipPanel #soOwnLevRow .so-final-depth-bottom,#mlbOwnershipPanel #soOwnLevRow .so-corr-panel.so-levval-panel{border:0!important;border-radius:0!important;box-shadow:none!important;}
+  #mlbOwnershipPanel #soOwnLevRow .so-final-depth-head-slim,#mlbOwnershipPanel #soOwnLevRow .so-corr-head.so-levval-head{min-height:48px!important;box-sizing:border-box!important;}
+}
+@media(max-width:1180px){
+  #mlbOwnershipPanel #soOwnLevRow>.so-levval-outer{padding:0!important;}
+}
+</style>
+<style id="so-editorial-restyle-v11-fill">
+/* ── Editorial restyle v11 ──────────────────────────────────────────────
+   The Signal Desk → Leverage & Value boundary keeps getting reported as
+   "gapped" even though every row-boundary measurement (box bottoms, row
+   tops) lines up to 0px — verified again this pass. The real issue is
+   density, not alignment: Signal Desk's own content (2 pivot tickets +
+   Field Concentration) is thinner/smaller than Live Tape's packed row
+   list next to it, so the eye reads dead space at the bottom of that
+   panel right before the boundary. Fix: grow the thin content itself
+   (bigger bars, bigger type, more breathing room) instead of touching
+   margins/borders again. Signal Desk's ticket list already scrolls
+   internally (flex:1 + overflow-y:auto) so growing it never clips
+   Field Concentration below. Presentation-only — no JS that computes,
+   filters, sorts or selects player/ownership data is touched. ── */
+
+/* Field Concentration — was the thinnest element in the whole desk row
+   (4px hairline bars, .52rem text). Bring it up to a size that reads as
+   an actual chart, not a footnote. */
+#mlbOwnershipPanel .so-v6-exposure{padding:12px 12px 14px!important;}
+#mlbOwnershipPanel .so-v6-exp-title{font-size:.56rem!important;margin-bottom:10px!important;}
+#mlbOwnershipPanel .so-v6-exp-row{grid-template-columns:64px 1fr 46px!important;gap:9px!important;margin-bottom:9px!important;font-size:.62rem!important;}
+#mlbOwnershipPanel .so-v6-exp-row:last-child{margin-bottom:0!important;}
+#mlbOwnershipPanel .so-v6-track{height:10px!important;}
+#mlbOwnershipPanel .so-v6-exp-label{font-size:.6rem!important;font-weight:800!important;}
+#mlbOwnershipPanel .so-v6-exp-val{font-size:.66rem!important;}
+
+/* Signal Desk pivot tickets — left at their existing size. (An earlier
+   version of this pass enlarged these too, but with only 2 tickets in
+   the flexed body, the extra height pushed the 2nd card's stat grid past
+   the visible area and it scrolled off mid-card, which read worse than
+   the density issue it was meant to fix. Field Concentration below —
+   which is fixed-height, not scrolling — is where the size increase
+   actually needed to happen, and does the job on its own.) */
+
+/* Field Pressure Map (middle column) had the same thin-bar issue in its
+   band chart — bring it up to match so all three panels read as equally
+   full. */
+#mlbOwnershipPanel .so-v6-bands{padding:11px!important;gap:9px!important;}
+#mlbOwnershipPanel .so-v6-band{font-size:.62rem!important;grid-template-columns:64px 1fr 44px!important;gap:10px!important;}
+#mlbOwnershipPanel .so-v6-band .so-v6-track{height:9px!important;}
+#mlbOwnershipPanel .so-v6-metric{padding:9px 8px!important;}
+#mlbOwnershipPanel .so-v6-metric b{font-size:.86rem!important;}
+</style>
+<style id="so-editorial-restyle-v12-swap">
+/* ── Editorial restyle v12 ──────────────────────────────────────────────
+   1) Leverage & Value's title was rendering at the same tiny (.54rem)
+      mono kicker size as the desk-row labels above it (Live Tape, Field
+      Pressure Map, Signal Desk) — fine for those since they're compact
+      strip headers, but Leverage & Value is a full panel title and read
+      as an afterthought pinned to the top of a much taller header area
+      once the Contrarian Targets/Value Board tab buttons wrapped to
+      their own line below it. Bumped to match the weight/size Tournament
+      Ownership's own title uses, and given the head real breathing room. */
+/* v13: dialed the title back down (.98rem read too heavy) and dropped
+   the "contrarian targets + positional value board" subtitle entirely —
+   it just repeated the two tab button labels sitting directly beneath
+   it. Head is now title + tabs only, one tidy row. */
+#mlbOwnershipPanel .so-levval-head{padding:12px 16px!important;align-items:center!important;}
+#mlbOwnershipPanel .so-levval-head>span:first-child{
+  font-family:'Inter',sans-serif!important;font-size:.78rem!important;font-weight:800!important;
+  letter-spacing:-.005em!important;text-transform:none!important;color:#edf5ff!important;margin-top:0!important;
+}
+#mlbOwnershipPanel .so-levval-head>span:nth-child(2){display:none!important;}
+#mlbOwnershipPanel .so-levval-tabs{margin-top:0!important;}
+
+/* 2) More rows visible in both Leverage & Value tabs without scrolling —
+   the row above is now 720px (was 610px) and the Value Board intro note
+   is gone; also trims a touch of per-row padding so more of the list
+   fits in the freed space. Numbers/text sizes from the earlier "bigger
+   type" pass are untouched, only vertical padding tightens. */
+#mlbOwnershipPanel .so-posval-row{padding:9px 14px!important;}
+#mlbOwnershipPanel .so-con2-row{padding:9px 14px!important;}
+</style>
+</head>
 <body>
 
 <!-- ═══════════════ OPTIMIZER HERO ═══════════════ -->
@@ -5693,6 +5780,10 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 </div><!-- end dfs-wrap -->
 <!-- ── OWNERSHIP PROJECTION PANEL ── -->
 <div id="mlbOwnershipPanel" style="display:none;">
+<div class="so-player-digest">
+<div class="so-player-digest-kicker">Player Digest</div>
+<div class="so-player-digest-body"><b>Live Tape</b> streams the players with the highest home-run probability on the slate right now. <b>Signal Desk</b> surfaces pivots and salary-relief plays worth watching against the field. <b>Tournament Ownership</b> is the full sortable ownership board — every rostered player, ranked and filterable by position. <b>Contrarian Targets</b> flags low-owned bats with a projection good enough to play anyway. <b>Value Board</b> shows the best salary-efficiency play at each roster slot. <b>Batter vs Pitcher</b> breaks down starter leverage and matchup EV against the opposing lineup once you pick a pitcher.</div>
+</div>
 <!-- header: badge + player count + tier pills + controls -->
 <div class="own-header own-header-v2">
 <div class="own-header-left">
@@ -5733,14 +5824,6 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 <div style="display:none;">
 <span id="ownCountChalk2"></span><span id="ownCountHigh2"></span>
 <span id="ownCountMid2"></span><span id="ownCountLow2"></span>
-</div>
-<div style="background:rgba(255,255,255,.03);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px 18px;margin-bottom:12px;position:relative;overflow:hidden;">
-<div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#0f1626,#5c4717,#0f1626);background-size:200% 100%;animation:navyGoldSweep 4s ease-in-out infinite alternate"></div>
-<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-<span style="display:block;width:14px;height:1px;background:#f4b942"></span>
-<span style="font-size:0.62rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#f4b942">shortopen · ownership philosophy</span>
-</div>
-<p style="font-size:0.82rem;color:#9dafc2;line-height:1.7;margin:0;">Knowing what the field is doing is one of the most critical inputs into your own decision-making. Do you <strong style="color:#f4b942;">short the consensus</strong> once you know the open? This ownership model lays out exactly where the public money is concentrating — chalk plays, high-owned favorites, contrarian upside — all in plain terms.</p>
 </div>
 <!-- HORIZONTAL DEPTH CHART replaces vertical table -->
 <div class="own-depth-outer" id="ownDepthChartWrap"></div>
@@ -6448,10 +6531,10 @@ function toggleAccessLock(){
 <!-- MLB slate arrays refreshed from uploaded CSV: left table batters, right detail table pitchers. -->
 // ── DATA ──────────────────────────────────────────────────────
 // Batters: Player,Salary,Position,Team,Opponent,Projection,Value,Hand,TeamTotal,IPVariance,StackVariance,HR%,K%,Own%
-const MLB_BATTERS = [["Aaron Judge",6100,"OF","NYY","NYM",13.12,1.84,"R",4.7,"","",36.1,31.13,22.73],["Pete Crow-Armstrong",6600,"OF","CHC","PIT",11.72,1.48,"L",4.8,"","",18.8,25.04,13.53],["Fernando Tatis Jr.",6500,"2B/OF","SD","SF",11.69,1.5,"R",4.6,"","",14.8,21.53,14.77],["Bobby Witt Jr.",6000,"SS","KC","BOS",11.35,1.57,"R",3.8,"","",9.2,15.15,9.5],["Zach Neto",4700,"SS","LAA","WSH",11.21,1.98,"R",4.2,"","",12.8,21.62,10.73],["Roman Anthony",5200,"OF","BOS","KC",11.05,1.76,"L",4.9,"","",6.5,21.14,12.2],["James Wood",6100,"OF","WSH","LAA",10.96,1.48,"L",4.2,"","",15.2,26.31,8.73],["Jose Ramirez",5400,"3B","CLE","MIN",10.92,1.67,"S",4.5,"","",17.1,16.05,12.73],["Freddie Freeman",4800,"1B","LAD","MIA",10.74,1.84,"L",4.7,"","",11.8,13.87,11.5],["Kyle Tucker",4000,"OF","LAD","MIA",10.73,2.2,"L",4.7,"","",15.2,14.87,13.07],["Juan Soto",6100,"OF","NYM","NYY",10.71,1.44,"L",3.8,"","",23.8,23.07,11.23],["Oneil Cruz",6700,"OF","PIT","CHC",10.65,1.3,"L",4.7,"","",14.1,29.09,10.93],["Manny Machado",5500,"3B","SD","SF",10.56,1.57,"R",4.6,"","",15.4,16.93,11],["Jo Adell",3900,"OF","CLE","MIN",10.51,2.2,"R",4.5,"","",20.2,37.61,11.57],["George Springer",4400,"OF","TOR","BAL",10.43,1.93,"R",4.3,"","",13.5,16.19,8.9],["Riley Greene",4700,"OF","DET","COL",10.41,1.81,"L",4.7,"","",15.3,40.12,11.73],["Seiya Suzuki",5100,"OF","CHC","PIT",10.38,1.66,"R",4.8,"","",13.4,23.91,9.13],["Vladimir Guerrero Jr.",4500,"1B","TOR","BAL",10.37,1.88,"R",4.3,"","",14.1,10.6,8.1],["Gunnar Henderson",4700,"SS","BAL","TOR",10.31,1.79,"L",4.4,"","",17.1,20.73,10.8],["Wilyer Abreu",5600,"OF","BOS","KC",10.25,1.49,"L",4.9,"","",12.9,23.84,11.53],["Pete Alonso",5200,"1B","BAL","TOR",10.25,1.6,"R",4.4,"","",20.5,18.66,11.87],["Kevin McGonigle",5200,"3B/SS","DET","COL",10.24,1.6,"L",4.7,"","",10.9,19.14,12.47],["Brandon Lowe",5700,"2B","PIT","CHC",10.2,1.45,"L",4.7,"","",16.6,23.54,10.8],["Michael Busch",4100,"1B","CHC","PIT",10.16,2.01,"L",4.8,"","",12.9,28.35,9.07],["Konnor Griffin",3300,"SS","PIT","CHC",10.14,2.49,"R",4.7,"","",5.9,24.93,10.5],["Mike Trout",5100,"OF","LAA","WSH",10.13,1.61,"R",4.2,"","",12.5,25.22,9.17],["Trevor Story",3300,"SS","BOS","KC",10.12,2.48,"R",4.9,"","",10.1,25.44,10.57],["CJ Abrams",5800,"2B/SS","WSH","LAA",10.1,1.41,"L",4.2,"","",10.3,18.29,10.43],["Jarren Duran",4400,"OF","BOS","KC",10.09,1.86,"L",4.9,"","",8.5,18.44,9.53],["Xander Bogaerts",4300,"SS","SD","SF",9.98,1.87,"R",4.6,"","",7.6,15.5,8.27],["Luke Keaschall",4500,"OF","MIN","CLE",9.94,1.78,"R",4.3,"","",5.3,22.35,7.63],["Francisco Lindor",4400,"SS","NYM","NYY",9.84,1.8,"S",3.8,"","",20.9,19.8,9.33],["Mookie Betts",4900,"SS","LAD","MIA",9.8,1.61,"R",4.7,"","",12.8,10.9,9.33],["Tommy Edman",4700,"2B/OF","LAD","MIA",9.74,1.66,"S",4.7,"","",7.9,16.85,10.8],["Paul Goldschmidt",3000,"1B","NYY","NYM",9.74,2.61,"R",4.7,"","",20,20.46,12.37],["Teoscar Hernandez",4500,"OF","LAD","MIA",9.73,1.74,"R",4.7,"","",12.7,27.74,9.3],["Hunter Goodman",5300,"C","COL","DET",9.69,1.47,"R",3.9,"","",21.7,29.66,12.83],["Cody Bellinger",4800,"OF","NYY","NYM",9.68,1.62,"L",4.7,"","",18.6,19.48,9.23],["Max Muncy",4600,"3B","LAD","MIA",9.64,1.68,"L",4.7,"","",15.6,27.74,9.47],["Adley Rutschman",3900,"C","BOS","KC",9.64,1.98,"S",4.9,"","",9.6,15.16,14.37],["Rafael Devers",5100,"1B","SF","SD",9.62,1.51,"L",3.6,"","",15.2,22.45,5.77],["Bryan Reynolds",5200,"OF","PIT","CHC",9.59,1.48,"S",4.7,"","",10.9,19.39,9.6],["Jackson Merrill",4900,"OF","SD","SF",9.49,1.54,"L",4.6,"","",11.9,15.86,7.43],["Steven Kwan",3800,"OF","CLE","MIN",9.39,1.97,"L",4.5,"","",5.1,11.89,6.37],["Dylan Beavers",2900,"OF","BAL","TOR",9.38,2.57,"L",4.4,"","",10.5,18.87,11.2],["Alex Bregman",5600,"3B","CHC","PIT",9.33,1.32,"R",4.8,"","",11.5,13.66,7.4],["Daylen Lile",4600,"OF","WSH","LAA",9.33,1.61,"L",4.2,"","",10.7,17.48,6.37],["Dylan Crews",4100,"OF","WSH","LAA",9.3,1.8,"R",4.2,"","",9.6,24.86,6.57],["Ryan O'Hearn",4200,"1B","PIT","CHC",9.28,1.75,"L",4.7,"","",10.8,22,8.07],["Colt Keith",3200,"1B","DET","COL",9.27,2.3,"L",4.7,"","",10.3,32.7,7.93],["Heliot Ramos",3400,"OF","NYY","NYM",9.26,2.16,"R",4.7,"","",16.8,23.09,9.57],["Ian Happ",3800,"OF","CHC","PIT",9.24,1.93,"S",4.8,"","",11.7,30.81,8.33],["Austin Hays",3000,"OF","SD","SF",9.23,2.44,"R",4.6,"","",9.3,27.99,7.23],["Gleyber Torres",4100,"2B","DET","COL",9.21,1.78,"R",4.7,"","",11.2,15.45,9.13],["Ben Rice",5700,"1B/C","NYY","NYM",9.19,1.28,"L",4.7,"","",22,22.29,13.13],["Caleb Durbin",3400,"3B","BOS","KC",9.17,2.13,"R",4.9,"","",6.1,14.65,9],["Connor Norby",3700,"2B/3B","COL","DET",9.16,1.96,"R",3.9,"","",9.6,34.99,10.97],["Jackson Holliday",3200,"2B","BAL","TOR",9.16,2.26,"L",4.4,"","",13.9,24.01,11.63],["Ryan Jeffers",5000,"C","MIN","CLE",9.03,1.42,"R",4.3,"","",12.8,32.81,9.73],["Nico Hoerner",3800,"SS","CHC","PIT",9.02,1.87,"R",4.8,"","",3.3,12.53,5.9],["Jose Siri",3300,"OF","LAA","WSH",9.02,2.15,"R",4.2,"","",12.1,31.62,7.33],["Chase DeLauter",4100,"OF","CLE","MIN",8.99,1.72,"L",4.5,"","",8.9,27.07,6.53],["Cole Carrigg",4700,"OF/SS","COL","DET",8.95,1.5,"S",3.9,"","",8.5,20.92,9.3],["Kyle Stowers",4400,"1B","MIA","LAD",8.89,1.58,"L",3.4,"","",17.4,30.28,5.33],["Dillon Dingler",4500,"C","DET","COL",8.87,1.54,"R",4.7,"","",15.7,32.69,10],["Jake McCarthy",5000,"OF","COL","DET",8.83,1.38,"L",3.9,"","",6.2,17.7,8.37],["Salvador Perez",3400,"C","KC","BOS",8.82,2.03,"R",3.8,"","",10.3,15.63,7.4],["Brooks Lee",4300,"3B","MIN","CLE",8.8,1.6,"S",4.3,"","",12.3,20.69,7.3],["Angel Martinez",4200,"OF","CLE","MIN",8.8,1.64,"S",4.5,"","",12,20.13,7.03],["Spencer Horwitz",3700,"1B","PIT","CHC",8.76,1.85,"L",4.7,"","",8.3,17.54,6],["Kazuma Okamoto",4300,"3B","TOR","BAL",8.71,1.58,"R",4.3,"","",16.4,14.9,7.27],["Josh Bell",4100,"1B","MIN","CLE",8.7,1.65,"S",4.3,"","",10.5,22.47,6.4],["Abimelec Ortiz",2400,"1B","WSH","LAA",8.69,2.82,"L",4.2,"","",10.3,27.02,6.37],["Max Clark",3000,"OF","DET","COL",8.65,2.24,"L",4.7,"","",7.5,40.28,8.13],["Amed Rosario",2400,"2B/3B","NYY","NYM",8.61,2.79,"R",4.7,"","",11.6,12.84,10.03],["Nathan Lukes",2700,"OF","TOR","BAL",8.6,2.47,"L",4.3,"","",7.4,13.18,5.1],["Mickey Gasper",4100,"1B","BOS","KC",8.59,1.63,"S",4.9,"","",10.2,19.88,7.13],["Zach McKinstry",2300,"OF","DET","COL",8.58,2.9,"L",4.7,"","",6.7,22,6.87],["Anthony Volpe",3000,"SS","NYY","NYM",8.55,2.21,"R",4.7,"","",11,34.3,7.1],["David Fry",2300,"1B/OF","CLE","MIN",8.55,2.88,"R",4.5,"","",12.8,27.81,6.27],["Nick Gonzales",3800,"2B/3B","PIT","CHC",8.53,1.74,"R",4.7,"","",4.6,18.47,7.57],["Kody Clemens",4800,"2B","MIN","CLE",8.52,1.38,"L",4.3,"","",13.2,28.84,8.27],["Luis Campusano",3400,"C","SD","SF",8.51,1.94,"R",4.6,"","",8.6,17.3,8],["Royce Lewis",3900,"1B","MIN","CLE",8.5,1.69,"R",4.3,"","",12,27.05,6],["Jung Hoo Lee",3900,"OF","SF","SD",8.46,1.68,"L",3.6,"","",4.8,12.4,5.13],["Jordan Beck",2300,"OF","COL","DET",8.45,2.84,"R",3.9,"","",8.1,33.49,7.23],["Bo Bichette",3800,"3B","NYM","NYY",8.43,1.71,"R",3.8,"","",13.6,22.38,7.6],["Vaughn Grissom",3700,"1B/3B","LAA","WSH",8.41,1.75,"R",4.2,"","",4.7,18.02,7.43],["Colton Cowser",2300,"OF","BAL","TOR",8.41,2.82,"L",4.4,"","",13.5,25.27,8.4],["Josh H. Smith",2100,"2B/3B","TOR","BAL",8.39,3.08,"L",4.3,"","",7.6,14.9,8.03],["Samuel Basallo",3800,"1B/C","BAL","TOR",8.37,1.7,"L",4.4,"","",15.6,24.41,11.17],["Christian Encarnacion-Strand",4200,"3B","BAL","TOR",8.36,1.53,"R",4.4,"","",16.4,21.4,7.9],["Brett Bateman",3800,"OF","TOR","BAL",8.36,1.69,"L",4.3,"","",3.5,16.19,4.73],["Ezequiel Tovar",2400,"SS","COL","DET",8.35,2.68,"R",3.9,"","",9.8,26.21,6.87],["Tyler Tolbert",2900,"2B/OF","KC","BOS",8.33,2.21,"R",3.8,"","",7.7,17.79,7],["Bryce Eldridge",3700,"1B","SF","SD",8.29,1.72,"L",3.6,"","",9.1,26.98,4.3],["Christian Moore",2500,"2B","LAA","WSH",8.27,2.54,"R",4.2,"","",7.9,24.33,6.9],["Jakob Marsee",3200,"OF","MIA","LAD",8.26,1.98,"L",3.4,"","",5.5,32.98,4.33],["Kyren Paris",2000,"OF","LAA","WSH",8.26,3.17,"R",4.2,"","",8.4,28.29,5.13],["Kaelen Culpepper",3400,"SS","MIN","CLE",8.25,1.86,"R",4.3,"","",8.2,15.37,5.77],["Ernie Clement",3600,"2B/SS","TOR","BAL",8.23,1.75,"R",4.3,"","",5.7,7.8,5.7],["Leody Taveras",3000,"OF","BAL","TOR",8.18,2.09,"S",4.4,"","",9.3,21.38,7.37],["Eduardo Valencia",4200,"C","DET","COL",8.17,1.49,"R",4.7,"","",10.9,22.31,7.53],["Brady House",3500,"3B","WSH","LAA",8.17,1.79,"R",4.2,"","",8,25.5,5.27],["Andres Gimenez",3400,"SS","TOR","BAL",8.17,1.84,"L",4.3,"","",6.7,14.9,5.4],["Vinnie Pasquantino",3900,"1B","KC","BOS",8.16,1.6,"L",3.8,"","",7.9,15.15,5.6],["Carter Jensen",4600,"C","KC","BOS",8.14,1.35,"L",3.8,"","",8.1,23.46,5.8],["Coby Mayo",4100,"1B/3B","BAL","TOR",8.13,1.51,"R",4.4,"","",15.6,22.9,9.87],["Nick Sogard",3500,"1B/2B","BOS","KC",8.12,1.77,"S",4.9,"","",2.9,19.03,7.93],["Drew Gilbert",3200,"OF","SF","SD",8.1,1.93,"L",3.6,"","",8.6,32.04,4.67],["Angel Genao",2900,"2B/3B","CLE","MIN",8.07,2.12,"S",4.5,"","",4.3,28.19,6.83],["Pedro Ramirez",3600,"2B","CHC","PIT",8.06,1.71,"S",4.8,"","",6.2,20.49,6.57],["Isiah Kiner-Falefa",2700,"2B/SS","BOS","KC",8.01,2.26,"R",4.9,"","",3.3,19.88,6.63],["Otto Lopez",4300,"SS","MIA","LAD",7.97,1.41,"R",3.4,"","",5.5,23.99,4.9],["Samad Taylor",3800,"OF","SD","SF",7.94,1.58,"R",4.6,"","",1.2,32.91,5.5],["Turner Hill",3500,"OF","SF","SD",7.92,1.71,"L",3.6,"","",3.2,20.73,4.13],["Carson Benge",4000,"OF","NYM","NYY",7.9,1.5,"L",3.8,"","",11.8,27.88,6.87],["Moises Ballesteros",2900,"1B/C","LAA","WSH",7.9,2.06,"L",4.2,"","",6.7,17.11,7.53],["Brayan Rocchio",3300,"SS","CLE","MIN",7.87,1.8,"S",4.5,"","",6,21.56,4.9],["Michael Conforto",3100,"OF","CHC","PIT",7.8,1.9,"L",4.8,"","",10,32.15,5.83],["Alex Freeland",2100,"2B","LAD","MIA",7.77,2.79,"S",4.7,"","",4,20.71,5.5],["Travis d'Arnaud",2000,"C","LAA","WSH",7.75,2.92,"R",4.2,"","",8.7,22,4.7],["John Peck",2500,"SS","DET","COL",7.74,2.33,"R",4.7,"","",4.9,35.68,6.27],["Nick Loftin",2800,"2B/3B","KC","BOS",7.73,2.08,"R",3.8,"","",3.9,16.62,6.3],["Isaac Collins",2600,"2B/OF","KC","BOS",7.72,2.23,"S",3.8,"","",4,20.53,5.37],["Heriberto Hernandez",4100,"OF","MIA","LAD",7.71,1.41,"R",3.4,"","",14.8,45,5.03],["George Lombard Jr.",3300,"SS","NYY","NYM",7.71,1.75,"R",4.7,"","",6.6,29.3,4.9],["Jake Cronenworth",3500,"2B","SD","SF",7.68,1.65,"L",4.6,"","",6,16.67,5.33],["Rafael Flores Jr.",3900,"C","PIT","CHC",7.67,1.47,"R",4.7,"","",7.5,25.86,6.93],["A.J. Ewing",3300,"OF","NYM","NYY",7.67,1.74,"L",3.8,"","",7.9,18.15,5.67],["Jase Bowen",2300,"OF","SD","SF",7.64,2.49,"R",4.6,"","",6.6,17.3,5.6],["Matthew Lugo",2300,"OF","KC","BOS",7.63,2.48,"R",3.8,"","",7.3,17.79,4.97],["Kyle Karros",3200,"3B","COL","DET",7.62,1.78,"R",3.9,"","",7.8,25.45,6.3],["Trevor Larnach",3500,"OF","MIN","CLE",7.61,1.63,"L",4.3,"","",8.3,19.4,5.47],["Keibert Ruiz",3900,"C","WSH","LAA",7.57,1.45,"S",4.2,"","",7.2,10.36,5.63],["Denzer Guzman",2700,"3B","LAA","WSH",7.57,2.09,"R",4.2,"","",8,23.15,5],["Marcus Semien",3200,"2B","NYM","NYY",7.54,1.76,"R",3.8,"","",14.8,23.3,7.37],["Jacob Gonzalez",2600,"3B/SS","PIT","CHC",7.51,2.15,"L",4.7,"","",9.2,20.32,6.73],["Jacob Young",3400,"OF","WSH","LAA",7.44,1.62,"R",4.2,"","",2.6,16.4,4.7],["TJ Rumfield",3800,"1B","COL","DET",7.43,1.45,"L",3.9,"","",7.8,17.01,5.2],["Griffin Conine",3800,"1B/OF","MIA","LAD",7.42,1.45,"L",3.4,"","",14.1,35.35,5.13],["Brett Baty",3000,"3B/OF","NYM","NYY",7.4,1.83,"L",3.8,"","",12.7,18.38,6.67],["Jared Young",2900,"1B","NYM","NYY",7.4,1.89,"L",3.8,"","",11.6,22.21,5.67],["Walker Jenkins",3000,"OF","MIN","CLE",7.31,1.8,"L",4.3,"","",5.3,13.41,4.63],["Javier Sanoja",3600,"2B/3B","MIA","LAD",7.3,1.49,"R",3.4,"","",3.5,18,5.17],["Miguel Amaya",2600,"C","CHC","PIT",7.27,2.06,"R",4.8,"","",7.5,18.38,5.63],["Osleivis Basabe",2900,"2B/3B","SF","SD",7.21,1.82,"R",3.6,"","",7.5,20.82,5.4],["Owen Caissie",2900,"OF","MIA","LAD",7.07,1.78,"L",3.4,"","",14,34.16,3.93],["Hunter Feduccia",2300,"C","LAD","MIA",7.04,2.23,"L",4.7,"","",3.9,17.8,4.93],["Shay Whitcomb",2800,"3B","SF","SD",6.92,1.79,"R",3.6,"","",8.2,26.89,4.33],["Christian Koss",2400,"SS","SF","SD",6.92,2.08,"R",3.6,"","",4.6,19.74,4.2],["Brandon Valenzuela",2500,"C","TOR","BAL",6.84,1.97,"S",4.3,"","",8.7,19.46,5.3],["Austin Hedges",2600,"C","CLE","MIN",6.78,1.87,"R",4.5,"","",7,27.81,5.03],["Graham Pauley",2400,"3B","MIA","LAD",6.72,2,"L",3.4,"","",7,26.92,3.47],["Jorbit Vivas",2500,"2B","WSH","LAA",6.63,1.88,"L",4.2,"","",2.4,22,3.93],["Kyle Isbel",2500,"OF","KC","BOS",6.56,1.86,"L",3.8,"","",3,23.46,4.2],["Ali Sanchez",2200,"C","NYY","NYM",6.53,2.1,"R",4.7,"","",7.8,14.94,4.43],["Brett Sullivan",2900,"C","COL","DET",6.45,1.56,"L",3.9,"","",8.2,22,4.77],["Drew Cavanaugh",2200,"C","SF","SD",6.45,2.06,"",3.6,"","",4.7,31.27,4.07],["Joe Mack",2500,"C","MIA","LAD",6.44,1.81,"L",3.4,"","",12.4,33.95,4.23],["Luis Torrens",2500,"C","NYM","NYY",6.42,1.8,"R",3.8,"","",9,20.83,5.63]];
+const MLB_BATTERS = [["James Wood",6200,"OF","WSH","LAA",12.02,1.63,"L",5,"","",21.7,26.31,10.17],["Aaron Judge",5700,"OF","NYY","NYM",11.82,1.74,"R",4.4,"","",27.8,31.13,13.13],["Zach Neto",4900,"SS","LAA","WSH",11.69,1.99,"R",4.7,"","",14.4,21.62,10.73],["Ronald Acuna Jr.",5600,"OF","ATL","PHI",11.41,1.69,"R",4.9,"","",18.1,26.99,12.7],["Jackson Chourio",5800,"OF","MIL","CIN",11.38,1.63,"R",4.8,"","",19.1,21.12,10.17],["Kyle Schwarber",5600,"1B","PHI","ATL",11.32,1.68,"L",4.7,"","",27.9,39.85,12.13],["CJ Abrams",5900,"2B/SS","WSH","LAA",11,1.54,"L",5,"","",15.1,18.29,12.43],["Michael Harris II",4200,"OF","ATL","PHI",10.85,2.13,"L",4.9,"","",17.2,25.27,12.83],["Kyle Tucker",4000,"OF","LAD","MIA",10.84,2.23,"L",4.7,"","",15.4,14.87,11.1],["Bryce Harper",4900,"OF","PHI","ATL",10.71,1.79,"L",4.7,"","",19.7,31.6,12.47],["Bobby Witt Jr.",6000,"SS","KC","BOS",10.64,1.45,"R",3.3,"","",10.8,15.15,7.9],["Freddie Freeman",4900,"1B","LAD","MIA",10.63,1.78,"L",4.7,"","",11.4,13.87,7.87],["Trea Turner",3800,"SS","PHI","ATL",10.54,2.27,"R",4.7,"","",14.2,25.41,14.5],["Pete Crow-Armstrong",6600,"OF","CHC","PIT",10.5,1.3,"L",3.8,"","",15.7,25.04,8.2],["Juan Soto",5900,"OF","NYM","NYY",10.49,1.45,"L",3.6,"","",20.5,23.07,10.63],["Brice Turang",5300,"2B","MIL","CIN",10.49,1.62,"L",4.8,"","",8.7,16.1,9.6],["Junior Caminero",6300,"3B","TB","HOU",10.43,1.35,"R",4.1,"","",25.3,29.46,8.8],["Mike Trout",5200,"OF","LAA","WSH",10.42,1.63,"R",4.7,"","",16.5,25.22,9.9],["Matt Olson",4600,"1B","ATL","PHI",10.42,1.85,"L",4.9,"","",21.8,28.49,10.63],["Vladimir Guerrero Jr.",4200,"1B","TOR","BAL",10.37,2.01,"R",4,"","",11.9,10.6,6.83],["George Springer",4400,"OF","TOR","BAL",10.35,1.92,"R",4,"","",13.7,16.19,8.33],["Yordan Alvarez",6100,"OF","HOU","TB",10.26,1.37,"L",3.9,"","",20.1,22.23,8.6],["Munetaka Murakami",4700,"1B","CWS","STL",10.23,1.77,"L",4.8,"","",19.3,24.94,7.67],["Daylen Lile",4600,"OF","WSH","LAA",10.2,1.8,"L",5,"","",13.5,17.48,9.13],["Christian Yelich",4000,"OF","MIL","CIN",10.09,2.04,"L",4.8,"","",11.9,24.32,7.13],["Mookie Betts",4800,"SS","LAD","MIA",10.05,1.69,"R",4.7,"","",13.3,10.9,8.77],["Alec Burleson",5000,"1B","STL","CWS",10.01,1.62,"L",4.4,"","",15.6,13.25,6.93],["Elly De La Cruz",5800,"SS","CIN","MIL",9.96,1.39,"S",3.7,"","",16.7,28.63,8.73],["Ben Rice",5500,"1B/C","NYY","NYM",9.95,1.46,"L",4.4,"","",22.2,22.29,13],["Ivan Herrera",4400,"C","STL","CWS",9.95,1.83,"R",4.4,"","",11.9,17.02,7.37],["Sam Antonacci",4200,"OF","CWS","STL",9.89,1.9,"L",4.8,"","",4.6,15.41,7.43],["Kyle Teel",2900,"C","CWS","STL",9.88,2.74,"L",4.8,"","",8.9,29.28,10.03],["Cody Bellinger",4500,"OF","NYY","NYM",9.86,1.76,"L",4.4,"","",16.4,19.48,10.1],["Garrett Mitchell",3600,"OF","MIL","CIN",9.86,2.21,"L",4.8,"","",8.7,34.88,8.7],["Drake Baldwin",4300,"C","ATL","PHI",9.77,1.83,"L",4.9,"","",17.2,24.12,11.4],["Yandy Diaz",4900,"1B/3B","TB","HOU",9.75,1.6,"R",4.1,"","",13.1,21.08,7.37],["Kyle Stowers",4200,"1B","MIA","LAD",9.75,1.86,"L",4,"","",20.4,30.28,6.67],["Will Smith",4200,"C","LAD","MIA",9.75,1.86,"R",4.7,"","",10.2,17.64,9.57],["Max Muncy",4600,"3B","LAD","MIA",9.73,1.7,"L",4.7,"","",16.5,27.74,8.93],["Trevor Story",3200,"SS","BOS","KC",9.73,2.44,"R",4.2,"","",11.8,25.44,7.23],["Luke Keaschall",4200,"OF","MIN","CLE",9.71,1.85,"R",4.1,"","",7.3,22.35,6.7],["Chandler Simpson",3600,"OF","TB","HOU",9.67,2.15,"L",4.1,"","",0.5,13.25,6.07],["Francisco Lindor",4400,"SS","NYM","NYY",9.64,1.75,"S",3.6,"","",17.7,19.8,9.2],["Andrew Benintendi",3400,"OF","CWS","STL",9.64,2.27,"L",4.8,"","",8.3,16.74,7.17],["Jonathan Aranda",4200,"1B","TB","HOU",9.59,1.83,"L",4.1,"","",14.1,33.52,5.3],["Abimelec Ortiz",2500,"1B","WSH","LAA",9.54,3.05,"L",5,"","",15.2,27.02,7.67],["Gunnar Henderson",4500,"SS","BAL","TOR",9.51,1.69,"L",3.5,"","",14.1,20.73,6.67],["Josh Lowe",2700,"OF","LAA","WSH",9.44,2.79,"L",4.7,"","",10.5,35.15,8.9],["Jo Adell",3800,"OF","CLE","MIN",9.42,1.97,"R",3.9,"","",17.1,37.61,7.03],["Steven Kwan",3700,"OF","CLE","MIN",9.42,2.03,"L",3.9,"","",5.5,11.89,6.1],["Luis Garcia Jr.",4900,"1B","NYY","NYM",9.34,1.51,"L",4.4,"","",13.4,19.74,6.23],["Roman Anthony",4800,"OF","BOS","KC",9.32,1.54,"L",4.2,"","",5.9,21.14,6.23],["Jeremy Pena",4500,"SS","HOU","TB",9.32,1.64,"R",3.9,"","",13.7,25.4,7.8],["Jake Bauers",4700,"1B/OF","MIL","CIN",9.3,1.57,"L",4.8,"","",13.2,30.32,8.1],["Jahmai Jones",2300,"OF","BOS","KC",9.3,3.21,"R",4.2,"","",10.5,19.88,6.57],["Seiya Suzuki",5000,"OF","CHC","PIT",9.23,1.46,"R",3.8,"","",12.5,23.91,6.23],["Colson Montgomery",3800,"3B/SS","CWS","STL",9.21,1.92,"L",4.8,"","",15.5,29.93,9.1],["Bryson Stott",3600,"3B","PHI","ATL",9.2,2.02,"L",4.7,"","",7.9,21.98,9.8],["Andres Chaparro",3300,"1B/3B","WSH","LAA",9.16,2.19,"R",5,"","",16.2,38.4,9.3],["Kody Clemens",4500,"2B","MIN","CLE",9.14,1.6,"L",4.1,"","",18.4,28.84,9.27],["Eugenio Suarez",3700,"3B","CIN","MIL",9.09,1.94,"R",3.7,"","",20.6,26.78,6.9],["Chase DeLauter",4100,"OF","CLE","MIN",9.08,1.75,"L",3.9,"","",12.7,27.07,6.7],["Brenton Doyle",2800,"OF","CWS","STL",9.08,2.56,"R",4.8,"","",7.7,31.1,7.37],["Michael Busch",4100,"1B","CHC","PIT",9.04,1.74,"L",3.8,"","",11.5,28.35,6.3],["Pete Alonso",5200,"1B","BAL","TOR",9.03,1.37,"R",3.5,"","",18.1,18.66,5.9],["Gary Sanchez",4200,"1B/C","MIL","CIN",9.03,1.69,"R",4.8,"","",17.9,32.71,9.3],["Wade Meckler",3500,"OF","LAA","WSH",9.03,2.03,"L",4.7,"","",3.4,23.43,5.93],["Austin Riley",3800,"3B","ATL","PHI",9.02,1.87,"R",4.9,"","",15.9,28.14,9.17],["Moises Ballesteros",2900,"1B/C","LAA","WSH",9,2.44,"L",4.7,"","",9.6,17.11,8.63],["Ozzie Albies",4000,"2B","ATL","PHI",8.95,1.76,"S",4.9,"","",14.8,18.95,9.63],["Jakob Marsee",3000,"OF","MIA","LAD",8.94,2.34,"L",4,"","",6.5,32.98,5.1],["Luis Arraez",3500,"2B","PHI","ATL",8.91,2,"L",4.7,"","",4.3,10.31,10.4],["Konnor Griffin",3400,"SS","PIT","CHC",8.91,2.06,"R",3.3,"","",6.2,24.93,5.7],["Caleb Durbin",3400,"3B","BOS","KC",8.9,2.05,"R",4.2,"","",7.1,14.65,5.8],["Miguel Vargas",5300,"3B","CWS","STL",8.88,1.31,"R",4.8,"","",10.3,22.81,6.77],["Kazuma Okamoto",3900,"3B","TOR","BAL",8.88,1.78,"R",4,"","",15.3,14.9,7.77],["Sal Stewart",5200,"1B","CIN","MIL",8.86,1.33,"R",3.7,"","",15.1,18.47,6.5],["Jordan Walker",5500,"OF","STL","CWS",8.84,1.26,"R",4.4,"","",15.5,21.77,7.3],["Brandon Marsh",3200,"OF","PHI","ATL",8.82,2.16,"L",4.7,"","",10.3,25.74,7.63],["Oneil Cruz",6500,"OF","PIT","CHC",8.81,1.06,"L",3.3,"","",15,29.09,5.13],["Brooks Lee",4000,"3B","MIN","CLE",8.81,1.72,"S",4.1,"","",15,20.69,6.07],["Bryan Torres",3400,"2B/OF","STL","CWS",8.8,2.02,"L",4.4,"","",4.5,21,5.9],["Alec Bohm",3100,"1B","PHI","ATL",8.79,2.22,"R",4.7,"","",9.6,24.73,6.87],["Wilyer Abreu",5400,"OF","BOS","KC",8.78,1.27,"L",4.2,"","",9.4,23.84,7.37],["Josue De Paula",3100,"OF","LAD","MIA",8.76,2.21,"L",4.7,"","",7.8,25.57,5.8],["Spencer Jones",3300,"OF","NYY","NYM",8.74,2.07,"L",4.4,"","",13.9,17.93,7.8],["Vaughn Grissom",3900,"1B/3B","LAA","WSH",8.71,1.74,"R",4.7,"","",8,18.02,7.2],["Daulton Varsho",3100,"OF","HOU","TB",8.69,2.18,"L",3.9,"","",14,23.73,6.57],["Nolan Gorman",2800,"3B","STL","CWS",8.67,2.41,"L",4.4,"","",17.9,30.74,6.4],["Ryan Jeffers",4700,"C","MIN","CLE",8.66,1.43,"R",4.1,"","",14.6,32.81,6.9],["Otto Lopez",4100,"SS","MIA","LAD",8.66,1.64,"R",4,"","",6.8,23.99,5.43],["Royce Lewis",3700,"1B","MIN","CLE",8.64,1.82,"R",4.1,"","",15.1,27.05,5.87],["Jose Tena",2700,"2B/OF","WSH","LAA",8.63,2.49,"L",5,"","",6.7,22,7.93],["Jose Siri",3400,"OF","LAA","WSH",8.52,1.94,"R",4.7,"","",12.5,31.62,6.6],["Victor Mesa Jr.",3700,"OF","TB","HOU",8.51,1.78,"L",4.1,"","",11.8,34.74,5.67],["Trevor Larnach",3500,"OF","MIN","CLE",8.49,1.88,"L",4.1,"","",12.6,19.4,5.67],["Nate Lowe",3300,"1B","CLE","MIN",8.47,1.98,"L",3.9,"","",14.5,27.81,4.97],["Yohandy Morales",2800,"1B","WSH","LAA",8.46,2.34,"R",5,"","",8.6,22,4.57],["Heriberto Hernandez",3900,"OF","MIA","LAD",8.43,1.67,"R",4,"","",17.4,45,6.07],["Travis Bazzana",4200,"2B","CLE","MIN",8.42,1.55,"L",3.9,"","",9.4,28.07,7.43],["Salvador Perez",3400,"C","KC","BOS",8.42,1.91,"R",3.3,"","",13.3,15.63,5.17],["Jonny DeLuca",3800,"OF","TB","HOU",8.41,1.71,"R",4.1,"","",10.3,18.04,5.63],["Ernie Clement",3200,"2B/SS","TOR","BAL",8.39,2.02,"R",4,"","",5.9,7.8,6.67],["Mike Yastrzemski",2500,"OF","ATL","PHI",8.38,2.58,"L",4.9,"","",12.5,29.86,6.77],["Jose Altuve",4000,"2B","HOU","TB",8.37,1.61,"R",3.9,"","",13.3,17.38,8.2],["Joey Ortiz",3100,"3B/SS","MIL","CIN",8.37,2.08,"R",4.8,"","",8.4,21.8,7.63],["Jose Caballero",3700,"3B/SS","NYY","NYM",8.36,1.74,"R",4.4,"","",6.7,24.4,7.47],["Dylan Beavers",3100,"OF","BAL","TOR",8.36,2.08,"L",3.5,"","",8.2,18.87,5.03],["Anthony Volpe",2700,"2B/SS","NYY","NYM",8.35,2.38,"R",4.4,"","",10.3,34.3,9.5],["Alex Bregman",5600,"3B","CHC","PIT",8.34,1.15,"R",3.8,"","",9.8,13.66,5.23],["Chase Meidroth",3600,"2B","CWS","STL",8.34,1.78,"R",4.8,"","",4.7,16.77,7.1],["Ian Happ",3800,"OF","CHC","PIT",8.29,1.68,"S",3.8,"","",9.9,30.81,5.6],["Justin Crawford",2500,"OF","PHI","ATL",8.29,2.55,"L",4.7,"","",3.1,15.97,6.37],["Keibert Ruiz",3900,"C","WSH","LAA",8.27,1.63,"S",5,"","",9.8,10.36,6.03],["Isaac Paredes",3600,"3B","HOU","TB",8.27,1.76,"R",3.9,"","",14.8,20.37,7.13],["Tristan Peters",3000,"OF","CWS","STL",8.27,2.12,"L",4.8,"","",6,19.79,5.67],["Bo Bichette",3900,"3B","NYM","NYY",8.26,1.63,"R",3.6,"","",10.4,22.38,5.8],["Dane Myers",2900,"OF","CIN","MIL",8.24,2.18,"R",3.7,"","",7.7,33.51,6.7],["Alex Call",2800,"OF","LAD","MIA",8.21,2.25,"R",4.7,"","",3.4,17.64,4.73],["Angel Martinez",4000,"OF","CLE","MIN",8.19,1.57,"S",3.9,"","",13.2,20.13,5.77],["Mauricio Dubon",3400,"OF/SS","ATL","PHI",8.19,1.84,"R",4.9,"","",7.1,14.36,7.63],["Leo Bernal",3200,"C","STL","CWS",8.16,1.95,"S",4.4,"","",8.9,22.71,5.23],["Charles McAdoo",2900,"2B/3B","TOR","BAL",8.16,2.15,"R",4,"","",8.7,14.9,6.5],["J.T. Realmuto",2800,"C","PHI","ATL",8.16,2.23,"R",4.7,"","",10.8,30.77,9.27],["Bryan Reynolds",5100,"OF","PIT","CHC",8.15,1.22,"S",3.3,"","",11.4,19.39,5.53],["Nico Hoerner",3700,"SS","CHC","PIT",8.14,1.68,"R",3.8,"","",2.8,12.53,4.47],["Denzer Guzman",2800,"3B","LAA","WSH",8.13,2.22,"R",4.7,"","",9.4,23.15,6.4],["Griffin Conine",3600,"1B/OF","MIA","LAD",8.1,1.72,"L",4,"","",15.8,35.35,5.67],["Jacob Young",3700,"OF","WSH","LAA",8.07,1.66,"R",5,"","",3.6,16.4,5.13],["Agustin Ramirez",2900,"C","MIA","LAD",8.05,2.11,"R",4,"","",11.4,34.8,4.7],["Christian Moore",2400,"2B","LAA","WSH",8.03,2.55,"R",4.7,"","",7.9,24.33,7.07],["Yainer Diaz",3000,"C","HOU","TB",7.98,2.02,"R",3.9,"","",15.2,19.9,6.7],["Tyler Stephenson",2800,"C","CIN","MIL",7.98,2.16,"R",3.7,"","",13.1,20.31,6.03],["Ha-Seong Kim",2200,"SS","ATL","PHI",7.97,2.75,"R",4.9,"","",7.5,13.22,5.9],["Walker Jenkins",2900,"OF","MIN","CLE",7.95,2.08,"L",4.1,"","",7.1,13.41,4.37],["Masyn Winn",3300,"SS","STL","CWS",7.94,1.82,"R",4.4,"","",7.6,14.38,4.97],["Javier Sanoja",3400,"2B/3B","MIA","LAD",7.93,1.77,"R",4,"","",4.1,18,5.53],["Austin Wells",2200,"C","NYY","NYM",7.92,2.73,"L",4.4,"","",15.1,24.8,6.93],["Richie Palacios",3200,"2B","TB","HOU",7.91,1.87,"L",4.1,"","",7.4,26.9,5.47],["Luis Lara",3300,"OF","MIL","CIN",7.87,1.8,"S",4.8,"","",3.5,24.78,4.3],["Andruw Monasterio",2800,"SS","BOS","KC",7.87,2.13,"R",4.2,"","",5.2,21.57,4.83],["Nathan Church",2700,"OF","STL","CWS",7.81,2.18,"L",4.4,"","",8.8,20.81,4.23],["Thomas Saggese",2600,"2B/SS","STL","CWS",7.81,2.27,"R",4.4,"","",8.9,23.66,7.27],["Emmanuel Rodriguez",2000,"OF","MIN","CLE",7.81,2.95,"L",4.1,"","",9.2,22.47,4.7],["Vinnie Pasquantino",3900,"1B","KC","BOS",7.78,1.5,"L",3.3,"","",9,15.15,4.6],["Cooper Pratt",3200,"SS","MIL","CIN",7.76,1.83,"R",4.8,"","",4.2,21.8,5.7],["Miguel Rojas",2500,"2B","LAD","MIA",7.76,2.34,"R",4.7,"","",4.4,14.92,5.4],["Carson Benge",3800,"OF","NYM","NYY",7.75,1.53,"L",3.6,"","",10.6,27.88,6.2],["Christian Walker",3300,"1B","HOU","TB",7.74,1.76,"R",3.9,"","",15.3,28.65,5.97],["Nick Gonzales",3700,"2B/3B","PIT","CHC",7.73,1.57,"R",3.3,"","",5,18.47,5.07],["A.J. Ewing",3200,"OF","NYM","NYY",7.72,1.81,"L",3.6,"","",6.8,18.15,5.2],["Ryan McMahon",2400,"3B","NYY","NYM",7.68,2.4,"L",4.4,"","",13.9,34.18,6.63],["Nate Eaton",2500,"OF","BOS","KC",7.65,2.29,"R",4.2,"","",2.9,19.88,3.9],["Carter Jensen",4400,"C","KC","BOS",7.64,1.3,"L",3.3,"","",10.9,23.46,4.93],["Jake Mangum",3300,"OF","PIT","CHC",7.6,1.72,"S",3.3,"","",3.6,19.06,3.63],["Angel Genao",2800,"2B/3B","CLE","MIN",7.6,2.03,"S",3.9,"","",4.9,28.19,5.5],["Nick Sogard",3500,"1B/2B","BOS","KC",7.58,1.62,"S",4.2,"","",4.3,19.03,5.4],["Christian Encarnacion-Strand",4100,"3B","BAL","TOR",7.57,1.38,"R",3.5,"","",12.8,21.4,5.1],["Brett Bateman",3600,"OF","TOR","BAL",7.57,1.57,"L",4,"","",2.8,16.19,4.13],["Samuel Basallo",3600,"1B/C","BAL","TOR",7.57,1.57,"L",3.5,"","",13.4,24.41,6.07],["Jackson Holliday",3400,"2B","BAL","TOR",7.57,1.66,"L",3.5,"","",9.2,24.01,5.03],["Alex Freeland",2300,"2B","LAD","MIA",7.51,2.43,"S",4.7,"","",3.7,20.71,4.9],["Andres Gimenez",3000,"SS","TOR","BAL",7.49,1.86,"L",4,"","",5,14.9,3.83],["Graham Pauley",2500,"3B","MIA","LAD",7.49,2.23,"L",4,"","",10,26.92,4.23],["Brayan Rocchio",3100,"SS","CLE","MIN",7.46,1.79,"S",3.9,"","",7.4,21.56,4.8],["Colton Cowser",2400,"OF","BAL","TOR",7.46,2.31,"L",3.5,"","",10.9,25.27,4.03],["Rafael Flores Jr.",3800,"C","PIT","CHC",7.38,1.44,"R",3.3,"","",9.3,25.86,4.27],["JJ Bleday",4200,"OF","CIN","MIL",7.35,1.29,"L",3.7,"","",11.8,22.16,5],["Connor Wong",2200,"C","BOS","KC",7.35,2.47,"R",4.2,"","",5.8,25.36,5],["Leody Taveras",3000,"OF","BAL","TOR",7.32,1.8,"S",3.5,"","",7,21.38,4.1],["Francisco Alvarez",3000,"C","NYM","NYY",7.31,1.8,"R",3.6,"","",13.5,33.84,5.6],["Isaac Collins",2600,"OF","KC","BOS",7.26,2.05,"S",3.3,"","",4.2,20.53,4.9],["Coby Mayo",4000,"3B","BAL","TOR",7.25,1.33,"R",3.5,"","",12,22.9,5.03],["Brett Baty",2900,"3B/OF","NYM","NYY",7.25,1.84,"L",3.6,"","",10.9,18.38,5.6],["Jared Young",2700,"1B","NYM","NYY",7.25,1.97,"L",3.6,"","",10,22.21,4.8],["Pedro Ramirez",3600,"2B","CHC","PIT",7.24,1.48,"S",3.8,"","",5.7,20.49,5.8],["Myles Straw",2500,"OF","TOR","BAL",7.19,2.11,"R",4,"","",1.1,19.26,3.43],["Ryan O'Hearn",4700,"1B","PIT","CHC",7.18,1.12,"L",3.3,"","",10.7,22,4.17],["Matthew Lugo",2300,"OF","KC","BOS",7.16,2.28,"R",3.3,"","",8.2,17.79,4.17],["Patrick Bailey",2500,"C","CLE","MIN",7.15,2.09,"S",3.9,"","",7.8,34.19,4.63],["Cam Smith",2900,"OF","HOU","TB",7.07,1.78,"R",3.9,"","",10.2,27.42,5.77],["Taylor Trammell",2800,"OF","HOU","TB",7.07,1.84,"L",3.9,"","",9.9,35.6,4.87],["Nick Loftin",2800,"2B/3B","KC","BOS",7.02,1.82,"R",3.3,"","",4.5,16.62,5.4],["Joe Mack",2400,"C","MIA","LAD",7.02,2.13,"L",4,"","",15.6,33.95,4.23],["Michael Conforto",3100,"OF","CHC","PIT",7,1.64,"L",3.8,"","",8.7,32.15,4.37],["Jared Triolo",2800,"3B/SS","PIT","CHC",6.99,1.81,"R",3.3,"","",4.9,22,3.93],["Nick Madrigal",2600,"2B/3B","TB","HOU",6.92,1.92,"R",4.1,"","",1.9,7.71,4.57],["Juan Brito",2500,"2B","CIN","MIL",6.81,1.96,"S",3.7,"","",7.4,22.16,5.17],["Nick Morabito",2100,"OF","NYM","NYY",6.76,2.3,"R",3.6,"","",4.2,28.93,3.87],["Michael Massey",3000,"2B","KC","BOS",6.75,1.61,"L",3.3,"","",5.5,17.79,5],["Jose Trevino",2700,"C","CIN","MIL",6.72,1.78,"R",3.7,"","",10.2,22.16,4.33],["Brandon Valenzuela",3100,"C","TOR","BAL",6.7,1.54,"S",4,"","",8,19.46,5.7],["Hector Rodriguez",3300,"OF","CIN","MIL",6.64,1.43,"L",3.7,"","",7.9,21.24,4.5],["Nick Fortes",2700,"C","TB","HOU",6.56,1.72,"R",4.1,"","",7.3,18.04,4.77],["Miguel Amaya",2600,"C","CHC","PIT",6.51,1.77,"R",3.8,"","",5.9,18.38,4.4],["Henry Davis",2100,"C","PIT","CHC",6.44,2.15,"R",3.3,"","",9.4,35.23,4.13],["Ryan Kreidler",2800,"2B/OF","MIN","CLE",6.26,1.55,"R",4.1,"","",5.9,40.76,5.37],["Kyle Isbel",2400,"OF","KC","BOS",6.18,1.78,"L",3.3,"","",3.7,23.46,4.17]];
 
 // Pitchers: Player,Salary,Position,Team,Opponent,Projection,Value,Hand,VegasProp,0,ProjK,K%,EV%,Own%
-const MLB_PITCHERS = [["Tyler Glasnow",10700,"SP","LAD","MIA",21.3,1.81,"R",6.5,0,6.6,28.9,0.71,45.53],["Gerrit Cole",9500,"SP","NYY","NYM",18.17,1.71,"R",5.5,0,5.63,22.21,1.09,18.77],["Andrew Sears",6300,"SP","DET","COL",17.33,2.45,"L",4.5,0,5.37,25.83,8.72,18.1],["Ranger Suarez",7600,"SP","BOS","KC",17.32,2.03,"L",4.5,0,5.37,23.7,8.69,23.1],["Spencer Arrighetti",6800,"SP","TOR","BAL",16.37,2.13,"R",4.5,0,5.07,24.5,5.75,15],["Michael King",8500,"RP","SD","SF",16.07,1.66,"R",4.5,0,4.98,22.45,4.82,13.77],["Paul Skenes",9100,"SP","PIT","CHC",15.9,1.54,"R",4.5,0,4.93,28.9,4.29,16.17],["Andrew Alvarez",6800,"RP","WSH","LAA",15.75,2.03,"L",4.5,0,4.88,23.74,3.83,11.93],["Zac Thornton",6600,"SP","NYM","NYY",15.48,2.05,"L",4.5,0,4.8,22.29,2.99,8.97],["Walbert Urena",8100,"RP","LAA","WSH",14.92,1.6,"R",4.5,0,4.63,23.7,1.25,11.4],["Joey Cantillo",7700,"RP","CLE","MIN",14.28,1.61,"L",3.5,0,4.43,22.35,11.92,9.2],["Kyle Bradish",7300,"SP","BAL","TOR",14.12,1.67,"R",3.5,0,4.38,22.8,11.28,10.4],["Connor Prielipp",6600,"SP","MIN","CLE",14,1.83,"L",3.5,0,4.34,21.56,10.8,12.13],["Clay Holmes",7800,"RP","CHC","PIT",13.5,1.48,"R",3.5,0,4.18,19,8.81,8.7],["Cesar Perdomo",6100,"RP","SF","SD",11.85,1.63,"L",3.5,0,3.67,23.7,2.23,7.07],["Tyler Phillips",5100,"RP","MIA","LAD",11.41,1.86,"R",2.5,0,3.54,18.7,18.67,5.27],["Tanner Gordon",5400,"RP","COL","DET",11.22,1.72,"R",2.5,0,3.48,32.7,17.61,6.87],["Randy Dobnak",6400,"RP","KC","BOS",10.72,1.38,"R",2.5,0,3.32,18,14.82,6.23]];
+const MLB_PITCHERS = [["Dylan Cease",10800,"SP","TOR","BAL",24.39,2.08,"R",6.5,0,7.56,21.4,7.34,49.6],["Cam Schlittler",11400,"SP","NYY","NYM",21.16,1.69,"R",5.5,0,6.56,28.5,8.67,22.2],["Payton Tolle",9900,"SP","BOS","KC",20.16,1.84,"L",5.5,0,6.25,27.5,6.14,21.1],["Matt Boyd",7200,"SP","CHC","PIT",19.31,2.42,"L",5.5,0,5.99,23.47,4.01,25.67],["Emmet Sheehan",7600,"SP","LAD","MIA",17.17,2.01,"R",4.5,0,5.32,32.98,8.2,15.97],["Robert Gasser",7800,"SP","MIL","CIN",16.89,1.92,"L",4.5,0,5.24,22.16,7.4,10.53],["Noah Cameron",8300,"SP","KC","BOS",16.55,1.76,"L",4.5,0,5.13,21.57,6.3,10.67],["Freddy Peralta",6500,"SP","TB","HOU",16.36,2.22,"R",4.5,0,5.07,29,5.7,10.2],["David Sandlin",7400,"RP","CWS","STL",15.88,1.89,"R",4.5,0,4.92,21,4.2,9.03],["Trevor Rogers",8600,"SP","BAL","TOR",15.73,1.61,"L",4.5,0,4.88,15.55,3.8,9.73],["Christian Scott",7000,"SP","NYM","NYY",15.63,1.96,"R",4.5,0,4.85,28.8,3.5,9],["Eury Perez",8800,"SP","MIA","LAD",15.58,1.55,"R",4.5,0,4.83,16.28,3.3,10.1],["Bubba Chandler",6100,"SP","PIT","CHC",14.53,2.07,"R",3.5,0,4.5,28,12.86,5.87],["Joe Ryan",9400,"SP","MIN","CLE",14.13,1.3,"R",3.5,0,4.38,27.81,11.31,8.17],["Grayson Rodriguez",5500,"SP","LAA","WSH",13.88,2.17,"R",3.5,0,4.3,18.29,10.29,5.4],["Michael McGreevy",5900,"SP","STL","CWS",13.81,2.02,"R",3.5,0,4.28,22.81,10.03,6.7],["Tanner Bibee",7700,"SP","CLE","MIN",13.63,1.52,"R",3.5,0,4.23,24.7,9.39,6.1],["Andrew Painter",6300,"SP","PHI","ATL",13.2,1.79,"R",3.5,0,4.09,25.27,7.59,4.33],["Riley Cornelio",4000,"RP","WSH","LAA",13.1,2.8,"R",3.5,0,4.06,22.2,7.2,4.77],["Grant Holmes",6700,"RP","ATL","PHI",11.7,1.46,"R",3.5,0,3.63,25.41,1.67,4.23],["Hayden Wesneski",8100,"RP","HOU","TB",11.35,1.16,"R",2.5,0,3.52,21.08,18.36,6.17],["Chase Burns",8000,"SP","CIN","MIL",11.04,1.14,"R",2.5,0,3.42,24.32,16.56,3.87]];
 
 // ── STATE ──────────────────────────────────────────────────────
 const MLB_SLOTS = [
@@ -8046,6 +8129,7 @@ hideAccessLock(); // ← CHANGE THIS LINE TO CONTROL THE ACCESS LOCK
   'use strict';
 
   var CORE_OWN_RENDER = window.ownRender;
+  var levValueTab = 'contrarian'; // persisted tab choice for the merged Leverage & Value panel
   var bvpActiveName = null; // currently selected pitcher in the Batter vs Pitcher panel
   var bvpDropdownOpen = false; // whether the Select Pitcher dropdown is expanded
   var bvpLastData = []; // most recent data snapshot, used by the outside-click handler
@@ -8151,7 +8235,9 @@ hideAccessLock(); // ← CHANGE THIS LINE TO CONTROL THE ACCESS LOCK
     var panel=el('mlbOwnershipPanel'); if(!panel) return;
     var header=panel.querySelector(':scope > .own-header');
     var cards=panel.querySelector('.own-stat-cards-inline');
+    var digest=panel.querySelector(':scope > .so-player-digest');
     if(header){ header.classList.add('so-final-top-cards'); header.style.display='grid'; if(panel.firstElementChild!==header) panel.insertBefore(header,panel.firstElementChild); }
+    if(header && digest && header.nextElementSibling!==digest) header.parentNode.insertBefore(digest, header.nextElementSibling);
     if(header && cards && cards.parentElement!==header) header.appendChild(cards);
     if(cards){ cards.style.display='grid'; cards.querySelectorAll('.own-stat-card').forEach(function(c){c.classList.add('own-stat-card-sm');}); cards.querySelectorAll('.lbl').forEach(function(l){l.classList.add('lbl-sm');}); cards.querySelectorAll('.num').forEach(function(n){n.classList.add('num-sm');}); }
     data=(data||allRows()).filter(function(p){return num(p.proj)>0&&num(p.own)>0;}); if(!data.length) return;
@@ -8230,27 +8316,43 @@ hideAccessLock(); // ← CHANGE THIS LINE TO CONTROL THE ACCESS LOCK
     if(desk.getAttribute('data-clean-key')!==key){ desk.setAttribute('data-clean-key',key); desk.innerHTML=buildHrLive(all)+buildPressure(data)+buildSignal(data); }
   }
 
+  function sortColLabel(k,label){
+    var active=ownSortKey===k, arrow=active?(ownSortAsc?' \u25b2':' \u25bc'):'';
+    return '<button type="button" class="so-own-sort-btn'+(active?' own-sort-active':'')+'" data-own-sort="'+k+'">'+label+'<span class="so-own-sort-arrow">'+arrow+'</span></button>';
+  }
   function buildDepth(rows){
     rows=rows&&rows.length?rows:sortedFilteredRows(); rows=ownPosRows(rows); if(!rows.length) return '';
     var totals={}; allRows().forEach(function(x){if(!x.isPit&&x.raw&&num(x.raw[8])>0)totals[String(x.raw[3]||'')]=num(x.raw[8]);});
+    var colHead='<div class="so-final-depth-row so-final-numeric-row so-final-depth-colhead"><div class="so-final-player">Player</div><div class="so-final-game">Matchup</div><div class="so-final-pct">'+sortColLabel('own','Own')+'</div><div class="so-final-proj">'+sortColLabel('proj','Proj')+'</div><div class="so-final-value">'+sortColLabel('value','Value')+'</div><div class="so-final-lev">'+sortColLabel('lev','Lev')+'</div></div>';
     var rowsHtml=rows.map(function(p){
       var o=num(p.own),l=num(p.lev),sign=l>=0?'+':'',r=p.raw||[],team=String(r[3]||''),opp=String(r[4]||''),total=totals[team];
       var game='<div class="so-final-game"><b>'+safe(team+(opp?' vs '+opp:''))+'</b><small>'+(total?team+' '+total.toFixed(1)+' implied runs':'game context')+'</small></div>';
-      return '<div class="so-final-depth-row so-final-numeric-row"><div class="so-final-player"><span class="so-final-pos">'+safe(p.pos)+'</span><div style="min-width:0"><div class="so-final-name" title="'+safe(p.name)+'">'+safe(p.name)+'</div></div></div>'+game+'<div class="so-final-pct"><small>OWN</small>'+pct(o)+'</div><div class="so-final-proj"><small>PROJ</small>'+num(p.proj).toFixed(1)+'</div><div class="so-final-value"><small>VALUE</small>'+num(p.value).toFixed(2)+'x</div><div class="so-final-lev '+(l>=2?'positive':l<=-2?'negative':'neutral')+'"><small>LEV</small>'+(l>=2?'▲ ':l<=-2?'▼ ':'● ')+sign+l.toFixed(1)+'</div></div>';
+      return '<div class="so-final-depth-row so-final-numeric-row"><div class="so-final-player"><span class="so-final-pos">'+safe(p.pos)+'</span><div style="min-width:0"><div class="so-final-name" title="'+safe(p.name)+'">'+safe(p.name)+'</div></div></div>'+game+'<div class="so-final-pct"><small>OWN</small>'+pct(o)+'</div><div class="so-final-proj"><small>PROJ</small>'+num(p.proj).toFixed(1)+'</div><div class="so-final-value"><small>VALUE</small>'+num(p.value).toFixed(2)+'x</div><div class="so-final-lev '+(l>=2?'positive':l<=-2?'negative':'neutral')+'"><small>LEV</small>'+(l>=2?'\u25b2 ':l<=-2?'\u25bc ':'\u25cf ')+sign+l.toFixed(1)+'</div></div>';
     }).join('');
-    return '<div id="soFinalDepthBottom" class="so-final-depth-bottom so-final-numeric-depth"><div class="so-final-depth-head so-final-depth-head-slim"><div class="so-final-depth-titlewrap"><div class="so-final-depth-title">Tournament Ownership</div>'+ownPosTabs()+'</div><div class="so-final-depth-meta"><span>'+rows.length+' players</span><span>sorted by projected ownership</span></div></div><div class="so-final-depth-grid">'+rowsHtml+'</div><div class="so-final-depth-method">Ownership, projection and value remain neutral. Leverage is the only directional color signal.</div></div>';
+    var sortLabel={own:'ownership',proj:'projection',value:'value',lev:'leverage',name:'name',salary:'salary'}[ownSortKey]||'ownership';
+    var metaSort='sorted by '+sortLabel+' \u00b7 '+(ownSortAsc?'low to high':'high to low');
+    return '<div id="soFinalDepthBottom" class="so-final-depth-bottom so-final-numeric-depth"><div class="so-final-depth-head so-final-depth-head-slim"><div class="so-final-depth-titlewrap"><div class="so-final-depth-title">Tournament Ownership</div>'+ownPosTabs()+'</div><div class="so-final-depth-meta"><span>'+rows.length+' players</span><span>'+metaSort+'</span></div></div><div class="so-final-depth-grid">'+colHead+rowsHtml+'</div><div class="so-final-depth-method">Ownership, projection and value remain neutral. Leverage is the only directional color signal.</div></div>';
   }
 
   function ensureDepth(rows){
     var panel=el('mlbOwnershipPanel'), ktMain=panel&&panel.querySelector('.so-kt-main'); if(!panel || !ktMain) return;
     var old=el('soExposurePair'); if(old) old.remove();
-    ktMain.insertAdjacentHTML('afterend', '<div id="soExposurePair" class="so-exposure-pair">'+buildDepth(rows)+'</div>');
+    // so-v6-restyle-v6: soOwnLevRow is a shared grid row (created once, reused
+    // across re-renders) that holds Tournament Ownership + the Leverage & Value
+    // outer as side-by-side grid items — see ensureUpgrades() below, and the
+    // #soOwnLevRow CSS in the v6 restyle block for the column placement.
+    var row=el('soOwnLevRow');
+    if(!row){
+      row=document.createElement('div'); row.id='soOwnLevRow'; row.className='so-own-lev-row';
+      ktMain.insertAdjacentElement('afterend', row);
+    }
+    row.insertAdjacentHTML('afterbegin', '<div id="soExposurePair" class="so-exposure-pair">'+buildDepth(rows)+'</div>');
   }
 
   function buildContrarian(all){
     all=all&&all.length?all:allRows();
     var old=el('soContrarianSection'); if(old) old.remove();
-    var pairWrap=el('soExposurePair'); if(!pairWrap) return;
+    var pairWrap=el('soLevValueContrarianSlot'); if(!pairWrap) return;
     var targets=all.filter(function(p){return !p.isPit && num(p.own)<15 && num(p.proj)>=8;}).sort(function(a,b){return (num(b.proj)+num(b.lev)*.4)-(num(a.proj)+num(a.lev)*.4);}).slice(0,8);
     var rows=targets.length?targets.map(function(p){var l=num(p.lev), sign=l>=0?'+':''; return '<div class="so-con2-row"><span class="so-con2-pos">'+safe(p.pos)+'</span><div class="so-con2-info"><div class="so-con2-name" title="'+safe(p.name)+'">'+safe(p.name)+'</div><div class="so-con2-matchup">'+safe(matchup(p))+'</div></div><div class="so-con2-stats"><div class="so-con2-stat"><small>OWN</small><b>'+pct(p.own)+'</b></div><div class="so-con2-stat"><small>PROJ</small><b>'+num(p.proj).toFixed(1)+'</b></div><div class="so-con2-stat"><small>LEV</small><b style="color:'+levColor(l)+'">'+sign+l.toFixed(1)+'</b></div></div></div>';}).join(''):'<div class="so-con2-empty">No contrarian bats meet &lt;15% own · ≥8 proj right now.</div>';
     var section=document.createElement('div'); section.id='soContrarianSection'; section.className='so-contrarian-section'; section.innerHTML='<div class="so-contrarian-head"><div class="so-contrarian-kicker">Contrarian Targets</div><div class="so-contrarian-rule">&lt;15% own · ≥8 proj · '+targets.length+' plays</div></div><div class="so-con2-list">'+rows+'</div>';
@@ -8272,7 +8374,7 @@ hideAccessLock(); // ← CHANGE THIS LINE TO CONTROL THE ACCESS LOCK
       var col=valueColor(score), lev=num(bestLev&&bestLev.lev);
       return '<div class="so-posval-row"><div class="so-posval-pos">'+safe(pos)+'</div><div class="so-posval-player"><b title="'+safe(topValue.name)+'">'+safe(topValue.name)+'</b><span>'+group.length+' tracked · top value</span></div><div class="so-posval-num"><small>OWN</small><b>'+pct(avgOwn)+'</b></div><div class="so-posval-num"><small>VAL</small><b style="color:'+col+'">'+num(avgVal).toFixed(2)+'x</b></div><div class="so-posval-lev"><small>BEST LEV</small><b>'+safe((bestLev.name||'').split(' ').pop())+' '+(lev>=0?'+':'')+lev.toFixed(1)+'</b></div></div>';
     }).join('');
-    return '<div class="so-corr-panel so-posval-panel"><div class="so-corr-head so-posval-head"><span>Positional Value Board</span><span style="color:var(--kt-muted)">today’s best roster-slot values</span></div><div class="so-posval-body"><div class="so-posval-intro so-posval-intro-slim"><b>What this means:</b> each position ranked by projection, salary efficiency and ownership — color on VAL shows strength at a glance.</div><div class="so-posval-table"><div class="so-posval-row head"><div>POS</div><div>TOP VALUE</div><div>OWN</div><div>VAL</div><div>LEVERAGE</div></div>'+rows+'</div></div></div>';
+    return '<div class="so-corr-panel so-posval-panel"><div class="so-corr-head so-posval-head"><span>Positional Value Board</span><span style="color:var(--kt-muted)">today’s best roster-slot values</span></div><div class="so-posval-body"><div class="so-posval-table"><div class="so-posval-row head"><div>POS</div><div>TOP VALUE</div><div>OWN</div><div>VAL</div><div>LEVERAGE</div></div>'+rows+'</div></div></div>';
   }
 
   // ── Batter vs Pitcher EV% matchup engine ──────────────────────
@@ -8452,10 +8554,66 @@ hideAccessLock(); // ← CHANGE THIS LINE TO CONTROL THE ACCESS LOCK
 
   function ensureUpgrades(data){
     var panel=el('mlbOwnershipPanel'); if(!panel) return;
-    var old=panel.querySelector('.so-upgrades-wrapper'); if(old) old.remove();
-    var wrapper=document.createElement('div'); wrapper.className='so-upgrades-wrapper'; wrapper.style.cssText='position:relative;z-index:3;padding:10px 12px 0;';
-    wrapper.innerHTML='<div class="so-posbvp-grid" style="display:grid;grid-template-columns:.7fr 1.3fr;gap:10px;">'+buildPositionalValue(data)+buildBvpPanel(data)+'</div>';
-    var pairWrap=el('soExposurePair'); if(pairWrap && pairWrap.parentNode) pairWrap.parentNode.insertBefore(wrapper, pairWrap.nextSibling); else panel.appendChild(wrapper);
+    // so-v6-restyle-v6: previously a single ".so-upgrades-wrapper" held both the
+    // Leverage & Value panel and the Batter vs Pitcher panel stacked full-width.
+    // Split into two outers so Leverage & Value can sit inside #soOwnLevRow
+    // (aligned under Signal Desk) while Batter vs Pitcher stays a separate,
+    // full-width element below the row — same content/markup either way.
+    // so-v12-swap: requested swap — Batter vs Pitcher now sits in the row next
+    // to Leverage & Value (both use the same small dark/mono terminal-panel
+    // styling, so the row reads as one matched pair) and Tournament Ownership
+    // (built by ensureDepth() into #soExposurePair, already inside the row at
+    // this point) moves out to be the full-width panel below — same
+    // content/markup for all three, only their positions change.
+    var oldLev=panel.querySelector('.so-levval-outer'); if(oldLev) oldLev.remove();
+    var oldBvp=el('soBvpOuter'); if(oldBvp) oldBvp.remove();
+
+    var levOuter=document.createElement('div');
+    levOuter.className='so-upgrades-wrapper so-levval-outer';
+    levOuter.style.cssText='position:relative;z-index:3;padding:10px 12px 0;';
+    levOuter.innerHTML=
+        '<div class="so-corr-panel so-levval-panel">'
+          +'<div class="so-corr-head so-levval-head"><span>Leverage &amp; Value</span><span style="color:var(--kt-muted)">contrarian targets + positional value board</span>'
+            +'<div class="so-levval-tabs">'
+              +'<button type="button" class="so-levval-tab'+(levValueTab==='contrarian'?' active':'')+'" data-levval-tab="contrarian">Contrarian Targets</button>'
+              +'<button type="button" class="so-levval-tab'+(levValueTab==='value'?' active':'')+'" data-levval-tab="value">Value Board</button>'
+            +'</div>'
+          +'</div>'
+          +'<div class="so-levval-body">'
+            +'<div class="so-levval-slot" id="soLevValueContrarianSlot" style="display:'+(levValueTab==='contrarian'?'block':'none')+'"></div>'
+            +'<div class="so-levval-slot" id="soLevValueValueSlot" style="display:'+(levValueTab==='value'?'block':'none')+'">'+buildPositionalValue(data)+'</div>'
+          +'</div>'
+        +'</div>';
+
+    var bvpOuter=document.createElement('div');
+    bvpOuter.id='soBvpOuter'; bvpOuter.className='so-bvp-outer';
+    bvpOuter.style.cssText='position:relative;z-index:3;padding:10px 12px 0;';
+    bvpOuter.innerHTML=buildBvpPanel(data);
+
+    var row=el('soOwnLevRow');
+    if(row){
+      row.appendChild(bvpOuter);
+      row.appendChild(levOuter);
+      var exposurePair=el('soExposurePair');
+      if(exposurePair && exposurePair.parentNode===row){
+        if(row.nextSibling) row.parentNode.insertBefore(exposurePair, row.nextSibling);
+        else row.parentNode.appendChild(exposurePair);
+      }
+    } else {
+      var pairWrap=el('soExposurePair');
+      if(pairWrap && pairWrap.parentNode) pairWrap.parentNode.insertBefore(levOuter, pairWrap.nextSibling); else panel.appendChild(levOuter);
+      panel.appendChild(bvpOuter);
+    }
+
+    levOuter.querySelectorAll('[data-levval-tab]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        levValueTab = btn.getAttribute('data-levval-tab');
+        levOuter.querySelectorAll('[data-levval-tab]').forEach(function(b){ b.classList.toggle('active', b===btn); });
+        var cSlot=el('soLevValueContrarianSlot'), vSlot=el('soLevValueValueSlot');
+        if(cSlot) cSlot.style.display = levValueTab==='contrarian' ? 'block' : 'none';
+        if(vSlot) vSlot.style.display = levValueTab==='value' ? 'block' : 'none';
+      });
+    });
     bvpBindEvents(data);
   }
 
@@ -8482,8 +8640,9 @@ hideAccessLock(); // ← CHANGE THIS LINE TO CONTROL THE ACCESS LOCK
     ensureUpgrades(data);
     buildContrarian(all);
     ensureTicker(data);
+    (function(){ var d=panel.querySelector(':scope > .so-player-digest'), h=panel.querySelector(':scope > .own-header'); if(d && h && h.nextElementSibling!==d) h.parentNode.insertBefore(d, h.nextElementSibling); })();
     panel.classList.add('so-v6-ready','so-mount-stable');
-    if(!panel.__soOwnPosBound){ panel.__soOwnPosBound=true; panel.addEventListener('click',function(e){ var b=e.target.closest('[data-own-pos]'); if(!b) return; e.preventDefault(); ownPosFilter=b.getAttribute('data-own-pos')||'ALL'; renderOwnershipExtras(true); }); }
+    if(!panel.__soOwnPosBound){ panel.__soOwnPosBound=true; panel.addEventListener('click',function(e){ var s=e.target.closest('[data-own-sort]'); if(s){ e.preventDefault(); var k=s.getAttribute('data-own-sort'); if(ownSortKey===k) ownSortAsc=!ownSortAsc; else { ownSortKey=k; ownSortAsc=(k==='name'); } renderOwnershipExtras(true); return; } var b=e.target.closest('[data-own-pos]'); if(!b) return; e.preventDefault(); ownPosFilter=b.getAttribute('data-own-pos')||'ALL'; renderOwnershipExtras(true); }); }
   }
 
   window.ownRender = function(){
@@ -9049,6 +9208,16 @@ hideAccessLock(); // ← CHANGE THIS LINE TO CONTROL THE ACCESS LOCK
 #mlbOwnershipPanel .so-final-numeric-row small{display:block;margin-bottom:2px;color:#607286;font-size:.42rem;font-weight:900;letter-spacing:.09em}
 #mlbOwnershipPanel .so-final-value{color:#d9e4ef}
 @media(max-width:700px){#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-card{min-height:118px!important;grid-template-rows:auto minmax(30px,auto) auto minmax(18px,auto)!important}#mlbOwnershipPanel .so-final-numeric-row{grid-template-columns:minmax(0,1fr) 62px 62px!important;grid-template-areas:"player own proj" "tier value lev"!important;gap:7px 8px!important;padding:9px!important}#mlbOwnershipPanel .so-final-numeric-row .so-final-player{grid-area:player}#mlbOwnershipPanel .so-final-numeric-row .so-final-tier{grid-area:tier}#mlbOwnershipPanel .so-final-numeric-row .so-final-pct{grid-area:own}#mlbOwnershipPanel .so-final-numeric-row .so-final-proj{grid-area:proj;display:block!important}#mlbOwnershipPanel .so-final-numeric-row .so-final-value{grid-area:value}#mlbOwnershipPanel .so-final-numeric-row .so-final-lev{grid-area:lev}#mlbOwnershipPanel .so-final-numeric-row .so-final-pct,#mlbOwnershipPanel .so-final-numeric-row .so-final-proj,#mlbOwnershipPanel .so-final-numeric-row .so-final-value,#mlbOwnershipPanel .so-final-numeric-row .so-final-lev{text-align:left!important;font-size:.58rem!important}}
+
+#mlbOwnershipPanel .so-final-depth-colhead{position:sticky;top:0;z-index:3;background:#0c141f;border-bottom:1px solid rgba(255,255,255,.09)!important;box-shadow:0 4px 10px rgba(0,0,0,.25)!important;padding-top:6px!important;padding-bottom:6px!important}
+#mlbOwnershipPanel .so-final-depth-colhead .so-final-player,#mlbOwnershipPanel .so-final-depth-colhead .so-final-game{color:#6d8094;font-size:.5rem;font-weight:900;letter-spacing:.09em;text-transform:uppercase}
+#mlbOwnershipPanel .so-final-depth-colhead .so-final-pct,#mlbOwnershipPanel .so-final-depth-colhead .so-final-proj,#mlbOwnershipPanel .so-final-depth-colhead .so-final-value,#mlbOwnershipPanel .so-final-depth-colhead .so-final-lev{padding:0}
+#mlbOwnershipPanel .so-own-sort-btn{display:inline-flex;align-items:center;justify-content:flex-end;gap:2px;width:100%;border:0;background:none;padding:0;margin:0;font:inherit;color:#6d8094;font-size:.5rem;font-weight:900;letter-spacing:.09em;text-transform:uppercase;cursor:pointer}
+#mlbOwnershipPanel .so-own-sort-btn:hover{color:#dce5eb}
+#mlbOwnershipPanel .so-own-sort-btn.own-sort-active{color:#f4b942}
+#mlbOwnershipPanel .so-own-sort-arrow{font-size:.5rem;min-width:8px;display:inline-block}
+@media(min-width:701px){#mlbOwnershipPanel .so-final-numeric-row:not(.so-final-depth-colhead) small{display:none!important}}
+@media(max-width:700px){#mlbOwnershipPanel .so-final-depth-colhead{display:none!important}}
 </style><script id="so-ownership-contrarian-sync-20260911">(function(){function refresh(){if(typeof window.soRenderCleanOwnership==='function')window.soRenderCleanOwnership(true)}function bind(){var b=document.getElementById('mlb-sub-ownership');if(b&&!b.__soContraSync){b.__soContraSync=true;b.addEventListener('click',function(){setTimeout(refresh,0);requestAnimationFrame(refresh)})}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind()})();</script>
 <style id="so-signal-clarity-20260911">
 /* MLB ownership: numerical information first; categorical labels no longer
@@ -9184,5 +9353,1330 @@ hideAccessLock(); // ← CHANGE THIS LINE TO CONTROL THE ACCESS LOCK
   #mlbOwnershipPanel .so-con2-row{flex:0 0 158px;width:158px;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:10px;scroll-snap-align:start;background:rgba(255,255,255,.015);}
   #mlbOwnershipPanel .so-con2-stats{justify-content:space-between;gap:6px;}
 }
-</style></body>
+</style>
+<style id="so-cohesive-scale-20260912">
+@media(min-width:701px){
+  #mlbOwnershipPanel .so-final-depth-row:not(.so-final-depth-colhead){min-height:40px!important;padding:9px 4px!important;}
+  #mlbOwnershipPanel .so-final-depth-colhead{padding-top:7px!important;padding-bottom:7px!important;}
+  #mlbOwnershipPanel .so-final-name{font-size:.8rem!important;font-weight:850!important;}
+  #mlbOwnershipPanel .so-final-game{font-size:.6rem!important;}
+  #mlbOwnershipPanel .so-final-game b{font-size:.62rem!important;}
+  #mlbOwnershipPanel .so-final-game small{font-size:.5rem!important;}
+  #mlbOwnershipPanel .so-final-pct{font-size:.84rem!important;}
+  #mlbOwnershipPanel .so-final-proj,#mlbOwnershipPanel .so-final-value,#mlbOwnershipPanel .so-final-lev{font-size:.72rem!important;}
+  #mlbOwnershipPanel .so-final-numeric-row .so-final-pct,#mlbOwnershipPanel .so-final-numeric-row .so-final-proj,#mlbOwnershipPanel .so-final-numeric-row .so-final-value,#mlbOwnershipPanel .so-final-numeric-row .so-final-lev{font-size:.72rem!important;}
+
+  #mlbOwnershipPanel .so-con2-row{padding:14px 14px!important;}
+  #mlbOwnershipPanel .so-con2-name{font-size:.8rem!important;}
+  #mlbOwnershipPanel .so-con2-matchup{font-size:.52rem!important;}
+  #mlbOwnershipPanel .so-con2-stats{gap:30px!important;}
+  #mlbOwnershipPanel .so-con2-stat b{font-size:.76rem!important;}
+
+  /* shared typography scale across Tournament Ownership, Contrarian Targets and Live Tape so row weight/size feels consistent */
+  #mlbOwnershipPanel .so-final-depth-title,#mlbOwnershipPanel .so-con2-head b{letter-spacing:-.02em;}
+  #mlbOwnershipPanel .so-final-depth-kicker,#mlbOwnershipPanel .so-v6-head{letter-spacing:.16em;}
+}
+</style>
+<style id="so-editorial-rework-20260912">
+/* ── Editorial rework: Player Digest intro, cover-story hero cards, and the merged Leverage & Value tab panel.
+   Nothing here touches the JS that computes or filters player data — only how the already-computed
+   HTML is laid out and typeset. ── */
+
+#mlbOwnershipPanel .so-player-digest{margin:0 0 12px;padding:13px 16px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.025);}
+#mlbOwnershipPanel .so-player-digest-kicker{font:800 .58rem 'DM Mono','Courier New',monospace;letter-spacing:.16em;text-transform:uppercase;color:#f4b942;margin-bottom:6px;}
+#mlbOwnershipPanel .so-player-digest-body{font-size:.72rem;line-height:1.65;color:#9fb0c2;}
+#mlbOwnershipPanel .so-player-digest-body b{color:#e7edf3;font-weight:800;}
+
+/* cover-story hero cards: card 1 = headline, cards 2–3 = sidebars, cards 4–6 = a slim strip below */
+@media(min-width:901px){
+  #mlbOwnershipPanel .own-stat-cards-inline{display:grid!important;grid-template-columns:repeat(6,1fr)!important;grid-auto-rows:auto!important;gap:12px!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1){grid-column:1/4!important;grid-row:1!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(2){grid-column:4/6!important;grid-row:1!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(3){grid-column:6/7!important;grid-row:1!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4){grid-column:1/3!important;grid-row:2!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5){grid-column:3/5!important;grid-row:2!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6){grid-column:5/7!important;grid-row:2!important;}
+
+  /* headline card: bigger name + metrics, quieter background than before */
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1).so-ref-signal-card{background:linear-gradient(135deg,rgba(244,185,66,.09),transparent 65%),#0d131a!important;min-height:150px!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-name{font-size:1.15rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-metric b{font-size:.92rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-orb{width:34px!important;height:34px!important;}
+
+  /* sidebar cards: medium */
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(2) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(3) .so-ref-signal-name{font-size:.92rem!important;}
+
+  /* bottom strip cards 4–6: compact, quiet, index badge + orb hidden to reduce noise */
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4),
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5),
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6){min-height:0!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4).so-ref-signal-card,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5).so-ref-signal-card,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6).so-ref-signal-card{padding:9px 11px!important;grid-template-rows:auto auto!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4) .so-ref-signal-orb,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5) .so-ref-signal-orb,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6) .so-ref-signal-orb,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4) .so-ref-signal-index,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5) .so-ref-signal-index,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6) .so-ref-signal-index{display:none!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6) .so-ref-signal-name{font-size:.7rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4) .so-ref-signal-metrics,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5) .so-ref-signal-metrics,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6) .so-ref-signal-metrics{grid-template-columns:repeat(3,1fr)!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4) .so-ref-signal-metric b,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5) .so-ref-signal-metric b,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6) .so-ref-signal-metric b{font-size:.62rem!important;}
+}
+
+/* Tournament Ownership now stands alone full-width — Contrarian Targets moved into Leverage & Value */
+#mlbOwnershipPanel .so-exposure-pair{display:block!important;}
+
+/* Leverage & Value: merged Contrarian Targets + Positional Value Board behind a two-tab switch */
+#mlbOwnershipPanel .so-levval-head{flex-wrap:wrap;row-gap:8px;}
+#mlbOwnershipPanel .so-levval-tabs{display:flex;gap:2px;margin-left:auto;border:1px solid rgba(255,255,255,.09);border-radius:999px;padding:2px;}
+#mlbOwnershipPanel .so-levval-tab{border:0;background:transparent;color:#7c8a99;font:800 .58rem 'DM Mono','Courier New',monospace;letter-spacing:.06em;padding:6px 13px;border-radius:999px;cursor:pointer;}
+#mlbOwnershipPanel .so-levval-tab.active{background:#f4b942;color:#15120a;}
+#mlbOwnershipPanel .so-levval-tab:hover:not(.active){color:#dce5eb;}
+#mlbOwnershipPanel .so-levval-body{position:relative;}
+#mlbOwnershipPanel .so-levval-slot .so-contrarian-section{border:0!important;}
+#mlbOwnershipPanel .so-levval-slot .so-posval-panel{border:0!important;box-shadow:none!important;}
+
+/* quiet down the two remaining glow/scan animations so color reads as signal, not decoration */
+#mlbOwnershipPanel .so-v6-tape-row{animation:none!important;}
+#mlbOwnershipPanel .so-v6-tape-row:after{display:none!important;}
+
+@media(max-width:900px){
+  #mlbOwnershipPanel .own-stat-cards-inline{display:grid!important;grid-template-columns:1fr 1fr!important;}
+}
+</style>
+<style id="so-editorial-restyle-v2">
+/* ── Editorial restyle v2 ──────────────────────────────────────────────
+   Presentation-only pass matching ownership-rework-f-editorial.html:
+   quiet flat panels, thin 1px borders, no glow/gradient chrome, color
+   used only on the leverage/value signal. Nothing here touches JS that
+   computes, filters, sorts or selects player data — only the CSS (and,
+   for decorateTopCards' wrapper markup, presentational strings) that
+   render already-computed values. ── */
+
+/* Hero cards (decorateTopCards → .so-ref-signal-card): flatten chrome,
+   drop the numbered badge + icon orb, restore editorial type hierarchy. */
+#mlbOwnershipPanel .own-stat-cards-inline .own-stat-card.so-ref-signal-card,
+#mlbOwnershipPanel .own-stat-cards-inline .own-stat-card-sm.so-ref-signal-card{
+  border:1px solid rgba(255,255,255,.08)!important;
+  background:#0d131a!important;
+  box-shadow:none!important;
+}
+#mlbOwnershipPanel .own-stat-cards-inline .own-stat-card.so-ref-signal-card:nth-child(1),
+#mlbOwnershipPanel .own-stat-cards-inline .own-stat-card.so-ref-signal-card:nth-child(6){
+  box-shadow:none!important;
+}
+#mlbOwnershipPanel .own-stat-cards-inline .own-stat-card.so-ref-signal-card:before,
+#mlbOwnershipPanel .own-stat-cards-inline .own-stat-card.so-ref-signal-card:after{
+  display:none!important;
+  content:none!important;
+}
+#mlbOwnershipPanel .so-ref-signal-index{display:none!important;}
+#mlbOwnershipPanel .so-ref-signal-orb{display:none!important;}
+#mlbOwnershipPanel .so-ref-signal-label svg{display:none!important;}
+#mlbOwnershipPanel .so-ref-signal-label,
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-label.lbl,
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-label.lbl-sm{
+  color:#f4b942!important;
+  font-weight:800!important;
+  max-width:100%!important;
+}
+#mlbOwnershipPanel .so-ref-signal-main{justify-content:flex-start!important;}
+#mlbOwnershipPanel .so-ref-signal-metrics{
+  border:1px solid rgba(255,255,255,.07)!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+/* card 1 = "cover story" headline: real type hierarchy, quiet gold-tinted wash */
+@media(min-width:901px){
+  /* the legacy rail was hard-capped at 194px for 92px-tall cards; the taller
+     cover-story row needs the container to size to its actual content instead
+     of clipping row 2 behind the next panel. */
+  #mlbOwnershipPanel .own-stat-cards-inline{
+    height:auto!important;min-height:0!important;max-height:none!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1).so-ref-signal-card{
+    height:auto!important;min-height:172px!important;max-height:none!important;
+    grid-template-rows:16px minmax(0,1fr) 34px!important;
+    padding:16px 18px!important;
+    background:linear-gradient(135deg,rgba(244,185,66,.08),transparent 65%),#0d131a!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-label{font-size:.6rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-name{
+    font-size:1.85rem!important;font-weight:850!important;letter-spacing:-.02em!important;
+    white-space:normal!important;overflow:visible!important;text-overflow:clip!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-metric span{font-size:.42rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-metric b{font-size:1rem!important;}
+
+  /* cards 2–3 = plain sidebar cards */
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(2).so-ref-signal-card,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(3).so-ref-signal-card{
+    height:auto!important;min-height:172px!important;max-height:none!important;
+    padding:14px 16px!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(2) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(3) .so-ref-signal-name{
+    font-size:1.05rem!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;
+  }
+
+  /* cards 4–6 = slim flat deck-strip, no badges/orbs (already hidden above) */
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4).so-ref-signal-card,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5).so-ref-signal-card,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6).so-ref-signal-card{
+    background:#0f151c!important;
+  }
+}
+
+/* Contrarian Targets (buildContrarian → .so-con2-row): flat quiet rows,
+   color kept only on the LEV number. */
+#mlbOwnershipPanel .so-contrarian-section{
+  background:#0d131a!important;
+  box-shadow:none!important;
+  border:1px solid rgba(255,255,255,.07)!important;
+}
+#mlbOwnershipPanel .so-contrarian-head{background:transparent!important;}
+#mlbOwnershipPanel .so-contrarian-head:after{display:none!important;}
+#mlbOwnershipPanel .so-contrarian-kicker{color:#f4b942!important;text-shadow:none!important;}
+#mlbOwnershipPanel .so-contrarian-kicker:before{background:#f4b942!important;box-shadow:none!important;}
+#mlbOwnershipPanel .so-con2-row{padding:12px 16px!important;}
+#mlbOwnershipPanel .so-con2-pos{
+  color:#8a97a6!important;
+  background:rgba(255,255,255,.04)!important;
+  border-color:rgba(255,255,255,.14)!important;
+}
+#mlbOwnershipPanel .so-con2-stat small{color:#7c8a99!important;}
+
+/* Value Board (buildPositionalValue → .so-posval-row): same flat treatment,
+   color kept only on the VAL figure (set inline by valueColor()). */
+#mlbOwnershipPanel .so-posval-panel{
+  background:#0d131a!important;
+  border-color:rgba(255,255,255,.08)!important;
+}
+#mlbOwnershipPanel .so-posval-head{color:#7c8a99!important;}
+#mlbOwnershipPanel .so-posval-intro{
+  background:rgba(255,255,255,.025)!important;
+  border-color:rgba(255,255,255,.08)!important;
+}
+#mlbOwnershipPanel .so-posval-intro b{color:#e7edf3!important;}
+#mlbOwnershipPanel .so-posval-row{
+  background:rgba(255,255,255,.02)!important;
+  border-color:rgba(255,255,255,.07)!important;
+  padding:11px 14px!important;
+}
+#mlbOwnershipPanel .so-posval-pos{
+  color:#8a97a6!important;
+  background:rgba(255,255,255,.04)!important;
+  border-color:rgba(255,255,255,.14)!important;
+}
+
+/* Leverage & Value tab shell: quiet gray header, no purple accent */
+#mlbOwnershipPanel .so-levval-panel{background:#0d131a!important;}
+#mlbOwnershipPanel .so-levval-head{color:#7c8a99!important;}
+#mlbOwnershipPanel .so-levval-head>span:first-child{margin-right:10px;}
+
+/* Live Tape / Field Pressure / Signal Desk: consistent gray uppercase
+   kicker headers (no per-panel blue/green accent), remaining scan/pulse
+   animations and glow box-shadows removed. */
+#mlbOwnershipPanel .so-kt-desk{
+  border-top-color:rgba(255,255,255,.08)!important;
+  border-bottom-color:rgba(255,255,255,.08)!important;
+}
+#mlbOwnershipPanel .so-v6-head,
+#mlbOwnershipPanel .so-v6-signal .so-v6-head,
+#mlbOwnershipPanel .so-v6-pressure .so-v6-head,
+#mlbOwnershipPanel .so-v6-live .so-v6-head{color:#7c8a99!important;}
+#mlbOwnershipPanel .so-v6-live:before,
+#mlbOwnershipPanel .so-v6-signal:before{display:none!important;}
+#mlbOwnershipPanel .so-v6-ticket{animation:none!important;}
+#mlbOwnershipPanel .so-v6-tape-row:before{box-shadow:none!important;}
+#mlbOwnershipPanel .so-v6-fill,
+#mlbOwnershipPanel .so-v6-mini-fill{box-shadow:none!important;}
+
+/* kill the panel-wide animated grid-drift wash */
+#mlbOwnershipPanel:after{animation:none!important;}
+</style>
+<style id="so-editorial-restyle-v3">
+/* ── Editorial restyle v3 ──────────────────────────────────────────────
+   Full re-theme pass, presentation-only. Every rule below changes CSS
+   (and, where noted, the wrapper markup produced by decorateTopCards /
+   buildContrarian / buildPositionalValue) — never the JS that computes,
+   filters, sorts or selects player data. Goal: bring every remaining
+   busy/oversized area down to the quiet, compact editorial density of
+   ownership-rework-f-editorial.html. ── */
+
+/* 1) HERO CARDS — fix the 6-up grid so "Best Pitcher" (card 3) gets the
+   same width as "Contrarian Play" (card 2) instead of being squeezed
+   into a single narrow column (that squeeze is what truncated its
+   metric labels to "P… O… U…"). Cover-main : side : side ≈ 1.3 : 1 : 1,
+   using a 12-col grid so the ratio is achievable with whole columns. */
+@media(min-width:901px){
+  #mlbOwnershipPanel .own-stat-cards-inline{
+    grid-template-columns:repeat(12,1fr)!important;
+    gap:10px!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1){grid-column:1/6!important;grid-row:1!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(2){grid-column:6/9!important;grid-row:1!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(3){grid-column:9/13!important;grid-row:1!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4){grid-column:1/5!important;grid-row:2!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5){grid-column:5/9!important;grid-row:2!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6){grid-column:9/13!important;grid-row:2!important;}
+}
+/* metric strip: let labels/values size to their real width instead of a
+   fixed 29px-tall ellipsis box — this is the actual truncation fix, the
+   grid rebalance above just gives it room to not need it. */
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metrics{
+  height:auto!important;min-height:30px!important;padding:4px 0!important;
+  background:transparent!important;border-color:rgba(255,255,255,.06)!important;
+}
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric{padding:2px 4px!important;}
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric span{
+  font-size:.42rem!important;overflow:visible!important;text-overflow:clip!important;
+}
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric b{
+  font-size:.68rem!important;overflow:visible!important;text-overflow:clip!important;
+}
+#mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-metric b{font-size:.95rem!important;}
+#mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4) .so-ref-signal-metric b,
+#mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5) .so-ref-signal-metric b,
+#mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6) .so-ref-signal-metric b{font-size:.6rem!important;}
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-card{
+  box-shadow:none!important;background:#0d131a!important;border-radius:10px!important;
+}
+#mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1).so-ref-signal-card{
+  background:linear-gradient(135deg,rgba(244,185,66,.08),transparent 65%),#0d131a!important;
+}
+
+/* 2) COMMAND CENTER HEADER — quiet flat chrome, no gradient rail, no
+   purple leverage-sort pill (kept gold to match the rest of the accent
+   system, since it is a meaningful sort control). */
+#mlbOwnershipPanel .own-header-v2{
+  background:#0d131a!important;border:1px solid rgba(255,255,255,.07)!important;
+  box-shadow:none!important;border-radius:12px!important;
+}
+#mlbOwnershipPanel .own-badge{
+  background:rgba(255,255,255,.04)!important;border:1px solid rgba(255,255,255,.1)!important;
+  color:#9fb0c2!important;box-shadow:none!important;font-weight:800!important;
+  text-transform:uppercase!important;letter-spacing:.08em!important;
+}
+#mlbOwnershipPanel .own-player-count{color:#7c8a99!important;background:transparent!important;border:0!important;}
+#mlbOwnershipPanel .own-tier-pill{
+  background:rgba(255,255,255,.03)!important;border:1px solid rgba(255,255,255,.08)!important;
+  box-shadow:none!important;
+}
+#mlbOwnershipPanel .own-controls select,
+#mlbOwnershipPanel .own-controls input{
+  background:#0b0f15!important;border:1px solid rgba(255,255,255,.1)!important;
+  box-shadow:none!important;color:#dfe6ee!important;
+}
+#mlbOwnershipPanel .own-controls span[onclick]{
+  background:rgba(244,185,66,.08)!important;border:1px solid rgba(244,185,66,.3)!important;
+  color:#f4b942!important;box-shadow:none!important;font-weight:800!important;
+}
+#mlbOwnershipPanel .own-header-v2:before,
+#mlbOwnershipPanel .own-header.own-header-v2:before,
+#mlbOwnershipPanel .own-header.so-final-top-cards:before{background:rgba(255,255,255,.07)!important;height:1px!important;}
+#mlbOwnershipPanel .own-header-left:before{color:#7c8a99!important;}
+#mlbOwnershipPanel .own-header-left:after{color:#4a5866!important;}
+
+/* 3) FIELD PRESSURE MAP — slim bars, quiet metric boxes, compact rows.
+   Colors on the bars stay (they're the actual chalk/high/neutral/pivot
+   signal, set inline per-row from data), just de-glow and slim them. */
+#mlbOwnershipPanel .so-v6-track{height:4px!important;background:rgba(255,255,255,.06)!important;}
+#mlbOwnershipPanel .so-v6-mini-track{height:3px!important;}
+#mlbOwnershipPanel .so-v6-fill,
+#mlbOwnershipPanel .so-v6-mini-fill{box-shadow:none!important;opacity:.82!important;}
+#mlbOwnershipPanel .so-v6-bands{background:transparent!important;border:0!important;padding:0 0 2px!important;}
+#mlbOwnershipPanel .so-v6-band{padding:0!important;font-size:.54rem!important;}
+#mlbOwnershipPanel .so-v6-metric{
+  background:transparent!important;border:1px solid rgba(255,255,255,.07)!important;
+  padding:6px 6px!important;border-radius:8px!important;
+}
+#mlbOwnershipPanel .so-v6-metric b{font-size:.68rem!important;}
+#mlbOwnershipPanel .so-v6-pressure-row{
+  padding:5px 6px!important;background:rgba(255,255,255,.015)!important;
+  border:1px solid rgba(255,255,255,.05)!important;
+}
+#mlbOwnershipPanel .so-v6-pressure-player b{font-size:.62rem!important;}
+#mlbOwnershipPanel .so-v6-pressure-player small{font-size:.44rem!important;}
+#mlbOwnershipPanel .so-v6-own{font-size:.62rem!important;}
+
+/* 4) LIVE TAPE / SIGNAL DESK panel shells — one quiet gray kicker style
+   across all three so-kt-desk panels instead of the leftover green/blue
+   accent heads, and a plain hairline instead of the glowing left rail. */
+#mlbOwnershipPanel .so-v6-live,
+#mlbOwnershipPanel .so-v6-pressure,
+#mlbOwnershipPanel .so-v6-signal{
+  background:#0d131a!important;border-color:rgba(255,255,255,.07)!important;
+}
+#mlbOwnershipPanel .so-v6-head{background:#0d131a!important;border-bottom-color:rgba(255,255,255,.07)!important;}
+#mlbOwnershipPanel .so-v6-tape-row:before{box-shadow:none!important;width:1px!important;}
+#mlbOwnershipPanel .so-v6-ticket{
+  box-shadow:none!important;border-color:rgba(255,255,255,.06)!important;background:rgba(255,255,255,.015)!important;
+}
+#mlbOwnershipPanel .so-v6-ticket:before{box-shadow:none!important;width:2px!important;}
+#mlbOwnershipPanel .so-v10-tag{background:rgba(255,255,255,.03)!important;border-color:rgba(255,255,255,.08)!important;}
+#mlbOwnershipPanel .so-v10-cell{background:rgba(255,255,255,.02)!important;border-color:rgba(255,255,255,.05)!important;}
+#mlbOwnershipPanel .so-v6-exposure{background:#0d131a!important;border-top-color:rgba(255,255,255,.07)!important;}
+
+/* 5) TOURNAMENT OWNERSHIP TABLE — shrink the "cohesive scale" pass back
+   down to a comfortable, compact row (was min-height 40px + 9px/4px
+   padding + up to .84rem type; now a denser single-line-plus-meta row
+   closer to the reference table's rhythm). */
+@media(min-width:701px){
+  #mlbOwnershipPanel .so-final-depth-row:not(.so-final-depth-colhead){
+    min-height:0!important;padding:7px 4px!important;
+  }
+  #mlbOwnershipPanel .so-final-name{font-size:.74rem!important;font-weight:800!important;}
+  #mlbOwnershipPanel .so-final-game b{font-size:.6rem!important;}
+  #mlbOwnershipPanel .so-final-game small{font-size:.46rem!important;}
+  #mlbOwnershipPanel .so-final-pct{font-size:.72rem!important;}
+  #mlbOwnershipPanel .so-final-proj,
+  #mlbOwnershipPanel .so-final-value,
+  #mlbOwnershipPanel .so-final-lev,
+  #mlbOwnershipPanel .so-final-numeric-row .so-final-pct,
+  #mlbOwnershipPanel .so-final-numeric-row .so-final-proj,
+  #mlbOwnershipPanel .so-final-numeric-row .so-final-value,
+  #mlbOwnershipPanel .so-final-numeric-row .so-final-lev{font-size:.64rem!important;}
+}
+#mlbOwnershipPanel .so-final-depth-row:hover{background:rgba(255,255,255,.02)!important;}
+#mlbOwnershipPanel .so-final-pos{background:rgba(255,255,255,.04)!important;border-color:rgba(255,255,255,.12)!important;color:#8a97a6!important;}
+
+/* 6) LEVERAGE & VALUE — Contrarian Targets was stacking "pos+name" over
+   a full-width "stats" row (2 lines of content each ~2 rows tall ≈ 90px
+   total). Lay the same three pieces out on one flat line instead, like
+   the reference contrarian-row: name+matchup left, stat cluster right. */
+@media(min-width:901px){
+  #mlbOwnershipPanel .so-con2-row{
+    display:flex!important;align-items:center!important;justify-content:flex-start!important;
+    gap:12px!important;padding:8px 14px!important;
+  }
+  #mlbOwnershipPanel .so-con2-pos{flex:0 0 auto!important;}
+  #mlbOwnershipPanel .so-con2-info{flex:1 1 auto!important;min-width:0!important;}
+  #mlbOwnershipPanel .so-con2-name{font-size:.76rem!important;}
+  #mlbOwnershipPanel .so-con2-matchup{margin-top:0!important;}
+  #mlbOwnershipPanel .so-con2-stats{flex:0 0 auto!important;gap:16px!important;}
+  #mlbOwnershipPanel .so-con2-stat b{font-size:.66rem!important;}
+}
+#mlbOwnershipPanel .so-con2-row{background:transparent!important;border-color:rgba(255,255,255,.06)!important;}
+#mlbOwnershipPanel .so-con2-pos{background:rgba(255,255,255,.04)!important;border-color:rgba(255,255,255,.14)!important;color:#8a97a6!important;}
+
+/* Value Board rows: same flat treatment, back to a compact single line. */
+#mlbOwnershipPanel .so-posval-row{
+  padding:7px 10px!important;background:transparent!important;
+  border:1px solid rgba(255,255,255,.06)!important;border-radius:8px!important;
+}
+#mlbOwnershipPanel .so-posval-pos{background:rgba(255,255,255,.04)!important;border-color:rgba(255,255,255,.14)!important;color:#8a97a6!important;}
+#mlbOwnershipPanel .so-posval-panel{background:#0d131a!important;border-color:rgba(255,255,255,.07)!important;box-shadow:none!important;}
+#mlbOwnershipPanel .so-posval-intro{background:rgba(255,255,255,.02)!important;border-color:rgba(255,255,255,.07)!important;}
+
+/* Tab shell itself: flat, gold active tab, no purple correlation-panel look. */
+#mlbOwnershipPanel .so-corr-panel.so-levval-panel{
+  background:#0d131a!important;border:1px solid rgba(255,255,255,.07)!important;
+  border-radius:12px!important;box-shadow:none!important;
+}
+#mlbOwnershipPanel .so-corr-head.so-levval-head{
+  color:#7c8a99!important;background:transparent!important;border-bottom:1px solid rgba(255,255,255,.07)!important;
+}
+</style>
+<style id="so-editorial-restyle-v4-spacing">
+/* ── Editorial restyle v4 — spacing pass ──────────────────────────────
+   Presentation/layout-only. Fixes: (1) the Command Center panel being a
+   tall box with dead space below its controls, caused by the outer
+   .own-header being a 2-column grid stretched to match the taller hero
+   card column; (2) the hero cards using an asymmetric "cover story" grid
+   (1 big + 2 medium + 3 small) instead of six equal cards; (3) a purple-
+   tinted, fixed-560px Batter vs Pitcher panel that left an oversized
+   empty box in the no-selection state; (4) minor alignment/whitespace
+   polish on the Tournament Ownership table and Leverage & Value panel.
+   Nothing here touches JS that computes, filters, sorts or selects
+   player/ownership data — only CSS layout of already-rendered markup. ── */
+
+/* 1) COMMAND CENTER — stop splitting the header into a 2-column grid
+   (controls | cards) with align-items:stretch, which forced the controls
+   box to stretch to the height of the taller hero-card column and left a
+   big empty void beneath the filters. Stack it instead: a thin, full-
+   width command-center strip on top, sized to its own content, with the
+   hero-card grid as a full-width row below it. */
+#mlbOwnershipPanel > .own-header,
+#mlbOwnershipPanel .own-header.own-header-v2,
+#mlbOwnershipPanel .own-header.so-final-top-cards{
+  display:flex!important;
+  flex-direction:column!important;
+  grid-template-columns:none!important;
+  align-items:stretch!important;
+  gap:14px!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+}
+#mlbOwnershipPanel .own-header-left{
+  grid-column:auto!important;
+  grid-row:auto!important;
+  width:100%!important;
+  max-width:none!important;
+  align-self:stretch!important;
+  flex:0 0 auto!important;
+}
+#mlbOwnershipPanel .own-stat-cards-inline{
+  grid-column:auto!important;
+  grid-row:auto!important;
+  width:100%!important;
+  max-width:none!important;
+  align-self:stretch!important;
+  flex:0 0 auto!important;
+  margin:0!important;
+}
+
+/* 2) HERO CARDS — replace the asymmetric cover-story grid (card 1 wide +
+   tall, cards 2–3 medium, cards 4–6 short) with six equal-size cards, 3
+   across x 2 rows, so no single card dominates the row. */
+@media(min-width:901px){
+  #mlbOwnershipPanel .own-stat-cards-inline{
+    display:grid!important;
+    grid-template-columns:repeat(3,1fr)!important;
+    grid-auto-rows:1fr!important;
+    gap:10px!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1),
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(2),
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(3),
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4),
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5),
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6){
+    grid-column:auto!important;
+    grid-row:auto!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1).so-ref-signal-card,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(2).so-ref-signal-card,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(3).so-ref-signal-card,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4).so-ref-signal-card,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5).so-ref-signal-card,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6).so-ref-signal-card{
+    height:auto!important;
+    min-height:112px!important;
+    max-height:none!important;
+    padding:12px 14px!important;
+    grid-template-rows:14px minmax(0,1fr) 28px!important;
+    background:#0d131a!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-label,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(2) .so-ref-signal-label,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(3) .so-ref-signal-label,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4) .so-ref-signal-label,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5) .so-ref-signal-label,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6) .so-ref-signal-label{
+    font-size:.5rem!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(2) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(3) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6) .so-ref-signal-name{
+    font-size:.92rem!important;
+    font-weight:800!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric b{
+    font-size:.66rem!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric span{
+    font-size:.4rem!important;
+  }
+}
+@media(max-width:900px){
+  #mlbOwnershipPanel .own-stat-cards-inline{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-auto-rows:1fr!important;
+    gap:9px!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-card{
+    min-height:100px!important;height:auto!important;max-height:none!important;
+  }
+}
+
+/* 3) BATTER VS PITCHER — the panel shared the generic .so-corr-panel
+   rule (purple-tinted border + dark violet background) and a fixed
+   560px height, which left a large empty box in the "No pitcher
+   selected" state. Match the quiet gray shell used everywhere else and
+   let the panel size to its actual content instead. */
+#mlbOwnershipPanel .so-bvp-panel.so-corr-panel{
+  background:#0d131a!important;
+  border-color:rgba(255,255,255,.07)!important;
+}
+#mlbOwnershipPanel .so-bvp-panel{
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+}
+#mlbOwnershipPanel .so-bvp-body{
+  min-height:0!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+#mlbOwnershipPanel .so-bvp-empty{
+  padding:26px 16px!important;
+}
+
+/* 4) LEVERAGE & VALUE — tighten the shell so the panel reads as fully
+   used rather than sparse; Contrarian Targets / Value Board rows are
+   already compact from the prior pass. */
+#mlbOwnershipPanel .so-upgrades-wrapper{padding:10px 0 0!important;}
+#mlbOwnershipPanel .so-levval-body{padding:0!important;}
+#mlbOwnershipPanel .so-posval-body{padding:10px 12px!important;}
+#mlbOwnershipPanel .so-posval-intro{margin-bottom:8px!important;}
+
+/* 5) TOURNAMENT OWNERSHIP TABLE — a touch more breathing room per row
+   and a clearer header/row rhythm; alignment, sort and data are
+   untouched. */
+@media(min-width:701px){
+  #mlbOwnershipPanel .so-final-depth-row:not(.so-final-depth-colhead){
+    padding:9px 12px!important;
+  }
+}
+#mlbOwnershipPanel .so-final-depth-colhead{padding-left:12px!important;padding-right:12px!important;}
+#mlbOwnershipPanel .so-final-depth-grid{gap:6px!important;}
+</style>
+<style id="so-editorial-restyle-v5">
+/* ── Editorial restyle v5 ──────────────────────────────────────────────
+   Presentation/layout-only follow-up to user feedback on the live render:
+   (1) sticky column-header opacity bug on the Tournament Ownership table,
+   (2) dead space to the right of that table's columns, (3) hero cards as
+   six equal squares in one row instead of a 3x2 grid, (4) Contrarian
+   Targets row spacing. Nothing here touches JS that computes, filters,
+   sorts or selects player/ownership data — only CSS of already-rendered
+   markup. ── */
+
+/* 1) STICKY HEADER OPACITY — .so-final-depth-colhead also carries the
+   .so-final-numeric-row class, and an earlier pass's
+   `.so-final-numeric-row{background:transparent!important}` (needed so
+   normal data rows show the panel background through them) was cascading
+   onto the sticky header too, since both are plain single-class
+   selectors of equal specificity. Scrolled player rows were showing
+   through the "translucent" header as a result. Force the header itself
+   fully opaque, above scrolling rows. */
+#mlbOwnershipPanel .so-final-depth-colhead{
+  background:#0d131a!important;
+  position:sticky!important;
+  top:0!important;
+  z-index:6!important;
+  box-shadow:0 4px 12px rgba(0,0,0,.4)!important;
+}
+
+/* 2) TOURNAMENT OWNERSHIP — DEAD SPACE ON THE RIGHT. Tournament Ownership
+   now renders alone (Contrarian Targets moved into Leverage & Value —
+   see the v4 comment above), but the row layout it inherits is still the
+   old "paired side-by-side" version: a hard `max-width:1180px` plus
+   narrow fixed-width columns sized for a ~62%-wide column, not the full
+   panel. That's the void next to the table and the "bunched to the left"
+   look. Let the row use the full container width again, with the extra
+   room going to Player/Matchup; numeric columns stay fixed-width (still
+   comfortably readable) instead of stretching pointlessly. */
+#mlbOwnershipPanel .so-exposure-pair .so-final-depth-bottom,
+#mlbOwnershipPanel .so-final-depth-bottom{width:100%!important;}
+#mlbOwnershipPanel .so-exposure-pair .so-final-depth-grid,
+#mlbOwnershipPanel .so-final-depth-grid{width:100%!important;}
+@media(min-width:901px){
+  #mlbOwnershipPanel .so-exposure-pair .so-final-numeric-row{
+    max-width:none!important;
+    width:100%!important;
+    justify-content:initial!important;
+    grid-template-columns:minmax(220px,1.5fr) minmax(170px,1.1fr) 92px 92px 92px 92px!important;
+    gap:14px!important;
+  }
+}
+
+/* 3) HERO CARDS — one row of six equal squares instead of 3-across x
+   2-row rectangles. aspect-ratio:1 keeps every card exactly as tall as
+   it is wide at whatever width the 6-column track gives it; internal
+   type sizes come down a notch so the kicker/name/metric stack still
+   fits and stays legible inside a square roughly 1/6 of the panel wide. */
+@media(min-width:901px){
+  #mlbOwnershipPanel .own-stat-cards-inline{
+    grid-template-columns:repeat(6,1fr)!important;
+    grid-auto-rows:unset!important;
+    gap:10px!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline > *.so-ref-signal-card{
+    grid-column:auto!important;
+    grid-row:auto!important;
+    aspect-ratio:1/1!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    padding:11px 10px!important;
+    grid-template-rows:12px minmax(0,1fr) 24px!important;
+    background:#0d131a!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-label{
+    font-size:.42rem!important;
+    white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-name{
+    font-size:.72rem!important;
+    font-weight:800!important;
+    white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metrics{
+    gap:2px!important;padding:2px 0!important;height:auto!important;min-height:0!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric{padding:1px 2px!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric span{
+    font-size:.3rem!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric b{
+    font-size:.5rem!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  }
+  /* card 1 no longer gets special "cover story" treatment — all six are
+     the same square now. */
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1).so-ref-signal-card{
+    background:linear-gradient(135deg,rgba(244,185,66,.08),transparent 65%),#0d131a!important;
+    min-height:0!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-label,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-metric b,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(3) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6) .so-ref-signal-name{
+    font-size:inherit!important;
+  }
+}
+/* Tablet: three per row (two rows of three), still square. */
+@media(min-width:641px) and (max-width:900px){
+  #mlbOwnershipPanel .own-stat-cards-inline{
+    grid-template-columns:repeat(3,1fr)!important;
+    grid-auto-rows:unset!important;
+    gap:9px!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-card{
+    aspect-ratio:1/1!important;height:auto!important;min-height:0!important;max-height:none!important;
+    padding:10px!important;grid-template-rows:12px minmax(0,1fr) 22px!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-name{font-size:.7rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-label{font-size:.42rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric b{font-size:.5rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric span{font-size:.3rem!important;}
+}
+/* Phone: two per row so squares don't shrink to illegible. */
+@media(max-width:640px){
+  #mlbOwnershipPanel .own-stat-cards-inline{
+    grid-template-columns:repeat(2,1fr)!important;
+    grid-auto-rows:unset!important;
+    gap:8px!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-card{
+    aspect-ratio:1/1!important;height:auto!important;min-height:0!important;max-height:none!important;
+  }
+}
+
+/* 4) CONTRARIAN TARGETS — a touch more room per row (was 8px/12px) and
+   full-width horizontal margins that now match the Tournament Ownership
+   table's corrected full-width usage above. */
+#mlbOwnershipPanel .so-contrarian-section{width:100%!important;}
+@media(min-width:901px){
+  #mlbOwnershipPanel .so-con2-row{
+    padding:11px 16px!important;
+    gap:16px!important;
+  }
+  #mlbOwnershipPanel .so-con2-stats{gap:20px!important;}
+}
+#mlbOwnershipPanel .so-con2-list{padding:2px 0!important;}
+</style>
+<style id="so-editorial-restyle-v6">
+/* ── Editorial restyle v6 ──────────────────────────────────────────────
+   Presentation/layout-only follow-up to live-render feedback:
+   (1) Tournament Ownership + Leverage & Value now sit side by side in one
+       row instead of stacked full-width, sharing the exact column tracks
+       used by the Live Tape / Field Pressure Map / Signal Desk row above
+       (#mlbOwnershipPanel .so-kt-desk) so their edges line up pixel for
+       pixel: Tournament Ownership spans the Live Tape + Field Pressure
+       columns, Leverage & Value sits under Signal Desk. Tournament
+       Ownership is height-capped with an internal scroll so the row reads
+       as matched-height instead of one panel towering over the other.
+       Batter vs Pitcher (#soBvpOuter, split out of the old shared wrapper
+       in ensureUpgrades() — see JS comment there) stays a separate,
+       unchanged, full-width element below the row.
+   (2) Hero cards drop the aspect-ratio:1 square shape from v5 in favor of
+       a short, wide card sized to its actual content (kicker + name + one
+       stat row) — same six-equal-columns-in-a-row layout, just not square.
+   Nothing here touches JS that computes, filters, sorts or selects
+   player/ownership data — only CSS grid placement of already-rendered
+   markup, plus one height cap with overflow-y:auto. ── */
+
+/* 1) OWNERSHIP + LEVERAGE&VALUE ROW — desktop: same column tracks as
+   .so-kt-desk (minmax(230px,.72fr) minmax(330px,1fr) minmax(360px,1.06fr),
+   0 gap) so column boundaries match the terminal row above exactly.
+   Tournament Ownership spans columns 1–2 (Live Tape + Field Pressure
+   width); Leverage & Value occupies column 3 (Signal Desk width). The
+   breakpoint (1180px) matches where .so-kt-desk itself collapses to a
+   single column. */
+/* v7 fix: .so-upgrades-wrapper (a class .so-levval-outer still carries,
+   left over from when it wrapped two stacked panels) sets
+   padding:10px 0 0!important — that stray top padding was the only thing
+   pushing Leverage & Value's visible top edge below Tournament
+   Ownership's. Zero it so both panels start flush under the terminal row,
+   at every width (mobile stacks them, so this is harmless there too). */
+#mlbOwnershipPanel #soOwnLevRow > .so-levval-outer{padding-top:0!important;}
+
+@media(min-width:1181px){
+  #mlbOwnershipPanel #soOwnLevRow{
+    display:grid!important;
+    grid-template-columns:minmax(230px,.72fr) minmax(330px,1fr) minmax(360px,1.06fr)!important;
+    /* v12: raised from 610px to 720px — the "what this means" intro block
+       was removed from the Value Board tab and both Value Board (7 rows)
+       and Contrarian Targets (8 rows) were reading as scroll-cramped with
+       only ~598px to work with. Batter vs Pitcher's own list already
+       scrolls internally past whatever height it's given, so the taller
+       row doesn't create dead space there when no pitcher is selected. */
+    grid-auto-rows:720px!important;
+    align-items:stretch!important;
+    gap:0!important;
+    margin:0 0 14px!important;
+  }
+  /* v12 swap: Batter vs Pitcher now takes the column-1/3 slot Tournament
+     Ownership used to occupy here — same sizing treatment, just a
+     different panel's markup filling it. */
+  #mlbOwnershipPanel #soOwnLevRow > #soBvpOuter{
+    grid-column:1/3!important;
+    grid-row:1!important;
+    margin:0!important;
+    padding:0!important;
+    height:100%!important;
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  #mlbOwnershipPanel #soOwnLevRow > #soBvpOuter .so-bvp-panel{
+    height:100%!important;
+    max-height:none!important;
+    margin-bottom:0!important;
+  }
+  #mlbOwnershipPanel #soOwnLevRow > .so-levval-outer{
+    grid-column:3/4!important;
+    grid-row:1!important;
+    /* v12 fix: this 14px left margin was the actual root cause of both the
+       "gap between Tournament Ownership and Leverage & Value" and the
+       "Leverage & Value doesn't line up with Signal Desk above it"
+       reports — it shifted this panel's left edge 14px right of where
+       column 3 actually starts, while Signal Desk directly above sits
+       flush at the true column-3 edge (the .so-kt-desk row above has
+       gap:0, its three panels touch with only a hairline border between
+       them). That made the two rows' shared column boundary not
+       actually line up, and put a visible strip of bare background
+       between Tournament Ownership's right edge and this panel's left
+       edge. Zeroed to match the row above's flush/no-gap layout, with a
+       hairline border standing in for the old margin gap — same
+       technique .so-v6-live/.so-v6-pressure already use for their own
+       column dividers one row up. */
+    margin:0!important;
+    border-left:1px solid rgba(255,255,255,.07)!important;
+    height:100%!important;
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  /* Both panels are full-height children of the 610px row track, and each
+     panel's own body scrolls internally (overflow-y:auto) if its content
+     runs past that height — so the row always reads as matched-height
+     regardless of which tab is active or how many rows the table has. */
+  #mlbOwnershipPanel #soOwnLevRow > .so-levval-outer > .so-corr-panel{
+    height:100%!important;
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  #mlbOwnershipPanel #soOwnLevRow .so-levval-body{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    overflow-y:auto!important;
+  }
+  #mlbOwnershipPanel #soOwnLevRow .so-final-depth-bottom{
+    height:100%!important;
+    max-height:none!important;
+    display:flex!important;
+    flex-direction:column!important;
+    overflow:hidden!important;
+  }
+  #mlbOwnershipPanel #soOwnLevRow .so-final-depth-head-slim,
+  #mlbOwnershipPanel #soOwnLevRow .so-final-depth-method{
+    flex:0 0 auto!important;
+  }
+  #mlbOwnershipPanel #soOwnLevRow .so-final-depth-grid{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow-y:auto!important;
+    grid-auto-rows:min-content!important;
+  }
+  #mlbOwnershipPanel #soOwnLevRow .so-final-depth-grid::-webkit-scrollbar,
+  #mlbOwnershipPanel #soOwnLevRow .so-levval-body::-webkit-scrollbar{width:5px;}
+  #mlbOwnershipPanel #soOwnLevRow .so-final-depth-grid::-webkit-scrollbar-thumb,
+  #mlbOwnershipPanel #soOwnLevRow .so-levval-body::-webkit-scrollbar-thumb{background:rgba(0,232,124,.28);border-radius:4px;}
+}
+/* Mobile/tablet: collapse back to a single stacked column, matching the
+   .so-kt-desk collapse breakpoint above. */
+@media(max-width:1180px){
+  #mlbOwnershipPanel #soOwnLevRow{display:block!important;}
+  #mlbOwnershipPanel #soOwnLevRow > #soBvpOuter,
+  #mlbOwnershipPanel #soOwnLevRow > .so-levval-outer{
+    grid-column:auto!important;
+    width:100%!important;
+    max-width:100%!important;
+    margin:0 0 14px!important;
+    height:auto!important;
+  }
+  #mlbOwnershipPanel #soOwnLevRow > #soBvpOuter .so-bvp-panel{height:560px!important;}
+}
+/* Detached Tournament Ownership panel — now a full-width block sitting
+   right after the row (below Batter vs Pitcher + Leverage & Value)
+   instead of squeezed inside it, at every width.
+   v13: letting this run unbounded (overflow:visible, no cap) turned the
+   panel into a 220-row, multi-thousand-pixel wall — with no scroll
+   container of its own to contain it, the page's normal scroll carries
+   right through it, and the sticky bottom ticker (which sticks to the
+   viewport while its containing panel is still in view) ends up
+   floating mid-list over rows instead of only reaching the very end.
+   Restored to a capped, internally-scrolling box — same pattern as
+   Contrarian Targets/Value Board — so the ticker only ever meets the
+   panel's true bottom edge. */
+#mlbOwnershipPanel #soOwnLevRow + #soExposurePair{
+  display:block!important;
+  width:100%!important;
+  margin:0 0 14px!important;
+}
+#mlbOwnershipPanel #soOwnLevRow + #soExposurePair .so-final-depth-bottom{
+  height:820px!important;
+  max-height:820px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:hidden!important;
+}
+#mlbOwnershipPanel #soOwnLevRow + #soExposurePair .so-final-depth-head-slim,
+#mlbOwnershipPanel #soOwnLevRow + #soExposurePair .so-final-depth-method{
+  flex:0 0 auto!important;
+}
+#mlbOwnershipPanel #soOwnLevRow + #soExposurePair .so-final-depth-grid{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  overflow-y:auto!important;
+  grid-auto-rows:min-content!important;
+}
+#mlbOwnershipPanel #soOwnLevRow + #soExposurePair .so-final-depth-grid::-webkit-scrollbar{width:6px;}
+#mlbOwnershipPanel #soOwnLevRow + #soExposurePair .so-final-depth-grid::-webkit-scrollbar-thumb{background:rgba(0,232,124,.28);border-radius:4px;}
+@media(max-width:900px){
+  #mlbOwnershipPanel #soOwnLevRow + #soExposurePair .so-final-depth-bottom{height:600px!important;max-height:600px!important;}
+}
+
+/* Stats more visible: bump the numeric columns another step up from the
+   v8 pass (was .96/.98rem) now that the row has its own scroll box
+   again instead of competing with the rest of the page for space. */
+/* v14: player name dialed back down one step and lightened up for a
+   sleeker look (was 1.04rem/850 — a touch heavy/oversized next to the
+   numbers); OWN/PROJ/VALUE/LEV data stays at v13's larger size, only the
+   column header labels (the small "OWN"/"PROJ"/"VALUE"/"LEV"/"PLAYER"/
+   "MATCHUP" captions) go up a step so they read clearly above the now-
+   bigger numbers. */
+#mlbOwnershipPanel #soOwnLevRow + #soExposurePair .so-final-name{font-size:.92rem!important;font-weight:700!important;letter-spacing:-.005em!important;}
+#mlbOwnershipPanel #soOwnLevRow + #soExposurePair .so-final-numeric-row .so-final-pct,
+#mlbOwnershipPanel #soOwnLevRow + #soExposurePair .so-final-numeric-row .so-final-proj,
+#mlbOwnershipPanel #soOwnLevRow + #soExposurePair .so-final-numeric-row .so-final-value,
+#mlbOwnershipPanel #soOwnLevRow + #soExposurePair .so-final-numeric-row .so-final-lev{font-size:1.02rem!important;font-weight:800!important;}
+#mlbOwnershipPanel #soOwnLevRow + #soExposurePair .so-final-depth-colhead .so-final-player,
+#mlbOwnershipPanel #soOwnLevRow + #soExposurePair .so-final-depth-colhead .so-final-game{font-size:.62rem!important;}
+#mlbOwnershipPanel #soOwnLevRow + #soExposurePair .so-own-sort-btn{font-size:.62rem!important;}
+
+/* Position filter tabs next to "Tournament Ownership" — widened so the
+   labels (SP/C/1B/2B/3B/SS/OF) aren't so cramped. Scoped to this title
+   row only (.so-final-depth-titlewrap), not the same tabs reused in the
+   narrower Field Pressure Map column above. */
+#mlbOwnershipPanel #soOwnLevRow + #soExposurePair .so-final-depth-titlewrap .so-own-pos-tab{
+  padding:5px 12px!important;font-size:.52rem!important;
+}
+#mlbOwnershipPanel #soOwnLevRow + #soExposurePair .so-final-depth-titlewrap .so-own-pos-tabs{gap:6px!important;}
+
+/* 1b) TOURNAMENT OWNERSHIP READABILITY — bump the table's type scale a
+   step (player name, matchup, own/proj/value/lev numbers, column header
+   labels) and open up row padding to match, so the bigger text doesn't
+   feel cramped. Scoped to this row only — the numbers/sort/filter logic
+   underneath is untouched, this only resizes already-rendered text. */
+#mlbOwnershipPanel #soOwnLevRow .so-final-pos{
+  font-size:.58rem!important;padding:4px 7px!important;min-width:30px!important;
+}
+#mlbOwnershipPanel #soOwnLevRow .so-final-name{
+  font-size:.88rem!important;font-weight:800!important;
+}
+#mlbOwnershipPanel #soOwnLevRow .so-final-game b{font-size:.72rem!important;}
+#mlbOwnershipPanel #soOwnLevRow .so-final-game small{font-size:.56rem!important;}
+#mlbOwnershipPanel #soOwnLevRow .so-final-numeric-row .so-final-pct,
+#mlbOwnershipPanel #soOwnLevRow .so-final-numeric-row .so-final-proj,
+#mlbOwnershipPanel #soOwnLevRow .so-final-numeric-row .so-final-value,
+#mlbOwnershipPanel #soOwnLevRow .so-final-numeric-row .so-final-lev{
+  font-size:.8rem!important;font-weight:900!important;
+}
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-colhead .so-final-player,
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-colhead .so-final-game{
+  font-size:.6rem!important;letter-spacing:.09em!important;
+}
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-colhead .so-final-pct,
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-colhead .so-final-proj,
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-colhead .so-final-value,
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-colhead .so-final-lev{
+  font-size:.66rem!important;
+}
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-row:not(.so-final-depth-colhead){
+  padding:12px 12px!important;min-height:50px!important;
+}
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-colhead{
+  padding-top:9px!important;padding-bottom:9px!important;
+}
+@media(min-width:901px){
+  #mlbOwnershipPanel #soOwnLevRow .so-final-numeric-row{
+    grid-template-columns:minmax(150px,1.05fr) minmax(120px,.85fr) 84px 84px 84px 84px!important;
+    gap:8px!important;
+  }
+}
+
+/* 1c) COHESION PASS — small consistency fixes vs. the Live Tape / Field
+   Pressure / Signal Desk row above: match Tournament Ownership's and
+   Leverage & Value's corner radius and header padding to each other
+   (was 18px vs 12px radius, 16px vs 14px header padding — an unintended
+   mismatch, not a deliberate design choice). */
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-bottom,
+#mlbOwnershipPanel #soOwnLevRow .so-corr-panel.so-levval-panel{
+  border-radius:16px!important;
+}
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-head-slim{padding:10px 14px!important;}
+
+/* 2) HERO CARDS — replace v5's aspect-ratio:1 squares with a compact
+   rectangular card sized to its actual content (kicker + name + one row
+   of three mini-stats), still six equal columns in a single row. */
+@media(min-width:901px){
+  #mlbOwnershipPanel .own-stat-cards-inline{
+    grid-template-columns:repeat(6,1fr)!important;
+    grid-auto-rows:unset!important;
+    gap:10px!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline > *.so-ref-signal-card{
+    aspect-ratio:auto!important;
+    height:124px!important;
+    min-height:0!important;
+    max-height:none!important;
+    padding:12px 13px!important;
+    grid-template-rows:14px minmax(0,1fr) 26px!important;
+    background:#0d131a!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-label{
+    font-size:.5rem!important;
+    white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-name{
+    font-size:.86rem!important;
+    font-weight:800!important;
+    white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metrics{
+    gap:3px!important;padding:3px 0!important;height:auto!important;min-height:0!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric{padding:1px 2px!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric span{
+    font-size:.34rem!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric b{
+    font-size:.58rem!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1).so-ref-signal-card{
+    min-height:0!important;
+  }
+  /* v7 fix: card 1 (Home Run Call) previously fell back to font-size:inherit
+     here, an unreliable leftover from the older asymmetric "headline card"
+     pass (a 1.15rem name override still sits earlier in the cascade) —
+     ambient inheritance meant its actual rendered size depended on
+     whatever the surrounding page's font-size happened to be, not on
+     matching the other five cards. Pin it to the exact same values used
+     above so all six hero cards are typographically identical. */
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-label{
+    font-size:.5rem!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-name{
+    font-size:.86rem!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-metric b{
+    font-size:.58rem!important;
+  }
+}
+/* Tablet: three per row, same short rectangular shape. */
+@media(min-width:641px) and (max-width:900px){
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-card{
+    aspect-ratio:auto!important;
+    height:114px!important;
+    min-height:0!important;
+    max-height:none!important;
+    padding:11px!important;
+    grid-template-rows:12px minmax(0,1fr) 24px!important;
+  }
+  /* pre-existing rule (v3 restyle) hard-sets card 1's metric number to
+     .95rem with no media guard, which overlaps at this card width — bring
+     it back in line with the other five cards at this breakpoint. */
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-metric b{font-size:.6rem!important;}
+}
+/* Phone: two per row, still short rather than square. */
+@media(max-width:640px){
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-card{
+    aspect-ratio:auto!important;
+    height:106px!important;
+    min-height:0!important;
+    max-height:none!important;
+  }
+  /* same fix as the tablet breakpoint above, tightened further for the
+     narrower two-per-row card width. */
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric b{font-size:.5rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric span{font-size:.32rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-metric b{font-size:.5rem!important;}
+}
+</style>
+<style id="so-editorial-restyle-v8">
+/* ── Editorial restyle v8 ──────────────────────────────────────────────
+   Follow-up to live-render feedback on the v6/v7 pass. Presentation/
+   markup-only — no JS that computes, filters, sorts or selects player/
+   ownership/tier data is touched anywhere in this block, EXCEPT the one
+   narrow, explicitly-allowed case in section 3 (hiding the tier-count
+   pill row), which is done here in pure CSS anyway (display:none), so
+   even that JS is left untouched.
+   1) Row-above/row-below gap around Leverage & Value.
+   2) Tournament Ownership numeric columns bumped larger again.
+   3) Command Center tier pills removed, whole strip flattened to one line.
+   4) Hero card interiors reworked for hierarchy, same outer footprint.
+── */
+
+/* ---- 1) GAP ABOVE / BELOW THE LEVERAGE & VALUE ROW ---------------------
+   Root cause of the lingering "open" look at the row boundary: .so-kt-desk
+   declares border-top/border-bottom (so-editorial-restyle base, ~line
+   2990) but a later rule (~line 3501, `border:0!important`) wipes both –
+   so the terminal row never visually "closes" before Leverage & Value
+   starts, even though the two boxes are already ~0px apart. Signal Desk's
+   short Field Concentration content then reads as bleeding into blank
+   space with no line to stop the eye. Restoring the line fixes the
+   perceived gap on both the Tournament-Ownership side (already flush) and
+   the Leverage & Value side (now matches it) without changing any box's
+   actual height. Below the row, the fixed 610px row track (sized for the
+   taller of the two Leverage & Value tab states, ~598px) left ~53px of
+   dead air under the shorter Contrarian Targets state before hitting the
+   row's own 14px bottom margin — tightened on both counts. */
+#mlbOwnershipPanel .so-kt-desk{
+  border-top:1px solid rgba(0,232,124,.16)!important;
+  border-bottom:1px solid rgba(0,232,124,.16)!important;
+}
+@media(min-width:1181px){
+  #mlbOwnershipPanel #soOwnLevRow{
+    grid-auto-rows:602px!important;
+    margin:0 0 10px!important;
+  }
+}
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-head-slim{padding:9px 14px!important;}
+
+/* ---- 2) TOURNAMENT OWNERSHIP — numbers bumped larger again, row density
+   opened up to match. Column widths widened so the bigger digits don't
+   collide; still scoped to this row only, no sort/filter logic touched. */
+#mlbOwnershipPanel #soOwnLevRow .so-final-pos{
+  font-size:.62rem!important;padding:4px 8px!important;min-width:32px!important;
+}
+#mlbOwnershipPanel #soOwnLevRow .so-final-name{
+  font-size:.98rem!important;font-weight:850!important;
+}
+#mlbOwnershipPanel #soOwnLevRow .so-final-game b{font-size:.76rem!important;}
+#mlbOwnershipPanel #soOwnLevRow .so-final-game small{font-size:.59rem!important;}
+#mlbOwnershipPanel #soOwnLevRow .so-final-numeric-row .so-final-pct,
+#mlbOwnershipPanel #soOwnLevRow .so-final-numeric-row .so-final-proj,
+#mlbOwnershipPanel #soOwnLevRow .so-final-numeric-row .so-final-value,
+#mlbOwnershipPanel #soOwnLevRow .so-final-numeric-row .so-final-lev{
+  font-size:.96rem!important;font-weight:900!important;
+}
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-colhead .so-final-player,
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-colhead .so-final-game{
+  font-size:.62rem!important;letter-spacing:.09em!important;
+}
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-colhead .so-final-pct,
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-colhead .so-final-proj,
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-colhead .so-final-value,
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-colhead .so-final-lev{
+  font-size:.68rem!important;
+}
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-row:not(.so-final-depth-colhead){
+  padding:14px 12px!important;min-height:58px!important;
+}
+#mlbOwnershipPanel #soOwnLevRow .so-final-depth-colhead{
+  padding-top:10px!important;padding-bottom:10px!important;
+}
+@media(min-width:901px){
+  #mlbOwnershipPanel #soOwnLevRow .so-final-numeric-row{
+    grid-template-columns:minmax(140px,1fr) minmax(110px,.8fr) 94px 94px 94px 94px!important;
+    gap:7px!important;
+  }
+}
+
+/* ---- 3) OWNERSHIP COMMAND CENTER — drop the Chalk/High/Neutral/
+   Contrarian tier-count pills entirely and flatten the strip (badge +
+   player count + leverage-sort + position/tier filters + search) into one
+   compact horizontal line. Pure display:none / flex reflow — the
+   underlying tier computation, the filter dropdowns' own option values,
+   and ownRender()/ownSort() are untouched. */
+#mlbOwnershipPanel .own-tier-pills{display:none!important;}
+#mlbOwnershipPanel .own-header-left{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  gap:8px 10px!important;
+  padding:12px 16px!important;
+}
+#mlbOwnershipPanel .own-header-left:before{
+  content:"COMMAND CENTER"!important;
+  margin:0!important;
+  flex:0 0 auto!important;
+  white-space:nowrap!important;
+}
+#mlbOwnershipPanel .own-header-left:after{
+  content:none!important;
+  display:none!important;
+}
+#mlbOwnershipPanel .own-badge,
+#mlbOwnershipPanel .own-player-count{
+  flex:0 0 auto!important;
+  white-space:nowrap!important;
+}
+#mlbOwnershipPanel .own-controls{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  gap:8px!important;
+  margin:0!important;
+  flex:1 1 auto!important;
+}
+#mlbOwnershipPanel .own-controls input{min-width:120px!important;max-width:170px!important;flex:1 1 120px!important;}
+@media(max-width:640px){
+  #mlbOwnershipPanel .own-header-left{padding:12px!important;}
+}
+
+/* ---- 4) HERO CARDS — rework the interior for legibility/hierarchy
+   without changing the outer card footprint set by v6/v7 (height:124px
+   desktop / 114px tablet / 106px phone, six/three/two-per-row grid).
+   Kicker in accent green uppercase, bold prominent name, and the 3-stat
+   row separated from the name by a hairline with each stat's label
+   stacked above its value and evenly spaced. */
+/* NOTE: a base rule (so-consolidated-styles-20260720, top of file) targets
+   this same element via a 3-class compound selector
+   (".own-stat-cards-inline .own-stat-card.so-ref-signal-card" /
+   ".own-stat-cards-inline .own-stat-card-sm.so-ref-signal-card") — both
+   classes are present on every hero card at runtime, so that selector's
+   specificity (3 classes) beats a plain 2-class ".so-ref-signal-card"
+   selector regardless of source order. The `.so-ref-signal-card
+   .so-ref-signal-card` repetition below is the standard CSS trick to
+   match specificity (same element, one extra class-selector token) so
+   this — the latest rule in the cascade — wins as intended. */
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-card.so-ref-signal-card{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:0!important;
+  height:100%!important;
+}
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-head{
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  flex:0 0 auto!important;margin-bottom:5px!important;
+}
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-label,
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-label.lbl,
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-label.lbl-sm{
+  color:#00d978!important;font-weight:950!important;letter-spacing:.1em!important;text-transform:uppercase!important;
+  display:flex!important;align-items:center!important;gap:4px!important;
+}
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-label svg{display:none!important;}
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-index{
+  font-family:'DM Mono','Courier New',monospace!important;font-size:.46rem!important;font-weight:800!important;color:#3a4a5c!important;
+}
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-main{
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  flex:1 1 auto!important;min-height:0!important;
+}
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-orb{display:none!important;}
+#mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-name,
+#mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(2) .so-ref-signal-name,
+#mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(3) .so-ref-signal-name,
+#mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4) .so-ref-signal-name,
+#mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5) .so-ref-signal-name,
+#mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6) .so-ref-signal-name{
+  font-weight:850!important;color:#f5f9fc!important;letter-spacing:-.01em!important;
+  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+}
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metrics.so-ref-signal-metrics{
+  flex:0 0 auto!important;
+  display:grid!important;grid-template-columns:repeat(3,1fr)!important;
+  gap:0!important;
+  margin-top:6px!important;padding-top:6px!important;
+  border-top:1px solid rgba(255,255,255,.09)!important;
+  height:auto!important;
+}
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric{
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+  gap:2px!important;text-align:center!important;
+  border-left:1px solid rgba(255,255,255,.06)!important;
+}
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric:first-child{border-left:0!important;}
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric span{
+  letter-spacing:.07em!important;text-transform:uppercase!important;color:#5e7489!important;font-weight:800!important;
+}
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric b{font-weight:900!important;}
+#mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-card .own-stat-mini-note{display:none!important;}
+@media(min-width:901px){
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-card.so-ref-signal-card{
+    padding:12px 14px!important;height:124px!important;min-height:0!important;max-height:none!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-label{font-size:.52rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(2) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(3) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6) .so-ref-signal-name{font-size:.98rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric span{font-size:.4rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric b{font-size:.76rem!important;}
+}
+@media(min-width:641px) and (max-width:900px){
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-card.so-ref-signal-card{
+    padding:11px!important;height:114px!important;min-height:0!important;max-height:none!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-label{font-size:.48rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(2) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(3) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6) .so-ref-signal-name{font-size:.82rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric span{font-size:.36rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric b{font-size:.64rem!important;}
+}
+@media(max-width:640px){
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-card.so-ref-signal-card{
+    padding:9px 10px!important;height:106px!important;min-height:0!important;max-height:none!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-label{font-size:.44rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(1) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(2) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(3) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(4) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(5) .so-ref-signal-name,
+  #mlbOwnershipPanel .own-stat-cards-inline > *:nth-child(6) .so-ref-signal-name{font-size:.72rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric span{font-size:.32rem!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric b{font-size:.54rem!important;}
+}
+</style>
+</body>
 </html>

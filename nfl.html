@@ -132,14 +132,15 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 <script defer src="auth.js?v=20260908-dedupe"></script>
 
 <style id="so-hub-uniform-20260818">
-.pick-grid{max-width:900px!important;grid-template-columns:repeat(auto-fit,213px)!important;justify-content:center!important;gap:16px!important;align-items:stretch!important}
-.pick-card{width:213px!important;height:340px!important;min-height:340px!important;display:grid!important;grid-template-rows:116px minmax(0,1fr)!important;border-radius:20px!important;background:linear-gradient(155deg,rgba(255,255,255,.03),rgba(3,8,14,.75))!important}
-.pick-art{height:116px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-bottom:1px solid rgba(255,255,255,.06)!important;background:radial-gradient(circle at 50% 30%,var(--accent-soft),transparent 70%),rgba(255,255,255,.02)!important}
-.pick-art svg{width:78px!important;height:78px!important;display:block!important}
-.pick-body{min-height:0!important;padding:19px 21px 22px!important;display:flex!important;flex-direction:column!important}
-.pick-name{display:flex!important;align-items:center!important;gap:6px!important;min-height:0!important;font-size:1.12rem!important;line-height:1.15!important;letter-spacing:-.015em!important}
-.pick-desc{margin-top:8px!important;font-size:.70rem!important;line-height:1.55!important;min-height:0!important}
-.pick-go{margin-top:auto!important;padding-top:14px!important}
+.hub-pick{padding:32px 16px!important}
+.pick-grid{max-width:1400px!important;width:100%!important;display:grid!important;grid-template-columns:repeat(auto-fit,266px)!important;justify-content:center!important;gap:16px!important;align-items:stretch!important}
+.pick-card{width:266px!important;height:425px!important;min-height:425px!important;display:grid!important;grid-template-rows:145px minmax(0,1fr)!important;border-radius:18px!important;background:linear-gradient(155deg,rgba(255,255,255,.03),rgba(3,8,14,.75))!important}
+.pick-art{height:145px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-bottom:1px solid rgba(255,255,255,.06)!important;background:radial-gradient(circle at 50% 30%,var(--accent-soft),transparent 70%),rgba(255,255,255,.02)!important}
+.pick-art svg{width:98px!important;height:98px!important;display:block!important}
+.pick-body{min-height:0!important;padding:24px 26px 28px!important;display:flex!important;flex-direction:column!important}
+.pick-name{display:flex!important;align-items:center!important;flex-wrap:wrap!important;gap:6px!important;min-height:0!important;font-size:1.4rem!important;line-height:1.18!important;letter-spacing:-.012em!important}
+.pick-desc{margin-top:10px!important;font-size:.875rem!important;line-height:1.5!important;min-height:0!important}
+.pick-go{margin-top:auto!important;padding-top:18px!important}
 </style>
 <style id="so-mobile-repair-20260819">
 @media(max-width:760px){
@@ -279,6 +280,38 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 </main>
 <script id="so-nfl-matchup-pick-card">
 (function(){var grid=document.querySelector('.pick-grid');if(!grid||grid.querySelector('[data-key="matchup-lab"]'))return;grid.insertAdjacentHTML('beforeend','<button class="pick-card" type="button" data-key="matchup-lab"><span class="pick-art" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M9 50h46M15 45V17h34v28M24 17v8M40 17v8"/><circle cx="24" cy="34" r="6"/><path d="M30 34h9l8-7M30 38h11l6 6"/></svg></span><span class="pick-body"><span class="pick-name">Matchup Lab <span style="color:#57a7ff;font-size:.48rem">BETA</span></span><span class="pick-desc">A 160-player Week 1 workbench matching quarterback, back and receiver traits to complete defensive-unit pressure, run and coverage resistance.</span><span class="pick-go">Open &rarr;</span></span></button>')})();
+</script>
+<script id="so-pick-carousel-20260913">
+(function(){
+  'use strict';
+  const carousel=document.getElementById('pickCarousel');if(!carousel)return;
+  const viewport=carousel.querySelector('.pick-viewport'),track=carousel.querySelector('.pick-grid'),prevBtn=carousel.querySelector('.pick-arrow-prev'),nextBtn=carousel.querySelector('.pick-arrow-next');
+  if(!viewport||!track)return;
+  let offset=0;
+  function metrics(){
+    const cards=[...track.children];
+    if(!cards.length)return{step:0,pages:1};
+    const cw=cards[0].getBoundingClientRect().width;
+    const gap=parseFloat(getComputedStyle(track).columnGap)||parseFloat(getComputedStyle(track).gap)||0;
+    const step=cw+gap;
+    const visible=step>0?Math.max(1,Math.round((viewport.clientWidth+gap)/step)):cards.length;
+    const pages=Math.max(1,cards.length-visible+1);
+    return{step,pages};
+  }
+  function render(){
+    const m=metrics();
+    if(offset>m.pages-1)offset=m.pages-1;
+    if(offset<0)offset=0;
+    track.style.transform='translateX(-'+(offset*m.step)+'px)';
+    if(prevBtn)prevBtn.disabled=offset<=0;
+    if(nextBtn)nextBtn.disabled=offset>=m.pages-1;
+  }
+  function spin(btn){if(!btn)return;const s=btn.querySelector('svg');if(!s)return;s.classList.remove('pick-arrow-spin');void s.offsetWidth;s.classList.add('pick-arrow-spin');}
+  if(prevBtn)prevBtn.addEventListener('click',()=>{offset=Math.max(0,offset-1);render();spin(prevBtn);});
+  if(nextBtn)nextBtn.addEventListener('click',()=>{const m=metrics();offset=Math.min(m.pages-1,offset+1);render();spin(nextBtn);});
+  window.addEventListener('resize',render);
+  render();
+})();
 </script>
 <script type="application/json" id="hubConfig">{"title":"NFL Intelligence","tabs":[{"key":"draft","label":"Draft","title":"NFL Draft Market","desc":"Prospects, ADP and live draft intelligence","src":"embed-nfl-draft.html"},{"key":"film-room","label":"Film","title":"Film Room","desc":"Tape-first player evaluation","src":"embed-film-room.html"},{"key":"grade-book","label":"Grades","title":"Grade Book","desc":"NFL player grades, camp intel and fantasy lens","src":"embed-grade-book.html"},{"key":"player-props","label":"Props","title":"NFL Player Props","desc":"Role, matchup and player-prop research","src":"embed-nfl-player-props.html"},{"key":"matchup-lab","label":"Matchups","title":"NFL Matchup Lab","desc":"160 skill-player profiles versus Week 1 defensive units","src":"embed-nfl-matchup-lab.html"}]}</script><script>
 (function(){
