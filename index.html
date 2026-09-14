@@ -273,10 +273,6 @@ div[style*="grid-template-columns"]{min-width:0}
   .sh-tile-desc{font-size:.66rem!important;line-height:1.4!important;margin-bottom:7px!important}
   .sh-tile-cta{font-size:.6rem!important}
 
-  /* Today's Open Board: swipeable horizontal row instead of stacked grid */
-  #openBoardGrid{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden;gap:12px!important;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 -16px!important;padding:2px 16px 12px!important}
-  #openBoardGrid::-webkit-scrollbar{display:none}
-  #openBoardGrid > div{flex:0 0 78vw!important;max-width:320px;min-width:220px;scroll-snap-align:start}
 }
 </style>
 <style id="so-shared-disclaimer-footer-20260824"></style><style id="so-canonical-nav-round14">.so-nav-shell{position:fixed;z-index:900;inset:0 0 auto;padding:16px 24px 0;pointer-events:none}
@@ -291,6 +287,7 @@ div[style*="grid-template-columns"]{min-width:0}
 .so-nav-tag{display:inline-flex;align-items:center;margin-left:6px;padding:2px 6px;border-radius:999px;border:1px solid var(--badge-border);background:var(--badge-bg);color:var(--badge-color);font-size:.4rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
 .so-nav-tag.gold{--badge-border:rgba(244,185,66,.25);--badge-bg:rgba(244,185,66,.08);--badge-color:#f4b942}
 .so-nav-tag.purple{--badge-border:rgba(167,139,250,.3);--badge-bg:rgba(167,139,250,.08);--badge-color:#c4b5fd}
+.so-nav-tag.green{--badge-border:rgba(52,211,153,.3);--badge-bg:rgba(52,211,153,.08);--badge-color:#34d399}
 .so-nav-actions{justify-self:end;display:flex;align-items:center;gap:18px}
 .so-nav-secondary{font-size:.76rem;color:#98a3ae;text-decoration:none}
 .so-nav-secondary:hover{color:#fff}
@@ -321,23 +318,31 @@ div[style*="grid-template-columns"]{min-width:0}
   .inside-head{padding-top:8px!important;margin-bottom:28px!important}
   .inside-kicker{display:block!important;line-height:1.35!important;margin-bottom:16px!important}
 }
-</style><style id="so-index-nfl-prop-rail-20260913">
-.so-nfl-prop-rail{margin-top:16px;padding:18px;border:1px solid rgba(87,167,255,.18);border-radius:22px;background:linear-gradient(135deg,rgba(10,18,29,.94),rgba(6,12,21,.96));overflow:hidden}.so-nfl-prop-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:13px}.so-nfl-prop-head div{display:grid;gap:4px}.so-nfl-prop-head span{color:#57a7ff;font-size:.55rem;font-weight:850;letter-spacing:.16em}.so-nfl-prop-head b{font-size:1.02rem}.so-nfl-prop-head a{color:#8ea5bb;font-size:.66rem;font-weight:750;text-decoration:none}.so-nfl-prop-track{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.so-nfl-prop-track article{min-width:0;padding:15px;border:1px solid rgba(255,255,255,.07);border-radius:15px;background:rgba(255,255,255,.025)}.so-nfl-prop-track small{display:block;color:#60788f;font-size:.53rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.so-nfl-prop-track h3{margin:8px 0 6px;font-size:.92rem;line-height:1.25}.so-nfl-prop-track p{min-height:2.7em;margin:0 0 12px;color:#8796a7;font-size:.67rem;line-height:1.45}.so-nfl-prop-track article>div{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:9px;border-top:1px solid rgba(255,255,255,.06)}.so-nfl-prop-track strong{color:#4ee4a3;font:800 .8rem var(--mono,monospace)}.so-nfl-prop-track article>div span{color:#6f8296;font-size:.58rem;font-weight:700}
-@media(max-width:820px){.so-nfl-prop-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:3px}.so-nfl-prop-track::-webkit-scrollbar{display:none}.so-nfl-prop-track article{flex:0 0 min(78vw,290px);scroll-snap-align:start}.so-nfl-prop-head{align-items:center}.so-nfl-prop-head a{white-space:nowrap}}
+</style><style id="so-index-board-rails-20260913">
+.so-board-rails{display:grid;gap:12px}
+.so-board-rail{position:relative;display:grid;grid-template-columns:148px minmax(0,1fr);border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;background:rgba(255,255,255,.02);transition:border-color .18s ease}
+.so-board-rail:hover{border-color:color-mix(in srgb,var(--rail) 40%,rgba(255,255,255,.07))}
+.so-board-rail-tag{display:flex;align-items:center;gap:7px;padding:0 14px;color:var(--rail);font-size:.56rem;font-weight:850;letter-spacing:.09em;text-transform:uppercase;line-height:1.35;border-right:1px solid rgba(255,255,255,.07);background:linear-gradient(135deg,color-mix(in srgb,var(--rail) 12%,transparent),transparent 75%)}
+.so-board-rail-tag i{margin-top:1px}
+.so-board-rail-tag i{width:6px;height:6px;border-radius:50%;background:var(--rail);box-shadow:0 0 9px var(--rail);flex:0 0 auto}
+.so-board-items{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));min-width:0}
+.so-board-item{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-content:center;gap:2px 8px;min-width:0;padding:15px 16px;color:inherit;text-decoration:none;border-left:1px solid rgba(255,255,255,.07);transition:background .18s ease}
+.so-board-item:first-child{border-left:0}
+.so-board-item:hover{background:color-mix(in srgb,var(--rail) 8%,transparent)}
+.so-board-item>span{grid-column:1;color:#647585;font-size:.5rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+.so-board-item b{grid-column:1;color:#edf2f6;font-size:.78rem;font-weight:700;line-height:1.32;margin:2px 0 3px}
+.so-board-item small{grid-column:1;color:#788798;font-size:.63rem;line-height:1.4}
+.so-board-item em{grid-column:2;grid-row:1/4;align-self:center;color:var(--rail);font-size:.9rem;font-style:normal;opacity:.7;transition:opacity .18s ease,transform .18s ease}
+.so-board-item:hover em{opacity:1;transform:translateX(2px)}
+@media(max-width:900px){
+.so-board-rail{grid-template-columns:1fr}
+.so-board-rail-tag{border-right:0;border-bottom:1px solid rgba(255,255,255,.07);padding:11px 16px}
+.so-board-items{display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.so-board-items::-webkit-scrollbar{display:none}
+.so-board-item{flex:0 0 72vw;max-width:300px;scroll-snap-align:start}
+}
 </style></head>
 <body>
-<style id="so-launch-board-20260909">
-.so-launch-board{position:relative;display:grid;grid-template-columns:minmax(190px,.62fr) minmax(0,1fr) minmax(0,1fr);gap:0;margin:0 0 16px;border:1px solid rgba(244,185,66,.18);border-radius:18px;overflow:hidden;background:linear-gradient(135deg,rgba(244,185,66,.055),rgba(8,15,25,.88) 34%,rgba(11,20,31,.95));box-shadow:0 18px 60px rgba(0,0,0,.2)}
-.so-launch-intro,.so-launch-item{min-width:0;padding:16px 18px}.so-launch-intro{display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(255,255,255,.07)}
-.so-launch-live{display:flex;align-items:center;gap:8px;color:#f4b942;font-size:.5rem;font-weight:850;letter-spacing:.16em;text-transform:uppercase}.so-launch-live i{width:7px;height:7px;border-radius:50%;background:#2de18b;box-shadow:0 0 0 4px rgba(45,225,139,.08),0 0 15px rgba(45,225,139,.6);animation:soLaunchPulse 1.9s ease-in-out infinite}
-.so-launch-intro strong{margin-top:7px;color:#f2f5f7;font-size:.94rem;line-height:1.25}.so-launch-intro small{margin-top:3px;color:#66778b;font-size:.62rem;line-height:1.45}
-.so-launch-item{display:grid;grid-template-columns:1fr auto;gap:5px 14px;align-content:center;color:inherit;text-decoration:none;transition:background .18s ease}.so-launch-item+.so-launch-item{border-left:1px solid rgba(255,255,255,.07)}.so-launch-item:hover{background:rgba(255,255,255,.025)}
-.so-launch-item>span{color:#687c91;font-size:.48rem;font-weight:850;letter-spacing:.14em;text-transform:uppercase}.so-launch-item b{grid-column:1;color:#edf2f6;font-size:.84rem;line-height:1.35}.so-launch-item p{grid-column:1;margin:0;color:#d8ad58;font-size:.67rem;line-height:1.5}.so-launch-item em{grid-column:2;grid-row:1/4;align-self:center;color:#f4b942;font-size:1rem;font-style:normal}.so-launch-item.nfl em{color:#64c7ff}.so-launch-price{color:#f4bf4f!important;font-family:'DM Mono',monospace;font-weight:850!important;letter-spacing:.01em!important;text-transform:none!important}
-@keyframes soLaunchPulse{50%{opacity:.48;transform:scale(.84)}}
-@media(max-width:900px){.so-launch-board{grid-template-columns:1fr 1fr}.so-launch-intro{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;gap:14px;border-right:0;border-bottom:1px solid rgba(255,255,255,.07)}.so-launch-intro strong{margin:0}.so-launch-intro small{display:none}}
-@media(max-width:640px){.so-launch-board{display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;margin-left:-16px;margin-right:-16px;border-radius:0;border-left:0;border-right:0}.so-launch-board::-webkit-scrollbar{display:none}.so-launch-intro{display:none}.so-launch-item{flex:0 0 86vw;max-width:340px;padding:15px 16px;scroll-snap-align:start}.so-launch-item+.so-launch-item{border-left:1px solid rgba(255,255,255,.08)}}
-@media(prefers-reduced-motion:reduce){.so-launch-live i{animation:none}}
-</style>
 
 <div class="so-top-blend" aria-hidden="true"></div>
 <div class="so-nav-shell"><nav class="so-nav" aria-label="Primary navigation">
@@ -504,7 +509,7 @@ div[style*="grid-template-columns"]{min-width:0}
 </a><a href="terminal.html" class="tile-pop sh-tile" style="--tile-accent:#3fc17a;display:block;text-decoration:none;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.2);border-radius:16px;padding:16px;position:relative;overflow:hidden">
 <div class="sh-tile-cat" style="font-size:.62rem;text-transform:uppercase;letter-spacing:.14em;color:#3fc17a;margin-bottom:6px;font-weight:800">I want the model</div>
 <div class="sh-tile-title" style="font-size:.98rem;font-weight:800;color:#f2f5f8;margin-bottom:5px">New simulator + Market</div>
-<div class="sh-tile-desc" style="font-size:.76rem;color:#8a97a6;line-height:1.5;margin-bottom:10px">Straight to market lines, model probability, and the tournament simulator &mdash; see how your build holds up against the field.</div>
+<div class="sh-tile-desc" style="font-size:.76rem;color:#8a97a6;line-height:1.5;margin-bottom:10px">Straight to market lines, model probability, and the tournament simulator &mdash; see how your build holds up against the field. New: stress-test same-game and cross-sport combos in the Parlay Calculator.</div>
 <span class="sh-tile-cta" style="font-size:.68rem;font-weight:700;color:#3fc17a">Open the terminal &rarr;</span>
 </a></div>
 </div>
@@ -523,7 +528,7 @@ div[style*="grid-template-columns"]{min-width:0}
 <a class="desk-panel" style="--dc:167,139,250" href="terminal.html">
 <div class="desk-head"><span class="desk-dot"></span><span class="desk-name">The Terminal</span><span class="desk-tag">Beta</span></div>
 <p class="desk-desc">Short Open's two strongest tools, one focused desk &mdash; live line pricing, prop parlays and DFS lineup building, ownership simulation with CSV exports.</p>
-<div class="desk-tools"><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M8 46l9-8 8 6 11-15 9 9 8-6"/><circle cx="17" cy="38" r="1.6" stroke="none" fill="currentColor"/></svg><div><b>Market</b><span>Lines, props and parlays across every book</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><rect x="8" y="8" width="48" height="48" rx="6"/><path d="M18 46V26M32 46V16M46 46V32"/><circle cx="18" cy="32" r="3"/></svg><div><b>Optimizer</b><span>Build and compare DFS lineups around projection, salary and correlation</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M9 50h46M14 44l10-9 9 6 12-16 8 9"/><circle cx="43" cy="25" r="2.2" fill="currentColor" stroke="none"/></svg><div><b>Shortopen Simulator <span class="so-nav-tag gold" style="display:inline-flex;width:auto;margin-left:6px;vertical-align:middle">Beta Launch</span></b><span>Tournament field study: player fit, lineup laboratory and stack exposure</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M10 49h44M14 41h8V23h-8zM28 41h8V14h-8zM42 41h8V29h-8z"/></svg><div><b>Ownership Simulator</b><span>See where the field is concentrating, sort ownership by position and slate</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><circle cx="18" cy="20" r="7"/><circle cx="46" cy="20" r="7"/><path d="M10 49c3-11 10-17 18-17s15 6 18 17"/></svg><div><b>Leverage &amp; Targets</b><span>Contrarian targets, value plays and batter-vs-pitcher leverage points</span></div></div></div>
+<div class="desk-tools"><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M8 46l9-8 8 6 11-15 9 9 8-6"/><circle cx="17" cy="38" r="1.6" stroke="none" fill="currentColor"/></svg><div><b>Market</b><span>Lines, props and parlays across every book</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><rect x="8" y="8" width="48" height="48" rx="6"/><path d="M18 46V26M32 46V16M46 46V32"/><circle cx="18" cy="32" r="3"/></svg><div><b>Optimizer</b><span>Build and compare DFS lineups around projection, salary and correlation</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M9 50h46M14 44l10-9 9 6 12-16 8 9"/><circle cx="43" cy="25" r="2.2" fill="currentColor" stroke="none"/></svg><div><b>Shortopen Simulator <span class="so-nav-tag gold" style="display:inline-flex;width:auto;margin-left:6px;vertical-align:middle">Beta Launch</span></b><span>Tournament field study: player fit, lineup laboratory and stack exposure</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M10 49h44M14 41h8V23h-8zM28 41h8V14h-8zM42 41h8V29h-8z"/><circle cx="46" cy="20" r="7"/><path d="M38 49c2-8 6-13 12-13"/></svg><div><b>Ownership, Leverage &amp; Targets</b><span>See where the field is concentrating and find contrarian value: leverage points, targets and batter-vs-pitcher edges</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><rect x="9" y="12" width="46" height="40" rx="5"/><path d="M9 22h46M20 12v40M32 30h14M32 38h14"/><circle cx="26" cy="30" r="2.2" fill="currentColor" stroke="none"/><circle cx="26" cy="38" r="2.2" fill="currentColor" stroke="none"/></svg><div><b>Parlay Sim <span class="so-nav-tag green" style="display:inline-flex;width:auto;margin-left:6px;vertical-align:middle">New</span></b><span>Build and price multi-leg parlays with live odds and Monte Carlo win-rate simulation</span></div></div></div>
 <span class="desk-open">Open The Terminal &rarr;</span>
 </a><a class="desk-panel" style="--dc:34,217,126" href="mlb.html">
 <div class="desk-head"><span class="desk-dot"></span><span class="desk-name">MLB Daily Desk</span><span class="desk-tag">Beta</span></div>
@@ -559,46 +564,44 @@ div[style*="grid-template-columns"]{min-width:0}
 <div><div class="section-kicker">Live Read</div><h2 class="section-title">Today's Open Board</h2></div>
 <a class="glass view-all" href="analysis.html">Full board &rarr;</a>
 </div>
-<aside class="so-launch-board" aria-label="NFL player prop announcements">
-  <div class="so-launch-intro"><span class="so-launch-live"><i></i> NFL Props</span><strong>Two plays for Sunday</strong><small>Latest posted player-prop prices; recheck before kickoff.</small></div>
-  <a class="so-launch-item nfl" href="nfl.html">
-    <span>NFL · Receiving Yards</span><b>Tetairoa McMillan Over 59.5 receiving yards.</b>
-    <p><span class="so-launch-price">-110</span> · The posted receiving-yard line for Sunday.</p><em>&rarr;</em>
-  </a>
-  <a class="so-launch-item nfl" href="nfl.html">
-    <span>NFL · Anytime Touchdown</span><b>Saquon Barkley to score a touchdown.</b>
-    <p><span class="so-launch-price">-130</span> · Current DraftKings price, Washington at Philadelphia.</p><em>&rarr;</em>
-  </a>
-</aside>
-<div id="openBoardGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px"><div class="glass market-card ob-card" style="border-radius:22px;padding:20px;position:relative">
-<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:#f4b9421f;color:#f4b942;border:1px solid #f4b9424d;border-radius:4px;padding:3px 8px">MLB</span><span style="font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4d6070">Market Price</span></div>
-<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">SD ML -126 is the tightest market.</h3>
-<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">SD at SF carries the slate’s lowest two-way margin.</p>
-<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a"><span>SD @ SF</span><span>3.8% margin</span></div>
-</div><div class="glass market-card ob-card" style="border-radius:22px;padding:20px;position:relative">
-<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:#57a7ff1f;color:#57a7ff;border:1px solid #57a7ff4d;border-radius:4px;padding:3px 8px">Strikeouts</span><span style="font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4d6070">Best Edge</span></div>
-<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">Cam Schlittler Over 6.5 strikeouts.</h3>
-<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">FanDuel posts the 6.5 line at -166 against the Mets.</p>
-<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a"><span>FanDuel -166</span><span>Over 6.5 K</span></div>
-</div><div class="glass market-card ob-card" style="border-radius:22px;padding:20px;position:relative">
-<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:#3fc17a1f;color:#3fc17a;border:1px solid #3fc17a4d;border-radius:4px;padding:3px 8px">Home Runs</span><span style="font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4d6070">Top Model</span></div>
-<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">Aaron Judge to hit a home run.</h3>
-<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">The model projects 31.4% against NYM; DraftKings has +223.</p>
-<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a"><span>DraftKings +223</span><span>Model 31.4%</span></div>
-</div><div class="glass market-card ob-card" style="border-radius:22px;padding:20px;position:relative">
-<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:#ff4d4d1f;color:#ff4d4d;border:1px solid #ff4d4d4d;border-radius:4px;padding:3px 8px">Matchup Lab</span><span style="font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4d6070">Top Score</span></div>
-<h3 style="font-size:1.05rem;font-weight:800;line-height:1.3;margin:0 0 8px">Aaron Judge leads the Matchup Lab.</h3>
-<p style="font-size:.78rem;color:#8a97a6;line-height:1.6;margin:0 0 14px">The NYY hitter grades 73.4 against Christian Scott.</p>
-<div style="display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06);padding-top:10px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:#57667a"><span>Lab 73.4</span><span>Model 31.4%</span></div>
-</div></div>
-<section class="so-nfl-prop-rail" aria-label="NFL prop reads">
-<div class="so-nfl-prop-head"><div><span>NFL PROP BOARD</span><b>Four more Sunday reads</b></div><a href="nfl.html">Full NFL desk &rarr;</a></div>
-<div class="so-nfl-prop-track">
-<article><small>Receiving Yards</small><h3>Michael Mayer Over 38.5</h3><p>A direct receiving-yard read at the requested alternate line.</p><div><strong>OVER</strong><span>38.5 yards</span></div></article>
-<article><small>Receiving Yards</small><h3>Emeka Egbuka Over 52.5</h3><p>A direct receiving-yard read at the requested alternate line.</p><div><strong>OVER</strong><span>52.5 yards</span></div></article>
-<article><small>Rushing + Receiving</small><h3>Travis Etienne Over 75</h3><p>A combined scrimmage-yard read across both rushing and receiving work.</p><div><strong>OVER</strong><span>75 total yards</span></div></article>
-<article><small>Receiving Yards</small><h3>Sam LaPorta Over 37.5</h3><p>A direct receiving-yard read at the requested alternate line.</p><div><strong>OVER</strong><span>37.5 yards</span></div></article>
-</div></section>
+<div class="so-board-rails">
+<div class="so-board-rail" style="--rail:#f4b942">
+<div class="so-board-rail-tag"><i></i>MLB</div>
+<div class="so-board-items">
+<a class="so-board-item" href="mlb.html"><span>Market Price</span><b>SD ML &minus;126 is the tightest market.</b><small>SD @ SF &middot; 3.8% margin</small><em>&rarr;</em></a>
+<a class="so-board-item" href="mlb.html"><span>Home Runs</span><b>Hunter Goodman to hit a home run.</b><small>Caesars +255 &middot; Model 31.7%</small><em>&rarr;</em></a>
+<a class="so-board-item" href="mlb.html"><span>Strikeouts</span><b>Tarik Skubal Over 7.5 strikeouts.</b><small>FanDuel &minus;120 at the Reds</small><em>&rarr;</em></a>
+<a class="so-board-item" href="mlb.html"><span>Matchup Lab</span><b>Fernando Tatis Jr. leads the Matchup Lab.</b><small>Lab 71.4 vs. Tomoyuki Sugano</small><em>&rarr;</em></a>
+</div>
+</div>
+<div class="so-board-rail" style="--rail:#64c7ff">
+<div class="so-board-rail-tag"><i></i>NFL</div>
+<div class="so-board-items">
+<a class="so-board-item" href="nfl.html"><span>Anytime TD</span><b>Travis Kelce to score a touchdown.</b><small>FanDuel +128 &middot; KC vs. DEN</small><em>&rarr;</em></a>
+<a class="so-board-item" href="nfl.html"><span>Completions</span><b>Bo Nix Over 21.5 completions.</b><small>DraftKings &minus;108 &middot; DEN vs. KC</small><em>&rarr;</em></a>
+<a class="so-board-item" href="nfl.html"><span>Passing Yards</span><b>Patrick Mahomes Over 224.5 yards.</b><small>BetMGM &minus;105 &middot; KC vs. DEN</small><em>&rarr;</em></a>
+<a class="so-board-item" href="nfl.html"><span>Receptions</span><b>Courtland Sutton Over 3.5 receptions.</b><small>Caesars &minus;118 &middot; DEN vs. KC</small><em>&rarr;</em></a>
+</div>
+</div>
+<div class="so-board-rail" style="--rail:#6366f1">
+<div class="so-board-rail-tag"><i></i>Champions League</div>
+<div class="so-board-items">
+<a class="so-board-item" href="premier-league.html"><span>Match Line</span><b>Real Madrid &minus;0.5 vs. Man City.</b><small>&minus;118 &middot; Shopped across books</small><em>&rarr;</em></a>
+<a class="so-board-item" href="premier-league.html"><span>Anytime Scorer</span><b>Erling Haaland to score.</b><small>+105 &middot; Model reads 46%</small><em>&rarr;</em></a>
+<a class="so-board-item" href="premier-league.html"><span>Total Goals</span><b>Bayern vs. PSG Over 2.5 goals.</b><small>&minus;125 &middot; Group-stage price</small><em>&rarr;</em></a>
+<a class="so-board-item" href="premier-league.html"><span>Goal Involvement</span><b>Bellingham to score or assist.</b><small>+140 &middot; Model reads 51%</small><em>&rarr;</em></a>
+</div>
+</div>
+<div class="so-board-rail" style="--rail:#ff4d4d">
+<div class="so-board-rail-tag"><i></i>Premier League</div>
+<div class="so-board-items">
+<a class="so-board-item" href="premier-league.html"><span>Match Line</span><b>Aston Villa vs. Spurs &mdash; Draw.</b><small>&minus;113 &middot; Model reads 53%</small><em>&rarr;</em></a>
+<a class="so-board-item" href="premier-league.html"><span>Total Goals</span><b>Man Utd vs. Fulham Over 2.5 goals.</b><small>&minus;125 &middot; Fair-price model</small><em>&rarr;</em></a>
+<a class="so-board-item" href="premier-league.html"><span>Clean Sheet</span><b>Hull City to keep a clean sheet.</b><small>+113 &middot; Model reads 47%</small><em>&rarr;</em></a>
+<a class="so-board-item" href="premier-league.html"><span>Anytime Assist</span><b>Cole Palmer Over 0.5 assists.</b><small>&minus;140 &middot; Model reads 58%</small><em>&rarr;</em></a>
+</div>
+</div>
+</div>
 <div style="margin-top:16px;display:grid;grid-template-columns:2fr 1fr;gap:16px">
 <div class="glass market-card" style="border-radius:22px;padding:24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
 <div><div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.18em;color:var(--gold);margin-bottom:6px">Every desk, every day</div><div style="font-size:1.2rem;font-weight:800">Six desks. One board. Updated by 3PM ET.</div></div>

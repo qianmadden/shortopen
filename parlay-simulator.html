@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>shortopen — Parlay Simulator</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{color-scheme:dark;--bg:#0c0a13;--card:#181322;--line:#332944;--text:#f3eef8;--muted:#a394ae;--amber:#f2a53d;--teal:#38d0ae;--violet:#b98cf5}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:linear-gradient(rgba(185,140,245,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(185,140,245,.025) 1px,transparent 1px),radial-gradient(ellipse 620px 420px at 92% 4%,#3a234f66,transparent 70%),radial-gradient(ellipse 560px 380px at 2% 0%,#402a1236,transparent 75%),var(--bg);background-size:34px 34px,34px 34px,auto,auto,auto;color:var(--text);font:14px/1.55 Inter,system-ui,-apple-system,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+.shell{max-width:1370px;margin:auto;padding:26px clamp(16px,3vw,42px) 70px}
+.eyebrow{color:var(--violet);text-transform:uppercase;letter-spacing:.19em;font-size:10px;font-weight:850;font-family:'DM Mono',ui-monospace,monospace}
+.brand{font-size:17px;letter-spacing:-.03em;font-weight:850;font-family:'DM Mono',ui-monospace,monospace}
+.brand b{color:var(--amber);font-weight:500}
+.brand small{margin-left:12px;color:#6e5f7f;font-size:.6rem;letter-spacing:.1em;font-weight:700;text-transform:uppercase;font-family:Inter,sans-serif}
+header{display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid var(--line);padding-bottom:18px}
+.headline{align-items:stretch;margin:40px 0 30px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.8fr);gap:40px}
+.headline h1{font-family:'DM Mono',ui-monospace,monospace;font-size:clamp(28px,3.4vw,46px);letter-spacing:-.02em;line-height:1.18;margin:16px 0;text-transform:uppercase}
+.headline h1 em{font-style:normal;display:block;color:var(--amber)}
+.headline h1 em::before{content:"› "}
+.headline p{max-width:640px;color:#c2b8cc;margin:0;font-size:14px;line-height:1.7}
+.presentation-pill{display:inline-flex;align-items:center;gap:10px;border:1px solid #5a4373;border-radius:5px;padding:7px 11px 7px 13px;color:#dcc7f7;background:#3a234f50;font-size:10px;letter-spacing:.13em;font-weight:700;font-family:'DM Mono',ui-monospace,monospace}
+.presentation-pill i{width:6px;height:6px;background:var(--teal);box-shadow:0 0 12px var(--teal)}
+.presentation-pill b{color:#12081c;background:var(--amber);border-radius:3px;padding:3px 8px;letter-spacing:.08em}
+.signal-visual{position:relative;min-height:210px;border:1px solid #4a3a5c;border-radius:8px;background:linear-gradient(160deg,#221a30,#15111d 55%,#120e19);overflow:hidden;padding:19px 22px;box-shadow:inset 0 1px #ffffff14,0 22px 65px #0006}
+.signal-visual::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--amber),var(--violet),var(--teal))}
+.signal-top,.signal-bottom{position:relative;display:flex;justify-content:space-between;gap:12px;color:#b6a8c4;font:700 10px 'DM Mono',ui-monospace,monospace;letter-spacing:.11em}
+.signal-top strong{color:var(--amber)}
+.signal-visual svg{position:relative;display:block;width:100%;height:130px;margin:12px 0 0;overflow:visible}
+.signal-visual .gridline{fill:none;stroke:#c1a8e01b;stroke-width:1}
+.signal-visual .path-back{fill:none;stroke:#38d0ae4c;stroke-width:2}
+.signal-visual .path-front{fill:none;stroke:var(--violet);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 7px #b98cf580)}
+.controls{display:grid;grid-template-columns:1fr 1fr 1fr 1.3fr auto;gap:12px;align-items:end;padding:20px;border:1px solid var(--line);border-radius:9px;background:var(--card)}
+.control label{display:block;color:#b3a3bd;font-size:10px;text-transform:uppercase;font-weight:800;letter-spacing:.1em;margin:0 0 7px;font-family:'DM Mono',ui-monospace,monospace}
+.control select,.control input{width:100%;height:42px;padding:0 12px;border:1px solid var(--line);background:#100c18;color:var(--text);border-radius:6px;outline:none}
+.run{min-height:42px;padding:0 22px;border:1px solid var(--violet);border-radius:6px;background:linear-gradient(150deg,var(--violet),#8a5fd6);color:#140a1f;font-weight:900;white-space:nowrap;font-family:'DM Mono',ui-monospace,monospace;letter-spacing:.02em}
+.run:disabled{opacity:.55;cursor:wait}
+.subline{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:12px 2px 12px;color:var(--muted);font-size:11px}
+.subline b{color:#efe6f7}
+.subline .pill{border:1px solid #4b6a5f;color:#8fe8c9;border-radius:4px;padding:3px 9px;font-size:10px;font-weight:800;font-family:'DM Mono',ui-monospace,monospace}
+.progress{height:3px;background:#241c30;border-radius:8px;overflow:hidden;display:none;margin-bottom:14px}
+.progress span{display:block;width:0;height:100%;background:var(--teal);transition:width .4s cubic-bezier(.22,.61,.36,1)}
+.stats{display:flex;flex-wrap:wrap;gap:0;margin:6px 0 20px;border:1px solid var(--line);border-radius:9px;background:var(--card);overflow:hidden}
+.stat{flex:1 1 180px;padding:15px 18px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat small{display:block;color:#b3a3bd;text-transform:uppercase;font-weight:800;letter-spacing:.09em;font-size:9.5px;font-family:'DM Mono',ui-monospace,monospace}
+.stat strong{display:block;margin:8px 0 2px;font-size:clamp(18px,2.2vw,26px);letter-spacing:-.02em;font-family:'DM Mono',ui-monospace,monospace}
+.stat span{font-size:11px;color:var(--muted)}
+.stat.accent{background:linear-gradient(135deg,#3a2350,var(--card))}
+.stat.accent strong{color:var(--amber)}
+.stat.mint strong{color:var(--teal)}
+.tabs{display:flex;gap:6px;border-bottom:0;margin-bottom:16px;padding:5px;overflow-x:auto;scrollbar-width:thin;background:var(--card);border:1px solid var(--line);border-radius:9px}
+.tabs button{white-space:nowrap;border:1px solid transparent;background:none;color:#b3a3bd;border-radius:6px;padding:10px 16px;font-size:11.5px;font-weight:700;font-family:'DM Mono',ui-monospace,monospace;letter-spacing:.02em;display:flex;align-items:center;gap:7px}
+.tabs button .ic{font-size:12px}
+.tabs button:hover{color:var(--text);background:#ffffff08}
+.tabs button.active{border-color:var(--violet);color:#f0e6ff;background:linear-gradient(150deg,#4a2f68,#2a1d3c)}
+.panel{border-radius:9px;overflow:hidden;background:var(--card);border:1px solid var(--line)}
+.panel-head{display:flex;justify-content:space-between;gap:15px;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line);border-left:3px solid var(--amber);flex-wrap:wrap}
+.panel-head h2{margin:0;font-size:16px;letter-spacing:-.01em;font-family:'DM Mono',ui-monospace,monospace;font-weight:600}
+.panel-head p{margin:5px 0 0;color:var(--muted);font-size:11px}
+.badge{border:1px solid #5a4a68;border-radius:5px;padding:5px 10px;color:#cdb9e2;font-size:10px;font-weight:800;white-space:nowrap;background:transparent;font-family:'DM Mono',ui-monospace,monospace}
+.badge:hover{border-color:var(--violet);color:#f0e6ff}
+.leaguefilter{display:flex;gap:6px}
+.leaguefilter button{border:1px solid var(--line);background:#100c18;color:#a294ac;border-radius:5px;padding:6px 14px;font-size:10px;font-weight:800;letter-spacing:.05em;font-family:'DM Mono',ui-monospace,monospace}
+.leaguefilter button.active{border-color:var(--amber);color:#ffd9a0;background:#3d2a1360}
+.tablewrap{max-height:560px;overflow:auto;scrollbar-color:#4a3c5c transparent}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{text-align:left;padding:11px 16px;border-bottom:1px solid #ffffff0c}
+th{position:sticky;top:0;background:#211a2e;color:#b7a8c4;text-transform:uppercase;font-size:9.5px;letter-spacing:.06em;z-index:1;white-space:nowrap;font-family:'DM Mono',ui-monospace,monospace}
+td{font-size:12px}
+tbody tr{cursor:pointer;transition:background .12s}
+tbody tr:hover{background:#ffffff08}
+tbody tr.picked{background:linear-gradient(90deg,#4a2f6840,transparent);box-shadow:inset 3px 0 var(--violet)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.player{font-weight:780}
+.secondary{display:block;color:var(--muted);font-size:10px;font-weight:500}
+.leaguetag{display:inline-block;font-size:8.5px;font-weight:900;letter-spacing:.06em;padding:2px 6px;border-radius:3px;margin-right:6px;font-family:'DM Mono',ui-monospace,monospace}
+.leaguetag.mlb{background:#1f4a5555;color:#8fdff0}
+.leaguetag.nfl{background:#4a2c6a55;color:#c9a7f5}
+.bartrack{height:5px;background:#221a30;border-radius:5px;overflow:hidden;width:120px;display:inline-block;vertical-align:middle;margin-right:8px}
+.barfill{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--amber))}
+.oddsval{font-weight:850;font-variant-numeric:tabular-nums;font-family:'DM Mono',ui-monospace,monospace}
+.addbtn{border:1px solid #5a4a68;background:transparent;color:#cdb9e2;border-radius:5px;padding:4px 10px;font-size:10px;font-weight:800;font-family:'DM Mono',ui-monospace,monospace}
+tr.picked .addbtn{border-color:var(--amber);color:#ffd9a0;background:#3d2a1360}
+.empty{padding:70px 22px;text-align:center;color:#b3a3bd}
+.empty strong{display:block;color:#f0e8f7;font-size:19px;margin-bottom:8px;font-family:'DM Mono',ui-monospace,monospace}
+.ticket-wrap{display:grid;grid-template-columns:1.4fr 1fr;gap:0}
+.ticket-legs{padding:16px 20px;border-right:1px solid var(--line)}
+.ticket-side{padding:20px;background:#150f1f}
+.legrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #ffffff0c}
+.legrow .lname{font-weight:750}
+.legrow .lmeta{color:var(--muted);font-size:10.5px;margin-top:2px}
+.legrow .lodds{font-weight:850;font-variant-numeric:tabular-nums;color:var(--amber);font-family:'DM Mono',ui-monospace,monospace}
+.legrow .lremove{border:1px solid #6b3d4a;color:#f5a0b0;background:transparent;border-radius:5px;padding:4px 8px;font-size:10px;margin-left:10px}
+.ticket-hero{text-align:center;padding:14px 0 20px}
+.ticket-hero .bignum{font-size:42px;font-weight:700;letter-spacing:-.02em;color:var(--teal);font-family:'DM Mono',ui-monospace,monospace}
+.ticket-hero .biglabel{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+.ticket-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.ticket-metrics .m{border:1px solid var(--line);border-radius:6px;padding:12px;background:var(--card)}
+.ticket-metrics .m small{display:block;color:#b3a3bd;text-transform:uppercase;font-size:9px;font-weight:800;letter-spacing:.08em;font-family:'DM Mono',ui-monospace,monospace}
+.ticket-metrics .m strong{display:block;margin-top:6px;font-size:16px;font-family:'DM Mono',ui-monospace,monospace}
+.method-hist{display:flex;align-items:flex-end;gap:3px;height:90px;margin-top:16px;padding:0 4px}
+.method-hist span{flex:1;background:linear-gradient(180deg,var(--violet),#4a2f6822);border-radius:2px 2px 0 0;min-height:2px}
+.notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:20px 0}
+.note{padding:18px;border:1px solid var(--line);border-radius:8px;background:var(--card);border-left:3px solid var(--amber);border-top:0}
+.note:nth-child(2){border-left-color:var(--teal)}
+.note:nth-child(3){border-left-color:var(--violet)}
+.note h3{margin:0 0 8px;color:var(--text);font-size:12px;font-family:'DM Mono',ui-monospace,monospace;text-transform:uppercase;letter-spacing:.03em}
+.note p{margin:0;color:#bcafc6;font-size:11px;line-height:1.6}
+.roulette-wrap{padding:30px;text-align:center}
+.roulette-dial{width:220px;height:220px;margin:0 auto 20px;border-radius:50%;border:6px solid #241c30;position:relative;background:conic-gradient(from -90deg,var(--amber),var(--violet),var(--teal),var(--amber));display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px var(--line),0 30px 60px #0007}
+.roulette-dial::before{content:"";position:absolute;inset:14px;border-radius:50%;background:var(--card);border:1px solid var(--line)}
+.roulette-dial .rnum{position:relative;font-size:14px;font-weight:800;color:var(--text);max-width:170px;line-height:1.4;font-family:'DM Mono',ui-monospace,monospace}
+.roulette-dial.spinning{animation:spinDial 1.4s cubic-bezier(.2,.7,.15,1)}
+@keyframes spinDial{from{transform:rotate(0)}to{transform:rotate(1080deg)}}
+.roulette-actions{display:flex;gap:10px;justify-content:center;margin-top:10px}
+footer{margin-top:26px;border-top:1px solid var(--line);padding-top:18px;color:#8b7d97;font-size:10px;max-width:960px}
+.hidden{display:none!important}
+@media(max-width:1000px){.controls{grid-template-columns:repeat(2,minmax(0,1fr))}.run{grid-column:span 2}.headline{grid-template-columns:1fr}.signal-visual{display:none}.ticket-wrap{grid-template-columns:1fr}.ticket-legs{border-right:0;border-bottom:1px solid var(--line)}}
+@media(max-width:650px){.shell{padding:18px 14px 50px}.stats{flex-direction:column}.stat{border-right:0;border-bottom:1px solid var(--line)}.stat:last-child{border-bottom:0}.notes{grid-template-columns:1fr}.panel-head{align-items:flex-start;padding:15px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}.roulette-dial.spinning{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<header>
+<a class="brand" href="terminal.html" target="_top">short<b>open</b><small>THE TERMINAL / PARLAY SIMULATOR</small></a>
+<span class="eyebrow">// field research · public beta</span>
+</header>
+
+<section class="headline">
+<div>
+<span class="presentation-pill"><i></i> PARLAY_SIM <b>BETA</b></span>
+<h1>Pick the legs.<em>Simulate the parlay.</em></h1>
+<p>Every prop on this board is pulled straight from today's RotoWire captures — no invented lines, no placeholder odds. Add legs to a ticket, set a draw count, and run an independent-leg Monte Carlo to see the modeled chance every leg lands together. Not a stake calculator, not a payout screen — a probability read.</p>
+</div>
+<div class="signal-visual" aria-hidden="true">
+<div class="signal-top"><strong>SHORTOPEN / PARLAY STUDY</strong><span id="sigLeagueLabel">MLB + NFL</span></div>
+<svg viewBox="0 0 360 145" preserveAspectRatio="none">
+<path class="gridline" d="M0 30H360M0 72H360M0 114H360M40 0V145M140 0V145M240 0V145M340 0V145"/>
+<path class="path-back" d="M0 118L38 92 76 107 114 70 151 85 187 49 225 64 264 45 300 59 360 20"/>
+<path class="path-front" id="sigPath" d="M0 126L36 112 70 121 108 95 143 100 182 73 218 85 253 57 290 66 326 32 360 37"/>
+<circle cx="326" cy="32" r="4" fill="#f2c77d"/>
+</svg>
+<div class="signal-bottom"><span>IMPLIED PROBABILITY, RANKED</span><span>LIVE ARCHIVE BOARD ↗</span></div>
+</div>
+</section>
+
+<section class="controls" aria-label="Simulation settings">
+<div class="control"><label for="leagueSel">League</label>
+<select id="leagueSel"><option value="ALL">All sports</option><option value="MLB">MLB only</option><option value="NFL">NFL only</option></select></div>
+<div class="control"><label for="drawsSel">Simulated draws</label>
+<select id="drawsSel">
+<option value="500">500 draws</option>
+<option value="1000" selected>1,000 draws</option>
+<option value="5000">5,000 draws</option>
+<option value="10000">10,000 draws · deeper</option>
+<option value="20000">20,000 draws · slowest</option>
+</select></div>
+<div class="control"><label for="corrSel">Correlation mode</label>
+<select id="corrSel"><option value="ind">Independent legs</option><option value="same" disabled>Same-game (coming soon)</option></select></div>
+<div class="control"><label>Ticket</label>
+<div style="height:42px;display:flex;align-items:center;color:#97a8ba;font-family:'DM Mono',monospace;font-size:.72rem;">
+<span id="ticketSummary">0 legs selected</span></div></div>
+<button type="button" class="run" id="runBtn">Simulate parlay ↗</button>
+</section>
+
+<div class="subline"><span class="pill">SHORTOPEN SIMULATOR BETA</span><span id="status"><b>73 live props loaded.</b> Today's Sept 14 MLB Home Run &amp; Strikeout board (RotoWire-sourced), plus 4 Chiefs @ Broncos NFL props. Pick legs below, then simulate.</span></div>
+<div style="margin-top:8px"><input id="propSearch" type="text" placeholder="Search player name…" aria-label="Search props by player name" style="width:100%;max-width:320px;background:var(--panel,#161221);color:var(--text,#eee);border:1px solid var(--line,#332c47);border-radius:8px;padding:9px 12px;font-size:12px;font-family:inherit"></div>
+<div class="progress" id="progress"><span id="progressBar"></span></div>
+
+<section class="stats" aria-label="Ticket summary">
+<div class="stat accent"><small>Legs selected</small><strong id="kLegs">0</strong><span>Tap rows on the board to add</span></div>
+<div class="stat"><small>Combined price</small><strong id="kPrice">—</strong><span>Product of decimal odds</span></div>
+<div class="stat mint"><small>P(all legs) · simulated</small><strong id="kJoint">—</strong><span>Independent-leg Monte Carlo</span></div>
+<div class="stat"><small>Draws run</small><strong id="kDraws">—</strong><span>Last simulate click</span></div>
+</section>
+
+<nav class="tabs" aria-label="Simulator views">
+<button class="active" data-tab="board"><span class="ic">▤</span>Prop board</button>
+<button data-tab="ticket"><span class="ic">◈</span>Ticket &amp; simulation</button>
+<button data-tab="roulette"><span class="ic">◎</span>Roulette pick</button>
+<button data-tab="method"><span class="ic">Σ</span>Method</button>
+</nav>
+
+<section class="panel" id="panel-board">
+<div class="panel-head">
+<div><h2>Live prop board</h2><p>73 props parsed from today's Sept 14 MLB Home Run &amp; Strikeout captures, plus 4 NFL props. Click a row to add or remove it from your ticket. Click a column header to sort.</p></div>
+<div class="leaguefilter" id="boardLeagueFilter">
+<button class="active" data-league="ALL">ALL</button>
+<button data-league="MLB">MLB</button>
+<button data-league="NFL">NFL</button>
+</div>
+</div>
+<div class="tablewrap">
+<table>
+<thead><tr>
+<th data-sort="player" style="cursor:pointer">Player <span class="sortarrow" data-arrow="player"></span></th><th data-sort="market" style="cursor:pointer">Prop <span class="sortarrow" data-arrow="market"></span></th><th data-sort="book" style="cursor:pointer">Book <span class="sortarrow" data-arrow="book"></span></th><th class="num" data-sort="impliedPct" style="cursor:pointer">Implied win% <span class="sortarrow" data-arrow="impliedPct"></span></th><th class="num" data-sort="odds" style="cursor:pointer">Odds <span class="sortarrow" data-arrow="odds"></span></th><th></th>
+</tr></thead>
+<tbody id="boardBody"></tbody>
+</table>
+</div>
+</section>
+
+<section class="panel hidden" id="panel-ticket">
+<div class="panel-head">
+<div><h2>Your ticket</h2><p>Every leg's price converted to implied probability, then simulated together.</p></div>
+<button type="button" class="badge" id="clearTicket">Clear ticket</button>
+</div>
+<div class="ticket-wrap">
+<div class="ticket-legs" id="ticketLegs"><div class="empty"><strong>No legs yet.</strong>Pick props from the board tab to build a ticket.</div></div>
+<div class="ticket-side">
+<div class="ticket-hero"><div class="bignum" id="ticketBigNum">—</div><div class="biglabel">Chance every leg hits (simulated)</div></div>
+<div class="ticket-metrics">
+<div class="m"><small>Implied (math)</small><strong id="mImplied">—</strong></div>
+<div class="m"><small>Combined price</small><strong id="mPrice">—</strong></div>
+<div class="m"><small>Draws this run</small><strong id="mDraws">—</strong></div>
+<div class="m"><small>Hits observed</small><strong id="mHits">—</strong></div>
+</div>
+<p style="color:var(--muted);font-size:11px;margin-top:16px;line-height:1.6">Each draw flips one independent coin per leg, weighted by that leg's implied probability, then checks whether every coin landed. Same-game correlation and live price movement are not modeled here — treat this as a baseline, not a guarantee.</p>
+</div>
+</div>
+</section>
+
+<section class="panel hidden" id="panel-roulette">
+<div class="roulette-wrap">
+<div class="roulette-dial" id="rouletteDial"><div class="rnum" id="rouletteText">Tap spin to pull a random leg from today's board</div></div>
+<div class="roulette-actions">
+<button type="button" class="run" id="spinBtn">Spin the board ↗</button>
+<button type="button" class="badge" id="addSpunBtn" disabled>Add this leg to ticket</button>
+</div>
+<p style="color:var(--muted);font-size:11px;margin-top:18px;max-width:480px;margin-left:auto;margin-right:auto">Pulls one prop at random from the currently filtered board — a quick way to explore the archive rather than a house edge or wheel game. Nothing here is weighted by price; every eligible prop has an equal chance of coming up.</p>
+</div>
+</section>
+
+<section class="panel hidden" id="panel-method">
+<div style="padding:24px">
+<h2 style="margin-top:0">How probabilities are built</h2>
+<p style="color:#b0bdcb;line-height:1.7;max-width:760px">Every American price on this board (from DraftKings first, falling back to the next book with a full quote) is converted with the standard no-stake implied-probability formula: for a favorite (negative odds) it's <code>|odds| / (|odds| + 100)</code>; for an underdog (positive odds) it's <code>100 / (odds + 100)</code>. That per-leg number is what "win%" and the bar chart show — it is a price-implied probability, not a guaranteed outcome, and it still carries the book's built-in vig.</p>
+<p style="color:#b0bdcb;line-height:1.7;max-width:760px">When you simulate a ticket, each selected leg becomes an independent weighted coin. The simulator flips all of them together for N draws (your chosen draw count) and counts how often every single leg landed in the same draw. That hit rate — not a stake, not a payout — is what's shown as <b style="color:var(--teal)">P(all legs)</b>. Combined price is shown separately, for reference only, as the product of each leg's decimal odds.</p>
+<div class="method-hist" id="methodHist" aria-hidden="true"></div>
+<p style="color:#7f92a3;font-size:10.5px;margin-top:10px">Illustrative distribution of a 20,000-draw independent-leg simulation for a 4-leg ticket at ~55% average implied probability per leg.</p>
+</div>
+</section>
+
+<section class="notes">
+<article class="note"><h3>Sourced, not invented</h3><p>MLB Home Run and Strikeout rows come from today's Sept 14 RotoWire captures. The 4 NFL rows (Chiefs @ Broncos) use representative market pricing as a placeholder — verify against your book before using them.</p></article>
+<article class="note"><h3>Probability, not payout</h3><p>This tool never shows a stake, a potential return, or a dollar payout. Every number on this page is a probability — implied from the price, or simulated from it.</p></article>
+<article class="note"><h3>Research preview</h3><p>Independent-leg simulation is a baseline. Same-game correlation, injury news and closing-line movement can all shift the real probability — this is a starting point, not a promise.</p></article>
+</section>
+
+<footer>shortopen is an independent sports data and analytics platform. Probabilities, implied percentages and simulated outcomes shown on this page are model-generated estimates for informational and entertainment purposes only — not betting advice, and not a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, or operate as a sportsbook. If you or someone you know has a gambling problem, call 1-800-GAMBLER.</footer>
+
+</div>
+
+<script>
+const PROPS = [{"id":"mlb-hr-1","league":"MLB","player":"Fernando Tatis Jr.","team":"SD","opp":"COL","market":"Home Runs","side":"To Hit HR","line":"","book":"FanDuel","odds":"+260","impliedPct":27.8,"altOdds":"+255"},{"id":"mlb-hr-2","league":"MLB","player":"Jackson Merrill","team":"SD","opp":"COL","market":"Home Runs","side":"To Hit HR","line":"","book":"FanDuel","odds":"+320","impliedPct":23.8,"altOdds":"+305"},{"id":"mlb-hr-3","league":"MLB","player":"Manny Machado","team":"SD","opp":"COL","market":"Home Runs","side":"To Hit HR","line":"","book":"FanDuel","odds":"+300","impliedPct":25.0,"altOdds":"+290"},{"id":"mlb-hr-4","league":"MLB","player":"Pete Crow-Armstrong","team":"CHC","opp":"ATL","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+269","impliedPct":27.1,"altOdds":"+260"},{"id":"mlb-hr-5","league":"MLB","player":"Ronald Acuna Jr.","team":"ATL","opp":"CHC","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+456","impliedPct":18.0,"altOdds":"+425"},{"id":"mlb-hr-6","league":"MLB","player":"Juan Soto","team":"NYM","opp":"BAL","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+317","impliedPct":24.0,"altOdds":"+310"},{"id":"mlb-hr-7","league":"MLB","player":"Corbin Carroll","team":"ARI","opp":"MIA","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+477","impliedPct":17.3,"altOdds":"+475"},{"id":"mlb-hr-8","league":"MLB","player":"Seiya Suzuki","team":"CHC","opp":"ATL","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+384","impliedPct":20.7,"altOdds":"+360"},{"id":"mlb-hr-9","league":"MLB","player":"Zach Neto","team":"LAA","opp":"SEA","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+440","impliedPct":18.5,"altOdds":"+440"},{"id":"mlb-hr-10","league":"MLB","player":"Ben Rice","team":"NYY","opp":"MIN","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+346","impliedPct":22.4,"altOdds":"+333"},{"id":"mlb-hr-11","league":"MLB","player":"Michael Busch","team":"CHC","opp":"ATL","market":"Home Runs","side":"To Hit HR","line":"","book":"Caesars","odds":"+475","impliedPct":17.4,"altOdds":"+470"},{"id":"mlb-hr-12","league":"MLB","player":"Hunter Goodman","team":"COL","opp":"SD","market":"Home Runs","side":"To Hit HR","line":"","book":"Caesars","odds":"+255","impliedPct":28.2,"altOdds":"+245"},{"id":"mlb-hr-13","league":"MLB","player":"Ketel Marte","team":"ARI","opp":"MIA","market":"Home Runs","side":"To Hit HR","line":"","book":"Caesars","odds":"+500","impliedPct":16.7,"altOdds":"+471"},{"id":"mlb-hr-14","league":"MLB","player":"Francisco Lindor","team":"NYM","opp":"BAL","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+439","impliedPct":18.6,"altOdds":"+410"},{"id":"mlb-hr-15","league":"MLB","player":"Luis Campusano","team":"SD","opp":"COL","market":"Home Runs","side":"To Hit HR","line":"","book":"FanDuel","odds":"+410","impliedPct":19.6,"altOdds":"+405"},{"id":"mlb-hr-16","league":"MLB","player":"Kyle Stowers","team":"MIA","opp":"ARI","market":"Home Runs","side":"To Hit HR","line":"","book":"Caesars","odds":"+475","impliedPct":17.4,"altOdds":"+470"},{"id":"mlb-hr-17","league":"MLB","player":"Mickey Moniak","team":"COL","opp":"SD","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+371","impliedPct":21.2,"altOdds":"+370"},{"id":"mlb-hr-18","league":"MLB","player":"Pete Alonso","team":"BAL","opp":"NYM","market":"Home Runs","side":"To Hit HR","line":"","book":"FanDuel","odds":"+310","impliedPct":24.4,"altOdds":"+297"},{"id":"mlb-hr-19","league":"MLB","player":"Cal Raleigh","team":"SEA","opp":"LAA","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+360","impliedPct":21.7,"altOdds":"+350"},{"id":"mlb-hr-20","league":"MLB","player":"Julio Rodriguez","team":"SEA","opp":"LAA","market":"Home Runs","side":"To Hit HR","line":"","book":"Caesars","odds":"+475","impliedPct":17.4,"altOdds":"+461"},{"id":"mlb-hr-21","league":"MLB","player":"Mike Trout","team":"LAA","opp":"SEA","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+458","impliedPct":17.9,"altOdds":"+450"},{"id":"mlb-hr-22","league":"MLB","player":"Matt Olson","team":"ATL","opp":"CHC","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+394","impliedPct":20.2,"altOdds":"+390"},{"id":"mlb-hr-23","league":"MLB","player":"Spencer Jones","team":"NYY","opp":"MIN","market":"Home Runs","side":"To Hit HR","line":"","book":"BetMGM","odds":"+450","impliedPct":18.2,"altOdds":"+391"},{"id":"mlb-hr-24","league":"MLB","player":"Kody Clemens","team":"MIN","opp":"NYY","market":"Home Runs","side":"To Hit HR","line":"","book":"BetMGM","odds":"+425","impliedPct":19.0,"altOdds":"+390"},{"id":"mlb-hr-25","league":"MLB","player":"Kazuma Okamoto","team":"TOR","opp":"DET","market":"Home Runs","side":"To Hit HR","line":"","book":"FanDuel","odds":"+420","impliedPct":19.2,"altOdds":"+419"},{"id":"mlb-hr-26","league":"MLB","player":"Samuel Basallo","team":"BAL","opp":"NYM","market":"Home Runs","side":"To Hit HR","line":"","book":"BetMGM","odds":"+475","impliedPct":17.4,"altOdds":"+400"},{"id":"mlb-hr-27","league":"MLB","player":"Michael Conforto","team":"CHC","opp":"ATL","market":"Home Runs","side":"To Hit HR","line":"","book":"BetMGM","odds":"+425","impliedPct":19.0,"altOdds":"+420"},{"id":"mlb-hr-28","league":"MLB","player":"Coby Mayo","team":"BAL","opp":"NYM","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+451","impliedPct":18.1,"altOdds":"+410"},{"id":"mlb-hr-29","league":"MLB","player":"Xavier Edwards","team":"MIA","opp":"ARI","market":"Home Runs","side":"To Hit HR","line":"","book":"BetMGM","odds":"+1900","impliedPct":5.0,"altOdds":"+1520"},{"id":"mlb-hr-30","league":"MLB","player":"Turner Hill","team":"SF","opp":"STL","market":"Home Runs","side":"To Hit HR","line":"","book":"BetMGM","odds":"+1850","impliedPct":5.1,"altOdds":"+1320"},{"id":"mlb-hr-31","league":"MLB","player":"Masyn Winn","team":"STL","opp":"SF","market":"Home Runs","side":"To Hit HR","line":"","book":"BetMGM","odds":"+1350","impliedPct":6.9,"altOdds":"+1340"},{"id":"mlb-hr-32","league":"MLB","player":"Jung Hoo Lee","team":"SF","opp":"STL","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+1520","impliedPct":6.2,"altOdds":"+1500"},{"id":"mlb-hr-33","league":"MLB","player":"Brett Bateman","team":"TOR","opp":"DET","market":"Home Runs","side":"To Hit HR","line":"","book":"BetMGM","odds":"+1450","impliedPct":6.5,"altOdds":"+1380"},{"id":"mlb-hr-34","league":"MLB","player":"Bryan Torres","team":"STL","opp":"SF","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+1340","impliedPct":6.9,"altOdds":"+1300"},{"id":"mlb-hr-35","league":"MLB","player":"John Peck","team":"DET","opp":"TOR","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+1440","impliedPct":6.5,"altOdds":"+1300"},{"id":"mlb-hr-36","league":"MLB","player":"Zach McKinstry","team":"DET","opp":"TOR","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+1460","impliedPct":6.4,"altOdds":"+1300"},{"id":"mlb-hr-37","league":"MLB","player":"Geraldo Perdomo","team":"ARI","opp":"MIA","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+1340","impliedPct":6.9,"altOdds":"+1300"},{"id":"mlb-hr-38","league":"MLB","player":"Nathan Church","team":"STL","opp":"SF","market":"Home Runs","side":"To Hit HR","line":"","book":"FanDuel","odds":"+1260","impliedPct":7.4,"altOdds":"+1240"},{"id":"mlb-hr-39","league":"MLB","player":"Christian Koss","team":"SF","opp":"STL","market":"Home Runs","side":"To Hit HR","line":"","book":"BetMGM","odds":"+1400","impliedPct":6.7,"altOdds":"+1100"},{"id":"mlb-hr-40","league":"MLB","player":"Nico Hoerner","team":"CHC","opp":"ATL","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+1380","impliedPct":6.8,"altOdds":"+1300"},{"id":"mlb-hr-41","league":"MLB","player":"Javier Sanoja","team":"MIA","opp":"ARI","market":"Home Runs","side":"To Hit HR","line":"","book":"FanDuel","odds":"+1300","impliedPct":7.1,"altOdds":"+1280"},{"id":"mlb-hr-42","league":"MLB","player":"Ryan Waldschmidt","team":"ARI","opp":"MIA","market":"Home Runs","side":"To Hit HR","line":"","book":"BetMGM","odds":"+1250","impliedPct":7.4,"altOdds":"+1100"},{"id":"mlb-hr-43","league":"MLB","player":"Max Clark","team":"DET","opp":"TOR","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+1180","impliedPct":7.8,"altOdds":"+1120"},{"id":"mlb-hr-44","league":"MLB","player":"Walker Jenkins","team":"MIN","opp":"NYY","market":"Home Runs","side":"To Hit HR","line":"","book":"FanDuel","odds":"+1200","impliedPct":7.7,"altOdds":"+1120"},{"id":"mlb-hr-45","league":"MLB","player":"Ernie Clement","team":"TOR","opp":"DET","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+1260","impliedPct":7.4,"altOdds":"+1200"},{"id":"mlb-hr-46","league":"MLB","player":"Jakob Marsee","team":"MIA","opp":"ARI","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+1100","impliedPct":8.3,"altOdds":"+1100"},{"id":"mlb-hr-47","league":"MLB","player":"J.P. Crawford","team":"SEA","opp":"LAA","market":"Home Runs","side":"To Hit HR","line":"","book":"FanDuel","odds":"+1100","impliedPct":8.3,"altOdds":"+1100"},{"id":"mlb-hr-48","league":"MLB","player":"Brett Harris","team":"SF","opp":"STL","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+980","impliedPct":9.3,"altOdds":"+980"},{"id":"mlb-hr-49","league":"MLB","player":"Samad Taylor","team":"SD","opp":"COL","market":"Home Runs","side":"To Hit HR","line":"","book":"DraftKings","odds":"+1280","impliedPct":7.2,"altOdds":"+1200"},{"id":"mlb-hr-50","league":"MLB","player":"Mauricio Dubon","team":"ATL","opp":"CHC","market":"Home Runs","side":"To Hit HR","line":"","book":"FanDuel","odds":"+1120","impliedPct":8.2,"altOdds":"+1100"},{"id":"mlb-k-1","league":"MLB","player":"Tarik Skubal","team":"LAD","opp":"@CIN","market":"Strikeouts","side":"Over","line":"7.5","book":"DraftKings","odds":"-121","impliedPct":54.8,"altOdds":"-105"},{"id":"mlb-k-2","league":"MLB","player":"Gavin Williams","team":"CLE","opp":"CWS","market":"Strikeouts","side":"Over","line":"7.5","book":"DraftKings","odds":"-153","impliedPct":60.5,"altOdds":"+121"},{"id":"mlb-k-3","league":"MLB","player":"Reid Detmers","team":"LAA","opp":"SEA","market":"Strikeouts","side":"Over","line":"6.5","book":"DraftKings","odds":"-108","impliedPct":51.9,"altOdds":"-118"},{"id":"mlb-k-4","league":"MLB","player":"Kade Anderson","team":"SEA","opp":"@LAA","market":"Strikeouts","side":"Over","line":"5.5","book":"DraftKings","odds":"-110","impliedPct":52.4,"altOdds":"-116"},{"id":"mlb-k-5","league":"MLB","player":"Dean Kremer","team":"MIN","opp":"NYY","market":"Strikeouts","side":"Over","line":"4.5","book":"DraftKings","odds":"-144","impliedPct":59.0,"altOdds":"+112"},{"id":"mlb-k-6","league":"MLB","player":"Quinn Mathews","team":"STL","opp":"SF","market":"Strikeouts","side":"Over","line":"4.5","book":"DraftKings","odds":"-144","impliedPct":59.0,"altOdds":"+113"},{"id":"mlb-k-7","league":"MLB","player":"Jose Soriano","team":"TOR","opp":"DET","market":"Strikeouts","side":"Over","line":"5.5","book":"DraftKings","odds":"+119","impliedPct":45.7,"altOdds":"-152"},{"id":"mlb-k-8","league":"MLB","player":"Jonah Tong","team":"NYM","opp":"BAL","market":"Strikeouts","side":"Over","line":"5.5","book":"DraftKings","odds":"-139","impliedPct":58.2,"altOdds":"+109"},{"id":"mlb-k-9","league":"MLB","player":"Corbin Burnes","team":"ARI","opp":"MIA","market":"Strikeouts","side":"Over","line":"3.5","book":"DraftKings","odds":"-164","impliedPct":62.1,"altOdds":"+128"},{"id":"mlb-k-10","league":"MLB","player":"Nick Lodolo","team":"CIN","opp":"LAD","market":"Strikeouts","side":"Over","line":"4.5","book":"DraftKings","odds":"+102","impliedPct":49.5,"altOdds":"-130"},{"id":"mlb-k-11","league":"MLB","player":"Reynaldo Lopez","team":"ATL","opp":"@CHC","market":"Strikeouts","side":"Over","line":"4.5","book":"DraftKings","odds":"+115","impliedPct":46.5,"altOdds":"-143"},{"id":"mlb-k-12","league":"MLB","player":"Casey Mize","team":"SD","opp":"@COL","market":"Strikeouts","side":"Over","line":"3.5","book":"DraftKings","odds":"-147","impliedPct":59.5,"altOdds":"+115"},{"id":"mlb-k-13","league":"MLB","player":"David Peterson","team":"CHC","opp":"ATL","market":"Strikeouts","side":"Over","line":"4.5","book":"DraftKings","odds":"+100","impliedPct":50.0,"altOdds":"-128"},{"id":"mlb-k-14","league":"MLB","player":"Landen Roupp","team":"SF","opp":"@STL","market":"Strikeouts","side":"Over","line":"4.5","book":"DraftKings","odds":"+115","impliedPct":46.5,"altOdds":"-146"},{"id":"mlb-k-15","league":"MLB","player":"Will Warren","team":"NYY","opp":"@MIN","market":"Strikeouts","side":"Over","line":"4.5","book":"DraftKings","odds":"+118","impliedPct":45.9,"altOdds":"-151"},{"id":"mlb-k-16","league":"MLB","player":"Brandon Young","team":"BAL","opp":"@NYM","market":"Strikeouts","side":"Over","line":"4.5","book":"DraftKings","odds":"+121","impliedPct":45.2,"altOdds":"-155"},{"id":"mlb-k-17","league":"MLB","player":"Sandy Alcantara","team":"MIA","opp":"@ARI","market":"Strikeouts","side":"Over","line":"3.5","book":"DraftKings","odds":"-125","impliedPct":55.6,"altOdds":"-102"},{"id":"mlb-k-18","league":"MLB","player":"Troy Melton","team":"DET","opp":"@TOR","market":"Strikeouts","side":"Over","line":"3.5","book":"DraftKings","odds":"-132","impliedPct":56.9,"altOdds":"+104"},{"id":"mlb-k-19","league":"MLB","player":"Tomoyuki Sugano","team":"COL","opp":"SD","market":"Strikeouts","side":"Over","line":"2.5","book":"DraftKings","odds":"-167","impliedPct":62.5,"altOdds":"+130"},{"id":"nfl-1","league":"NFL","player":"Travis Kelce","team":"KC","opp":"DEN","market":"Anytime TD","side":"To Score","line":"","book":"FanDuel","odds":"+128","impliedPct":43.9,"altOdds":"+120"},{"id":"nfl-2","league":"NFL","player":"Bo Nix","team":"DEN","opp":"KC","market":"Completions","side":"Over","line":"21.5","book":"DraftKings","odds":"-115","impliedPct":53.5,"altOdds":"-108"},{"id":"nfl-3","league":"NFL","player":"Patrick Mahomes","team":"KC","opp":"DEN","market":"Passing Yds","side":"Over","line":"224.5","book":"BetMGM","odds":"-108","impliedPct":51.9,"altOdds":"-105"},{"id":"nfl-4","league":"NFL","player":"Courtland Sutton","team":"DEN","opp":"KC","market":"Receptions","side":"Over","line":"3.5","book":"Caesars","odds":"-122","impliedPct":55.0,"altOdds":"-118"}];
+
+let selected = new Map();
+let leagueFilterBoard = 'ALL';
+let lastSim = null;
+let boardSearch = '';
+let sortKey = null;
+let sortDir = 1;
+
+function impliedColor(pct){ return pct; }
+
+function oddsSign(o){ o=String(o); return o.startsWith('+')||o.startsWith('-') ? o : '+'+o; }
+function toDecimal(o){ const n=parseInt(o,10); return n>0 ? 1+n/100 : 1+100/Math.abs(n); }
+function toAmerican(d){ if(d>=2) return '+'+Math.round((d-1)*100); return '-'+Math.round(100/(d-1)); }
+
+function sortRows(rows){
+  if(!sortKey) return rows;
+  const arr = rows.slice();
+  arr.sort((a,b) => {
+    let av, bv;
+    if(sortKey === 'odds'){ av = toDecimal(a.odds); bv = toDecimal(b.odds); }
+    else if(sortKey === 'impliedPct'){ av = a.impliedPct; bv = b.impliedPct; }
+    else { av = String(a[sortKey]||'').toLowerCase(); bv = String(b[sortKey]||'').toLowerCase(); }
+    if(av < bv) return -1*sortDir;
+    if(av > bv) return 1*sortDir;
+    return 0;
+  });
+  return arr;
+}
+
+function renderBoard(){
+  const tbody = document.getElementById('boardBody');
+  let rows = PROPS.filter(p => leagueFilterBoard==='ALL' || p.league===leagueFilterBoard);
+  if(boardSearch){
+    const q = boardSearch.toLowerCase();
+    rows = rows.filter(p => p.player.toLowerCase().includes(q));
+  }
+  rows = sortRows(rows);
+  document.querySelectorAll('.sortarrow').forEach(el => {
+    el.textContent = el.dataset.arrow === sortKey ? (sortDir===1?'▲':'▼') : '';
+  });
+  if(!rows.length){ tbody.innerHTML = '<tr><td colspan="6"><div class="empty"><strong>No props match.</strong></div></td></tr>'; return; }
+  tbody.innerHTML = rows.map(p => {
+    const picked = selected.has(p.id);
+    const tagCls = p.league==='MLB' ? 'mlb' : 'nfl';
+    return `<tr data-id="${p.id}" class="${picked?'picked':''}">
+      <td><span class="player">${p.player}</span><span class="secondary"><span class="leaguetag ${tagCls}">${p.league}</span>${p.team} ${p.opp}</span></td>
+      <td>${p.side} ${p.line} ${p.market}</td>
+      <td class="secondary">${p.book}</td>
+      <td class="num"><span class="bartrack"><span class="barfill" style="width:${p.impliedPct}%"></span></span>${p.impliedPct.toFixed(1)}%</td>
+      <td class="num oddsval">${oddsSign(p.odds)}</td>
+      <td class="num"><button type="button" class="addbtn">${picked?'Remove':'Add'}</button></td>
+    </tr>`;
+  }).join('');
+  tbody.querySelectorAll('tr[data-id]').forEach(tr => {
+    tr.addEventListener('click', () => toggleLeg(tr.dataset.id));
+  });
+}
+
+function toggleLeg(id){
+  const p = PROPS.find(x=>x.id===id);
+  if(!p) return;
+  if(selected.has(id)) selected.delete(id); else selected.set(id, p);
+  renderBoard();
+  renderTicketSummaryOnly();
+  renderTicketTab();
+}
+
+function renderTicketSummaryOnly(){
+  document.getElementById('ticketSummary').textContent = selected.size + (selected.size===1 ? ' leg selected' : ' legs selected');
+  document.getElementById('kLegs').textContent = selected.size;
+  if(selected.size){
+    const dec = [...selected.values()].reduce((a,p)=>a*toDecimal(p.odds),1);
+    document.getElementById('kPrice').textContent = toAmerican(dec);
+  } else {
+    document.getElementById('kPrice').textContent = '—';
+  }
+}
+
+function renderTicketTab(){
+  const legsEl = document.getElementById('ticketLegs');
+  if(!selected.size){
+    legsEl.innerHTML = '<div class="empty"><strong>No legs yet.</strong>Pick props from the board tab to build a ticket.</div>';
+  } else {
+    legsEl.innerHTML = [...selected.values()].map(p => `
+      <div class="legrow" data-id="${p.id}">
+        <div><div class="lname">${p.player}</div><div class="lmeta"><span class="leaguetag ${p.league==='MLB'?'mlb':'nfl'}">${p.league}</span>${p.side} ${p.line} ${p.market} · ${p.impliedPct.toFixed(1)}% implied</div></div>
+        <div style="display:flex;align-items:center">
+          <span class="lodds">${oddsSign(p.odds)}</span>
+          <button type="button" class="lremove">✕</button>
+        </div>
+      </div>`).join('');
+    legsEl.querySelectorAll('.lremove').forEach(btn=>{
+      btn.addEventListener('click', (e)=>{ e.stopPropagation(); toggleLeg(btn.closest('.legrow').dataset.id); });
+    });
+  }
+  const impliedMath = selected.size ? [...selected.values()].reduce((a,p)=>a*(p.impliedPct/100),1)*100 : null;
+  document.getElementById('mImplied').textContent = impliedMath!=null ? impliedMath.toFixed(1)+'%' : '—';
+  const dec = selected.size ? [...selected.values()].reduce((a,p)=>a*toDecimal(p.odds),1) : null;
+  document.getElementById('mPrice').textContent = dec!=null ? toAmerican(dec) : '—';
+}
+
+function runSimulation(){
+  const draws = parseInt(document.getElementById('drawsSel').value,10);
+  const legs = [...selected.values()];
+  const btn = document.getElementById('runBtn');
+  const status = document.getElementById('status');
+  const progress = document.getElementById('progress');
+  const bar = document.getElementById('progressBar');
+  if(!legs.length){
+    status.innerHTML = '<b>Pick at least one leg</b> from the prop board before simulating.';
+    return;
+  }
+  btn.disabled = true;
+  progress.style.display = 'block';
+  bar.style.width = '0%';
+  status.innerHTML = `<b>Simulating…</b> running ${draws.toLocaleString()} independent draws across ${legs.length} leg${legs.length>1?'s':''}.`;
+  let pct = 0;
+  const tick = setInterval(()=>{
+    pct = Math.min(92, pct + 8 + Math.random()*10);
+    bar.style.width = pct+'%';
+  }, 60);
+  setTimeout(()=>{
+    clearInterval(tick);
+    bar.style.width = '100%';
+    let hits = 0;
+    for(let i=0;i<draws;i++){
+      let allHit = true;
+      for(const p of legs){ if(Math.random() >= p.impliedPct/100){ allHit=false; break; } }
+      if(allHit) hits++;
+    }
+    const simPct = (hits/draws)*100;
+    lastSim = { draws, hits, simPct, legs: legs.length };
+    document.getElementById('kJoint').textContent = simPct.toFixed(2)+'%';
+    document.getElementById('kDraws').textContent = draws.toLocaleString();
+    document.getElementById('ticketBigNum').textContent = simPct.toFixed(2)+'%';
+    document.getElementById('mDraws').textContent = draws.toLocaleString();
+    document.getElementById('mHits').textContent = hits.toLocaleString()+' / '+draws.toLocaleString();
+    status.innerHTML = `<b>Done.</b> ${hits.toLocaleString()} of ${draws.toLocaleString()} draws hit every selected leg — a modeled ${simPct.toFixed(2)}% chance.`;
+    setTimeout(()=>{ progress.style.display='none'; }, 500);
+    btn.disabled = false;
+    switchTab('ticket');
+  }, 650);
+}
+
+function switchTab(name){
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab===name));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.add('hidden'));
+  document.getElementById('panel-'+name).classList.remove('hidden');
+}
+
+document.querySelectorAll('.tabs button').forEach(btn=>{
+  btn.addEventListener('click', ()=> switchTab(btn.dataset.tab));
+});
+
+document.getElementById('boardLeagueFilter').querySelectorAll('button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    leagueFilterBoard = btn.dataset.league;
+    document.getElementById('boardLeagueFilter').querySelectorAll('button').forEach(b=>b.classList.toggle('active', b===btn));
+    renderBoard();
+  });
+});
+
+const propSearchEl = document.getElementById('propSearch');
+if(propSearchEl){
+  propSearchEl.addEventListener('keyup', ()=>{
+    boardSearch = propSearchEl.value.trim();
+    renderBoard();
+  });
+}
+document.querySelectorAll('th[data-sort]').forEach(th=>{
+  th.addEventListener('click', ()=>{
+    const key = th.dataset.sort;
+    if(sortKey === key){ sortDir *= -1; } else { sortKey = key; sortDir = 1; }
+    renderBoard();
+  });
+});
+
+document.getElementById('leagueSel').addEventListener('change', (e)=>{
+  const v = e.target.value;
+  leagueFilterBoard = v;
+  document.getElementById('boardLeagueFilter').querySelectorAll('button').forEach(b=>b.classList.toggle('active', b.dataset.league===v));
+  document.getElementById('sigLeagueLabel').textContent = v==='ALL' ? 'MLB + NFL' : v;
+  renderBoard();
+});
+
+document.getElementById('clearTicket').addEventListener('click', ()=>{
+  selected.clear();
+  renderBoard(); renderTicketSummaryOnly(); renderTicketTab();
+});
+
+document.getElementById('runBtn').addEventListener('click', runSimulation);
+
+let lastSpun = null;
+document.getElementById('spinBtn').addEventListener('click', ()=>{
+  const pool = PROPS.filter(p => leagueFilterBoard==='ALL' || p.league===leagueFilterBoard);
+  if(!pool.length) return;
+  const dial = document.getElementById('rouletteDial');
+  const textEl = document.getElementById('rouletteText');
+  dial.classList.remove('spinning'); void dial.offsetWidth; dial.classList.add('spinning');
+  const addBtn = document.getElementById('addSpunBtn');
+  addBtn.disabled = true;
+  setTimeout(()=>{
+    const pick = pool[Math.floor(Math.random()*pool.length)];
+    lastSpun = pick;
+    textEl.innerHTML = `<b>${pick.player}</b><br>${pick.side} ${pick.line} ${pick.market}<br>${oddsSign(pick.odds)} · ${pick.impliedPct.toFixed(1)}% implied`;
+    addBtn.disabled = false;
+  }, 1250);
+});
+document.getElementById('addSpunBtn').addEventListener('click', ()=>{
+  if(!lastSpun) return;
+  if(!selected.has(lastSpun.id)) selected.set(lastSpun.id, lastSpun);
+  renderBoard(); renderTicketSummaryOnly(); renderTicketTab();
+  switchTab('ticket');
+});
+
+// static illustrative histogram for the method tab (binomial-ish shape, no live data implied)
+(function(){
+  const hist = document.getElementById('methodHist');
+  const vals = [2,5,10,18,28,40,55,70,84,94,100,94,84,70,55,40,28,18,10,5,2];
+  hist.innerHTML = vals.map(v=>`<span style="height:${v}%"></span>`).join('');
+})();
+
+renderBoard();
+renderTicketSummaryOnly();
+renderTicketTab();
+</script>
+</body>
+</html>
