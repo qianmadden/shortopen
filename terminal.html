@@ -134,6 +134,7 @@
 (function(){
   'use strict';
   function boot(){
+    if(window.matchMedia && !window.matchMedia('(min-width:761px)').matches) return;
     var viewport=document.getElementById('grid');
     if(!viewport||viewport.dataset.pcInit)return;
     var cards=[].slice.call(viewport.querySelectorAll('.card'));
@@ -190,5 +191,6 @@
     applySlots();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+  window.addEventListener('resize',function(){if(window.matchMedia&&window.matchMedia('(min-width:761px)').matches)boot();});
 })();
 </script></body></html>

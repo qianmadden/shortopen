@@ -115,16 +115,49 @@ tr.picked .addbtn{border-color:var(--amber);color:#ffd9a0;background:#3d2a1360}
 .note h3{margin:0 0 8px;color:var(--text);font-size:12px;font-family:'DM Mono',ui-monospace,monospace;text-transform:uppercase;letter-spacing:.03em}
 .note p{margin:0;color:#bcafc6;font-size:11px;line-height:1.6}
 .roulette-wrap{padding:30px;text-align:center}
-.roulette-dial{width:220px;height:220px;margin:0 auto 20px;border-radius:50%;border:6px solid #241c30;position:relative;background:conic-gradient(from -90deg,var(--amber),var(--violet),var(--teal),var(--amber));display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px var(--line),0 30px 60px #0007}
-.roulette-dial::before{content:"";position:absolute;inset:14px;border-radius:50%;background:var(--card);border:1px solid var(--line)}
-.roulette-dial .rnum{position:relative;font-size:14px;font-weight:800;color:var(--text);max-width:170px;line-height:1.4;font-family:'DM Mono',ui-monospace,monospace}
+.roulette-eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid #5a4373;border-radius:999px;padding:6px 14px;color:#dcc7f7;background:#3a234f45;font-size:10px;letter-spacing:.13em;font-weight:800;font-family:'DM Mono',ui-monospace,monospace}
+.roulette-stage{position:relative;display:flex;justify-content:center;margin:22px auto 0}
+.roulette-dial{width:220px;height:220px;border-radius:50%;border:6px solid #241c30;position:relative;background:conic-gradient(from -90deg,var(--amber),var(--violet),var(--teal),var(--amber));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;box-shadow:0 0 0 1px var(--line),0 30px 60px #0007}
+.roulette-dial::before{content:"";position:absolute;inset:14px;border-radius:50%;background:var(--card);border:1px solid var(--line);z-index:1}
+.roulette-ring{position:absolute;inset:-6px;border-radius:50%;background:repeating-conic-gradient(rgba(255,255,255,.5) 0deg 1.2deg,transparent 1.2deg 9deg);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 5px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 5px));opacity:.45;pointer-events:none}
+.roulette-dial .rnum{position:relative;font-size:14px;font-weight:800;color:var(--text);max-width:170px;line-height:1.4;font-family:'DM Mono',ui-monospace,monospace;z-index:2}
+.roulette-tier{position:relative;z-index:2}
+.roulette-tier:not(:empty){display:inline-block;margin-top:8px;padding:3px 9px;border-radius:999px;font:800 9px 'DM Mono',ui-monospace,monospace;letter-spacing:.06em}
+.roulette-tier.likely{background:#1a3d2e;color:var(--teal);border:1px solid #2c6b52}
+.roulette-tier.live{background:#3a2f13;color:var(--amber);border:1px solid #6b5620}
+.roulette-tier.longshot{background:#3a1830;color:#f5a0d0;border:1px solid #6b3058}
 .roulette-dial.spinning{animation:spinDial 1.4s cubic-bezier(.2,.7,.15,1)}
+.roulette-dial.landed{animation:dialPulse .55s ease-out}
 @keyframes spinDial{from{transform:rotate(0)}to{transform:rotate(1080deg)}}
-.roulette-actions{display:flex;gap:10px;justify-content:center;margin-top:10px}
-footer{margin-top:26px;border-top:1px solid var(--line);padding-top:18px;color:#8b7d97;font-size:10px;max-width:960px}
+@keyframes dialPulse{0%{box-shadow:0 0 0 1px var(--line),0 30px 60px #0007,0 0 0 0 rgba(185,140,245,.55)}100%{box-shadow:0 0 0 1px var(--line),0 30px 60px #0007,0 0 0 22px rgba(185,140,245,0)}}
+.roulette-actions{display:flex;gap:10px;justify-content:center;margin-top:22px}
+.roulette-session{display:flex;justify-content:center;gap:0;margin:22px auto 0;max-width:460px;border:1px solid var(--line);border-radius:9px;background:var(--card);overflow:hidden}
+.rs-item{flex:1;padding:12px 10px;border-right:1px solid var(--line)}
+.rs-item:last-child{border-right:0}
+.rs-item strong{display:block;font-size:18px;font-family:'DM Mono',ui-monospace,monospace;color:var(--teal)}
+.rs-item span{display:block;margin-top:3px;color:var(--muted);font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.roulette-history-wrap{margin:22px auto 0;max-width:640px;text-align:left}
+.roulette-history-wrap.hidden{display:none}
+.roulette-history-label{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:800;margin-bottom:8px;font-family:'DM Mono',ui-monospace,monospace}
+.roulette-history{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
+.rh-chip{flex:0 0 auto;display:flex;flex-direction:column;gap:2px;border:1px solid var(--line);border-radius:8px;padding:8px 11px;background:var(--card);cursor:pointer;transition:border-color .15s}
+.rh-chip:hover{border-color:var(--violet)}
+.rh-chip b{font-size:11px;color:var(--text);white-space:nowrap}
+.rh-chip span{font-size:9.5px;color:var(--muted);white-space:nowrap}
+.rh-chip .rh-odds{font-family:'DM Mono',ui-monospace,monospace;font-weight:800;color:var(--amber)}
+@media(max-width:650px){.roulette-wrap{padding:22px 14px}.roulette-dial{width:180px;height:180px}.roulette-session{flex-wrap:wrap}.rs-item{flex:1 1 33%;padding:10px 6px}.rs-item strong{font-size:15px}}
 .hidden{display:none!important}
+footer.so-footer{position:static;display:block;width:100%;max-width:none;margin:26px 0 0;padding:22px max(20px,calc((100vw - 1360px)/2)) 30px;border:0;border-top:1px solid rgba(255,255,255,.09);background:#080e15;color:#6f7f97;font-size:10.5px;line-height:1.6;box-shadow:none}
+.so-footer .footer-top{max-width:1360px;width:100%;margin:0 auto 10px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.so-footer .footer-logo{font-size:16px;font-weight:800;color:#fff;line-height:1.3}
+.so-footer .footer-logo span{color:#f4b942}
+.so-footer .footer-copy{margin:0;color:#6f7f97;text-align:right;font-size:11.5px}
+.so-footer .footer-disclaimer{max-width:1360px;margin:0 auto;color:#6f7f97;font-size:10.5px;line-height:1.6}
+.so-footer .footer-emphasis,.so-footer a{color:#e8c078}
+.so-footer a{text-decoration:underline}
+@media(max-width:700px){.so-footer .footer-top{flex-direction:column;align-items:flex-start}.so-footer .footer-copy{text-align:left}.so-footer{padding:22px 16px 34px}}
 @media(max-width:1000px){.controls{grid-template-columns:repeat(2,minmax(0,1fr))}.run{grid-column:span 2}.headline{grid-template-columns:1fr}.signal-visual{display:none}.ticket-wrap{grid-template-columns:1fr}.ticket-legs{border-right:0;border-bottom:1px solid var(--line)}}
-@media(max-width:650px){.shell{padding:18px 14px 50px}.stats{flex-direction:column}.stat{border-right:0;border-bottom:1px solid var(--line)}.stat:last-child{border-bottom:0}.notes{grid-template-columns:1fr}.panel-head{align-items:flex-start;padding:15px}}
+@media(max-width:650px){.shell{padding:18px 14px 50px}.stats{flex-direction:column}.stat{flex:0 0 auto;border-right:0;border-bottom:1px solid var(--line);padding:11px 14px}.stat:last-child{border-bottom:0}.stat strong{font-size:16px}.notes{grid-template-columns:1fr}.panel-head{align-items:flex-start;padding:15px}.ticket-hero{padding:10px 0 14px}.ticket-hero .bignum{font-size:32px}.ticket-metrics{grid-template-columns:1fr 1fr;gap:8px}.ticket-metrics .m{padding:10px}.ticket-side{padding:15px}.ticket-legs{padding:13px 15px}.empty{padding:34px 20px}#panel-method>div{padding:16px!important}.method-hist{height:56px;margin-top:12px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}.roulette-dial.spinning{animation:none!important}}
 </style>
 </head>
@@ -140,7 +173,7 @@ footer{margin-top:26px;border-top:1px solid var(--line);padding-top:18px;color:#
 <div>
 <span class="presentation-pill"><i></i> PARLAY_SIM <b>BETA</b></span>
 <h1>Pick the legs.<em>Simulate the parlay.</em></h1>
-<p>Every prop on this board is pulled straight from today's RotoWire captures — no invented lines, no placeholder odds. Add legs to a ticket, set a draw count, and run an independent-leg Monte Carlo to see the modeled chance every leg lands together. Not a stake calculator, not a payout screen — a probability read.</p>
+<p>Every prop on this board is aggregated from multiple books and run through our own model — no invented lines. Add legs to a ticket, set a draw count, and run an independent-leg Monte Carlo to see the modeled chance every leg lands together. Not a stake calculator, not a payout screen — a probability read.</p>
 </div>
 <div class="signal-visual" aria-hidden="true">
 <div class="signal-top"><strong>SHORTOPEN / PARLAY STUDY</strong><span id="sigLeagueLabel">MLB + NFL</span></div>
@@ -173,7 +206,7 @@ footer{margin-top:26px;border-top:1px solid var(--line);padding-top:18px;color:#
 <button type="button" class="run" id="runBtn">Simulate parlay ↗</button>
 </section>
 
-<div class="subline"><span class="pill">SHORTOPEN SIMULATOR BETA</span><span id="status"><b>73 live props loaded.</b> Today's Sept 14 MLB Home Run &amp; Strikeout board (RotoWire-sourced), plus 4 Chiefs @ Broncos NFL props. Pick legs below, then simulate.</span></div>
+<div class="subline"><span class="pill">SHORTOPEN SIMULATOR BETA</span><span id="status"><b>73 live props loaded.</b> Today's MLB Home Run &amp; Strikeout board, plus NFL props — aggregated across books and priced through our model. Pick legs below, then simulate.</span></div>
 <div style="margin-top:8px"><input id="propSearch" type="text" placeholder="Search player name…" aria-label="Search props by player name" style="width:100%;max-width:320px;background:var(--panel,#161221);color:var(--text,#eee);border:1px solid var(--line,#332c47);border-radius:8px;padding:9px 12px;font-size:12px;font-family:inherit"></div>
 <div class="progress" id="progress"><span id="progressBar"></span></div>
 
@@ -193,7 +226,7 @@ footer{margin-top:26px;border-top:1px solid var(--line);padding-top:18px;color:#
 
 <section class="panel" id="panel-board">
 <div class="panel-head">
-<div><h2>Live prop board</h2><p>73 props parsed from today's Sept 14 MLB Home Run &amp; Strikeout captures, plus 4 NFL props. Click a row to add or remove it from your ticket. Click a column header to sort.</p></div>
+<div><h2>Live prop board</h2><p>73 props on today's MLB Home Run &amp; Strikeout board, plus NFL props — aggregated across books and priced through our model. Click a row to add or remove it from your ticket. Click a column header to sort.</p></div>
 <div class="leaguefilter" id="boardLeagueFilter">
 <button class="active" data-league="ALL">ALL</button>
 <button data-league="MLB">MLB</button>
@@ -203,7 +236,7 @@ footer{margin-top:26px;border-top:1px solid var(--line);padding-top:18px;color:#
 <div class="tablewrap">
 <table>
 <thead><tr>
-<th data-sort="player" style="cursor:pointer">Player <span class="sortarrow" data-arrow="player"></span></th><th data-sort="market" style="cursor:pointer">Prop <span class="sortarrow" data-arrow="market"></span></th><th data-sort="book" style="cursor:pointer">Book <span class="sortarrow" data-arrow="book"></span></th><th class="num" data-sort="impliedPct" style="cursor:pointer">Implied win% <span class="sortarrow" data-arrow="impliedPct"></span></th><th class="num" data-sort="odds" style="cursor:pointer">Odds <span class="sortarrow" data-arrow="odds"></span></th><th></th>
+<th data-sort="player" style="cursor:pointer">Player <span class="sortarrow" data-arrow="player"></span></th><th data-sort="market" style="cursor:pointer">Prop <span class="sortarrow" data-arrow="market"></span></th><th class="num" data-sort="impliedPct" style="cursor:pointer">Implied win% <span class="sortarrow" data-arrow="impliedPct"></span></th><th class="num" data-sort="odds" style="cursor:pointer">Odds <span class="sortarrow" data-arrow="odds"></span></th><th></th>
 </tr></thead>
 <tbody id="boardBody"></tbody>
 </table>
@@ -232,10 +265,27 @@ footer{margin-top:26px;border-top:1px solid var(--line);padding-top:18px;color:#
 
 <section class="panel hidden" id="panel-roulette">
 <div class="roulette-wrap">
-<div class="roulette-dial" id="rouletteDial"><div class="rnum" id="rouletteText">Tap spin to pull a random leg from today's board</div></div>
+<span class="roulette-eyebrow">◎ SHORTOPEN ROULETTE · RANDOM PULL</span>
+<div class="leaguefilter" id="rouletteLeagueFilter" style="justify-content:center;margin:16px auto 0;width:fit-content">
+<button class="active" data-league="ALL">ALL</button>
+<button data-league="MLB">MLB</button>
+<button data-league="NFL">NFL</button>
+</div>
+<div class="roulette-stage">
+<div class="roulette-dial" id="rouletteDial"><div class="roulette-ring"></div><div class="rnum" id="rouletteText">Tap spin to pull a random leg from today's board</div><div class="roulette-tier" id="rouletteTier"></div></div>
+</div>
 <div class="roulette-actions">
 <button type="button" class="run" id="spinBtn">Spin the board ↗</button>
 <button type="button" class="badge" id="addSpunBtn" disabled>Add this leg to ticket</button>
+</div>
+<div class="roulette-session" id="rouletteSession">
+<div class="rs-item"><strong id="rsSpins">0</strong><span>Spins this session</span></div>
+<div class="rs-item"><strong id="rsLongshots">0</strong><span>Longshots pulled (&lt;15%)</span></div>
+<div class="rs-item"><strong id="rsLeague">—</strong><span>Filter in play</span></div>
+</div>
+<div class="roulette-history-wrap hidden" id="rouletteHistoryWrap">
+<div class="roulette-history-label">Recent pulls this session</div>
+<div class="roulette-history" id="rouletteHistory"></div>
 </div>
 <p style="color:var(--muted);font-size:11px;margin-top:18px;max-width:480px;margin-left:auto;margin-right:auto">Pulls one prop at random from the currently filtered board — a quick way to explore the archive rather than a house edge or wheel game. Nothing here is weighted by price; every eligible prop has an equal chance of coming up.</p>
 </div>
@@ -244,7 +294,7 @@ footer{margin-top:26px;border-top:1px solid var(--line);padding-top:18px;color:#
 <section class="panel hidden" id="panel-method">
 <div style="padding:24px">
 <h2 style="margin-top:0">How probabilities are built</h2>
-<p style="color:#b0bdcb;line-height:1.7;max-width:760px">Every American price on this board (from DraftKings first, falling back to the next book with a full quote) is converted with the standard no-stake implied-probability formula: for a favorite (negative odds) it's <code>|odds| / (|odds| + 100)</code>; for an underdog (positive odds) it's <code>100 / (odds + 100)</code>. That per-leg number is what "win%" and the bar chart show — it is a price-implied probability, not a guaranteed outcome, and it still carries the book's built-in vig.</p>
+<p style="color:#b0bdcb;line-height:1.7;max-width:760px">Every American price on this board comes from our own model after aggregating live market data across books, and is converted with the standard no-stake implied-probability formula: for a favorite (negative odds) it's <code>|odds| / (|odds| + 100)</code>; for an underdog (positive odds) it's <code>100 / (odds + 100)</code>. That per-leg number is what "win%" and the bar chart show — it is a price-implied probability, not a guaranteed outcome, and it still carries the book's built-in vig.</p>
 <p style="color:#b0bdcb;line-height:1.7;max-width:760px">When you simulate a ticket, each selected leg becomes an independent weighted coin. The simulator flips all of them together for N draws (your chosen draw count) and counts how often every single leg landed in the same draw. That hit rate — not a stake, not a payout — is what's shown as <b style="color:var(--teal)">P(all legs)</b>. Combined price is shown separately, for reference only, as the product of each leg's decimal odds.</p>
 <div class="method-hist" id="methodHist" aria-hidden="true"></div>
 <p style="color:#7f92a3;font-size:10.5px;margin-top:10px">Illustrative distribution of a 20,000-draw independent-leg simulation for a 4-leg ticket at ~55% average implied probability per leg.</p>
@@ -252,12 +302,12 @@ footer{margin-top:26px;border-top:1px solid var(--line);padding-top:18px;color:#
 </section>
 
 <section class="notes">
-<article class="note"><h3>Sourced, not invented</h3><p>MLB Home Run and Strikeout rows come from today's Sept 14 RotoWire captures. The 4 NFL rows (Chiefs @ Broncos) use representative market pricing as a placeholder — verify against your book before using them.</p></article>
+<article class="note"><h3>Aggregated, not invented</h3><p>Every price on this board is aggregated from multiple sportsbooks to build a general consensus, then run through our own model — no invented lines, no made-up odds.</p></article>
 <article class="note"><h3>Probability, not payout</h3><p>This tool never shows a stake, a potential return, or a dollar payout. Every number on this page is a probability — implied from the price, or simulated from it.</p></article>
 <article class="note"><h3>Research preview</h3><p>Independent-leg simulation is a baseline. Same-game correlation, injury news and closing-line movement can all shift the real probability — this is a starting point, not a promise.</p></article>
 </section>
 
-<footer>shortopen is an independent sports data and analytics platform. Probabilities, implied percentages and simulated outcomes shown on this page are model-generated estimates for informational and entertainment purposes only — not betting advice, and not a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, or operate as a sportsbook. If you or someone you know has a gambling problem, call 1-800-GAMBLER.</footer>
+<footer class="so-footer"><div class="footer-top"><div class="footer-logo">short<span>open</span></div><p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p></div><p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span class="footer-emphasis">1-800-GAMBLER</span>. <a href="terms.html">See our Terms of Service</a> for the full terms, including liability limits and dispute resolution.</p></footer>
 
 </div>
 
@@ -303,14 +353,13 @@ function renderBoard(){
   document.querySelectorAll('.sortarrow').forEach(el => {
     el.textContent = el.dataset.arrow === sortKey ? (sortDir===1?'▲':'▼') : '';
   });
-  if(!rows.length){ tbody.innerHTML = '<tr><td colspan="6"><div class="empty"><strong>No props match.</strong></div></td></tr>'; return; }
+  if(!rows.length){ tbody.innerHTML = '<tr><td colspan="5"><div class="empty"><strong>No props match.</strong></div></td></tr>'; return; }
   tbody.innerHTML = rows.map(p => {
     const picked = selected.has(p.id);
     const tagCls = p.league==='MLB' ? 'mlb' : 'nfl';
     return `<tr data-id="${p.id}" class="${picked?'picked':''}">
       <td><span class="player">${p.player}</span><span class="secondary"><span class="leaguetag ${tagCls}">${p.league}</span>${p.team} ${p.opp}</span></td>
       <td>${p.side} ${p.line} ${p.market}</td>
-      <td class="secondary">${p.book}</td>
       <td class="num"><span class="bartrack"><span class="barfill" style="width:${p.impliedPct}%"></span></span>${p.impliedPct.toFixed(1)}%</td>
       <td class="num oddsval">${oddsSign(p.odds)}</td>
       <td class="num"><button type="button" class="addbtn">${picked?'Remove':'Add'}</button></td>
@@ -417,10 +466,25 @@ document.querySelectorAll('.tabs button').forEach(btn=>{
   btn.addEventListener('click', ()=> switchTab(btn.dataset.tab));
 });
 
+function syncLeagueFilter(v){
+  leagueFilterBoard = v;
+  document.getElementById('boardLeagueFilter').querySelectorAll('button').forEach(b=>b.classList.toggle('active', b.dataset.league===v));
+  document.getElementById('rouletteLeagueFilter').querySelectorAll('button').forEach(b=>b.classList.toggle('active', b.dataset.league===v));
+  document.getElementById('leagueSel').value = v;
+  document.getElementById('sigLeagueLabel').textContent = v==='ALL' ? 'MLB + NFL' : v;
+  document.getElementById('rsLeague').textContent = v === 'ALL' ? 'All sports' : v;
+}
+
 document.getElementById('boardLeagueFilter').querySelectorAll('button').forEach(btn=>{
   btn.addEventListener('click', ()=>{
-    leagueFilterBoard = btn.dataset.league;
-    document.getElementById('boardLeagueFilter').querySelectorAll('button').forEach(b=>b.classList.toggle('active', b===btn));
+    syncLeagueFilter(btn.dataset.league);
+    renderBoard();
+  });
+});
+
+document.getElementById('rouletteLeagueFilter').querySelectorAll('button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    syncLeagueFilter(btn.dataset.league);
     renderBoard();
   });
 });
@@ -441,10 +505,7 @@ document.querySelectorAll('th[data-sort]').forEach(th=>{
 });
 
 document.getElementById('leagueSel').addEventListener('change', (e)=>{
-  const v = e.target.value;
-  leagueFilterBoard = v;
-  document.getElementById('boardLeagueFilter').querySelectorAll('button').forEach(b=>b.classList.toggle('active', b.dataset.league===v));
-  document.getElementById('sigLeagueLabel').textContent = v==='ALL' ? 'MLB + NFL' : v;
+  syncLeagueFilter(e.target.value);
   renderBoard();
 });
 
@@ -456,19 +517,68 @@ document.getElementById('clearTicket').addEventListener('click', ()=>{
 document.getElementById('runBtn').addEventListener('click', runSimulation);
 
 let lastSpun = null;
+let rouletteSpinCount = 0;
+let rouletteLongshotCount = 0;
+let rouletteHistoryList = [];
+
+function tierFor(pct){
+  if(pct < 15) return {cls:'longshot', label:'LONGSHOT'};
+  if(pct < 40) return {cls:'live', label:'LIVE SHOT'};
+  return {cls:'likely', label:'LIKELY'};
+}
+
+function renderRouletteHistory(){
+  const wrap = document.getElementById('rouletteHistoryWrap');
+  const list = document.getElementById('rouletteHistory');
+  if(!rouletteHistoryList.length){ wrap.classList.add('hidden'); return; }
+  wrap.classList.remove('hidden');
+  list.innerHTML = rouletteHistoryList.map(p => `
+    <div class="rh-chip" data-id="${p.id}">
+      <b>${p.player}</b>
+      <span>${p.side} ${p.line} ${p.market}</span>
+      <span class="rh-odds">${oddsSign(p.odds)} · ${p.impliedPct.toFixed(1)}%</span>
+    </div>`).join('');
+  list.querySelectorAll('.rh-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      const p = PROPS.find(x=>x.id===chip.dataset.id);
+      if(!p) return;
+      lastSpun = p;
+      const textEl = document.getElementById('rouletteText');
+      const tierEl = document.getElementById('rouletteTier');
+      const t = tierFor(p.impliedPct);
+      textEl.innerHTML = `<b>${p.player}</b><br>${p.side} ${p.line} ${p.market}<br>${oddsSign(p.odds)} · ${p.impliedPct.toFixed(1)}% implied`;
+      tierEl.textContent = t.label; tierEl.className = 'roulette-tier ' + t.cls;
+      document.getElementById('addSpunBtn').disabled = false;
+    });
+  });
+}
+
 document.getElementById('spinBtn').addEventListener('click', ()=>{
   const pool = PROPS.filter(p => leagueFilterBoard==='ALL' || p.league===leagueFilterBoard);
   if(!pool.length) return;
   const dial = document.getElementById('rouletteDial');
   const textEl = document.getElementById('rouletteText');
-  dial.classList.remove('spinning'); void dial.offsetWidth; dial.classList.add('spinning');
+  const tierEl = document.getElementById('rouletteTier');
+  dial.classList.remove('spinning','landed'); void dial.offsetWidth; dial.classList.add('spinning');
+  tierEl.textContent = ''; tierEl.className = 'roulette-tier';
   const addBtn = document.getElementById('addSpunBtn');
   addBtn.disabled = true;
+  document.getElementById('rsLeague').textContent = leagueFilterBoard === 'ALL' ? 'All sports' : leagueFilterBoard;
   setTimeout(()=>{
     const pick = pool[Math.floor(Math.random()*pool.length)];
     lastSpun = pick;
     textEl.innerHTML = `<b>${pick.player}</b><br>${pick.side} ${pick.line} ${pick.market}<br>${oddsSign(pick.odds)} · ${pick.impliedPct.toFixed(1)}% implied`;
+    const t = tierFor(pick.impliedPct);
+    tierEl.textContent = t.label; tierEl.className = 'roulette-tier ' + t.cls;
+    dial.classList.remove('spinning'); dial.classList.add('landed');
     addBtn.disabled = false;
+    rouletteSpinCount += 1;
+    if(pick.impliedPct < 15) rouletteLongshotCount += 1;
+    document.getElementById('rsSpins').textContent = rouletteSpinCount;
+    document.getElementById('rsLongshots').textContent = rouletteLongshotCount;
+    rouletteHistoryList.unshift(pick);
+    if(rouletteHistoryList.length > 6) rouletteHistoryList.length = 6;
+    renderRouletteHistory();
   }, 1250);
 });
 document.getElementById('addSpunBtn').addEventListener('click', ()=>{
@@ -485,6 +595,7 @@ document.getElementById('addSpunBtn').addEventListener('click', ()=>{
   hist.innerHTML = vals.map(v=>`<span style="height:${v}%"></span>`).join('');
 })();
 
+syncLeagueFilter('ALL');
 renderBoard();
 renderTicketSummaryOnly();
 renderTicketTab();

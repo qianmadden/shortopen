@@ -434,6 +434,7 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 (function(){
   'use strict';
   function boot(){
+    if(window.matchMedia && !window.matchMedia('(min-width:761px)').matches) return;
     var viewport=document.querySelector('.hub-pick .pick-grid');
     if(!viewport||viewport.dataset.pcInit)return;
     var cards=[].slice.call(viewport.querySelectorAll('.pick-card'));
@@ -490,6 +491,7 @@ html.so-perf-scrolling .so-perf-anim-target::after,
     applySlots();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+  window.addEventListener('resize',function(){if(window.matchMedia&&window.matchMedia('(min-width:761px)').matches)boot();});
 })();
 </script>
 <style id="so-mobile-sleek-20260901">

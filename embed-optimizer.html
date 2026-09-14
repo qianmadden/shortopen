@@ -10678,5 +10678,61 @@ hideAccessLock(); // ← CHANGE THIS LINE TO CONTROL THE ACCESS LOCK
   #mlbOwnershipPanel .own-stat-cards-inline .so-ref-signal-metric b{font-size:.54rem!important;}
 }
 </style>
+<style id="so-round7-optimizer-mobile-final-fixes">
+/* Final-word mobile pass: this file has accumulated many competing
+   #mlbOwnershipPanel .own-stat-cards-inline / .so-final-depth-row /
+   .so-con2-list rules across earlier rounds, all !important at the same
+   specificity, so whichever is LAST in source order wins per viewport.
+   These are placed last on purpose to be the winning declarations. */
+@media(max-width:760px){
+  /* 1) Home Run Call / Contrarian Play / Best Pitcher / etc stat strip:
+     force the swipeable single-row layout so cards stop stacking into
+     a tall, oddly-spaced 2-column grid. */
+  #mlbOwnershipPanel .own-stat-cards-inline{
+    display:flex!important;flex-wrap:nowrap!important;grid-template-columns:none!important;
+    gap:7px!important;width:100%!important;max-width:100%!important;height:auto!important;
+    overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x proximity!important;
+    -webkit-overflow-scrolling:touch!important;scrollbar-width:none!important;
+  }
+  #mlbOwnershipPanel .own-stat-cards-inline::-webkit-scrollbar{display:none!important;}
+  #mlbOwnershipPanel .own-stat-cards-inline>*{
+    flex:0 0 128px!important;width:128px!important;min-width:128px!important;
+    height:auto!important;min-height:78px!important;max-height:none!important;
+    scroll-snap-align:start!important;grid-column:auto!important;
+  }
+
+  /* 2) Tournament Ownership rows: collapse the tall stacked block (name /
+     matchup / OWN+PROJ / VALUE+LEV each on their own line, ~104px tall)
+     into a compact wrapped row so the "chart" reads more like a list. */
+  #mlbOwnershipPanel .so-final-depth-row.so-final-numeric-row:not(.so-final-depth-colhead){
+    display:flex!important;flex-wrap:wrap!important;align-items:center!important;
+    gap:2px 10px!important;padding:7px 10px!important;min-height:0!important;height:auto!important;
+  }
+  #mlbOwnershipPanel .so-final-depth-row .so-final-player{flex:1 1 100%!important;order:1!important;}
+  #mlbOwnershipPanel .so-final-depth-row .so-final-name{font-size:.7rem!important;}
+  #mlbOwnershipPanel .so-final-depth-row .so-final-game{flex:1 1 100%!important;order:2!important;font-size:.56rem!important;margin-bottom:1px!important;}
+  #mlbOwnershipPanel .so-final-depth-row .so-final-pct,
+  #mlbOwnershipPanel .so-final-depth-row .so-final-proj,
+  #mlbOwnershipPanel .so-final-depth-row .so-final-value,
+  #mlbOwnershipPanel .so-final-depth-row .so-final-lev{
+    flex:1 1 0!important;order:3!important;min-width:0!important;text-align:left!important;font-size:.62rem!important;
+  }
+  #mlbOwnershipPanel .so-final-depth-row .so-final-pct small,
+  #mlbOwnershipPanel .so-final-depth-row .so-final-proj small,
+  #mlbOwnershipPanel .so-final-depth-row .so-final-value small,
+  #mlbOwnershipPanel .so-final-depth-row .so-final-lev small{font-size:.38rem!important;display:block!important;}
+  #mlbOwnershipPanel .so-final-depth-grid{gap:2px!important;}
+
+  /* 3) Contrarian Targets swipe chips were bleeding off the right edge of
+     the screen (the flex list sized to fit all chips instead of the
+     viewport) instead of scrolling, so "tons of information" looked cut
+     off with no way to reach it. Cap the list to the panel width so the
+     existing overflow-x:auto can actually engage. */
+  #mlbOwnershipPanel .so-con2-list{width:100%!important;max-width:100%!important;}
+  #mlbOwnershipPanel .so-levval-slot,#mlbOwnershipPanel .so-levval-body,#mlbOwnershipPanel .so-contrarian-section{
+    width:100%!important;max-width:100%!important;overflow-x:hidden!important;
+  }
+}
+</style>
 </body>
 </html>
