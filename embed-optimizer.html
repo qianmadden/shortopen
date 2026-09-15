@@ -492,7 +492,7 @@
 </div>
 <div class="saved-lineups-list" id="mlbSavedLineupsList"></div>
 <div class="saved-lineups-footer">
-<button class="dfs-btn dfs-btn-ghost" id="mlbExportAllBtn" onclick="mlbExportAllCSV()" style="flex:1;">↓ Export All CSV</button>
+<button class="dfs-btn dfs-btn-ghost" id="mlbExportAllBtn" onclick="mlbExportAllCSV()" style="flex:1;">Export All CSV</button>
 </div>
 </div>
 </div>
@@ -685,7 +685,7 @@
 </div>
 <div class="saved-lineups-list" id="nflSavedLineupsList"></div>
 <div class="saved-lineups-footer">
-<button class="dfs-btn dfs-btn-ghost" id="nflExportAllBtn" onclick="nflExportAllCSV()" style="flex:1;">↓ Export All CSV</button>
+<button class="dfs-btn dfs-btn-ghost" id="nflExportAllBtn" onclick="nflExportAllCSV()" style="flex:1;">Export All CSV</button>
 </div>
 </div>
 </div>
@@ -725,8 +725,16 @@ window.soRunDeferred = function(name){
   }
 };
 window.soDrainDeferred = function(){
-  var q = window.soDeferQueue;
-  for (var i = 0; i < q.length; i++) window.soRunDeferred(q[i].name);
+  if(window.soDeferredDraining)return;
+  window.soDeferredDraining=true;
+  var q=window.soDeferQueue.filter(function(task){return task.name!=='nfl-panel'&&task.name!=='mlb-pitchers'}), i=0;
+  function next(){
+    if(i>=q.length){window.soDeferredDraining=false;return;}
+    window.soRunDeferred(q[i++].name);
+    if(i<q.length){if(window.requestIdleCallback)requestIdleCallback(next,{timeout:200});else setTimeout(next,0);}
+    else window.soDeferredDraining=false;
+  }
+  next();
 };
 
 // Builds the pitcher rows exactly once, then re-applies the same
@@ -737,9 +745,8 @@ window.soRenderPitchersOnce = function(){
   window.soPitchersRendered = true;
   mlbRenderPitchers();
   requestAnimationFrame(function(){
-    document.querySelectorAll('#mlbPitcherTable *').forEach(function(el){
-      el.getAnimations().forEach(function(a){ a.cancel(); });
-    });
+    var table=document.getElementById('mlbPitcherTable');
+    if(table&&table.getAnimations)table.getAnimations({subtree:true}).forEach(function(a){a.cancel()});
   });
 };
 
@@ -1074,7 +1081,7 @@ function renderLineup() {
         <span class="slot-player">${p[0]}<br><span style="font-size:0.68rem;color:var(--muted)">${p[2].join('/')} · ${p[1]}</span></span>
         <span class="slot-proj">${p[8].toFixed(1)}</span>
         <span class="slot-salary">$${p[3].toLocaleString()}</span>
-        <button class="slot-remove" onclick="event.stopPropagation();removeSlot(${i})">✕</button>`;
+        <button class="slot-remove" onclick="event.stopPropagation();removeSlot(${i})">Delete</button>`;
     } else {
       div.innerHTML = `<span class="slot-pos">${slot.label}</span><span class="slot-empty">Empty</span>`;
     }
@@ -1231,12 +1238,14 @@ function toggleMobileMenu() {
   document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
 }
 
-init();
+window.soInitNBAOnce=function(){if(window.soNBAInitialized)return;window.soNBAInitialized=true;init();};
+if(document.getElementById('panel-nba').style.display!=='none')window.soInitNBAOnce();
 // ════════════════════════════════════════════════════════════════
 //  MLB OPTIMIZER
 // ════════════════════════════════════════════════════════════════
 
 function switchOptSport(sport) {
+  if(sport==='nba')window.soInitNBAOnce();
   document.getElementById('panel-nba').style.display = sport === 'nba' ? 'block' : 'none';
   document.getElementById('panel-mlb').style.display = sport === 'mlb' ? 'block' : 'none';
   const nflPanel = document.getElementById('panel-nfl');
@@ -1257,7 +1266,7 @@ function switchOptSport(sport) {
   }
   if (sport === 'nfl') {
     window.soRunDeferred('nfl-panel');
-    nflRenderPool(); nflRenderLineup(); nflRenderSavedLineups();
+    requestAnimationFrame(nflPositionPool);
     const sl = document.getElementById('heroSlateLabel'); if (sl) sl.textContent = 'NFL Optimizer · DK';
     const sl2 = document.getElementById('heroSlateLabel2'); if (sl2) sl2.textContent = 'NFL Optimizer · DK';
   }
@@ -1665,7 +1674,7 @@ function mlbRenderLineup() {
         <span class="slot-player">${p[0]}<br><span style="font-size:0.7rem;color:var(--muted)">${p[3]} vs ${p[4]} <span style="color:${varColor(ipv)}">${ipv} Var</span></span></span>
         <span class="slot-proj">${p[5].toFixed(1)}</span>
         <span class="slot-salary">$${p[1].toLocaleString()}</span>
-        <button class="slot-remove" onclick="event.stopPropagation();mlbRemoveSlot(${i})">✕</button>
+        <button class="slot-remove" onclick="event.stopPropagation();mlbRemoveSlot(${i})">Delete</button>
       `;
     } else {
       div.innerHTML = `<span class="slot-pos">${slot.label}</span><span class="slot-empty">Empty</span>`;
@@ -1784,9 +1793,9 @@ function mlbRenderSavedLineups() {
         <div class="saved-lineup-meta">${filled}/10 filled &nbsp;·&nbsp; $${entry.salary.toLocaleString()} &nbsp;·&nbsp; <span class="sl-proj">${entry.proj.toFixed(1)} proj</span></div>
       </div>
       <div class="saved-lineup-actions">
-        <button class="sl-icon-btn" title="Load into builder" onclick="mlbLoadSavedLineup('${entry.id}')">↩</button>
-        <button class="sl-icon-btn" title="Export this lineup as CSV" onclick="mlbExportLineupCSV('${entry.id}')">↓</button>
-        <button class="sl-icon-btn sl-delete" title="Delete" onclick="mlbDeleteSavedLineup('${entry.id}')">✕</button>
+        <button class="sl-icon-btn" title="Load into builder" onclick="mlbLoadSavedLineup('${entry.id}')">Load</button>
+        <button class="sl-icon-btn" title="Export this lineup as CSV" onclick="mlbExportLineupCSV('${entry.id}')">CSV</button>
+        <button class="sl-icon-btn sl-delete" title="Delete" onclick="mlbDeleteSavedLineup('${entry.id}')">Delete</button>
       </div>
     `;
     frag.appendChild(row);
@@ -2594,7 +2603,7 @@ function nflOwnership(p){if(!NFL_OWNERSHIP_CACHE)NFL_OWNERSHIP_CACHE=nflBuildOwn
 function nflSortValue(p,key){const m=nflMarket(p);if(key==='name')return p[0];if(key==='salary')return p[1];if(key==='position')return p[2];if(key==='projection')return p[5];if(key==='ownership')return nflOwnership(p);if(key==='stat')return nflStatProjection(p);if(key==='probability')return m?m.prob:null;if(key==='total')return nflTotal(p);if(key==='matchup')return nflMatchupScore(p);if(key==='ceiling')return nflBoomScore(p);if(key==='riskValue')return nflRiskValue(p);if(key==='value')return p[5]/(p[1]/1000);return 0}
 function nflSortView(key){const state=nflSortByView[nflViewMode];if(state.key===key)state.asc=!state.asc;else nflSortByView[nflViewMode]={key:key,asc:key==='name'||key==='position'};nflRenderPool()}
 function nflSortRows(rows){const state=nflSortByView[nflViewMode];return rows.slice().sort((a,b)=>{if(nflViewMode==='value'&&a[2]!==b[2]&&(a[2]==='DST'||b[2]==='DST'))return a[2]==='DST'?1:-1;let av=nflSortValue(a,state.key),bv=nflSortValue(b,state.key);if(av==null)av=state.asc?Infinity:-Infinity;if(bv==null)bv=state.asc?Infinity:-Infinity;if(typeof av==='string'||typeof bv==='string')return state.asc?String(av).localeCompare(String(bv)):String(bv).localeCompare(String(av));return state.asc?av-bv:bv-av})}
-function nflHead(label,key){if(!key)return '<th></th>';const state=nflSortByView[nflViewMode],active=state.key===key;return '<th class="nfl-sort-head '+(active?'active':'')+'" onclick="nflSortView(\''+key+'\')" aria-sort="'+(active?(state.asc?'ascending':'descending'):'none')+'">'+label+'<span>'+((active&&state.asc)?'↑':active?'↓':'↕')+'</span></th>'}
+function nflHead(label,key){if(!key)return '<th></th>';const state=nflSortByView[nflViewMode],active=state.key===key;return '<th class="nfl-sort-head '+(active?'active':'')+'" onclick="nflSortView(\''+key+'\')" aria-sort="'+(active?(state.asc?'ascending':'descending'):'none')+'">'+label+'</th>'}
 function nflSetView(mode,btn){nflViewMode=mode;document.querySelectorAll('.nfl-sub-tabs button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');const note=document.querySelector('#panel-nfl .nfl-boom-note');if(note)note.style.display=mode==='boom'?'block':'none';nflFilterPool()}
 function nflRenderPool(){const body=document.getElementById('nflPoolBody'),head=document.getElementById('nflPoolHead'),table=document.getElementById('nflPoolTable');if(!body||!head)return;const inLineupKeys=new Set(nflLineup.filter(Boolean).map(p=>p[0]));body.innerHTML='';const frag=document.createDocumentFragment();table.dataset.view=nflViewMode;const heads={all:[['',null],['Player','name'],['Salary','salary'],['Pos','position'],['Projection','projection'],['Proj. Ownership','ownership'],['Market Line','stat'],['Matchup Context','matchup'],['Value','value'],['Game Total','total']],boom:[['',null],['Player / Matchup','name'],['Salary','salary'],['Projection','projection'],['Market Line','stat'],['Odds to Hit','probability'],['Game Total','total'],['Ceiling Index','ceiling']],value:[['',null],['Player / Matchup','name'],['Salary','salary'],['Pos','position'],['Projection','projection'],['Risk-Adjusted Value','riskValue'],['Value Rank','riskValue']]};head.innerHTML='<tr>'+heads[nflViewMode].map(h=>nflHead(h[0],h[1])).join('')+'</tr>';const title=document.querySelector('#panel-nfl .dfs-pool-title');if(title)title.textContent=nflViewMode==='boom'?'Ceiling Index':nflViewMode==='value'?'Value Board':'Player Pool';let rows=nflFiltered.filter(p=>nflViewMode==='boom'?nflBoomTier(p)==='boom':nflViewMode==='value'?(p[5]/(p[1]/1000)>=2.2):true);rows=nflSortRows(rows);rows.forEach((p,i)=>{const inL=inLineupKeys.has(p[0]),value=p[5]/(p[1]/1000),riskValue=nflRiskValue(p),ownership=nflOwnership(p),m=nflMarket(p),total=nflTotal(p),boom=nflBoomScore(p),tier=nflBoomTier(p),tr=document.createElement('tr');tr.className=(inL?'in-lineup pool-row-pinned ':'')+'ap-in';tr.style.animationDelay=Math.min(i*.02,.4)+'s';tr.style.cursor='pointer';tr.onclick=()=>nflAddToLineup(p);const add=`<td><button class="add-btn-circle ${inL?'added':''}">${inL?'✓':'+'}</button></td>`,player=`<td class="nfl-player-cell"><b>${p[0]}</b><small>${p[3]} ${p[6]==='H'?'vs':'@'} ${p[4]}</small></td>`,salary=`<td class="nfl-salary">$${p[1].toLocaleString()}</td>`,pos=`<td><span class="nfl-pos-chip">${p[2]}</span></td>`,proj=`<td><div class="ap-proj-num">${p[5].toFixed(1)}</div>${apBar(p[5]/28*100,'#ffd36b',true)}</td>`,own=`<td><span class="nfl-own-value">${ownership.toFixed(1)}%</span><i class="nfl-own-track"><b style="--own:${Math.min(100,ownership/30*100)}%"></b></i></td>`,stat=`<td><div class="nfl-stat-proj">${m?(m.label+' '+(typeof m.line==='number'?m.line.toFixed(1):m.line)):'—'}</div><small>${m?'market-linked baseline':'no posted prop'}</small></td>`,match=`<td class="nfl-context-cell">${nflContextHtml(p)}</td>`;if(nflViewMode==='all'){tr.innerHTML=add+player+salary+pos+proj+own+stat+match+`<td><span class="nfl-value ${value>=2.6?'good':''}">${value.toFixed(1)}x</span></td><td><span class="nfl-game-total-plain">${total?total.toFixed(1):'—'}</span></td>`}else if(nflViewMode==='boom'){const hit=m?(m.odds+' · '+m.prob.toFixed(1)+'%'):'—';tr.innerHTML=add+player+salary+proj+stat+`<td><span class="nfl-hit-odds">${hit}</span></td><td><span class="nfl-total ${total>=47.5?'hot':''}">${total?total.toFixed(1):'—'}</span></td><td><span class="nfl-ceiling ${tier}" style="--score:${boom}%"><b>${boom}</b><span></span><i>${tier==='boom'?'TOP RANGE':tier==='build'?'MID RANGE':'LOW RANGE'}</i></span></td>`}else{tr.innerHTML=add+player+salary+pos+proj+`<td><span class="nfl-value ${p[2]!=='DST'&&riskValue>=2.6?'good':''}">${riskValue.toFixed(1)}x</span>${p[2]==='DST'?'<small class="nfl-dst-risk">DST downside adjusted</small>':''}</td><td><span class="nfl-value-rank">#${i+1}</span></td>`}frag.appendChild(tr)});body.appendChild(frag)}
 
@@ -2641,7 +2650,7 @@ function nflRenderLineup() {
         <span class="slot-player">${p[0]}<br><span style="font-size:0.7rem;color:var(--muted)">${p[3]} ${p[6] === 'H' ? 'vs' : '@'} ${p[4]}</span></span>
         <span class="slot-proj">${p[5].toFixed(1)}</span>
         <span class="slot-salary">$${p[1].toLocaleString()}</span>
-        <button class="slot-remove" onclick="event.stopPropagation();nflRemoveSlot(${i})">✕</button>
+        <button class="slot-remove" onclick="event.stopPropagation();nflRemoveSlot(${i})">Delete</button>
       `;
     } else {
       div.innerHTML = `<span class="slot-pos">${slot.label}</span><span class="slot-empty">Empty</span>`;
@@ -2682,9 +2691,9 @@ function nflPositionPool() {
   poolWrap.style.setProperty('max-height', targetHeight + 'px', 'important');
   poolWrap.style.setProperty('overflow', 'auto', 'important');
 }
-window.addEventListener('load', () => setTimeout(nflPositionPool, 50));
+
 window.addEventListener('resize', () => { clearTimeout(window._nflPoolResize); window._nflPoolResize = setTimeout(nflPositionPool, 120); });
-setTimeout(nflPositionPool, 300);
+/* NFL decorations are built when its tab opens. */
 
 function nflAutoOptimize() {
   // Simple greedy value-per-dollar solver, filling exact-position slots
@@ -2774,8 +2783,8 @@ function nflRenderSavedLineups() {
         <div class="saved-lineup-meta">${entry.filled}/${NFL_SLOTS.length} filled &nbsp;·&nbsp; $${entry.salary.toLocaleString()} &nbsp;·&nbsp; <span class="sl-proj">${entry.proj.toFixed(1)} proj</span></div>
       </div>
       <div class="saved-lineup-actions">
-        <button class="sl-icon-btn" title="Load into builder" onclick="nflLoadSavedLineup('${entry.id}')">↩</button>
-        <button class="sl-icon-btn sl-delete" title="Delete" onclick="nflDeleteSavedLineup('${entry.id}')">✕</button>
+        <button class="sl-icon-btn" title="Load into builder" onclick="nflLoadSavedLineup('${entry.id}')">Load</button>
+        <button class="sl-icon-btn sl-delete" title="Delete" onclick="nflDeleteSavedLineup('${entry.id}')">Delete</button>
       </div>
     `;
     frag.appendChild(row);
@@ -3461,7 +3470,7 @@ hideAccessLock(); // ← CHANGE THIS LINE TO CONTROL THE ACCESS LOCK
 
   function boot(){
     paintMlbTab('batters');
-    try{ if(typeof mlbRenderBatters==='function') mlbRenderBatters(); }catch(e){}
+    /* Initial batter rows are already populated. */
     /* pitcher rows are rendered on first tab open */
     restoreHeaderCards(allRows());
   }
@@ -3875,5 +3884,5 @@ hideAccessLock(); // ← CHANGE THIS LINE TO CONTROL THE ACCESS LOCK
 
 
 
-</body>
+<style id="so-optimizer-mobile-density">@media(max-width:700px){.pool-table-wrap{height:62.4vh!important;max-height:62.4vh!important}.dfs-pool-table th,.dfs-pool-table td,#mlbBatterTable th,#mlbBatterTable td{padding:6px 7px!important;line-height:1.2!important;font-size:.73rem!important}.dfs-pool-table td small,#mlbBatterTable td small{font-size:.6rem!important}.lineup-slot{min-height:0!important;padding:6px 9px!important;gap:7px!important}.lineup-slots{gap:4px!important}.dfs-builder{gap:7px!important}.salary-bar{padding:10px!important}#mlbOwnershipPanel .so-final-depth-row.so-final-numeric-row:not(.so-final-depth-colhead){padding:5px 9px!important;min-height:0!important;gap:1px 8px!important}#mlbOwnershipPanel .so-final-player{gap:5px!important}#mlbOwnershipPanel .so-final-numeric-row{gap:8px!important;padding:3px 0!important}#mlbOwnershipPanel .so-final-depth-row .so-final-exp{margin:0!important}#mlbOwnershipPanel .so-final-depth-row .so-final-name{line-height:1.2!important}.ap-in{animation:none!important;opacity:1!important;transform:none!important}}</style><style id="so-optimizer-smooth-paint">#panel-nba,#panel-mlb,#panel-nfl,#mlbOwnershipPanel,#mlbBatterPanel,#mlbPitcherPanel,.dfs-pool,.dfs-builder,.ct-wrap,#mlbBatterBody tr,#mlbPitcherBody tr{content-visibility:visible!important;contain:none!important;contain-intrinsic-size:none!important}.dfs-pool-table tr,.dfs-pool-table td,.dfs-pool-table svg,.lineup-slot{animation:none!important}.ap-in{animation:none!important;opacity:1!important;transform:none!important}.sl-icon-btn{width:auto!important;min-width:36px!important;padding:5px 8px!important;font-size:10px!important;font-weight:600!important}.sl-actions{gap:5px!important}.saved-lineup-actions{gap:5px!important}.dfs-pool,.dfs-builder,.salary-bar{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}</style><style>@media(max-width:760px){.saved-lineup-row{flex-wrap:wrap!important;gap:8px!important}.saved-lineup-main{flex:1 1 100%!important;min-width:0!important}.saved-lineup-actions{width:100%;justify-content:flex-end}.sl-icon-btn{height:28px!important}}</style></body>
 </html>
