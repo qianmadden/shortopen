@@ -92,6 +92,14 @@ h1{font-size:clamp(2.5rem,5vw,4.6rem);line-height:.92;letter-spacing:-.055em;mar
 .pw-note{margin-top:6px;color:#5e6e80;font-size:9px;font-style:italic;line-height:1.5}
 .v-strong{color:var(--green)}.v-lean{color:#8ef3bd}.v-mixed{color:var(--gold)}.v-fade{color:var(--red)}
 
+/* Team playing-style line — matches the existing "Research read:" /
+   "Matchup read:" pattern already used elsewhere in these same cards:
+   one inline label+value line, then the description as a plain
+   secondary line underneath. No pills, no dots, no extra color. */
+.style-line{margin-top:10px;color:#8998a8;font-size:11.5px;line-height:1.65}
+.style-line strong{color:#c8d2dc}
+.style-line .style-sub{display:block;margin-top:4px;color:#8998a8;font-size:10.5px;line-height:1.6}
+
 /* Selected matchup card */
 .selected{padding:18px}
 .sel-top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
@@ -308,6 +316,39 @@ var FIXTURES = [
 ];
 var OPP_OF = {};
 FIXTURES.forEach(function(f){ OPP_OF[f[0]] = f[1]; OPP_OF[f[1]] = f[0]; });
+
+/* ---- Team playing-style reference (sourced analysis) ----
+   Three tiers: Elite Possession Builders, Pragmatic Overperformers,
+   Direct and Low-Block Sides. Keyed on the short club labels used
+   throughout this file (FIXTURES / OPP_OF / players_full.json). ---- */
+var TEAM_STYLE = {
+ 'Arsenal':        { tier:'elite', tierLabel:'Elite Possession Builder', desc:'Fluid positional play, heavy reliance on right-sided passing triangles, and strict defensive solidity.' },
+ 'Man City':       { tier:'elite', tierLabel:'Elite Possession Builder', desc:'Intricate, slow-tempo passing sequences designed to suffocate opponents through territorial control.' },
+ 'Liverpool':      { tier:'elite', tierLabel:'Elite Possession Builder', desc:'High-intensity control blending technical possession with elements of fast vertical transitions.' },
+ 'Chelsea':        { tier:'elite', tierLabel:'Elite Possession Builder', desc:'High-possession base mixed with a surprisingly high volume of direct, fast-breaking attacks under Enzo Maresca.' },
+ 'Brighton':       { tier:'elite', tierLabel:'Elite Possession Builder', desc:'Aggressive pressing and brave short passing from the back to bait opponent pressure.' },
+ 'Leeds':          { tier:'prag', tierLabel:'Pragmatic Overperformer', desc:'High-variance, high-energy pressing with quick vertical thrusts.' },
+ 'Hull City':      { tier:'prag', tierLabel:'Pragmatic Overperformer', desc:'Compact mid-block focus aiming to maximize efficiency during transitions.' },
+ 'Brentford':      { tier:'prag', tierLabel:'Pragmatic Overperformer', desc:'Pragmatic, well-drilled structure heavily reliant on set-piece mastery and organized defensive blocks.' },
+ 'Everton':        { tier:'prag', tierLabel:'Pragmatic Overperformer', desc:'Direct, physical, and heavily reliant on organized midfield runners and set-piece creation.' },
+ 'Ipswich Town':   { tier:'prag', tierLabel:'Pragmatic Overperformer', desc:'Vertical, energetic attacking transitions coupled with high-work-rate defending.' },
+ "Nott'm Forest":  { tier:'prag', tierLabel:'Pragmatic Overperformer', desc:'Rapid open-play progression (among the fastest in the league) using sharp counter-attacks.' },
+ 'Man Utd':        { tier:'prag', tierLabel:'Pragmatic Overperformer', desc:'High-transition, variable approach balancing structural possession with direct winger entries.' },
+ 'Newcastle':      { tier:'prag', tierLabel:'Pragmatic Overperformer', desc:'Direct, physical football anchored by intense central ball-winning and full-back distribution.' },
+ 'Spurs':          { tier:'prag', tierLabel:'Pragmatic Overperformer', desc:'High-press mechanics shifting quickly through central playmakers into the front line.' },
+ 'Bournemouth':    { tier:'low', tierLabel:'Direct / Low-Block', desc:'Mid-block "chaos-ball" focusing on quick recovery and winger-driven crosses.' },
+ 'Sunderland':     { tier:'low', tierLabel:'Direct / Low-Block', desc:'Compact defending and physical duels to transition forward rapidly.' },
+ 'Crystal Palace': { tier:'low', tierLabel:'Direct / Low-Block', desc:'Deep-sitting low block shifting swiftly into direct counter-attacks.' },
+ 'Aston Villa':    { tier:'low', tierLabel:'Direct / Low-Block', desc:'Double-pivot defensive screen with fast central combinations between the front two.' },
+ 'Fulham':         { tier:'low', tierLabel:'Direct / Low-Block', desc:'Deep defensive stances paired with disciplined attempts to play out from pressure.' },
+ 'Coventry City':  { tier:'low', tierLabel:'Direct / Low-Block', desc:'Compact defensive prioritization looking to survive through organized lower-block resistance.' }
+};
+function buildStyleBlock(teamName, roleLabel){
+ var s = TEAM_STYLE[teamName];
+ if(!s) return '';
+ return '<div class="style-line"><strong>'+(roleLabel||'Team Playing Style')+':</strong> '+s.tierLabel+' &mdash; '+teamName
+  +'<span class="style-sub">'+s.desc+'</span></div>';
+}
 
 /* ---- Opponent position-pairing rule (documented per spec) ----
    FWD -> DEF   : the marking centre-back / full-back group
@@ -592,7 +633,8 @@ function drawSelected(p){
   +(opp?('<div class="edge-lean"><div class="edge-lean-head"><span>DEFENDER</span><b>MATCHUP LEAN</b><span>ATTACKER</span></div><div class="edge-track"><div class="edge-center"></div><div class="edge-fill" style="'+edgeFillStyle+'"></div></div><div class="edge-readout">'+edgeLeanLabel(edgeRaw)+' <small>(profile heuristic, not a probability)</small></div></div>'):'')
   +buildRadarGeneric(radarCats,radarTitle)
   +'<div class="sel-grid">'+minisHtml+'</div>'
-  +'<div class="read"><strong>Research read:</strong> '+readText+' <span class="matrix-note" style="display:block;margin-top:6px;color:#5e6e80;font-size:9.5px">Model output derived from relative squad value and role — illustrative, not a real per-match statistic.</span></div>';
+  +'<div class="read"><strong>Research read:</strong> '+readText+' <span class="matrix-note" style="display:block;margin-top:6px;color:#5e6e80;font-size:9.5px">Model output derived from relative squad value and role — illustrative, not a real per-match statistic.</span></div>'
+  +buildStyleBlock(p.team,'Team Playing Style');
 
  drawEvidence(p, opp, oppInfo);
  requestAnimationFrame(function(){ requestAnimationFrame(function(){ var gf=document.getElementById('gaugeFillCircle'); if(gf) gf.style.strokeDashoffset=gaugeOff; }); });
@@ -664,7 +706,8 @@ function drawEvidence(p, opp, oppInfo){
   +'<div class="pw-note">Attacking metrics (xG contribution, shots, key passes, dribbles) and defensive metrics (tackles, interceptions, aerial duels, clearances) are illustrative model outputs scaled from each player\'s relative squad value and position — not observed match data.</div>'
   +gridHtml
   +'<div class="pw-threat"><span>'+threatLabel+'</span><b>'+opp.name+'</b><small>'+threatSmall+'</small></div>'
-  +'<div class="pw-read"><strong>Matchup read:</strong> '+readText+'</div>';
+  +'<div class="pw-read"><strong>Matchup read:</strong> '+readText+'</div>'
+  +buildStyleBlock(oppTeam,'Opponent Team Playing Style');
 }
 
 function draw(){

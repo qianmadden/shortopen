@@ -176,7 +176,7 @@ h1{position:relative;font-size:clamp(2.5rem,5vw,4.6rem);line-height:.92;letter-s
 .methgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.05)}
 .methcard{background:#070d14;padding:13px 15px}
 .methcard .mh-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}
-.methcard b{display:block;font-size:11px;font-weight:800;color:#c7d0da}
+.methcard .mh-row b{display:block;font-size:11px;font-weight:800;color:#c7d0da}
 .methcard .mh-tag{font:800 7.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--red);background:rgba(255,93,108,.09);border:1px solid rgba(255,93,108,.18);border-radius:5px;padding:3px 6px;white-space:nowrap}
 .methcard p{margin:0;color:#647486;font-size:10px;line-height:1.6}
 .methcard p b.inline{color:#8a98a7;font-weight:700}
@@ -187,51 +187,50 @@ h1{position:relative;font-size:clamp(2.5rem,5vw,4.6rem);line-height:.92;letter-s
    panel stays a fixed, compact height regardless of category count. */
 @media(max-width:650px){.methhead{flex-direction:column;align-items:flex-start;padding:11px 13px;gap:4px}.methhead span{font-size:9px;line-height:1.5}.methgrid{display:flex;grid-template-columns:none;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;gap:8px;background:none;padding:10px;scrollbar-width:none}.methgrid::-webkit-scrollbar{display:none}.methcard{flex:0 0 176px;scroll-snap-align:start;border-radius:9px;border:1px solid rgba(255,255,255,.05);padding:10px 12px;height:168px;overflow:hidden}.methcard .mh-row{margin-bottom:5px}.methcard b{font-size:10px}.methcard .mh-tag{font-size:6.5px;padding:2px 5px}.methcard p{font-size:8.7px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;overflow:hidden}}
 
-/* ===== PROBABILITY CHART — the statistically-driven centerpiece: every
-   player in the active category ranked on one axis, so the read is a
-   distribution, not ten disconnected cards. ===== */
-.chartpanel{margin:14px 0 4px;padding:18px 20px 16px;border:1px solid rgba(255,93,108,.15);border-radius:14px;background:linear-gradient(155deg,rgba(255,255,255,.025),rgba(5,10,16,.94))}
-.chart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:10px}
-.chart-head b{font-size:13px;font-weight:800;color:#eef3f7}
-.chart-head span{display:block;margin-top:2px;color:#647486;font-size:9.5px;line-height:1.45;max-width:520px}
-.chart-legend{display:flex;align-items:center;gap:7px;font:700 9px var(--mono);color:#576578}
-.chart-legend i{width:11px;height:0;border-top:1.4px dashed rgba(244,185,66,.65);display:inline-block}
-.probchart{width:100%}
-/* Hybrid layout: desk-table input columns on the left (rank, name, the
-   exact base/signal/fixture numbers that built the read) feeding into a
-   range-dot plot on the right (baseline tick, connector, read dot) —
-   the data-entry precision of a ledger with the at-a-glance spread of a
-   scatter strip. Condensed ~30% vertically (tighter row padding, plot
-   height, dot size, type scale) so the panel doesn't dominate the page. */
-.chartpanel{--gridcols:18px 150px 36px 1fr 60px 52px}
-.pcx-axis{display:grid;grid-template-columns:var(--gridcols);gap:8px;padding:0 0 8px}
-.pcx-ticks{position:relative;height:12px;width:62%;margin:0 auto}
-.pcx-ticks i{position:absolute;top:0;transform:translateX(-50%);font:700 7.5px var(--mono);font-style:normal;color:#4c5b6b}
-.pcx-axis .pcx-lbl{font:700 7px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:#3d4b5a;align-self:end;text-align:right}
-.pcx-axis .pcx-lbl:first-of-type{text-align:left}
-.pcx-row{display:grid;grid-template-columns:var(--gridcols);align-items:center;gap:8px;padding:6.5px 0}
-.pcx-row:not(:last-child){border-bottom:1px solid rgba(255,255,255,.035)}
-.pcx-row:hover{background:rgba(255,255,255,.015)}
-.pcx-rank{font:800 9.5px var(--mono);color:#3d4b5a;font-variant-numeric:tabular-nums}
-.pcx-row:nth-child(-n+3) .pcx-rank{color:var(--gold)}
-.pcx-name{font-size:11px;font-weight:700;color:#c3ccd6;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pcx-name.ceiling{color:var(--gold)}
-.pcx-sub{display:block;color:#576578;font-weight:600;font-size:8.5px;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pcx-in{font:700 9.5px var(--mono);text-align:right;color:#8593a3;font-variant-numeric:tabular-nums}
-.pcx-in.pos{color:var(--green)}
-.pcx-in.neg{color:#ff8b93}
-.pcx-plot{position:relative;height:14px;width:62%;margin:0 auto}
-.pcx-line{position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,.07)}
-.pcx-base{position:absolute;top:1px;bottom:1px;width:1px;background:rgba(244,185,66,.6)}
-.pcx-base:after{content:'';position:absolute;top:-2.5px;left:-2.5px;width:6px;height:6px;border-radius:50%;background:rgba(244,185,66,.6)}
-.pcx-conn{position:absolute;top:50%;height:1.4px;transform:translateY(-50%);background:rgba(255,93,108,.28)}
-.pcx-conn.neg{height:1.8px;background:rgba(255,93,108,.5)}
-.pcx-dot{position:absolute;top:50%;width:9.5px;height:9.5px;border-radius:50%;transform:translate(-50%,-50%);background:var(--red);box-shadow:0 0 0 2px rgba(255,93,108,.16)}
-.pcx-dot.ceiling{background:var(--gold);box-shadow:0 0 0 2px rgba(244,185,66,.18)}
-.pcx-heat{font:900 11.5px var(--mono);text-align:center;font-variant-numeric:tabular-nums;padding:3.5px 5px;border-radius:6px}
-.pcx-odds{font:800 10px var(--mono);text-align:right;font-variant-numeric:tabular-nums;color:var(--gold);background:rgba(244,185,66,.08);border:1px solid rgba(244,185,66,.2);border-radius:5px;padding:3px 6px}
-@media(max-width:960px){.chartpanel{--gridcols:14px 122px 1fr 42px 48px}.pcx-in{display:none}.pcx-axis .pcx-lbl.pcx-in-lbl{display:none}}
-@media(max-width:650px){.chart-head span{max-width:none}.chartpanel{padding:10px 10px 7px}.chartpanel{--gridcols:13px 96px 1fr 40px 42px}.pcx-name{font-size:9.5px}.pcx-heat{font-size:9.5px;padding:2px 5px}.pcx-rank{font-size:8.5px}.pcx-odds{font-size:8.5px;padding:2px 4px}}
+/* ===== PROPS TABLE — one sortable, searchable table instead of a card
+   grid or a separate chart. Click a header to sort by it (again to
+   flip direction); the search box filters by player or team name as
+   you type. Read % gets a colored heat cell so the ranking is still
+   scannable at a glance, without a second visualization. ===== */
+.tablewrap{margin:14px 0 4px;border:1px solid rgba(255,93,108,.15);border-radius:14px;background:linear-gradient(155deg,rgba(255,255,255,.025),rgba(5,10,16,.94));overflow:hidden}
+.table-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 18px 12px}
+.table-head b{font-size:13px;font-weight:800;color:#eef3f7}
+.table-head span{display:block;margin-top:2px;color:#647486;font-size:9.5px;line-height:1.45}
+.search-wrap{position:relative;flex:0 0 auto}
+.search-wrap input{width:230px;background:#081019;border:1px solid var(--line2);border-radius:8px;color:var(--text);font:600 11.5px Inter,sans-serif;padding:8px 12px 8px 30px}
+.search-wrap input:focus{outline:none;border-color:rgba(255,93,108,.4)}
+.search-wrap:before{content:'';position:absolute;left:10px;top:50%;width:9px;height:9px;margin-top:-6px;border:1.6px solid #5c6c7d;border-radius:50%}
+.search-wrap:after{content:'';position:absolute;left:17px;top:50%;width:6px;height:1.6px;margin-top:2px;background:#5c6c7d;transform:rotate(45deg);transform-origin:left center}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+/* Past 25 rows the table caps its own height (measured in JS off the
+   real row height, so it holds at exactly 25 rows on any screen size —
+   desktop's taller rows and mobile's shorter ones both land the cutoff
+   in the same place) and scrolls vertically inside this same box, with
+   the header staying sticky the whole way down. */
+.table-scroll.scroll-capped{overflow-y:auto}
+.table-scroll.scroll-capped table.props-table thead th{box-shadow:0 1px 0 rgba(255,255,255,.05)}
+table.props-table{width:100%;border-collapse:collapse;min-width:760px}
+table.props-table thead th{position:sticky;top:0;background:#0a0f16;text-align:left;padding:9px 10px;font:800 8.5px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:#5c6c7d;border-bottom:1px solid var(--line2);white-space:nowrap;cursor:pointer;user-select:none}
+table.props-table thead th:hover{color:#a2afbd}
+table.props-table thead th.num,table.props-table td.num{text-align:right}
+table.props-table thead th .arrow{display:inline-block;margin-left:4px;opacity:.35;font-size:8px}
+table.props-table thead th.sorted .arrow{opacity:1;color:var(--red)}
+table.props-table tbody td{padding:9px 10px;font-size:11.5px;color:#c3ccd6;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle}
+table.props-table tbody tr:hover{background:rgba(255,255,255,.02)}
+table.props-table tbody tr:nth-child(-n+3) td.rank{color:var(--gold)}
+td.rank{font:800 10.5px var(--mono);color:#3d4b5a}
+td.player b{display:block;font-weight:800;color:#f0f4f7;font-size:12px}
+td.player span{display:block;margin-top:1px;color:#647486;font-size:9.5px;font-weight:600}
+td.fixture{font:700 10.5px var(--mono);color:#8593a3;white-space:nowrap}
+td.fixture b{color:#c3ccd6;font-weight:800}
+td.sub{color:#5c6c7d;font-size:10px;white-space:nowrap}
+td.num{font:700 11px var(--mono);font-variant-numeric:tabular-nums;color:#8593a3}
+td.num.pos{color:var(--green)}
+td.num.neg{color:#ff8b93}
+td.heat{font:900 12px var(--mono);text-align:center;font-variant-numeric:tabular-nums;padding:5px 10px;border-radius:7px;min-width:52px}
+td.odds{font:800 10.5px var(--mono);text-align:right;font-variant-numeric:tabular-nums;color:var(--gold)}
+.table-empty{padding:32px 18px;text-align:center;color:#5c6c7d;font-size:11px}
+@media(max-width:650px){.table-head{padding:12px 14px 10px}.search-wrap input{width:150px}table.props-table{min-width:640px}table.props-table thead th,table.props-table tbody td{padding:7px 8px;font-size:10px}td.player b{font-size:11px}}
 
 .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:16px 0 4px}
 /* Swipeable category switcher on mobile: a horizontal scroller with
@@ -242,44 +241,6 @@ button{font:inherit}
 button.tab{border:1px solid var(--line);background:#081019;color:#7f8d9b;border-radius:999px;padding:9px 16px;cursor:pointer;font-size:11.5px;font-weight:700;transition:background .15s,border-color .15s,color .15s}
 button.tab.active{background:rgba(255,93,108,.13);border-color:rgba(255,93,108,.46);color:var(--red);font-weight:800}
 .tab-note{margin:2px 0 14px;color:#647486;font-size:10px;font-style:italic;line-height:1.55;min-height:14px}
-
-/* ===== PROP CARDS — glossy Scouting Dossier system. The card keeps the
-   full input audit trail but reads vertically: identity, model verdict,
-   then formula rails. Layered highlights create a polished glass finish
-   without adding image assets or expensive continuous animation. ===== */
-.propgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin:5px 0 8px}
-.prop-card{--team-rgb:125,189,215;position:relative;isolation:isolate;overflow:hidden;min-height:248px;padding:17px 17px 15px;border:1px solid rgba(var(--team-rgb),.19);border-radius:3px 19px 3px 3px;background:radial-gradient(circle at 82% 3%,rgba(var(--team-rgb),.135),transparent 35%),linear-gradient(145deg,rgba(var(--team-rgb),.07) 0,rgba(255,255,255,.018) 30%,rgba(5,12,19,.96) 69%),#081018;box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 1px 0 0 rgba(var(--team-rgb),.07),0 12px 32px rgba(0,0,0,.26),0 2px 8px rgba(0,0,0,.28);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
-.prop-card:before{content:"";position:absolute;z-index:-1;inset:-45% -85% 48% -20%;transform:rotate(-10deg);background:linear-gradient(112deg,transparent 31%,rgba(var(--team-rgb),.02) 43%,rgba(var(--team-rgb),.14) 50%,rgba(255,255,255,.025) 56%,transparent 69%);transition:transform .5s ease;pointer-events:none}
-.prop-card:after{content:"SO";position:absolute;z-index:-2;right:10px;bottom:-8px;color:rgba(255,255,255,.022);font:900 64px var(--mono);letter-spacing:-.08em;pointer-events:none}
-.prop-card:hover{transform:translateY(-3px);border-color:rgba(var(--team-rgb),.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 18px 38px rgba(0,0,0,.34),0 0 26px rgba(var(--team-rgb),.085)}
-.prop-card:hover:before{transform:translate(30%,15%) rotate(-10deg)}
-.prop-card.ceiling{border-color:rgba(244,185,66,.47);box-shadow:inset 0 1px 0 rgba(255,255,255,.19),0 0 0 1px rgba(244,185,66,.1),0 15px 34px rgba(0,0,0,.3),0 0 28px rgba(244,185,66,.07)}
-.pc-tag{position:absolute;z-index:2;top:14px;right:14px;padding:4px 8px;border-radius:999px;background:linear-gradient(180deg,rgba(244,185,66,.2),rgba(244,185,66,.08));border:1px solid rgba(244,185,66,.44);box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 4px 12px rgba(0,0,0,.2);color:var(--gold);font:800 6.5px var(--mono);letter-spacing:.09em;white-space:nowrap}
-.pc-topline{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.pc-team{font:800 7.5px var(--mono);letter-spacing:.13em;text-transform:uppercase;color:#7e93a6}
-.pc-id{font:700 7px var(--mono);letter-spacing:.07em;color:#435464}
-.pc-name{margin-top:6px;font-size:17px;font-weight:850;line-height:1.08;letter-spacing:-.035em;color:#f2f6f9;padding-right:66px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 12px rgba(255,255,255,.04)}
-.pc-sub{margin-top:4px;color:#6f8191;font-size:9px}
-.pc-metarow{margin-top:11px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.pc-fixture,.pc-line{display:flex;align-items:center;gap:4px;padding:4px 7px;border:1px solid rgba(255,255,255,.075);border-radius:6px;background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.025));box-shadow:inset 0 1px 0 rgba(255,255,255,.05);font:700 8px var(--mono)}
-.pc-fixture{color:#8fa0af}.pc-fixture .fw{color:#c5d0da}.pc-line{color:#d3dbe3}
-.pc-pctrow{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:15px;padding-top:13px;border-top:1px solid rgba(255,255,255,.07)}
-.pc-pctmain{display:flex;align-items:baseline;gap:7px;min-width:0}
-.pc-pct{font:900 36px/1 var(--mono);letter-spacing:-.055em;font-variant-numeric:tabular-nums;text-shadow:0 0 20px color-mix(in srgb,currentColor 18%,transparent)}
-.pc-pctlabel{color:#67798a;font:800 6.8px var(--mono);letter-spacing:.09em;text-transform:uppercase;white-space:nowrap}
-.pc-odds{flex:0 0 auto;margin-bottom:2px;padding:4px 7px;border:1px solid rgba(244,185,66,.28);border-radius:6px;background:linear-gradient(180deg,rgba(244,185,66,.15),rgba(244,185,66,.055));box-shadow:inset 0 1px 0 rgba(255,255,255,.09);color:var(--gold);font:850 9px var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
-.pc-verdict{min-height:37px;margin-top:8px;color:#8e9ba7;font-size:9.5px;line-height:1.5}.pc-verdict b{display:block;margin-bottom:2px;color:#cbd4dc;font:800 6.5px var(--mono);letter-spacing:.1em;text-transform:uppercase}
-.pc-bar{height:3px;border-radius:3px;background:rgba(255,255,255,.065);margin-top:8px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.35)}
-.pc-bar i{display:block;height:100%;border-radius:inherit;width:var(--w);background:linear-gradient(90deg,color-mix(in srgb,var(--c) 72%,#fff),var(--c));box-shadow:0 0 10px var(--c);transition:width .5s ease}
-.pc-breakdown{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:14px}
-.pc-bd-item{min-width:0;padding-top:7px;border-top:2px solid rgba(255,255,255,.13);text-align:left}
-.pc-bd-item:first-child{border-top-color:var(--gold)}
-.pc-bd-item:not(:first-child){border-left:0}
-.pc-bd-val{font:850 10px var(--mono);color:#d4dce4;font-variant-numeric:tabular-nums}
-.pc-bd-val.pos{color:var(--green)}.pc-bd-val.neg{color:var(--red)}
-.pc-bd-lbl{margin-top:3px;font:750 5.8px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#566777;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media(max-width:950px){.propgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:650px){body{padding:14px}.hero{padding:24px 18px 56px}.badge{position:static;display:inline-flex;margin-top:10px}.propgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.prop-card{min-height:225px;padding:13px 12px 12px;border-radius:3px 15px 3px 3px}.prop-card:after{font-size:48px}.pc-tag{top:10px;right:9px;font-size:5.4px;padding:3px 5px}.pc-name{font-size:13px;padding-right:42px}.pc-sub{font-size:7.5px}.pc-fixture,.pc-line{font-size:6.7px;padding:3px 5px}.pc-pctrow{margin-top:11px;padding-top:10px}.pc-pct{font-size:27px}.pc-pctlabel{display:none}.pc-odds{font-size:7.3px;padding:3px 5px}.pc-verdict{min-height:33px;font-size:7.6px;line-height:1.4}.pc-verdict b{font-size:5.5px}.pc-breakdown{gap:4px;margin-top:10px}.pc-bd-item{padding-top:5px}.pc-bd-val{font-size:8px}.pc-bd-lbl{font-size:4.8px}button.tab{padding:7px 13px;font-size:10.5px}}
 </style>
 <style id="so-mobile-repair-20260819">
 @media(max-width:700px){
@@ -395,8 +356,8 @@ button.tab.active{background:rgba(255,93,108,.13);border-color:rgba(255,93,108,.
 </section>
 
 <div class="deskstrip">
- <div class="deskcell accent"><i class="dk-dot"></i><b id="dsPlayers">80</b><span>Players Tracked</span></div>
- <div class="deskcell"><i class="dk-dot"></i><b>4</b><span>Prop Categories</span></div>
+ <div class="deskcell accent"><i class="dk-dot"></i><b id="dsPlayers">20</b><span>Players Tracked</span></div>
+ <div class="deskcell"><i class="dk-dot"></i><b>3</b><span>Prop Categories</span></div>
  <div class="deskcell accent2"><i class="dk-dot"></i><b id="dsAvg">—</b><span>Avg. Model Read</span><div class="dk-bar"><i id="dsAvgBar" style="width:0%"></i></div></div>
  <div class="deskcell accent3"><i class="dk-dot"></i><b id="dsHigh">—</b><span>Highest Read</span><div class="dk-bar"><i id="dsHighBar" style="width:0%"></i></div></div>
  <div class="deskcell"><i class="dk-dot"></i><b>MW5</b><span>Fixture Calibration</span></div>
@@ -405,9 +366,9 @@ button.tab.active{background:rgba(255,93,108,.13);border-color:rgba(255,93,108,.
 <div class="methpanel">
  <div class="methhead"><b>Model Methodology</b><span>A layered read, not a single number — category baseline, player-specific signal, and fixture context are weighted and blended into the probability shown on each card.</span></div>
  <div class="methgrid">
-  <div class="methcard"><div class="mh-row"><b>Goals / Assists</b><span class="mh-tag">Form-weighted</span></div><p>Starts from a category baseline, then leans on <b class="inline">recent production</b> — output above a player's own first-goal-or-assist threshold this season nudges the read up, within a modeled ceiling. <b class="inline">Fixture context</b> layers on top, scaled to how the market itself prices the matchup. No player gets a hand-set number — proven top scorers simply clear the ceiling on form alone.</p></div>
-  <div class="methcard"><div class="mh-row"><b>Clean Sheets</b><span class="mh-tag">Inverted read</span></div><p>Framed as the goals-conceded side of the same coin, so direction stays consistent with the categories above it. A team's defensive track record this season pulls the number down as it accumulates; fixture context runs the opposite way here — the model treats being favored as protective, not exposing.</p></div>
-  <div class="methcard"><div class="mh-row"><b>Passes Completed</b><span class="mh-tag">Volume-set line</span></div><p>The line itself is derived rather than fixed — anchored just above a player's own season volume so the read leans slightly toward the under before any other signal is applied. Fixture context is the only adjustment layered in beyond that starting point.</p></div>
+  <div class="methcard"><div class="mh-row"><b>Goals</b><span class="mh-tag">Model projection</span></div><p>Each player's own scoring rate (goals per 90) is run through a Poisson model for the odds of scoring in <b class="inline">this week's matchup</b>. <b class="inline">Fixture context</b> layers on top, scaled to how the market itself prices the matchup. Ranked league-wide, not one player per club.</p></div>
+  <div class="methcard"><div class="mh-row"><b>Assists</b><span class="mh-tag">Model projection</span></div><p>Same treatment as Goals, run on each player's assist rate instead — a Poisson read on the odds of setting one up in this week's matchup, plus fixture context. Ranked league-wide, not one player per club, so a couple of clubs without a top producer won't appear on this tab.</p></div>
+  <div class="methcard"><div class="mh-row"><b>Clean Sheets</b><span class="mh-tag">Model projection</span></div><p>Offered only for starting goalkeepers, one per club, framed as the probability their team keeps a clean sheet — under 0.5 goals conceded — in this week's matchup. Built from each keeper's own clean-sheet rate, blended with a neutral prior to protect against a small sample; fixture context runs the same way here — a favorable matchup is protective, a tough one exposing.</p></div>
   <div class="methcard"><div class="mh-row"><b>Fixture Tier</b><span class="mh-tag">Market-derived</span></div><p>Every fixture adjustment used above traces back here: a team's implied strength for the matchweek, extracted from the market's own three-way price with the house edge stripped out, then bucketed into a tiered nudge rather than applied as a raw number.</p></div>
  </div>
 </div>
@@ -416,19 +377,22 @@ button.tab.active{background:rgba(255,93,108,.13);border-color:rgba(255,93,108,.
 <button class="tab active" data-cat="goals">Goals</button>
 <button class="tab" data-cat="assists">Assists</button>
 <button class="tab" data-cat="cleansheets">Clean Sheets</button>
-<button class="tab" data-cat="passes">Passes</button>
 </div>
 <div class="tab-note" id="tabNote"></div>
 
-<div class="chartpanel">
- <div class="chart-head">
-  <div><b id="chartTitle">Over 0.5 Goals</b><span>Ranked highest to lowest &mdash; Fix is the fixture-tier move from the matchup's own market-implied win probability (favorable matchup = positive, tough matchup = negative); the line runs from each category's baseline out to the read; Read is shaded on the same scale and brightens fast past 45%; SO Target is the fair price that read implies at shortopen's own board, not a sportsbook quote</span></div>
-  <div class="chart-legend"><span style="display:flex;align-items:center;gap:5px"><i style="background:var(--gold);border-radius:50%;width:7px;height:7px;border:0"></i>baseline</span><span style="display:flex;align-items:center;gap:5px"><i style="background:var(--red);border-radius:50%;width:7px;height:7px;border:0"></i>model read</span></div>
+<div class="tablewrap">
+ <div class="table-head">
+  <div><b id="chartTitle">Over 0.5 Goals</b><span>Click any column to sort &mdash; Fix is the fixture-tier move from the matchup's own market-implied win probability (favorable = positive, tough = negative); SO Target is the fair price that read implies at shortopen's own board, not a sportsbook quote</span></div>
+  <div class="search-wrap"><input type="text" id="playerSearch" placeholder="Search player or team…" autocomplete="off"></div>
  </div>
- <div id="probChart" class="probchart"></div>
+ <div class="table-scroll">
+  <table class="props-table">
+   <thead><tr id="tableHead"></tr></thead>
+   <tbody id="tableBody"></tbody>
+  </table>
+  <div class="table-empty" id="tableEmpty" hidden>No players match that search.</div>
+ </div>
 </div>
-
-<div class="propgrid" id="propGrid"></div>
 
 </div>
 <style id="so-canonical-footer-v3">
@@ -466,109 +430,137 @@ footer.so-footer .footer-copy{text-align:left!important;}
 </footer>
 
 <script>
+/* Every Read below is a model projection for this week's matchup, not a
+   season stat quoted at face value. Goals/Assists: each player's own
+   scoring/assist rate (per 90) is first shrunk toward the league-average
+   rate, weighted by how many minutes back it — a small sample (a couple
+   of goals in a handful of matches) gets pulled hard toward the mean,
+   a season-long sample barely moves — so a hot start can't out-rank a
+   full season of real production. That shrunk rate is then run through
+   a Poisson model — 1-e^(-rate) — for the odds of doing it again in this
+   matchup, ranked league-wide rather than one player per club. Clean
+   Sheets: each keeper's clean-sheet rate blended the same way, one per
+   club. All three add the same market-derived fixture nudge: each
+   team's de-vigged win probability from the live MW5 FanDuel three-way
+   line (see embed-pl-live-lines.html), scaled around a neutral 33.3%
+   baseline. underPct is simply 100-overPct so the two always sum to 100
+   and both sides are shown labeled, never as a bare number. */
 var DATA={
  goals:{
-  line:"Over 0.5 Goals",
-  note:"",
+  unit:"Goals",
+  note:"Each player's Read is a model projection for this week's matchup: their scoring rate is shrunk toward the league mean based on sample size (so a couple of goals in a handful of matches can't out-rank a full season of proof), then run through a Poisson model plus the fixture-tier nudge. Ranked league-wide, not one player per club.",
   players:[
-   {name:"Bruno Fernandes",team:"Man Utd",opp:"Fulham",side:"A",sub:"3 goals this season",pct:45,base:40,form:5.0,fbon:0,winP:48},
-   {name:"Jack Hinshelwood",team:"Brighton",opp:"Arsenal",side:"H",sub:"2 goals this season",pct:38,base:40,form:2.5,fbon:-4,winP:20},
-   {name:"João Pedro",team:"Chelsea",opp:"Brentford",side:"A",sub:"2 goals this season",pct:42,base:40,form:2.5,fbon:-1,winP:42},
-   {name:"Rayan Cherki",team:"Man City",opp:"Sunderland",side:"H",sub:"2 goals this season",pct:45,base:40,form:2.5,fbon:2.5,winP:73},
-   {name:"Anthony Elanga",team:"Newcastle",opp:"Hull City",side:"H",sub:"2 goals this season",pct:44,base:40,form:2.5,fbon:1.5,winP:62},
-   {name:"Cole Palmer",team:"Chelsea",opp:"Brentford",side:"A",sub:"2 goals this season",pct:42,base:40,form:2.5,fbon:-1,winP:42},
-   {name:"Bukayo Saka",team:"Arsenal",opp:"Brighton",side:"A",sub:"2 goals this season",pct:43,base:40,form:2.5,fbon:0.5,winP:55},
-   {name:"Erling Haaland",team:"Man City",opp:"Sunderland",side:"H",sub:"6 goals this season",pct:52,base:40,form:10,fbon:2.5,winP:73},
-   {name:"Malick Yalcouyé",team:"Brighton",opp:"Arsenal",side:"H",sub:"2 goals this season",pct:38,base:40,form:2.5,fbon:-4,winP:20},
-   {name:"Michael Kayode",team:"Brentford",opp:"Chelsea",side:"H",sub:"2 goals this season",pct:40,base:40,form:2.5,fbon:-2,winP:33},
-   {name:"Alexander Isak",team:"Liverpool",opp:"Bournemouth",side:"A",sub:"5 goals this season",pct:50,base:40,form:10,fbon:-0.5,winP:45},
-   {name:"Antoine Semenyo",team:"Man City",opp:"Sunderland",side:"H",sub:"4 goals this season",pct:50,base:40,form:7.5,fbon:2.5,winP:73},
-   {name:"Igor Thiago",team:"Brentford",opp:"Chelsea",side:"H",sub:"4 goals this season",pct:46,base:40,form:7.5,fbon:-2,winP:33},
-   {name:"Viktor Gyökeres",team:"Arsenal",opp:"Brighton",side:"A",sub:"3 goals this season",pct:46,base:40,form:5,fbon:0.5,winP:55},
-   {name:"Hugo Ekitike",team:"Liverpool",opp:"Bournemouth",side:"A",sub:"2 goals this season",pct:42,base:40,form:2.5,fbon:-0.5,winP:45},
-   {name:"Benjamin Šeško",team:"Man Utd",opp:"Fulham",side:"A",sub:"2 goals this season",pct:42,base:40,form:2.5,fbon:0,winP:48},
-   {name:"Morgan Rogers",team:"Chelsea",opp:"Brentford",side:"A",sub:"2 goals this season",pct:42,base:40,form:2.5,fbon:-1,winP:42},
-   {name:"Dominik Szoboszlai",team:"Liverpool",opp:"Bournemouth",side:"A",sub:"2 goals this season",pct:42,base:40,form:2.5,fbon:-0.5,winP:45},
-   {name:"Dominic Calvert-Lewin",team:"Leeds United",opp:"Crystal Palace",side:"H",sub:"2 goals this season",pct:43,base:40,form:2.5,fbon:0.5,winP:53},
-   {name:"Danny Welbeck",team:"Chelsea",opp:"Brentford",side:"A",sub:"2 goals this season",pct:42,base:40,form:2.5,fbon:-1,winP:42},
-   {name:"Jérémy Doku",team:"Man City",opp:"Sunderland",side:"H",sub:"2 goals this season",pct:45,base:40,form:2.5,fbon:2.5,winP:73},
-   {name:"Florian Wirtz",team:"Liverpool",opp:"Bournemouth",side:"A",sub:"2 goals this season",pct:42,base:40,form:2.5,fbon:-0.5,winP:45},
-   {name:"Callum Wilson",team:"Brentford",opp:"Chelsea",side:"H",sub:"2 goals this season",pct:40,base:40,form:2.5,fbon:-2,winP:33},
-   {name:"Iliman Ndiaye",team:"Everton",opp:"Ipswich Town",side:"H",sub:"2 goals this season",pct:43,base:40,form:2.5,fbon:0.5,winP:54},
-   {name:"Beto",team:"Everton",opp:"Ipswich Town",side:"H",sub:"1 goal this season",pct:43,base:40,form:2.5,fbon:0.5,winP:54},
-   {name:"Jack Clarke",team:"Ipswich Town",opp:"Everton",side:"A",sub:"2 goals this season",pct:39,base:40,form:2.5,fbon:-3.5,winP:21},
-   {name:"Ali Al-Hamadi",team:"Ipswich Town",opp:"Everton",side:"A",sub:"1 goal this season",pct:39,base:40,form:2.5,fbon:-3.5,winP:21},
-   {name:"Evanilson",team:"Bournemouth",opp:"Liverpool",side:"H",sub:"2 goals this season",pct:40,base:40,form:2.5,fbon:-2.5,winP:30},
-   {name:"David Brooks",team:"Bournemouth",opp:"Liverpool",side:"H",sub:"1 goal this season",pct:40,base:40,form:2.5,fbon:-2.5,winP:30},
-   {name:"Rodrigo Muniz",team:"Fulham",opp:"Man Utd",side:"H",sub:"2 goals this season",pct:40,base:40,form:2.5,fbon:-3,winP:28},
-   {name:"Jean-Philippe Mateta",team:"Crystal Palace",opp:"Leeds",side:"A",sub:"3 goals this season",pct:42,base:40,form:5.0,fbon:-3.5,winP:22},
-   {name:"Wilson Isidor",team:"Sunderland",opp:"Man City",side:"A",sub:"1 goal this season",pct:38,base:40,form:2.5,fbon:-5,winP:10},
-   {name:"Ellis Simms",team:"Coventry City",opp:"Nottingham Forest",side:"A",sub:"1 goal this season",pct:38,base:40,form:2.5,fbon:-4,winP:18},
-   {name:"Chris Wood",team:"Nottingham Forest",opp:"Coventry",side:"H",sub:"3 goals this season",pct:46,base:40,form:5.0,fbon:1,winP:58},
-   {name:"Callum Hudson-Odoi",team:"Nottingham Forest",opp:"Coventry",side:"H",sub:"1 goal this season",pct:44,base:40,form:2.5,fbon:1,winP:58},
-   {name:"Dominic Solanke",team:"Tottenham Hotspur",opp:"Aston Villa",side:"H",sub:"2 goals this season",pct:42,base:40,form:2.5,fbon:-0.5,winP:47},
-   {name:"Liam Millar",team:"Hull City",opp:"Newcastle",side:"A",sub:"1 goal this season",pct:38,base:40,form:2.5,fbon:-4,winP:17},
-   {name:"Ollie Watkins",team:"Aston Villa",opp:"Tottenham Hotspur",side:"A",sub:"3 goals this season",pct:42,base:40,form:5.0,fbon:-3,winP:26}
+   {name:"Haaland",team:"Man City",opp:"Sunderland",side:"H",sub:"0.72 G/90 model rate",overPct:56,base:48,fix:10},
+   {name:"William Osula",team:"Newcastle",opp:"Hull City",side:"H",sub:"0.57 G/90 model rate",overPct:48,base:48,fix:10},
+   {name:"Viktor Gyökeres",team:"Arsenal",opp:"Brighton",side:"A",sub:"0.51 G/90 model rate",overPct:45,base:48,fix:9},
+   {name:"Eli Junior Kroupi",team:"Bournemouth",opp:"Liverpool",side:"H",sub:"0.59 G/90 model rate",overPct:44,base:48,fix:-1},
+   {name:"Benjamin Šeško",team:"Man Utd",opp:"Fulham",side:"A",sub:"0.52 G/90 model rate",overPct:44,base:48,fix:6},
+   {name:"Igor Thiago",team:"Brentford",opp:"Chelsea",side:"H",sub:"0.56 G/90 model rate",overPct:43,base:48,fix:0},
+   {name:"Rayan Cherki",team:"Man City",opp:"Sunderland",side:"H",sub:"0.47 G/90 model rate",overPct:43,base:48,fix:10},
+   {name:"Anthony Elanga",team:"Newcastle",opp:"Hull City",side:"H",sub:"0.46 G/90 model rate",overPct:42,base:48,fix:10},
+   {name:"Hugo Ekitike",team:"Liverpool",opp:"Bournemouth",side:"A",sub:"0.49 G/90 model rate",overPct:41,base:48,fix:4},
+   {name:"Beto",team:"Everton",opp:"Ipswich Town",side:"H",sub:"0.47 G/90 model rate",overPct:41,base:48,fix:8},
+   {name:"Alexander Isak",team:"Liverpool",opp:"Bournemouth",side:"A",sub:"0.50 G/90 model rate",overPct:41,base:48,fix:4},
+   {name:"Morgan Gibbs-White",team:"Nott'm Forest",opp:"Coventry City",side:"H",sub:"0.42 G/90 model rate",overPct:40,base:48,fix:10},
+   {name:"Dominic Calvert-Lewin",team:"Leeds",opp:"Crystal Palace",side:"H",sub:"0.44 G/90 model rate",overPct:40,base:48,fix:8},
+   {name:"Richarlison",team:"Spurs",opp:"Aston Villa",side:"H",sub:"0.47 G/90 model rate",overPct:40,base:48,fix:5},
+   {name:"Lukas Nmecha",team:"Leeds",opp:"Crystal Palace",side:"H",sub:"0.45 G/90 model rate",overPct:40,base:48,fix:8},
+   {name:"Jayden Bogle",team:"Leeds",opp:"Crystal Palace",side:"H",sub:"0.44 G/90 model rate",overPct:40,base:48,fix:8},
+   {name:"João Pedro",team:"Chelsea",opp:"Brentford",side:"A",sub:"0.48 G/90 model rate",overPct:39,base:48,fix:3},
+   {name:"Noah Okafor",team:"Leeds",opp:"Crystal Palace",side:"H",sub:"0.43 G/90 model rate",overPct:39,base:48,fix:8},
+   {name:"Kai Havertz",team:"Arsenal",opp:"Brighton",side:"A",sub:"0.42 G/90 model rate",overPct:39,base:48,fix:9},
+   {name:"Cole Palmer",team:"Chelsea",opp:"Brentford",side:"A",sub:"0.44 G/90 model rate",overPct:37,base:48,fix:3},
+   {name:"Ollie Watkins",team:"Aston Villa",opp:"Spurs",side:"A",sub:"0.48 G/90 model rate",overPct:36,base:48,fix:-3},
+   {name:"Danny Welbeck",team:"Brighton",opp:"Arsenal",side:"H",sub:"0.48 G/90 model rate",overPct:36,base:48,fix:-5},
+   {name:"Antoine Semenyo",team:"Bournemouth",opp:"Liverpool",side:"H",sub:"0.46 G/90 model rate",overPct:36,base:48,fix:-1},
+   {name:"Bryan Mbeumo",team:"Man Utd",opp:"Fulham",side:"A",sub:"0.38 G/90 model rate",overPct:35,base:48,fix:6},
+   {name:"Thierno Barry",team:"Everton",opp:"Ipswich Town",side:"H",sub:"0.38 G/90 model rate",overPct:35,base:48,fix:8},
+   {name:"Eberechi Eze",team:"Arsenal",opp:"Brighton",side:"A",sub:"0.36 G/90 model rate",overPct:35,base:48,fix:9},
+   {name:"Emersonn",team:"Ipswich Town",opp:"Everton",side:"A",sub:"0.46 G/90 model rate",overPct:35,base:48,fix:-5},
+   {name:"Jean-Philippe Mateta",team:"Crystal Palace",opp:"Leeds",side:"A",sub:"0.46 G/90 model rate",overPct:34,base:48,fix:-5},
+   {name:"Matheus Cunha",team:"Man Utd",opp:"Fulham",side:"A",sub:"0.37 G/90 model rate",overPct:34,base:48,fix:6},
+   {name:"Bruno Guimarães",team:"Arsenal",opp:"Brighton",side:"A",sub:"0.34 G/90 model rate",overPct:34,base:48,fix:9},
+   {name:"Harvey Barnes",team:"Newcastle",opp:"Hull City",side:"H",sub:"0.34 G/90 model rate",overPct:34,base:48,fix:10},
+   {name:"Vitaly Janelt",team:"Brentford",opp:"Chelsea",side:"H",sub:"0.42 G/90 model rate",overPct:34,base:48,fix:0},
+   {name:"Phil Foden",team:"Man City",opp:"Sunderland",side:"H",sub:"0.33 G/90 model rate",overPct:33,base:48,fix:10},
+   {name:"Anthony Gordon",team:"Newcastle",opp:"Hull City",side:"H",sub:"0.33 G/90 model rate",overPct:33,base:48,fix:10},
+   {name:"Pascal Groß",team:"Brighton",opp:"Arsenal",side:"H",sub:"0.42 G/90 model rate",overPct:32,base:48,fix:-5},
+   {name:"Bachir Belloumi",team:"Hull City",opp:"Newcastle",side:"A",sub:"0.43 G/90 model rate",overPct:32,base:48,fix:-6},
+   {name:"Leif Davis",team:"Ipswich Town",opp:"Everton",side:"A",sub:"0.42 G/90 model rate",overPct:32,base:48,fix:-5},
+   {name:"Marcus Rashford",team:"Man Utd",opp:"Fulham",side:"A",sub:"0.33 G/90 model rate",overPct:31,base:48,fix:6},
+   {name:"Bukayo Saka",team:"Arsenal",opp:"Brighton",side:"A",sub:"0.31 G/90 model rate",overPct:31,base:48,fix:9},
+   {name:"Leandro Trossard",team:"Arsenal",opp:"Brighton",side:"A",sub:"0.31 G/90 model rate",overPct:31,base:48,fix:9},
+   {name:"Jeremy Doku",team:"Man City",opp:"Sunderland",side:"H",sub:"0.30 G/90 model rate",overPct:31,base:48,fix:10},
+   {name:"Kiernan Dewsbury-Hall",team:"Everton",opp:"Ipswich Town",side:"H",sub:"0.30 G/90 model rate",overPct:30,base:48,fix:8},
+   {name:"Wilson Isidor",team:"Sunderland",opp:"Man City",side:"A",sub:"0.43 G/90 model rate",overPct:30,base:48,fix:-9},
+   {name:"Ismaila Sarr",team:"Crystal Palace",opp:"Leeds",side:"A",sub:"0.38 G/90 model rate",overPct:29,base:48,fix:-5},
+   {name:"Igor Jesus",team:"Nott'm Forest",opp:"Coventry City",side:"H",sub:"0.28 G/90 model rate",overPct:29,base:48,fix:10},
+   {name:"Enzo Fernández",team:"Chelsea",opp:"Brentford",side:"A",sub:"0.31 G/90 model rate",overPct:28,base:48,fix:3},
+   {name:"Harry Wilson",team:"Fulham",opp:"Man Utd",side:"H",sub:"0.35 G/90 model rate",overPct:28,base:48,fix:-2},
+   {name:"Bruno Fernandes",team:"Man Utd",opp:"Fulham",side:"A",sub:"0.29 G/90 model rate",overPct:28,base:48,fix:6},
+   {name:"Emi Buendía",team:"Aston Villa",opp:"Spurs",side:"A",sub:"0.33 G/90 model rate",overPct:27,base:48,fix:-3},
+   {name:"Cody Gakpo",team:"Liverpool",opp:"Bournemouth",side:"A",sub:"0.27 G/90 model rate",overPct:26,base:48,fix:4},
+   {name:"Dango Ouattara",team:"Brentford",opp:"Chelsea",side:"H",sub:"0.31 G/90 model rate",overPct:26,base:48,fix:0},
+   {name:"Kevin Schade",team:"Brentford",opp:"Chelsea",side:"H",sub:"0.29 G/90 model rate",overPct:25,base:48,fix:0},
+   {name:"Brian Brobbey",team:"Sunderland",opp:"Man City",side:"A",sub:"0.35 G/90 model rate",overPct:25,base:48,fix:-9},
+   {name:"Iliman Ndiaye",team:"Everton",opp:"Ipswich Town",side:"H",sub:"0.24 G/90 model rate",overPct:25,base:48,fix:8},
+   {name:"Morgan Rogers",team:"Aston Villa",opp:"Spurs",side:"A",sub:"0.30 G/90 model rate",overPct:24,base:48,fix:-3},
+   {name:"Marcus Tavernier",team:"Bournemouth",opp:"Liverpool",side:"H",sub:"0.27 G/90 model rate",overPct:23,base:48,fix:-1},
+   {name:"Evanilson",team:"Bournemouth",opp:"Liverpool",side:"H",sub:"0.24 G/90 model rate",overPct:21,base:48,fix:-1},
+   {name:"Dominik Szoboszlai",team:"Liverpool",opp:"Bournemouth",side:"A",sub:"0.21 G/90 model rate",overPct:21,base:48,fix:4},
+   {name:"Virgil van Dijk",team:"Liverpool",opp:"Bournemouth",side:"A",sub:"0.20 G/90 model rate",overPct:21,base:48,fix:4}
   ]
  },
  assists:{
-  line:"Over 0.5 Assists",
-  note:"",
+  unit:"Assists",
+  note:"Ranked by actual assists this season (Standard Stats, through Matchweek 4) across the whole league, not capped at one player per club \u2014 Coventry City and Spurs do not have a player in the real top 20 and so do not appear on this tab.",
   players:[
-   {name:"João Pedro",team:"Chelsea",opp:"Brentford",side:"A",sub:"2 assists this season",pct:42,base:40,form:2.5,fbon:-1,winP:42},
-   {name:"Julio Enciso",team:"Ipswich Town",opp:"Everton",side:"A",sub:"2 assists this season",pct:39,base:40,form:2.5,fbon:-3.5,winP:21},
-   {name:"Riccardo Calafiori",team:"Arsenal",opp:"Brighton",side:"A",sub:"2 assists this season",pct:43,base:40,form:2.5,fbon:0.5,winP:55},
-   {name:"Rayan Cherki",team:"Man City",opp:"Sunderland",side:"H",sub:"2 assists this season",pct:45,base:40,form:2.5,fbon:2.5,winP:73},
-   {name:"Evanilson",team:"Bournemouth",opp:"Liverpool",side:"H",sub:"2 assists this season",pct:40,base:40,form:2.5,fbon:-2.5,winP:30},
-   {name:"Phil Foden",team:"Man City",opp:"Sunderland",side:"H",sub:"2 assists this season",pct:45,base:40,form:2.5,fbon:2.5,winP:73},
-   {name:"Harrison Armstrong",team:"Everton",opp:"Ipswich Town",side:"H",sub:"2 assists this season",pct:43,base:40,form:2.5,fbon:0.5,winP:54},
-   {name:"Jorrel Hato",team:"Chelsea",opp:"Brentford",side:"A",sub:"2 assists this season",pct:42,base:40,form:2.5,fbon:-1,winP:42},
-   {name:"Habib Diarra",team:"Sunderland",opp:"Man City",side:"A",sub:"2 assists this season",pct:38,base:40,form:2.5,fbon:-5,winP:10},
-   {name:"Mohamed Belloumi",team:"Hull City",opp:"Newcastle",side:"A",sub:"2 assists this season",pct:38,base:40,form:2.5,fbon:-4,winP:17},
-   {name:"Bryan Mbeumo",team:"Man Utd",opp:"Fulham",side:"A",sub:"2 assists this season",pct:42,base:40,form:2.5,fbon:0,winP:48},
-   {name:"Kaoru Mitoma",team:"Brighton",opp:"Arsenal",side:"H",sub:"2 assists this season",pct:38,base:40,form:2.5,fbon:-4,winP:20},
-   {name:"Anthony Gordon",team:"Newcastle",opp:"Hull City",side:"H",sub:"1 assist this season",pct:44,base:40,form:2.5,fbon:1.5,winP:62},
-   {name:"Mikkel Damsgaard",team:"Brentford",opp:"Chelsea",side:"H",sub:"2 assists this season",pct:40,base:40,form:2.5,fbon:-2,winP:33},
-   {name:"Mohamed Salah",team:"Liverpool",opp:"Bournemouth",side:"A",sub:"3 assists this season",pct:44,base:40,form:5.0,fbon:-0.5,winP:45},
-   {name:"Daniel James",team:"Leeds United",opp:"Crystal Palace",side:"H",sub:"1 assist this season",pct:43,base:40,form:2.5,fbon:0.5,winP:53},
-   {name:"Alex Iwobi",team:"Fulham",opp:"Man Utd",side:"H",sub:"2 assists this season",pct:40,base:40,form:2.5,fbon:-3,winP:28},
-   {name:"Daniel Muñoz",team:"Crystal Palace",opp:"Leeds",side:"A",sub:"1 assist this season",pct:39,base:40,form:2.5,fbon:-3.5,winP:22},
-   {name:"Morgan Gibbs-White",team:"Nottingham Forest",opp:"Coventry",side:"H",sub:"3 assists this season",pct:46,base:40,form:5.0,fbon:1,winP:58},
-   {name:"James Maddison",team:"Tottenham Hotspur",opp:"Aston Villa",side:"H",sub:"2 assists this season",pct:42,base:40,form:2.5,fbon:-0.5,winP:47},
-   {name:"Emiliano Buendía",team:"Aston Villa",opp:"Tottenham Hotspur",side:"A",sub:"2 assists this season",pct:40,base:40,form:2.5,fbon:-3,winP:26},
-   {name:"Ben Sheaf",team:"Coventry City",opp:"Nottingham Forest",side:"A",sub:"1 assist this season",pct:38,base:40,form:2.5,fbon:-4,winP:18}
+   {name:"Cody Gakpo",team:"Liverpool",opp:"Bournemouth",side:"A",sub:"3 assists this season",overPct:64,base:44,fix:4},
+   {name:"Rayan Cherki",team:"Man City",opp:"Sunderland",side:"H",sub:"2 assists this season",overPct:62,base:44,fix:10},
+   {name:"Phil Foden",team:"Man City",opp:"Sunderland",side:"H",sub:"2 assists this season",overPct:62,base:44,fix:10},
+   {name:"Evanilson",team:"Bournemouth",opp:"Liverpool",side:"H",sub:"3 assists this season",overPct:55,base:44,fix:-1},
+   {name:"João Pedro",team:"Chelsea",opp:"Brentford",side:"A",sub:"3 assists this season",overPct:54,base:44,fix:3},
+   {name:"Daichi Kamada",team:"Crystal Palace",opp:"Leeds",side:"A",sub:"3 assists this season",overPct:51,base:44,fix:-5},
+   {name:"Jorrel Hato",team:"Chelsea",opp:"Brentford",side:"A",sub:"2 assists this season",overPct:51,base:44,fix:3},
+   {name:"Riccardo Calafiori",team:"Arsenal",opp:"Brighton",side:"A",sub:"2 assists this season",overPct:47,base:44,fix:9},
+   {name:"Declan Rice",team:"Arsenal",opp:"Brighton",side:"A",sub:"2 assists this season",overPct:47,base:44,fix:9},
+   {name:"Morgan Gibbs-White",team:"Nott'm Forest",opp:"Coventry City",side:"H",sub:"2 assists this season",overPct:44,base:44,fix:10},
+   {name:"Antoine Semenyo",team:"Man City",opp:"Sunderland",side:"H",sub:"2 assists this season",overPct:44,base:44,fix:10},
+   {name:"Cole Palmer",team:"Chelsea",opp:"Brentford",side:"A",sub:"2 assists this season",overPct:42,base:44,fix:3},
+   {name:"Maxim De Cuyper",team:"Brighton",opp:"Arsenal",side:"H",sub:"2 assists this season",overPct:39,base:44,fix:-5},
+   {name:"Julio Enciso",team:"Ipswich Town",opp:"Everton",side:"A",sub:"2 assists this season",overPct:38,base:44,fix:-5},
+   {name:"Pascal Groß",team:"Brighton",opp:"Arsenal",side:"H",sub:"2 assists this season",overPct:37,base:44,fix:-5},
+   {name:"Dominic Calvert-Lewin",team:"Leeds",opp:"Crystal Palace",side:"H",sub:"1 assist this season",overPct:28,base:44,fix:8},
+   {name:"Bruno Fernandes",team:"Man Utd",opp:"Fulham",side:"A",sub:"1 assist this season",overPct:25,base:44,fix:6},
+   {name:"Morgan Rogers",team:"Chelsea",opp:"Brentford",side:"A",sub:"1 assist this season",overPct:24,base:44,fix:3},
+   {name:"Bachir Belloumi",team:"Hull City",opp:"Newcastle",side:"A",sub:"1 assist this season",overPct:22,base:44,fix:-6},
+   {name:"Leif Davis",team:"Ipswich Town",opp:"Everton",side:"A",sub:"1 assist this season",overPct:20,base:44,fix:-5}
   ]
  },
  cleansheets:{
-  line:"Over 0.5 Goals Allowed",
-  note:"Inverse framing: this line tracks whether the goalkeeper's team concedes at least once — a lower probability here means the model likes them to keep another clean sheet.",
+  unit:"Clean Sheet",
+  note:"Offered for starting goalkeepers only, one per club (all 20). The read is the probability their side keeps a clean sheet \u2014 under 0.5 goals conceded \u2014 not the goals-allowed side, so a higher number here always means a stronger defensive matchup.",
   players:[
-   {name:"Konstantinos Tzolakis",team:"Hull City",opp:"Newcastle",side:"A",sub:"2 clean sheets this season",pct:42,base:48,csbon:10,fbon:4,winP:17},
-   {name:"David Raya",team:"Arsenal",opp:"Brighton",side:"A",sub:"2 clean sheets this season",pct:38,base:48,csbon:10,fbon:-0.5,winP:55},
-   {name:"Robin Roefs",team:"Sunderland",opp:"Man City",side:"A",sub:"1 clean sheet this season",pct:48,base:48,csbon:5,fbon:5,winP:10},
-   {name:"Bart Verbruggen",team:"Brighton",opp:"Arsenal",side:"H",sub:"1 clean sheet this season",pct:47,base:48,csbon:5,fbon:4,winP:20},
-   {name:"Lukáš Hornícek",team:"Newcastle",opp:"Hull City",side:"H",sub:"1 clean sheet this season",pct:42,base:48,csbon:5,fbon:-1.5,winP:62},
-   {name:"James Trafford",team:"Leeds United",opp:"Crystal Palace",side:"H",sub:"1 clean sheet this season",pct:42,base:48,csbon:5,fbon:-0.5,winP:53},
-   {name:"Caoimhín Kelleher",team:"Brentford",opp:"Chelsea",side:"H",sub:"1 clean sheet this season",pct:45,base:48,csbon:5,fbon:2,winP:33},
-   {name:"Jordan Pickford",team:"Everton",opp:"Ipswich Town",side:"H",sub:"1 clean sheet this season",pct:42,base:48,csbon:5,fbon:-0.5,winP:54},
-   {name:"Emiliano Martínez",team:"Chelsea",opp:"Brentford",side:"A",sub:"0 clean sheets this season",pct:49,base:48,csbon:0,fbon:1,winP:42},
-   {name:"Nick Pope",team:"Newcastle",opp:"Hull City",side:"H",sub:"0 clean sheets this season",pct:46,base:48,csbon:0,fbon:-1.5,winP:62}
-  ]
- },
- passes:{
-  line:"",
-  note:"",
-  players:[
-   {name:"Rúben Dias",team:"Man City",opp:"Sunderland",side:"H",sub:"season total: 236 · avg 78.7",line:"Over 83.0 Passes Completed",pct:44,base:42,fbon:2.5,winP:73},
-   {name:"Lewis Dunk",team:"Brighton",opp:"Arsenal",side:"H",sub:"season total: 213 · avg 71.0",line:"Over 75.0 Passes Completed",pct:38,base:42,fbon:-4,winP:20},
-   {name:"Luka Vuskovic",team:"Brighton",opp:"Arsenal",side:"H",sub:"season total: 198 · avg 66.0",line:"Over 69.5 Passes Completed",pct:38,base:42,fbon:-4,winP:20},
-   {name:"Marc Guéhi",team:"Man City",opp:"Sunderland",side:"H",sub:"season total: 174 · avg 58.0",line:"Over 61.0 Passes Completed",pct:44,base:42,fbon:2.5,winP:73},
-   {name:"Abdukodir Khusanov",team:"Man City",opp:"Sunderland",side:"H",sub:"season total: 173 · avg 57.7",line:"Over 61.0 Passes Completed",pct:44,base:42,fbon:2.5,winP:73},
-   {name:"Virgil van Dijk",team:"Liverpool",opp:"Bournemouth",side:"A",sub:"season total: 172 · avg 57.3",line:"Over 60.5 Passes Completed",pct:42,base:42,fbon:-0.5,winP:45},
-   {name:"Calvin Bassey",team:"Fulham",opp:"Man Utd",side:"H",sub:"season total: 167 · avg 55.7",line:"Over 59.0 Passes Completed",pct:39,base:42,fbon:-3,winP:28},
-   {name:"Matt Grimes",team:"Coventry City",opp:"Nottingham Forest",side:"A",sub:"season total: 164 · avg 54.7",line:"Over 57.5 Passes Completed",pct:38,base:42,fbon:-4,winP:18},
-   {name:"Elliot Anderson",team:"Man City",opp:"Sunderland",side:"H",sub:"season total: 159 · avg 53.0",line:"Over 56.0 Passes Completed",pct:44,base:42,fbon:2.5,winP:73},
-   {name:"Bruno Fernandes",team:"Man Utd",opp:"Fulham",side:"A",sub:"season total: 153 · avg 51.0",line:"Over 54.0 Passes Completed",pct:42,base:42,fbon:0,winP:48}
+   {name:"Raya",team:"Arsenal",opp:"Brighton",side:"A",sub:"3 clean sheets this season",overPct:67,base:44,fix:9},
+   {name:"Tzolakis",team:"Hull City",opp:"Newcastle",side:"A",sub:"3 clean sheets this season",overPct:60,base:44,fix:-6},
+   {name:"Donnarumma",team:"Man City",opp:"Sunderland",side:"H",sub:"2 clean sheets this season",overPct:52,base:44,fix:10},
+   {name:"Pickford",team:"Everton",opp:"Ipswich Town",side:"H",sub:"2 clean sheets this season",overPct:51,base:44,fix:8},
+   {name:"Kinský",team:"Spurs",opp:"Aston Villa",side:"H",sub:"2 clean sheets this season",overPct:49,base:44,fix:5},
+   {name:"Alisson",team:"Liverpool",opp:"Bournemouth",side:"A",sub:"2 clean sheets this season",overPct:49,base:44,fix:4},
+   {name:"Verbruggen",team:"Brighton",opp:"Arsenal",side:"H",sub:"2 clean sheets this season",overPct:44,base:44,fix:-5},
+   {name:"Horníček",team:"Newcastle",opp:"Hull City",side:"H",sub:"1 clean sheet this season",overPct:35,base:44,fix:10},
+   {name:"Sels",team:"Nott'm Forest",opp:"Coventry City",side:"H",sub:"1 clean sheet this season",overPct:35,base:44,fix:10},
+   {name:"Suzuki",team:"Aston Villa",opp:"Spurs",side:"A",sub:"1 clean sheet this season",overPct:34,base:44,fix:-3},
+   {name:"Trafford",team:"Leeds",opp:"Crystal Palace",side:"H",sub:"1 clean sheet this season",overPct:34,base:44,fix:8},
+   {name:"Kelleher",team:"Brentford",opp:"Chelsea",side:"H",sub:"1 clean sheet this season",overPct:30,base:44,fix:0},
+   {name:"Leno",team:"Fulham",opp:"Man Utd",side:"H",sub:"1 clean sheet this season",overPct:29,base:44,fix:-2},
+   {name:"Roefs",team:"Sunderland",opp:"Man City",side:"A",sub:"1 clean sheet this season",overPct:26,base:44,fix:-9},
+   {name:"Lammens",team:"Man Utd",opp:"Fulham",side:"A",sub:"0 clean sheets this season",overPct:17,base:44,fix:6},
+   {name:"Martínez",team:"Chelsea",opp:"Brentford",side:"A",sub:"0 clean sheets this season",overPct:16,base:44,fix:3},
+   {name:"Petrović",team:"Bournemouth",opp:"Liverpool",side:"H",sub:"0 clean sheets this season",overPct:14,base:44,fix:-1},
+   {name:"Henderson",team:"Crystal Palace",opp:"Leeds",side:"A",sub:"0 clean sheets this season",overPct:12,base:44,fix:-5},
+   {name:"Scherpen",team:"Ipswich Town",opp:"Everton",side:"A",sub:"0 clean sheets this season",overPct:12,base:44,fix:-5},
+   {name:"Rushworth",team:"Coventry City",opp:"Nott'm Forest",side:"A",sub:"0 clean sheets this season",overPct:11,base:44,fix:-6}
   ]
  }
 };
@@ -583,51 +575,14 @@ function colorForPct(p){
  if(p<42) return lerpColor(RED,GOLD,(p-36)/6);
  return lerpColor(GOLD,GREEN,(p-42)/6);
 }
-function barWidth(p){
- var w=((p-25)/(58-25))*100;
- if(w<8)w=8; if(w>100)w=100;
- return w.toFixed(1)+'%';
-}
 function fmtSigned(n){ n=Math.round(n*10)/10; return (n>0?'+':'')+n; }
-
-var grid=document.getElementById('propGrid');
 var tabNote=document.getElementById('tabNote');
 
-function breakdownHtml(p,cat){
- // Every card exposes the exact inputs that produced its number — the
- // "sourced" desk feel: baseline, the player-specific adjustment, and
- // the fixture-tier read pulled from the de-vigged matchweek price.
- if(p.ceiling){
-  return '<div class="pc-breakdown">'
-   +'<div class="pc-bd-item"><div class="pc-bd-val">FIXED</div><div class="pc-bd-lbl">Model Override</div></div>'
-   +'<div class="pc-bd-item"><div class="pc-bd-val">'+p.winP+'%</div><div class="pc-bd-lbl">Fixture Win Prob</div></div>'
-   +'<div class="pc-bd-item"><div class="pc-bd-val">52%</div><div class="pc-bd-lbl">Ceiling Read</div></div>'
-   +'</div>';
- }
- var midLabel='Form', midVal=fmtSigned(p.form);
- if(cat==='cleansheets'){ midLabel='CS Penalty'; midVal='−'+p.csbon; }
- if(cat==='passes'){ midLabel='Baseline'; midVal=p.base+'%'; }
- var fbonCls = p.fbon>0 ? 'pos' : (p.fbon<0 ? 'neg' : '');
- return '<div class="pc-breakdown">'
-  +'<div class="pc-bd-item"><div class="pc-bd-val">'+(cat==='passes'?p.base+'%':p.base)+'</div><div class="pc-bd-lbl">'+(cat==='passes'?'Base Rate':'Baseline')+'</div></div>'
-  +(cat!=='passes'?'<div class="pc-bd-item"><div class="pc-bd-val">'+midVal+'</div><div class="pc-bd-lbl">'+midLabel+'</div></div>':'')
-  +'<div class="pc-bd-item"><div class="pc-bd-val '+fbonCls+'">'+fmtSigned(p.fbon)+'</div><div class="pc-bd-lbl">Fixture Tier</div></div>'
-  +'<div class="pc-bd-item"><div class="pc-bd-val">'+p.winP+'%</div><div class="pc-bd-lbl">'+p.team+' Win Prob</div></div>'
-  +'</div>';
-}
-
 var CHART_META={
- goals:{baseline:40,title:'Over 0.5 Goals'},
- assists:{baseline:40,title:'Over 0.5 Assists'},
- cleansheets:{baseline:48,title:'Over 0.5 Goals Allowed'},
- passes:{baseline:42,title:'Passes Completed — model read vs. each player’s own line'}
+ goals:{baseline:48,title:'Over 0.5 Goals'},
+ assists:{baseline:44,title:'Over 0.5 Assists'},
+ cleansheets:{baseline:44,title:'Clean Sheet — Under 0.5 Goals Conceded'}
 };
-function midInfo(p,cat){
- if(p.ceiling) return {label:'Model',val:'FIXED'};
- if(cat==='cleansheets') return {label:'CS Bon',val:p.csbon?('−'+p.csbon):'0',cls:''};
- if(cat==='passes') return {label:'Base%',val:p.base+'%',cls:''};
- return {label:'Form',val:fmtSigned(p.form),cls:p.form>0?'pos':''};
-}
 // Fair American odds implied by the model's own probability — framed as
 // "what shortopen's board would price this at" alongside the read,
 // not a real sportsbook quote.
@@ -636,122 +591,182 @@ function fmtOdds(pct){
  if(p>=.5) return Math.round(-(p/(1-p))*100);
  return '+'+Math.round(((1-p)/p)*100);
 }
-function renderChart(cat){
- var d=DATA[cat],meta=CHART_META[cat];
- document.getElementById('chartTitle').textContent=meta.title;
- var sorted=d.players.slice().sort(function(a,b){return b.pct-a.pct});
- // Domain is centered ON the baseline (rather than just clamped to the
- // data's spread) so the baseline tick always lands at the middle of the
- // plot, not wherever it happens to fall — that's what kept pulling the
- // whole chart over to the left edge.
- var maxDev=Math.max.apply(null,d.players.map(function(p){return Math.abs(p.pct-meta.baseline)}));
- var half=Math.max(20,Math.ceil((maxDev+8)/5)*5);
- var lo=Math.max(0,meta.baseline-half), hi=Math.min(100,meta.baseline+half);
- var range=hi-lo, step=range<=25?5:(range<=45?10:15);
- var ticks=[];
- for(var t=Math.ceil(lo/step)*step;t<=hi;t+=step) ticks.push(t);
- function pos(v){return Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100)).toFixed(1)}
- // Heat color: red-deep to gold, but weighted so the ramp stays muted up
- // to 45% and brightens fast past it — 45% and 55% should look visibly
- // different, not two shades of the same orange.
- var HEAT_T=45;
- function heatColor(pct){
-  var t;
-  if(pct<=HEAT_T) t=Math.max(0,(pct-lo)/(HEAT_T-lo))*0.4;
-  else t=0.4+Math.max(0,(pct-HEAT_T)/Math.max(1,hi-HEAT_T))*0.6;
-  t=Math.max(0,Math.min(1,t));
-  var c1=[139,20,31],c2=[244,185,66];
-  var r=Math.round(c1[0]+(c2[0]-c1[0])*t),g=Math.round(c1[1]+(c2[1]-c1[1])*t),b=Math.round(c1[2]+(c2[2]-c1[2])*t);
-  return {bg:'rgb('+r+','+g+','+b+')',dark:t>0.55};
- }
- var html='<div class="pcx-axis"><span></span><span></span><span class="pcx-lbl pcx-in-lbl">Fix</span><span class="pcx-ticks">'
-  +ticks.filter(function(t){var pp=+pos(t);return pp>4&&pp<96}).map(function(t){return '<i style="left:'+pos(t)+'%">'+t+'%</i>'}).join('')
-  +'</span><span class="pcx-lbl">Read</span><span class="pcx-lbl">SO Target</span></div>';
- // A player only a point or two below baseline produces a connector so
- // short it barely registers next to the bigger positive moves — give
- // every below-baseline line a visible minimum length so it still reads
- // as a real move rather than vanishing into the baseline tick.
- var MIN_NEG_CONN=5;
- sorted.forEach(function(p,i){
-  var fixVal=p.ceiling?'—':fmtSigned(p.fbon);
-  var fixCls=(!p.ceiling&&p.fbon>0)?'pos':((!p.ceiling&&p.fbon<0)?'neg':'');
-  var hc=heatColor(p.pct);
-  var isNeg=p.pct<meta.baseline;
-  var x1=Math.min(pos(meta.baseline),pos(p.pct)),x2=Math.max(pos(meta.baseline),pos(p.pct));
-  if(isNeg&&(x2-x1)<MIN_NEG_CONN) x1=Math.max(0,x2-MIN_NEG_CONN);
-  html+='<div class="pcx-row">'
-   +'<div class="pcx-rank">'+(i+1)+'</div>'
-   +'<div class="pcx-name'+(p.ceiling?' ceiling':'')+'">'+p.name+'<span class="pcx-sub">'+p.team+'</span></div>'
-   +'<div class="pcx-in '+fixCls+'">'+fixVal+'</div>'
-   +'<div class="pcx-plot"><div class="pcx-line"></div><div class="pcx-base" style="left:'+pos(meta.baseline)+'%"></div>'
-   +'<div class="pcx-conn'+(isNeg?' neg':'')+'" style="left:'+x1+'%;width:'+(x2-x1)+'%"></div>'
-   +'<div class="pcx-dot'+(p.ceiling?' ceiling':'')+'" style="left:'+pos(p.pct)+'%"></div></div>'
-   +'<div class="pcx-heat" style="background:'+hc.bg+';color:'+(hc.dark?'#12080a':'#fff6ea')+'">'+p.pct+'%</div>'
-   +'<div class="pcx-odds">'+fmtOdds(p.pct)+'</div>'
-   +'</div>';
- });
- document.getElementById('probChart').innerHTML=html;
-}
-
-/* Muted primary club colors tint only the glass surface. Probability heat
-   colors remain independent so model meaning is never confused with team. */
-function teamRgb(team){
- var colors={
-  'Arsenal':'239,1,7','Bournemouth':'218,41,28','Brentford':'208,20,45',
-  'Brighton':'0,87,184','Chelsea':'3,70,148','Coventry City':'125,182,226',
-  'Everton':'0,72,135','Fulham':'205,211,216','Hull City':'241,176,0',
-  'Ipswich Town':'0,93,171','Leeds United':'214,220,228','Liverpool':'200,16,46',
-  'Man City':'108,171,221','Man Utd':'218,41,28','Newcastle':'205,210,216',
-  'Sunderland':'235,23,44'
+/* Muted primary club colors — no longer used for a card tint since the
+   cards are gone, but kept for the fixture abbreviation lookup below. */
+function teamAbbr(team){
+ var a={
+  'Arsenal':'ARS','Aston Villa':'AVL','Bournemouth':'BOU','Brentford':'BRE','Brighton':'BHA',
+  'Chelsea':'CHE','Everton':'EVE','Fulham':'FUL','Leeds':'LEE','Liverpool':'LIV',
+  'Man City':'MCI','Man Utd':'MUN','Newcastle':'NEW',"Nott'm Forest":'NFO','Sunderland':'SUN',
+  'Spurs':'TOT','Hull City':'HUL','Ipswich Town':'IPS','Coventry City':'COV','Crystal Palace':'CRY'
  };
- return colors[team]||'125,189,215';
+ return a[team]||team.slice(0,3).toUpperCase();
 }
 
-function render(cat){
- var d=DATA[cat];
- var html='';
- var idx=0;
- d.players.forEach(function(p){
-  idx++;
-  var lineText=p.line||d.line;
-  var color=colorForPct(p.pct);
-  var w=barWidth(p.pct);
-  var ticket='P-'+(cat.slice(0,2).toUpperCase())+String(idx).padStart(2,'0');
-  var verdict=p.pct>=50
-   ?'The adjusted read moves this side above an even-probability threshold.'
-   :(p.pct>=43
-    ?'A live model signal, though it remains below an even-probability read.'
-    :'The visible inputs keep this side below the board’s stronger signal range.');
-  html+='<div class="prop-card'+(p.ceiling?' ceiling':'')+'" style="--team-rgb:'+teamRgb(p.team)+'">'
-    +(p.ceiling?'<span class="pc-tag">MODEL CEILING</span>':'')
-    +'<div class="pc-topline"><span class="pc-team">'+p.team+'</span><span class="pc-id">'+ticket+'</span></div>'
-    +'<div class="pc-name">'+p.name+'</div>'
-    +'<div class="pc-sub">'+p.sub+'</div>'
-    +'<div class="pc-metarow"><span class="pc-fixture">'+(p.side==='H'?'vs':'@')+' <span class="fw">'+p.opp+'</span></span><span class="pc-line">'+lineText+'</span></div>'
-    +'<div class="pc-pctrow"><div class="pc-pctmain"><span class="pc-pct" style="color:'+color+'">'+p.pct+'%</span><span class="pc-pctlabel">model read</span></div><span class="pc-odds">'+fmtOdds(p.pct)+'</span></div>'
-    +'<div class="pc-verdict"><b>ShortOpen read</b>'+verdict+'</div>'
-    +'<div class="pc-bar"><i style="--w:'+w+';--c:'+color+'"></i></div>'
-    +breakdownHtml(p,cat)
-    +'</div>';
- });
- grid.innerHTML=html;
+var tabNote=document.getElementById('tabNote');
+var tableHead=document.getElementById('tableHead');
+var tableBody=document.getElementById('tableBody');
+var tableEmpty=document.getElementById('tableEmpty');
+var searchInput=document.getElementById('playerSearch');
+var tableScroll=document.querySelector('.table-scroll');
+var SCROLL_CAP_ROWS=25;
+
+// Caps the table at exactly 25 rows of visible height, on any screen
+// size, by measuring the real rendered height of the header plus the
+// first 25 rows rather than guessing a pixel number that would be wrong
+// the moment mobile's smaller row padding kicked in.
+function applyScrollCap(){
+ if(!tableScroll) return;
+ var trs=tableBody.querySelectorAll('tr');
+ if(trs.length<=SCROLL_CAP_ROWS){
+  tableScroll.classList.remove('scroll-capped');
+  tableScroll.style.maxHeight='';
+  return;
+ }
+ var capRow=trs[SCROLL_CAP_ROWS-1];
+ var containerTop=tableScroll.getBoundingClientRect().top;
+ var capBottom=capRow.getBoundingClientRect().bottom;
+ var height=Math.ceil(capBottom-containerTop);
+ tableScroll.classList.add('scroll-capped');
+ tableScroll.style.maxHeight=height+'px';
+}
+var _scrollCapResize;
+window.addEventListener('resize', function(){
+ clearTimeout(_scrollCapResize);
+ _scrollCapResize=setTimeout(applyScrollCap, 120);
+});
+
+var CHART_META={
+ goals:{baseline:48,title:'Over 0.5 Goals'},
+ assists:{baseline:44,title:'Over 0.5 Assists'},
+ cleansheets:{baseline:44,title:'Clean Sheet — Under 0.5 Goals Conceded'}
+};
+// Fair American odds implied by the model's own probability — framed as
+// "what shortopen's board would price this at" alongside the read,
+// not a real sportsbook quote.
+function fmtOdds(pct){
+ var p=pct/100;
+ if(p>=.5) return Math.round(-(p/(1-p))*100);
+ return '+'+Math.round(((1-p)/p)*100);
+}
+
+var COLS=[
+ {key:'rank', label:'#', sortable:false},
+ {key:'name', label:'Player'},
+ {key:'team', label:'Team'},
+ {key:'fixture', label:'Fixture', sortable:false},
+ {key:'sub', label:'Season', sortable:false},
+ {key:'base', label:'Baseline', num:true},
+ {key:'fix', label:'Fix', num:true},
+ {key:'overPct', label:'Read', num:true},
+ {key:'under', label:'Under', num:true},
+ {key:'odds', label:'SO Target', num:true}
+];
+var currentCat='goals';
+var sortState={key:'overPct', dir:-1};
+var searchTerm='';
+
+function renderHead(){
+ tableHead.innerHTML=COLS.map(function(c){
+  var cls=(c.num?'num':'')+(sortState.key===c.key?' sorted':'');
+  var arrow=sortState.key===c.key?(sortState.dir===1?'▲':'▼'):'';
+  return '<th class="'+cls+'" data-key="'+c.key+'" data-sortable="'+(c.sortable===false?'0':'1')+'">'+c.label+(c.sortable===false?'':' <span class="arrow">'+(arrow||'⋄')+'</span>')+'</th>';
+ }).join('');
+}
+
+function renderTable(){
+ var d=DATA[currentCat];
+ var meta=CHART_META[currentCat];
+ document.getElementById('chartTitle').textContent=meta.title;
  tabNote.textContent=d.note||'';
- var pcts=d.players.map(function(p){return p.pct});
+
+ var isCS=currentCat==='cleansheets';
+ var overWord=isCS?'Clean sheet':'Over 0.5 '+d.unit;
+ var underWord=isCS?'Conceded':'Under 0.5 '+d.unit;
+
+ var rows=d.players.map(function(p){
+  return {
+   name:p.name, team:p.team, opp:p.opp, side:p.side, sub:p.sub,
+   base:p.base, fix:p.fix, overPct:p.overPct, under:100-p.overPct, odds:fmtOdds(p.overPct)
+  };
+ });
+
+ if(searchTerm){
+  rows=rows.filter(function(r){
+   return (r.name+' '+r.team).toLowerCase().indexOf(searchTerm)>=0;
+  });
+ }
+
+ rows.sort(function(a,b){
+  var k=sortState.key, dir=sortState.dir;
+  if(k==='rank') return 0;
+  var av=a[k], bv=b[k];
+  if(typeof av==='string') return av.localeCompare(bv)*dir;
+  return ((Number(av)||0)-(Number(bv)||0))*dir;
+ });
+
+ // Stats tiles still track the whole category, not the filtered view.
+ var pcts=d.players.map(function(p){return p.overPct});
  var avg=Math.round(pcts.reduce(function(a,b){return a+b},0)/pcts.length);
  var high=Math.max.apply(null,pcts);
  document.getElementById('dsAvg').textContent=avg+'%';
  document.getElementById('dsHigh').textContent=high+'%';
+ var playersEl=document.getElementById('dsPlayers'); if(playersEl) playersEl.textContent=d.players.length;
  var avgBar=document.getElementById('dsAvgBar'); if(avgBar) avgBar.style.width=Math.max(6,Math.min(100,avg))+'%';
  var highBar=document.getElementById('dsHighBar'); if(highBar) highBar.style.width=Math.max(6,Math.min(100,high))+'%';
- renderChart(cat);
+
+ renderHead();
+
+ if(!rows.length){
+  tableBody.innerHTML='';
+  tableEmpty.hidden=false;
+  if(tableScroll){ tableScroll.classList.remove('scroll-capped'); tableScroll.style.maxHeight=''; }
+  return;
+ }
+ tableEmpty.hidden=true;
+
+ tableBody.innerHTML=rows.map(function(r,i){
+  var color=colorForPct(r.overPct);
+  var fixCls=r.fix>0?'pos':(r.fix<0?'neg':'');
+  return '<tr>'
+   +'<td class="rank">'+(i+1)+'</td>'
+   +'<td class="player"><b>'+r.name+'</b><span>'+overWord+'</span></td>'
+   +'<td>'+r.team+'</td>'
+   +'<td class="fixture">'+(r.side==='H'?'vs':'@')+' <b>'+teamAbbr(r.opp)+'</b></td>'
+   +'<td class="sub">'+r.sub+'</td>'
+   +'<td class="num">'+r.base+'%</td>'
+   +'<td class="num '+fixCls+'">'+(r.fix>0?'+':'')+r.fix+'</td>'
+   +'<td class="heat" style="background:'+color+';color:#0b0f14">'+r.overPct+'%</td>'
+   +'<td class="num">'+r.under+'%</td>'
+   +'<td class="odds">'+r.odds+'</td>'
+   +'</tr>';
+ }).join('');
+
+ applyScrollCap();
 }
+
+tableHead.addEventListener('click', function(e){
+ var th=e.target.closest('th');
+ if(!th || th.getAttribute('data-sortable')==='0') return;
+ var key=th.getAttribute('data-key');
+ if(sortState.key===key) sortState.dir*=-1;
+ else sortState={key:key, dir:-1};
+ renderTable();
+});
+
+searchInput.addEventListener('input', function(){
+ searchTerm=searchInput.value.trim().toLowerCase();
+ renderTable();
+});
 
 document.getElementById('tabs').addEventListener('click',function(e){
  var btn=e.target.closest('button.tab');
  if(!btn)return;
  document.querySelectorAll('#tabs button.tab').forEach(function(b){b.classList.remove('active')});
  btn.classList.add('active');
- render(btn.getAttribute('data-cat'));
+ currentCat=btn.getAttribute('data-cat');
+ sortState={key:'overPct', dir:-1};
+ renderTable();
 });
 
 // The ball's flight used to animate the "left" percentage directly, which
@@ -773,6 +788,6 @@ document.getElementById('tabs').addEventListener('click',function(e){
  }
 })();
 
-render('goals');
+renderTable();
 </script>
 </body></html>
