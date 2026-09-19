@@ -614,7 +614,7 @@ div[style*="grid-template-columns"]{min-width:0}
 <a class="so-board-item" href="mlb.html"><span>Matchup Lab</span><b>Yordan Alvarez leads the Matchup Lab.</b><small>Lab 77.8 vs. Grant Holmes</small><em>&rarr;</em></a>
 </div>
 </div>
-<div class="so-board-rail" style="--rail:#64c7ff">
+<div data-cadence="weekly" class="so-board-rail" style="--rail:#64c7ff">
 <div class="so-board-rail-tag"><i></i>NFL</div>
 <div class="so-board-items">
 <a class="so-board-item" href="nfl.html"><span>Receptions</span><b>Saquon Barkley Over 1.5 receptions.</b><small>DraftKings &minus;175 &middot; PHI @ TEN</small><em>&rarr;</em></a>
@@ -623,7 +623,7 @@ div[style*="grid-template-columns"]{min-width:0}
 <a class="so-board-item" href="nfl.html"><span>Receptions</span><b>Kenny Gainwell Over 1.5 receptions.</b><small>DraftKings &minus;193 &middot; TB vs. CLE</small><em>&rarr;</em></a>
 </div>
 </div>
-<div class="so-board-rail" style="--rail:#64c7ff">
+<div data-cadence="weekly" class="so-board-rail" style="--rail:#64c7ff">
 <div class="so-board-rail-tag"><i></i>NFL Bonus</div>
 <div class="so-board-items">
 <a class="so-board-item" href="nfl.html"><span>Rec Yards</span><b>Justice Hill Over 14.5 receiving yards.</b><small>DraftKings &minus;117 &middot; BAL vs. NO</small><em>&rarr;</em></a>
@@ -632,19 +632,19 @@ div[style*="grid-template-columns"]{min-width:0}
 <a class="so-board-item" href="nfl.html"><span>Rec Yards</span><b>MarShawn Lloyd Over 6.5 receiving yards.</b><small>DraftKings &minus;118 &middot; GB @ NYJ</small><em>&rarr;</em></a>
 </div>
 </div>
-<div class="so-board-rail" style="--rail:#ff4d4d">
+<div data-cadence="weekly" class="so-board-rail" style="--rail:#ff4d4d">
 <div class="so-board-rail-tag"><i></i>Premier League</div>
 <div class="so-board-items">
-<a class="so-board-item" href="premier-league.html"><span>Total Goals</span><b>Man Utd vs. Fulham Over 3.5 goals.</b><small>Verify price before betting</small><em>&rarr;</em></a>
-<a class="so-board-item" href="premier-league.html"><span>Anytime Assist</span><b>Bruno Fernandes Over 0.5 assists.</b><small>Verify price before betting</small><em>&rarr;</em></a>
-<a class="so-board-item" href="premier-league.html"><span>Goal or Assist</span><b>Cody Gakpo Over 0.5 goals or assists.</b><small>Verify price before betting</small><em>&rarr;</em></a>
-<a class="so-board-item" href="premier-league.html"><span>Goals Conceded</span><b>David Raya Over 0.5 goals conceded.</b><small>Verify price before betting</small><em>&rarr;</em></a>
+<a class="so-board-item" href="premier-league.html"><span>Clean Sheet</span><b>Sunderland to keep a clean sheet.</b><small>DraftKings +700 &middot; Model 15.2%</small><em>&rarr;</em></a>
+<a class="so-board-item" href="premier-league.html"><span>Clean Sheet</span><b>Liverpool to keep a clean sheet.</b><small>DraftKings +310 &middot; Model 26.2%</small><em>&rarr;</em></a>
+<a class="so-board-item" href="premier-league.html"><span>Anytime Assist</span><b>Daniel James Over 0.5 assists.</b><small>DraftKings +400 &middot; LEE vs. CRY</small><em>&rarr;</em></a>
+<a class="so-board-item" href="premier-league.html"><span>Anytime Assist</span><b>Anton Stach Over 0.5 assists.</b><small>DraftKings +380 &middot; LEE vs. CRY</small><em>&rarr;</em></a>
 </div>
 </div>
 </div>
 <div style="margin-top:16px;display:grid;grid-template-columns:2fr 1fr;gap:16px">
 <div class="glass market-card" style="border-radius:22px;padding:24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
-<div><div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.18em;color:var(--gold);margin-bottom:6px">Every desk, every day</div><div style="font-size:1.2rem;font-weight:800">Six desks. One board. Updated by 3PM ET.</div></div>
+<div><div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.18em;color:var(--gold);margin-bottom:6px">Every desk, every day</div><div style="font-size:1.2rem;font-weight:800">Six desks. One board. Updated by 3PM ET.</div><div class="cadence-legend"><span><i class="cd cd-daily"></i>MLB &amp; Terminal refresh daily</span><span><i class="cd cd-weekly"></i>NFL &amp; Premier League &mdash; refreshed weekly, shopped daily, locked the morning before slate</span></div></div>
 <a class="hero-cta hero-cta-gold" href="terminal.html" style="padding:14px 22px;font-size:.75rem">Enter the Terminal</a>
 </div>
 <div class="glass market-card" style="border-radius:22px;padding:20px;grid-column:span 1">
@@ -1024,5 +1024,30 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 </style><script id="so-index-refresh-pill-js">
 (function(){var t=document.getElementById('soRefreshTime');if(!t)return;var d=new Date();
 try{t.textContent=d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit',timeZoneName:'short'})}catch(e){t.textContent=d.toLocaleTimeString()}})();
-</script></body>
+</script><style id="so-weekly-glow-20260919">
+/* Weekly desks carry an ambient glow so a fresh card reads at a glance.
+   box-shadow and an absolutely-positioned wash only - no box-model change,
+   so every rail keeps the geometry it already had. */
+.so-board-rail[data-cadence="weekly"]{position:relative;isolation:isolate;
+ box-shadow:0 0 0 1px color-mix(in srgb,var(--rail) 22%,transparent),
+            0 0 26px -6px color-mix(in srgb,var(--rail) 32%,transparent)}
+.so-board-rail[data-cadence="weekly"]::after{content:'';position:absolute;inset:0;z-index:-1;
+ pointer-events:none;border-radius:inherit;
+ background:radial-gradient(120% 140% at 0% 50%,
+   color-mix(in srgb,var(--rail) 14%,transparent),transparent 62%);
+ animation:weeklyGlow 6s ease-in-out infinite}
+@keyframes weeklyGlow{0%,100%{opacity:.55}50%{opacity:1}}
+.so-board-rail[data-cadence="weekly"] .so-board-rail-tag i{
+ box-shadow:0 0 10px color-mix(in srgb,var(--rail) 70%,transparent)}
+@media(prefers-reduced-motion:reduce){
+ .so-board-rail[data-cadence="weekly"]::after{animation:none;opacity:.8}}
+
+.cadence-legend{display:flex;flex-direction:column;gap:5px;margin-top:12px}
+.cadence-legend span{display:flex;align-items:flex-start;gap:7px;color:#8a97a6;
+ font-size:.7rem;line-height:1.5}
+.cadence-legend i.cd{flex:0 0 7px;width:7px;height:7px;margin-top:5px;border-radius:50%}
+.cd-daily{background:var(--gold);box-shadow:0 0 8px rgba(244,185,66,.5)}
+.cd-weekly{background:#ff4d4d;box-shadow:0 0 8px rgba(255,77,77,.55)}
+@media(max-width:640px){.cadence-legend span{font-size:.66rem}}
+</style></body>
 </html>

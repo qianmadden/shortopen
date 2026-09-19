@@ -160,13 +160,13 @@ footer.so-footer .footer-copy{text-align:left!important;}
       '<div class="who"><b>'+esc(r.n)+'</b><span>'+esc(r.t)+' '+(away?'@':'vs')+' '+esc(opp)+' · '+esc(r.mk).toUpperCase()+'</span></div>'+
       '<div class="bet"><span class="sd '+r.side.toLowerCase()+'" style="display:inline-flex;align-items:center;padding:5px 10px;border-radius:8px;font:900 12px var(--mono);'+
         (r.side==='OVER'?'border:1px solid rgba(34,217,126,.34);color:#7df0b7;background:rgba(34,217,126,.09)':'border:1px solid rgba(255,93,108,.32);color:#ffa3ac;background:rgba(255,93,108,.08)')+
-        '">'+r.side+' '+r.bl+'</span>'+
+        '">'+r.side+' '+(Math.round(r.bl*10)/10).toFixed(1)+'</span>'+
       '<span class="at" style="color:#7f93a6;font:800 8.5px var(--mono);letter-spacing:.08em">at <b style="color:#d5e3ee">'+esc(r.bkn)+'</b></span>'+
       '<span class="px" style="color:#f5c556;font:900 11.5px var(--mono)">'+esc(r.bp)+'</span></div>'+
       '<p class="mtx">'+esc(r.why)+'</p>'+
       '<div class="ft"><span class="ev">EDGE +'+(Math.round(r.ev*10)/10).toFixed(1)+'%</span>'+
       '<span>FAIR '+(Math.round(r.bf*10)/10).toFixed(1)+'%</span>'+
-      '<span>MODEL '+(Math.round(r.ref*10)/10).toFixed(1)+' vs '+r.bl+'</span>'+
+      '<span>MODEL '+(Math.round(r.ref*10)/10).toFixed(1)+' vs '+(Math.round(r.bl*10)/10).toFixed(1)+'</span>'+
       '<span>'+r.tier+'</span></div></div></article>';
   }).join('');
 })();
@@ -224,14 +224,14 @@ footer.so-footer .footer-copy{text-align:left!important;}
       var isBest=(p[0]===r.bk), off=(q.l!==r.cons),
           px=(r.side==='OVER')?q.o:q.u;
       return '<div class="bkrow'+(isBest?' best':'')+(off?' off':'')+'">'+
-        '<i>'+p[1]+'</i><b>'+q.l+'</b><s>'+esc(px)+'</s></div>';
+        '<i>'+p[1]+'</i><b>'+(Math.round(q.l*10)/10).toFixed(1)+'</b><s>'+esc(px)+'</s></div>';
     }).join('')+'</div>';
   }
 
   function callCell(r){
     var pass=(r.tier==='PASS'), sd=r.side.toLowerCase();
     var h='<div class="call'+(pass?' is-pass':'')+'">'+
-      '<div class="hd"><span class="sd '+sd+'">'+r.side+' '+r.bl+'</span>'+
+      '<div class="hd"><span class="sd '+sd+'">'+r.side+' '+(Math.round(r.bl*10)/10).toFixed(1)+'</span>'+
       '<span class="at">at <b>'+esc(r.bkn)+'</b></span><span class="px">'+esc(r.bp)+'</span></div>'+
       '<div class="mt">MODEL FAIR <b>'+n1(r.bf)+'%</b> · BREAK-EVEN AT THIS PRICE <b>'+n1(r.be)+'%</b></div>';
     if(!pass) h+='<p class="wy">'+esc(r.why)+'</p>';
@@ -257,15 +257,15 @@ footer.so-footer .footer-copy{text-align:left!important;}
         return '<tr class="t-'+r.tier.toLowerCase()+'">'+
           '<td><div class="player-cell-clean"><span></span><div><b class="pname">'+esc(r.n)+
             '</b><small>'+esc(r.t)+'</small></div></div></td>'+
-          '<td><div class="game-matchup">'+matchup(r)+'</div><span class="depth">'+r.nb+' books</span></td>'+
-          '<td><div class="mk">'+esc(cat.label)+'</div>'+
-            '<div class="nums"><span class="nb"><u>THE NUMBER</u><b>'+r.bl+'</b></span>'+
+          '<td class="c-game"><div class="game-matchup">'+matchup(r)+'</div><span class="depth">'+r.nb+' books</span></td>'+
+          '<td data-l="MARKET VS MODEL"><div class="mk">'+esc(cat.label)+'</div>'+
+            '<div class="nums"><span class="nb"><u>THE NUMBER</u><b>'+n1(r.bl)+'</b></span>'+
             '<span class="arw">&rarr;</span>'+
             '<span class="nb proj"><u>MODEL (EX-BOOK)</u><b>'+n1(r.ref)+'</b></span></div>'+
             '<div class="gapline"><k>GAP '+(gz?'<em>LEVEL</em>':'<em class="'+(up?'up':'dn')+'">'+(up?'+':'')+r.gap+' '+esc(cat.unit)+'</em>')+
-            '</k> <k>CONSENSUS '+r.cons+'</k> <k>&sigma; '+r.sig+'</k></div></td>'+
-          '<td>'+books(r)+'</td>'+
-          '<td>'+callCell(r)+'</td>'+
+            '</k> <k>CONSENSUS '+n1(r.cons)+'</k> <k>&sigma; '+n1(r.sig)+'</k></div></td>'+
+          '<td data-l="BOOK LINES">'+books(r)+'</td>'+
+          '<td data-l="THE CALL">'+callCell(r)+'</td>'+
           '<td><span class="stamp s-'+r.tier.toLowerCase()+'">'+r.tier+'</span>'+
             '<div class="evline">EDGE VS MARKET<b class="'+(r.ev>0?'pos':'neg')+'">'+
             (r.ev>0?'+':'')+n1(r.ev)+'%</b></div>'+
@@ -402,9 +402,87 @@ tr.t-lean td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
 .ccard .ft span{padding:4px 8px;border:1px solid rgba(255,255,255,.07);border-radius:999px;color:#8ba0b2;font:800 7.5px var(--mono);letter-spacing:.07em}
 .ccard .ft span.ev{border-color:rgba(34,217,126,.3);color:#7df0b7;background:rgba(34,217,126,.06)}
 
+
+/* ---- phones: the table becomes a stack of cards ---------------------- */
+@media(max-width:760px){
+ .props-table-wrap{overflow-x:visible!important;overflow-y:visible!important;max-height:none!important;
+   margin:14px 0 0!important;padding:0!important;border:0!important;border-radius:0!important;
+   background:transparent!important;box-shadow:none!important}
+ .props-table{display:block!important;width:100%!important;min-width:0!important;
+   table-layout:auto!important;border-collapse:separate!important}
+ .props-table thead{display:none!important}
+ .props-table tbody{display:grid!important;gap:10px;width:100%}
+ .props-table tr{display:grid!important;
+   grid-template-columns:minmax(0,1fr) 104px;gap:11px 10px;
+   padding:14px!important;border:1px solid var(--line)!important;border-radius:14px!important;
+   background:linear-gradient(145deg,rgba(11,23,35,.92),rgba(5,12,20,.95))!important}
+ .props-table tbody tr:nth-child(even) td,.props-table tbody tr:hover{background:none!important}
+ .props-table td{display:block!important;width:auto!important;padding:0!important;
+   border:0!important;background:none!important;opacity:1!important}
+ .props-table td:nth-child(1){grid-column:1;grid-row:1;align-self:center}
+ .props-table td:nth-child(6){grid-column:2;grid-row:1}
+ .props-table td.c-game{grid-column:1/-1;grid-row:2;
+   display:flex!important;align-items:center;gap:10px;
+   padding-bottom:11px!important;border-bottom:1px solid rgba(255,255,255,.06)!important}
+ .props-table td:nth-child(3){grid-column:1/-1;grid-row:3}
+ .props-table td:nth-child(4){grid-column:1/-1;grid-row:4}
+ .props-table td:nth-child(5){grid-column:1/-1;grid-row:5}
+
+ /* captions, since the header row is gone */
+ .props-table td[data-l]:before{content:attr(data-l);display:block;margin-bottom:7px;
+   color:#5f7386;font:800 7.5px var(--mono);letter-spacing:.13em}
+ .props-table td:nth-child(3) .mk{display:none}
+
+ .props-table td.c-game .game-matchup{font-size:11.5px}
+ .props-table td.c-game .depth{margin:0!important;color:#5f7386;font-size:8px}
+ .player-cell-clean .pname{max-width:none!important;font-size:14px!important}
+ .player-cell-clean>span{height:26px}
+
+ /* stamp + edge sit together in the corner */
+ .stamp{padding:6px 8px!important;font-size:8.5px!important;letter-spacing:.1em!important}
+ .evline{margin-top:5px!important;font-size:7px!important}
+ .evline b{font-size:12px!important}
+
+ .nums{flex-wrap:wrap}
+ .nums .nb{flex:1 1 0;min-width:0}
+ .gapline{font-size:8px!important}
+ .bkgrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+ .bkrow{grid-template-columns:1fr;justify-items:center;gap:3px;text-align:center;padding:7px 5px}
+ .bkrow i{font-size:7.5px}
+ .call{padding:11px!important}
+ .call .wy{font-size:10px!important;line-height:1.6}
+ .call .mt{font-size:8px!important;line-height:1.6}
+ .shopflag{display:flex!important;width:100%;justify-content:center;text-align:center;
+   font-size:7.5px!important;letter-spacing:.05em!important}
+
+ /* tier colour moves from the cell edge to the whole card */
+ tr.t-pass td{opacity:1}
+ tr.t-strong td,tr.t-lean td{background:none!important}
+ tr.t-strong td:first-child,tr.t-lean td:first-child{box-shadow:none!important}
+ .props-table tr.t-strong{border-color:rgba(34,217,126,.42)!important;
+   background:linear-gradient(145deg,rgba(14,38,30,.92),rgba(5,13,20,.95))!important}
+ .props-table tr.t-lean{border-color:rgba(244,185,66,.34)!important;
+   background:linear-gradient(145deg,rgba(33,29,18,.9),rgba(5,12,20,.95))!important}
+ .props-table tr.t-pass{opacity:.8}
+
+ /* controls stack cleanly */
+ .props-controls{display:grid!important;grid-template-columns:1fr!important;gap:9px!important}
+ .props-tabs{grid-column:1/-1}
+ .vfilter{width:100%;justify-content:stretch}
+ .vfilter button{flex:1;text-align:center}
+ .props-search{width:100%}
+ .props-controls>#propsCount{grid-column:1;justify-self:start}
+ .vsum b{font-size:8px;padding:6px 10px}
+ .fut-legend{display:grid!important;gap:7px!important;overflow:visible!important}
+ .fut-legend span{white-space:normal!important;font-size:8.5px}
+}
+@media(max-width:420px){
+ .props-table tr{grid-template-columns:minmax(0,1fr) 92px}
+ .bkgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .nums .nb b{font-size:12px!important}
+}
+
 @media(max-width:700px){
- .props-table{min-width:1120px!important}
- .props-table td{padding:11px 12px!important}
  .card-grid{display:flex!important;gap:10px;margin:14px -14px 0;padding:2px 14px 12px;overflow-x:auto;scroll-snap-type:x mandatory}
  .ccard{flex:0 0 86vw;max-width:350px;scroll-snap-align:start}
  .props-controls{grid-template-columns:1fr!important}
