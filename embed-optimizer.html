@@ -1862,6 +1862,103 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;-webk
     box-shadow:inset 0 -1px 0 var(--border2)}
 }
 </style>
+<style id="so-zoom-header-a">
+@media (min-width:1181px){ .wrap{zoom:.9} }
+.pagehead{padding-bottom:18px}
+.pagehead p{margin-top:8px}
+.steps{list-style:none;display:flex;flex-wrap:wrap;gap:8px 14px;margin:16px 0 0;padding:0;
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#8ea2b8}
+.steps li{display:flex;align-items:center;gap:9px}
+.steps li+li:before{content:"→";color:#34465b;margin-right:5px}
+.steps i{font-style:normal;color:var(--orange);font-weight:700}
+.steps span{color:var(--white)} .steps b{color:var(--green-bright)}
+</style>
+<style id="so-compact-rail">
+/* shorter field */
+.field.mlb{aspect-ratio:1/.74} .field.nfl{aspect-ratio:1/.8}
+.fp{--fplab:96px}
+.fp b{max-width:100%}
+/* one-line lineup rows */
+.R .rows .grp{padding:6px 15px}
+.R .rows .row{padding-top:7px;padding-bottom:7px}
+.R .rows .nm s{display:inline;margin-left:8px}
+.R .rows .v{display:flex;justify-content:flex-end;align-items:baseline}
+.R .rows .v s{display:inline-block;margin:0 0 0 12px;min-width:34px;text-align:right}
+/* Both / Field / List toggle */
+.rh .vt{display:flex;border:1px solid var(--border2);border-radius:6px;overflow:hidden;margin-left:auto}
+.rh .vt button{all:unset;cursor:pointer;font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;padding:4px 8px;color:var(--label)}
+.rh .vt button.on{background:rgba(232,160,32,.16);color:var(--gold-light)}
+.R.v-field .rows,.R.v-list .field{display:none}
+</style>
+<script id="so-compact-rail-js">
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.desk .R .rh').forEach(rh=>{
+    const R=rh.parentElement, s=rh.querySelector('s');
+    const vt=document.createElement('div'); vt.className='vt';
+    vt.innerHTML='<button class="on" data-v="both">BOTH</button><button data-v="field">FIELD</button><button data-v="list">LIST</button>';
+    rh.insertBefore(vt,s);
+    vt.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+      vt.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+      R.classList.remove('v-field','v-list'); if(b.dataset.v!=='both')R.classList.add('v-'+b.dataset.v);});
+  });
+});
+</script>
+<style id="so-v5">
+/* field art fills the (shorter) field box exactly; explicit size so Safari can't overflow it */
+.field{overflow:hidden}
+.field .fieldbg{inset:0;width:100%;height:100%}
+.buildgo .btn.big{padding:11px 20px}
+/* click-to-remove */
+.R .fp[data-add],.R .rows .row[data-add]{cursor:pointer}
+.R .fp[data-add]:hover b{color:#ff8a8a;text-decoration:line-through;text-decoration-thickness:1px}
+.R .fp[data-add]:hover .dot{background:#ef4444;box-shadow:0 0 10px rgba(239,68,68,.6)}
+.R .rows .row[data-add]:hover{background:rgba(239,68,68,.07)}
+.R .rows .row[data-add]:hover .p{border-color:rgba(239,68,68,.55);color:transparent;position:relative}
+.R .rows .row[data-add]:hover .p:after{content:"✕";position:absolute;inset:0;display:grid;place-items:center;color:#ff8a8a;font-size:.6rem}
+.R .rows .row[data-add]:hover .nm{color:#ffb4b4}
+/* zone 4 tabs — green / gold pills */
+.z4tabs{display:flex;align-items:center;gap:6px}
+.z4tabs button{all:unset;cursor:pointer;font:inherit;font-size:.52rem;font-weight:700;letter-spacing:.13em;line-height:1;
+  display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid;transition:background .15s,color .15s,box-shadow .15s}
+.z4tabs button:before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.55}
+.z4tabs [data-z4=chart]{color:#54f0a5;border-color:rgba(84,240,165,.4);background:rgba(84,240,165,.06)}
+.z4tabs [data-z4=built]{color:#f5c15c;border-color:rgba(232,160,32,.45);background:rgba(232,160,32,.07)}
+.z4tabs button:hover{filter:brightness(1.15)}
+.z4tabs button:hover:before,.z4tabs button.on:before{opacity:1}
+.z4tabs [data-z4=chart].on{background:rgba(84,240,165,.16);border-color:#54f0a5;box-shadow:0 0 8px rgba(84,240,165,.15)}
+.z4tabs [data-z4=built].on{background:rgba(232,160,32,.18);border-color:#e8a020;box-shadow:0 0 8px rgba(232,160,32,.15)}
+.z4tabs button i{font-style:normal;min-width:14px;text-align:center;padding:1px 5px;font-size:.5rem;border-radius:999px;background:rgba(232,160,32,.22);color:#ffd27a}
+.z4tabs button.ping i{animation:z4ping 1s ease 2}
+@keyframes z4ping{50%{background:#e8a020;color:#111;box-shadow:0 0 10px #e8a020}}
+.z4body{position:relative}
+.z4built{position:absolute;inset:0;overflow-y:auto;visibility:hidden}
+.z4body.built .z4chart{visibility:hidden}
+.z4body.built .z4built{visibility:visible}
+.z4built .built-list:not(:empty){border-top:0;padding:14px 16px}
+.z4built .built-list>strong{display:none}
+.z4built .built-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));overflow:visible;padding-top:0}
+.z4empty{display:none;padding:60px 16px;text-align:center;font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;color:var(--muted)}
+.z4empty b{color:var(--gold-light)}
+.z4built .built-list:empty+.z4empty{display:block}
+/* lineup header never wraps */
+.rh{flex-wrap:nowrap}
+.rh k,.rh s{white-space:nowrap}
+.rh s{font-size:.66rem;min-width:44px;text-align:right}
+</style>
+<script id="so-v5-js">
+document.addEventListener('DOMContentLoaded',()=>{try{
+  document.querySelectorAll('.z4tabs').forEach(tabs=>{
+    const body=tabs.nextElementSibling, list=body.querySelector('.built-list'), n=tabs.querySelector('[data-z4n]'), bt=tabs.querySelector('[data-z4=built]');
+    tabs.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+      tabs.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+      body.classList.toggle('built',b.dataset.z4==='built');});
+    let last=0;
+    const sync=()=>{const c=list.querySelectorAll('.built-card').length;n.textContent=c;
+      if(c&&c!==last){bt.classList.remove('ping');void bt.offsetWidth;bt.classList.add('ping');}last=c;};
+    new MutationObserver(sync).observe(list,{childList:true,subtree:true}); sync();
+  });
+}catch(e){console.warn('z4 tabs',e)}});
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -1869,7 +1966,11 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;-webk
   <div class="k">SHORTOPEN · OPTIMIZER</div>
   <h1>Build the lineup the field isn't.</h1>
   <p>MLB and NFL player pools, ownership intelligence, and a lineup builder with contest and stacking controls.</p>
-  <div class="live"><b>These controls actually run.</b> Contest type, min stack, max ownership, lineup count and locked/excluded all feed a live optimizer. Press <b>BUILD LINEUP</b> and the field, rows, totals, stack chips and frontier all recompute. Lock a player with 🔒 in the pool and he'll survive every rebuild; exclude with ✕ and he'll never appear. Try GPP vs CASH — the lineup changes, because GPP weights leverage and CASH weights raw points per dollar.</p></div>
+  <ol class="steps">
+    <li><i>01</i>Lock <span>🔒</span> or cut <span>✕</span> in the pool</li>
+    <li><i>02</i>Set contest, stack &amp; ownership cap</li>
+    <li><i>03</i>Build — <b>GPP</b> chases leverage · <b>CASH</b> chases pts/$</li>
+  </ol>
 </header>
 
 <div class="sw" id="sw">
@@ -1898,10 +1999,6 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;-webk
 
   <div class="zone">ZONE 2 <b>· BUILD</b> — working controls</div>
   <div class="build">
-    <div class="bh">
-      <div><k>◆ AUTO-OPTIMIZE</k><p>Set the constraints, let the model fill the gaps. Locked players are never replaced.</p></div>
-      <button class="btn big" data-act="build">BUILD LINEUP →</button>
-    </div>
     <div class="ctrls">
       <div class="ct"><k>CONTEST TYPE</k><div class="seg" data-ctl="contest"><button data-v="GPP" class="on">GPP</button><button data-v="CASH">CASH</button></div></div>
       <div class="ct"><k>MIN STACK</k><div class="seg" data-ctl="stack"><button data-v="1">OFF</button><button data-v="2">2</button><button data-v="3">3</button><button data-v="4" class="on">4</button><button data-v="5">5</button></div></div>
@@ -1913,8 +2010,8 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;-webk
       <span class="hint" data-f="hint">—</span>
       <div class="pager" data-f="pager" style="display:none"><button data-act="prev">‹</button><span data-f="pageinfo">1 / 1</span><button data-act="next">›</button></div>
       <button class="btn ghost" data-act="reset">RESET CONSTRAINTS</button>
+      <button class="btn big" data-act="build">BUILD LINEUP →</button>
     </div>
-    <div class="built-list" data-f="built" aria-live="polite"></div>
   </div>
 
   <div class="zone">ZONE 3 <b>· DESK</b></div>
@@ -1939,10 +2036,10 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;-webk
     </div>
     <div class="R">
       <div class="rh"><k>YOUR LINEUP</k><s data-f="valid">—</s></div>
-      <div class="field mlb"><svg class="fieldbg" viewBox="0 0 300 258" aria-hidden="true">
-        <path d="M150 236 L26 114 A176 176 0 0 1 274 114 Z" fill="rgba(34,197,94,.045)" stroke="rgba(26,37,53,.9)"/>
-        <path d="M150 236 L92 178 L150 120 L208 178 Z" fill="rgba(232,160,32,.05)" stroke="rgba(26,37,53,.9)"/>
-        <circle cx="150" cy="178" r="4" fill="rgba(26,37,53,.9)"/>
+      <div class="field mlb"><svg class="fieldbg" viewBox="0 0 300 222" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M150 196 L10 56 A221 221 0 0 1 290 56 Z" fill="rgba(34,197,94,.045)" stroke="rgba(26,37,53,.9)"/>
+        <path d="M150 196 L104 150 L150 104 L196 150 Z" fill="rgba(232,160,32,.05)" stroke="rgba(26,37,53,.9)"/>
+        <circle cx="150" cy="150" r="3.4" fill="rgba(26,37,53,.9)"/>
       </svg><div data-f="field"></div></div>
       <div class="rows" data-f="rows"></div>
       <div class="tot"><div><k>SALARY</k><v class="go" data-f="tsal">—</v></div><div><k>LEFT</k><v data-f="tleft">—</v></div><div><k>PROJ</k><v class="gd" data-f="tprj">—</v></div></div>
@@ -1951,7 +2048,8 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;-webk
     </div>
   </div>
 
-  <div class="zone">ZONE 4 <b>· VALUE FRONTIER</b> — ownership colouring removed</div>
+  <div class="zone z4tabs">ZONE 4 <b>·</b><button class="on" data-z4="chart">VALUE CHART</button><button data-z4="built">BUILT LINEUPS <i data-z4n>0</i></button></div>
+  <div class="z4body"><div class="z4p z4chart">
   <div class="lgd">
     <span class="mk"><b style="background:var(--dot)"></b>POOL</span>
     <span class="mk"><b style="background:var(--gold-light)"></b>IN YOUR LINEUP</span>
@@ -1959,6 +2057,7 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;-webk
     <span style="margin-left:auto">HOVER ANY DOT</span>
   </div>
   <div class="chartwrap" style="padding:4px 16px 14px"><div data-f="chart"></div><div class="tip" data-f="tip"></div></div>
+  </div><div class="z4p z4built"><div class="built-list" data-f="built" aria-live="polite"></div><div class="z4empty">No built lineups yet — press <b>BUILD LINEUP</b>.</div></div></div>
 </div>
 
 </div>
@@ -1980,10 +2079,6 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;-webk
   </div>
   <div class="zone">ZONE 2 <b>· BUILD</b></div>
   <div class="build">
-    <div class="bh">
-      <div><k>◆ AUTO-OPTIMIZE</k><p>Set the constraints, let the model fill the gaps.</p></div>
-      <button class="btn big" data-act="build">BUILD LINEUP →</button>
-    </div>
     <div class="ctrls">
       <div class="ct"><k>CONTEST TYPE</k><div class="seg" data-ctl="contest"><button data-v="GPP" class="on">GPP</button><button data-v="CASH">CASH</button></div></div>
       <div class="ct"><k>QB STACK</k><div class="seg" data-ctl="stack"><button data-v="1" class="on">NONE</button><button data-v="2">+1</button><button data-v="3">+2</button></div></div>
@@ -1995,9 +2090,9 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;-webk
       <span class="hint" data-f="hint">—</span>
       <div class="pager" data-f="pager" style="display:none"><button data-act="prev">‹</button><span data-f="pageinfo">1 / 1</span><button data-act="next">›</button></div>
       <button class="btn ghost" data-act="reset">RESET CONSTRAINTS</button>
+      <button class="btn big" data-act="build">BUILD LINEUP →</button>
     </div>
   </div>
-  <div class="built-list" data-f="built" aria-live="polite"></div>
   <div class="zone">ZONE 3 <b>· DESK</b></div>
   <div class="desk">
     <div class="L">
@@ -2015,12 +2110,12 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;-webk
     </div>
     <div class="R">
       <div class="rh"><k>YOUR LINEUP</k><s data-f="valid">—</s></div>
-      <div class="field nfl"><svg class="fieldbg" viewBox="0 0 300 318" aria-hidden="true">
-        <rect x="2" y="2" width="296" height="314" rx="6" fill="rgba(34,197,94,.04)" stroke="rgba(26,37,53,.9)"/>
-        <line x1="2" y1="252" x2="298" y2="252" stroke="rgba(26,37,53,.95)"/>
-        <line x1="2" y1="190" x2="298" y2="190" stroke="rgba(26,37,53,.5)" stroke-dasharray="3 5"/>
-        <line x1="2" y1="126" x2="298" y2="126" stroke="rgba(26,37,53,.5)" stroke-dasharray="3 5"/>
-        <line x1="2" y1="62" x2="298" y2="62" stroke="rgba(26,37,53,.5)" stroke-dasharray="3 5"/>
+      <div class="field nfl"><svg class="fieldbg" viewBox="0 0 300 240" preserveAspectRatio="none" aria-hidden="true">
+        <rect x="8" y="7" width="284" height="226" rx="6" fill="rgba(34,197,94,.04)" stroke="rgba(26,37,53,.9)"/>
+        <line x1="8" y1="190" x2="292" y2="190" stroke="rgba(26,37,53,.95)"/>
+        <line x1="8" y1="143" x2="292" y2="143" stroke="rgba(26,37,53,.5)" stroke-dasharray="3 5"/>
+        <line x1="8" y1="96" x2="292" y2="96" stroke="rgba(26,37,53,.5)" stroke-dasharray="3 5"/>
+        <line x1="8" y1="50" x2="292" y2="50" stroke="rgba(26,37,53,.5)" stroke-dasharray="3 5"/>
       </svg><div data-f="field"></div></div>
       <div class="rows" data-f="rows"></div>
       <div class="tot"><div><k>SALARY</k><v class="go" data-f="tsal">—</v></div><div><k>LEFT</k><v data-f="tleft">—</v></div><div><k>PROJ</k><v class="gd" data-f="tprj">—</v></div></div>
@@ -2028,7 +2123,8 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;-webk
       <div class="acts"><button class="btn" data-act="save">SAVE LINEUP</button><button class="btn ghost" data-act="clear">CLEAR</button><button class="btn ghost" data-act="export">EXPORT CSV</button></div><div class="saved-list" data-f="saved"></div>
     </div>
   </div>
-  <div class="zone">ZONE 4 <b>· VALUE FRONTIER</b></div>
+  <div class="zone z4tabs">ZONE 4 <b>·</b><button class="on" data-z4="chart">VALUE CHART</button><button data-z4="built">BUILT LINEUPS <i data-z4n>0</i></button></div>
+  <div class="z4body"><div class="z4p z4chart">
   <div class="lgd">
     <span class="mk"><b style="background:var(--dot)"></b>POOL</span>
     <span class="mk"><b style="background:var(--gold-light)"></b>IN YOUR LINEUP</span>
@@ -2036,6 +2132,7 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;-webk
     <span style="margin-left:auto">HOVER ANY DOT</span>
   </div>
   <div class="chartwrap" style="padding:4px 16px 14px"><div data-f="chart"></div><div class="tip" data-f="tip"></div></div>
+  </div><div class="z4p z4built"><div class="built-list" data-f="built" aria-live="polite"></div><div class="z4empty">No built lineups yet — press <b>BUILD LINEUP</b>.</div></div></div>
 </div>
 </div>
 
@@ -2130,11 +2227,11 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;-webk
 <p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span style="color:#e8c078;font-weight:600">1-800-GAMBLER</span>. <a href="terms.html" style="text-decoration:underline;color:#e8c078">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p>
 </footer>
 <script>
-const MLB_BATTERS = [["Yordan Alvarez",6500,"OF","HOU","ATH",10.95,1.68,"L",6.23,2,"",17.7,20.58,16.57],["Elly De La Cruz",6100,"SS","CIN","ATL",10.72,1.76,"S",2.54,2,"",16.18,24.9,14.14],["Shohei Ohtani",6000,"1B/OF","LAD","SD",10.49,1.75,"L",4.57,1,"",23.41,33.39,18.39],["Fernando Tatis Jr.",6200,"2B/OF","SD","LAD",10.41,1.68,"R",2.93,1,"",18.39,15.03,17.73],["Ben Rice",5600,"1B/C","NYY","TB",10.34,1.85,"L",3.76,1,"",12.26,22.16,17.64],["Ronald Acuna Jr.",5800,"OF","ATL","CIN",10.28,1.77,"R",4.96,2,"",18.5,27.4,16.16],["Randy Arozarena",5500,"OF","SEA","LAA",10.2,1.85,"R",4.23,2,"",18.17,32.35,12.09],["Jeremy Pena",5200,"SS","HOU","ATH",10.1,1.94,"R",6.23,1,"",23.12,27.46,17.02],["Matt Olson",5300,"1B","ATL","CIN",9.78,1.85,"L",4.96,3,"",22.86,28.42,14.16],["Junior Caminero",6300,"3B","TB","NYY",9.7,1.54,"R",2.74,3,"",18.51,15.77,13.6],["Sal Stewart",5100,"1B","CIN","ATL",9.48,1.86,"R",2.54,3,"",14.3,18.18,14.5],["Jose Ramirez",5300,"3B","CLE","BOS",9.38,1.77,"S",3.01,2,"",13.65,33.39,16.28],["Shea Langeliers",5400,"C","ATH","HOU",9.33,1.73,"R",4.27,3,"",24.04,20.36,13.5],["Mookie Betts",5500,"SS","LAD","SD",9.16,1.67,"R",4.57,2,"",15.85,26.14,13.49],["Drake Baldwin",4700,"C","ATL","CIN",9.07,1.93,"L",4.96,1,"",18.1,27.77,10.62],["Zach Neto",4900,"SS","LAA","SEA",9.0,1.84,"R",2.27,1,"",8.41,23.98,11.91],["Wilyer Abreu",5100,"OF","BOS","CLE",8.89,1.74,"L",3.49,3,"",12.45,14.65,10.54],["Zack Gelof",5700,"3B","ATH","HOU",8.8,1.54,"R",4.27,5,"",18.07,26.15,12.57],["Freddie Freeman",5400,"1B","LAD","SD",8.75,1.62,"L",4.57,3,"",18.94,14.23,13.9],["Yandy Diaz",4300,"1B/3B","TB","NYY",8.62,2.0,"R",2.74,1,"",8.61,32.63,12.89],["Manny Machado",5200,"3B","SD","LAD",8.6,1.65,"R",2.93,3,"",17.13,33.15,10.94],["Mike Trout",5000,"OF","LAA","SEA",8.52,1.7,"R",2.27,2,"",15.24,25.45,14.77],["Cody Bellinger",4500,"OF","NYY","TB",8.44,1.88,"L",3.76,2,"",13.46,28.69,8.72],["Willson Contreras",4600,"1B","BOS","CLE",8.38,1.82,"R",3.49,4,"",10.36,28.14,10.63],["Michael Harris II",4200,"OF","ATL","CIN",8.18,1.95,"L",4.96,4,"",20.29,18.38,12.56],["Isaac Paredes",4600,"3B","HOU","ATH",8.13,1.77,"R",6.23,3,"",17.43,20.37,9.72],["Jonathan Aranda",4100,"1B","TB","NYY",8.07,1.97,"L",2.74,2,"",10.82,14.92,8.47],["Chase DeLauter",4100,"OF","CLE","BOS",8.05,1.96,"L",3.01,3,"",10.18,25.8,7.93],["Henry Bolte",4700,"OF","ATH","HOU",8.01,1.7,"R",4.27,1,"",16.04,27.89,8.89],["Jackson Merrill",4900,"OF","SD","LAD",7.99,1.63,"L",2.93,5,"",14.25,14.74,12.53],["Luis Garcia Jr.",5000,"1B","NYY","TB",7.9,1.58,"L",3.76,3,"",12.85,20.87,13.72],["Max Muncy",4800,"3B","LAD","SD",7.67,1.6,"L",4.57,4,"",19.06,29.19,9.02],["Jazz Chisholm Jr.",4200,"2B","NYY","TB",7.61,1.81,"L",3.76,6,"",9.09,21.87,12.59],["Andy Pages",4500,"OF","LAD","SD",7.59,1.69,"R",4.57,8,"",16.53,18.6,11.54],["Julio Rodriguez",4400,"OF","SEA","LAA",7.57,1.72,"R",4.23,5,"",14.44,18.46,10.56],["Ty France",4200,"1B","SD","LAD",7.52,1.79,"R",2.93,4,"",12.6,32.73,11.72],["Roman Anthony",4400,"OF","BOS","CLE",7.47,1.7,"L",3.49,1,"",13.68,31.6,9.72],["Jose Altuve",4400,"2B","HOU","ATH",7.46,1.7,"R",6.23,4,"",13.94,26.05,8.38],["Liam Hicks",4100,"C","TB","NYY",7.45,1.82,"L",2.74,4,"",6.9,21.69,10.31],["Dominic Canzone",4100,"OF","SEA","LAA",7.32,1.79,"L",4.23,3,"",15.72,26.83,9.79],["Kyle Tucker",4600,"OF","LAD","SD",7.2,1.57,"L",4.57,6,"",19.38,29.13,9.85],["Angel Martinez",4200,"OF","CLE","BOS",7.15,1.7,"S",3.01,5,"",14.72,15.86,10.39],["Cal Raleigh",4800,"C","SEA","LAA",7.02,1.46,"S",4.23,4,"",20.6,31.56,11.34],["Teoscar Hernandez",4800,"OF","LAD","SD",6.97,1.45,"R",4.57,7,"",20.3,15.74,10.76],["Will Smith",4200,"C","LAD","SD",6.87,1.64,"R",4.57,5,"",19.6,15.49,8.15],["Eugenio Suarez",4100,"3B","CIN","ATL",6.86,1.67,"R",2.54,6,"",7.07,32.61,9.69],["Lawrence Butler",4200,"OF","ATH","HOU",6.66,1.59,"L",4.27,4,"",9.84,27.1,8.49],["Samad Taylor",4000,"OF","SD","LAD",6.66,1.67,"R",2.93,9,"",5.4,31.19,9.43],["Dustin Harris",3300,"OF","SD","LAD",6.66,2.02,"L",2.93,2,"",15.36,26.83,10.17],["Steven Kwan",3500,"OF","CLE","BOS",6.65,1.9,"L",3.01,1,"",3.32,24.11,9.88],["JJ Bleday",3900,"OF","CIN","ATL",6.6,1.69,"L",2.54,4,"",11.2,30.47,8.06],["Mauricio Dubon",3400,"OF/SS","ATL","CIN",6.55,1.93,"R",4.96,5,"",18.05,26.07,9.54],["Jo Adell",3700,"OF","CLE","BOS",6.53,1.76,"R",3.01,4,"",10.77,14.93,4.57],["Tommy Edman",4400,"OF","LAD","SD",6.46,1.47,"S",4.57,9,"",12.86,25.67,9.26],["Adley Rutschman",4000,"C","BOS","CLE",6.46,1.61,"S",3.49,5,"",14.65,25.77,10.53],["Chandler Simpson",3300,"OF","TB","NYY",6.45,1.95,"L",2.74,6,"",2.5,14.3,5.93],["J.P. Crawford",3500,"SS","SEA","LAA",6.42,1.83,"L",4.23,1,"",13.96,26.61,9.39],["Josh Naylor",3800,"1B","SEA","LAA",6.39,1.68,"L",4.23,6,"",16.17,15.44,8.6],["Yainer Diaz",3900,"C","HOU","ATH",6.34,1.63,"R",6.23,5,"",23.22,28.74,5.15],["Victor Mesa Jr.",3700,"OF","TB","NYY",6.32,1.71,"L",2.74,5,"",10.46,25.86,10.1],["Christian Walker",4000,"1B","HOU","ATH",6.27,1.57,"R",6.23,7,"",14.92,16.55,8.56],["Ozzie Albies",3800,"2B","ATL","CIN",6.27,1.65,"S",4.96,8,"",10.92,23.76,10.02],["Vaughn Grissom",3900,"1B","LAA","SEA",6.24,1.6,"R",2.27,4,"",12.96,16.33,9.67],["Spencer Jones",3500,"OF","NYY","TB",6.24,1.78,"L",3.76,4,"",19.53,21.67,7.83],["Austin Riley",3400,"3B","ATL","CIN",6.14,1.81,"R",4.96,6,"",13.1,33.58,6.64],["Xander Bogaerts",3900,"SS","SD","LAD",6.04,1.55,"R",2.93,6,"",15.42,31.58,5.43],["Jarren Duran",3500,"OF","BOS","CLE",5.97,1.71,"L",3.49,7,"",11.02,23.45,4.97],["Jeff McNeil",3700,"1B/2B","ATH","HOU",5.92,1.6,"L",4.27,2,"",16.59,32.37,9.32],["Trevor Story",3100,"SS","BOS","CLE",5.91,1.91,"R",3.49,6,"",17.67,20.17,9.12],["Caleb Durbin",3100,"3B","BOS","CLE",5.9,1.9,"R",3.49,8,"",6.01,26.97,6.89],["Wade Meckler",3800,"OF","LAA","SEA",5.87,1.54,"L",2.27,3,"",5.65,29.67,8.94],["George Lombard Jr.",2800,"SS","NYY","TB",5.83,2.08,"R",3.76,5,"",10.93,23.33,7.35],["Daulton Varsho",3700,"OF","HOU","ATH",5.73,1.55,"L",6.23,6,"",18.76,27.14,5.69],["Cole Young",3200,"2B","SEA","LAA",5.71,1.78,"L",4.23,7,"",15.04,33.58,6.35],["Brayan Rocchio",3600,"SS","CLE","BOS",5.7,1.58,"S",3.01,9,"",5.47,33.76,5.97],["Tyler Stephenson",3300,"C","CIN","ATL",5.55,1.68,"R",2.54,5,"",8.7,27.65,8.21],["Luis Campusano",3700,"C","SD","LAD",5.51,1.49,"R",2.93,7,"",9.96,15.67,4.73],["Nick Sogard",3300,"1B/2B","BOS","CLE",5.51,1.67,"S",3.49,9,"",6.25,32.08,5.04],["Richie Palacios",3200,"2B","TB","NYY",5.44,1.7,"L",2.74,7,"",6.9,19.92,6.97],["Heliot Ramos",3000,"OF","NYY","TB",5.44,1.81,"R",3.76,7,"",9.43,14.4,6.89],["Cam Smith",3800,"OF","HOU","ATH",5.43,1.43,"R",6.23,9,"",14.36,29.63,3.67],["Cedric Mullins",3800,"OF","TB","NYY",5.38,1.42,"L",2.74,8,"",8.36,23.79,5.09],["Donovan Walton",3400,"2B/SS","ATH","HOU",5.36,1.58,"L",4.27,6,"",15.67,23.13,8.06],["Matt McLain",3600,"2B","CIN","ATL",5.31,1.47,"R",2.54,8,"",9.06,28.77,5.04],["Jake Cronenworth",3500,"2B/3B","SD","LAD",5.31,1.52,"L",2.93,8,"",7.15,15.31,5.22],["Hector Rodriguez",3100,"OF","CIN","ATL",5.04,1.63,"L",2.54,7,"",13.82,18.23,6.66],["Taylor Walls",3100,"SS","TB","NYY",5.0,1.61,"S",2.74,9,"",5.07,25.63,1.75],["Lazaro Montes",3600,"OF","SEA","LAA",4.92,1.37,"L",4.23,8,"",17.49,16.16,2.33],["Jonah Heim",3400,"C","ATH","HOU",4.92,1.45,"S",4.27,8,"",9.28,20.86,6.98],["Moises Ballesteros",3200,"1B/C","LAA","SEA",4.78,1.49,"L",2.27,5,"",7.54,31.68,4.7],["Carlos Cortes",3200,"OF","ATH","HOU",4.77,1.49,"L",4.27,7,"",9.0,22.62,5.31],["Taylor Trammell",3400,"OF","HOU","ATH",4.63,1.36,"L",6.23,8,"",14.54,14.84,5.93],["Denzer Guzman",2700,"3B","LAA","SEA",4.61,1.71,"R",2.27,6,"",5.38,15.01,6.02],["Mike Yastrzemski",2700,"OF","ATL","CIN",4.54,1.68,"L",4.96,7,"",19.02,26.49,2.17],["Jose Siri",3500,"OF","LAA","SEA",4.33,1.24,"R",2.27,8,"",5.9,32.14,6.03],["Josh Lowe",2800,"OF","LAA","SEA",4.17,1.49,"L",2.27,7,"",11.4,23.88,3.46],["Austin Hedges",3000,"C","CLE","BOS",4.01,1.34,"R",3.01,8,"",5.45,22.24,1.48],["Angel Genao",2600,"2B/3B","CLE","BOS",3.97,1.53,"S",3.01,7,"",10.82,26.13,1.2],["Austin Wells",2300,"C","NYY","TB",3.94,1.71,"L",3.76,8,"",11.98,20.19,2.08],["Ryan McMahon",2500,"3B","NYY","TB",3.78,1.51,"L",3.76,9,"",12.66,24.78,1.2],["Alika Williams",2600,"SS","ATH","HOU",3.72,1.43,"R",4.27,9,"",10.45,28.7,1.2],["Christian Moore",2400,"2B","LAA","SEA",3.53,1.47,"R",2.27,9,"",6.61,32.41,1.2],["Jahmai Jones",2300,"OF","BOS","CLE",3.53,1.53,"R",3.49,2,"",9.76,26.67,1.2],["David Fry",2400,"1B/OF","CLE","BOS",3.44,1.43,"R",3.01,6,"",6.4,25.17,1.2],["Brock Rodden",2400,"3B","SEA","LAA",2.95,1.23,"S",4.23,9,"",13.2,17.04,1.2],["Ha-Seong Kim",2100,"SS","ATL","CIN",2.87,1.37,"R",4.96,9,"",14.15,23.71,1.2],["Carlos Jorge",2600,"OF","CIN","ATL",2.84,1.09,"L",2.54,1,"",7.3,28.76,1.2],["Ke'Bryan Hayes",2200,"3B","CIN","ATL",2.64,1.2,"R",2.54,9,"",11.83,15.99,1.2]];
+const MLB_BATTERS = [["Yordan Alvarez",6500,"OF","HOU","ATH",10.95,1.68,"L",5.76,2,"",24.89,20.58,16.57],["Jackson Chourio",6000,"OF","MIL","STL",10.8,1.8,"R",4.73,2,"",17.41,17.25,16.12],["Shohei Ohtani",6300,"1B/OF","LAD","SF",10.79,1.71,"L",5.6,1,"",24.04,33.39,19.14],["Elly De La Cruz",5900,"SS","CIN","TOR",10.72,1.82,"S",3.27,2,"",14.15,24.9,13.94],["Fernando Tatis Jr.",6200,"2B/OF","SD","ARI",10.49,1.69,"R",4.13,1,"",19.45,15.03,17.85],["Miguel Vargas",5400,"3B","CWS","COL",10.22,1.89,"R",5.72,3,"",19.67,21.36,12.44],["Bobby Witt Jr.",6100,"SS","KC","CLE",10.2,1.67,"R",3.27,2,"",13.25,21.83,15.43],["Brice Turang",5600,"2B","MIL","STL",10.14,1.81,"L",4.73,3,"",20.17,32.01,16.3],["Randy Arozarena",5400,"OF","SEA","LAA",10.13,1.88,"R",3.41,2,"",15.46,32.35,11.91],["Jeremy Pena",5200,"SS","HOU","ATH",10.1,1.94,"R",5.76,1,"",19.44,27.46,17.02],["Ronald Acuna Jr.",5700,"OF","ATL","MIA",9.98,1.75,"R",4.42,2,"",17.32,27.4,15.61],["Mookie Betts",5500,"SS","LAD","SF",9.46,1.72,"R",5.6,2,"",18.26,26.14,13.94],["Jose Ramirez",5100,"3B","CLE","KC",9.46,1.85,"S",4.23,2,"",13.52,33.39,16.22],["Hunter Goodman",5200,"C","COL","CWS",9.41,1.81,"R",2.78,3,"",21.39,18.6,11.57],["Matt Olson",5200,"1B","ATL","MIA",9.41,1.81,"L",4.42,3,"",21.34,28.42,13.48],["Mike Trout",5100,"OF","LAA","SEA",9.38,1.84,"R",3.09,2,"",16.44,25.45,16.22],["Shea Langeliers",5500,"C","ATH","HOU",9.33,1.7,"R",3.74,3,"",16.64,20.36,13.6],["Jake McCarthy",5000,"OF","COL","CWS",9.15,1.83,"L",2.78,1,"",16.18,15.75,11.36],["Freddie Freeman",5300,"1B","LAD","SF",9.05,1.71,"L",5.6,3,"",21.48,14.23,14.27],["Zach Neto",4900,"SS","LAA","SEA",9.0,1.84,"R",3.09,1,"",15.79,23.98,11.91],["Zack Gelof",5800,"3B","ATH","HOU",8.94,1.54,"R",3.74,5,"",10.46,26.15,12.89],["Drake Baldwin",4500,"C","ATL","MIA",8.77,1.95,"L",4.42,1,"",17.31,27.77,10.0],["Jordan Walker",4900,"OF","STL","MIL",8.71,1.78,"R",2.77,3,"",18.64,32.8,12.81],["Jac Caglianone",5100,"OF","KC","CLE",8.68,1.7,"L",3.27,3,"",14.32,28.82,12.71],["Sal Stewart",4900,"1B","CIN","TOR",8.63,1.76,"R",3.27,3,"",13.95,18.18,12.99],["Otto Lopez",4200,"SS","MIA","ATL",8.63,2.05,"R",4.08,3,"",17.06,30.99,11.16],["Jake Bauers",4500,"1B/OF","MIL","STL",8.57,1.9,"L",4.73,5,"",17.89,18.37,14.46],["Manny Machado",5200,"3B","SD","ARI",8.53,1.64,"R",4.13,3,"",18.68,33.15,10.84],["Gabriel Moreno",4200,"C","ARI","SD",8.49,2.02,"R",3.37,3,"",15.21,25.79,10.49],["JJ Wetherholt",4100,"2B/SS","STL","MIL",8.31,2.03,"L",2.77,1,"",11.12,24.3,10.06],["Ketel Marte",4600,"2B","ARI","SD",8.22,1.79,"S",3.37,2,"",18.88,21.34,11.7],["Isaac Paredes",4700,"3B","HOU","ATH",8.2,1.74,"R",5.76,3,"",18.28,20.37,9.89],["Alec Burleson",4700,"1B","STL","MIL",8.17,1.74,"L",2.77,4,"",8.79,26.07,9.31],["William Contreras",4300,"C","MIL","STL",8.11,1.89,"R",4.73,4,"",14.25,17.0,9.23],["Ivan Herrera",4100,"C","STL","MIL",8.07,1.97,"R",2.77,2,"",13.13,33.44,11.47],["Henry Bolte",4800,"OF","ATH","HOU",8.01,1.67,"R",3.74,1,"",8.49,27.89,8.98],["Carter Jensen",4600,"C","KC","CLE",8.01,1.74,"L",3.27,1,"",10.98,31.8,12.31],["Jackson Merrill",4700,"OF","SD","ARI",7.99,1.7,"L",4.13,5,"",17.3,14.74,12.36],["Luke Keaschall",4400,"OF","MIN","TEX",7.93,1.8,"R",3.72,1,"",14.47,15.83,12.02],["Corbin Carroll",4900,"OF","ARI","SD",7.91,1.61,"L",3.37,7,"",17.65,16.03,8.78],["Ryan Jeffers",4700,"C","MIN","TEX",7.9,1.68,"R",3.72,3,"",14.43,30.55,9.95],["Andy Pages",4500,"OF","LAD","SF",7.89,1.75,"R",5.6,8,"",13.78,18.6,12.01],["Michael Harris II",4200,"OF","ATL","MIA",7.88,1.88,"L",4.42,4,"",18.89,18.38,12.06],["Cole Carrigg",4800,"OF/SS","COL","CWS",7.85,1.64,"S",2.78,5,"",11.15,32.92,10.27],["Brett Bateman",4000,"OF","TOR","CIN",7.79,1.95,"L",4.23,1,"",19.31,29.05,12.72],["Max Muncy",4600,"3B","LAD","SF",7.73,1.68,"L",5.6,5,"",16.42,29.19,8.94],["George Springer",4600,"OF","TOR","CIN",7.7,1.67,"R",4.23,2,"",15.2,21.18,9.87],["Julio Rodriguez",4400,"OF","SEA","LAA",7.64,1.74,"R",3.41,5,"",14.36,18.46,10.68],["Christian Yelich",4200,"OF","MIL","STL",7.57,1.8,"L",4.73,6,"",18.89,20.71,11.62],["Kyle Stowers",3500,"1B","MIA","ATL",7.49,2.14,"L",4.08,1,"",17.77,26.38,11.89],["Jose Altuve",4500,"2B","HOU","ATH",7.46,1.66,"R",5.76,4,"",12.79,26.05,8.45],["Ty France",4300,"1B","SD","ARI",7.45,1.73,"R",4.13,4,"",13.6,32.73,11.67],["Kyle Tucker",4800,"OF","LAD","SF",7.43,1.55,"L",5.6,6,"",21.59,29.13,10.4],["Kody Clemens",4400,"2B","MIN","TEX",7.43,1.69,"L",3.72,5,"",16.49,28.55,9.8],["Kazuma Okamoto",4100,"3B","TOR","CIN",7.43,1.81,"R",4.23,5,"",21.63,15.98,8.51],["Chase Meidroth",4000,"2B","CWS","COL",7.4,1.85,"R",5.72,1,"",19.18,28.77,11.54],["Chase DeLauter",4000,"OF","CLE","KC",7.33,1.83,"L",4.23,3,"",12.47,25.8,6.66],["Will Smith",4400,"C","LAD","SF",7.32,1.66,"R",5.6,4,"",13.63,15.49,9.03],["Garrett Mitchell",4000,"OF","MIL","STL",7.25,1.81,"L",4.73,1,"",13.43,22.18,11.83],["Wyatt Langford",4000,"OF","TEX","MIN",7.23,1.81,"R",3.78,5,"",13.7,23.08,7.25],["Teoscar Hernandez",5000,"OF","LAD","SF",7.2,1.44,"R",5.6,7,"",14.7,15.74,11.33],["Vinnie Pasquantino",4100,"1B","KC","CLE",7.2,1.76,"L",3.27,6,"",13.4,31.64,10.51],["Corey Seager",3400,"SS","TEX","MIN",7.18,2.11,"L",3.78,2,"",18.76,27.89,6.89],["Josh Jung",3400,"3B","TEX","MIN",7.18,2.11,"R",3.78,3,"",18.33,32.6,9.88],["Vladimir Guerrero Jr.",4400,"1B","TOR","CIN",7.17,1.63,"R",4.23,3,"",14.64,27.58,11.73],["Christian Walker",4100,"1B","HOU","ATH",7.16,1.75,"R",5.76,6,"",18.57,16.55,10.14],["Angel Martinez",4100,"OF","CLE","KC",7.15,1.74,"S",4.23,5,"",17.53,15.86,10.32],["Leo Bernal",3600,"C","STL","MIL",7.14,1.98,"S",2.77,6,"",11.62,26.33,8.4],["Ezequiel Duran",3300,"3B/OF","TEX","MIN",7.1,2.15,"R",3.78,1,"",17.17,26.13,7.52],["Maikel Garcia",4300,"3B","KC","CLE",7.08,1.65,"R",3.27,5,"",5.99,28.89,8.11],["Cal Raleigh",4900,"C","SEA","LAA",7.02,1.43,"S",3.41,4,"",18.77,31.56,11.43],["Heriberto Hernandez",4000,"OF","MIA","ATL",6.96,1.74,"R",4.08,2,"",17.55,14.17,10.99],["Geraldo Perdomo",3800,"SS","ARI","SD",6.82,1.79,"S",3.37,4,"",17.43,19.51,5.53],["Mickey Moniak",4300,"OF","COL","CWS",6.77,1.57,"L",2.78,7,"",8.02,23.28,9.03],["Tommy Edman",4300,"2B/OF","LAD","SF",6.76,1.57,"S",5.6,9,"",15.42,25.67,9.66],["Josh Bell",3700,"1B","MIN","TEX",6.75,1.82,"S",3.72,4,"",16.93,19.31,8.61],["TJ Rumfield",3400,"1B","COL","CWS",6.75,1.99,"L",2.78,4,"",8.28,32.15,6.89],["Colson Montgomery",3900,"3B/SS","CWS","COL",6.69,1.72,"L",5.72,6,"",18.96,27.06,9.66],["Lawrence Butler",4200,"OF","ATH","HOU",6.66,1.59,"L",3.74,4,"",8.68,27.1,8.49],["Nolan Arenado",3500,"3B","ARI","SD",6.66,1.9,"R",3.37,6,"",13.97,32.01,7.68],["JJ Bleday",3700,"OF","CIN","TOR",6.6,1.78,"L",3.27,4,"",14.01,30.47,7.93],["Dustin Harris",3400,"OF","SD","ARI",6.59,1.94,"L",4.13,2,"",17.76,26.83,10.07],["Steven Kwan",3400,"OF","CLE","KC",6.57,1.93,"L",4.23,1,"",3.76,24.11,9.69],["Samad Taylor",4000,"OF","SD","ARI",6.53,1.63,"R",4.13,9,"",5.98,31.19,9.19],["Dominic Canzone",3900,"OF","SEA","LAA",6.53,1.67,"L",3.41,3,"",8.87,26.83,8.3],["Jo Adell",3600,"OF","CLE","KC",6.46,1.79,"R",4.23,4,"",13.55,14.93,4.4],["Brandon Nimmo",3100,"OF","TEX","MIN",6.46,2.08,"L",3.78,4,"",14.35,17.16,6.72],["J.P. Crawford",3300,"SS","SEA","LAA",6.42,1.95,"L",3.41,1,"",12.52,26.61,9.34],["Griffin Conine",3500,"OF","MIA","ATL",6.39,1.83,"L",4.08,4,"",13.36,22.52,9.2],["Adael Amador",3600,"2B","COL","CWS",6.36,1.77,"S",2.78,8,"",14.46,28.49,9.9],["Alejandro Kirk",3800,"C","TOR","CIN",6.32,1.66,"R",4.23,4,"",17.24,26.96,8.37],["Josh Naylor",3600,"1B","SEA","LAA",6.32,1.76,"L",3.41,6,"",14.6,15.44,8.38],["Brooks Lee",4000,"3B","MIN","TEX",6.31,1.58,"S",3.72,7,"",15.55,26.6,9.82],["Yainer Diaz",4000,"C","HOU","ATH",6.27,1.57,"R",5.76,5,"",15.98,28.74,5.1],["Cooper Pratt",3100,"SS","MIL","STL",6.26,2.02,"R",4.73,9,"",5.85,18.96,9.75],["Eugenio Suarez",3900,"3B","CIN","TOR",6.25,1.6,"R",3.27,6,"",14.79,32.61,8.51],["Mauricio Dubon",3500,"OF/SS","ATL","MIA",6.25,1.79,"R",4.42,5,"",16.44,26.07,9.04],["Vaughn Grissom",4000,"1B","LAA","SEA",6.24,1.56,"R",3.09,4,"",14.64,16.33,9.74],["Xavier Edwards",3700,"2B","MIA","ATL",6.24,1.69,"S",4.08,7,"",6.04,29.64,5.48],["Jakob Marsee",3200,"OF","MIA","ATL",6.18,1.93,"L",4.08,6,"",12.67,23.75,6.42],["Jake Burger",3100,"1B","TEX","MIN",6.18,1.99,"R",3.78,7,"",14.61,20.73,5.56],["Connor Norby",3700,"2B","COL","CWS",6.14,1.66,"R",2.78,2,"",14.97,20.3,4.68],["Royce Lewis",3200,"1B/2B","MIN","TEX",6.11,1.91,"R",3.72,6,"",12.89,28.81,8.96],["Lars Nootbaar",3100,"OF","ARI","SD",6.11,1.97,"L",3.37,1,"",14.27,20.2,5.41],["Javier Sanoja",3300,"2B/3B","MIA","ATL",6.04,1.83,"R",4.08,5,"",10.89,17.16,6.08],["Jeff McNeil",3800,"1B/2B","ATH","HOU",5.99,1.58,"L",3.74,2,"",15.36,32.37,9.51],["Xander Bogaerts",3700,"SS","SD","ARI",5.98,1.62,"R",4.13,6,"",18.27,31.58,5.2],["Ozzie Albies",3800,"2B","ATL","MIA",5.97,1.57,"S",4.42,8,"",9.49,23.76,9.5],["Jonah Cox",3600,"2B/OF","SF","LAD",5.96,1.66,"R",1.9,1,"",5.68,27.59,6.38],["Salvador Perez",3200,"1B","KC","CLE",5.96,1.86,"R",3.27,4,"",9.92,15.6,7.53],["Bo Davidson",2300,"OF","SF","LAD",5.96,2.59,"L",1.9,4,"",15.42,18.1,6.08],["Wade Meckler",3600,"OF","LAA","SEA",5.87,1.63,"L",3.09,3,"",6.34,29.67,8.82],["Austin Riley",3300,"3B","ATL","MIA",5.84,1.77,"R",4.42,6,"",11.79,33.58,6.04],["Turner Hill",3300,"OF","SF","LAD",5.84,1.77,"L",1.9,2,"",4.13,33.64,7.13],["Randal Grichuk",3600,"OF","CWS","COL",5.69,1.58,"R",5.72,2,"",22.1,32.84,7.49],["Cam Smith",3800,"OF","HOU","ATH",5.67,1.49,"R",5.76,7,"",18.31,29.63,4.08],["Brayan Rocchio",3300,"SS","CLE","KC",5.64,1.71,"S",4.23,9,"",6.87,33.76,5.71],["Cole Young",3100,"2B","SEA","LAA",5.58,1.8,"L",3.41,8,"",13.29,33.58,6.08],["Kyle Karros",2900,"3B","COL","CWS",5.56,1.92,"R",2.78,6,"",12.13,26.42,6.24],["Tyler Stephenson",3300,"C","CIN","TOR",5.55,1.68,"R",3.27,5,"",10.31,27.65,8.21],["Luis Campusano",3700,"C","SD","ARI",5.51,1.49,"R",4.13,7,"",12.6,15.67,4.73],["Tristan Peters",3300,"OF","CWS","COL",5.43,1.65,"L",5.72,9,"",20.43,16.39,3.0],["Ernie Clement",3500,"2B/SS","TOR","CIN",5.37,1.53,"R",4.23,7,"",15.49,30.04,8.01],["Donovan Walton",3400,"2B/SS","ATH","HOU",5.36,1.58,"L",3.74,6,"",14.5,23.13,8.06],["Luis Lara",3300,"OF","MIL","STL",5.35,1.62,"S",4.73,8,"",11.79,15.46,5.58],["Joey Ortiz",3600,"3B/SS","MIL","STL",5.34,1.48,"R",4.73,7,"",16.27,31.97,4.78],["Matt McLain",3300,"2B","CIN","TOR",5.31,1.61,"R",3.27,8,"",11.09,28.77,4.87],["Jake Cronenworth",3600,"2B/3B","SD","ARI",5.25,1.46,"L",4.13,8,"",16.85,15.31,5.18],["Austin Martin",3200,"OF","MIN","TEX",5.24,1.64,"R",3.72,2,"",11.05,32.71,5.13],["Jose Fermin",3100,"2B/3B","STL","MIL",5.06,1.63,"R",2.77,5,"",7.54,30.59,1.62],["Agustin Ramirez",3100,"C","MIA","ATL",5.06,1.63,"R",4.08,9,"",14.71,27.77,7.41],["Lucas Spence",2800,"OF","HOU","ATH",5.03,1.8,"L",5.76,8,"",19.54,26.24,3.62],["Jonah Heim",3400,"C","ATH","HOU",4.99,1.47,"S",3.74,8,"",8.18,20.86,7.1],["Masyn Winn",2800,"SS","STL","MIL",4.92,1.76,"R",2.77,8,"",9.46,25.8,2.66],["Thomas Saggese",3200,"2B/3B","STL","MIL",4.9,1.53,"R",2.77,7,"",15.61,30.68,6.65],["Michael Arroyo",3100,"2B","SEA","LAA",4.9,1.58,"R",3.41,7,"",8.8,15.49,4.62],["Hector Rodriguez",2900,"OF","CIN","TOR",4.9,1.69,"L",3.27,7,"",15.61,18.23,6.31],["Emmanuel Rodriguez",3000,"OF","MIN","TEX",4.86,1.62,"L",3.72,8,"",8.77,24.56,6.65],["Carlos Cortes",3300,"OF","ATH","HOU",4.77,1.45,"L",3.74,7,"",7.72,22.62,5.39],["Nathan Lukes",3000,"OF","TOR","CIN",4.66,1.55,"L",4.23,8,"",9.54,31.95,5.01],["Tim Tawa",3000,"1B/OF","ARI","SD",4.61,1.54,"R",3.37,9,"",12.63,24.76,2.48],["Denzer Guzman",2700,"3B","LAA","SEA",4.61,1.71,"R",3.09,6,"",7.18,15.01,6.02],["Brenton Doyle",3000,"OF","CWS","COL",4.59,1.53,"R",5.72,5,"",22.03,29.41,1.2],["Victor Bericoto",2800,"OF","SF","LAD",4.55,1.62,"R",1.9,3,"",7.81,19.18,1.39],["Isaac Collins",2600,"OF","KC","CLE",4.5,1.73,"S",3.27,7,"",10.58,32.49,1.2],["Nathan Church",3000,"OF","STL","MIL",4.49,1.5,"L",2.77,9,"",11.14,14.02,5.46],["Joe Mack",2600,"C","MIA","ATL",4.46,1.72,"L",4.08,8,"",16.23,18.55,5.21],["Moises Ballesteros",3000,"1B/C","LAA","SEA",4.36,1.45,"L",3.09,5,"",9.23,31.68,3.8],["Jose Siri",3400,"OF","LAA","SEA",4.27,1.26,"R",3.09,8,"",7.76,32.14,5.84],["Danny Jansen",2800,"C","TEX","MIN",4.27,1.52,"R",3.78,8,"",17.08,33.05,5.0],["Josh Lowe",2600,"OF","LAA","SEA",4.24,1.63,"L",3.09,7,"",13.62,23.88,3.53],["Mike Yastrzemski",2500,"OF","ATL","MIA",4.24,1.7,"L",4.42,7,"",17.89,26.49,1.55],["Evan Carter",2800,"OF","TEX","MIN",4.23,1.51,"L",3.78,9,"",15.03,33.81,4.66],["Ezequiel Tovar",2400,"SS","COL","CWS",4.23,1.76,"R",2.78,9,"",12.42,30.05,1.83],["Pavin Smith",2300,"1B","ARI","SD",4.22,1.83,"L",3.37,5,"",12.66,29.25,1.2],["Charles McAdoo",2800,"2B/OF","TOR","CIN",4.2,1.5,"R",4.23,6,"",15.72,22.4,1.72],["Nelson Velazquez",3100,"OF","HOU","ATH",4.08,1.32,"R",5.76,9,"",19.72,28.87,2.24],["Osleivis Basabe",3000,"2B/3B","SF","LAD",4.07,1.36,"R",1.9,8,"",4.55,21.89,3.25],["Jesus Sanchez",2700,"OF","ARI","SD",4.07,1.51,"L",3.37,8,"",13.65,33.89,4.2],["Austin Hedges",2900,"C","CLE","KC",4.01,1.38,"R",4.23,8,"",11.27,22.24,1.41],["Tyler Tolbert",2700,"2B/OF","KC","CLE",4.01,1.49,"R",3.27,8,"",14.74,15.93,1.84],["Andrew Knizner",2300,"C","SF","LAD",3.94,1.71,"R",1.9,5,"",6.76,27.1,1.49],["Jake Rogers",2100,"C","CWS","COL",3.93,1.87,"R",5.72,7,"",20.29,21.58,4.53],["Angel Genao",2500,"2B/3B","CLE","KC",3.9,1.56,"S",4.23,7,"",13.59,26.13,1.2],["Kyle Isbel",2500,"OF","KC","CLE",3.85,1.54,"L",3.27,9,"",4.51,15.0,1.2],["Christian Koss",2300,"SS","SF","LAD",3.85,1.67,"R",1.9,9,"",4.54,23.35,4.28],["Alika Williams",2700,"SS","ATH","HOU",3.72,1.38,"R",3.74,9,"",9.13,28.7,1.2],["Christian Moore",2500,"2B","LAA","SEA",3.72,1.49,"R",3.09,9,"",13.68,32.41,1.2],["Nicky Lopez",2100,"2B","TEX","MIN",3.72,1.77,"L",3.78,6,"",3.2,27.08,1.2],["Ryan Kreidler",2900,"2B/SS","MIN","TEX",3.66,1.26,"R",3.72,9,"",14.67,31.13,4.01],["Weston Wilson",2700,"3B","SEA","LAA",3.47,1.29,"R",3.41,9,"",7.4,30.15,3.83],["Tommy Pham",2500,"OF","CWS","COL",3.47,1.39,"R",5.72,4,"",19.6,16.2,1.2],["Luisangel Acuna",2200,"SS","CWS","COL",3.46,1.57,"R",5.72,8,"",12.48,14.0,2.09],["Carlos Jorge",2500,"OF","CIN","TOR",3.45,1.38,"L",3.27,1,"",12.0,28.76,1.2],["David Fry",2500,"1B/OF","CLE","KC",3.44,1.38,"R",4.23,6,"",8.94,25.17,1.21],["Myles Straw",2500,"OF","TOR","CIN",3.27,1.31,"R",4.23,9,"",5.47,25.91,2.14],["Shay Whitcomb",2800,"2B/3B","SF","LAD",3.23,1.15,"R",1.9,7,"",7.33,32.59,1.2],["Brett Harris",2100,"1B/3B","SF","LAD",2.76,1.31,"R",1.9,6,"",5.78,33.42,1.2],["Ke'Bryan Hayes",2200,"3B","CIN","TOR",2.64,1.2,"R",3.27,9,"",5.47,15.99,1.2],["Ha-Seong Kim",2100,"SS","ATL","MIA",2.57,1.22,"R",4.42,9,"",12.51,23.71,1.2]];
 
 // Pitchers: Player,Salary,Position,Team,Opponent,Projection,Value,Hand,VegasProp,0,ProjK,K%,EV%,Own%
-const MLB_PITCHERS = [["Tyler Glasnow",10500,"SP","LAD","SD",30.32,2.89,"",6.5,0,7.19,22.04,4.78,33.7],["Ian Seymour",8200,"SP","TB","NYY",28.67,3.5,"",6.5,0,7.53,23.37,7.13,31.4],["Cam Schlittler",11500,"SP","NYY","TB",28.62,2.49,"",6.5,0,6.4,21.09,-0.69,26.5],["Bryan Woo",8500,"SP","SEA","LAA",28.61,3.37,"",6.5,0,6.59,17.1,0.62,24.9],["Tyler Mahle",7700,"SP","ATL","CIN",25.79,3.35,"",5.5,0,5.61,15.77,0.9,22.0],["Nick Pivetta",8300,"SP","SD","LAD",24.21,2.92,"",4.5,0,5.36,19.95,8.6,18.6],["Peter Lambert",7000,"SP","HOU","ATH",24.06,3.44,"",4.5,0,4.88,16.72,3.8,16.9],["Ranger Suarez",7900,"SP","BOS","CLE",23.61,2.99,"",4.5,0,4.77,16.15,2.7,13.9],["Grayson Rodriguez",5500,"SP","LAA","SEA",20.67,3.76,"",4.5,0,4.35,15.2,-1.5,13.1],["Brady Singer",5800,"SP","CIN","ATL",19.29,3.33,"",3.5,0,3.68,13.87,2.31,10.6],["Mason Barnett",5000,"SP","ATH","HOU",17.48,3.5,"",3.5,0,3.65,16.72,1.93,9.5],["Daniel Espino",5500,"SP","CLE","BOS",11.12,2.02,"",2.5,0,2.16,17.1,-6.12,6.4]];
-const MLB_HOME = {"STL":false,"PIT":true,"CWS":false,"KC":true,"MIA":false,"CHC":true,"NYM":false,"TEX":true,"ARI":false,"COL":true,"MIL":false,"PHI":true,"CLE":false,"BOS":true,"TB":false,"NYY":true,"CIN":false,"ATL":true,"LAA":false,"SEA":true,"HOU":false,"ATH":true,"SD":false,"LAD":true};
+const MLB_PITCHERS = [["Tarik Skubal",11000,"SP","LAD","SF",31.23,2.84,"",7.5,0,7.37,19.76,-0.78,33.7],["Gavin Williams",9700,"SP","CLE","KC",28.98,2.99,"",6.5,0,6.95,22.99,3.12,31.9],["Reid Detmers",9400,"SP","LAA","SEA",28.47,3.03,"",6.5,0,6.87,19.57,2.56,30.1],["Sean Burke",8500,"SP","CWS","COL",27.98,3.29,"",6.5,0,6.23,18.43,-1.87,28.6],["Jacob deGrom",9700,"SP","TEX","MIN",27.96,2.88,"",6.5,0,6.56,21.09,0.42,26.2],["Hunter Brown",8900,"SP","HOU","ATH",27.73,3.12,"",5.5,0,6.24,20.14,6.05,24.8],["Joe Ryan",9700,"SP","MIN","TEX",27.59,2.84,"",6.5,0,6.39,18.62,-0.76,22.7],["Bryce Miller",7500,"SP","SEA","LAA",26.54,3.54,"",6.5,0,6.26,17.1,-1.66,22.1],["Eury Perez",8200,"SP","MIA","ATL",24.85,3.03,"",5.5,0,5.5,23.89,0.0,19.7],["Jose Soriano",8000,"SP","TOR","CIN",24.24,3.03,"",5.5,0,5.03,28.84,-3.85,18.2],["Noah Cameron",9000,"SP","KC","CLE",24.23,2.69,"",4.5,0,4.83,15.2,3.3,16.2],["Robert Gasser",7200,"SP","MIL","STL",23.05,3.2,"",4.5,0,4.3,15.39,-2.0,15.7],["Casey Mize",6700,"SP","SD","ARI",21.7,3.24,"",4.5,0,4.46,21.9,-0.4,14.4],["Nick Lodolo",6200,"SP","CIN","TOR",21.32,3.44,"",4.5,0,4.5,20.96,0.0,13.5],["Brandon Pfaadt",7000,"SP","ARI","SD",20.72,2.96,"",3.5,0,3.5,21.5,0.0,11.6],["Jacob Lopez",6000,"SP","ATH","HOU",20.69,3.45,"",4.5,0,4.27,15.77,-2.3,11.4],["Michael McGreevy",6500,"SP","STL","MIL",18.75,2.88,"",3.5,0,3.35,11.78,-1.93,9.5],["Tomoyuki Sugano",5500,"SP","COL","CWS",18.36,3.34,"",3.5,0,3.24,10.45,-3.34,9.5],["Yunior Marte",5000,"SP","SF","LAD",13.34,2.67,"",1.5,0,1.89,9.12,11.7,7.8],["Ray Kerr",4000,"SP","ATL","MIA",11.21,2.8,"",2.5,0,2.09,20.75,-7.38,7.6]];
+const MLB_HOME = {"CHC":false,"BOS":true,"BAL":false,"NYY":true,"TB":false,"PHI":true,"PIT":false,"DET":true,"NYM":false,"WSH":true,"CIN":false,"TOR":true,"ATL":false,"MIA":true,"COL":false,"CWS":true,"STL":false,"MIL":true,"CLE":false,"KC":true,"TEX":false,"MIN":true,"HOU":false,"ATH":true,"ARI":false,"SD":true,"LAA":false,"SEA":true,"LAD":false,"SF":true};
 function vsTag(p){
   // NFL rows carry an explicit H/A flag at raw[6]; MLB rows resolve through MLB_HOME.
   var ha = p && (p.ha || (p.raw && p.raw[6]));
@@ -2143,337 +2240,194 @@ function vsTag(p){
   return (typeof MLB_HOME !== 'undefined' && MLB_HOME[p && p.tm]) ? ' vs ' : ' @ ';
 }
 const NFL_SOURCE = [
-["Justin Herbert",8700,'QB','LAC','ARI',26.99,'H'],
-["Jalen Hurts",8500,'QB','PHI','WAS',25.88,'H'],
-["Joe Burrow",8100,'QB','CIN','TB',23.31,'H'],
-["Caleb Williams",8100,'QB','CHI','CAR',23.15,'A'],
-["Dak Prescott",8100,'QB','DAL','NYG',23.08,'A'],
-["Jared Goff",8000,'QB','DET','NO',22.42,'H'],
-["Trevor Lawrence",7900,'QB','JAC','CLE',22.29,'H'],
-["Lamar Jackson",7900,'QB','BAL','IND',22.27,'A'],
-["Jahmyr Gibbs",9200,'RB','DET','NO',21.91,'H'],
-["Jaxson Dart",7800,'QB','NYG','DAL',21.51,'H'],
-["Baker Mayfield",7800,'QB','TB','CIN',21.46,'A'],
-["Malik Willis",7800,'QB','MIA','LV',21.21,'A'],
-["Cam Ward",7700,'QB','TEN','NYJ',21.01,'H'],
-["Bryce Young",7700,'QB','CAR','CHI',20.67,'H'],
-["Geno Smith",7600,'QB','NYJ','TEN',20.29,'A'],
-["Matthew Stafford",7600,'QB','LAR','SF',20.28,'H'],
-["Josh Allen",7500,'QB','BUF','HOU',19.77,'A'],
-["Sam Darnold",7500,'QB','SEA','NE',19.4,'H'],
-["Tyler Shough",7400,'QB','NO','DET',19.2,'A'],
-["Brock Purdy",7400,'QB','SF','LAR',19.19,'A'],
-["C.J. Stroud",7300,'QB','HOU','BUF',18.7,'H'],
-["Patrick Mahomes",7300,'QB','KC','DEN',18.4,'H'],
-["Kyler Murray",7300,'QB','MIN','GB',18.4,'H'],
-["Drake Maye",7200,'QB','NE','SEA',17.78,'A'],
-["Daniel Jones",7100,'QB','IND','BAL',17.32,'H'],
-["Jayden Daniels",7100,'QB','WAS','PHI',17.21,'A'],
-["Kirk Cousins",7100,'QB','LV','MIA',17.16,'H'],
-["Jacoby Brissett",7000,'QB','ARI','LAC',16.64,'A'],
-["Bo Nix",7000,'QB','DEN','KC',16.35,'A'],
-["Aaron Rodgers",6900,'QB','PIT','ATL',16.18,'H'],
-["Bijan Robinson",7800,'RB','ATL','PIT',16.06,'A'],
-["Derrick Henry",7700,'RB','BAL','IND',15.8,'A'],
-["Jordan Love",6900,'QB','GB','MIN',15.71,'A'],
-["Jonathan Taylor",7600,'RB','IND','BAL',15.3,'H'],
-["Saquon Barkley",7400,'RB','PHI','WAS',14.64,'H'],
-["Tua Tagovailoa",6700,'QB','ATL','PIT',14.62,'A'],
-["De`Von Achane",7300,'RB','MIA','LV',14.16,'A'],
-["Omarion Hampton",7300,'RB','LAC','ARI',14.15,'H'],
-["Puka Nacua",9000,'WR','LAR','SF',14.04,'H'],
-["Chase Brown",7200,'RB','CIN','TB',13.89,'H'],
-["Javonte Williams",7200,'RB','DAL','NYG',13.84,'A'],
-["Jaxon Smith-Njigba",8800,'WR','SEA','NE',13.58,'H'],
-["Christian McCaffrey",7100,'RB','SF','LAR',13.49,'A'],
-["Travis Etienne",7100,'RB','NO','DET',13.21,'A'],
-["Ja`Marr Chase",8600,'WR','CIN','TB',13.17,'H'],
-["Breece Hall",7000,'RB','NYJ','TEN',12.87,'A'],
-["D`Andre Swift",6900,'RB','CHI','CAR',12.67,'A'],
-["Bucky Irving",6900,'RB','TB','CIN',12.61,'A'],
-["Cam Skattebo",6900,'RB','NYG','DAL',12.59,'H'],
-["Amon-Ra St. Brown",8300,'WR','DET','NO',12.5,'H'],
-["James Cook",6900,'RB','BUF','HOU',12.38,'A'],
-["Deshaun Watson",6300,'QB','CLE','JAC',12.04,'A'],
-["George Pickens",8000,'WR','DAL','NYG',11.83,'A'],
-["Kyren Williams",6700,'RB','LAR','SF',11.54,'H'],
-["Kenneth Walker III",6600,'RB','KC','DEN',11.5,'H'],
-["Chris Olave",7700,'WR','NO','DET',11.39,'A'],
-["Drake London",7600,'WR','ATL','PIT',11.11,'A'],
-["David Montgomery",6500,'RB','HOU','BUF',11.08,'H'],
-["Malik Nabers",7600,'WR','NYG','DAL',11.07,'H'],
-["Garrett Wilson",7600,'WR','NYJ','TEN',11.02,'A'],
-["Tetairoa McMillan",7500,'WR','CAR','CHI',10.87,'H'],
-["Brock Bowers",7500,'TE','LV','MIA',10.75,'H'],
-["Bhayshul Tuten",6500,'RB','JAC','CLE',10.74,'H'],
-["Tee Higgins",7400,'WR','CIN','TB',10.63,'H'],
-["Ladd McConkey",7400,'WR','LAC','ARI',10.62,'H'],
-["Nico Collins",7300,'WR','HOU','BUF',10.49,'H'],
-["CeeDee Lamb",7300,'WR','DAL','NYG',10.4,'A'],
-["Rico Dowdle",6400,'RB','PIT','ATL',10.34,'H'],
-["DeVonta Smith",7200,'WR','PHI','WAS',10.3,'H'],
-["Jeremiyah Love",6300,'RB','ARI','LAC',10.13,'A'],
-["Jaylen Warren",6300,'RB','PIT','ATL',10.13,'H'],
-["Zay Flowers",7100,'WR','BAL','IND',10.01,'A'],
-["Chuba Hubbard",6300,'RB','CAR','CHI',10.0,'H'],
-["Jonathon Brooks",6300,'RB','CAR','CHI',9.99,'H'],
-["Quinshon Judkins",6300,'RB','CLE','JAC',9.97,'A'],
-["Dallas Goedert",7100,'TE','PHI','WAS',9.94,'H'],
-["Jadarian Price",6200,'RB','SEA','NE',9.88,'H'],
-["Rashee Rice",7000,'WR','KC','DEN',9.87,'H'],
-["Tony Pollard",6200,'RB','TEN','NYJ',9.83,'H'],
-["Emeka Egbuka",6900,'WR','TB','CIN',9.65,'A'],
-["Jameson Williams",6900,'WR','DET','NO',9.63,'H'],
-["Rhamondre Stevenson",6200,'RB','NE','SEA',9.55,'A'],
-["Colston Loveland",6800,'TE','CHI','CAR',9.51,'A'],
-["Quentin Johnston",6900,'WR','LAC','ARI',9.5,'H'],
-["Luther Burden III",6800,'WR','CHI','CAR',9.48,'A'],
-["A.J. Brown",6800,'WR','NE','SEA',9.39,'A'],
-["Justin Jefferson",6700,'WR','MIN','GB',9.27,'H'],
-["Trey McBride",6700,'TE','ARI','LAC',9.26,'A'],
-["Rome Odunze",6500,'WR','CHI','CAR',8.86,'A'],
-["Alec Pierce",6500,'WR','IND','BAL',8.67,'H'],
-["MarShawn Lloyd",5900,'RB','GB','MIN',8.66,'A'],
-["Kyle Monangai",5900,'RB','CHI','CAR',8.66,'A'],
-["Ashton Jeanty",5900,'RB','LV','MIA',8.59,'H'],
-["Kenneth Gainwell",5900,'RB','TB','CIN',8.41,'A'],
-["Harold Fannin Jr.",6200,'TE','CLE','JAC',8.32,'A'],
-["Davante Adams",6300,'WR','LAR','SF',8.29,'H'],
-["Mike Washington Jr.",5800,'RB','LV','MIA',8.25,'H'],
-["J.K. Dobbins",5800,'RB','DEN','KC',8.2,'A'],
-["DK Metcalf",6200,'WR','PIT','ATL',8.13,'H'],
-["Brian Thomas Jr.",6100,'WR','JAC','CLE',7.87,'H'],
-["George Kittle",5900,'TE','SF','LAR',7.81,'A'],
-["Sam LaPorta",5900,'TE','DET','NO',7.8,'H'],
-["Isaiah Likely",5900,'TE','NYG','DAL',7.74,'H'],
-["Marvin Harrison Jr.",6000,'WR','ARI','LAC',7.74,'A'],
-["Parker Washington",5900,'WR','JAC','CLE',7.58,'H'],
-["Jordan Mason",5700,'RB','MIN','GB',7.48,'H'],
-["Christian Watson",5900,'WR','GB','MIN',7.43,'A'],
-["Blake Corum",5600,'RB','LAR','SF',7.31,'H'],
-["Wan`Dale Robinson",5800,'WR','TEN','NYJ',7.27,'H'],
-["DJ Moore",5800,'WR','BUF','HOU',7.26,'A'],
-["Chris Godwin",5800,'WR','TB','CIN',7.26,'A'],
-["Jalen Coker",5800,'WR','CAR','CHI',7.26,'H'],
-["Mike Evans",5800,'WR','SF','LAR',7.22,'A'],
-["Mark Andrews",5600,'TE','BAL','IND',7.21,'A'],
-["RJ Harvey",5600,'RB','DEN','KC',7.2,'A'],
-["Terry McLaurin",5800,'WR','WAS','PHI',7.18,'A'],
-["Calvin Ridley",5700,'WR','TEN','NYJ',7.17,'H'],
-["Tucker Kraft",5600,'TE','GB','MIN',7.15,'A'],
-["Jaylen Waddle",5700,'WR','DEN','KC',7.14,'A'],
-["Ja'Kobi Lane",5700,'WR','BAL','IND',7.14,'A'],
-["Jordan Addison",5700,'WR','MIN','GB',7.06,'H'],
-["Chris Rodriguez Jr.",5500,'RB','JAC','CLE',6.93,'H'],
-["Tyler Warren",5400,'TE','IND','BAL',6.92,'H'],
-["Carnell Tate",5600,'WR','TEN','NYJ',6.9,'H'],
-["Woody Marks",5500,'RB','HOU','BUF',6.85,'H'],
-["Jacory Croskey-Merritt",5500,'RB','WAS','PHI',6.82,'A'],
-["Rashid Shaheed",5600,'WR','SEA','NE',6.79,'H'],
-["Michael Wilson",5600,'WR','ARI','LAC',6.79,'A'],
-["Kyle Pitts",5400,'TE','ATL','PIT',6.77,'A'],
-["Tre Tucker",5600,'WR','LV','MIA',6.76,'H'],
-["Courtland Sutton",5500,'WR','DEN','KC',6.74,'A'],
-["Aaron Jones",5500,'RB','MIN','GB',6.67,'H'],
-["Michael Pittman Jr.",5500,'WR','PIT','ATL',6.58,'H'],
-["Elic Ayomanor",5500,'WR','TEN','NYJ',6.57,'H'],
-["Juwan Johnson",5200,'TE','NO','DET',6.55,'A'],
-["Tank Bigsby",5400,'RB','PHI','WAS',6.41,'H'],
-["Jakobi Meyers",5400,'WR','JAC','CLE',6.35,'H'],
-["Jalen Nailor",5400,'WR','LV','MIA',6.35,'H'],
-["Brenton Strange",5100,'TE','JAC','CLE',6.33,'H'],
-["Rachaad White",5400,'RB','WAS','PHI',6.31,'A'],
-["Jake Ferguson",5100,'TE','DAL','NYG',6.21,'A'],
-["Braelon Allen",5300,'RB','NYJ','TEN',6.2,'A'],
-["Rashod Bateman",5300,'WR','BAL','IND',6.2,'A'],
-["Deebo Samuel",5300,'WR','SF','LAR',6.18,'A'],
-["Jayden Reed",5300,'WR','GB','MIN',6.13,'A'],
-["Kenyon Sadiq",5000,'TE','NYJ','TEN',6.13,'A'],
-["De'Zhaun Stribling",5200,'WR','SF','LAR',6.1,'A'],
-["Dalton Kincaid",5000,'TE','BUF','HOU',6.05,'A'],
-["Malik Davis",5300,'RB','DAL','NYG',5.98,'A'],
-["KC Concepcion",5200,'WR','CLE','JAC',5.94,'A'],
-["Tyjae Spears",5300,'RB','TEN','NYJ',5.92,'H'],
-["Marquise Brown",5100,'WR','PHI','WAS',5.91,'H'],
-["Romeo Doubs",5100,'WR','NE','SEA',5.86,'A'],
-["Jauan Jennings",5100,'WR','MIN','GB',5.81,'H'],
-["Chimere Dike",5100,'WR','TEN','NYJ',5.79,'H'],
-["Cade Otton",4800,'TE','TB','CIN',5.76,'A'],
-["Travis Kelce",4800,'TE','KC','DEN',5.75,'H'],
-["Jerry Jeudy",5100,'WR','CLE','JAC',5.75,'A'],
-["AJ Barner",4700,'TE','SEA','NE',5.64,'H'],
-["Josh Downs",5000,'WR','IND','BAL',5.64,'H'],
-["Matthew Golden",5000,'WR','GB','MIN',5.62,'A'],
-["Jalen McMillan",5000,'WR','TB','CIN',5.61,'A'],
-["Darren Waller",4700,'TE','CAR','CHI',5.6,'H'],
-["David Njoku",4700,'TE','LAC','ARI',5.57,'H'],
-["Emanuel Wilson",5200,'RB','SEA','NE',5.57,'H'],
-["Denzel Boston",5000,'WR','CLE','JAC',5.56,'A'],
-["Xavier Worthy",5000,'WR','KC','DEN',5.55,'H'],
-["Kaelon Black",5200,'RB','SF','LAR',5.52,'A'],
-["Tyrone Tracy Jr.",5200,'RB','NYG','DAL',5.49,'H'],
-["Jordan James",5200,'RB','SF','LAR',5.46,'A'],
-["Cooper Kupp",4900,'WR','SEA','NE',5.44,'H'],
-["Brock Wright",4600,'TE','DET','NO',5.43,'H'],
-["Kayshon Boutte",4900,'WR','HOU','BUF',5.39,'H'],
-["Bryce Lance",4900,'WR','NO','DET',5.38,'A'],
-["Greg Dulcich",4600,'TE','MIA','LV',5.33,'A'],
-["Dalton Schultz",4600,'TE','HOU','BUF',5.31,'H'],
-["Omar Cooper Jr.",4800,'WR','NYJ','TEN',5.24,'A'],
-["Makai Lemon",4800,'WR','PHI','WAS',5.17,'H'],
-["Hunter Henry",4500,'TE','NE','SEA',5.16,'A'],
-["Dylan Sampson",5100,'RB','CLE','JAC',5.14,'A'],
-["Tory Horton",4800,'WR','SEA','NE',5.12,'H'],
-["Keenan Allen",4800,'WR','IND','BAL',5.11,'H'],
-["Tyler Allgeier",5100,'RB','ARI','LAC',5.1,'A'],
-["Devaughn Vele",4700,'WR','NO','DET',5.01,'A'],
-["Stefon Diggs",4700,'WR','WAS','PHI',4.98,'A'],
-["Mason Taylor",4400,'TE','NYJ','TEN',4.94,'A'],
-["Justice Hill",5000,'RB','BAL','IND',4.91,'A'],
-["Pat Freiermuth",4300,'TE','PIT','ATL',4.89,'H'],
-["Oronde Gadsden",4300,'TE','LAC','ARI',4.83,'H'],
-["Malik Benson",4600,'WR','LV','MIA',4.83,'H'],
-["Kimani Vidal",5000,'RB','LAC','ARI',4.76,'H'],
-["Samaje Perine",5000,'RB','CIN','TB',4.75,'H'],
-["Terrance Ferguson",4300,'TE','LAR','SF',4.73,'H'],
-["Adonai Mitchell",4600,'WR','NYJ','TEN',4.69,'A'],
-["Troy Franklin",4500,'WR','DEN','KC',4.61,'A'],
-["Khalil Shakir",4500,'WR','BUF','HOU',4.6,'A'],
-["Keaton Mitchell",4900,'RB','LAC','ARI',4.53,'H'],
-["Christopher Brooks",4900,'RB','GB','MIN',4.5,'A'],
-["Jahdae Walker",4500,'WR','CHI','CAR',4.49,'A'],
-["Mike Gesicki",4100,'TE','CIN','TB',4.44,'H'],
-["Colby Parkinson",4100,'TE','LAR','SF',4.38,'H'],
-["Malachi Fields",4400,'WR','NYG','DAL',4.37,'H'],
-["Brian Robinson Jr.",4900,'RB','ATL','PIT',4.35,'A'],
-["Theo Johnson",4000,'TE','NYG','DAL',4.3,'H'],
-["Xavier Hutchinson",4300,'WR','HOU','BUF',4.21,'H'],
-["Dontayvion Wicks",4300,'WR','PHI','WAS',4.21,'H'],
-["Tyquan Thornton",4300,'WR','KC','DEN',4.18,'H'],
-["Antonio Williams",4300,'WR','WAS','PHI',4.18,'A'],
-["Isaac TeSlaa",4300,'WR','DET','NO',4.13,'H'],
-["Germie Bernard",4300,'WR','PIT','ATL',4.12,'H'],
-["Chigoziem Okonkwo",3900,'TE','WAS','PHI',4.08,'A'],
-["Tyler Higbee",3900,'TE','LAR','SF',4.06,'H'],
-["T.J. Hockenson",3900,'TE','MIN','GB',4.05,'H'],
-["Jaylin Noel",4300,'WR','HOU','BUF',4.05,'H'],
-["Charlie Kolar",3900,'TE','LAC','ARI',4.05,'H'],
-["Malik Washington",4300,'WR','MIA','LV',4.04,'A'],
-["Ty Johnson",4800,'RB','BUF','HOU',3.98,'A'],
-["Andrei Iosivas",4200,'WR','CIN','TB',3.98,'H'],
-["Ashton Dulin",4200,'WR','IND','BAL',3.92,'H'],
-["Ted Hurst",4200,'WR','TB','CIN',3.91,'A'],
-["Gunnar Helm",3800,'TE','TEN','NYJ',3.86,'H'],
-["Zavion Thomas",4200,'WR','CHI','CAR',3.82,'A'],
-["Najee Harris",4700,'RB','NYG','DAL',3.75,'H'],
-["Caleb Douglas",4100,'WR','MIA','LV',3.69,'A'],
-["Tez Johnson",4100,'WR','TB','CIN',3.66,'A'],
-["Bo Melton",4100,'WR','GB','MIN',3.65,'A'],
-["Demarcus Robinson",4100,'WR','SF','LAR',3.64,'A'],
-["Ben Skowronek",4100,'WR','PIT','ATL',3.63,'H'],
-["Daniel Bellinger",3600,'TE','TEN','NYJ',3.52,'H'],
-["Darnell Mooney",4000,'WR','NYG','DAL',3.5,'H'],
-["Roman Wilson",4000,'WR','PIT','ATL',3.41,'H'],
-["Jalen Tolbert",4000,'WR','MIA','LV',3.4,'A'],
-["Xavier Legette",4000,'WR','CAR','CHI',3.4,'H'],
-["KaVontae Turpin",3900,'WR','DAL','NYG',3.35,'A'],
-["Evan Engram",3500,'TE','DEN','KC',3.35,'A'],
-["Ryan Flournoy",3900,'WR','DAL','NYG',3.34,'A'],
-["Devontez Walker",3900,'WR','BAL','IND',3.33,'A'],
-["Isaiah Bond",3900,'WR','CLE','JAC',3.33,'A'],
-["Zachariah Branch",3900,'WR','ATL','PIT',3.22,'A'],
-["Josh Palmer",3800,'WR','BUF','HOU',3.16,'A'],
-["Michael Mayer",3400,'TE','LV','MIA',3.16,'H'],
-["Noah Fant",3400,'TE','NO','DET',3.14,'A'],
-["Eli Stowers",3400,'TE','PHI','WAS',3.12,'H'],
-["Corey Kiner",4600,'RB','NE','SEA',3.08,'A'],
-["Olamide Zaccheaus",3800,'WR','ATL','PIT',3.06,'A'],
-["Kendrick Bourne",3800,'WR','ARI','LAC',3.05,'A'],
-["Shedeur Sanders",4800,'QB','CLE','JAC',3.05,'A'],
-["Dawson Knox",3300,'TE','BUF','HOU',2.99,'A'],
-["Will Kacmarek",3300,'TE','MIA','LV',2.97,'A'],
-["Darnell Washington",3300,'TE','PIT','ATL',2.96,'H'],
-["Jaylen Wright",4500,'RB','MIA','LV',2.89,'A'],
-["Luke McCaffrey",3700,'WR','WAS','PHI',2.81,'A'],
-["Marlin Klein",3200,'TE','HOU','BUF',2.75,'H'],
-["Josh Oliver",3100,'TE','MIN','GB',2.66,'H'],
-["Kendre Miller",4500,'RB','NO','DET',2.65,'A'],
-["Chris Bell",3600,'WR','MIA','LV',2.64,'A'],
-["Erick All",3100,'TE','CIN','TB',2.63,'H'],
-["Tre Harris",3600,'WR','LAC','ARI',2.61,'H'],
-["Mack Hollins",3600,'WR','NE','SEA',2.57,'A'],
-["Tylan Wallace",3500,'WR','CLE','JAC',2.52,'A'],
-["Ty Simpson",4700,'QB','LAR','SF',2.44,'H'],
-["Marvin Mims",3500,'WR','DEN','KC',2.43,'A'],
-["Brashard Smith",4400,'RB','KC','DEN',2.38,'H'],
-["Jack Bech",3500,'WR','LV','MIA',2.38,'H'],
-["Jordan Whittington",3500,'WR','LAR','SF',2.38,'H'],
-["Davis Allen",3000,'TE','LAR','SF',2.35,'H'],
-["Jalen Brooks",3500,'WR','ARI','LAC',2.34,'A'],
-["Kalif Raymond",3500,'WR','CHI','CAR',2.34,'A'],
-["Treylon Burks",3500,'WR','WAS','PHI',2.33,'A'],
-["Cole Kmet",2900,'TE','CHI','CAR',2.25,'A'],
-["Isaiah Williams",3400,'WR','NYJ','TEN',2.22,'A'],
-["Odell Beckham Jr.",3400,'WR','NYG','DAL',2.22,'H'],
-["Jeremy Ruckert",2900,'TE','NYJ','TEN',2.2,'A'],
-["Demario Douglas",3400,'WR','NE','SEA',2.19,'A'],
-["Travis Hunter",3400,'WR','JAC','CLE',2.13,'H'],
-["Adam Trautman",2800,'TE','DEN','KC',2.1,'A'],
-["Keon Coleman",3300,'WR','BUF','HOU',2.09,'A'],
-["Konata Mumpfield",3300,'WR','LAR','SF',1.98,'H'],
-["Tommy Tremble",2800,'TE','CAR','CHI',1.96,'H'],
-["Austin Hooper",2800,'TE','ATL','PIT',1.95,'A'],
-["Emari Demercado",4300,'RB','DAL','NYG',1.95,'A'],
-["Nate Boerkircher",2800,'TE','JAC','CLE',1.95,'H'],
-["Isaiah Davis",4300,'RB','NYJ','TEN',1.95,'A'],
-["Jahan Dotson",3300,'WR','ATL','PIT',1.9,'A'],
-["Pat Bryant",3200,'WR','DEN','KC',1.88,'A'],
-["Tai Felton",3200,'WR','MIN','GB',1.85,'H'],
-["Ja`Tavion Sanders",2700,'TE','CAR','CHI',1.84,'H'],
-["Jaylin Lane",3200,'WR','WAS','PHI',1.75,'A'],
-["Eli Raridon",2600,'TE','NE','SEA',1.63,'A'],
-["LeQuint Allen",4200,'RB','JAC','CLE',1.61,'H'],
-["Arian Smith",3100,'WR','NYJ','TEN',1.59,'A'],
-["Charlie Woerner",2600,'TE','ATL','PIT',1.57,'A'],
-["Elijah Higgins",2500,'TE','ARI','LAC',1.56,'A'],
-["Tutu Atwell",3100,'WR','LAR','SF',1.56,'H'],
-["Brycen Tremayne",3100,'WR','CAR','CHI',1.55,'H'],
-["John Bates",2500,'TE','WAS','PHI',1.47,'A'],
-["Xavier Smith",3000,'WR','LAR','SF',1.37,'H'],
-["Marcus Mariota",4500,'QB','WAS','PHI',1.29,'A'],
-["Dylan Laube",4000,'RB','LV','MIA',0.72,'H'],
-["ARI DST",3000,'DST','ARI','LAC',10.0,'A'],
-["ATL DST",3000,'DST','ATL','PIT',10.0,'A'],
-["BAL DST",3000,'DST','BAL','IND',10.0,'A'],
-["BUF DST",3000,'DST','BUF','HOU',10.0,'A'],
-["CAR DST",3000,'DST','CAR','CHI',10.0,'H'],
-["CHI DST",3000,'DST','CHI','CAR',10.0,'A'],
-["CIN DST",3000,'DST','CIN','TB',10.0,'H'],
-["CLE DST",3000,'DST','CLE','JAC',10.0,'A'],
-["DAL DST",3000,'DST','DAL','NYG',10.0,'A'],
-["DEN DST",3000,'DST','DEN','KC',10.0,'A'],
-["DET DST",3000,'DST','DET','NO',10.0,'H'],
-["GB DST",3000,'DST','GB','MIN',10.0,'A'],
-["HOU DST",3000,'DST','HOU','BUF',10.0,'H'],
-["IND DST",3000,'DST','IND','BAL',10.0,'H'],
-["JAC DST",3000,'DST','JAC','CLE',10.0,'H'],
-["KC DST",3000,'DST','KC','DEN',10.0,'H'],
-["LAC DST",3000,'DST','LAC','ARI',10.0,'H'],
-["LAR DST",3000,'DST','LAR','SF',10.0,'H'],
-["LV DST",3000,'DST','LV','MIA',10.0,'H'],
-["MIA DST",3000,'DST','MIA','LV',10.0,'A'],
-["MIN DST",3000,'DST','MIN','GB',10.0,'H'],
-["NE DST",3000,'DST','NE','SEA',10.0,'A'],
-["NO DST",3000,'DST','NO','DET',10.0,'A'],
-["NYG DST",3000,'DST','NYG','DAL',10.0,'H'],
-["NYJ DST",3000,'DST','NYJ','TEN',10.0,'A'],
-["PHI DST",3000,'DST','PHI','WAS',10.0,'H'],
-["PIT DST",3000,'DST','PIT','ATL',10.0,'H'],
-["SEA DST",3000,'DST','SEA','NE',10.0,'H'],
-["SF DST",3000,'DST','SF','LAR',10.0,'A'],
-["TB DST",3000,'DST','TB','CIN',10.0,'A'],
-["TEN DST",3000,'DST','TEN','NYJ',10.0,'H'],
-["WAS DST",3000,'DST','WAS','PHI',10.0,'A']
+["Jahmyr Gibbs",8800,"RB","DET","NYJ",24.59,"H",31.00],
+["Josh Allen",8000,"QB","BUF","LAC",23.46,"H",9.59],
+["Lamar Jackson",7500,"QB","BAL","DAL",23.15,"A",12.75],
+["Jaxon Smith-Njigba",8600,"WR","SEA","WAS",22.39,"A",27.00],
+["Patrick Mahomes",6200,"QB","KC","MIA",20.95,"A",16.00],
+["Christian McCaffrey",8300,"RB","SF","ARI",20.41,"H",15.91],
+["Jared Goff",6300,"QB","DET","NYJ",20.26,"H",8.83],
+["Kenneth Walker III",7400,"RB","KC","MIA",20.19,"A",19.31],
+["Brock Purdy",6500,"QB","SF","ARI",20.17,"H",6.93],
+["Dak Prescott",6700,"QB","DAL","BAL",20.07,"H",4.08],
+["Ashton Jeanty",7100,"RB","LV","NO",19.96,"A",13.69],
+["Jonathan Taylor",7600,"RB","IND","HOU",19.93,"H",11.82],
+["Amon-Ra St. Brown",7900,"WR","DET","NYJ",19.88,"H",21.53],
+["CeeDee Lamb",7800,"WR","DAL","BAL",19.48,"H",18.08],
+["Derrick Henry",7700,"RB","BAL","DAL",19.37,"A",14.72],
+["Tyler Shough",5400,"QB","NO","LV",18.72,"H",9.15],
+["Joe Burrow",6600,"QB","CIN","PIT",18.55,"A",1.66],
+["Ja'Marr Chase",8100,"WR","CIN","PIT",18.29,"A",11.45],
+["James Cook III",6900,"RB","BUF","LAC",18.13,"H",14.73],
+["Trevor Lawrence",5700,"QB","JAX","NE",18.10,"H",3.95],
+["Chris Olave",7200,"WR","NO","LV",17.88,"H",14.56],
+["Trey McBride",6700,"TE","ARI","SF",17.28,"A",16.00],
+["Justin Jefferson",7500,"WR","MIN","TB",17.02,"A",9.82],
+["C.J. Stroud",5500,"QB","HOU","IND",16.97,"A",2.17],
+["Drake Maye",6100,"QB","NE","JAX",16.92,"A",0.95],
+["Justin Herbert",5800,"QB","LAC","BUF",16.77,"A",1.20],
+["Kyler Murray",5100,"QB","MIN","TB",16.53,"A",2.89],
+["Bryce Young",5600,"QB","CAR","CLE",16.47,"A",1.35],
+["Malik Willis",4900,"QB","MIA","KC",16.33,"H",2.65],
+["Chuba Hubbard",6100,"RB","CAR","CLE",16.09,"A",8.79],
+["Baker Mayfield",5300,"QB","TB","MIN",16.05,"H",1.39],
+["Geno Smith",4900,"QB","NYJ","DET",16.04,"A",2.64],
+["Jaylen Warren",5700,"RB","PIT","CIN",15.98,"H",6.68],
+["Javonte Williams",6700,"RB","DAL","BAL",15.84,"H",7.60],
+["Jacoby Brissett",4800,"QB","ARI","SF",15.83,"A",2.52],
+["De'Von Achane",6500,"RB","MIA","KC",15.80,"H",5.69],
+["Chase Brown",6600,"RB","CIN","PIT",15.74,"A",7.12],
+["Parker Washington",6000,"WR","JAX","NE",15.57,"H",13.35],
+["Garrett Wilson",6300,"WR","NYJ","DET",15.43,"A",9.93],
+["Kirk Cousins",4800,"QB","LV","NO",15.19,"A",1.56],
+["Aaron Rodgers",5000,"QB","PIT","CIN",14.99,"H",0.95],
+["Bucky Irving",6300,"RB","TB","MIN",14.95,"H",5.75],
+["George Pickens",6600,"WR","DAL","BAL",14.93,"H",8.64],
+["Daniel Jones",5000,"QB","IND","HOU",14.86,"H",0.92],
+["Omarion Hampton",6800,"RB","LAC","BUF",14.61,"A",4.67],
+["Breece Hall",6400,"RB","NYJ","DET",14.58,"A",5.22],
+["Deshaun Watson",4700,"QB","CLE","CAR",14.41,"H",0.99],
+["Jameis Winston",4000,"QB","NYG","TEN",14.37,"H",3.88],
+["Aaron Jones Sr.",5900,"RB","MIN","TB",14.34,"A",4.60],
+["Tetairoa McMillan",6000,"WR","CAR","CLE",14.26,"A",8.41],
+["Quinshon Judkins",5500,"RB","CLE","CAR",14.03,"H",5.86],
+["Cam Ward",5100,"QB","TEN","NYG",13.78,"A",0.32],
+["Drew Lock",5200,"QB","SEA","WAS",13.70,"A",0.38],
+["Zay Flowers",6900,"WR","BAL","DAL",13.62,"A",4.62],
+["Cam Skattebo",6200,"RB","NYG","TEN",13.56,"H",4.24],
+["Jalen Coker",5500,"WR","CAR","CLE",13.44,"A",6.27],
+["Ladd McConkey",5900,"WR","LAC","BUF",13.33,"A",6.42],
+["Dalton Kincaid",5500,"TE","BUF","LAC",13.20,"H",9.28],
+["Tee Higgins",6100,"WR","CIN","PIT",12.92,"A",5.63],
+["Jameson Williams",5400,"WR","DET","NYJ",12.75,"H",8.69],
+["Travis Kelce",4500,"TE","KC","MIA",12.73,"A",14.46],
+["Marcus Mariota",4500,"QB","WAS","SEA",12.72,"H",0.31],
+["Malik Nabers",6500,"WR","NYG","TEN",12.65,"H",3.06],
+["Mike Evans",6800,"WR","SF","ARI",12.59,"H",3.67],
+["Rashee Rice",6400,"WR","KC","MIA",12.59,"A",5.50],
+["Dalton Schultz",4200,"TE","HOU","IND",12.51,"A",12.62],
+["Deebo Samuel Sr.",5300,"WR","SF","ARI",12.50,"H",8.77],
+["David Montgomery",6000,"RB","HOU","IND",12.27,"A",3.54],
+["Josh Downs",5700,"WR","IND","HOU",12.02,"H",4.63],
+["Brock Bowers",6600,"TE","LV","NO",11.84,"A",1.66],
+["DK Metcalf",5400,"WR","PIT","CIN",11.77,"H",4.72],
+["Mark Andrews",4400,"TE","BAL","DAL",11.70,"A",9.68],
+["Sam LaPorta",4300,"TE","DET","NYJ",11.70,"H",10.23],
+["DJ Moore",5800,"WR","BUF","LAC",11.67,"H",4.03],
+["Bhayshul Tuten",5600,"RB","JAX","NE",11.59,"H",3.73],
+["George Kittle",4800,"TE","SF","ARI",11.57,"H",7.04],
+["Emeka Egbuka",6200,"WR","TB","MIN",11.30,"H",3.08],
+["Tyler Warren",5300,"TE","IND","HOU",11.20,"H",3.06],
+["Michael Wilson",5200,"WR","ARI","SF",11.20,"A",4.41],
+["Jadarian Price",5300,"RB","SEA","WAS",11.04,"A",2.68],
+["Jeremiyah Love",5500,"RB","ARI","SF",11.03,"A",2.74],
+["Isaiah Likely",4700,"TE","NYG","TEN",10.80,"H",3.61],
+["Devaughn Vele",4400,"WR","NO","LV",10.79,"H",6.82],
+["Denzel Boston",4500,"WR","CLE","CAR",10.77,"H",5.47],
+["Rhamondre Stevenson",5400,"RB","NE","JAX",10.73,"A",2.81],
+["Stefon Diggs",5500,"WR","WAS","SEA",10.70,"H",2.88],
+["Khalil Shakir",4800,"WR","BUF","LAC",10.70,"H",6.28],
+["Xavier Worthy",4400,"WR","KC","MIA",10.70,"A",7.81],
+["Rashod Bateman",4700,"WR","BAL","DAL",10.48,"A",6.03],
+["TreVeyon Henderson",5200,"RB","NE","JAX",10.33,"A",2.70],
+["Tony Pollard",5400,"RB","TEN","NYG",10.24,"A",1.56],
+["Terry McLaurin",5100,"WR","WAS","SEA",10.20,"H",2.92],
+["Harold Fannin Jr.",4000,"TE","CLE","CAR",10.20,"H",4.28],
+["Hunter Henry",3900,"TE","NE","JAX",10.20,"A",5.12],
+["Carnell Tate",5000,"WR","TEN","NYG",10.10,"A",3.13],
+["Adonai Mitchell",4300,"WR","NYJ","DET",10.08,"A",3.82],
+["Chris Godwin Jr.",5300,"WR","TB","MIN",10.00,"H",2.91],
+["Brian Thomas Jr.",4600,"WR","JAX","NE",9.80,"H",4.32],
+["KC Concepcion Jr.",4300,"WR","CLE","CAR",9.70,"H",4.18],
+["Malik Washington",4200,"WR","MIA","KC",9.70,"H",4.13],
+["Travis Etienne Jr.",5800,"RB","NO","LV",9.66,"H",1.57],
+["Juwan Johnson",3700,"TE","NO","LV",9.60,"H",4.94],
+["Jordan Addison",4900,"WR","MIN","TB",9.50,"A",3.11],
+["Romeo Doubs",5100,"WR","NE","JAX",9.30,"A",2.61],
+["Wan'Dale Robinson",4500,"WR","TEN","NYG",9.20,"A",2.94],
+["Mack Hollins",4200,"WR","NE","JAX",9.00,"A",3.68],
+["Brenton Strange",3400,"TE","JAX","NE",9.00,"H",4.86],
+["Jacory Croskey-Merritt",5300,"RB","WAS","SEA",8.95,"H",1.41],
+["Tre Tucker",5000,"WR","LV","NO",8.90,"A",2.25],
+["Quentin Johnston",4900,"WR","LAC","BUF",8.90,"A",2.44],
+["Keenan Allen",4600,"WR","IND","HOU",8.90,"H",2.75],
+["Michael Pittman Jr.",4700,"WR","PIT","CIN",8.83,"H",1.85],
+["Jake Ferguson",4100,"TE","DAL","BAL",8.80,"H",2.53],
+["Alvin Kamara",4800,"RB","NO","LV",8.70,"H",2.17],
+["T.J. Hockenson",3200,"TE","MIN","TB",8.70,"A",4.59],
+["Xavier Hutchinson",4000,"WR","HOU","IND",8.50,"A",3.49],
+["Oronde Gadsden II",3500,"TE","LAC","BUF",8.50,"A",2.91],
+["Woody Marks",5000,"RB","HOU","IND",8.47,"A",1.77],
+["Jakobi Meyers",4800,"WR","JAX","NE",8.46,"H",1.84],
+["Rashid Shaheed",4200,"WR","SEA","WAS",8.30,"A",3.09],
+["Tyjae Spears",4900,"RB","TEN","NYG",8.00,"A",0.98],
+["Tyler Allgeier",5000,"RB","ARI","SF",7.96,"A",1.39],
+["Tre' Harris",3900,"WR","LAC","BUF",7.90,"A",2.81],
+["Ryan Flournoy",3800,"WR","DAL","BAL",7.90,"H",3.41],
+["Cade Otton",3100,"TE","TB","MIN",7.90,"H",2.98],
+["Marvin Harrison Jr.",4700,"WR","ARI","SF",7.80,"A",1.75],
+["Kayshon Boutte",4500,"WR","HOU","IND",7.60,"A",1.91],
+["Pat Freiermuth",3800,"TE","PIT","CIN",7.60,"H",1.33],
+["Rachaad White",5100,"RB","WAS","SEA",7.50,"H",1.00],
+["DeMario Douglas",3700,"WR","NE","JAX",7.30,"A",2.54],
+["Gunnar Helm",2900,"TE","TEN","NYG",7.20,"A",2.14],
+["Kenyon Sadiq",3500,"TE","NYJ","DET",7.00,"A",1.28],
+["Justice Hill",4200,"RB","BAL","DAL",6.90,"A",1.95],
+["Rico Dowdle",4700,"RB","PIT","CIN",6.81,"H",0.80],
+["Kendrick Bourne",3700,"WR","ARI","SF",6.80,"A",1.95],
+["Kaelon Black",4800,"RB","SF","ARI",6.70,"H",1.57],
+["Jalen Nailor",3700,"WR","LV","NO",6.70,"A",1.87],
+["Darren Waller",3400,"TE","CAR","CLE",6.70,"A",1.23],
+["Malachi Fields",4400,"WR","NYG","TEN",6.60,"H",1.31],
+["Mike Gesicki",3300,"TE","CIN","PIT",6.60,"A",1.32],
+["Tyquan Thornton",3300,"WR","KC","MIA",6.50,"A",2.97],
+["Kenny Gainwell",4800,"RB","TB","MIN",6.40,"H",0.97],
+["AJ Barner",3100,"TE","SEA","WAS",6.40,"A",1.45],
+["Cooper Kupp",4000,"WR","SEA","WAS",6.26,"A",1.17],
+["Keon Coleman",4300,"WR","BUF","LAC",6.07,"H",1.13],
+["Roman Wilson",3400,"WR","PIT","CIN",6.00,"H",1.62],
+["Emanuel Wilson",4900,"RB","SEA","WAS",5.90,"A",0.98],
+["Chris Rodriguez Jr.",4600,"RB","JAX","NE",5.90,"H",1.05],
+["Braelon Allen",4400,"RB","NYJ","DET",5.90,"A",0.95],
+["Greg Dulcich",3000,"TE","MIA","KC",5.90,"H",0.85],
+["Jerry Jeudy",3800,"WR","CLE","CAR",5.80,"H",1.20],
+["Bryce Lance",3000,"WR","NO","LV",5.70,"H",2.13],
+["Jaylin Noel",3600,"WR","HOU","IND",5.60,"A",1.34],
+["Isaiah Williams",3300,"WR","NYJ","DET",5.60,"A",1.52],
+["Keaton Mitchell",4300,"RB","LAC","BUF",5.50,"A",0.87],
+["Emmett Johnson",4400,"RB","KC","MIA",5.30,"A",1.12],
+["Antonio Williams",4100,"WR","WAS","SEA",5.30,"H",0.78],
+["Michael Mayer",3300,"TE","LV","NO",5.30,"A",0.55],
+["Ted Hurst III",3000,"WR","TB","MIN",5.30,"H",1.57],
+["Samaje Perine",4100,"RB","CIN","PIT",5.20,"A",0.92],
+["George Holani",4500,"RB","SEA","WAS",5.06,"A",0.63],
+["Devin Singletary",4200,"RB","NYG","TEN",5.00,"H",0.74],
+["Seahawks",3800,"DST","SEA","WAS",8.40,"A",17.00],
+["Giants",3400,"DST","NYG","TEN",8.00,"H",15.60],
+["49ers",3600,"DST","SF","ARI",7.30,"H",4.12],
+["Vikings",3100,"DST","MIN","TB",7.30,"A",9.54],
+["Lions",3500,"DST","DET","NYJ",7.20,"H",3.86],
+["Panthers",3000,"DST","CAR","CLE",7.20,"A",10.73],
+["Chiefs",3700,"DST","KC","MIA",7.10,"A",1.93],
+["Texans",3200,"DST","HOU","IND",6.90,"A",2.56],
+["Saints",3300,"DST","NO","LV",6.70,"H",1.38],
+["Bengals",2900,"DST","CIN","PIT",6.50,"A",2.92],
+["Bills",2800,"DST","BUF","LAC",6.50,"H",7.72],
+["Raiders",2600,"DST","LV","NO",6.50,"A",7.14],
+["Jaguars",2900,"DST","JAX","NE",6.30,"H",1.94],
+["Buccaneers",2600,"DST","TB","MIN",6.00,"H",1.89],
+["Titans",2400,"DST","TEN","NYG",6.00,"A",3.58],
+["Ravens",2800,"DST","BAL","DAL",5.90,"A",1.51],
+["Steelers",2700,"DST","PIT","CIN",5.90,"H",0.87],
+["Colts",2500,"DST","IND","HOU",5.90,"H",2.21],
+["Browns",2500,"DST","CLE","CAR",5.90,"H",1.98],
+["Patriots",2700,"DST","NE","JAX",5.70,"A",0.63],
+["Commanders",2300,"DST","WAS","SEA",5.10,"H",0.34],
+["Jets",2100,"DST","NYJ","DET",4.70,"A",0.42],
+["Cowboys",2400,"DST","DAL","BAL",4.10,"H",0.10],
+["Chargers",2200,"DST","LAC","BUF",4.10,"A",0.10],
+["Dolphins",2000,"DST","MIA","KC",4.10,"H",0.10],
+["Cardinals",2300,"DST","ARI","SF",3.60,"A",0.10]
 ];
 
 
@@ -2769,21 +2723,35 @@ function ownRender() {
 
 
 
-const NFL_MARKET_CONTEXT = {"deshaunwatson":{"label":"PASS YDS","line":177.5,"odds":"-112","prob":49.7,"fair":"+101","inputs":2},"malikwillis":{"label":"PASS YDS","line":180.5,"odds":"-115","prob":49.9,"fair":"+101","inputs":2},"jaydendaniels":{"label":"PASS YDS","line":204.5,"odds":"-117","prob":50.5,"fair":"-102","inputs":2},"camward":{"label":"PASS YDS","line":203.5,"odds":"-114","prob":49.9,"fair":"+100","inputs":2},"genosmith":{"label":"PASS YDS","line":207.5,"odds":"-115","prob":49.9,"fair":"+100","inputs":3},"tuatagovailoa":{"label":"PASS YDS","line":209.5,"odds":"-116","prob":50.6,"fair":"-102","inputs":3},"bryceyoung":{"label":"PASS YDS","line":207.5,"odds":"-115","prob":49.9,"fair":"+100","inputs":3},"jalenhurts":{"label":"PASS YDS","line":213.5,"odds":"-115","prob":49.9,"fair":"+101","inputs":2},"aaronrodgers":{"label":"PASS YDS","line":212.5,"odds":"-114","prob":50.1,"fair":"-100","inputs":2},"jaxsondart":{"label":"PASS YDS","line":215.5,"odds":"-113","prob":49.6,"fair":"+102","inputs":3},"kirkcousins":{"label":"PASS YDS","line":215.5,"odds":"-114","prob":50.0,"fair":"-100","inputs":3},"lamarjackson":{"label":"PASS YDS","line":219.5,"odds":"-113","prob":50.1,"fair":"-100","inputs":2},"cjstroud":{"label":"PASS YDS","line":219.5,"odds":"-115","prob":50.0,"fair":"+100","inputs":5},"joshallen":{"label":"PASS YDS","line":221.5,"odds":"-114","prob":49.9,"fair":"+100","inputs":2},"jacobybrissett":{"label":"PASS YDS","line":222.5,"odds":"-114","prob":50.1,"fair":"-100","inputs":3},"kylermurray":{"label":"PASS YDS","line":222.5,"odds":"-115","prob":50.0,"fair":"-100","inputs":3},"patrickmahomes":{"label":"PASS YDS","line":225.5,"odds":"-117","prob":50.5,"fair":"-102","inputs":2},"calebwilliams":{"label":"PASS YDS","line":226.5,"odds":"-115","prob":50.1,"fair":"-100","inputs":4},"bonix":{"label":"PASS YDS","line":227.5,"odds":"-114","prob":50.0,"fair":"-100","inputs":2},"danieljones":{"label":"PASS YDS","line":233.5,"odds":"-114","prob":50.0,"fair":"+100","inputs":5},"samdarnold":{"label":"PASS YDS","line":228.5,"odds":"-113","prob":50.0,"fair":"+100","inputs":6},"drakemaye":{"label":"PASS YDS","line":230.5,"odds":"-114","prob":50.0,"fair":"-100","inputs":2},"bakermayfield":{"label":"PASS YDS","line":231.5,"odds":"-115","prob":49.7,"fair":"+101","inputs":3},"trevorlawrence":{"label":"PASS YDS","line":235.5,"odds":"-113","prob":49.7,"fair":"+101","inputs":4},"justinherbert":{"label":"PASS YDS","line":235.5,"odds":"-115","prob":49.8,"fair":"+101","inputs":4},"jordanlove":{"label":"PASS YDS","line":238.5,"odds":"-114","prob":50.5,"fair":"-102","inputs":4},"tylershough":{"label":"PASS YDS","line":246.5,"odds":"-114","prob":50.1,"fair":"-101","inputs":3},"brockpurdy":{"label":"PASS YDS","line":244.5,"odds":"-114","prob":49.9,"fair":"+100","inputs":4},"dakprescott":{"label":"PASS YDS","line":259.5,"odds":"-117","prob":50.6,"fair":"-102","inputs":2},"jaredgoff":{"label":"PASS YDS","line":261.5,"odds":"-114","prob":50.0,"fair":"-100","inputs":4},"matthewstafford":{"label":"PASS YDS","line":265.5,"odds":"-113","prob":49.7,"fair":"+101","inputs":3},"joeburrow":{"label":"PASS YDS","line":267.5,"odds":"-114","prob":49.9,"fair":"+100","inputs":4},"derrickhenry":{"label":"RUSH YDS","line":80.5,"odds":"-114","prob":49.7,"fair":"+101","inputs":4},"adamtrautman":{"label":"REC YDS","line":8.5,"odds":"-110","prob":49.4,"fair":"+102","inputs":3},"rashodbateman":{"label":"REC YDS","line":26.5,"odds":"-112","prob":49.6,"fair":"+101","inputs":4},"jackbech":{"label":"REC YDS","line":15.5,"odds":"-113","prob":49.6,"fair":"+101","inputs":5},"odellbeckham":{"label":"REC YDS","line":10.5,"odds":"-120","prob":50.7,"fair":"-103","inputs":3},"kayshonboutte":{"label":"REC YDS","line":24.5,"odds":"-114","prob":50.2,"fair":"-101","inputs":4},"jahandotson":{"label":"REC YDS","line":18.5,"odds":"-114","prob":49.9,"fair":"+100","inputs":4},"demariodouglas":{"label":"REC YDS","line":19.5,"odds":"-118","prob":50.8,"fair":"-103","inputs":7},"ricodowdle":{"label":"RUSH YDS","line":42.5,"odds":"-113","prob":49.4,"fair":"+102","inputs":4},"terranceferguson":{"label":"REC YDS","line":24.5,"odds":"-115","prob":50.1,"fair":"-100","inputs":5},"malachifields":{"label":"REC YDS","line":21.5,"odds":"-114","prob":50.1,"fair":"-100","inputs":4},"noahgray":{"label":"REC YDS","line":9.5,"odds":"-114","prob":50.3,"fair":"-101","inputs":4},"tylerhigbee":{"label":"REC YDS","line":13.5,"odds":"-117","prob":50.6,"fair":"-103","inputs":4},"justicehill":{"label":"RUSH YDS","line":9.5,"odds":"-107","prob":48.5,"fair":"+106","inputs":4},"georgeholani":{"label":"RUSH YDS","line":19.5,"odds":"-114","prob":50.4,"fair":"-101","inputs":7},"buckyirving":{"label":"RUSH YDS","line":58.5,"odds":"-114","prob":50.0,"fair":"-100","inputs":3},"quinshonjudkins":{"label":"RUSH YDS","line":59.5,"odds":"-114","prob":49.9,"fair":"+100","inputs":4},"kylejuszczyk":{"label":"REC YDS","line":5.5,"odds":"-114","prob":49.5,"fair":"+102","inputs":3},"colekmet":{"label":"REC YDS","line":14.5,"odds":"-115","prob":50.2,"fair":"-101","inputs":5},"dawsonknox":{"label":"REC YDS","line":14.5,"odds":"-115","prob":50.1,"fair":"-100","inputs":5},"charliekolar":{"label":"REC YDS","line":16.5,"odds":"-118","prob":50.7,"fair":"-103","inputs":2},"jakobilane":{"label":"REC YDS","line":19.5,"odds":"-115","prob":50.3,"fair":"-101","inputs":5},"xavierlegette":{"label":"REC YDS","line":18.5,"odds":"-115","prob":50.2,"fair":"-101","inputs":3},"marshawnlloyd":{"label":"RUSH YDS","line":44.5,"odds":"-111","prob":49.3,"fair":"+103","inputs":3},"davidmontgomery":{"label":"RUSH YDS","line":54.5,"odds":"-110","prob":49.6,"fair":"+102","inputs":3},"jalennailor":{"label":"REC YDS","line":21.5,"odds":"-115","prob":50.6,"fair":"-103","inputs":3},"samajeperine":{"label":"RUSH YDS","line":20.5,"odds":"-110","prob":48.6,"fair":"+106","inputs":4},"tonypollard":{"label":"RUSH YDS","line":54.5,"odds":"-116","prob":50.2,"fair":"-101","inputs":4},"jadarianprice":{"label":"RUSH YDS","line":51.5,"odds":"-113","prob":50.2,"fair":"-101","inputs":3},"kalifraymond":{"label":"REC YDS","line":16.5,"odds":"-115","prob":50.4,"fair":"-102","inputs":2},"calvinridley":{"label":"REC YDS","line":27.5,"odds":"-114","prob":50.0,"fair":"-100","inputs":3},"demarcusrobinson":{"label":"REC YDS","line":11.5,"odds":"-114","prob":49.9,"fair":"+100","inputs":4},"isaacteslaa":{"label":"REC YDS","line":17.5,"odds":"-114","prob":50.0,"fair":"-100","inputs":4},"tyquanthornton":{"label":"REC YDS","line":20.5,"odds":"-111","prob":48.8,"fair":"+105","inputs":3},"tommytremble":{"label":"REC YDS","line":15.5,"odds":"-112","prob":49.5,"fair":"+102","inputs":4},"bhayshultuten":{"label":"RUSH YDS","line":50.5,"odds":"-112","prob":49.1,"fair":"+103","inputs":4},"darnellwashington":{"label":"REC YDS","line":17.5,"odds":"-115","prob":49.9,"fair":"+100","inputs":4},"javontewilliams":{"label":"RUSH YDS","line":73.5,"odds":"-114","prob":49.9,"fair":"+101","inputs":6},"kyrenwilliams":{"label":"RUSH YDS","line":54.5,"odds":"-111","prob":48.6,"fair":"+106","inputs":3},"saquonbarkley":{"label":"RUSH YDS","line":76.5,"odds":"-115","prob":50.0,"fair":"-100","inputs":5},"ajbarner":{"label":"REC YDS","line":25.5,"odds":"-110","prob":49.0,"fair":"+104","inputs":5},"denzelboston":{"label":"REC YDS","line":24.5,"odds":"-114","prob":49.9,"fair":"+100","inputs":2},"kendrickbourne":{"label":"REC YDS","line":18.5,"odds":"-114","prob":50.1,"fair":"-101","inputs":4},"patbryant":{"label":"REC YDS","line":23.5,"odds":"-114","prob":49.8,"fair":"+101","inputs":4},"jamescook":{"label":"RUSH YDS","line":74.5,"odds":"-115","prob":50.1,"fair":"-100","inputs":5},"calebdouglas":{"label":"REC YDS","line":25.5,"odds":"-114","prob":50.2,"fair":"-101","inputs":3},"gregdulcich":{"label":"REC YDS","line":26.5,"odds":"-114","prob":50.0,"fair":"-100","inputs":3},"evanengram":{"label":"REC YDS","line":22.5,"odds":"-115","prob":50.6,"fair":"-103","inputs":5},"travisetienne":{"label":"RUSH YDS","line":56.5,"odds":"-114","prob":50.1,"fair":"-101","inputs":3},"patfreiermuth":{"label":"REC YDS","line":25.5,"odds":"-114","prob":50.0,"fair":"+100","inputs":6},"mikegesicki":{"label":"REC YDS","line":20.5,"odds":"-113","prob":49.4,"fair":"+102","inputs":5},"breecehall":{"label":"RUSH YDS","line":65.5,"odds":"-112","prob":49.2,"fair":"+103","inputs":4},"omarionhampton":{"label":"RUSH YDS","line":66.5,"odds":"-115","prob":50.2,"fair":"-101","inputs":4},"treharris":{"label":"REC YDS","line":26.5,"odds":"-114","prob":49.9,"fair":"+100","inputs":4},"rjharvey":{"label":"RUSH YDS","line":18.5,"odds":"-114","prob":49.7,"fair":"+101","inputs":4},"gunnarhelm":{"label":"REC YDS","line":21.5,"odds":"-112","prob":49.7,"fair":"+101","inputs":4},"xavierhutchinson":{"label":"REC YDS","line":19.5,"odds":"-117","prob":50.5,"fair":"-102","inputs":2},"jauanjennings":{"label":"REC YDS","line":22.5,"odds":"-117","prob":50.2,"fair":"-101","inputs":6},"jerryjeudy":{"label":"REC YDS","line":30.5,"odds":"-115","prob":49.7,"fair":"+101","inputs":5},"aaronjones":{"label":"RUSH YDS","line":29.5,"odds":"-116","prob":50.4,"fair":"-101","inputs":6},"cooperkupp":{"label":"REC YDS","line":29.5,"odds":"-117","prob":50.4,"fair":"-102","inputs":7},"makailemon":{"label":"REC YDS","line":24.5,"odds":"-113","prob":49.7,"fair":"+101","inputs":4},"michaelmayer":{"label":"REC YDS","line":17.5,"odds":"-114","prob":50.1,"fair":"-100","inputs":5},"jalenmcmillan":{"label":"REC YDS","line":34.5,"odds":"-117","prob":50.3,"fair":"-101","inputs":4},"adonaimitchell":{"label":"REC YDS","line":32.5,"odds":"-114","prob":50.1,"fair":"-101","inputs":3},"chigokonkwo":{"label":"REC YDS","line":25.5,"odds":"-114","prob":50.1,"fair":"-100","inputs":6},"colbyparkinson":{"label":"REC YDS","line":19.5,"odds":"-114","prob":50.6,"fair":"-102","inputs":4},"deebosamuel":{"label":"REC YDS","line":29.5,"odds":"-114","prob":50.1,"fair":"-100","inputs":6},"rashidshaheed":{"label":"RUSH YDS","line":2.5,"odds":"-115","prob":50.5,"fair":"-102","inputs":5},"camskattebo":{"label":"RUSH YDS","line":49.5,"odds":"-115","prob":50.5,"fair":"-102","inputs":3},"tyjaespears":{"label":"RUSH YDS","line":22.5,"odds":"-114","prob":50.2,"fair":"-101","inputs":4},"jonathantaylor":{"label":"RUSH YDS","line":76.5,"odds":"-114","prob":50.1,"fair":"-100","inputs":5},"masontaylor":{"label":"REC YDS","line":20.5,"odds":"-110","prob":49.0,"fair":"+104","inputs":3},"brianthomas":{"label":"REC YDS","line":36.5,"odds":"-114","prob":49.8,"fair":"+101","inputs":6},"kennethwalker":{"label":"RUSH YDS","line":61.5,"odds":"-117","prob":50.5,"fair":"-102","inputs":3},"jaylenwarren":{"label":"RUSH YDS","line":43.5,"odds":"-115","prob":50.2,"fair":"-101","inputs":3},"malikwashington":{"label":"REC YDS","line":27.5,"odds":"-115","prob":50.3,"fair":"-101","inputs":5},"rachaadwhite":{"label":"RUSH YDS","line":24.5,"odds":"-115","prob":50.3,"fair":"-101","inputs":5},"dontayvionwicks":{"label":"REC YDS","line":27.5,"odds":"-116","prob":50.4,"fair":"-102","inputs":4},"jordanaddison":{"label":"REC YDS","line":43.5,"odds":"-115","prob":49.7,"fair":"+101","inputs":3},"markandrews":{"label":"REC YDS","line":34.5,"odds":"-114","prob":49.9,"fair":"+100","inputs":5},"chasebrown":{"label":"RUSH YDS","line":57.5,"odds":"-114","prob":50.0,"fair":"-100","inputs":3},"jalencoker":{"label":"REC YDS","line":39.5,"odds":"-115","prob":50.2,"fair":"-101","inputs":5},"kcconcepcion":{"label":"REC YDS","line":33.5,"odds":"-114","prob":50.2,"fair":"-101","inputs":3},"stefondiggs":{"label":"REC YDS","line":41.5,"odds":"-115","prob":50.0,"fair":"+100","inputs":4},"romeodoubs":{"label":"REC YDS","line":36.5,"odds":"-114","prob":50.0,"fair":"-100","inputs":6},"mikeevans":{"label":"REC YDS","line":49.5,"odds":"-115","prob":50.1,"fair":"-100","inputs":6},"haroldfannin":{"label":"REC YDS","line":35.5,"odds":"-115","prob":49.6,"fair":"+102","inputs":4},"jakeferguson":{"label":"REC YDS","line":30.5,"odds":"-110","prob":49.4,"fair":"+102","inputs":5},"kennygainwell":{"label":"RUSH YDS","line":21.5,"odds":"-115","prob":50.1,"fair":"-100","inputs":4},"chrisgodwin":{"label":"REC YDS","line":41.5,"odds":"-115","prob":50.4,"fair":"-101","inputs":4},"dallasgoedert":{"label":"REC YDS","line":34.5,"odds":"-115","prob":50.2,"fair":"-101","inputs":3},"matthewgolden":{"label":"REC YDS","line":39.5,"odds":"-114","prob":49.9,"fair":"+100","inputs":4},"marvinharrison":{"label":"REC YDS","line":48.5,"odds":"-115","prob":50.2,"fair":"-101","inputs":3},"hunterhenry":{"label":"REC YDS","line":34.5,"odds":"-113","prob":50.0,"fair":"+100","inputs":4},"tjhockenson":{"label":"REC YDS","line":27.5,"odds":"-113","prob":49.8,"fair":"+101","inputs":4},"quentinjohnston":{"label":"REC YDS","line":42.5,"odds":"-114","prob":49.8,"fair":"+101","inputs":3},"traviskelce":{"label":"REC YDS","line":41.5,"odds":"-115","prob":50.2,"fair":"-101","inputs":4},"daltonkincaid":{"label":"REC YDS","line":38.5,"odds":"-114","prob":50.0,"fair":"-100","inputs":4},"georgekittle":{"label":"REC YDS","line":36.5,"odds":"-113","prob":49.9,"fair":"+101","inputs":4},"tuckerkraft":{"label":"REC YDS","line":45.5,"odds":"-114","prob":49.9,"fair":"+100","inputs":7},"samlaporta":{"label":"REC YDS","line":41.5,"odds":"-114","prob":50.1,"fair":"-100","inputs":4},"isaiahlikely":{"label":"REC YDS","line":35.5,"odds":"-115","prob":49.5,"fair":"+102","inputs":3},"terrymclaurin":{"label":"REC YDS","line":51.5,"odds":"-115","prob":49.8,"fair":"+101","inputs":3},"dkmetcalf":{"label":"REC YDS","line":48.5,"odds":"-115","prob":50.3,"fair":"-101","inputs":3},"jakobimeyers":{"label":"REC YDS","line":37.5,"odds":"-115","prob":50.2,"fair":"-101","inputs":5},"djmoore":{"label":"REC YDS","line":47.5,"odds":"-115","prob":49.9,"fair":"+100","inputs":5},"romeodunze":{"label":"REC YDS","line":43.5,"odds":"-115","prob":50.0,"fair":"-100","inputs":5},"cadeotton":{"label":"REC YDS","line":28.5,"odds":"-114","prob":49.9,"fair":"+100","inputs":5},"alecpierce":{"label":"REC YDS","line":46.5,"odds":"-115","prob":50.0,"fair":"-100","inputs":3},"michaelpittman":{"label":"REC YDS","line":40.5,"odds":"-114","prob":49.7,"fair":"+101","inputs":3},"jaydenreed":{"label":"REC YDS","line":39.5,"odds":"-113","prob":50.1,"fair":"-100","inputs":4},"daltonschultz":{"label":"REC YDS","line":32.5,"odds":"-115","prob":50.2,"fair":"-101","inputs":3},"khalilshakir":{"label":"REC YDS","line":36.5,"odds":"-113","prob":49.8,"fair":"+101","inputs":4},"rhamondrestevenson":{"label":"RUSH YDS","line":56.5,"odds":"-114","prob":50.0,"fair":"+100","inputs":3},"brentonstrange":{"label":"REC YDS","line":36.5,"odds":"-114","prob":50.0,"fair":"+100","inputs":4},"dezhaunstribling":{"label":"REC YDS","line":35.5,"odds":"-114","prob":50.7,"fair":"-103","inputs":4},"carnelltate":{"label":"REC YDS","line":38.5,"odds":"-114","prob":49.6,"fair":"+101","inputs":3},"tretucker":{"label":"REC YDS","line":40.5,"odds":"-114","prob":49.8,"fair":"+101","inputs":7},"devaughnvele":{"label":"REC YDS","line":39.5,"odds":"-114","prob":49.9,"fair":"+101","inputs":4},"parkerwashington":{"label":"REC YDS","line":52.5,"odds":"-117","prob":50.5,"fair":"-102","inputs":2},"christianwatson":{"label":"REC YDS","line":55.5,"odds":"-116","prob":50.2,"fair":"-101","inputs":5},"jamesonwilliams":{"label":"REC YDS","line":58.5,"odds":"-113","prob":49.8,"fair":"+101","inputs":4},"michaelwilson":{"label":"REC YDS","line":41.5,"odds":"-114","prob":49.9,"fair":"+100","inputs":4},"xavierworthy":{"label":"RUSH YDS","line":5.5,"odds":"+225","prob":28.3,"fair":"+253","inputs":1},"devonachane":{"label":"RUSH YDS","line":66.5,"odds":"-117","prob":50.5,"fair":"-102","inputs":2},"davanteadams":{"label":"REC YDS","line":51.5,"odds":"-114","prob":50.0,"fair":"+100","inputs":3},"ajbrown":{"label":"REC YDS","line":63.5,"odds":"-114","prob":49.9,"fair":"+100","inputs":4},"lutherburden":{"label":"REC YDS","line":56.5,"odds":"-114","prob":50.1,"fair":"-100","inputs":4},"joshdowns":{"label":"REC YDS","line":45.5,"odds":"-117","prob":50.4,"fair":"-102","inputs":4},"emekaegbuka":{"label":"REC YDS","line":54.5,"odds":"-111","prob":49.3,"fair":"+103","inputs":3},"zayflowers":{"label":"REC YDS","line":63.5,"odds":"-115","prob":50.0,"fair":"-100","inputs":4},"jahmyrgibbs":{"label":"RUSH YDS","line":83.5,"odds":"-115","prob":50.1,"fair":"-100","inputs":5},"teehiggins":{"label":"REC YDS","line":62.5,"odds":"-115","prob":50.1,"fair":"-100","inputs":2},"juwanjohnson":{"label":"REC YDS","line":42.5,"odds":"-114","prob":50.0,"fair":"+100","inputs":3},"colstonloveland":{"label":"REC YDS","line":50.5,"odds":"-116","prob":50.5,"fair":"-102","inputs":4},"christianmccaffrey":{"label":"RUSH YDS","line":59.5,"odds":"-115","prob":50.1,"fair":"-100","inputs":6},"laddmcconkey":{"label":"REC YDS","line":51.5,"odds":"-115","prob":49.9,"fair":"+101","inputs":3},"tetairoamcmillan":{"label":"REC YDS","line":58.5,"odds":"-114","prob":49.9,"fair":"+100","inputs":4},"maliknabers":{"label":"REC YDS","line":60.5,"odds":"-113","prob":49.8,"fair":"+101","inputs":4},"georgepickens":{"label":"REC YDS","line":69.5,"odds":"-114","prob":50.2,"fair":"-101","inputs":4},"kylepitts":{"label":"REC YDS","line":43.5,"odds":"-114","prob":49.8,"fair":"+101","inputs":4},"bijanrobinson":{"label":"RUSH YDS","line":76.5,"odds":"-115","prob":50.1,"fair":"-100","inputs":4},"wandalerobinson":{"label":"REC YDS","line":42.5,"odds":"-115","prob":49.9,"fair":"+100","inputs":5},"courtlandsutton":{"label":"REC YDS","line":43.5,"odds":"-115","prob":50.0,"fair":"+100","inputs":3},"jaylenwaddle":{"label":"REC YDS","line":53.5,"odds":"-117","prob":50.3,"fair":"-101","inputs":4},"tylerwarren":{"label":"REC YDS","line":45.5,"odds":"-117","prob":50.5,"fair":"-102","inputs":2},"brockbowers":{"label":"REC YDS","line":63.5,"odds":"-121","prob":51.0,"fair":"-104","inputs":3},"nicocollins":{"label":"REC YDS","line":69.5,"odds":"-115","prob":50.2,"fair":"-101","inputs":6},"justinjefferson":{"label":"REC YDS","line":73.5,"odds":"-114","prob":50.2,"fair":"-101","inputs":3},"drakelondon":{"label":"REC YDS","line":64.5,"odds":"-115","prob":50.3,"fair":"-101","inputs":3},"treymcbride":{"label":"REC YDS","line":56.5,"odds":"-114","prob":50.1,"fair":"-100","inputs":4},"rasheerice":{"label":"REC YDS","line":59.5,"odds":"-114","prob":49.1,"fair":"+104","inputs":3},"devontasmith":{"label":"REC YDS","line":66.5,"odds":"-114","prob":49.9,"fair":"+100","inputs":4},"garrettwilson":{"label":"REC YDS","line":61.5,"odds":"-113","prob":50.0,"fair":"+100","inputs":4},"ceedeelamb":{"label":"REC YDS","line":76.5,"odds":"-114","prob":50.0,"fair":"+100","inputs":5},"chrisolave":{"label":"REC YDS","line":76.5,"odds":"-115","prob":50.1,"fair":"-101","inputs":5},"jaxonsmithnjigba":{"label":"REC YDS","line":81.5,"odds":"-114","prob":50.0,"fair":"-100","inputs":4},"amonrastbrown":{"label":"REC YDS","line":77.5,"odds":"-114","prob":50.2,"fair":"-101","inputs":3},"jamarrchase":{"label":"REC YDS","line":86.5,"odds":"-112","prob":49.3,"fair":"+103","inputs":4},"pukanacua":{"label":"RUSH YDS","line":2.5,"odds":"-112","prob":48.8,"fair":"+105","inputs":3},"erickall":{"label":"RECEPTIONS","line":1.5,"odds":"+125","prob":41.4,"fair":"+142","inputs":1},"braelonallen":{"label":"RUSH YDS","line":17.5,"odds":"-117","prob":50.4,"fair":"-102","inputs":5},"elijaharroyo":{"label":"RECEPTIONS","line":1.5,"odds":"+145","prob":37.8,"fair":"+165","inputs":1},"omarcooper":{"label":"RECEPTIONS","line":1.5,"odds":"+145","prob":37.8,"fair":"+165","inputs":1},"jkdobbins":{"label":"RUSH YDS","line":49.5,"odds":"-115","prob":50.2,"fair":"-101","inputs":5},"andreiiosivas":{"label":"RECEPTIONS","line":1.5,"odds":"+155","prob":36.3,"fair":"+175","inputs":1},"ashtonjeanty":{"label":"RUSH YDS","line":45.5,"odds":"-140","prob":54.5,"fair":"-120","inputs":1},"jeremiyahlove":{"label":"REC YDS","line":10.5,"odds":"-140","prob":54.5,"fair":"-120","inputs":1},"woodymarks":{"label":"RUSH YDS","line":30.5,"odds":"-118","prob":50.5,"fair":"-102","inputs":3},"jordanmason":{"label":"RUSH YDS","line":44.5,"odds":"-114","prob":49.9,"fair":"+101","inputs":4},"davidnjoku":{"label":"REC YDS","line":15.5,"odds":"-115","prob":50.0,"fair":"-100","inputs":1},"kenyonsadiq":{"label":"REC YDS","line":15.5,"odds":"-135","prob":53.5,"fair":"-115","inputs":1},"drewsample":{"label":"RECEPTIONS","line":1.5,"odds":"+170","prob":34.3,"fair":"+192","inputs":1},"brashardsmith":{"label":"RECEPTIONS","line":1.5,"odds":"+160","prob":35.6,"fair":"+181","inputs":1},"isaiahwilliams":{"label":"RECEPTIONS","line":1.5,"odds":"+130","prob":40.3,"fair":"+148","inputs":1},"colbieyoung":{"label":"RECEPTIONS","line":1.5,"odds":"+170","prob":34.3,"fair":"+192","inputs":1},"darnellmooney":{"label":"REC YDS","line":10.5,"odds":"-125","prob":52.0,"fair":"-108","inputs":1},"coreykiner":{"label":"RUSH YDS","line":7.5,"odds":"-114","prob":50.0,"fair":"-100","inputs":2},"chrisrodriguez":{"label":"RUSH YDS","line":33.5,"odds":"-119","prob":50.5,"fair":"-102","inputs":4},"jacorycroskeymerritt":{"label":"RUSH YDS","line":41.5,"odds":"-111","prob":49.7,"fair":"+101","inputs":4},"blakecorum":{"label":"RUSH YDS","line":44.5,"odds":"-120","prob":51.3,"fair":"-105","inputs":3},"malikdavis":{"label":"RUSH YDS","line":10.5,"odds":"-150","prob":55.8,"fair":"-126","inputs":1},"brianrobinson":{"label":"RUSH YDS","line":20.5,"odds":"-125","prob":52.0,"fair":"-108","inputs":1},"dandreswift":{"label":"ANYTIME TD","line":"Anytime TD","odds":"-164","prob":58.7,"fair":"-142","inputs":8},"mikewashington":{"label":"ANYTIME TD","line":"Anytime TD","odds":"-154","prob":57.2,"fair":"-134","inputs":7},"chubahubbard":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+115","prob":43.9,"fair":"+128","inputs":8},"jonathonbrooks":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+138","prob":39.6,"fair":"+152","inputs":7},"kylemonangai":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+185","prob":33.1,"fair":"+202","inputs":7},"tylerallgeier":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+210","prob":30.4,"fair":"+229","inputs":8},"jaketonges":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+407","prob":18.6,"fair":"+437","inputs":8},"tyronetracy":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+320","prob":22.5,"fair":"+345","inputs":8},"kimanividal":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+250","prob":27.0,"fair":"+271","inputs":7},"juliuschestnut":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+392","prob":19.2,"fair":"+421","inputs":6},"sionevaki":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+318","prob":22.6,"fair":"+343","inputs":7},"keatonmitchell":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+250","prob":27.0,"fair":"+271","inputs":7},"chrisbrooks":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+293","prob":24.0,"fair":"+317","inputs":8},"kalebjohnson":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+287","prob":24.4,"fair":"+310","inputs":8},"orondegadsden":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+491","prob":16.0,"fair":"+526","inputs":8},"jacobsaylors":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+290","prob":24.2,"fair":"+313","inputs":7},"alvinkamara":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+282","prob":24.7,"fair":"+305","inputs":2},"keenanallen":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+325","prob":22.2,"fair":"+350","inputs":7},"najeeharris":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+320","prob":22.5,"fair":"+345","inputs":7},"tedhurst":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+425","prob":18.0,"fair":"+457","inputs":7},"olliegordon":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+450","prob":17.2,"fair":"+483","inputs":7},"jaylenwright":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+379","prob":19.7,"fair":"+408","inputs":8},"roschonjohnson":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+400","prob":18.9,"fair":"+430","inputs":5},"ryanflournoy":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+395","prob":19.1,"fair":"+425","inputs":8},"tankbigsby":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+425","prob":18.0,"fair":"+457","inputs":8},"theojohnson":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+512","prob":15.4,"fair":"+549","inputs":8},"seantucker":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+400","prob":18.9,"fair":"+430","inputs":7},"darrenwaller":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+412","prob":18.4,"fair":"+443","inputs":8},"kendremiller":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+500","prob":15.7,"fair":"+536","inputs":7},"emanuelwilson":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+500","prob":15.7,"fair":"+536","inputs":8},"devinsingletary":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+757","prob":11.0,"fair":"+809","inputs":8},"emmettjohnson":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+500","prob":15.7,"fair":"+536","inputs":8},"jordanwhittington":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+850","prob":9.9,"fair":"+907","inputs":8},"audricestime":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+500","prob":15.7,"fair":"+536","inputs":6},"troyfranklin":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1092","prob":8.0,"fair":"+1150","inputs":8},"malikbenson":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+700","prob":11.8,"fair":"+748","inputs":8},"cyrusallen":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+900","prob":9.4,"fair":"+960","inputs":8},"tezjohnson":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+487","prob":16.1,"fair":"+522","inputs":6},"olamidezaccheaus":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+700","prob":11.8,"fair":"+748","inputs":7},"raydavis":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+525","prob":15.1,"fair":"+562","inputs":7},"dylanlaube":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+624","prob":13.0,"fair":"+668","inputs":6},"dylansampson":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+629","prob":12.9,"fair":"+673","inputs":8},"demondclaiborne":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1030","prob":8.3,"fair":"+1098","inputs":8},"jackendries":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+600","prob":13.5,"fair":"+642","inputs":5},"sethmcgowan":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+700","prob":11.8,"fair":"+748","inputs":8},"jaylinnoel":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+526","prob":15.1,"fair":"+563","inputs":8},"romanwilson":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+550","prob":14.5,"fair":"+589","inputs":7},"keoncoleman":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+600","prob":13.5,"fair":"+642","inputs":8},"tyjohnson":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+587","prob":13.7,"fair":"+629","inputs":6},"jatavionsanders":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+800","prob":10.5,"fair":"+854","inputs":6},"hollywoodbrown":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+700","prob":11.8,"fair":"+748","inputs":8},"isaiahdavis":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+596","prob":13.5,"fair":"+638","inputs":6},"jalentolbert":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+647","prob":12.6,"fair":"+691","inputs":8},"germiebernard":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+600","prob":13.5,"fair":"+642","inputs":7},"travishunter":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+724","prob":11.4,"fair":"+774","inputs":8},"davisallen":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1300","prob":8.0,"fair":"+1150","inputs":8},"chrisbell":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+778","prob":10.7,"fair":"+831","inputs":8},"noahfant":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+711","prob":11.6,"fair":"+760","inputs":8},"devontezwalker":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+821","prob":10.2,"fair":"+877","inputs":8},"brycelance":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+700","prob":11.8,"fair":"+748","inputs":7},"konatamumpfield":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1100","prob":8.0,"fair":"+1150","inputs":7},"kaytronallen":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+924","prob":9.2,"fair":"+986","inputs":8},"josholiver":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+700","prob":11.8,"fair":"+748","inputs":8},"calvinaustin":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+637","prob":12.8,"fair":"+682","inputs":2},"zachariahbranch":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+750","prob":11.1,"fair":"+801","inputs":7},"treylonburks":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+675","prob":12.2,"fair":"+722","inputs":8},"jonahcoleman":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+700","prob":11.8,"fair":"+748","inputs":7},"ashtondulin":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1050","prob":8.2,"fair":"+1119","inputs":7},"joshuapalmer":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+774","prob":10.8,"fair":"+827","inputs":8},"kavontaeturpin":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+699","prob":11.8,"fair":"+747","inputs":8},"joshwhyle":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+750","prob":11.1,"fair":"+801","inputs":7},"brockwright":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+777","prob":10.8,"fair":"+830","inputs":7},"antoniowilliams":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+874","prob":9.7,"fair":"+933","inputs":8},"kaelonblack":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+850","prob":9.9,"fair":"+907","inputs":8},"zavionthomas":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+687","prob":12.0,"fair":"+735","inputs":6},"barionbrown":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+750","prob":11.1,"fair":"+801","inputs":7},"toryhorton":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+700","prob":11.8,"fair":"+748","inputs":7},"eliraridon":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1100","prob":8.0,"fair":"+1150","inputs":8},"moaliecox":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+850","prob":9.9,"fair":"+907","inputs":7},"elicayomanor":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+750","prob":11.1,"fair":"+801","inputs":7},"jakebobo":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+700","prob":11.8,"fair":"+748","inputs":1},"kevincoleman":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1694","prob":8.0,"fair":"+1150","inputs":8},"djgiddens":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+800","prob":10.5,"fair":"+854","inputs":7},"jimmyhorn":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+750","prob":11.1,"fair":"+801","inputs":7},"keandrelambertsmith":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1202","prob":8.0,"fair":"+1150","inputs":6},"marvinmims":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+948","prob":9.0,"fair":"+1010","inputs":8},"jonnusmith":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+850","prob":9.9,"fair":"+907","inputs":8},"brenenthompson":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+847","prob":10.0,"fair":"+904","inputs":6},"jahdaewalker":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1062","prob":8.1,"fair":"+1132","inputs":7},"lajohntaywester":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2200","prob":8.0,"fair":"+1150","inputs":7},"chimeredike":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+898","prob":9.5,"fair":"+957","inputs":8},"rasheenali":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1200","prob":8.0,"fair":"+1150","inputs":7},"lequintallen":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+850","prob":9.9,"fair":"+907","inputs":6},"emaridemercado":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+824","prob":10.2,"fair":"+880","inputs":6},"connorheyward":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+750","prob":11.1,"fair":"+801","inputs":7},"elijahhiggins":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1000","prob":8.6,"fair":"+1066","inputs":7},"mackhollins":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+898","prob":9.5,"fair":"+957","inputs":8},"lukeschoonmaker":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+803","prob":10.4,"fair":"+858","inputs":8},"nicholassingleton":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1000","prob":8.6,"fair":"+1066","inputs":8},"xaviersmith":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1124","prob":8.0,"fair":"+1150","inputs":6},"brevynspannford":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+797","prob":10.5,"fair":"+851","inputs":8},"jordanjames":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+950","prob":9.0,"fair":"+1013","inputs":8},"danielbellinger":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1003","prob":8.5,"fair":"+1070","inputs":8},"bomelton":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1100","prob":8.0,"fair":"+1150","inputs":8},"marlinklein":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1900","prob":8.0,"fair":"+1150","inputs":5},"ameerabdullah":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+887","prob":9.6,"fair":"+946","inputs":6},"trevoretienne":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+520","prob":15.2,"fair":"+557","inputs":2},"johnmetchie":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+960","prob":8.9,"fair":"+1024","inputs":6},"taifelton":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1233","prob":8.0,"fair":"+1150","inputs":8},"taymartin":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1300","prob":8.0,"fair":"+1150","inputs":7},"deriusdavis":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1675","prob":8.0,"fair":"+1150","inputs":6},"paynedurham":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1000","prob":8.6,"fair":"+1066","inputs":7},"mitchellevans":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1000","prob":8.6,"fair":"+1066","inputs":5},"austinhooper":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+913","prob":9.3,"fair":"+974","inputs":7},"jalenroyals":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1000","prob":8.6,"fair":"+1066","inputs":7},"kylewilliams":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1348","prob":8.0,"fair":"+1150","inputs":8},"nateboerkircher":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1050","prob":8.2,"fair":"+1119","inputs":7},"bamknight":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+965","prob":8.9,"fair":"+1029","inputs":3},"jacksonhawes":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1024","prob":8.4,"fair":"+1092","inputs":6},"lukemccaffrey":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1300","prob":8.0,"fair":"+1150","inputs":7},"fostermoreau":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1100","prob":8.0,"fair":"+1150","inputs":8},"durhamsmythe":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1158","prob":8.0,"fair":"+1150","inputs":8},"roberttonyan":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1034","prob":8.3,"fair":"+1102","inputs":6},"laquontreadwell":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1148","prob":8.0,"fair":"+1150","inputs":6},"tahjbrooks":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2095","prob":8.0,"fair":"+1150","inputs":8},"johnnymundt":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1248","prob":8.0,"fair":"+1150","inputs":8},"isaiahbond":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1300","prob":8.0,"fair":"+1150","inputs":8},"maxbredeson":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2000","prob":8.0,"fair":"+1150","inputs":7},"hunterluepke":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1600","prob":8.0,"fair":"+1150","inputs":7},"dohntemeyers":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1448","prob":8.0,"fair":"+1150","inputs":4},"elijahsarratt":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1207","prob":8.0,"fair":"+1150","inputs":8},"willshipley":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1175","prob":8.0,"fair":"+1150","inputs":8},"benskowronek":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1600","prob":8.0,"fair":"+1150","inputs":5},"kadenwetjen":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1981","prob":8.0,"fair":"+1150","inputs":6},"devinduvernay":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1600","prob":8.0,"fair":"+1150","inputs":5},"johnbates":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1800","prob":8.0,"fair":"+1150","inputs":8},"deionburks":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1248","prob":8.0,"fair":"+1150","inputs":6},"eftonchism":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1594","prob":8.0,"fair":"+1150","inputs":6},"tylerconklin":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1334","prob":8.0,"fair":"+1150","inputs":4},"malachicorley":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2341","prob":8.0,"fair":"+1150","inputs":6},"cjdaniels":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1300","prob":8.0,"fair":"+1150","inputs":6},"eliheidenreich":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1400","prob":8.0,"fair":"+1150","inputs":5},"liljordanhumphrey":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1300","prob":8.0,"fair":"+1150","inputs":5},"jacksonmeeks":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1600","prob":8.0,"fair":"+1150","inputs":5},"skyymoore":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1500","prob":8.0,"fair":"+1150","inputs":7},"mylesprice":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1448","prob":8.0,"fair":"+1150","inputs":8},"elistowers":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1981","prob":8.0,"fair":"+1150","inputs":6},"tannerkoziol":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1895","prob":8.0,"fair":"+1150","inputs":6},"blakewhiteheart":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2200","prob":8.0,"fair":"+1150","inputs":7},"dyamibrown":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1800","prob":8.0,"fair":"+1150","inputs":7},"camdenbrown":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1500","prob":8.0,"fair":"+1150","inputs":5},"dariuscooper":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1800","prob":8.0,"fair":"+1150","inputs":8},"oscardelp":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1772","prob":8.0,"fair":"+1150","inputs":6},"ajdillon":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+715","prob":11.6,"fair":"+764","inputs":2},"willkacmarek":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1448","prob":8.0,"fair":"+1150","inputs":6},"maxklare":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1348","prob":8.0,"fair":"+1150","inputs":6},"jaylinlane":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1400","prob":8.0,"fair":"+1150","inputs":6},"jonathanmingo":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1576","prob":8.0,"fair":"+1150","inputs":6},"elijahmoore":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1694","prob":8.0,"fair":"+1150","inputs":6},"drewogletree":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1309","prob":8.0,"fair":"+1150","inputs":7},"jeremyruckert":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1600","prob":8.0,"fair":"+1150","inputs":8},"raheimsanders":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1318","prob":8.0,"fair":"+1150","inputs":7},"reggievirgil":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1600","prob":8.0,"fair":"+1150","inputs":6},"skylerbell":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1600","prob":8.0,"fair":"+1150","inputs":7},"joshcameron":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1700","prob":8.0,"fair":"+1150","inputs":5},"rileynowakowski":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1800","prob":8.0,"fair":"+1150","inputs":5},"jakebriningstool":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1600","prob":8.0,"fair":"+1150","inputs":5},"joshcuevas":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1800","prob":8.0,"fair":"+1150","inputs":5},"montoriefoster":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1800","prob":8.0,"fair":"+1150","inputs":7},"matthewhibner":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1900","prob":8.0,"fair":"+1150","inputs":7},"jelaniwoods":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2100","prob":8.0,"fair":"+1150","inputs":7},"ericsaubert":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2500","prob":8.0,"fair":"+1150","inputs":8},"cadestover":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1900","prob":8.0,"fair":"+1150","inputs":7},"britishbrooks":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2949","prob":8.0,"fair":"+1150","inputs":6},"lukefarrell":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1236","prob":8.0,"fair":"+1150","inputs":2},"simifehoko":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1779","prob":8.0,"fair":"+1150","inputs":4},"ryanmiller":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1800","prob":8.0,"fair":"+1150","inputs":5},"timpatrick":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1600","prob":8.0,"fair":"+1150","inputs":6},"ianthomas":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2000","prob":8.0,"fair":"+1150","inputs":7},"jaredwiley":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1600","prob":8.0,"fair":"+1150","inputs":5},"jalenbrooks":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1795","prob":8.0,"fair":"+1150","inputs":2},"grantcalcaterra":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1700","prob":8.0,"fair":"+1150","inputs":1},"reggiegilliam":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2000","prob":8.0,"fair":"+1150","inputs":7},"brycentremayne":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1900","prob":8.0,"fair":"+1150","inputs":6},"charliewoerner":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2200","prob":8.0,"fair":"+1150","inputs":7},"benyurosek":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1849","prob":8.0,"fair":"+1150","inputs":6},"samroush":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2200","prob":8.0,"fair":"+1150","inputs":5},"gavinbartholomew":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1995","prob":8.0,"fair":"+1150","inputs":6},"alecingold":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2341","prob":8.0,"fair":"+1150","inputs":6},"hunterlong":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2200","prob":8.0,"fair":"+1150","inputs":5},"quintinmorris":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2000","prob":8.0,"fair":"+1150","inputs":5},"nikkoremigio":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2000","prob":8.0,"fair":"+1150","inputs":6},"kelekilatu":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2331","prob":8.0,"fair":"+1150","inputs":2},"jaredwayne":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2471","prob":8.0,"fair":"+1150","inputs":2},"chrisblair":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2400","prob":8.0,"fair":"+1150","inputs":5},"justinjoly":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2300","prob":8.0,"fair":"+1150","inputs":5},"markredman":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2200","prob":8.0,"fair":"+1150","inputs":5},"bensinnott":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2800","prob":8.0,"fair":"+1150","inputs":7},"keshawnwilliams":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2000","prob":8.0,"fair":"+1150","inputs":6},"cjwilliams":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2000","prob":8.0,"fair":"+1150","inputs":5},"darekeyoung":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+3000","prob":8.0,"fair":"+1150","inputs":6},"seydoutraore":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2200","prob":8.0,"fair":"+1150","inputs":6},"nateadkins":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2396","prob":8.0,"fair":"+1150","inputs":4},"kylengranson":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2900","prob":8.0,"fair":"+1150","inputs":5},"cameronlatu":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2596","prob":8.0,"fair":"+1150","inputs":6},"davidmartinrobinson":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2500","prob":8.0,"fair":"+1150","inputs":7},"ronnierivers":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+3000","prob":8.0,"fair":"+1150","inputs":7},"bradyrussell":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+4000","prob":8.0,"fair":"+1150","inputs":7},"carsenryan":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2800","prob":8.0,"fair":"+1150","inputs":5},"tylanwallace":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2541","prob":8.0,"fair":"+1150","inputs":6},"andrewbeck":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2596","prob":8.0,"fair":"+1150","inputs":6},"nickkallerup":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2700","prob":8.0,"fair":"+1150","inputs":7},"michaelburton":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+4236","prob":8.0,"fair":"+1150","inputs":6},"thomasfidone":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2642","prob":8.0,"fair":"+1150","inputs":6},"kenenwangwu":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2800","prob":8.0,"fair":"+1150","inputs":7},"tannerarkin":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2749","prob":8.0,"fair":"+1150","inputs":6},"dallenbentley":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2786","prob":8.0,"fair":"+1150","inputs":4},"chrismanhertz":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2800","prob":8.0,"fair":"+1150","inputs":5},"ejjenkins":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+3000","prob":8.0,"fair":"+1150","inputs":5},"patrickricard":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2178","prob":8.0,"fair":"+1150","inputs":2},"colsonyankoff":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+3500","prob":8.0,"fair":"+1150","inputs":7},"tutuatwell":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2800","prob":8.0,"fair":"+1150","inputs":1},"jacobcowing":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1050","prob":8.2,"fair":"+1119","inputs":1},"feleipefranks":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+3500","prob":8.0,"fair":"+1150","inputs":1},"djherman":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2200","prob":8.0,"fair":"+1150","inputs":1},"kameronjohnson":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+900","prob":9.4,"fair":"+960","inputs":1},"kokieft":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2200","prob":8.0,"fair":"+1150","inputs":1},"lukemusgrave":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1050","prob":8.2,"fair":"+1119","inputs":1},"bauersharp":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2500","prob":8.0,"fair":"+1150","inputs":1},"ariansmith":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+2200","prob":8.0,"fair":"+1150","inputs":1},"jordanwatkins":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1500","prob":8.0,"fair":"+1150","inputs":1},"savionwilliams":{"label":"ANYTIME TD","line":"Anytime TD","odds":"+1000","prob":8.6,"fair":"+1066","inputs":1}};
-const NFL_GAME_TOTALS = {"NE":44.5,"SEA":44.5,"SF":48.5,"LAR":48.5,"BUF":44.5,"HOU":44.5,"CHI":47.5,"CAR":47.5,"CLE":40.5,"JAX":40.5,"ATL":41.5,"PIT":41.5,"NYJ":39.5,"TEN":39.5,"NO":49.5,"DET":49.5,"TB":50.5,"CIN":50.5,"BAL":47.5,"IND":47.5,"WAS":44.5,"PHI":44.5,"GB":46.5,"MIN":46.5,"MIA":40.5,"LV":40.5,"ARI":47.5,"LAC":47.5,"DAL":48.5,"NYG":48.5,"DEN":43.5,"KC":43.5};
+const NFL_MARKET_CONTEXT = {"jahmyrgibbs": {"label": "RUSH YDS", "line": 88.0, "odds": "-", "prob": 49.9, "fair": "+100", "inputs": 6}, "joshallen": {"label": "PASS YDS", "line": 238.5, "odds": "-112", "prob": 49.8, "fair": "+101", "inputs": 6}, "lamarjackson": {"label": "PASS YDS", "line": 239.5, "odds": "-114", "prob": 49.5, "fair": "+102", "inputs": 6}, "jaxonsmithnjigba": {"label": "REC YDS", "line": 91.0, "odds": "-", "prob": 50.3, "fair": "-101", "inputs": 6}, "patrickmahomes": {"label": "PASS YDS", "line": 235.5, "odds": "-114", "prob": 50.5, "fair": "-102", "inputs": 6}, "christianmccaffrey": {"label": "RUSH YDS", "line": 56.5, "odds": "-115", "prob": 50.2, "fair": "-101", "inputs": 6}, "jaredgoff": {"label": "PASS YDS", "line": 260.0, "odds": "-", "prob": 49.9, "fair": "+100", "inputs": 6}, "kennethwalker": {"label": "RUSH YDS", "line": 83.0, "odds": "-", "prob": 50.5, "fair": "-102", "inputs": 6}, "brockpurdy": {"label": "PASS YDS", "line": 237.5, "odds": "-114", "prob": 49.9, "fair": "+100", "inputs": 6}, "dakprescott": {"label": "PASS YDS", "line": 264.5, "odds": "-115", "prob": 50.2, "fair": "-101", "inputs": 6}, "ashtonjeanty": {"label": "RUSH YDS", "line": 69.0, "odds": "-", "prob": 50.0, "fair": "-100", "inputs": 6}, "jonathantaylor": {"label": "RUSH YDS", "line": 81.0, "odds": "-", "prob": 49.5, "fair": "+102", "inputs": 6}, "amonrastbrown": {"label": "REC YDS", "line": 77.0, "odds": "-", "prob": 50.5, "fair": "-102", "inputs": 6}, "ceedeelamb": {"label": "REC YDS", "line": 82.5, "odds": "-110", "prob": 49.5, "fair": "+102", "inputs": 6}, "derrickhenry": {"label": "RUSH YDS", "line": 89.5, "odds": "-113", "prob": 50.3, "fair": "-101", "inputs": 6}, "tylershough": {"label": "PASS YDS", "line": 252.0, "odds": "-", "prob": 49.4, "fair": "+102", "inputs": 6}, "joeburrow": {"label": "PASS YDS", "line": 253.0, "odds": "-", "prob": 49.4, "fair": "+102", "inputs": 6}, "jamarrchase": {"label": "REC YDS", "line": 75.5, "odds": "-114", "prob": 49.9, "fair": "+100", "inputs": 6}, "jamescook": {"label": "RUSH YDS", "line": 79.5, "odds": "-114", "prob": 50.5, "fair": "-102", "inputs": 6}, "trevorlawrence": {"label": "PASS YDS", "line": 224.0, "odds": "-", "prob": 50.6, "fair": "-102", "inputs": 6}, "chrisolave": {"label": "REC YDS", "line": 77.5, "odds": "-113", "prob": 50.0, "fair": "-100", "inputs": 6}, "treymcbride": {"label": "REC YDS", "line": 67.5, "odds": "-114", "prob": 50.4, "fair": "-102", "inputs": 5}, "justinjefferson": {"label": "REC YDS", "line": 70.0, "odds": "-", "prob": 50.0, "fair": "-100", "inputs": 6}, "cjstroud": {"label": "PASS YDS", "line": 238.5, "odds": "-", "prob": 49.5, "fair": "+102", "inputs": 6}, "drakemaye": {"label": "PASS YDS", "line": 221.0, "odds": "-", "prob": 49.6, "fair": "+102", "inputs": 6}, "justinherbert": {"label": "PASS YDS", "line": 224.5, "odds": "-113", "prob": 49.9, "fair": "+100", "inputs": 6}, "kylermurray": {"label": "PASS YDS", "line": 208.5, "odds": "-112", "prob": 49.9, "fair": "+100", "inputs": 6}, "bryceyoung": {"label": "PASS YDS", "line": 221.5, "odds": "-111", "prob": 49.6, "fair": "+102", "inputs": 5}, "malikwillis": {"label": "PASS YDS", "line": 178.0, "odds": "-", "prob": 50.3, "fair": "-101", "inputs": 6}, "chubahubbard": {"label": "RUSH YDS", "line": 71.5, "odds": "-114", "prob": 50.8, "fair": "-103", "inputs": 5}, "bakermayfield": {"label": "PASS YDS", "line": 216.5, "odds": "-113", "prob": 50.0, "fair": "-100", "inputs": 6}, "genosmith": {"label": "PASS YDS", "line": 223.5, "odds": "-114", "prob": 50.5, "fair": "-102", "inputs": 6}, "jaylenwarren": {"label": "RUSH YDS", "line": 57.5, "odds": "-110", "prob": 49.9, "fair": "+100", "inputs": 5}, "javontewilliams": {"label": "RUSH YDS", "line": 59.5, "odds": "+100", "prob": 49.2, "fair": "+103", "inputs": 6}, "jacobybrissett": {"label": "PASS YDS", "line": 225.5, "odds": "-111", "prob": 49.9, "fair": "+100", "inputs": 5}, "devonachane": {"label": "RUSH YDS", "line": 59.5, "odds": "-114", "prob": 50.6, "fair": "-102", "inputs": 5}, "chasebrown": {"label": "RUSH YDS", "line": 63.0, "odds": "-", "prob": 49.9, "fair": "+100", "inputs": 6}, "parkerwashington": {"label": "REC YDS", "line": 63.0, "odds": "-", "prob": 49.6, "fair": "+102", "inputs": 6}, "garrettwilson": {"label": "REC YDS", "line": 67.5, "odds": "-112", "prob": 49.8, "fair": "+101", "inputs": 5}, "kirkcousins": {"label": "PASS YDS", "line": 211.5, "odds": "-114", "prob": 50.2, "fair": "-101", "inputs": 6}, "aaronrodgers": {"label": "PASS YDS", "line": 220.5, "odds": "-113", "prob": 49.3, "fair": "+103", "inputs": 5}, "buckyirving": {"label": "RUSH YDS", "line": 57.5, "odds": "-110", "prob": 49.5, "fair": "+102", "inputs": 6}, "georgepickens": {"label": "REC YDS", "line": 60.0, "odds": "-", "prob": 50.5, "fair": "-102", "inputs": 6}, "danieljones": {"label": "PASS YDS", "line": 216.5, "odds": "-111", "prob": 49.6, "fair": "+102", "inputs": 6}, "omarionhampton": {"label": "RUSH YDS", "line": 61.0, "odds": "-", "prob": 50.1, "fair": "-100", "inputs": 6}, "breecehall": {"label": "RUSH YDS", "line": 57.5, "odds": "-111", "prob": 49.3, "fair": "+103", "inputs": 6}, "deshaunwatson": {"label": "PASS YDS", "line": 189.5, "odds": "-113", "prob": 50.0, "fair": "-100", "inputs": 5}, "jameiswinston": {"label": "PASS YDS", "line": 205.5, "odds": "-115", "prob": 49.7, "fair": "+101", "inputs": 5}, "aaronjones": {"label": "RUSH YDS", "line": 59.5, "odds": "-102", "prob": 49.2, "fair": "+103", "inputs": 4}, "tetairoamcmillan": {"label": "REC YDS", "line": 62.5, "odds": "-114", "prob": 50.1, "fair": "-100", "inputs": 5}, "quinshonjudkins": {"label": "RUSH YDS", "line": 59.5, "odds": "-113", "prob": 50.2, "fair": "-101", "inputs": 5}, "camward": {"label": "PASS YDS", "line": 189.5, "odds": "-114", "prob": 50.0, "fair": "-100", "inputs": 5}, "camskattebo": {"label": "RUSH YDS", "line": 57.5, "odds": "-113", "prob": 49.7, "fair": "+101", "inputs": 5}, "jalencoker": {"label": "REC YDS", "line": 59.5, "odds": "-114", "prob": 49.4, "fair": "+102", "inputs": 5}, "laddmcconkey": {"label": "REC YDS", "line": 55.5, "odds": "-114", "prob": 50.4, "fair": "-101", "inputs": 6}, "daltonkincaid": {"label": "REC YDS", "line": 56.5, "odds": "-114", "prob": 49.6, "fair": "+101", "inputs": 6}, "teehiggins": {"label": "REC YDS", "line": 53.5, "odds": "-114", "prob": 51.0, "fair": "-104", "inputs": 6}, "jamesonwilliams": {"label": "REC YDS", "line": 54.5, "odds": "-110", "prob": 49.4, "fair": "+102", "inputs": 6}, "traviskelce": {"label": "REC YDS", "line": 51.5, "odds": "-114", "prob": 49.6, "fair": "+102", "inputs": 6}, "marcusmariota": {"label": "PASS YDS", "line": 172.5, "odds": "-112", "prob": 49.1, "fair": "+104", "inputs": 6}, "maliknabers": {"label": "REC YDS", "line": 55.5, "odds": "-112", "prob": 49.9, "fair": "+100", "inputs": 5}, "mikeevans": {"label": "REC YDS", "line": 55.5, "odds": "-113", "prob": 48.3, "fair": "+107", "inputs": 3}, "rasheerice": {"label": "REC YDS", "line": 49.0, "odds": "-", "prob": 49.5, "fair": "+102", "inputs": 6}, "daltonschultz": {"label": "REC YDS", "line": 50.5, "odds": "-114", "prob": 50.6, "fair": "-103", "inputs": 6}, "deebosamuel": {"label": "RECEPTIONS", "line": 3.5, "odds": "-156", "prob": 58.6, "fair": "-141", "inputs": 3}, "davidmontgomery": {"label": "RUSH YDS", "line": 48.5, "odds": "-113", "prob": 49.9, "fair": "+101", "inputs": 6}, "joshdowns": {"label": "REC YDS", "line": 49.5, "odds": "-113", "prob": 50.4, "fair": "-102", "inputs": 6}, "brockbowers": {"label": "REC YDS", "line": 49.5, "odds": "-111", "prob": 50.0, "fair": "-100", "inputs": 6}, "dkmetcalf": {"label": "REC YDS", "line": 52.5, "odds": "-114", "prob": 49.4, "fair": "+103", "inputs": 5}, "markandrews": {"label": "RECEPTIONS", "line": 4.5, "odds": "+114", "prob": 43.0, "fair": "+133", "inputs": 4}, "samlaporta": {"label": "RECEPTIONS", "line": 4.5, "odds": "-114", "prob": 50.5, "fair": "-102", "inputs": 6}, "djmoore": {"label": "REC YDS", "line": 49.5, "odds": "-114", "prob": 49.6, "fair": "+102", "inputs": 5}, "bhayshultuten": {"label": "RUSH YDS", "line": 53.0, "odds": "-", "prob": 49.9, "fair": "+100", "inputs": 6}, "georgekittle": {"label": "REC YDS", "line": 44.5, "odds": "-114", "prob": 51.8, "fair": "-108", "inputs": 3}, "emekaegbuka": {"label": "REC YDS", "line": 48.5, "odds": "-114", "prob": 50.1, "fair": "-101", "inputs": 6}, "tylerwarren": {"label": "RECEPTIONS", "line": 4.5, "odds": "-120", "prob": 54.2, "fair": "-118", "inputs": 6}, "michaelwilson": {"label": "RECEPTIONS", "line": 3.5, "odds": "-148", "prob": 56.7, "fair": "-131", "inputs": 5}, "jeremiyahlove": {"label": "RUSH YDS", "line": 38.5, "odds": "-111", "prob": 49.4, "fair": "+102", "inputs": 5}, "isaiahlikely": {"label": "RECEPTIONS", "line": 3.5, "odds": "-141", "prob": 56.7, "fair": "-131", "inputs": 5}, "devaughnvele": {"label": "REC YDS", "line": 48.5, "odds": "-113", "prob": 49.9, "fair": "+101", "inputs": 6}, "denzelboston": {"label": "REC YDS", "line": 48.5, "odds": "-114", "prob": 49.7, "fair": "+101", "inputs": 5}, "rhamondrestevenson": {"label": "RUSH YDS", "line": 37.5, "odds": "-114", "prob": 49.5, "fair": "+102", "inputs": 6}, "stefondiggs": {"label": "RECEPTIONS", "line": 3.5, "odds": "-130", "prob": 56.7, "fair": "-131", "inputs": 5}, "khalilshakir": {"label": "RECEPTIONS", "line": 4.0, "odds": "-", "prob": 41.0, "fair": "+144", "inputs": 5}, "rashodbateman": {"label": "REC YDS", "line": 44.5, "odds": "-115", "prob": 50.6, "fair": "-102", "inputs": 5}, "treveyonhenderson": {"label": "RUSH YDS", "line": 40.5, "odds": "-113", "prob": 50.0, "fair": "-100", "inputs": 6}, "tonypollard": {"label": "RUSH YDS", "line": 48.5, "odds": "-114", "prob": 49.9, "fair": "+101", "inputs": 5}, "haroldfannin": {"label": "RECEPTIONS", "line": 3.5, "odds": "-128", "prob": 54.7, "fair": "-121", "inputs": 5}, "hunterhenry": {"label": "RECEPTIONS", "line": 3.5, "odds": "-150", "prob": 58.6, "fair": "-141", "inputs": 6}, "adonaimitchell": {"label": "REC YDS", "line": 47.5, "odds": "-114", "prob": 50.4, "fair": "-102", "inputs": 5}, "brianthomas": {"label": "RECEPTIONS", "line": 3.5, "odds": "+147", "prob": 37.5, "fair": "+167", "inputs": 6}, "mackhollins": {"label": "RECEPTIONS", "line": 2.5, "odds": "-165", "prob": 59.9, "fair": "-149", "inputs": 6}, "jacorycroskeymerritt": {"label": "RUSH YDS", "line": 39.5, "odds": "+100", "prob": 49.0, "fair": "+104", "inputs": 6}, "jakeferguson": {"label": "RECEPTIONS", "line": 3.5, "odds": "-115", "prob": 50.6, "fair": "-102", "inputs": 6}, "woodymarks": {"label": "RUSH YDS", "line": 27.5, "odds": "-114", "prob": 50.9, "fair": "-104", "inputs": 6}, "tylerallgeier": {"label": "RUSH YDS", "line": 33.5, "odds": "-109", "prob": 49.3, "fair": "+103", "inputs": 5}, "treharris": {"label": "RECEPTIONS", "line": 2.5, "odds": "-132", "prob": 55.4, "fair": "-124", "inputs": 6}, "cadeotton": {"label": "RECEPTIONS", "line": 3.5, "odds": "+143", "prob": 37.5, "fair": "+167", "inputs": 6}, "patfreiermuth": {"label": "RECEPTIONS", "line": 3.5, "odds": "-136", "prob": 54.7, "fair": "-121", "inputs": 5}, "demariodouglas": {"label": "RECEPTIONS", "line": 2.5, "odds": "-160", "prob": 59.9, "fair": "-149", "inputs": 6}, "kenyonsadiq": {"label": "RECEPTIONS", "line": 2.5, "odds": "-150", "prob": 57.7, "fair": "-136", "inputs": 3}, "justicehill": {"label": "REC YDS", "line": 13.5, "odds": "-112", "prob": 51.1, "fair": "-105", "inputs": 5}, "malachifields": {"label": "RECEPTIONS", "line": 2.5, "odds": "+151", "prob": 37.7, "fair": "+165", "inputs": 5}, "kennygainwell": {"label": "REC YDS", "line": 9.5, "odds": "-112", "prob": 51.7, "fair": "-107", "inputs": 6}, "jerryjeudy": {"label": "RECEPTIONS", "line": 1.5, "odds": "-129", "prob": 53.7, "fair": "-116", "inputs": 4}, "emmettjohnson": {"label": "REC YDS", "line": 10.5, "odds": "-109", "prob": 49.4, "fair": "+102", "inputs": 6}, "samajeperine": {"label": "REC YDS", "line": 8.5, "odds": "-109", "prob": 48.9, "fair": "+105", "inputs": 3}};
+const NFL_GAME_TOTALS = {"DET": 48.5, "BUF": 49.5, "BAL": 52.5, "SEA": 40.5, "KC": 45.5, "SF": 48.5, "IND": 42.5, "DAL": 52.5, "LV": 43.5, "NO": 43.5, "JAX": 45.5, "CIN": 42.5, "NE": 45.5, "MIN": 42.5, "LAC": 49.5, "ARI": 48.5, "MIA": 45.5, "CAR": 41.5, "HOU": 42.5, "TB": 42.5, "NYJ": 48.5, "CLE": 41.5, "TEN": 38.5, "PIT": 42.5, "NYG": 38.5, "WAS": 40.5};
 const NFL_POS_PROJ_RANGE={}; ['QB','RB','WR','TE','DST'].forEach(pos=>{const vals=NFL_SOURCE.filter(p=>p[2]===pos).map(p=>p[5]);NFL_POS_PROJ_RANGE[pos]={min:Math.min(...vals),max:Math.max(...vals)}});
 const NFL_QB_CONTEXT={
- 'jalenhurts':{pass:15,rush:24,dvp:21},'justinherbert':{pass:9,rush:7,dvp:-1},'joeburrow':{pass:12,rush:-11,dvp:22},
- 'lamarjackson':{pass:19,rush:-15,dvp:4},'joshallen':{pass:-16,rush:-19,dvp:-24},'dakprescott':{pass:3,rush:24,dvp:12},
- 'jaxsondart':{pass:20,rush:5,dvp:40},'trevorlawrence':{pass:-23,rush:-2,dvp:-24},'calebwilliams':{pass:-4,rush:4,dvp:-16},
- 'jaredgoff':{pass:-14,rush:7,dvp:-14},'kylermurray':{pass:-9,rush:-1,dvp:-7},'brockpurdy':{pass:2,rush:-4,dvp:-5},
- 'drakemaye':{pass:-6,rush:-20,dvp:-9},'bakermayfield':{pass:15,rush:27,dvp:15},'matthewstafford':{pass:12,rush:-12,dvp:7},
- 'tylershough':{pass:3,rush:0,dvp:11},'jaydendaniels':{pass:-9,rush:5,dvp:-12},'bonix':{pass:-4,rush:-10,dvp:-4},
- 'patrickmahomes':{pass:-9,rush:-23,dvp:-12},'jordanlove':{pass:-20,rush:6,dvp:-30},'malikwillis':{pass:-1,rush:1,dvp:0},
- 'danieljones':{pass:16,rush:-9,dvp:7},'samdarnold':{pass:-6,rush:-11,dvp:-8},'bryceyoung':{pass:5,rush:15,dvp:16},
- 'cjstroud':{pass:-23,rush:20,dvp:-19},'jacobybrissett':{pass:-13,rush:-11,dvp:-22},'aaronrodgers':{pass:-6,rush:9,dvp:-2},
- 'camward':{pass:1,rush:15,dvp:12},'genosmith':{pass:8,rush:0,dvp:11},'kirkcousins':{pass:2,rush:7,dvp:11},
- 'deshaunwatson':{pass:6,rush:-26,dvp:4},'tuatagovailoa':{pass:16,rush:-5,dvp:17}
+ 'joshallen':{pass:6,rush:60,dvp:9},
+ 'lamarjackson':{pass:6,rush:60,dvp:20},
+ 'patrickmahomes':{pass:5,rush:0,dvp:15},
+ 'jaredgoff':{pass:16,rush:0,dvp:-20},
+ 'brockpurdy':{pass:6,rush:0,dvp:3},
+ 'dakprescott':{pass:18,rush:0,dvp:-7},
+ 'tylershough':{pass:12,rush:0,dvp:-15},
+ 'joeburrow':{pass:12,rush:0,dvp:-30},
+ 'trevorlawrence':{pass:0,rush:0,dvp:-26},
+ 'cjstroud':{pass:6,rush:0,dvp:28},
+ 'drakemaye':{pass:-2,rush:0,dvp:-11},
+ 'justinherbert':{pass:0,rush:0,dvp:22},
+ 'kylermurray':{pass:-7,rush:0,dvp:-3},
+ 'bryceyoung':{pass:-2,rush:0,dvp:11},
+ 'malikwillis':{pass:-20,rush:60,dvp:-24},
+ 'bakermayfield':{pass:-3,rush:0,dvp:-1},
+ 'genosmith':{pass:0,rush:0,dvp:30},
+ 'jacobybrissett':{pass:0,rush:0,dvp:-28},
+ 'kirkcousins':{pass:-6,rush:0,dvp:-9},
+ 'aaronrodgers':{pass:-2,rush:0,dvp:-5},
+ 'danieljones':{pass:-4,rush:0,dvp:26},
+ 'deshaunwatson':{pass:-16,rush:0,dvp:13},
+ 'jameiswinston':{pass:-9,rush:0,dvp:-16},
+ 'camward':{pass:-16,rush:0,dvp:18},
+ 'marcusmariota':{pass:-24,rush:0,dvp:-22}
 };
 function nflNormName(v){return String(v||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\b(jr|sr|ii|iii|iv)\b/g,'').replace(/[^a-z0-9]/g,'')}
 function nflTeam(v){return v==='JAC'?'JAX':v}
@@ -2794,12 +2762,10 @@ function nflBoomScore(p){const m=nflMarket(p),total=nflTotal(p),proj=nflProjPct(
 function nflBoomTier(p){const total=nflTotal(p),score=nflBoomScore(p);if(total>=47.5||score>=70)return 'boom';if(score>=52)return 'build';return 'floor'}
 function nflMatchupScore(p){const total=nflTotal(p);if(total==null)return 5;if(total<30)return 3;if(total<40)return 4;if(total<=44.5)return 6;if(total<=49.5)return 8;if(total<=60)return 9;return 9}
 function nflDelta(v,label){const cls=v>0?'up':v<0?'down':'flat',arrow=v>0?'▲':v<0?'▼':'—';return '<span class="nfl-delta '+cls+'"><i>'+label+'</i><b>'+arrow+' '+Math.abs(v)+'%</b></span>'}
-function nflContextHtml(p){const q=NFL_QB_CONTEXT[nflNormName(p[0])];if(q)return '<div class="nfl-context-row">'+nflDelta(q.pass,'PASS')+nflDelta(q.rush,'RUSH')+nflDelta(q.dvp,'DVP')+'</div><small>opponent-adjusted Week 1 direction</small>';const m=nflMarket(p),total=nflTotal(p);return '<div class="nfl-context-plain"><b>'+(m?m.prob.toFixed(1)+'%':'—')+'</b><span>'+(m?'PROP HIT':'NO PROP')+'</span><em>'+(total?total.toFixed(1)+' TOTAL':'—')+'</em></div><small>market probability · game environment</small>'}
+function nflContextHtml(p){const q=NFL_QB_CONTEXT[nflNormName(p[0])];if(q)return '<div class="nfl-context-row">'+nflDelta(q.pass,'PASS')+nflDelta(q.rush,'RUSH')+nflDelta(q.dvp,'DVP')+'</div><small>opponent-adjusted Week 3 direction</small>';const m=nflMarket(p),total=nflTotal(p);return '<div class="nfl-context-plain"><b>'+(m?m.prob.toFixed(1)+'%':'—')+'</b><span>'+(m?'PROP HIT':'NO PROP')+'</span><em>'+(total?total.toFixed(1)+' TOTAL':'—')+'</em></div><small>market probability · game environment</small>'}
 function nflRiskValue(p){const raw=p[5]/(p[1]/1000);return p[2]==='DST'?Math.max(0,(p[5]-6)/(p[1]/1000))*.55:raw}
 function nflStatProjection(p){const m=nflMarket(p);return m&&typeof m.line==='number'?m.line:null}
-const NFL_OWNERSHIP_SAMPLE=[
-['Jahmyr Gibbs','RB','DET',8000,28.6,23.76],['Ja\'Marr Chase','WR','CIN',7800,28.2,21.85],['Bijan Robinson','RB','ATL',7700,27.8,20.39],['Amon-Ra St. Brown','WR','DET',7500,25.8,21.74],['Jaguars','DST','JAX',3400,23.6,9],['Ja\'Kobi Lane','WR','BAL',3100,20.6,9.02],['Titans','DST','TEN',3100,19.3,7.4],['Jared Goff','QB','DET',6000,14.5,18.55],['Trevor Lawrence','QB','JAX',5800,14.2,20.08],['Joe Burrow','QB','CIN',6900,13.4,18.83],['Jonathan Taylor','RB','IND',7300,12.2,18.98],['Justin Herbert','QB','LAC',6100,10.8,21.19],['Chase Brown','RB','CIN',7100,10.6,19.09],['Nico Collins','WR','HOU',7000,10.3,14.97],['Tyler Shough','QB','NO',5600,10,17.12],['Mike Gesicki','TE','CIN',3100,9.5,7.21],['Jets','DST','NYJ',2500,9.5,6.24],['Bears','DST','CHI',2800,8.1,6.64],['D\'Andre Swift','RB','CHI',6100,8.1,13.93],['Baker Mayfield','QB','TB',5900,7.7,17.48],['Lamar Jackson','QB','BAL',6800,6.5,18.94],['Wan\'Dale Robinson','WR','TEN',4800,6.2,11],['Harold Fannin Jr.','TE','CLE',4200,4.4,9.65],['Caleb Williams','QB','CHI',6300,2.9,17.43],['Malik Willis','QB','MIA',5300,2.6,17.93],['Kyle Pitts Sr.','TE','ATL',4700,2.4,11.99],['Josh Allen','QB','BUF',7000,2.3,22.19],['Dalton Schultz','TE','HOU',3400,1.9,8.1],['Kyler Murray','QB','MIN',5500,1.3,17.13],['Daniel Jones','QB','IND',5400,1.3,17.13],['Jaylen Warren','RB','PIT',5400,1.3,13.11],['Bryce Young','QB','CAR',5200,1.3,15.85],['Brenton Strange','TE','JAX',3600,1.3,7.88],['Colts','DST','IND',2400,1.2,6.4],['Saints','DST','NO',2200,1,5.8],['Aaron Rodgers','QB','PIT',5300,.9,15.99],['Tetairoa McMillan','WR','CAR',6100,.7,13.2],['David Montgomery','RB','HOU',6000,.7,14.78],['Tua Tagovailoa','QB','ATL',4800,.4,13.38]
-];
+const NFL_OWNERSHIP_SAMPLE=[];
 let NFL_OWNERSHIP_CACHE=null;
 function nflOwnKey(p){return p[2]==='DST'?'dst:'+nflTeam(p[3]):nflNormName(p[0])}
 function nflOwnHash(name){let h=2166136261;for(let i=0;i<name.length;i++){h^=name.charCodeAt(i);h=Math.imul(h,16777619)}return ((h>>>0)%1000)/999}
@@ -2811,7 +2777,7 @@ function nflBuildOwnership(){
   Object.keys(rawByPos).forEach(pos=>{const fixed=NFL_SOURCE.filter(p=>p[2]===pos&&anchors.has(nflOwnKey(p))).reduce((s,p)=>s+anchors.get(nflOwnKey(p)),0),items=rawByPos[pos],rawTotal=items.reduce((s,x)=>s+x.raw,0)||1,remaining=Math.max(0,budgets[pos]-fixed),scale=remaining/rawTotal;items.forEach(x=>out.set(x.key,Math.max(.1,Math.min(19.8,x.raw*scale))))});
   return out;
 }
-function nflOwnership(p){if(!NFL_OWNERSHIP_CACHE)NFL_OWNERSHIP_CACHE=nflBuildOwnership();return NFL_OWNERSHIP_CACHE.get(nflOwnKey(p))||.1}
+function nflOwnership(p){if(p[7]!=null)return p[7];if(!NFL_OWNERSHIP_CACHE)NFL_OWNERSHIP_CACHE=nflBuildOwnership();return NFL_OWNERSHIP_CACHE.get(nflOwnKey(p))||.1}
 
 
 /* ── sport apps ─────────────────────────────────────────────────────────── */
@@ -2886,7 +2852,7 @@ function App(root, cfg){
     if($('own'))set('own',owns.length?(owns.reduce((a,b)=>a+b,0)/owns.length).toFixed(1)+'%':'—');
     const m=$('meter'); if(m){m.style.width=Math.min(100,sal/50000*100)+'%';m.classList.toggle('over',over)}
     const v=$('valid'); if(v){const ok=filled.length===cfg.slots.length&&!over;
-      v.textContent=filled.length+' / '+cfg.slots.length+(ok?' · VALID':over?' · OVER CAP':'');
+      v.textContent=filled.length+' / '+cfg.slots.length; v.title=ok?'Valid lineup':over?'Over the salary cap':'Lineup incomplete';
       v.className=ok?'ok':'bad';}
     /* field */
     const f=$('field');
@@ -2894,7 +2860,7 @@ function App(root, cfg){
       f.innerHTML=(lu||cfg.slots.map(slot=>({slot,p:null}))).filter(o=>!cfg.fieldOnly||cfg.fieldOnly.includes(o.slot)).map(o=>{
         const k=o.slot; used[k]=used[k]||0; const pos=(cfg.map[k]||[[50,50]])[used[k]++]||cfg.map[k][0];
         const lk=o.p&&state.locked.includes(o.p.n);
-        return '<div class="fp'+(o.p?(lk?' lk':''):' e')+'" style="--x:'+pos[0]+'%;top:'+pos[1]+'%">'
+        return '<div class="fp'+(o.p?(lk?' lk':''):' e')+'"'+(o.p?' data-add="'+o.p.n+'" title="Remove '+o.p.n+'"':'')+' style="--x:'+pos[0]+'%;top:'+pos[1]+'%">'
           +'<span class="dot"></span><k>'+k+'</k><b>'+(o.p?short(o.p.n):'Empty')+'</b>'
           +'<s>'+(o.p?money(o.p.sal):'—')+'</s></div>';}).join('');}
     /* rows */
@@ -2905,7 +2871,7 @@ function App(root, cfg){
         const gs=rows.reduce((a,o)=>a+(o.p?o.p.sal:0),0), gp=rows.reduce((a,o)=>a+(o.p?o.p.prj:0),0);
         return '<div class="grp"><span>'+g.k+' · '+rows.length+'</span><s>'+money(gs)+' · '+gp.toFixed(1)+'</s></div>'
           +rows.map(o=>{const lk=o.p&&state.locked.includes(o.p.n);
-            return '<div class="row'+(o.p?(lk?' lk':''):' e')+'"><span class="p">'+o.slot+'</span>'
+            return '<div class="row'+(o.p?(lk?' lk':''):' e')+'"'+(o.p?' data-add="'+o.p.n+'" title="Remove '+o.p.n+'"':'')+'><span class="p">'+o.slot+'</span>'
             +'<span class="nm">'+(o.p?o.p.n:'Empty')+(o.p?'<s>'+o.p.tm+vsTag(o.p)+o.p.opp+'</s>':'')+'</span>'
             +'<span class="v">'+(o.p?money(o.p.sal)+'<s>'+o.p.prj.toFixed(1)+'</s>':'—')+'</span></div>';}).join('');
       }).join('');
@@ -3070,7 +3036,7 @@ function App(root, cfg){
       // page scroll. Measure the rail at its intrinsic height, then constrain
       // the left column to that exact boundary just as the NFL desk appears.
       R.style.alignSelf='start';
-      const railHeight=Math.ceil(R.getBoundingClientRect().height);
+      const railHeight=R.offsetHeight;
       L.style.height=railHeight+'px';
       L.style.maxHeight=railHeight+'px';
       L.style.overflow='hidden';
@@ -3082,7 +3048,7 @@ function App(root, cfg){
   }
   const _r=render;
   render=function(){_r.apply(this,arguments); requestAnimationFrame(syncPoolHeight);};
-  if(window.ResizeObserver){const ro=new ResizeObserver(()=>syncPoolHeight());
+  if(window.ResizeObserver){let _rq=0,_lastH=-1;const ro=new ResizeObserver(ents=>{const h=Math.round(ents[0].contentRect.height);if(h===_lastH||_rq)return;_lastH=h;_rq=requestAnimationFrame(()=>{_rq=0;syncPoolHeight();});});
     const R=root.querySelector('.desk .R'); if(R)ro.observe(R);}
   window.addEventListener('resize',syncPoolHeight);
   render(); requestAnimationFrame(syncPoolHeight);
