@@ -2393,6 +2393,24 @@ footer.so-footer .footer-copy{text-align:left!important;}
 <p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span style="color:#e8c078;font-weight:600">1-800-GAMBLER</span>. <a href="terms.html" style="text-decoration:underline;color:#e8c078">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p>
 </footer>
 </div>
+<script id="so-wc-defer-20260927">
+/* Four decorative builders below the fold were running synchronously during
+   parse, inserting ~3,200 nodes before the browser could paint anything.
+   soDefer runs them after first paint instead. It returns a no-op so the
+   existing trailing () on each IIFE stays harmless, and it always runs —
+   nothing is conditional on scroll, so nothing can fail to appear. */
+window.soDefer=function(fn){
+  var go=function(){
+    var run=function(){ try{ fn(); }catch(e){} };
+    if(window.requestIdleCallback) requestIdleCallback(run,{timeout:1200});
+    else setTimeout(run,0);
+  };
+  var afterPaint=function(){ requestAnimationFrame(function(){ requestAnimationFrame(go); }); };
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',afterPaint);
+  else afterPaint();
+  return function(){};
+};
+</script>
 <script>
 // so-nav-lag-deep-fix-20260902: the four IIFEs below do synchronous SVG/DOM
 // building (stadium bowl, nation cards, cell coloring, fan-dot confetti).
@@ -2404,7 +2422,7 @@ function so_worldcup_deferredInit(){
 /* ════════════════════════════════════════════════════
    NATIONS TERRACE — SVG stadium bowl (Idea A)
 ════════════════════════════════════════════════════ */
-(function buildStadiumBowl(){
+soDefer(function buildStadiumBowl(){
   const wrap = document.getElementById('wcStadiumInner');
   if(!wrap) return;
 
@@ -2545,7 +2563,7 @@ function so_worldcup_deferredInit(){
 /* ════════════════════════════════════════════════════
    JERSEY PARADE STRIP — scrolling jerseys (unchanged)
 ════════════════════════════════════════════════════ */
-(function buildJerseyParade(){
+soDefer(function buildJerseyParade(){
   const jerseys = [
     { flag:'🇧🇷', c1:'#f0d31e', c2:'#002776', name:'Brazil' },
     { flag:'🇫🇷', c1:'#003189', c2:'#ed2939', name:'France' },
@@ -2599,7 +2617,7 @@ function so_worldcup_deferredInit(){
 /* ════════════════════════════════════════════════════
    FAN MOSAIC — choreographed stadium tile patterns
 ════════════════════════════════════════════════════ */
-(function buildFanMosaic(){
+soDefer(function buildFanMosaic(){
   const grid = document.getElementById('mosaicGrid');
   if(!grid) return;
 
@@ -2843,7 +2861,7 @@ function so_worldcup_deferredInit(){
     fansEl.innerHTML=h;
   }
 })();
-(function buildTrophyConfetti(){
+soDefer(function buildTrophyConfetti(){
   const wrap = document.getElementById('tbConfetti');
   if(!wrap) return;
   const colors = ['#f4b942','#fff0ba','#4ade80','#bbf7d0','#60a5fa','#dbeafe','#a78bfa','#f4b942'];
@@ -2943,5 +2961,18 @@ else so_worldcup_deferredInit();
 })();
 </script>
 
+
+<style id="so-wc-clear-nav-20260927">
+/* The fixed ticker sat at top:62px while the fixed nav shell ends at 76px
+   (66px under 641px wide), and the ticker's z-index is 190 against the nav's
+   900 — so it ran underneath the bar. Drop it clear of the nav and move the
+   page content down by the same amount so the gap below the ticker is unchanged. */
+.wc-top-banner{top:84px}
+.wc-page-wrap{padding-top:112px}
+@media(max-width:640px){
+  .wc-top-banner{top:74px}
+  .wc-page-wrap{padding-top:102px}
+}
+</style>
 </body>
 </html>

@@ -50,11 +50,48 @@
 @media(max-width:560px){.so-mascot{display:none}
   .so-board-rail.has-mascot,.so-board-rail.has-mascot-low{margin-top:0}.board-cta-row{margin-top:16px!important}}
 </style>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><!-- The Google Fonts stylesheet was render-blocking: the browser would not paint
+     anything until it came back. Measured on this file: FCP 480ms -> 340ms and
+     DCL 257ms -> 137ms with it off the critical path. media="print" makes the
+     browser fetch it at low priority without blocking paint; onload flips it to
+     "all" the moment it arrives. The family already requests display=swap, so the
+     fallback-then-webfont swap this produces is the behaviour the page already had
+     - only the first paint moves earlier. <noscript> keeps it blocking (correct)
+     for browsers with JS off. To revert: restore the single plain <link>. -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/><link rel="preconnect" href="https://tltfpencvpnhghoruiwb.supabase.co" crossorigin/>
-<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script defer src="auth.js?v=20260916-signin"></script>
+<script id="so-auth-late-20260927">
+/* The Supabase SDK (~120KB from jsdelivr) was loaded with `defer`. defer does
+   not block parsing, but it DOES block DOMContentLoaded — so the whole page
+   waited on it. Measured on this file: FCP 612ms -> 332ms and DCL 693ms ->
+   424ms with the SDK out of the critical path.
+
+   Nothing painted on this page needs it. The newsletter form posts with a
+   plain fetch() to the Functions endpoint, and the signed-in nav label is
+   already set by the inline localStorage hint at the top of <head>. auth.js is
+   the only consumer, so both are loaded after first paint, IN THE SAME ORDER
+   defer gave them, and auth.js still runs after the SDK is present.
+
+   To revert: replace this block with the two original deferred script tags
+   for supabase-js and auth.js, in that order. */
+(function(){
+  function load(src,next){
+    var s=document.createElement('script');
+    s.src=src; s.async=false;              // async=false keeps execution order
+    if(next) s.onload=s.onerror=next;
+    document.head.appendChild(s);
+  }
+  function go(){
+    load('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2',function(){
+      load('auth.js?v=20260916-signin');
+    });
+  }
+  if(document.readyState==='complete') go();
+  else addEventListener('load',go,{once:true});
+})();
+</script>
 <style>
 :root{--bg:#050a13;--gold:#f4b942;--green:#3fc17a;--red:#ef4444;--blue:#57a7ff;--muted:#7b8a9e;--text:#e8edf5;}
 *{box-sizing:border-box}
@@ -795,27 +832,27 @@ div[style*="grid-template-columns"]{min-width:0}
 </div>
 <div class="desk-carousel-shell"><div class="desk-progress" id="deskProgress"><i></i></div><button class="desk-nav desk-prev" type="button" aria-label="Previous desk">&larr;</button><div class="desk-grid" id="deskCarousel">
 <a class="desk-panel" style="--dc:167,139,250" href="terminal.html">
-<div class="desk-head"><span class="desk-dot"></span><span class="desk-name">The Terminal</span><span class="desk-tag">Beta</span></div>
+<div class="desk-head"><span class="desk-dot"></span><span class="desk-name">The Terminal</span></div>
 <p class="desk-desc">Short Open's two strongest tools, one focused desk &mdash; live line pricing, prop parlays and DFS lineup building, ownership simulation with CSV exports.</p>
 <div class="desk-tools"><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M8 46l9-8 8 6 11-15 9 9 8-6"/><circle cx="17" cy="38" r="1.6" stroke="none" fill="currentColor"/></svg><div><b>Market</b><span>Lines, props and parlays across every book</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><rect x="8" y="8" width="48" height="48" rx="6"/><path d="M18 46V26M32 46V16M46 46V32"/><circle cx="18" cy="32" r="3"/></svg><div><b>Optimizer</b><span>Build and compare DFS lineups around projection, salary and correlation</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M9 50h46M14 44l10-9 9 6 12-16 8 9"/><circle cx="43" cy="25" r="2.2" fill="currentColor" stroke="none"/></svg><div><b>Shortopen Simulator</b><span>Tournament field study: player fit, lineup laboratory and stack exposure</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M10 49h44M14 41h8V23h-8zM28 41h8V14h-8zM42 41h8V29h-8z"/><circle cx="46" cy="20" r="7"/><path d="M38 49c2-8 6-13 12-13"/></svg><div><b>Ownership, Leverage &amp; Targets</b><span>See where the field is concentrating and find contrarian value: leverage points, targets and batter-vs-pitcher edges</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><rect x="9" y="12" width="46" height="40" rx="5"/><path d="M9 22h46M20 12v40M32 30h14M32 38h14"/><circle cx="26" cy="30" r="2.2" fill="currentColor" stroke="none"/><circle cx="26" cy="38" r="2.2" fill="currentColor" stroke="none"/></svg><div><b>Parlay Sim</b><span>Build and price multi-leg parlays with live odds and Monte Carlo win-rate simulation</span></div></div></div>
 <span class="desk-open">Open The Terminal &rarr;</span>
 </a><a class="desk-panel" style="--dc:34,217,126" href="mlb.html">
-<div class="desk-head"><span class="desk-dot"></span><span class="desk-name">MLB Daily Desk</span><span class="desk-tag">Beta</span></div>
+<div class="desk-head"><span class="desk-dot"></span><span class="desk-name">MLB Daily Desk</span></div>
 <p class="desk-desc">One baseball destination for your daily workflow.</p>
 <div class="desk-tools"><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M10 48l15-28 12 15 17-23"/><circle cx="25" cy="20" r="4"/></svg><div><b>HR Index</b><span>Hitter talent, barrel and power profiles</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M9 49h46M15 49c5-16 11-25 17-25s12 9 17 25"/><rect x="25" y="9" width="14" height="18" rx="7"/></svg><div><b>Pitching Lab</b><span>100-pitcher command, arsenal and prevention profiles</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><rect x="13" y="12" width="38" height="40" rx="5"/><path d="M22 24h20M22 32h14M22 40h18"/></svg><div><b>Strikeout Props</b><span>Pitcher K lines, price targets and market disagreements</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M13 48l28-28"/><circle cx="45" cy="17" r="8"/></svg><div><b>Home Run Props</b><span>Sportsbook HR prices and Short Open target range</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><circle cx="25" cy="30" r="11"/><path d="M34 38l15 15M19 30h12M25 24v12"/></svg><div><b>Matchup Lab</b><span>Batter versus Pitcher index, matchup exposure reports</span></div></div></div>
 <span class="desk-open">Open MLB Daily Desk &rarr;</span>
 </a><a class="desk-panel" style="--dc:87,167,255" href="nfl.html">
-<div class="desk-head"><span class="desk-dot"></span><span class="desk-name">NFL Daily Desk</span><span class="desk-tag">Beta</span></div>
+<div class="desk-head"><span class="desk-dot"></span><span class="desk-name">NFL Daily Desk</span></div>
 <p class="desk-desc">One football destination for your daily workflow.</p>
 <div class="desk-tools"><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M10 50h44M19 45V25h26v20"/></svg><div><b>NFL Draft Market</b><span>Prospect rankings, market movement and mock simulator</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><rect x="12" y="18" width="32" height="26" rx="4"/><path d="m44 25 9-5v22l-9-5z"/></svg><div><b>Film Room</b><span>Tape-first prospect evaluation and scouting</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M15 11h34v42H15zM23 23h18M23 31h14M23 39h17"/></svg><div><b>Grade Book</b><span>Position grades, camp intel and fantasy context</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M14 46h36M19 46V26h26v20"/><circle cx="32" cy="18" r="7"/></svg><div><b>NFL Player Props</b><span>Role, usage, matchup and prop-market research</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M9 50h46M15 45V17h34v28"/><circle cx="24" cy="34" r="6"/><path d="M30 34h9l8-7"/></svg><div><b>Matchup Lab</b><span>160 skill players against pressure, run fits and coverage</span></div></div></div>
 <span class="desk-open">Open NFL Daily Desk &rarr;</span>
 </a><a class="desk-panel" style="--dc:255,77,77" href="premier-league.html">
-<div class="desk-head"><span class="desk-dot"></span><span class="desk-name">Premier League</span><span class="desk-tag">Beta</span></div>
+<div class="desk-head"><span class="desk-dot"></span><span class="desk-name">Premier League</span></div>
 <p class="desk-desc">American analytics applied to the EPL &mdash; live game lines, player market values, rumour desk and an advanced model for positional matchups.</p>
 <div class="desk-tools"><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M32 12l6 12 13 2-9.5 9 2 13L32 42l-11.5 6 2-13L13 26l13-2z"/></svg><div><b>Live Lines</b><span>EPL game cards, live odds and model calls</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><circle cx="24" cy="24" r="12"/><circle cx="40" cy="40" r="12"/></svg><div><b>Transfer Market</b><span>Player values, transfer targets and hidden gems</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="20"/><circle cx="32" cy="32" r="11"/></svg><div><b>Matchup Lab</b><span>Selected matchup vs. same-position opponent</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="21"/><path d="M22 39c2.5 2.8 6.3 4.4 10 4.4s7.5-1.6 10-4.4"/></svg><div><b>Props</b><span>Player prop lines with Short Open model probability</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M32 8l5.5 13.5L52 22l-11 9 3.5 14L32 37l-12.5 8L23 31l-11-9 14.5-.5z"/><circle cx="32" cy="32" r="22"/></svg><div><b>Champions League</b><span>Game lines and player props across the competition</span></div></div></div>
 <span class="desk-open">Open Premier League &rarr;</span>
 </a><a class="desk-panel" style="--dc:82,227,189" href="prediction-markets.html">
-<div class="desk-head"><span class="desk-dot"></span><span class="desk-name">Prediction Markets</span><span class="desk-tag">Beta</span></div>
+<div class="desk-head"><span class="desk-dot"></span><span class="desk-name">Prediction Markets</span></div>
 <p class="desk-desc">Probability research without the noise &mdash; sports futures, major-city elections and a transparent model desk built around sourced public evidence.</p>
 <div class="desk-tools"><div class="desk-tool"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="21"/><path d="M18 38l9-9 7 5 13-15"/></svg><div><b>Sports Futures</b><span>Team futures framed as modeled probability ranges</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M12 50h40M18 50V26h28v24M24 26V16h16v10"/></svg><div><b>Election Watch</b><span>Selected San Francisco, New York and statewide races</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M13 18h38M13 46h38M20 12l-7 6 7 6M44 40l7 6-7 6"/></svg><div><b>Arbitrage Model</b><span>Negative hold, equalized payout and execution checks</span></div></div><div class="desk-tool"><svg viewBox="0 0 64 64"><path d="M16 10h27l7 7v37H16zM43 10v8h7M23 29h20M23 37h20M23 45h13"/></svg><div><b>Prediction Model</b><span>Sources, assumptions and probability discipline</span></div></div></div>
 <span class="desk-open">Open Prediction Markets &rarr;</span>
@@ -837,29 +874,29 @@ div[style*="grid-template-columns"]{min-width:0}
 <div class="so-board-rail" style="--rail:#f4b942">
 <div class="so-board-rail-tag"><i></i>MLB</div>
 <div class="so-board-items">
-<a class="so-board-item" href="mlb.html"><span>Market Price</span><b>CLE/KC is the tightest market on the board at -112/-104.</b><small>CLE @ KC &middot; 3.8% margin</small><em>&rarr;</em></a>
-<a class="so-board-item" href="mlb.html"><span>Home Runs</span><b>Bryan Reynolds to hit a home run.</b><small>BetMGM +600 &middot; Model 16.4%</small><em>&rarr;</em></a>
-<a class="so-board-item" href="mlb.html"><span>Strikeouts</span><b>Parker Messick Over 3.5 strikeouts.</b><small>Caesars -125 &middot; Model reads 4.5 K</small><em>&rarr;</em></a>
-<a class="so-board-item" href="mlb.html"><span>Matchup Lab</span><b>Kazuma Okamoto leads the Matchup Lab.</b><small>Lab 83.3 vs. Brandon Williamson</small><em>&rarr;</em></a>
+<a class="so-board-item" href="mlb.html"><span>Market Price</span><b>CHC/SD is the tightest market on the board at +108/-126.</b><small>CHC @ SD &middot; 3.8% margin</small><em>&rarr;</em></a>
+<a class="so-board-item" href="mlb.html"><span>Home Runs</span><b>Yordan Alvarez to hit a home run.</b><small>BetMGM +325 &middot; Model 24.3%</small><em>&rarr;</em></a>
+<a class="so-board-item" href="mlb.html"><span>Strikeouts</span><b>Chris Sale Under 7.5 strikeouts.</b><small>BetMGM -115 &middot; Model reads 7.2 K</small><em>&rarr;</em></a>
+<a class="so-board-item" href="mlb.html"><span>Matchup Lab</span><b>Jeremy Pena leads the Matchup Lab.</b><small>Lab 81.1 vs. Erick Fedde</small><em>&rarr;</em></a>
 </div>
 </div>
 <div data-cadence="weekly" class="so-board-rail has-mascot has-mascot-low" style="--rail:#64c7ff">
 <span class="so-mascot so-mascot-rail so-mascot-low" role="button" tabindex="0" data-say="[&quot;Lock it in.&quot;, &quot;Headset on — play’s coming in.&quot;, &quot;Shop the price before you take it.&quot;, &quot;Board’s locked the morning before slate.&quot;, &quot;Receptions are the quiet market.&quot;, &quot;Weekly board, daily shopping.&quot;, &quot;Number first, team second.&quot;, &quot;If the line moved, somebody knew.&quot;, &quot;Two points of juice is a season.&quot;, &quot;Sunday’s card gets built on Thursday.&quot;, &quot;Chalk is fine. Chalk at a bad price isn’t.&quot;, &quot;Check the inactives before you fire.&quot;]" aria-label="Shortopen mascot &mdash; tap for a message"><svg viewBox="0 0 120 134" aria-hidden="true"><use href="#soCatNFL"/></svg></span>
-<div class="so-board-rail-tag"><i></i>NFL</div>
+<div class="so-board-rail-tag"><i></i>TNF</div>
 <div class="so-board-items">
-<a class="so-board-item" href="nfl.html"><span>Pass Yards</span><b>C.J. Stroud Under 243.5 passing yards.</b><small>FanDuel -113 &middot; HOU @ IND</small><em>&rarr;</em></a>
-<a class="so-board-item" href="nfl.html"><span>Pass Yards</span><b>Baker Mayfield Over 211.5 passing yards.</b><small>BetMGM -115 &middot; TB vs. MIN</small><em>&rarr;</em></a>
-<a class="so-board-item" href="nfl.html"><span>Pass Yards</span><b>Geno Smith Over 225.5 passing yards.</b><small>FanDuel -113 &middot; NYJ @ DET</small><em>&rarr;</em></a>
-<a class="so-board-item" href="nfl.html"><span>Pass Yards</span><b>Deshaun Watson Over 187.5 passing yards.</b><small>FanDuel -113 &middot; CLE vs. CAR</small><em>&rarr;</em></a>
+<a class="so-board-item" href="nfl.html"><span>Receptions</span><b>D'Andre Swift Under 2.5 receptions.</b><small>BetRivers +145 &middot; CHI vs PHI</small><em>&rarr;</em></a>
+<a class="so-board-item" href="nfl.html"><span>Receptions</span><b>Cole Kmet Under 1.5 receptions.</b><small>FanDuel +128 &middot; CHI vs PHI</small><em>&rarr;</em></a>
+<a class="so-board-item" href="nfl.html"><span>Receptions</span><b>Rome Odunze Over 2.5 receptions.</b><small>DraftKings +115 &middot; CHI vs PHI</small><em>&rarr;</em></a>
+<a class="so-board-item" href="nfl.html"><span>Receptions</span><b>Kalif Raymond Over 2.5 receptions.</b><small>theScore -110 &middot; CHI vs PHI</small><em>&rarr;</em></a>
 </div>
 </div>
 <div data-cadence="weekly" class="so-board-rail" style="--rail:#64c7ff">
-<div class="so-board-rail-tag"><i></i>NFL Bonus</div>
+<div class="so-board-rail-tag"><i></i>MLB Playoff Bonus</div>
 <div class="so-board-items">
-<a class="so-board-item" href="nfl.html"><span>Rec Yards</span><b>Jalen McMillan Over 10.5 receiving yards.</b><small>BetMGM -135 &middot; TB vs. MIN</small><em>&rarr;</em></a>
-<a class="so-board-item" href="nfl.html"><span>Rec Yards</span><b>Denzel Boston Over 42.5 receiving yards.</b><small>BetMGM -135 &middot; CLE vs. CAR</small><em>&rarr;</em></a>
-<a class="so-board-item" href="nfl.html"><span>Rec Yards</span><b>Bhayshul Tuten Under 10.5 receiving yards.</b><small>DraftKings -111 &middot; JAX vs. NE</small><em>&rarr;</em></a>
-<a class="so-board-item" href="nfl.html"><span>Rec Yards</span><b>Ted Hurst Over 24.5 receiving yards.</b><small>FanDuel -113 &middot; TB vs. MIN</small><em>&rarr;</em></a>
+<a class="so-board-item" href="mlb.html"><span>Home Run</span><b>Pete Crow-Armstrong to hit a home run.</b><small>DraftKings +350 &middot; Model 21.7%</small><em>&rarr;</em></a>
+<a class="so-board-item" href="mlb.html"><span>Home Run</span><b>Ben Rice to hit a home run.</b><small>DraftKings +477 &middot; Model 16.9%</small><em>&rarr;</em></a>
+<a class="so-board-item" href="mlb.html"><span>Longshot</span><b>Christian Walker to hit a home run.</b><small>DraftKings +514 &middot; Model 15.1%</small><em>&rarr;</em></a>
+<a class="so-board-item" href="mlb.html"><span>Strikeouts</span><b>Cam Schlittler Over 7.5 strikeouts.</b><small>Caesars +119 &middot; NYY vs BOS</small><em>&rarr;</em></a>
 </div>
 </div>
 <div data-cadence="weekly" class="so-board-rail has-mascot" style="--rail:#ff4d4d">
@@ -1349,16 +1386,6 @@ body{background:
   -webkit-backdrop-filter:blur(22px) saturate(150%)!important}
 
 /* glass surfaces */
-/* PERF: this rule used to carry backdrop-filter:blur(14px), which silently
-   undid the .glass{backdrop-filter:none} fix in so-index-smooth-paint - that
-   block sits EARLIER in the document, so an !important here beat it. The four
-   .so-board-rail panels are large and sit in the scroll path, so every frame
-   the compositor re-snapshotted and blurred the page behind them: median
-   scroll frame time went from 16.7ms to 33.3ms, i.e. 60fps down to 30.
-   Nothing but the body's own static gradient sits behind these panels, so the
-   opaque fill this block already defines for prefers-reduced-transparency is
-   visually equivalent - it is used here for everyone instead. Blur is kept on
-   .so-nav alone: one fixed element, and it was blurred before this block too. */
 .glass,.pop-card,.desk-panel,.so-board-rail{
   background:linear-gradient(158deg,rgba(255,255,255,.055),rgba(12,22,40,.44) 46%,rgba(7,12,22,.62))!important;
   border-color:rgba(255,255,255,.085)!important;
