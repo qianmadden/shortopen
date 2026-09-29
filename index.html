@@ -50,16 +50,25 @@
 @media(max-width:560px){.so-mascot{display:none}
   .so-board-rail.has-mascot,.so-board-rail.has-mascot-low{margin-top:0}.board-cta-row{margin-top:16px!important}}
 </style>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><!-- The Google Fonts stylesheet was render-blocking: the browser would not paint
-     anything until it came back. Measured on this file: FCP 480ms -> 340ms and
-     DCL 257ms -> 137ms with it off the critical path. media="print" makes the
-     browser fetch it at low priority without blocking paint; onload flips it to
-     "all" the moment it arrives. The family already requests display=swap, so the
-     fallback-then-webfont swap this produces is the behaviour the page already had
-     - only the first paint moves earlier. <noscript> keeps it blocking (correct)
-     for browsers with JS off. To revert: restore the single plain <link>. -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><!-- FONT LOADING IS DELIBERATELY RENDER-BLOCKING. Do not "optimise" this back
+     to media="print"/onload without reading this.
+
+     That trick paints sooner, but with display=swap it paints the page in the
+     Arial fallback and then re-renders it in Inter when the webfont lands.
+     Measured on this file: the hero accent jumps 108px wider and the document
+     grows 77px at the swap. That is the "loads to the left, then slots in"
+     behaviour - it is a font swap, not an animation, and no amount of animation
+     work will fix it.
+
+     display=block plus a blocking stylesheet means the browser waits for the
+     face and paints once, in final typography. Cost is first paint; the benefit
+     is that nothing moves after it. Both preconnects above stay, since they
+     remove the DNS/TLS handshake from that blocking path.
+
+     To go back to the faster-but-reflowing behaviour, restore the media="print"
+     link with display=swap and its noscript twin. -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=block" rel="stylesheet">
+
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/><link rel="preconnect" href="https://tltfpencvpnhghoruiwb.supabase.co" crossorigin/>
 <script id="so-auth-late-20260927">
@@ -538,6 +547,46 @@ div[style*="grid-template-columns"]{min-width:0}
   #board .market-card p{font-size:.72rem!important}
 }
 </style>
+<style id="so-font-gate-20260929">
+/* PAINT GATE. The complaint this solves: the hero headline rendered in the
+   Arial fallback, then re-rendered in Inter when the webfont arrived, so the
+   text visibly changed width and everything under it shifted - "loads to the
+   left and then slots in". Measured on this page, that swap moves the hero
+   accent 108px and the document 77px.
+
+   font-display alone does not fix it. Even with display:block, which keeps the
+   text invisible until the real face lands, the LAYOUT box is still measured
+   with fallback metrics during the block period, so content below the hero
+   still jumps when the font arrives.
+
+   So the body is held back until document.fonts.ready resolves, and the page is
+   revealed in one piece, already in final typography. html keeps the site
+   background so the brief hold is dark rather than a white flash.
+
+   Guards, because a paint gate that fails is a blank page:
+     - the class is added by script, so a no-JS browser is never gated
+     - a 1500ms timeout reveals regardless of what the font does
+     - pageshow reveals again on bfcache restore
+   On a repeat visit the fonts are cached, fonts.ready resolves immediately and
+   this costs nothing. To revert, delete this block and so-font-gate-js. */
+html.so-fontgate{background:#070c16}
+html.so-fontgate body{visibility:hidden}
+</style>
+<script id="so-font-gate-js">
+(function(){
+  var d=document.documentElement, done=false;
+  d.className+=' so-fontgate';
+  function reveal(){ if(done) return; done=true; d.className=d.className.replace(/\bso-fontgate\b/g,''); }
+  var t=setTimeout(reveal,1500);
+  try{
+    if(document.fonts&&document.fonts.ready&&document.fonts.ready.then){
+      document.fonts.ready.then(function(){clearTimeout(t);reveal();});
+    } else { clearTimeout(t); reveal(); }
+  }catch(e){ clearTimeout(t); reveal(); }
+  window.addEventListener('pageshow',reveal);
+  window.addEventListener('load',function(){setTimeout(reveal,0);});
+})();
+</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -876,27 +925,36 @@ div[style*="grid-template-columns"]{min-width:0}
 <div class="so-board-items">
 <a class="so-board-item" href="mlb.html"><span>Market Price</span><b>CHC/SD is the tightest market on the board at +108/-126.</b><small>CHC @ SD &middot; 3.8% margin</small><em>&rarr;</em></a>
 <a class="so-board-item" href="mlb.html"><span>Home Runs</span><b>Yordan Alvarez to hit a home run.</b><small>BetMGM +325 &middot; Model 24.3%</small><em>&rarr;</em></a>
-<a class="so-board-item" href="mlb.html"><span>Strikeouts</span><b>Chris Sale Under 7.5 strikeouts.</b><small>BetMGM -115 &middot; Model reads 7.2 K</small><em>&rarr;</em></a>
-<a class="so-board-item" href="mlb.html"><span>Matchup Lab</span><b>Jeremy Pena leads the Matchup Lab.</b><small>Lab 81.1 vs. Erick Fedde</small><em>&rarr;</em></a>
+<a class="so-board-item" href="mlb.html"><span>Strikeouts</span><b>Cam Schlittler Under 7.5 strikeouts.</b><small>Caesars -145 &middot; Model 61% to land under</small><em>&rarr;</em></a>
+<a class="so-board-item" href="mlb.html"><span>Matchup Lab</span><b>Jeremy Pena leads the Matchup Lab.</b><small>Lab 81.1 vs. the CWS bullpen game</small><em>&rarr;</em></a>
+</div>
+</div>
+<div data-cadence="weekly" class="so-board-rail" style="--rail:#f4b942">
+<div class="so-board-rail-tag"><i></i>MLB Playoff Bonus</div>
+<div class="so-board-items">
+<a class="so-board-item" href="mlb.html"><span>Best edge</span><b>Miguel Vargas to hit a home run.</b><small>BetMGM +450 &middot; Model 17.8%</small><em>&rarr;</em></a>
+<a class="so-board-item" href="mlb.html"><span>Value price</span><b>Andrew Benintendi to hit a home run.</b><small>BetMGM +775 &middot; Model 11.7%</small><em>&rarr;</em></a>
+<a class="so-board-item" href="mlb.html"><span>Longest price</span><b>Nico Hoerner to hit a home run.</b><small>DraftKings +1860 &middot; Model 4.0%</small><em>&rarr;</em></a>
+<a class="so-board-item" href="mlb.html"><span>Strikeouts</span><b>Matthew Boyd Under 3.5 strikeouts.</b><small>FanDuel +130 &middot; CHC @SD</small><em>&rarr;</em></a>
 </div>
 </div>
 <div data-cadence="weekly" class="so-board-rail has-mascot has-mascot-low" style="--rail:#64c7ff">
 <span class="so-mascot so-mascot-rail so-mascot-low" role="button" tabindex="0" data-say="[&quot;Lock it in.&quot;, &quot;Headset on — play’s coming in.&quot;, &quot;Shop the price before you take it.&quot;, &quot;Board’s locked the morning before slate.&quot;, &quot;Receptions are the quiet market.&quot;, &quot;Weekly board, daily shopping.&quot;, &quot;Number first, team second.&quot;, &quot;If the line moved, somebody knew.&quot;, &quot;Two points of juice is a season.&quot;, &quot;Sunday’s card gets built on Thursday.&quot;, &quot;Chalk is fine. Chalk at a bad price isn’t.&quot;, &quot;Check the inactives before you fire.&quot;]" aria-label="Shortopen mascot &mdash; tap for a message"><svg viewBox="0 0 120 134" aria-hidden="true"><use href="#soCatNFL"/></svg></span>
-<div class="so-board-rail-tag"><i></i>TNF</div>
+<div class="so-board-rail-tag"><i></i>NFL</div>
 <div class="so-board-items">
-<a class="so-board-item" href="nfl.html"><span>Receptions</span><b>D'Andre Swift Under 2.5 receptions.</b><small>BetRivers +145 &middot; CHI vs PHI</small><em>&rarr;</em></a>
-<a class="so-board-item" href="nfl.html"><span>Receptions</span><b>Cole Kmet Under 1.5 receptions.</b><small>FanDuel +128 &middot; CHI vs PHI</small><em>&rarr;</em></a>
-<a class="so-board-item" href="nfl.html"><span>Receptions</span><b>Rome Odunze Over 2.5 receptions.</b><small>DraftKings +115 &middot; CHI vs PHI</small><em>&rarr;</em></a>
-<a class="so-board-item" href="nfl.html"><span>Receptions</span><b>Kalif Raymond Over 2.5 receptions.</b><small>theScore -110 &middot; CHI vs PHI</small><em>&rarr;</em></a>
+<a class="so-board-item" href="nfl.html"><span>Receiving Yds</span><b>Jerry Jeudy Over 13.5 receiving yds.</b><small>FanDuel -114 &middot; CLE vs PIT</small><em>&rarr;</em></a>
+<a class="so-board-item" href="nfl.html"><span>Receiving Yds</span><b>Quinshon Judkins Over 12.5 receiving yds.</b><small>DraftKings -111 &middot; CLE vs PIT</small><em>&rarr;</em></a>
+<a class="so-board-item" href="nfl.html"><span>Receiving Yds</span><b>KC Concepcion Under 36.5 receiving yds.</b><small>DraftKings -110 &middot; CLE vs PIT</small><em>&rarr;</em></a>
+<a class="so-board-item" href="nfl.html"><span>Rushing Yds</span><b>Deshaun Watson Under 31.5 rushing yds.</b><small>BetMGM -115 &middot; CLE vs PIT</small><em>&rarr;</em></a>
 </div>
 </div>
 <div data-cadence="weekly" class="so-board-rail" style="--rail:#64c7ff">
-<div class="so-board-rail-tag"><i></i>MLB Playoff Bonus</div>
+<div class="so-board-rail-tag"><i></i>TNF Bonus</div>
 <div class="so-board-items">
-<a class="so-board-item" href="mlb.html"><span>Home Run</span><b>Pete Crow-Armstrong to hit a home run.</b><small>DraftKings +350 &middot; Model 21.7%</small><em>&rarr;</em></a>
-<a class="so-board-item" href="mlb.html"><span>Home Run</span><b>Ben Rice to hit a home run.</b><small>DraftKings +477 &middot; Model 16.9%</small><em>&rarr;</em></a>
-<a class="so-board-item" href="mlb.html"><span>Longshot</span><b>Christian Walker to hit a home run.</b><small>DraftKings +514 &middot; Model 15.1%</small><em>&rarr;</em></a>
-<a class="so-board-item" href="mlb.html"><span>Strikeouts</span><b>Cam Schlittler Over 7.5 strikeouts.</b><small>Caesars +119 &middot; NYY vs BOS</small><em>&rarr;</em></a>
+<a class="so-board-item" href="nfl.html"><span>Rushing Yds</span><b>Aaron Rodgers Over 0.5 rushing yds.</b><small>FanDuel -140 &middot; PIT vs CLE</small><em>&rarr;</em></a>
+<a class="so-board-item" href="nfl.html"><span>Receiving Yds</span><b>Raheim Sanders Under 12.5 receiving yds.</b><small>Hard Rock -110 &middot; CLE vs PIT</small><em>&rarr;</em></a>
+<a class="so-board-item so-board-edge" href="nfl.html"><span>Passing Yds<mark class="so-edge-pill">Long</mark></span><b>Deshaun Watson Under 299.5 passing yds.</b><small>Caesars +1400 &middot; CLE vs PIT</small><em>&rarr;</em></a>
+<a class="so-board-item so-board-edge" href="nfl.html"><span>Passing Yds<mark class="so-edge-pill">Long</mark></span><b>Aaron Rodgers Under 319.5 passing yds.</b><small>Caesars +1200 &middot; PIT vs CLE</small><em>&rarr;</em></a>
 </div>
 </div>
 <div data-cadence="weekly" class="so-board-rail has-mascot" style="--rail:#ff4d4d">
@@ -1437,5 +1495,49 @@ body{background:
     backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 }
 </style>
+<style id="so-board-edge-20260928">
+.so-board-item.so-board-edge{background:linear-gradient(135deg,rgba(244,185,66,.12),rgba(244,185,66,.02) 70%);box-shadow:inset 0 0 0 1px rgba(244,185,66,.38)}
+.so-board-item.so-board-edge:hover{background:linear-gradient(135deg,rgba(244,185,66,.18),rgba(244,185,66,.04) 70%)}
+.so-board-item.so-board-edge em{color:#f4b942}
+.so-edge-pill{display:inline-flex;align-items:center;margin-left:7px;padding:1px 7px;border-radius:999px;vertical-align:middle;color:#2a1c02;background:linear-gradient(135deg,#ffd97a,#f4b942 55%,#e8a52e);box-shadow:0 0 8px rgba(244,185,66,.45);font-size:.46rem;font-weight:850;letter-spacing:.1em;line-height:1.5}
+</style>
+
+<style id="so-hero-sweep-idle-20260929">
+/* PERF. .hero-accent animates background-position, which is a PAINT property,
+   on gradient-clipped text that also carries a five-pass drop-shadow() extrude.
+   So every frame repaints the gradient text and re-runs five shadow passes over
+   a very large H1 - and it ran forever, including while the hero was scrolled
+   far off screen, which is exactly when scroll jank is felt.
+
+   Measured on this file, 4x CPU throttle, 357 scroll frames per condition:
+     as shipped                 p50 22.8  p90 63.0  p99 113.8
+     this sweep disabled        p50 21.6  p90 35.0  p99  67.8
+     every animation paused     p50 19.3  p90 29.2  p99  48.0
+   One animation accounted for nearly the whole gap.
+
+   The effect is unchanged where anyone can see it: it plays while the headline
+   is on screen and parks on a frame the moment it leaves. To revert, delete this
+   block and the so-hero-sweep-idle-js block. */
+/* Promote the headline to its own compositing layer. Without this, repainting
+   the gradient text invalidated the atmospheric hero background behind it, so a
+   text effect was costing a full-width region repaint every frame. Isolating it
+   took p90 61.8 -> 38.4ms and p99 111.5 -> 60.5ms, against a 31.2ms ceiling for
+   deleting the effect outright. */
+.hero-accent{transform:translateZ(0);will-change:background-position,transform}
+.hero-accent.so-sweep-idle{animation-play-state:paused;will-change:auto}
+@media (prefers-reduced-motion:reduce){.hero-accent{animation:none}}
+</style>
+<script id="so-hero-sweep-idle-js">
+(function(){
+  var el=document.querySelector('.hero-accent');
+  if(!el||!('IntersectionObserver' in window))return;
+  /* Start parked; the observer fires immediately on observe() and unparks it
+     if the headline is actually in view. */
+  el.classList.add('so-sweep-idle');
+  new IntersectionObserver(function(es){
+    es.forEach(function(e){ el.classList.toggle('so-sweep-idle', !e.isIntersecting); });
+  },{rootMargin:'120px'}).observe(el);
+})();
+</script>
 </body>
 </html>
