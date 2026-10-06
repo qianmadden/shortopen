@@ -70,25 +70,6 @@ button{font:inherit}
 .frame-stage{position:relative;min-height:0;background:#070c16}
 .hub-pick{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:32px;background:#070c16;overflow-y:auto}
 .hub-pick.hidden{display:none}
-.hub-buildout-note{position:relative;display:flex;align-items:center;gap:21px;width:100%;max-width:660px;padding:18px 21px;border-radius:18px;border:1px solid rgba(184,118,58,.28);background:linear-gradient(180deg,rgba(184,118,58,.14),rgba(184,118,58,.05));color:#e8c8a6;overflow:hidden}
-.hub-buildout-note:before,.hub-buildout-note:after{content:'';position:absolute;left:0;right:0;height:3px;background-image:repeating-linear-gradient(45deg,#d99a56 0 9px,#2a1608 9px 18px);background-size:26px 100%;opacity:.6}
-.hub-buildout-note:before{top:0;animation:hazardSlide 1.8s linear infinite}
-.hub-buildout-note:after{bottom:0;animation:hazardSlide 1.8s linear infinite reverse}
-@keyframes hazardSlide{0%{background-position-x:0}100%{background-position-x:26px}}
-.hub-worker{position:relative;flex:0 0 auto;width:111px;height:165px;display:flex;align-items:flex-end;justify-content:center;animation:workerBob 3.2s ease-in-out infinite}
-.hub-worker svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 9px 14px rgba(0,0,0,.45))}
-.worker-arm{transform-origin:138px 102px;animation:workerWave 3.2s ease-in-out infinite}
-.worker-hat-shine{animation:workerHatShine 3.2s ease-in-out infinite}
-@keyframes workerBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-@keyframes workerWave{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-7deg)}50%{transform:rotate(4deg)}75%{transform:rotate(-3deg)}}
-@keyframes workerHatShine{0%,20%{opacity:0}50%{opacity:.85}80%,100%{opacity:0}}
-.hub-note-copy{display:flex;flex-direction:column;gap:7px;padding-right:12px}
-.hub-note-copy b{color:#f4d3ac;font-weight:850;font-size:.92rem;letter-spacing:-.01em}
-.hub-note-copy p{margin:0;color:#e8c8a6;font-size:.72rem;line-height:1.6;max-width:36ch}
-.hub-buildout-note button{position:absolute;right:12px;top:12px;width:22px;height:22px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:rgba(11,20,36,.55);color:#cfd8e0;font-size:.78rem;line-height:1;cursor:pointer;padding:0;z-index:2}
-.hub-buildout-note button:hover{background:rgba(255,255,255,.12);color:#fff}
-@media(max-width:760px){.hub-buildout-note{flex-direction:column;text-align:center;padding:17px 15px;gap:10px}.hub-worker{width:79px;height:118px}.hub-note-copy{align-items:center;padding-right:0}.hub-note-copy p{max-width:34ch}}
-@media(prefers-reduced-motion:reduce){.hub-buildout-note:before,.hub-buildout-note:after,.hub-worker,.worker-arm,.worker-hat-shine{animation:none!important}}
 .pick-grid{width:100%;max-width:960px;display:grid;grid-template-columns:repeat(var(--pick-count,2),1fr);gap:20px}
 .pick-card{position:relative;overflow:hidden;display:block;width:100%;box-sizing:border-box;margin:0;text-align:left;font:inherit;appearance:none;-webkit-appearance:none;border:1px solid rgba(255,255,255,.08);border-radius:20px;background:linear-gradient(155deg,rgba(255,255,255,.03),rgba(7,13,23,.75));color:#919daa;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease}
 .pick-card:hover{transform:translateY(-3px);border-color:var(--accent-border);background:linear-gradient(155deg,var(--accent-soft),rgba(9,17,30,.85) 68%)}
@@ -282,38 +263,7 @@ html.so-perf-scrolling .so-perf-anim-target::after,
 </div>
   <span class="hub-count" id="sectionCount"></span>
 </header>
-<section class="workspace" aria-live="polite"><div class="frame-stage"><div class="hub-pick" id="hubPick"><div class="hub-buildout-note" id="hubBuildoutNote"><span class="hub-worker" aria-hidden="true"><svg viewBox="0 0 220 330">
- <ellipse cx="100" cy="322" rx="60" ry="8" fill="#000" opacity=".25"/>
- <!-- legs -->
- <path d="M76 204c-4 44-7 84-5 111l19 0c1-39 4-79 7-111c-7-4-14-4-21 0z" fill="#9aa7b4"/>
- <path d="M106 204c6 41 11 80 17 108l20-3c-5-41-10-80-18-108c-6-3-13-2-19 3z" fill="#8a97a4"/>
- <!-- torso / vest -->
- <rect x="56" y="95" width="84" height="118" rx="20" fill="#e2672b"/>
- <rect x="56" y="131" width="84" height="11" fill="#fff7ea" opacity=".92"/>
- <rect x="56" y="162" width="84" height="11" fill="#fff7ea" opacity=".92"/>
- <!-- neck + head -->
- <rect x="88" y="78" width="20" height="20" fill="#d8ad84"/>
- <circle cx="98" cy="52" r="29" fill="#d8ad84"/>
- <!-- hard hat -->
- <path d="M58 48c0-25 18-43 40-43s40 18 40 43c-13-6-27-9-40-9s-27 3-40 9z" fill="#f4c430"/>
- <rect x="55" y="43" width="86" height="11" rx="5.5" fill="#e0ab1c"/>
- <path class="worker-hat-shine" d="M73 22c6-6 15-9 24-9" stroke="#fff3c9" stroke-width="2.2" fill="none" stroke-linecap="round" opacity="0"/>
- <!-- standing arm, hand at hip -->
- <path d="M58 100c-19 4-31 18-34 40l18 6c4-18 12-30 24-35z" fill="#c7d0da"/>
- <circle cx="26" cy="146" r="10" fill="#d8ad84"/>
- <!-- raised arm holding the buildout-phase sign -->
- <g class="worker-arm">
-  <path d="M138 100c22 2 38 16 44 38l-19 7c-5-19-15-30-29-33z" fill="#c7d0da"/>
-  <circle cx="184" cy="140" r="10" fill="#d8ad84"/>
-  <g transform="translate(150,150)">
-   <rect x="0" y="0" width="66" height="86" rx="7" fill="#0f1b31" stroke="#d99a56" stroke-width="2.4"/>
-   <rect x="0" y="0" width="66" height="9" rx="4.5" fill="#d99a56"/>
-   <text x="33" y="41" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-weight="900" font-size="14.5" fill="#f4d3ac" letter-spacing="-.2">BUILD</text>
-   <text x="33" y="59" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-weight="900" font-size="14.5" fill="#f4d3ac" letter-spacing="-.2">OUT</text>
-   <text x="33" y="77" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="9.5" fill="#d99a56" letter-spacing=".08em">PHASE</text>
-  </g>
- </g>
-</svg></span><div class="hub-note-copy"><b>Under Construction — NBA Tools</b><p>Our crew is wiring up player props, matchup lab, and tempo models for tip-off. Check back closer to preseason — subscribers get first access the moment each tool goes live.</p></div><button type="button" onclick="this.parentElement.remove()" aria-label="Dismiss">&times;</button></div><div class="pick-grid" style="--pick-count:4"><button class="pick-card" type="button" data-key="player-props"><span class="pick-art" aria-hidden="true"><svg viewBox="0 0 64 64">
+<section class="workspace" aria-live="polite"><div class="frame-stage"><div class="hub-pick" id="hubPick"><div class="pick-grid" style="--pick-count:4"><button class="pick-card" type="button" data-key="player-props"><span class="pick-art" aria-hidden="true"><svg viewBox="0 0 64 64">
 <circle cx="32" cy="20" r="10.5"/>
 <path d="M22.6 13.4c3.6 3.2 3.6 16.4 0 19.2M41.4 13.4c-3.6 3.2-3.6 16.4 0 19.2M22 20h20M32 9.5v21" stroke-width="1"/>
 <path d="M13 52c3-9 10-14 19-14s16 5 19 14" stroke-width="1.6"/>
