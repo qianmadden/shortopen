@@ -549,7 +549,7 @@ html body .hero-stat-value{
   <div class="hero-left">
     <div class="live-badge"><div class="live-dot"></div>Premier League · Live Lines</div>
     <h1 class="page-title">Live<br/><span class="gold-line">Lines.</span></h1>
-    <p class="page-sub" id="pageSubCopy">Every Matchweek 7 fixture on one board. Short Open removes the market margin, compares all three outcomes, and surfaces only the clearest directional reads. The whole of Matchweek 7 is priced, Oct 17–19. The two statement results from Matchweek 5 are preserved below.</p>
+    <p class="page-sub" id="pageSubCopy">Every Matchweek 8 fixture on one board. Short Open removes the market margin, compares all three outcomes, and surfaces only the clearest directional reads. The whole of Matchweek 7 is priced, Oct 17–19. The two statement results from Matchweek 5 are preserved below.</p>
     <div class="hero-stat-row">
       <div class="hero-stat-card">
         <div class="hero-stat-label">Fixtures Loaded</div>
@@ -958,7 +958,18 @@ const SO_EPL_FIXTURES = [
   { matchweek: 7, status: 'upcoming', home: 'Leeds United', homeAbbr: 'LEE', away: 'Manchester United', awayAbbr: 'MUN', kickoffET: 'Sun Oct 18 · 9:00 AM ET', mlHome: 135, mlDraw: 250, mlAway: 185 },
   { matchweek: 7, status: 'upcoming', home: 'AFC Bournemouth', homeAbbr: 'BOU', away: 'Sunderland', awayAbbr: 'SUN', kickoffET: 'Sun Oct 18 · 9:00 AM ET', mlHome: 100, mlDraw: 250, mlAway: 240 },
   { matchweek: 7, status: 'upcoming', home: 'Nottingham Forest', homeAbbr: 'NFO', away: 'Arsenal', awayAbbr: 'ARS', kickoffET: 'Sun Oct 18 · 11:30 AM ET', mlHome: 490, mlDraw: 290, mlAway: -175 },
-  { matchweek: 7, status: 'upcoming', home: 'Tottenham Hotspur', homeAbbr: 'TOT', away: 'Coventry City', awayAbbr: 'COV', kickoffET: 'Mon Oct 19 · 3:00 PM ET', mlHome: -220, mlDraw: 350, mlAway: 500 }
+  { matchweek: 7, status: 'upcoming', home: 'Tottenham Hotspur', homeAbbr: 'TOT', away: 'Coventry City', awayAbbr: 'COV', kickoffET: 'Mon Oct 19 · 3:00 PM ET', mlHome: -220, mlDraw: 350, mlAway: 500 },
+  // ── Matchweek 8 (Q's FanDuel capture, 19 Oct: three-way only) ──
+  { matchweek: 8, status: 'upcoming', home: 'Ipswich Town', homeAbbr: 'IPS', away: 'Nottingham Forest', awayAbbr: 'NFO', kickoffET: 'Fri Oct 23 · 3:00 PM ET', mlHome: 200, mlDraw: 240, mlAway: 125 },
+  { matchweek: 8, status: 'upcoming', home: 'Aston Villa', homeAbbr: 'AVL', away: 'Manchester City', awayAbbr: 'MCI', kickoffET: 'Sat Oct 24 · 7:30 AM ET', mlHome: 340, mlDraw: 320, mlAway: -150 },
+  { matchweek: 8, status: 'upcoming', home: 'Coventry City', homeAbbr: 'COV', away: 'Fulham', awayAbbr: 'FUL', kickoffET: 'Sat Oct 24 · 10:00 AM ET', mlHome: 185, mlDraw: 260, mlAway: 125 },
+  { matchweek: 8, status: 'upcoming', home: 'Arsenal', homeAbbr: 'ARS', away: 'Everton', awayAbbr: 'EVE', kickoffET: 'Sat Oct 24 · 10:00 AM ET', mlHome: -310, mlDraw: 380, mlAway: 700 },
+  { matchweek: 8, status: 'upcoming', home: 'Chelsea', homeAbbr: 'CHE', away: 'Tottenham Hotspur', awayAbbr: 'TOT', kickoffET: 'Sat Oct 24 · 12:30 PM ET', mlHome: -150, mlDraw: 310, mlAway: 350 },
+  { matchweek: 8, status: 'upcoming', home: 'Crystal Palace', homeAbbr: 'CRY', away: 'Newcastle United', awayAbbr: 'NEW', kickoffET: 'Sun Oct 25 · 10:00 AM ET', mlHome: 175, mlDraw: 260, mlAway: 135 },
+  { matchweek: 8, status: 'upcoming', home: 'Liverpool', homeAbbr: 'LIV', away: 'Brighton & Hove Albion', awayAbbr: 'BHA', kickoffET: 'Sun Oct 25 · 10:00 AM ET', mlHome: 110, mlDraw: 280, mlAway: 210 },
+  { matchweek: 8, status: 'upcoming', home: 'Hull City', homeAbbr: 'HUL', away: 'Brentford', awayAbbr: 'BRE', kickoffET: 'Sun Oct 25 · 10:00 AM ET', mlHome: 340, mlDraw: 290, mlAway: -145 },
+  { matchweek: 8, status: 'upcoming', home: 'Manchester United', homeAbbr: 'MUN', away: 'AFC Bournemouth', awayAbbr: 'BOU', kickoffET: 'Sun Oct 25 · 10:00 AM ET', mlHome: -120, mlDraw: 290, mlAway: 270 },
+  { matchweek: 8, status: 'upcoming', home: 'Sunderland', homeAbbr: 'SUN', away: 'Leeds United', awayAbbr: 'LEE', kickoffET: 'Sun Oct 25 · 12:30 PM ET', mlHome: 190, mlDraw: 210, mlAway: 145 },
 ];
 
 // FINAL_GAMES / UPCOMING_GAMES are built straight off SO_EPL_FIXTURES above,
@@ -971,74 +982,66 @@ function fx(mw, homeAbbr, awayAbbr) {
 }
 
 const FINAL_GAMES = [
-  Object.assign({}, fx(5, 'BRE', 'CHE'), {
-    date: fx(5, 'BRE', 'CHE').kickoffET.replace(/ \u00b7 .*$/, ''),
-    status: 'final', scoreHome: 3, scoreAway: 0,
-    closeHandiHome: 'BRE +1', closeHandiHomeJuice: '-110', closeHandiAway: 'CHE -1', closeHandiAwayJuice: '-110',
-    closeMlAway: '+125', closeMlDraw: '+270', closeMlHome: '+190',
-    closeTotal: 'O/U 2.5', closeTotalOverJuice: '-110', closeTotalUnderJuice: '-110',
-    note: 'Priced wrong. The adjusted market made CHE the likeliest outcome at 42.3%, while BRE sat at just 32.5% \u2014 and BRE is what happened, 3-0. Total went over 2.5 on 3 goals; the three-way carried 6.0% hold.'
-  }),
-  Object.assign({}, fx(5, 'FUL', 'MUN'), {
-    date: fx(5, 'FUL', 'MUN').kickoffET.replace(/ \u00b7 .*$/, ''),
+  Object.assign({}, fx(7, 'LEE', 'MUN'), {
+    date: fx(7, 'LEE', 'MUN').kickoffET.replace(/ \u00b7 .*$/, ''),
     status: 'final', scoreHome: 1, scoreAway: 1,
-    closeHandiHome: 'FUL DNB', closeHandiHomeJuice: '+100', closeHandiAway: 'MUN DNB', closeHandiAwayJuice: '-120',
-    closeMlAway: '-105', closeMlDraw: '+290', closeMlHome: '+240',
-    closeTotal: 'O/U 2.75', closeTotalOverJuice: '-110', closeTotalUnderJuice: '-110',
-    note: 'The board\'s least-likely outcome landed. MUN carried the cleanest adjusted number at 48.9% after Shin margin removal and FUL sat at 27.4%, leaving the draw third at 23.7% \u2014 and 1-1 is what happened. Total stayed under 2.75 on 2 goals; the three-way carried 6.3% hold.'
+    closeHandiHome: 'LEE DNB', closeHandiHomeJuice: '-110', closeHandiAway: 'MUN DNB', closeHandiAwayJuice: '-110',
+    closeMlHome: '+135', closeMlDraw: '+250', closeMlAway: '+185',
+    closeTotal: 'O/U 2.5', closeTotalOverJuice: '-110', closeTotalUnderJuice: '-110',
+    note: 'The draw was the board\'s third read and the draw is what happened. Leeds and Manchester United finished 1-1 at Elland Road off a three-way that had neither side clear; the total stayed under 2.5 on two goals.'
   })
 ];
 
 const UPCOMING_GAMES = [
-  Object.assign({}, fx(7, 'EVE', 'CHE'), {
-    date: fx(7, 'EVE', 'CHE').kickoffET,
-    handiHome: 'EVE DNB', handiHomeJuice: '-110', handiAway: 'CHE DNB', handiAwayJuice: '-110',
-    total: 'O/U 2.5', totalOverJuice: '-110', totalUnderJuice: '-110'
+  Object.assign({}, fx(8, 'IPS', 'NFO'), {
+    date: fx(8, 'IPS', 'NFO').kickoffET,
+    handiHome: '', handiHomeJuice: '', handiAway: '', handiAwayJuice: '',
+    total: '', totalOverJuice: '', totalUnderJuice: ''
   }),
-  Object.assign({}, fx(7, 'MCI', 'IPS'), {
-    date: fx(7, 'MCI', 'IPS').kickoffET,
-    handiHome: 'MCI -1', handiHomeJuice: '-115', handiAway: 'IPS +1', handiAwayJuice: '-105',
-    total: 'O/U 3.5', totalOverJuice: '-115', totalUnderJuice: '-105'
+  Object.assign({}, fx(8, 'AVL', 'MCI'), {
+    date: fx(8, 'AVL', 'MCI').kickoffET,
+    handiHome: '', handiHomeJuice: '', handiAway: '', handiAwayJuice: '',
+    total: '', totalOverJuice: '', totalUnderJuice: ''
   }),
-  Object.assign({}, fx(7, 'FUL', 'HUL'), {
-    date: fx(7, 'FUL', 'HUL').kickoffET,
-    handiHome: 'FUL DNB', handiHomeJuice: '-110', handiAway: 'HUL DNB', handiAwayJuice: '-110',
-    total: 'O/U 2.5', totalOverJuice: '-110', totalUnderJuice: '-110'
+  Object.assign({}, fx(8, 'COV', 'FUL'), {
+    date: fx(8, 'COV', 'FUL').kickoffET,
+    handiHome: '', handiHomeJuice: '', handiAway: '', handiAwayJuice: '',
+    total: '', totalOverJuice: '', totalUnderJuice: ''
   }),
-  Object.assign({}, fx(7, 'BRE', 'LIV'), {
-    date: fx(7, 'BRE', 'LIV').kickoffET,
-    handiHome: 'BRE DNB', handiHomeJuice: '-110', handiAway: 'LIV DNB', handiAwayJuice: '-110',
-    total: 'O/U 2.5', totalOverJuice: '-110', totalUnderJuice: '-110'
+  Object.assign({}, fx(8, 'ARS', 'EVE'), {
+    date: fx(8, 'ARS', 'EVE').kickoffET,
+    handiHome: '', handiHomeJuice: '', handiAway: '', handiAwayJuice: '',
+    total: '', totalOverJuice: '', totalUnderJuice: ''
   }),
-  Object.assign({}, fx(7, 'NEW', 'AVL'), {
-    date: fx(7, 'NEW', 'AVL').kickoffET,
-    handiHome: 'NEW DNB', handiHomeJuice: '-110', handiAway: 'AVL DNB', handiAwayJuice: '-110',
-    total: 'O/U 2.5', totalOverJuice: '-110', totalUnderJuice: '-110'
+  Object.assign({}, fx(8, 'CHE', 'TOT'), {
+    date: fx(8, 'CHE', 'TOT').kickoffET,
+    handiHome: '', handiHomeJuice: '', handiAway: '', handiAwayJuice: '',
+    total: '', totalOverJuice: '', totalUnderJuice: ''
   }),
-  Object.assign({}, fx(7, 'BOU', 'SUN'), {
-    date: fx(7, 'BOU', 'SUN').kickoffET,
-    handiHome: 'BOU DNB', handiHomeJuice: '-110', handiAway: 'SUN DNB', handiAwayJuice: '-110',
-    total: 'O/U 2.5', totalOverJuice: '-110', totalUnderJuice: '-110'
+  Object.assign({}, fx(8, 'CRY', 'NEW'), {
+    date: fx(8, 'CRY', 'NEW').kickoffET,
+    handiHome: '', handiHomeJuice: '', handiAway: '', handiAwayJuice: '',
+    total: '', totalOverJuice: '', totalUnderJuice: ''
   }),
-  Object.assign({}, fx(7, 'BHA', 'CRY'), {
-    date: fx(7, 'BHA', 'CRY').kickoffET,
-    handiHome: 'BHA -1', handiHomeJuice: '-115', handiAway: 'CRY +1', handiAwayJuice: '-105',
-    total: 'O/U 2.5', totalOverJuice: '-110', totalUnderJuice: '-110'
+  Object.assign({}, fx(8, 'LIV', 'BHA'), {
+    date: fx(8, 'LIV', 'BHA').kickoffET,
+    handiHome: '', handiHomeJuice: '', handiAway: '', handiAwayJuice: '',
+    total: '', totalOverJuice: '', totalUnderJuice: ''
   }),
-  Object.assign({}, fx(7, 'LEE', 'MUN'), {
-    date: fx(7, 'LEE', 'MUN').kickoffET,
-    handiHome: 'LEE DNB', handiHomeJuice: '-110', handiAway: 'MUN DNB', handiAwayJuice: '-110',
-    total: 'O/U 2.5', totalOverJuice: '-110', totalUnderJuice: '-110'
+  Object.assign({}, fx(8, 'HUL', 'BRE'), {
+    date: fx(8, 'HUL', 'BRE').kickoffET,
+    handiHome: '', handiHomeJuice: '', handiAway: '', handiAwayJuice: '',
+    total: '', totalOverJuice: '', totalUnderJuice: ''
   }),
-  Object.assign({}, fx(7, 'NFO', 'ARS'), {
-    date: fx(7, 'NFO', 'ARS').kickoffET,
-    handiHome: 'NFO +1', handiHomeJuice: '-105', handiAway: 'ARS -1', handiAwayJuice: '-115',
-    total: 'O/U 2.5', totalOverJuice: '-110', totalUnderJuice: '-110'
+  Object.assign({}, fx(8, 'MUN', 'BOU'), {
+    date: fx(8, 'MUN', 'BOU').kickoffET,
+    handiHome: '', handiHomeJuice: '', handiAway: '', handiAwayJuice: '',
+    total: '', totalOverJuice: '', totalUnderJuice: ''
   }),
-  Object.assign({}, fx(7, 'TOT', 'COV'), {
-    date: fx(7, 'TOT', 'COV').kickoffET,
-    handiHome: 'TOT -1', handiHomeJuice: '-115', handiAway: 'COV +1', handiAwayJuice: '-105',
-    total: 'O/U 2.5', totalOverJuice: '-110', totalUnderJuice: '-110'
+  Object.assign({}, fx(8, 'SUN', 'LEE'), {
+    date: fx(8, 'SUN', 'LEE').kickoffET,
+    handiHome: '', handiHomeJuice: '', handiAway: '', handiAwayJuice: '',
+    total: '', totalOverJuice: '', totalUnderJuice: ''
   })
 ];
 
@@ -1277,15 +1280,15 @@ function buildUpcomingCard(g) {
     <div class="t-prob">${probHtml}</div>
     <div class="t-odds">
       <div class="t-odds-row"><span class="t-odds-chip neutral">${g.handiAway}</span></div>
-      <div class="t-odds-row"><span class="t-odds-chip neutral">${g.handiHome}</span></div>
+      <div class="t-odds-row"><span class="t-odds-chip neutral">${g.handiHome||'—'}</span></div>
     </div>
     <div class="t-odds">
       <div class="t-odds-row"><span class="t-odds-chip ${mlChip(g.mlAway)}">${fmtOdds(g.mlAway)}</span></div>
       <div class="t-odds-row"><span class="t-odds-chip ${mlChip(g.mlHome)}">${fmtOdds(g.mlHome)}</span></div>
     </div>
     <div class="t-odds">
-      <div class="t-odds-row"><span class="t-odds-chip total-o">O ${g.total.replace('O/U ','')}</span></div>
-      <div class="t-odds-row"><span class="t-odds-chip total-u">U ${g.total.replace('O/U ','')}</span></div>
+      <div class="t-odds-row"><span class="t-odds-chip total-o">${g.total?'O '+g.total.replace('O/U ',''):'—'}</span></div>
+      <div class="t-odds-row"><span class="t-odds-chip total-u">${g.total?'U '+g.total.replace('O/U ',''):'—'}</span></div>
     </div>
     <div class="t-edge">${edgeHtml}</div>
   `;
