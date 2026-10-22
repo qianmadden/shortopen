@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="format-detection" content="telephone=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="description" content="Short Open NBA Draft desk: how the 2026 rookie class is playing, Rookie of the Year odds, and the 2027 mock draft with a lottery simulator."/>
+<title>NBA Draft Market Intelligence — shortopen</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg?v=20260810"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=20260810"/>
+<link rel="shortcut icon" href="favicon.ico?v=20260810"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20260810"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Mono:wght@400;500&amp;display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/></noscript>
+<style id="so-nba-draft-core-20261021">
+:root{
+  --bg:#05080d;--panel:rgba(12,15,22,.88);--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.13);
+  --text:#f0ece4;--muted:#7a8ba0;--muted2:#9fb0c4;--dim:#536277;
+  --gold:#f4b942;--green:#22c55e;--red:#ef4444;--blue:#57a7ff;--orange:#e69143;
+  --mono:'DM Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{color-scheme:dark;-webkit-text-size-adjust:100%}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{min-height:100vh;overflow-x:hidden;background:
+  radial-gradient(900px 520px at 6% -4%,rgba(230,145,67,.10),transparent 64%),
+  radial-gradient(760px 460px at 96% 6%,rgba(34,197,94,.06),transparent 68%),
+  linear-gradient(180deg,#05080d 0%,#070b12 50%,#05080d 100%)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse at 50% 0%,#000 20%,transparent 75%)}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+.glass{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:26px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.mono{font-family:var(--mono)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+main{position:relative;z-index:1}
+
+/* ROTY sticky strip */
+.roty-strip{position:sticky;top:0;z-index:50;display:flex;align-items:center;height:40px;padding:0 16px;border-bottom:1px solid rgba(244,185,66,.14);background:rgba(5,8,13,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);overflow:hidden}
+.roty-strip-lbl{font-size:.48rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-right:18px;white-space:nowrap;text-shadow:0 0 12px rgba(244,185,66,.5);flex-shrink:0}
+.roty-items{display:flex;align-items:center;overflow-x:auto;scrollbar-width:none;min-width:0}
+.roty-items::-webkit-scrollbar{display:none}
+.roty-item{display:flex;align-items:center;gap:8px;padding:0 15px;border-right:1px solid rgba(255,255,255,.07);white-space:nowrap;flex-shrink:0}
+.roty-rank{font:900 .5rem var(--mono);width:16px}
+.roty-name{font-size:.66rem;font-weight:700;color:#d4dce8}
+.roty-pos{font:700 .46rem var(--mono);color:#7a8ba0;background:rgba(255,255,255,.05);border-radius:3px;padding:1px 5px}
+.roty-odds{font:900 .72rem var(--mono)}
+.roty-imp{font:800 .54rem var(--mono);color:#7f8fa3}
+
+/* ticker */
+.ticker{border-bottom:1px solid rgba(100,199,255,.12);background:linear-gradient(90deg,rgba(8,24,38,.75),rgba(3,7,12,.72),rgba(8,24,38,.75));overflow:hidden}
+.marquee{display:flex;width:max-content;white-space:nowrap;padding:8px 0;font-size:.66rem;font-weight:600;text-transform:uppercase;letter-spacing:.24em;color:#6f8096;animation:marquee 46s linear infinite}
+.marquee span{margin:0 28px}.marquee .hl{color:#68c8ff}.marquee .gd{color:var(--gold)}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* hero */
+.hero{position:relative;padding:44px 40px 36px;border-bottom:1px solid var(--line);overflow:hidden}
+.hero::before{content:"";position:absolute;width:620px;height:620px;left:-180px;top:-260px;border-radius:50%;background:radial-gradient(circle,rgba(230,145,67,.16),transparent 66%);pointer-events:none}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;max-width:1440px;margin:0 auto}
+.hero-pill{display:inline-flex;align-items:center;gap:10px;padding:8px 16px;border-radius:999px;border:1px solid rgba(244,185,66,.22);background:rgba(244,185,66,.08);font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:#f6cf7a}
+.hero-pill i{width:7px;height:7px;border-radius:50%;background:var(--orange);box-shadow:0 0 12px var(--orange)}
+.hero h2{margin:20px 0 0;font-size:clamp(2.2rem,4.4vw,3.6rem);font-weight:900;line-height:.95;letter-spacing:-.035em}
+.hero h2 span{display:block;color:var(--gold)}
+.hero-copy{margin-top:22px;max-width:620px;font-size:1.02rem;line-height:1.75;color:#93a1b2}
+.hero-cta{margin-top:22px;display:inline-flex;align-items:center;gap:14px;padding:12px 18px;border-radius:18px;border:1px solid rgba(244,185,66,.22);background:rgba(255,255,255,.03);cursor:pointer;transition:transform .2s,border-color .2s}
+.hero-cta:hover{transform:translateY(-2px);border-color:rgba(244,185,66,.45)}
+.hero-cta b{display:block;font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.hero-cta small{display:block;margin-top:2px;font-size:.72rem;color:#6b8097}
+.hero-cta i{width:8px;height:8px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.quickstats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:28px;padding-top:18px;border-top:1px solid rgba(244,185,66,.14)}
+.qs{position:relative;padding:12px 14px;border:1px solid rgba(244,185,66,.12);border-radius:16px;background:rgba(244,185,66,.03);min-width:0}
+.qs::after{content:"";position:absolute;top:12px;right:12px;width:6px;height:6px;border-radius:50%;background:var(--gold);opacity:.7}
+.qs.g::after{background:var(--green)}
+.qs-l{font-size:.5rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#5a6b80}
+.qs-v{margin-top:5px;font-size:1.45rem;font-weight:900;letter-spacing:-.03em;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qs.g .qs-v{color:var(--green);text-shadow:0 0 16px rgba(34,197,94,.3)}
+.qs.y .qs-v{color:var(--gold);text-shadow:0 0 16px rgba(244,185,66,.3)}
+.qs-s{margin-top:4px;font-size:.62rem;color:#5f6f84;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.lead-panel{position:relative;border-radius:28px;border:1px solid rgba(244,185,66,.16);background:linear-gradient(180deg,rgba(13,17,26,.94),rgba(6,9,14,.97));box-shadow:0 30px 70px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06);overflow:hidden}
+.lead-panel::before{content:"";position:absolute;inset:-30%;background:radial-gradient(ellipse at 70% 0%,rgba(244,185,66,.12),transparent 60%);pointer-events:none}
+.lead-head{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px 14px;border-bottom:1px solid rgba(255,255,255,.07)}
+.eyebrow{font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#5a6b80}
+.lead-title{margin-top:3px;font-size:1.2rem;font-weight:900}
+.live-badge{display:flex;align-items:center;gap:7px;border-radius:999px;border:1px solid rgba(34,197,94,.3);background:rgba(34,197,94,.12);padding:6px 12px;font-size:.58rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#34d399;white-space:nowrap}
+.live-badge i{width:6px;height:6px;border-radius:50%;background:#34d399;animation:pulse 1.6s infinite}
+.lead-list{position:relative;padding:6px 8px 10px}
+.lead-row{display:grid;grid-template-columns:26px minmax(0,1fr) 92px 58px 48px;align-items:center;gap:10px;padding:9px 10px;border-radius:14px;transition:background .2s}
+.lead-row:hover{background:rgba(255,255,255,.03)}
+.lead-rank{font:900 .9rem var(--mono);color:var(--accent,#f4b942);text-align:center}
+.lead-name{font-size:.84rem;font-weight:800;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lead-meta{margin-top:1px;font-size:.6rem;color:#65758a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lead-bar{height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
+.lead-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--green))}
+.lead-odds{font:800 .8rem var(--mono);text-align:right;color:var(--gold)}
+.lead-imp{font:800 .62rem var(--mono);text-align:right;color:#8fa2b8}
+.lead-foot{position:relative;display:flex;justify-content:space-between;gap:10px;padding:12px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:.6rem;color:#5a6b80}
+.lead-foot b{color:#9fb0c4;font-weight:700}
+
+/* layout */
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr) 310px;gap:22px;padding:34px 40px;max-width:1520px;margin:0 auto}
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.nav-card{padding:18px}
+.nav-title{font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:#5a6b80}
+.nav-list{display:flex;flex-direction:column;gap:7px;margin-top:14px}
+.nav-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;padding:12px 14px;border-radius:13px;border:1px solid transparent;background:rgba(255,255,255,.045);color:#c3ccd6;font-size:.82rem;font-weight:600;text-align:left;cursor:pointer;transition:background .18s,border-color .18s,color .18s}
+.nav-btn:hover{background:rgba(244,185,66,.08);color:#fff}
+.nav-btn.on{border-color:rgba(244,185,66,.32);background:rgba(244,185,66,.1);color:#fff}
+.nav-btn span{color:#5d6d80}
+.nav-btn .tag{font-size:.5rem;font-weight:800;letter-spacing:.1em;color:#22d97e}
+.filter-card{padding:16px}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.pill{padding:6px 11px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#93a1b2;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.pill.on{border-color:rgba(244,185,66,.35);color:#f6cf7a;background:rgba(244,185,66,.08)}
+.content{min-width:0}
+.panel{display:none}
+.panel.on{display:block;animation:fadeUp .35s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.sec-head{padding:16px 18px;margin-bottom:16px}
+.sec-kicker{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:#5a6b80}
+.sec-title{margin-top:4px;font-size:1.5rem;font-weight:900;letter-spacing:-.02em}
+.sec-copy{margin-top:6px;max-width:720px;font-size:.78rem;line-height:1.7;color:#8b9aac}
+.sec-src{margin-top:8px;font-size:.6rem;color:#536277;line-height:1.6}
+
+/* liquid board + cards */
+.board{position:relative;margin-bottom:20px;padding:14px;border-radius:20px;border:1px solid rgba(255,255,255,.05);background:linear-gradient(180deg,rgba(255,255,255,.016),rgba(255,255,255,.008))}
+.board-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:0 2px 11px}
+.board-title{font-size:.69rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+.board-sub{font-size:.58rem;letter-spacing:.04em;color:#59687c}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.card{position:relative;min-width:0;overflow:hidden;cursor:pointer;border-radius:16px;background:rgba(12,13,16,.88);box-shadow:0 10px 24px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.05);transition:transform .28s cubic-bezier(.22,.85,.3,1),box-shadow .28s}
+.card::before{content:"";position:absolute;left:0;top:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent,#f4b942),transparent 80%)}
+.card:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08)}
+.card-mark{position:absolute;right:-14px;bottom:-14px;opacity:.07;pointer-events:none;transform:rotate(-8deg)}
+.card-body{position:relative;padding:14px 15px 12px}
+.card-top{display:flex;align-items:center;gap:6px;min-width:0}
+.dot{flex-shrink:0;width:6px;height:6px;border-radius:50%;background:var(--accent,#f4b942);box-shadow:0 0 8px var(--accent,#f4b942)}
+.kicker{flex:1 1 auto;min-width:0;font-size:.5rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7a8ba0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.signal{flex-shrink:0;font-size:.5rem;font-weight:800;white-space:nowrap}
+.signal.up{color:#22c55e}.signal.dn{color:#ef4444}.signal.flat{color:#9dafc2}.signal.watch{color:#f4b942}
+.card-name{margin-top:10px;font-size:.98rem;font-weight:900;letter-spacing:-.02em;line-height:1.15}
+.card-team{margin-top:4px;font-size:.54rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#8695ab}
+.card-line{margin-top:9px;font-size:.66rem;line-height:1.45;color:#c9d3e0;min-height:2.9em}
+.card-foot{display:flex;align-items:baseline;justify-content:space-between;gap:6px;margin-top:10px;padding-top:9px;border-top:1px solid rgba(255,255,255,.06)}
+.foot-l{font-size:.46rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#63738a}
+.foot-v{font:700 .95rem var(--mono);color:#f4f0e8}
+.foot-v small{margin-left:2px;font-size:.55rem;color:#63738a}
+.foot-odds{font:800 .64rem var(--mono);color:var(--gold)}
+.card-foot>span{white-space:nowrap}
+.chip{display:inline-flex;align-items:center;padding:2px 7px;border-radius:999px;border:1px solid rgba(255,255,255,.1);font-size:.5rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#9fb0c4;background:rgba(255,255,255,.03)}
+.chip.start{color:#4ade80;border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.07)}
+.chip.inj{color:#f87171;border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.07)}
+.chip.rot{color:#68c8ff;border-color:rgba(104,200,255,.28);background:rgba(104,200,255,.06)}
+.chip.dev{color:#c4b5fd;border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.07)}
+.expand{max-height:0;overflow:hidden;opacity:0;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s,margin-top .4s;margin-top:0}
+.card.open .expand{max-height:520px;opacity:1;margin-top:10px}
+.expand-inner{padding-top:10px;border-top:1px solid rgba(255,255,255,.07)}
+.x-row{display:flex;justify-content:space-between;gap:8px;margin-bottom:5px;font-size:.56rem;color:#7a8ba0}
+.x-row b{color:#dfe6ee;font-weight:700;text-align:right}
+.x-note{margin:7px 0 0;font-size:.62rem;line-height:1.6;color:#9fb0c4}
+.x-flag{margin-top:7px;font-size:.58rem;font-weight:600;color:#f4a45c}
+.hint{margin-top:9px;display:flex;justify-content:center;gap:4px;font-size:.44rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#5d7088}
+.card.open .hint{color:#c9d3e0}
+
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:20px}
+.tile{padding:14px 15px;border-radius:18px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(160deg,rgba(255,255,255,.035),rgba(255,255,255,.01))}
+.tile b{display:block;font-size:.52rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.tile strong{display:block;margin-top:7px;font-size:.95rem;font-weight:850;line-height:1.25}
+.tile p{margin:6px 0 0;font-size:.62rem;line-height:1.55;color:#7f8fa3}
+
+/* ROTY table */
+.roty-table{width:100%;border-collapse:separate;border-spacing:0 6px}
+.roty-table th{padding:0 10px 4px;font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#59687c;text-align:left}
+.roty-table th.r,.roty-table td.r{text-align:right}
+.roty-table td{padding:11px 10px;background:rgba(12,13,16,.86);font-size:.74rem;border-top:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04)}
+.roty-table td:first-child{border-left:3px solid var(--accent,#f4b942);border-radius:12px 0 0 12px}
+.roty-table td:last-child{border-radius:0 12px 12px 0}
+.roty-table .nm{font-weight:800}
+.roty-table .sm{display:block;margin-top:2px;font-size:.58rem;color:#6b7b90}
+.roty-table .odds{font:800 .8rem var(--mono);color:var(--gold)}
+.roty-table .pct{font:700 .74rem var(--mono)}
+.mini-bar{width:100%;min-width:70px;height:7px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
+.mini-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--green))}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.note-box{margin-top:12px;padding:12px 14px;border-radius:14px;border:1px dashed rgba(255,255,255,.1);font-size:.64rem;line-height:1.65;color:#7f8fa3}
+
+/* mock */
+.mock-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.seg{display:inline-flex;padding:3px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03)}
+.seg button{padding:7px 13px;border:0;border-radius:9px;background:transparent;color:#8b9aac;font-size:.66rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.seg button.on{background:rgba(244,185,66,.12);color:#f6cf7a}
+.sel{padding:8px 12px;border-radius:11px;border:1px solid rgba(255,255,255,.1);background:#0b0f16;color:#c3ccd6;font-size:.7rem;font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:12px;border:1px solid rgba(244,185,66,.35);background:rgba(244,185,66,.1);color:#f6cf7a;font-size:.66rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:transform .15s,background .15s}
+.btn:hover{transform:translateY(-1px);background:rgba(244,185,66,.16)}
+.btn.ghost{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.03);color:#9fb0c4}
+.lotto-msg{font-size:.66rem;color:#8b9aac}
+.lotto-msg b{color:#f6cf7a}
+.mock-card .pk{font:900 1.35rem var(--mono);color:var(--accent,#f4b942);line-height:1}
+.mock-card .mv{font:800 .52rem var(--mono);margin-left:6px;vertical-align:middle}
+.mv.up{color:#22c55e}.mv.dn{color:#ef4444}
+.mock-card.mine{box-shadow:0 0 0 1px rgba(244,185,66,.55),0 16px 34px rgba(0,0,0,.5)}
+.mock-card.dim{opacity:.38}
+.stat-strip{display:flex;gap:10px;margin-top:8px;font:700 .62rem var(--mono);color:#c9d3e0}
+.stat-strip span small{display:block;font:700 .42rem Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#5d6d80}
+.r2-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.r2-row{display:grid;grid-template-columns:30px 46px minmax(0,1fr) auto;align-items:center;gap:8px;padding:9px 11px;border-radius:12px;background:rgba(12,13,16,.86);border-left:3px solid var(--accent,#f4b942);font-size:.7rem}
+.r2-row .n{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r2-row .s{font-size:.56rem;color:#6b7b90;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r2-row .p{font:900 .78rem var(--mono);color:#8fa2b8}
+.r2-row .t{font:800 .62rem var(--mono)}
+
+/* draft board table */
+.dtable{width:100%;border-collapse:collapse;font-size:.7rem}
+.dtable th{position:sticky;top:0;background:#0a0e15;padding:9px 8px;font-size:.5rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#59687c;text-align:left;border-bottom:1px solid var(--line)}
+.dtable td{padding:9px 8px;border-bottom:1px solid rgba(255,255,255,.045);white-space:nowrap}
+.dtable tr:hover td{background:rgba(255,255,255,.025)}
+.dtable .pk{font:800 .72rem var(--mono);color:#8fa2b8}
+.dtable .tm{font:800 .64rem var(--mono)}
+.dtable .via{font-size:.56rem;color:#5d6d80}
+.dtable .nm{font-weight:700}
+
+/* right panel feed */
+.feed{overflow:hidden}
+.feed-head{display:flex;justify-content:space-between;align-items:center;padding:18px 18px 14px;border-bottom:1px solid var(--line)}
+.feed-title{margin-top:3px;font-size:1.4rem;font-weight:900}
+.feed-live{width:10px;height:10px;border-radius:50%;background:#34d399;animation:pulse 1.6s infinite}
+.feed-item{display:grid;grid-template-columns:minmax(0,1fr) 62px;gap:10px;align-items:center;padding:13px 16px;border-bottom:1px solid rgba(255,255,255,.05)}
+.feed-item:last-child{border-bottom:0}
+.feed-item b{display:block;font-size:.84rem;line-height:1.15}
+.feed-item .who{display:block;margin-top:3px;font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:#64748b}
+.feed-item p{margin:6px 0 0;font-size:.7rem;line-height:1.45;color:#aeb9c8}
+.trend{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border-radius:10px;font-size:.46rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.trend svg{width:20px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.trend.bullish{color:#4ade80;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22)}
+.trend.bearish{color:#f87171;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22)}
+.trend.watch{color:#f4b942;background:rgba(244,185,66,.08);border:1px solid rgba(244,185,66,.22)}
+.lotto-card{padding:18px}
+.lotto-row{display:grid;grid-template-columns:22px 36px minmax(0,1fr) 44px;align-items:center;gap:8px;margin-top:7px;font-size:.62rem}
+.lotto-row .sl{font:800 .64rem var(--mono);color:#7a8ba0}
+.lotto-row .tm{font:800 .62rem var(--mono)}
+.lotto-row .pc{font:800 .62rem var(--mono);text-align:right;color:#c9d3e0}
+
+/* footer */
+footer.so-footer{display:block;width:100%;margin:8px 0 0;padding:22px 20px 30px;border-top:1px solid rgba(255,255,255,.09);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;position:relative;z-index:1}
+footer.so-footer .footer-top{max-width:1440px;margin:0 auto 10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+footer.so-footer .footer-logo{font-size:16px;font-weight:800;color:#fff}
+footer.so-footer .footer-logo span{color:#f4b942}
+footer.so-footer .footer-copy{font-size:11.5px;color:#6f7f97;margin:0}
+footer.so-footer .footer-disclaimer{max-width:1440px;margin:0 auto;font-size:10.5px;color:#6f7f97;line-height:1.6}
+
+/* responsive */
+
+/* ── sleek pass (Oct 21 pm) ── */
+.hero h2 span{background:linear-gradient(100deg,#f4b942 20%,#ffe9a8 40%,#f4b942 60%,#ff7a1a 95%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:heroTextSheen 9s linear infinite}
+@keyframes heroTextSheen{to{background-position:220% 0}}
+.lead-bar i,.mini-bar i{background:linear-gradient(90deg,#f4b942,#ff8a2a)}
+.board{padding:0;border:0;background:none}
+.board-head{padding:0 2px 12px}
+.grid{gap:12px;align-items:start}
+.card{border-radius:20px;border:1px solid rgba(255,255,255,.06);background:radial-gradient(140% 85% at 100% 100%,color-mix(in srgb,var(--accent) 17%,transparent),transparent 58%),linear-gradient(180deg,#0f121a,#090b10);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);transition:transform .3s cubic-bezier(.22,.85,.3,1),border-color .3s}
+.card::before{left:18px;right:18px;top:0;height:1px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent) 70%,transparent),transparent)}
+.card:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent) 38%,transparent);box-shadow:0 18px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.07)}
+.card-mark{right:-26px;bottom:-30px;opacity:.14;transform:rotate(-10deg);-webkit-mask-image:linear-gradient(315deg,#000 35%,transparent 88%);mask-image:linear-gradient(315deg,#000 35%,transparent 88%);transition:transform .5s ease,opacity .4s}
+.card:hover .card-mark{transform:rotate(-6deg) scale(1.05);opacity:.2}
+.card-body{padding:16px 16px 18px}
+.c-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.c-pick{font:300 1.85rem var(--mono);line-height:.9;letter-spacing:-.06em;color:var(--accent)}
+.c-tag{display:flex;flex-direction:column;align-items:flex-end;gap:5px;min-width:0}
+.c-tag b{font:800 .58rem var(--mono);letter-spacing:.08em;color:#c9d3e0;white-space:nowrap}
+.c-trend{font-size:.5rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.c-trend.up{color:#4ade80}.c-trend.dn{color:#f87171}.c-trend.flat{color:#8695ab}.c-trend.watch{color:#fbbf24}
+.c-name{margin-top:14px;font-size:1.08rem;font-weight:850;letter-spacing:-.03em;line-height:1.12;color:#f6f3ee}
+.c-sub{margin-top:4px;font-size:.58rem;color:#6f7f93;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-status{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:.58rem;font-weight:700;color:#aab6c4}
+.c-status i{width:6px;height:6px;border-radius:50%;background:var(--sc,#8695ab);box-shadow:0 0 8px var(--sc,#8695ab)}
+.c-stats{position:relative;display:grid;grid-template-columns:repeat(3,1fr);margin-top:12px;padding:9px 0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+.c-stats div{text-align:center}
+.c-stats div+div{border-left:1px solid rgba(255,255,255,.06)}
+.c-stats b{display:block;font:700 1.05rem var(--mono);color:#f4f0e8;letter-spacing:-.03em}
+.c-stats small{display:block;margin-top:2px;font-size:.42rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#5f6f84}
+.c-cap{margin-top:7px;font-size:.5rem;color:#5f6f84;letter-spacing:.04em}
+.c-text{margin-top:12px;font-size:.64rem;line-height:1.5;color:#b8c3cf}
+.c-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px}
+.c-form{display:flex;align-items:center;gap:7px;font-size:.48rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#5f6f84}
+.c-form b{font:800 .8rem var(--mono);letter-spacing:0;color:var(--fc)}
+.c-odds{font:800 .64rem var(--mono);color:#f4b942;white-space:nowrap}
+.c-odds.none{color:#4f5e70;font-weight:600}
+.c-bar{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.04)}
+.c-bar i{display:block;height:100%;background:linear-gradient(90deg,transparent,var(--fc));box-shadow:0 0 12px var(--fc)}
+.card .hint{margin-top:10px;justify-content:flex-start;color:#4f5e70}
+.card.up{border-color:rgba(34,197,94,.18)}.card.up .c-pick{color:#4ade80}
+.card.dn{border-color:rgba(239,68,68,.16)}.card.dn .c-pick{color:#f87171}
+.mock-card .c-pick{font-weight:400}
+.mock-card .c-tag b{color:var(--accent)}
+.mock-card.mine{border-color:rgba(244,185,66,.55);box-shadow:0 0 0 1px rgba(244,185,66,.35)}
+.mv{font:800 .5rem var(--mono)}
+
+/* ── Oct 21 pm: movers rows, ROTY movement, ledger, toggles ── */
+.rm{margin-bottom:20px;border-radius:20px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(180deg,rgba(12,15,21,.94),rgba(6,8,12,.97));overflow:hidden}
+.rm-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;padding:16px 18px 12px;border-bottom:1px solid rgba(255,255,255,.06)}
+.rm-kicker{font-size:.55rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#7a8ba0}
+.rm-title{margin-top:4px;font-size:1.15rem;font-weight:950;letter-spacing:-.03em;color:#f4f0e8}
+.sr-cols{display:grid;grid-template-columns:1fr 1fr}
+.sr-col{min-width:0}.sr-col+.sr-col{border-left:1px solid rgba(255,255,255,.06)}
+.sr-col-head{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:10px 18px;font-size:.56rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;background:rgba(10,13,18,.97);border-bottom:1px solid rgba(255,255,255,.06)}
+.sr-col-head b{font:800 .56rem var(--mono);padding:1px 6px;border-radius:6px;background:rgba(255,255,255,.06);color:#9fb0c4}
+.sr-col.up .sr-col-head{color:#4ade80}.sr-col.dn .sr-col-head{color:#f87171}
+.sr-scroll{max-height:440px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.14) transparent;-webkit-mask-image:linear-gradient(180deg,#000 88%,transparent);mask-image:linear-gradient(180deg,#000 88%,transparent)}
+.rm-row{position:relative;display:grid;grid-template-columns:26px 40px minmax(0,1fr) 30px;gap:12px;align-items:center;padding:13px 18px;border-bottom:1px solid rgba(255,255,255,.045);cursor:pointer;transition:background .18s}
+.rm-row:hover{background:rgba(255,255,255,.022)}
+.rm-n{font:700 .68rem var(--mono);color:#4f5f72;text-align:center}
+.tm-chip{display:grid;place-items:center;height:24px;border-radius:7px;font:800 .54rem var(--mono);color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);border:1px solid color-mix(in srgb,var(--accent) 32%,transparent)}
+.rm-name{font-size:.86rem;font-weight:850;color:#f4f0e8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rm-meta{margin-top:2px;font-size:.52rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5f6f84}
+.rm-line{margin-top:6px;font:600 .62rem var(--mono);line-height:1.4}
+.sr-col.up .rm-line{color:#86efac}.sr-col.dn .rm-line{color:#fca5a5}
+.rm-dir{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;font-size:.62rem;font-weight:900}
+.sr-col.up .rm-dir{color:#22c55e;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.22)}
+.sr-col.dn .rm-dir{color:#ef4444;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.22)}
+.rm-copy{grid-column:3/-1;max-height:0;overflow:hidden;opacity:0;margin:0;font-size:.64rem!important;line-height:1.55!important;color:#9fb0c4;transition:max-height .35s ease,opacity .25s}
+.rm-row.open .rm-copy{max-height:220px;opacity:1}
+.rm-foot{padding:10px 18px;font-size:.54rem;color:#56667a}
+.mv-pill{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:7px;font:800 .62rem var(--mono)}
+.mv-pill.up{color:#4ade80;background:rgba(34,197,94,.1)}.mv-pill.dn{color:#f87171;background:rgba(239,68,68,.1)}.mv-pill.nil{color:#4f5e70}
+.gm{font:700 .7rem var(--mono);color:#c9d3e0}.gm.nil{color:#4f5e70}
+.sortbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:0 2px 12px}
+.sortbar .board-title{margin:0}
+.lg{border-radius:18px;border:1px solid rgba(255,255,255,.07);background:linear-gradient(180deg,rgba(12,15,21,.94),rgba(6,8,12,.97));overflow:hidden}
+.lg-row{display:grid;grid-template-columns:34px 46px minmax(0,1.1fr) minmax(0,1.2fr) 120px 86px;gap:12px;align-items:center;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.045);cursor:pointer}
+.lg-row:last-child{border-bottom:0}.lg-row:hover{background:rgba(255,255,255,.022)}
+.lg-pk{font:300 1.2rem var(--mono);color:var(--accent);text-align:center;letter-spacing:-.04em}
+.lg-st{display:flex;align-items:center;gap:6px;margin-top:3px;font-size:.54rem;font-weight:700;color:#8a98a8}
+.lg-st i{width:6px;height:6px;border-radius:50%;background:var(--sc)}
+.lg-line{font:600 .6rem var(--mono);color:#b8c3cf;line-height:1.45}
+.lg-form{display:flex;align-items:center;gap:8px}
+.lg-form .bar{flex:1;height:6px;border-radius:9px;background:rgba(255,255,255,.06);overflow:hidden}
+.lg-form .bar i{display:block;height:100%;border-radius:inherit;background:var(--fc)}
+.lg-form b{font:800 .76rem var(--mono);color:var(--fc);width:22px;text-align:right}
+.lg-odds{font:800 .64rem var(--mono);color:#f4b942;text-align:right;white-space:nowrap}.lg-odds.none{color:#4f5e70;font-weight:600}
+.lg-more{grid-column:3/-1;max-height:0;overflow:hidden;opacity:0;transition:max-height .35s,opacity .25s}
+.lg-row.open .lg-more{max-height:260px;opacity:1}
+.lg-more p{margin:4px 0 0;font-size:.64rem!important;line-height:1.55!important;color:#9fb0c4}
+.r1-list{display:grid;grid-template-columns:1fr;gap:6px}
+.r1-list .r2-row{grid-template-columns:30px 54px minmax(0,1fr) auto;padding:11px 14px}
+.r1-list .st{font:700 .62rem var(--mono);color:#c9d3e0;white-space:nowrap}
+.r1-list .mvx{font:800 .56rem var(--mono)}
+.board-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 12px}
+@media(max-width:860px){.sr-cols{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}.sr-cols::-webkit-scrollbar{display:none}.sr-col{flex:0 0 88%;scroll-snap-align:start}.rm-row{padding:12px 14px}
+ .lg-row{grid-template-columns:30px 42px minmax(0,1fr) 80px;gap:9px;padding:11px 12px}.lg-line{grid-column:3/-1;grid-row:2}.lg-odds{display:none}.lg-more{grid-column:1/-1}
+ .r1-list .r2-row{grid-template-columns:26px 44px minmax(0,1fr)}.r1-list .st{grid-column:3;font-size:.56rem}}
+
+@media(max-width:1280px){.layout{grid-template-columns:220px minmax(0,1fr)}.layout>.rail{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:1100px){.hero-grid{grid-template-columns:1fr}.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:860px){
+  .hero{padding:26px 16px 22px}.layout{grid-template-columns:minmax(0,1fr);padding:18px 16px;gap:14px}
+  .side{gap:10px}.nav-card{padding:12px}.nav-title{display:none}
+  .nav-list{flex-direction:row;overflow-x:auto;margin-top:0;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .nav-list::-webkit-scrollbar{display:none}
+  .nav-btn{flex:0 0 auto;width:auto;padding:10px 13px;font-size:.74rem;white-space:nowrap}
+  .nav-btn span.arr{display:none}
+  .layout>.rail{grid-template-columns:1fr}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .r2-list{grid-template-columns:1fr}
+  .quickstats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:520px){
+  .grid{grid-template-columns:1fr}.tiles{grid-template-columns:1fr}
+  .lead-row{grid-template-columns:22px minmax(0,1fr) 54px 44px;gap:8px}.lead-row .lead-bar{display:none}
+  .hero h2{font-size:2.15rem}.hero-copy{font-size:.86rem;line-height:1.65}
+  .qs-v{font-size:1.1rem}
+  .roty-strip{height:36px;padding:0 12px}.roty-strip-lbl{font-size:.42rem;margin-right:10px}
+  .roty-table .hide-sm,.dtable .hide-sm{display:none}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="roty-strip" id="rotyStrip"><span class="roty-strip-lbl">ROTY Board</span><div class="roty-items" id="rotyItems"></div></div>
+<main>
+<div class="ticker" aria-hidden="true"><div class="marquee" id="marquee"></div></div>
+
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-pill"><i></i>NBA Draft Intelligence Terminal</div>
+      <h2>NBA Draft<span>Rookie Market Intelligence</span></h2>
+      <p class="hero-copy" id="heroCopy"></p>
+      <div class="hero-cta" role="button" tabindex="0" onclick="go('mock')" onkeydown="if(event.key==='Enter')go('mock')"><i></i><div><b>2027 Mock + Lottery Sim</b><small>Projected order · run the lottery · track your team</small></div><span style="color:#f4b942">&rarr;</span></div>
+      <div class="quickstats" id="quickstats"></div>
+    </div>
+    <div class="lead-panel">
+      <div class="lead-head"><div><div class="eyebrow">2026-27 Rookie of the Year</div><div class="lead-title">ROTY Market Board</div></div><div class="live-badge"><i></i><span id="leadBadge"></span></div></div>
+      <div class="lead-list" id="leadList"></div>
+      <div class="lead-foot"><span id="leadFoot"></span><b id="leadCount"></b></div>
+    </div>
+  </div>
+</section>
+
+<section class="layout">
+  <aside class="side">
+    <div class="glass nav-card">
+      <div class="nav-title">Navigation</div>
+      <div class="nav-list" role="tablist" aria-label="NBA draft sections">
+        <button class="nav-btn on" data-sec="tracker" onclick="go('tracker')">Rookie Tracker <span class="arr">&rarr;</span></button>
+        <button class="nav-btn" data-sec="roty" onclick="go('roty')">ROTY Market <span class="arr">&rarr;</span></button>
+        <button class="nav-btn" data-sec="surprises" onclick="go('surprises')">Surprises &amp; Fades <span class="arr">&rarr;</span></button>
+        <button class="nav-btn" data-sec="mock" onclick="go('mock')">2027 Mock Draft <span class="tag">SIM</span></button>
+        <button class="nav-btn" data-sec="board" onclick="go('board')">2026 Draft Board <span class="arr">&rarr;</span></button>
+      </div>
+    </div>
+    <div class="glass filter-card" id="filterCard">
+      <div class="nav-title" style="display:block">Position Filter</div>
+      <div class="pills" id="posPills"></div>
+    </div>
+  </aside>
+
+  <div class="content">
+    <!-- TRACKER -->
+    <div class="panel on" id="sec-tracker">
+      <div class="glass sec-head"><div class="sec-kicker">2026 NBA Draft · Class Intel</div><div class="sec-title">Rookie Tracker</div><p class="sec-copy" id="trackerCopy"></p><div class="sec-src" id="trackerSrc"></div></div>
+      <div class="tiles" id="pulseTiles"></div>
+      <div class="board"><div class="sortbar"><div class="board-head" style="padding:0"><div class="board-title">2026 Lottery &middot; Performance Tracker</div><div class="board-sub" id="trackerSub"></div></div><div class="seg" id="sortSeg"><button class="on" data-s="pick">By pick</button><button data-s="form">By form</button><button data-s="odds">By odds</button></div></div><div class="grid" id="trackerGrid"></div></div>
+      <div class="board" id="laterBoardWrap"><div class="board-head"><div class="board-title">Beyond the Lottery</div><div class="board-sub">Picks 15+ with a role or a ROTY price &middot; tap a row for notes</div></div><div class="lg" id="laterGrid"></div></div>
+    </div>
+
+    <!-- ROTY -->
+    <div class="panel" id="sec-roty">
+      <div class="glass sec-head"><div class="sec-kicker">2026-27 Award Market</div><div class="sec-title">Rookie of the Year Odds</div><p class="sec-copy">Every rookie with a posted price, converted to implied probability. The no-vig column rescales the board to 100% so the shares compare cleanly.</p><div class="sec-src" id="rotySrc"></div></div>
+      <div class="board"><div class="table-wrap"><table class="roty-table"><thead><tr><th>Rookie</th><th class="hide-sm">Pick</th><th class="r">Odds</th><th class="r">Implied</th><th class="r hide-sm">Open</th><th class="r">Since open</th><th class="r hide-sm">GM vote</th><th class="hide-sm" style="width:16%">Share</th></tr></thead><tbody id="rotyBody"></tbody></table></div>
+      <div class="note-box" id="rotyNote"></div></div>
+    </div>
+
+    <!-- SURPRISES -->
+    <div class="panel" id="sec-surprises">
+      <div class="glass sec-head"><div class="sec-kicker">Camp &amp; Preseason Read</div><div class="sec-title">Surprises &amp; Fades</div><p class="sec-copy">Who outplayed the draft slot in camp and the preseason, and who has ground to make up. Small samples — these are opening reads, not verdicts.</p><div class="sec-src" id="surpriseSrc"></div></div>
+      <div id="srPanel"></div>
+    </div>
+
+    <!-- MOCK -->
+    <div class="panel" id="sec-mock">
+      <div class="glass sec-head"><div class="sec-kicker">2027 NBA Draft</div><div class="sec-title">Mock Draft &amp; Lottery Simulator</div><p class="sec-copy">The current 2027 mock, picks via trades shown. Run the lottery with the NBA&rsquo;s weighted odds for the 14 lottery slots and watch the top of the board re-sort; prospects stay in board order. Pick protections aren&rsquo;t modeled.</p><div class="sec-src" id="mockSrc"></div></div>
+      <div class="mock-bar">
+        <div class="seg" id="roundSeg"><button class="on" data-r="1">Round 1</button><button data-r="2">Round 2</button></div>
+        <div class="seg" id="viewSeg"><button class="on" data-v="cards">Cards</button><button data-v="list">List</button></div>
+        <select class="sel" id="teamSel" aria-label="Highlight a team"><option value="">Highlight a team…</option></select>
+        <button class="btn" id="lottoBtn" type="button">&#9673; Run Lottery</button>
+        <button class="btn ghost" id="resetBtn" type="button">Reset</button>
+        <span class="lotto-msg" id="lottoMsg"></span>
+      </div>
+      <div class="board" id="mockBoard"></div>
+    </div>
+
+    <!-- BOARD -->
+    <div class="panel" id="sec-board">
+      <div class="glass sec-head"><div class="sec-kicker">2026 NBA Draft</div><div class="sec-title">Full Draft Board</div><p class="sec-copy">All 60 picks with draft-day age and measurements. Rows with a status chip have an opening-week read in the tracker.</p><div class="sec-src">Draft results and measurements: Tankathon past drafts (2026).</div></div>
+      <div class="board"><div class="board-bar"><div class="seg" id="bRoundSeg"><button class="on" data-r="1">Round 1</button><button data-r="2">Round 2</button><button data-r="0">All 60</button></div><select class="sel" id="bTeamSel" aria-label="Filter by team"><option value="">All teams</option></select></div><div class="table-wrap"><table class="dtable"><thead><tr><th>Pk</th><th>Team</th><th>Player</th><th>Pos</th><th class="hide-sm">School / Club</th><th class="hide-sm">Ht</th><th class="hide-sm">Age</th><th>ROTY</th><th>Status</th></tr></thead><tbody id="draftBody"></tbody></table></div></div>
+    </div>
+  </div>
+
+  <aside class="side rail">
+    <div class="glass feed">
+      <div class="feed-head"><div><div class="eyebrow">Rookie &amp; 2027 Intel</div><div class="feed-title">Market Feed</div></div><div class="feed-live"></div></div>
+      <div id="feedList"></div>
+    </div>
+    <div class="glass lotto-card">
+      <div class="eyebrow">2027 Lottery Odds</div>
+      <div style="margin-top:4px;font-size:1.1rem;font-weight:900">Chance at No. 1</div>
+      <div id="lottoOdds"></div>
+      <p style="margin:12px 0 0;font-size:.6rem;line-height:1.6;color:#5f6f84">NBA lottery odds by pre-lottery slot (14% for the three worst records). Teams shown are the current projected owners.</p>
+    </div>
+  </aside>
+</section>
+</main>
+<footer class="so-footer">
+<div class="footer-top"><div class="footer-logo">short<span>open</span></div><p class="footer-copy">© 2026 shortopen. Independent analysis. All rights reserved.</p></div>
+<p class="footer-disclaimer">shortopen is an independent sports data and analytics platform. Win probabilities, EV figures, grades, scores, valuation models, and payout or “you’d earn” calculations shown throughout this site are model-generated estimates provided for informational and entertainment purposes only. They are not betting advice, financial advice, or a real-money wager placed with shortopen. shortopen does not accept bets, hold funds, process wagers, or operate as a sportsbook. Any outside wagering decisions are made independently, at your own risk, and subject to the laws and legal-age requirements where you live. Model estimates are not guarantees of outcome. If you or someone you know has a gambling problem, call <span style="color:#e8c078;font-weight:600">1-800-GAMBLER</span>. <a href="terms.html" style="text-decoration:underline;color:#e8c078">See our Terms of Service</a> for our full legal terms, including liability limits and dispute resolution.</p>
+</footer>
+
+<script type="application/json" id="nbaDraftData">{"teams": {"ATL": {"name": "Atlanta Hawks", "c": ["#E03A3E", "#C1D32F"]}, "BOS": {"name": "Boston Celtics", "c": ["#007A33", "#BA9653"]}, "BKN": {"name": "Brooklyn Nets", "c": ["#000000", "#FFFFFF"]}, "CHA": {"name": "Charlotte Hornets", "c": ["#1D1160", "#00788C"]}, "CHI": {"name": "Chicago Bulls", "c": ["#CE1141", "#000000"]}, "CLE": {"name": "Cleveland Cavaliers", "c": ["#860038", "#FDBB30"]}, "DAL": {"name": "Dallas Mavericks", "c": ["#00538C", "#B8C4CA"]}, "DEN": {"name": "Denver Nuggets", "c": ["#0E2240", "#FEC524"]}, "DET": {"name": "Detroit Pistons", "c": ["#C8102E", "#1D42BA"]}, "GSW": {"name": "Golden State Warriors", "c": ["#1D428A", "#FFC72C"]}, "HOU": {"name": "Houston Rockets", "c": ["#CE1141", "#C4CED4"]}, "IND": {"name": "Indiana Pacers", "c": ["#002D62", "#FDBB30"]}, "LAC": {"name": "LA Clippers", "c": ["#C8102E", "#1D428A"]}, "LAL": {"name": "Los Angeles Lakers", "c": ["#552583", "#FDB927"]}, "MEM": {"name": "Memphis Grizzlies", "c": ["#5D76A9", "#12173F"]}, "MIA": {"name": "Miami Heat", "c": ["#98002E", "#F9A01B"]}, "MIL": {"name": "Milwaukee Bucks", "c": ["#00471B", "#EEE1C6"]}, "MIN": {"name": "Minnesota Timberwolves", "c": ["#0C2340", "#78BE20"]}, "NOP": {"name": "New Orleans Pelicans", "c": ["#0C2340", "#C8102E"]}, "NYK": {"name": "New York Knicks", "c": ["#006BB6", "#F58426"]}, "OKC": {"name": "Oklahoma City Thunder", "c": ["#007AC1", "#EF3B24"]}, "ORL": {"name": "Orlando Magic", "c": ["#0077C0", "#C4CED4"]}, "PHI": {"name": "Philadelphia 76ers", "c": ["#006BB6", "#ED174C"]}, "PHX": {"name": "Phoenix Suns", "c": ["#1D1160", "#E56020"]}, "POR": {"name": "Portland Trail Blazers", "c": ["#E03A3E", "#000000"]}, "SAC": {"name": "Sacramento Kings", "c": ["#5A2D81", "#63727A"]}, "SAS": {"name": "San Antonio Spurs", "c": ["#C4CED4", "#000000"]}, "TOR": {"name": "Toronto Raptors", "c": ["#CE1141", "#000000"]}, "UTA": {"name": "Utah Jazz", "c": ["#31006F", "#7EC8F0"]}, "WAS": {"name": "Washington Wizards", "c": ["#002B5C", "#E31837"]}}, "draft": [{"pick": 1, "abbr": "WAS", "via": "", "name": "AJ Dybantsa", "pos": "SF", "school": "BYU", "ht": "6'9.75\"", "age": "19.4"}, {"pick": 2, "abbr": "UTA", "via": "", "name": "Darryn Peterson", "pos": "SG/PG", "school": "Kansas", "ht": "6'5.75\"", "age": "19.4"}, {"pick": 3, "abbr": "MEM", "via": "", "name": "Cameron Boozer", "pos": "PF", "school": "Duke", "ht": "6'9.5\"", "age": "18.9"}, {"pick": 4, "abbr": "CHI", "via": "", "name": "Caleb Wilson", "pos": "SF/PF", "school": "North Carolina", "ht": "6'10.5\"", "age": "19.9"}, {"pick": 5, "abbr": "LAC", "via": "IND", "name": "Keaton Wagler", "pos": "SG/PG", "school": "Illinois", "ht": "6'6.25\"", "age": "19.4"}, {"pick": 6, "abbr": "BKN", "via": "", "name": "Mikel Brown Jr.", "pos": "PG", "school": "Louisville", "ht": "6'4.75\"", "age": "20.2"}, {"pick": 7, "abbr": "SAC", "via": "", "name": "Darius Acuff Jr.", "pos": "PG", "school": "Arkansas", "ht": "6'3.25\"", "age": "19.6"}, {"pick": 8, "abbr": "ATL", "via": "NOP", "name": "Kingston Flemings", "pos": "PG", "school": "Houston", "ht": "6'3.75\"", "age": "19.5"}, {"pick": 9, "abbr": "DAL", "via": "", "name": "Morez Johnson Jr.", "pos": "PF/C", "school": "Michigan", "ht": "6'10.25\"", "age": "20.4"}, {"pick": 10, "abbr": "MIL", "via": "", "name": "Brayden Burries", "pos": "SG/PG", "school": "Arizona", "ht": "6'5\"", "age": "20.8"}, {"pick": 11, "abbr": "GSW", "via": "", "name": "Yaxel Lendeborg", "pos": "PF", "school": "Michigan", "ht": "6'10\"", "age": "23.7"}, {"pick": 12, "abbr": "OKC", "via": "LAC", "name": "Aday Mara", "pos": "C", "school": "Michigan", "ht": "7'4.25\"", "age": "21.2"}, {"pick": 13, "abbr": "MIL", "via": "MIA", "name": "Nate Ament", "pos": "SF", "school": "Tennessee", "ht": "6'10.75\"", "age": "19.5"}, {"pick": 14, "abbr": "CHA", "via": "", "name": "Hannes Steinbach", "pos": "PF", "school": "Washington", "ht": "6'11.5\"", "age": "20.1"}, {"pick": 15, "abbr": "CHI", "via": "POR", "name": "Dailyn Swain", "pos": "SG/SF", "school": "Texas", "ht": "6'7.75\"", "age": "20.9"}, {"pick": 16, "abbr": "OKC", "via": "PHX", "name": "Bennett Stirtz", "pos": "PG", "school": "Iowa", "ht": "6'3.75\"", "age": "22.7"}, {"pick": 17, "abbr": "DET", "via": "PHI", "name": "Ebuka Okorie", "pos": "PG", "school": "Stanford", "ht": "6'2.5\"", "age": "19.2"}, {"pick": 18, "abbr": "CHA", "via": "ORL", "name": "Christian Anderson", "pos": "PG", "school": "Texas Tech", "ht": "6'2.25\"", "age": "20.2"}, {"pick": 19, "abbr": "TOR", "via": "", "name": "Allen Graves", "pos": "PF", "school": "Santa Clara", "ht": "6'9\"", "age": "19.9"}, {"pick": 20, "abbr": "SAS", "via": "ATL", "name": "Jayden Quaintance", "pos": "PF/C", "school": "Kentucky", "ht": "6'10.25\"", "age": "18.9"}, {"pick": 21, "abbr": "MEM", "via": "MIN", "name": "Karim López", "pos": "SF", "school": "New Zealand Breakers", "ht": "6'9.5\"", "age": "19.2"}, {"pick": 22, "abbr": "PHI", "via": "HOU", "name": "Labaron Philon Jr.", "pos": "PG", "school": "Alabama", "ht": "6'3.75\"", "age": "20.6"}, {"pick": 23, "abbr": "ATL", "via": "CLE", "name": "Zuby Ejiofor", "pos": "PF", "school": "St. John's", "ht": "6'8.75\"", "age": "22.2"}, {"pick": 24, "abbr": "LAL", "via": "NYK", "name": "Cameron Carr", "pos": "SG", "school": "Baylor", "ht": "6'5.75\"", "age": "21.6"}, {"pick": 25, "abbr": "DAL", "via": "LAL", "name": "Sergio de Larrea", "pos": "PG/SG", "school": "Valencia Basket", "ht": "6'7.25\"", "age": "20.5"}, {"pick": 26, "abbr": "SAS", "via": "DEN", "name": "Tarris Reed Jr.", "pos": "C", "school": "UConn", "ht": "6'11\"", "age": "22.9"}, {"pick": 27, "abbr": "BOS", "via": "", "name": "Chris Cenac Jr.", "pos": "PF/C", "school": "Houston", "ht": "6'11.5\"", "age": "19.4"}, {"pick": 28, "abbr": "BKN", "via": "DET", "name": "Joshua Jefferson", "pos": "PF/SF", "school": "Iowa State", "ht": "6'9\"", "age": "22.6"}, {"pick": 29, "abbr": "SAC", "via": "SAS", "name": "Alex Karaban", "pos": "SF/PF", "school": "UConn", "ht": "6'8\"", "age": "23.6"}, {"pick": 30, "abbr": "PHX", "via": "OKC", "name": "Koa Peat", "pos": "PF", "school": "Arizona", "ht": "6'8.25\"", "age": "19.4"}, {"pick": 31, "abbr": "HOU", "via": "WAS", "name": "Bruce Thornton", "pos": "PG", "school": "Ohio State", "ht": "6'1.25\"", "age": "22.8"}, {"pick": 32, "abbr": "MEM", "via": "IND", "name": "Richie Saunders", "pos": "SG", "school": "BYU", "ht": "6'6.25\"", "age": "24.8"}, {"pick": 33, "abbr": "MIN", "via": "BKN", "name": "Isaiah Evans", "pos": "SF", "school": "Duke", "ht": "6'6.75\"", "age": "20.5"}, {"pick": 34, "abbr": "CLE", "via": "SAC", "name": "Meleek Thomas", "pos": "SG/PG", "school": "Arkansas", "ht": "6'4.25\"", "age": "19.9"}, {"pick": 35, "abbr": "DEN", "via": "UTA", "name": "Trevon Brazile", "pos": "PF", "school": "Arkansas", "ht": "6'10.75\"", "age": "23.4"}, {"pick": 36, "abbr": "LAC", "via": "MEM", "name": "Baba Miller", "pos": "SF", "school": "Cincinnati", "ht": "6'11.75\"", "age": "22.4"}, {"pick": 37, "abbr": "MIA", "via": "DAL", "name": "Ryan Conwell", "pos": "SG", "school": "Louisville", "ht": "6'3.25\"", "age": "22.0"}, {"pick": 38, "abbr": "IND", "via": "NOP", "name": "Braden Smith", "pos": "PG", "school": "Purdue", "ht": "5'11.5\"", "age": "22.9"}, {"pick": 39, "abbr": "NYK", "via": "CHI", "name": "Jack Kayil", "pos": "PG", "school": "Alba Berlin", "ht": "6'4.75\"", "age": "20.4"}, {"pick": 40, "abbr": "BOS", "via": "MIL", "name": "Dillon Mitchell", "pos": "SF", "school": "St. John's", "ht": "6'8\"", "age": "22.7"}, {"pick": 41, "abbr": "OKC", "via": "GSW", "name": "Otega Oweh", "pos": "SG", "school": "Kentucky", "ht": "6'5.5\"", "age": "23.0"}, {"pick": 42, "abbr": "SAS", "via": "POR", "name": "Ja'Kobi Gillespie", "pos": "PG", "school": "Tennessee", "ht": "6'1\"", "age": "22.3"}, {"pick": 43, "abbr": "BKN", "via": "LAC", "name": "Tyler Bilodeau", "pos": "PF", "school": "UCLA", "ht": "6'8.5\"", "age": "22.2"}, {"pick": 44, "abbr": "SAS", "via": "MIA", "name": "Maliq Brown", "pos": "PF", "school": "Duke", "ht": "6'9.25\"", "age": "22.6"}, {"pick": 45, "abbr": "SAC", "via": "CHA", "name": "Emanuel Sharp", "pos": "SG", "school": "Houston", "ht": "6'4\"", "age": "22.3"}, {"pick": 46, "abbr": "WAS", "via": "ORL", "name": "Felix Okpara", "pos": "C", "school": "Tennessee", "ht": "6'11.25\"", "age": "22.2"}, {"pick": 47, "abbr": "NYK", "via": "PHI", "name": "Tyler Nickel", "pos": "SG", "school": "Vanderbilt", "ht": "6'7.25\"", "age": "22.8"}, {"pick": 48, "abbr": "DAL", "via": "PHX", "name": "Tobi Lawal", "pos": "PF", "school": "Virginia Tech", "ht": "6'8.5\"", "age": "23.1"}, {"pick": 49, "abbr": "DEN", "via": "ATL", "name": "Bryce Hopkins", "pos": "SF", "school": "St. John's", "ht": "6'7.25\"", "age": "23.8"}, {"pick": 50, "abbr": "TOR", "via": "", "name": "Jaden Bradley", "pos": "PG", "school": "Arizona", "ht": "6'3.75\"", "age": "22.8"}, {"pick": 51, "abbr": "ORL", "via": "MIN", "name": "Izaiyah Nelson", "pos": "PF/C", "school": "South Florida", "ht": "6'9.5\"", "age": "22.7"}, {"pick": 52, "abbr": "ATL", "via": "CLE", "name": "Henri Veesaar", "pos": "C", "school": "North Carolina", "ht": "7'0.5\"", "age": "22.2"}, {"pick": 53, "abbr": "DET", "via": "HOU", "name": "Ugonna Onyenso", "pos": "C", "school": "Virginia", "ht": "7'0.25\"", "age": "21.7"}, {"pick": 54, "abbr": "GSW", "via": "LAL", "name": "Lajae Jones", "pos": "SG/SF", "school": "Florida State", "ht": "6'7\"", "age": "22.1"}, {"pick": 55, "abbr": "LAC", "via": "NYK", "name": "Nick Martinelli", "pos": "SF", "school": "Northwestern", "ht": "6'7.75\"", "age": "22.2"}, {"pick": 56, "abbr": "DAL", "via": "DEN", "name": "Vsevolod Ishchenko", "pos": "SF", "school": "Lokomotiv Kuban", "ht": "6'8\"", "age": "21.4"}, {"pick": 57, "abbr": "LAC", "via": "BOS", "name": "Narcisse Ngoy", "pos": "C", "school": "Poitiers Basket 86", "ht": "7'0\"", "age": "21.9"}, {"pick": 58, "abbr": "NOP", "via": "DET", "name": "Jaron Pierre Jr.", "pos": "SG", "school": "SMU", "ht": "6'5\"", "age": "23.9"}, {"pick": 59, "abbr": "MIN", "via": "SAS", "name": "Trey Kaufman-Renn", "pos": "PF", "school": "Purdue", "ht": "6'9\"", "age": "23.8"}, {"pick": 60, "abbr": "MIL", "via": "OKC", "name": "Malique Lewis", "pos": "SF", "school": "SE Melbourne Phoenix", "ht": "6'8\"", "age": "21.6"}], "mock": [{"pick": 1, "team": "Boston", "abbr": "BOS", "via": "", "name": "Tyran Stokes", "pos": "SF", "school": "Kansas", "ht": "6'7\"", "wt": "230 lbs", "yr": "Freshman", "age": "19.7", "stats": {}, "ts": ""}, {"pick": 2, "team": "Brooklyn", "abbr": "BKN", "via": "NYK", "name": "Caleb Holt", "pos": "SG", "school": "Arizona", "ht": "6'5\"", "wt": "200 lbs", "yr": "Freshman", "age": "19.6", "stats": {}, "ts": ""}, {"pick": 3, "team": "Sacramento", "abbr": "SAC", "via": "SAS", "name": "Stefan Joksimović", "pos": "PG/SG", "school": "Baskonia", "ht": "6'7\"", "wt": "205 lbs", "yr": "International", "age": "18.6", "stats": {"pts": "3.0", "reb": "1.2", "ast": "1.2", "blk": "0.0", "stl": "0.3"}, "ts": ".504"}, {"pick": 4, "team": "Sacramento", "abbr": "SAC", "via": "", "name": "Anthony Thompson", "pos": "SF", "school": "Ohio State", "ht": "6'9\"", "wt": "215 lbs", "yr": "Freshman", "age": "18.9", "stats": {}, "ts": ""}, {"pick": 5, "team": "Houston", "abbr": "HOU", "via": "BKN", "name": "Jordan Smith Jr.", "pos": "SG/PG", "school": "Arkansas", "ht": "6'2\"", "wt": "200 lbs", "yr": "Freshman", "age": "19.8", "stats": {}, "ts": ""}, {"pick": 6, "team": "New Orleans", "abbr": "NOP", "via": "MIL", "name": "Bruce Branch III", "pos": "SF", "school": "BYU", "ht": "6'7\"", "wt": "190 lbs", "yr": "Freshman", "age": "18.7", "stats": {}, "ts": ""}, {"pick": 7, "team": "Memphis", "abbr": "MEM", "via": "", "name": "Cameron Williams", "pos": "PF", "school": "Duke", "ht": "6'11\"", "wt": "200 lbs", "yr": "Freshman", "age": "19.7", "stats": {}, "ts": ""}, {"pick": 8, "team": "Oklahoma City", "abbr": "OKC", "via": "LAC", "name": "Baba Oladotun", "pos": "SF/PF", "school": "Maryland", "ht": "6'10\"", "wt": "195 lbs", "yr": "Freshman", "age": "18.5", "stats": {}, "ts": ""}, {"pick": 9, "team": "Chicago", "abbr": "CHI", "via": "", "name": "Brandon McCoy Jr.", "pos": "SG/PG", "school": "Michigan", "ht": "6'5\"", "wt": "200 lbs", "yr": "Freshman", "age": "19.6", "stats": {}, "ts": ""}, {"pick": 10, "team": "Atlanta", "abbr": "ATL", "via": "NOP", "name": "Hugo Yimga-Moukouri", "pos": "SF", "school": "Nanterre 92", "ht": "6'9\"", "wt": "218 lbs", "yr": "International", "age": "18.9", "stats": {"pts": "10.6", "reb": "5.7", "ast": "0.4", "blk": "0.1", "stl": "0.4"}, "ts": ".560"}, {"pick": 11, "team": "Charlotte", "abbr": "CHA", "via": "DAL", "name": "Dylan Mingo", "pos": "PG", "school": "Baylor", "ht": "6'5\"", "wt": "185 lbs", "yr": "Freshman", "age": "18.7", "stats": {}, "ts": ""}, {"pick": 12, "team": "Washington", "abbr": "WAS", "via": "", "name": "Amari Allen", "pos": "SF", "school": "Alabama", "ht": "6'6.5\"", "wt": "205 lbs", "yr": "Sophomore", "age": "21.4", "stats": {"pts": "11.4", "reb": "6.9", "ast": "3.1", "blk": "0.7", "stl": "1.0"}, "ts": ".570"}, {"pick": 13, "team": "Memphis", "abbr": "MEM", "via": "UTA", "name": "Braylon Mullins", "pos": "SG", "school": "UConn", "ht": "6'6\"", "wt": "196 lbs", "yr": "Sophomore", "age": "21.2", "stats": {"pts": "12.0", "reb": "3.5", "ast": "1.4", "blk": "0.6", "stl": "1.0"}, "ts": ".544"}, {"pick": 14, "team": "Charlotte", "abbr": "CHA", "via": "", "name": "Patrick Ngongba II", "pos": "C", "school": "Duke", "ht": "6'11\"", "wt": "250 lbs", "yr": "Junior", "age": "21.3", "stats": {"pts": "10.1", "reb": "5.8", "ast": "2.0", "blk": "1.1", "stl": "0.6"}, "ts": ".645"}, {"pick": 15, "team": "Houston", "abbr": "HOU", "via": "PHX", "name": "Ivan Kharchenkov", "pos": "SF", "school": "Arizona", "ht": "6'7\"", "wt": "230 lbs", "yr": "Sophomore", "age": "20.7", "stats": {"pts": "10.4", "reb": "4.3", "ast": "2.3", "blk": "0.3", "stl": "1.4"}, "ts": ".575"}, {"pick": 16, "team": "San Antonio", "abbr": "SAS", "via": "ATL", "name": "Quentin Coleman", "pos": "SG", "school": "Illinois", "ht": "6'4\"", "wt": "180 lbs", "yr": "Freshman", "age": "18.9", "stats": {}, "ts": ""}, {"pick": 17, "team": "Golden State", "abbr": "GSW", "via": "", "name": "Jason Crowe Jr.", "pos": "PG", "school": "Missouri", "ht": "6'3\"", "wt": "170 lbs", "yr": "Freshman", "age": "18.9", "stats": {}, "ts": ""}, {"pick": 18, "team": "Portland", "abbr": "POR", "via": "", "name": "Thomas Haugh", "pos": "PF", "school": "Florida", "ht": "6'9\"", "wt": "215 lbs", "yr": "Senior", "age": "23.9", "stats": {"pts": "17.1", "reb": "6.1", "ast": "2.1", "blk": "1.0", "stl": "1.1"}, "ts": ".586"}, {"pick": 19, "team": "Orlando", "abbr": "ORL", "via": "", "name": "Tounde Yessoufou", "pos": "SG/SF", "school": "St. John's", "ht": "6'5.5\"", "wt": "220 lbs", "yr": "Sophomore", "age": "21.1", "stats": {"pts": "17.8", "reb": "5.9", "ast": "1.6", "blk": "0.6", "stl": "2.0"}, "ts": ".550"}, {"pick": 20, "team": "Indiana", "abbr": "IND", "via": "", "name": "JJ Andrews", "pos": "SF", "school": "Arkansas", "ht": "6'6\"", "wt": "220 lbs", "yr": "Freshman", "age": "19.3", "stats": {}, "ts": ""}, {"pick": 21, "team": "Charlotte", "abbr": "CHA", "via": "MIA", "name": "Davis Fogle", "pos": "SG", "school": "Gonzaga", "ht": "6'7\"", "wt": "200 lbs", "yr": "Sophomore", "age": "21.0", "stats": {"pts": "8.6", "reb": "3.1", "ast": "1.3", "blk": "0.5", "stl": "0.7"}, "ts": ".584"}, {"pick": 22, "team": "Memphis", "abbr": "MEM", "via": "LAL", "name": "Luigi Suigo", "pos": "C", "school": "Villanova", "ht": "7'4\"", "wt": "289 lbs", "yr": "Freshman", "age": "20.4", "stats": {"pts": "8.5", "reb": "5.3", "ast": "0.9", "blk": "1.0", "stl": "0.5"}, "ts": ".607"}, {"pick": 23, "team": "Brooklyn", "abbr": "BKN", "via": "HOU", "name": "Miikka Muurinen", "pos": "PF", "school": "Arkansas", "ht": "6'11\"", "wt": "200 lbs", "yr": "Freshman", "age": "20.3", "stats": {}, "ts": ""}, {"pick": 24, "team": "LA Clippers", "abbr": "LAC", "via": "TOR", "name": "Motiejus Krivas", "pos": "C", "school": "Arizona", "ht": "7'2\"", "wt": "260 lbs", "yr": "Senior", "age": "22.6", "stats": {"pts": "10.4", "reb": "8.2", "ast": "1.1", "blk": "1.9", "stl": "0.7"}, "ts": ".638"}, {"pick": 25, "team": "Utah", "abbr": "UTA", "via": "CLE", "name": "Tyler Tanner", "pos": "PG", "school": "Vanderbilt", "ht": "6'0\"", "wt": "167 lbs", "yr": "Junior", "age": "21.4", "stats": {"pts": "19.5", "reb": "3.6", "ast": "5.1", "blk": "0.3", "stl": "2.4"}, "ts": ".612"}, {"pick": 26, "team": "Phoenix", "abbr": "PHX", "via": "MIN", "name": "Christian Collins", "pos": "SF/PF", "school": "USC", "ht": "6'9\"", "wt": "200 lbs", "yr": "Freshman", "age": "19.8", "stats": {}, "ts": ""}, {"pick": 27, "team": "Oklahoma City", "abbr": "OKC", "via": "DEN", "name": "Billy Richmond III", "pos": "SG/SF", "school": "Arkansas", "ht": "6'7\"", "wt": "195 lbs", "yr": "Junior", "age": "21.2", "stats": {"pts": "11.2", "reb": "4.3", "ast": "2.0", "blk": "0.8", "stl": "1.1"}, "ts": ".612"}, {"pick": 28, "team": "Detroit", "abbr": "DET", "via": "", "name": "David Mirkovic", "pos": "PF", "school": "Illinois", "ht": "6'9\"", "wt": "250 lbs", "yr": "Sophomore", "age": "21.5", "stats": {"pts": "13.3", "reb": "8.0", "ast": "2.6", "blk": "0.4", "stl": "0.4"}, "ts": ".592"}, {"pick": 29, "team": "Philadelphia", "abbr": "PHI", "via": "", "name": "Milan Momcilovic", "pos": "SF/PF", "school": "Kentucky", "ht": "6'9.25\"", "wt": "218 lbs", "yr": "Senior", "age": "22.7", "stats": {"pts": "16.9", "reb": "3.1", "ast": "1.0", "blk": "0.2", "stl": "0.8"}, "ts": ".693"}, {"pick": 30, "team": "Toronto", "abbr": "TOR", "via": "OKC", "name": "Alijah Arenas", "pos": "SG", "school": "USC", "ht": "6'6\"", "wt": "197 lbs", "yr": "Sophomore", "age": "20.3", "stats": {"pts": "14.1", "reb": "2.9", "ast": "2.1", "blk": "0.5", "stl": "0.9"}, "ts": ".453"}, {"pick": 31, "team": "Atlanta", "abbr": "ATL", "via": "", "name": "Trey McKenney", "pos": "SG", "school": "Michigan", "ht": "6'4\"", "wt": "220 lbs", "yr": "Sophomore", "age": "20.8", "stats": {"pts": "9.9", "reb": "2.8", "ast": "0.9", "blk": "0.1", "stl": "0.4"}, "ts": ".632"}, {"pick": 32, "team": "Philadelphia", "abbr": "PHI", "via": "PHX", "name": "Malachi Moreno", "pos": "C", "school": "Kentucky", "ht": "7'0.5\"", "wt": "243 lbs", "yr": "Sophomore", "age": "20.7", "stats": {"pts": "7.8", "reb": "6.3", "ast": "1.8", "blk": "1.5", "stl": "0.5"}, "ts": ".623"}, {"pick": 33, "team": "Oklahoma City", "abbr": "OKC", "via": "CHA", "name": "Sayon Keita", "pos": "C", "school": "North Carolina", "ht": "7'0\"", "wt": "215 lbs", "yr": "Freshman", "age": "19.3", "stats": {}, "ts": ""}, {"pick": 34, "team": "Indiana", "abbr": "IND", "via": "UTA", "name": "Stefan Vaaks", "pos": "SG", "school": "Illinois", "ht": "6'7\"", "wt": "215 lbs", "yr": "Sophomore", "age": "22.1", "stats": {"pts": "15.8", "reb": "2.5", "ast": "3.2", "blk": "0.3", "stl": "0.8"}, "ts": ".567"}, {"pick": 35, "team": "New York", "abbr": "NYK", "via": "WAS", "name": "Alex Condon", "pos": "PF/C", "school": "Florida", "ht": "7'0.5\"", "wt": "222 lbs", "yr": "Senior", "age": "22.9", "stats": {"pts": "15.1", "reb": "7.5", "ast": "3.6", "blk": "1.4", "stl": "0.7"}, "ts": ".594"}, {"pick": 36, "team": "Washington", "abbr": "WAS", "via": "DAL", "name": "Cameron Houindo", "pos": "PF", "school": "Cedevita Olimpija", "ht": "6'9\"", "wt": "240 lbs", "yr": "International", "age": "19.4", "stats": {"pts": "3.0", "reb": "1.7", "ast": "0.0", "blk": "0.3", "stl": "0.0"}, "ts": ".566"}, {"pick": 37, "team": "Charlotte", "abbr": "CHA", "via": "NOP", "name": "Matt Able", "pos": "SG/SF", "school": "North Carolina", "ht": "6'5\"", "wt": "196 lbs", "yr": "Sophomore", "age": "19.9", "stats": {"pts": "8.8", "reb": "3.4", "ast": "0.9", "blk": "0.3", "stl": "1.2"}, "ts": ".544"}, {"pick": 38, "team": "Oklahoma City", "abbr": "OKC", "via": "CHI", "name": "Juke Harris", "pos": "SG", "school": "Tennessee", "ht": "6'7\"", "wt": "200 lbs", "yr": "Junior", "age": "21.9", "stats": {"pts": "21.4", "reb": "6.5", "ast": "1.9", "blk": "0.2", "stl": "1.3"}, "ts": ".581"}, {"pick": 39, "team": "Utah", "abbr": "UTA", "via": "LAC", "name": "Rueben Chinyelu", "pos": "C", "school": "Florida", "ht": "6'10.5\"", "wt": "259 lbs", "yr": "Senior", "age": "23.7", "stats": {"pts": "10.9", "reb": "11.2", "ast": "0.7", "blk": "1.0", "stl": "0.8"}, "ts": ".610"}, {"pick": 40, "team": "Charlotte", "abbr": "CHA", "via": "MEM", "name": "Andrej Stojakovic", "pos": "SG", "school": "Illinois", "ht": "6'6.75\"", "wt": "206 lbs", "yr": "Senior", "age": "22.8", "stats": {"pts": "13.5", "reb": "4.5", "ast": "1.0", "blk": "0.4", "stl": "0.4"}, "ts": ".578"}, {"pick": 41, "team": "Milwaukee", "abbr": "MIL", "via": "", "name": "Klark Riethauser", "pos": "SG", "school": "Élan Chalon", "ht": "6'8\"", "wt": "200 lbs", "yr": "International", "age": "19.2", "stats": {"pts": "16.3", "reb": "6.0", "ast": "2.2", "blk": "0.4", "stl": "1.7"}, "ts": ".579"}, {"pick": 42, "team": "Milwaukee", "abbr": "MIL", "via": "BKN", "name": "Shelton Henderson", "pos": "SF", "school": "Miami", "ht": "6'6\"", "wt": "240 lbs", "yr": "Sophomore", "age": "20.6", "stats": {"pts": "13.8", "reb": "4.9", "ast": "2.1", "blk": "0.3", "stl": "1.1"}, "ts": ".590"}, {"pick": 43, "team": "Oklahoma City", "abbr": "OKC", "via": "SAC", "name": "JoJo Tugler", "pos": "PF", "school": "Houston", "ht": "6'8\"", "wt": "230 lbs", "yr": "Senior", "age": "22.1", "stats": {"pts": "8.4", "reb": "5.3", "ast": "1.3", "blk": "1.5", "stl": "1.3"}, "ts": ".601"}, {"pick": 44, "team": "San Antonio", "abbr": "SAS", "via": "", "name": "Dame Sarr", "pos": "SG/SF", "school": "Duke", "ht": "6'7\"", "wt": "181 lbs", "yr": "Sophomore", "age": "21.0", "stats": {"pts": "6.4", "reb": "3.8", "ast": "1.1", "blk": "0.4", "stl": "1.0"}, "ts": ".514"}, {"pick": 45, "team": "New York", "abbr": "NYK", "via": "", "name": "Flory Bidunga", "pos": "C", "school": "Louisville", "ht": "6'9\"", "wt": "229 lbs", "yr": "Junior", "age": "22.1", "stats": {"pts": "13.3", "reb": "9.0", "ast": "1.5", "blk": "2.6", "stl": "0.7"}, "ts": ".647"}, {"pick": 46, "team": "Utah", "abbr": "UTA", "via": "BOS", "name": "Dash Daniels", "pos": "SG", "school": "SE Melbourne", "ht": "6'6\"", "wt": "199 lbs", "yr": "International", "age": "19.5", "stats": {"pts": "12.6", "reb": "5.3", "ast": "2.0", "blk": "0.1", "stl": "1.2"}, "ts": ".567"}, {"pick": 47, "team": "Washington", "abbr": "WAS", "via": "GSW", "name": "Neoklis Avdalas", "pos": "SG/SF", "school": "North Carolina", "ht": "6'8.75\"", "wt": "198 lbs", "yr": "Sophomore", "age": "21.4", "stats": {"pts": "12.1", "reb": "3.1", "ast": "4.6", "blk": "0.5", "stl": "0.6"}, "ts": ".491"}, {"pick": 48, "team": "Portland", "abbr": "POR", "via": "", "name": "Paul McNeil Jr.", "pos": "SG", "school": "NC State", "ht": "6'5\"", "wt": "190 lbs", "yr": "Junior", "age": "21.2", "stats": {"pts": "13.8", "reb": "3.6", "ast": "0.8", "blk": "0.4", "stl": "0.6"}, "ts": ".635"}, {"pick": 49, "team": "Phoenix", "abbr": "PHX", "via": "ORL", "name": "Jeremy Fears Jr.", "pos": "PG", "school": "Michigan State", "ht": "6'1.25\"", "wt": "196 lbs", "yr": "Junior", "age": "22.2", "stats": {"pts": "15.2", "reb": "2.4", "ast": "9.4", "blk": "0.0", "stl": "1.3"}, "ts": ".576"}, {"pick": 50, "team": "Washington", "abbr": "WAS", "via": "IND", "name": "Moustapha Thiam", "pos": "C", "school": "Michigan", "ht": "7'2\"", "wt": "250 lbs", "yr": "Junior", "age": "21.3", "stats": {"pts": "12.8", "reb": "7.1", "ast": "0.5", "blk": "1.6", "stl": "0.8"}, "ts": ".565"}, {"pick": 51, "team": "New Orleans", "abbr": "NOP", "via": "MIA", "name": "Pryce Sandfort", "pos": "SF", "school": "Nebraska", "ht": "6'7\"", "wt": "210 lbs", "yr": "Senior", "age": "22.9", "stats": {"pts": "18.1", "reb": "4.9", "ast": "2.0", "blk": "0.3", "stl": "1.0"}, "ts": ".644"}, {"pick": 52, "team": "Brooklyn", "abbr": "BKN", "via": "LAL", "name": "Nikolas Khamenia", "pos": "SF/PF", "school": "UConn", "ht": "6'8\"", "wt": "225 lbs", "yr": "Sophomore", "age": "20.5", "stats": {"pts": "5.7", "reb": "3.3", "ast": "1.0", "blk": "0.1", "stl": "0.6"}, "ts": ".567"}, {"pick": 53, "team": "New York", "abbr": "NYK", "via": "HOU", "name": "Cayden Boozer", "pos": "PG", "school": "Duke", "ht": "6'4\"", "wt": "205 lbs", "yr": "Sophomore", "age": "19.9", "stats": {"pts": "7.7", "reb": "2.3", "ast": "3.0", "blk": "0.1", "stl": "0.8"}, "ts": ".592"}, {"pick": 54, "team": "Toronto", "abbr": "TOR", "via": "", "name": "Coen Carr", "pos": "SF/PF", "school": "Michigan State", "ht": "6'6\"", "wt": "230 lbs", "yr": "Senior", "age": "22.6", "stats": {"pts": "12.0", "reb": "5.4", "ast": "1.2", "blk": "0.8", "stl": "0.5"}, "ts": ".574"}, {"pick": 55, "team": "Chicago", "abbr": "CHI", "via": "CLE", "name": "Ian Jackson", "pos": "SG", "school": "St. John's", "ht": "6'5\"", "wt": "200 lbs", "yr": "Junior", "age": "22.3", "stats": {"pts": "9.4", "reb": "2.3", "ast": "1.3", "blk": "0.2", "stl": "0.8"}, "ts": ".544"}, {"pick": 56, "team": "Portland", "abbr": "POR", "via": "MIN", "name": "Matas Vokietaitis", "pos": "C", "school": "Texas", "ht": "7'0\"", "wt": "255 lbs", "yr": "Junior", "age": "22.6", "stats": {"pts": "15.6", "reb": "7.1", "ast": "0.6", "blk": "0.9", "stl": "0.2"}, "ts": ".645"}, {"pick": 57, "team": "Utah", "abbr": "UTA", "via": "DEN", "name": "Miles Byrd", "pos": "SG", "school": "Providence", "ht": "6'6\"", "wt": "182 lbs", "yr": "Senior", "age": "22.8", "stats": {"pts": "10.4", "reb": "4.7", "ast": "2.6", "blk": "1.2", "stl": "1.9"}, "ts": ".528"}, {"pick": 58, "team": "Miami", "abbr": "MIA", "via": "OKC", "name": "Karter Knox", "pos": "SF", "school": "Louisville", "ht": "6'6.25\"", "wt": "214 lbs", "yr": "Junior", "age": "22.1", "stats": {"pts": "8.1", "reb": "4.5", "ast": "1.2", "blk": "0.5", "stl": "0.7"}, "ts": ".575"}, {"pick": 59, "team": "Philadelphia", "abbr": "PHI", "via": "", "name": "JT Toppin", "pos": "PF", "school": "Texas Tech", "ht": "6'9\"", "wt": "230 lbs", "yr": "Senior", "age": "22.0", "stats": {"pts": "21.8", "reb": "10.8", "ast": "2.1", "blk": "1.7", "stl": "1.4"}, "ts": ".571"}, {"pick": 60, "team": "Detroit", "abbr": "DET", "via": "", "name": "Daniel Jacobsen", "pos": "C", "school": "Purdue", "ht": "7'4\"", "wt": "250 lbs", "yr": "Junior", "age": "21.2", "stats": {"pts": "5.5", "reb": "3.0", "ast": "0.3", "blk": "1.2", "stl": "0.1"}, "ts": ".658"}], "roty": [{"name": "Cameron Boozer", "odds": "+230"}, {"name": "Caleb Wilson", "odds": "+370"}, {"name": "Darryn Peterson", "odds": "+460"}, {"name": "AJ Dybantsa", "odds": "+460"}, {"name": "Darius Acuff Jr.", "odds": "+1000"}, {"name": "Yaxel Lendeborg", "odds": "+1000"}, {"name": "Mikel Brown Jr.", "odds": "+4000"}, {"name": "Keaton Wagler", "odds": "+4000"}, {"name": "Aday Mara", "odds": "+7500"}, {"name": "Kingston Flemings", "odds": "+10000"}, {"name": "Brayden Burries", "odds": "+10000"}, {"name": "Morez Johnson Jr.", "odds": "+10000"}, {"name": "Hannes Steinbach", "odds": "+10000"}, {"name": "Cameron Carr", "odds": "+10000"}, {"name": "Christian Anderson", "odds": "+10000"}, {"name": "Ebuka Okorie", "odds": "+20000"}], "asof": "Oct 21, 2026", "asofShort": "Oct 21", "rotySource": "ROTY odds as of Oct 21, 2026 · open = FanDuel, June 24 · GM vote = NBA.com GM Survey", "rotyNote": "Implied probability = 100 ÷ (odds + 100). The 16 posted prices add up to {SUM}, and the extra above 100% is the book's margin, which the no-vig column strips out. For comparison, Polymarket on Oct 18 had Boozer 23.5%, Wilson 20.5%, Dybantsa 18.5% and Peterson 16.5%. The NBA.com GM Survey picked Boozer for Rookie of the Year with 50% of the vote, then Wilson 20%, Dybantsa 17% and Peterson 13%. Since open = change in implied probability (percentage points) from FanDuel's June 24 opening price (all 16 priced rookies had an opening line). GM vote is the share of NBA general managers picking each rookie for Rookie of the Year; the four names receiving votes total 100%, so everyone else is 0%.", "hero": {"copy": "Opening night is here for the 2026 class. Track how the lottery is playing, who is outplaying their draft slot and where the Rookie of the Year market stands, then run the 2027 lottery against the current mock.", "stats": [{"l": "ROTY favorite", "v": "Boozer", "s": "+230 · 30% implied · MEM", "cls": "y"}, {"l": "GM survey ROTY", "v": "50%", "s": "Boozer · Wilson 20% · Dybantsa 17%", "cls": "g"}, {"l": "First lottery debut", "v": "Mara", "s": "OKC 116-104 at SAS · Oct 20"}, {"l": "2027 mock No. 1", "v": "Stokes", "s": "SF · Kansas → BOS", "cls": "y"}]}, "ticker": ["2026-27 Rookie Watch", "Boozer +230 ROTY favorite", "GM Survey: Boozer 50% for ROTY", "Mara blocks Wembanyama in debut", "Dybantsa out for opener · left ankle", "Peterson vs Boozer · UTA at MEM tonight", "Stirtz: 61 pts, 13 threes in 3 preseason games", "Lendeborg starting for Golden State", "Burries voted biggest steal (30%)", "2027 mock No. 1: Tyran Stokes → BOS", "Caleb Holt No. 2 → BKN via NYK"], "trackerCopy": "The 14 lottery picks plus the later picks who have earned a role or a ROTY price. Each card has the preseason line, the opening-week role and a form score: Short Open's 0–100 read of camp and preseason play against draft-slot expectations.", "trackerSrc": "Sources: NBA.com Kia Rookie Ladder (Oct 21) and 2026-27 GM Survey; preseason game logs from CBS Sports and RotoWire (averages computed by Short Open; incomplete logs noted on each card); draft data from Tankathon.", "trackerSub": "Preseason + opening week · tap a card for notes", "surpriseSrc": "Built from preseason box scores, the NBA.com GM Survey, Bleacher Report and SI preseason risers/fallers. Commentary is Short Open's.", "pulse": [{"k": "ROTY consensus", "v": "Boozer, then Wilson", "s": "First on the board at +230 and 50% in the GM survey."}, {"k": "Hottest preseason", "v": "Stirtz · Lendeborg · Mara", "s": "Three of the four most efficient preseason lines came from picks 11, 12 and 16."}, {"k": "Injury watch", "v": "Dybantsa · Ament · Anderson", "s": "Ankle sprains for all three; Dybantsa misses the opener."}, {"k": "GMs' biggest steal", "v": "Brayden Burries", "s": "30% of the vote at No. 10; Graves, Philon and Meleek Thomas got 10% each."}], "rookies": [{"name": "AJ Dybantsa", "trend": "watch", "status": "Out · left ankle", "form": 70, "line": "12.8 pts · 3.8 reb · 1.8 ast on 43.9% FG (4 games)", "pre": "4 GP · 21.5 min · 12.8/3.8/1.8 · 2-of-11 3PT", "college": "25.5 ppg · 6.8 rpg · 3.7 apg (led nation)", "archetype": "Big wing scorer, all three levels", "note": "Scored in double figures in every preseason game, with a 7-rebound night, a 4-steal night and a 3-assist night. Washington doesn't need him to carry the offense, which suits a rookie. He sprained his left ankle in the preseason finale and is out for the opener against Milwaukee.", "flag": "Ankle sprain (Oct 17) · out for opener; 3-point shot hasn't come yet", "ps": [12.8, 3.8, 1.8, 4]}, {"name": "Darryn Peterson", "trend": "flat", "status": "Starter · SG", "form": 76, "line": "13.3 pts · 4.3 reb · 4.0 ast on 44.4% FG (4 games)", "pre": "4 GP · 26.3 min · 13.3/4.3/4.0", "college": "20.2 ppg · 4.2 rpg · 1.6 apg (24 games)", "archetype": "Shot-making combo guard with size", "note": "An uneven preseason: 3 points in his debut, 23 in the next game against Denver, then a balanced 13/6/6 with one turnover in the finale. He opens at Memphis against Boozer, the No. 3 pick, which is the marquee rookie matchup of opening week.", "ps": [13.3, 4.3, 4.0, 4]}, {"name": "Cameron Boozer", "trend": "up", "status": "Starter · PF", "form": 84, "line": "14.0 pts · 5.5 reb · 3.0 ast on 47.1% FG (4 games)", "pre": "4 GP · 14.0/5.5/3.0 · best 19/7/3 vs CHA", "college": "22.5 ppg · 10.2 rpg · 4.1 apg", "archetype": "Physically ready hub forward", "note": "Had at least 10 points, 4 rebounds and 2 assists in every preseason game. Arrived leaner and quicker than at Duke and already runs offense through the post. He is the GMs' Rookie of the Year pick and the betting favorite.", "ps": [14.0, 5.5, 3.0, 4]}, {"name": "Caleb Wilson", "trend": "up", "status": "Starter · PF", "form": 82, "line": "15.8 pts · 4.4 reb · 3.5 ast (5 games) · 21.4 pts per 36", "pre": "5 GP · 26.6 min · 15.8/4.4/3.5 · 9-of-29 3PT", "college": "19.8 ppg · 9.4 rpg · 2.7 apg", "archetype": "Explosive rim-running, rim-protecting forward", "note": "Scored in double figures in all five games and looked comfortable attacking the basket. GMs tied him with Dybantsa as the class's best player five years from now, and he's second in the award market at +370.", "ps": [15.8, 4.4, 3.5, 5]}, {"name": "Keaton Wagler", "trend": "watch", "status": "Starter · big on-ball role", "form": 58, "line": "12.0 pts · 4.0 reb · 3.0 ast on 30.3% FG (3 games)", "pre": "3 GP · 27.0 min · 12.0/4.0/3.0", "college": "17.9 ppg · 5.0 rpg · 4.3 apg", "archetype": "Crafty shot-creating guard with range", "note": "Hit a go-ahead jumper in his debut despite going 1-of-11 from three, and his shooting improved through the preseason. With several Clippers veterans out, he'll handle the ball a lot from day one, and the Clippers can let him develop through mistakes.", "flag": "Efficiency: ~30% FG in preseason", "ps": [12.0, 4.0, 3.0, 3]}, {"name": "Mikel Brown Jr.", "trend": "watch", "status": "Bench · minutes limit", "form": 55, "line": "15 pts · 3 reb · 2 stl in his only preseason game", "pre": "1 GP · 18 min · 15 pts on 4-of-7, 5-of-5 FT", "college": "18.2 ppg · 3.3 rpg · 4.7 apg (21 games)", "archetype": "Deep-range scoring point guard", "note": "An ankle sprain in late September cost him most of camp, and he'll come off the bench until he's cleared for more than 24 minutes. In his one preseason game he looked sharp, and he's learning under Julius Randle.", "flag": "Ankle (cleared Oct 14) · minutes restriction", "ps": [15, 3, 2, 1]}, {"name": "Darius Acuff Jr.", "trend": "up", "status": "Starter · PG", "form": 80, "line": "17.3 pts · 3.8 ast on 42.4% FG · 8-of-19 3PT (4 games)", "pre": "4 GP · 24.0 min · 17.3/2.3/3.8", "college": "23.5 ppg · 3.1 rpg · 6.4 apg (SEC POY)", "archetype": "Pull-up scoring lead guard", "note": "His scoring drew attention around the league: 19 points against the Lakers, then 25 points and 8 assists against Golden State. He's the projected starting point guard in Sacramento, a big reason he's +1000 to win the award.", "ps": [17.3, 2.3, 3.8, 4]}, {"name": "Kingston Flemings", "trend": "flat", "status": "Rotation · backup PG", "form": 70, "line": "5+ assists in 3 of 5 games · 2 TO over the last 4", "pre": "5 GP · full averages not published", "college": "16.1 ppg · 4.1 rpg · 5.2 apg (All-American)", "archetype": "Pass-first two-way point guard", "note": "Atlanta loves his work ethic and attention to detail. Ball security stood out: only two turnovers across his last four preseason games. He'll play rotation minutes behind the veteran guards."}, {"name": "Morez Johnson Jr.", "trend": "flat", "status": "Bench big", "form": 55, "line": "Limited to 2 preseason games (lower-leg soreness)", "pre": "2 GP · one known line: 4 pts, 2 reb in 12 min", "college": "13.1 ppg · 7.3 rpg · 62% FG (national champion)", "archetype": "Energy big: rebounds, defends, finishes", "note": "Dallas's frontcourt is crowded and he saw limited preseason minutes. Coach Dusty May, who coached him at Michigan, knows exactly how to use him, so his early role is worth watching."}, {"name": "Brayden Burries", "trend": "up", "status": "Rotation guard", "form": 72, "line": "16.3 pts · 5.7 reb · 3.0 ast (3 logged games)", "pre": "4 GP · best 19/5/5 + 4 stl vs CHI · 1-of-14 3PT", "college": "16.1 ppg · 4.9 rpg · 2.4 apg (49.1% FG)", "archetype": "Downhill two-way guard", "note": "GMs voted him the biggest steal of the draft. Against Chicago he showed everything at once: scoring, rebounding, passing and four steals. Milwaukee's guard depth may limit his early minutes.", "flag": "Shooting: 1-of-14 from three in preseason", "ps": [16.3, 5.7, 3.0, 3]}, {"name": "Yaxel Lendeborg", "trend": "up", "status": "Starter · opening night", "form": 86, "line": "15.6 pts · 7.4 reb · 4.0 ast on 56.9% FG (5 games)", "pre": "5 GP · 23.2 min · 15.6/7.4/4.0", "college": "15.1 ppg · 6.8 rpg · 3.2 apg (Big Ten POY)", "archetype": "Switchable playmaking forward", "note": "Scored 17 or more in four of five preseason games, including 23/10/6 in 24 minutes against Sacramento. Steve Kerr promised rotation minutes, then gave him a spot in the opening-night starting lineup.", "ps": [15.6, 7.4, 4.0, 5]}, {"name": "Aday Mara", "trend": "up", "status": "Rotation · backup C", "form": 85, "line": "Debut: 7 pts · 2 reb · 1 blk in ~12 min (W 116-104 at SAS)", "pre": "3 logged GP · 17.0/8.3/3.7 on 79.2% FG", "college": "12.1 ppg · 6.8 rpg · 2.6 bpg", "archetype": "Shot-blocking, passing 7-footer", "note": "The first lottery pick to play a regular-season game. He blocked a Victor Wembanyama dunk and threw down an alley-oop on the next trip. In preseason he started 10-of-10 from the field and had a 17/10/6/5-block game against Atlanta.", "flag": "Contract dispute: Basket Zaragoza claims he's still under contract; OKC says he's cleared", "ps": [17.0, 8.3, 3.7, 3]}, {"name": "Nate Ament", "trend": "dn", "status": "Available · development role", "form": 45, "line": "23 total preseason minutes (ankle sprain Oct 8)", "pre": "2 GP · 12.0 min · 5.5 pts · 27.3% FG", "college": "16.7 ppg · 6.3 rpg · 2.3 apg", "archetype": "Long, skilled wing scorer · long-term project", "note": "An ankle sprain wiped out most of his preseason. He was listed as probable for the opener, but with a healthy Bucks frontcourt he's a slow-burn project this year.", "flag": "Ankle sprain cost the preseason", "ps": [5.5, 3.0, 0.5, 2]}, {"name": "Hannes Steinbach", "trend": "up", "status": "Rotation · backup C", "form": 70, "line": "Finale: 19 pts · 10 reb · 3 stl off the bench", "pre": "2 logged GP · 13.0 pts · 7.0 reb · 69.2% FG", "college": "18.5 ppg · 11.8 rpg", "archetype": "Rebounding, rim-rolling big", "note": "Charlotte is excited about him as a versatile big in the rotation. He closed the preseason with a double-double, and an injury to Moussa Diabate opens backup center minutes right away.", "ps": [13.0, 7.0, null, 2]}, {"name": "Dailyn Swain", "trend": "flat", "status": "Rotation · backup handler", "form": 64, "line": "Preseason opener: 10 pts · 6 ast on 3-of-3 FG", "pre": "Full averages unverified", "college": "17.3 ppg · 7.5 rpg · 3.6 apg (54.2% FG)", "archetype": "Athletic forward being developed as a ball-handler", "note": "Chicago is using him as a backup ball-handler while Tre Jones nurses a sore hip, and he'll also play G League games when the schedule allows."}, {"name": "Bennett Stirtz", "trend": "up", "status": "Bench guard", "form": 83, "line": "20.3 pts · 4.3 ast on 58.3% FG · 13 threes (3 games)", "pre": "3 GP · 30.3 min · 20.3/4.7/4.3", "college": "19.8 ppg · 4.4 apg (47.7 / 35.8)", "archetype": "Poised shooting point guard", "note": "The most efficient preseason of any rookie guard: 61 points and 13-of-22 from three in his first three games, including 26 at Atlanta. A lot of it came with OKC's starters resting, and the Thunder backcourt is deep, so playing time is the real hurdle.", "ps": [20.3, 4.7, 4.3, 3]}, {"name": "Ebuka Okorie", "trend": "up", "status": "Bench · behind Cunningham", "form": 74, "line": "~11.7 pts in 15 min · debut game-winner vs PHX", "pre": "3 GP · approx. 11.7 pts · 2.7 ast", "college": "23.2 ppg · 3.6 rpg · 3.6 apg (All-ACC)", "archetype": "Bucket-getting guard, calm late", "note": "Detroit traded up to get him, and he hit a game-winner in his first preseason game. He also led the Pistons with 14 points against Washington and scored 14 in nine minutes against Toronto. At +20000 he's the longest price on the ROTY board.", "ps": [11.7, null, 2.7, 3]}, {"name": "Christian Anderson", "trend": "dn", "status": "Development · backup PG", "form": 45, "line": "Missed early exhibitions (ankle sprain in practice)", "pre": "Preseason line unverified", "college": "18.5 ppg · 7.4 apg (47 / 42 / 81)", "archetype": "Shooting, passing point guard; small for the position", "note": "A practice ankle sprain slowed his camp, and Charlotte is bringing him along carefully behind Coby White in a crowded backup point guard competition. He's priced at +10000 for the award."}, {"name": "Allen Graves", "trend": "flat", "status": "Development", "form": 55, "line": "Debut: 5 pts on 1-of-7 · 3 reb in 15 min", "pre": "Full averages unverified", "college": "Santa Clara · stats unverified", "archetype": "Connective forward who helps off the ball", "note": "Darko Rajakovic praised his defense, and he tied for second in the GMs' steal vote. Expect some G League time early."}, {"name": "Labaron Philon Jr.", "trend": "dn", "status": "Bench · minutes unclear", "form": 52, "line": "10.0 pts · 5.5 ast on 31.8% FG (2 games)", "pre": "2 GP · 25.0 min · 14 pts / 7 ast vs BOS", "college": "22.0 ppg · 3.5 rpg · 5.0 apg (50.1 / 39.9)", "archetype": "Shifty paint-touching point guard", "note": "Went 7-of-22 across two games. He tied for second in the GM steal vote, but with Maxey and veterans ahead of him, his rotation spot is unclear.", "ps": [10.0, 2.0, 5.5, 2]}, {"name": "Cameron Carr", "trend": "flat", "status": "Fringe rotation", "form": 66, "line": "Debut: 19 pts off the bench at SAC (7-of-13)", "pre": "1 logged GP · other games unverified", "college": "18.9 ppg · 5.8 rpg · 1.3 bpg (49.4 / 37.4)", "archetype": "Springy shooting guard who blocks shots", "note": "Led the Lakers' bench in his debut, and JJ Redick has said he can earn minutes. He's priced at +10000 for Rookie of the Year.", "ps": [19, 3, 2, 1]}], "risers": [{"name": "Bennett Stirtz", "line": "61 pts · 13-of-22 3PT in his first 3 games", "copy": "Scored more efficiently than any of the lottery point guards. Even accounting for the bench-unit competition, he looks like a real answer for OKC's second-unit creation."}, {"name": "Yaxel Lendeborg", "line": "Opening-night starter · 17+ pts in 4 of 5", "copy": "Kerr gave him a starting spot after the preseason. His ability to defend several positions fits Golden State's system now, not later."}, {"name": "Aday Mara", "line": "10-of-10 FG start · blocked Wembanyama in debut", "copy": "Opened the preseason perfect from the field, posted a 17/10/6/5-block game, then won his first real minutes against San Antonio."}, {"name": "Darius Acuff Jr.", "line": "19 vs LAL · 25 + 8 ast vs GSW", "copy": "Back-to-back showcase games made him look like a starting-caliber scorer already. He's the best-priced guard on the board after the top four."}, {"name": "Ebuka Okorie", "line": "Debut game-winner · 14 pts in 9 min vs TOR", "copy": "His late-game composure is why Detroit traded up for him. A bench scoring role on a contender is within reach."}, {"name": "Cameron Carr", "line": "19 pts off the bench in his debut", "copy": "The No. 24 pick has a ROTY price and a coach saying he can earn minutes. He's the best long shot in the late first round."}], "fallers": [{"name": "AJ Dybantsa", "line": "Out for opener · 2-of-11 3PT in preseason", "copy": "The No. 1 pick's ankle sprain means his award case starts late. He's tied for third in the market at +460 after opening behind only Boozer."}, {"name": "Keaton Wagler", "line": "~30% FG · 1-of-11 3PT in his debut", "copy": "Veteran injuries hand him a big role anyway. How efficiently he shoots is the thing to watch in his first month."}, {"name": "Mikel Brown Jr.", "line": "1 preseason game · bench minutes limit", "copy": "An ankle sprain cost him three preseason games, and Brooklyn will keep him under 24 minutes until he's cleared for more."}, {"name": "Nate Ament", "line": "23 preseason minutes", "copy": "An ankle sprain on Oct 8 ended his preseason. A healthy Bucks frontcourt makes this a development year."}, {"name": "Christian Anderson", "line": "Practice ankle sprain", "copy": "Missed early exhibitions and sits in a crowded backup point guard competition behind Coby White."}, {"name": "Labaron Philon Jr.", "line": "7-of-22 FG in 2 games", "copy": "Tied for second in the GMs' steal vote, but Philadelphia's guard depth leaves his rotation spot unclear."}], "feed": [{"name": "Cameron Boozer", "who": "PF · Grizzlies · No. 3", "copy": "ROTY favorite at +230 and the GMs' pick with 50%. Debuts tonight against Peterson.", "trend": "bullish"}, {"name": "Aday Mara", "who": "C · Thunder · No. 12", "copy": "First lottery pick to debut, and he blocked a Wembanyama dunk in a 116-104 win at San Antonio.", "trend": "bullish"}, {"name": "AJ Dybantsa", "who": "SF · Wizards · No. 1", "copy": "Out for the opener with a sprained left ankle; +460 for the award.", "trend": "bearish"}, {"name": "Yaxel Lendeborg", "who": "F · Warriors · No. 11", "copy": "Starting on opening night after a 15.6/7.4/4.0 preseason on 57% shooting.", "trend": "bullish"}, {"name": "Bennett Stirtz", "who": "PG · Thunder · No. 16", "copy": "13 threes in three preseason games. Needs minutes in a deep OKC backcourt.", "trend": "watch"}, {"name": "Keaton Wagler", "who": "G · Clippers · No. 5", "copy": "Big early role because of injuries; preseason shooting around 30%.", "trend": "watch"}, {"name": "Tyran Stokes", "who": "SF · Kansas · 2027", "copy": "No. 1 in the current 2027 mock, projected to Boston.", "trend": "bullish"}, {"name": "Stefan Joksimović", "who": "PG/SG · Baskonia · 2027", "copy": "Highest-ranked international in the mock at No. 3. Sacramento holds Nos. 3 and 4.", "trend": "watch"}], "mockMeta": {"source": "Tankathon 2027 mock draft", "asof": "Projected order · Oct 2026", "note": "Order and prospects from Tankathon's 2027 mock draft (saved Oct 2026; order is projected, not current standings). Stats are last season per game; incoming freshmen have none yet. Lottery odds: NBA format since 2019."}, "rotyOpen": {"Cameron Boozer": "+240", "Darryn Peterson": "+400", "AJ Dybantsa": "+400", "Darius Acuff Jr.": "+450", "Caleb Wilson": "+950", "Mikel Brown Jr.": "+1500", "Yaxel Lendeborg": "+2000", "Keaton Wagler": "+3500", "Brayden Burries": "+5000", "Kingston Flemings": "+10000", "Morez Johnson Jr.": "+10000", "Cameron Carr": "+15000", "Ebuka Okorie": "+20000", "Christian Anderson": "+20000", "Aday Mara": "+25000", "Hannes Steinbach": "+25000"}, "gmRoty": {"Cameron Boozer": 50, "Caleb Wilson": 20, "AJ Dybantsa": 17, "Darryn Peterson": 13, "Darius Acuff Jr.": 0, "Yaxel Lendeborg": 0, "Mikel Brown Jr.": 0, "Keaton Wagler": 0, "Aday Mara": 0, "Kingston Flemings": 0, "Brayden Burries": 0, "Morez Johnson Jr.": 0, "Hannes Steinbach": 0, "Cameron Carr": 0, "Christian Anderson": 0, "Ebuka Okorie": 0}}</script>
+<script>
+(function(){
+'use strict';
+const D=JSON.parse(document.getElementById('nbaDraftData').textContent);
+const T=D.teams; // abbr -> {name, c:[primary,secondary]}
+const $=id=>document.getElementById(id);
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function hexLum(h){h=h.replace('#','');const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return .299*r+.587*g+.114*b;}
+function blend(a,b,t){const p=x=>[1,3,5].map(i=>parseInt(x.slice(i,i+2),16));const A=p(a),B=p(b);return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join('');}
+function accent(ab){const t=T[ab];if(!t)return '#f4b942';let c=t.c[0];if(hexLum(c)<70||c.toLowerCase()==='#000000')c=t.c[1];if(hexLum(c)<110)c=blend(c,'#ffffff',.45);return c;}
+function tname(ab){return (T[ab]&&T[ab].name)||ab;}
+function implied(o){const n=parseInt(String(o).replace('+',''),10);if(isNaN(n))return null;return n>0?100/(n+100):-n/(-n+100);}
+function pct(x,d){return (x*100).toFixed(d==null?1:d)+'%';}
+function jersey(ab,size){const t=T[ab]||{c:['#1e2d40','#f4b942']};const a=t.c[0],b=t.c[1];const s=size||40;
+  return `<svg viewBox="0 0 64 64" width="${s}" height="${s}" aria-hidden="true"><path d="M20 6h8c0 4 2 6 4 6s4-2 4-6h8l2 2c-1 7 2 11 8 13v37H10V21c6-2 9-6 8-13z" fill="${a}" stroke="${b}" stroke-width="2.4" stroke-linejoin="round"/><path d="M26 6c0 5 3 9 6 9s6-4 6-9" fill="none" stroke="${b}" stroke-width="2.4"/><text x="32" y="44" text-anchor="middle" font-family="DM Mono,monospace" font-size="13" font-weight="900" fill="${b}">${esc(ab)}</text></svg>`;}
+const POS_GROUP=p=>{p=String(p||'');if(/C/.test(p)&&!/^SG|PG/.test(p.split('/')[0]))return 'BIG';if(/PF/.test(p)&&!/SF/.test(p))return 'BIG';if(/SF|PF/.test(p))return 'WING';return 'GUARD';};
+let posFilter='ALL';
+
+/* ROTY */
+const roty=D.roty.map(r=>Object.assign({},r,{imp:implied(r.odds)})).sort((a,b)=>b.imp-a.imp);
+const impSum=roty.reduce((s,r)=>s+r.imp,0);
+roty.forEach(r=>r.nv=r.imp/impSum);
+const rookieBy=Object.fromEntries(D.rookies.map(r=>[r.name,r]));
+const draftBy=Object.fromEntries(D.draft.map(r=>[r.name,r]));
+function rotyOf(name){return roty.find(r=>r.name===name);}
+
+function renderStrip(){
+  const col=['#f4b942','#c9ccd6','#cd7f32'];
+  $('rotyItems').innerHTML=roty.slice(0,8).map((r,i)=>{const d=draftBy[r.name]||{};return `<div class="roty-item"><span class="roty-rank" style="color:${col[i]||'#5a6b80'}">#${i+1}</span><span class="roty-name">${esc(r.name)}</span><span class="roty-pos">${esc(d.abbr||'')}</span><span class="roty-odds" style="color:${i===0?'#f4b942':'#22c55e'}">${esc(r.odds)}</span><span class="roty-imp">${pct(r.imp,0)}</span></div>`;}).join('');
+}
+function renderHero(){
+  $('heroCopy').innerHTML=esc(D.hero.copy);
+  $('quickstats').innerHTML=D.hero.stats.map(s=>`<div class="qs ${s.cls||''}"><div class="qs-l">${esc(s.l)}</div><div class="qs-v">${esc(s.v)}</div><div class="qs-s">${esc(s.s)}</div></div>`).join('');
+  $('leadBadge').textContent=D.asofShort;
+  const top=roty.slice(0,8),max=top[0].imp;
+  const col=['#f4b942','#c9ccd6','#cd7f32'];
+  $('leadList').innerHTML=top.map((r,i)=>{const d=draftBy[r.name]||{};return `<div class="lead-row" style="--accent:${i<3?col[i]:accent(d.abbr)}"><div class="lead-rank">${i+1}</div><div style="min-width:0"><div class="lead-name">${esc(r.name)}</div><div class="lead-meta">${esc(d.pos||'')} &middot; ${esc(tname(d.abbr))} &middot; Pick ${d.pick||'—'}</div></div><div class="lead-bar"><i style="width:${(r.imp/max*100).toFixed(0)}%"></i></div><div class="lead-odds">${esc(r.odds)}</div><div class="lead-imp">${pct(r.imp,0)}</div></div>`;}).join('');
+  $('leadFoot').textContent=D.rotySource;
+  $('leadCount').textContent=roty.length+' priced';
+  const tk=D.ticker.concat(D.ticker);
+  $('marquee').innerHTML=tk.map((t,i)=>`<span class="${i%5===0?'gd':i%3===0?'hl':''}">${esc(t)}</span>`).join('');
+}
+function statusChip(s){if(!s)return '';const k=/inj|out|ankle|sprain/i.test(s)?'inj':/start/i.test(s)?'start':/rotation|bench|minutes/i.test(s)?'rot':'dev';return `<span class="chip ${k}">${esc(s)}</span>`;}
+function sig(t){return t==='up'?['up','▲ Rising']:t==='dn'?['dn','▼ Fading']:t==='watch'?['watch','◆ Watch']:['flat','■ Steady'];}
+function passPos(r){if(posFilter==='ALL')return true;const d=draftBy[r.name]||{};return POS_GROUP(d.pos||r.pos)===posFilter;}
+let trSort='pick';
+function trSortFn(a,b){const da=draftBy[a.name],db=draftBy[b.name];if(trSort==='form')return (b.form||0)-(a.form||0);if(trSort==='odds'){const ia=(rotyOf(a.name)||{}).imp||0,ib=(rotyOf(b.name)||{}).imp||0;return ib-ia||da.pick-db.pick;}return da.pick-db.pick;}
+function ledgerRow(r){const d=draftBy[r.name]||{};const ab=r.team||d.abbr;const ro=rotyOf(r.name);const fv=r.form||0;
+  return `<div class="lg-row" style="--accent:${accent(ab)};--fc:${fcol(fv)};--sc:${scol(r.status)}" onclick="this.classList.toggle('open')"><div class="lg-pk">${d.pick}</div><span class="tm-chip">${esc(ab)}</span>
+  <div style="min-width:0"><div class="rm-name">${esc(r.name)}</div><div class="lg-st"><i></i>${esc(r.status||'')} &middot; ${esc(d.pos||'')}</div></div>
+  <div class="lg-line">${esc(r.line)}</div><div class="lg-form"><div class="bar"><i style="width:${fv}%"></i></div><b>${fv}</b></div><div class="lg-odds${ro?'':' none'}">${ro?esc(ro.odds):'—'}</div>
+  <div class="lg-more">${r.college?`<p style="color:#6f7f93">${esc(r.college)}</p>`:''}<p>${esc(r.note)}</p></div></div>`;}
+function renderTracker(){
+  $('trackerCopy').textContent=D.trackerCopy;
+  $('trackerSrc').textContent=D.trackerSrc;
+  $('trackerSub').textContent=D.trackerSub;
+  const lot=D.rookies.filter(r=>(draftBy[r.name]||{}).pick<=14&&passPos(r)).sort(trSortFn);
+  const later=D.rookies.filter(r=>(draftBy[r.name]||{}).pick>14&&passPos(r)).sort(trSortFn);
+  $('trackerGrid').innerHTML=lot.map(rookieCard).join('')||'<p class="board-sub">No lottery picks at this position.</p>';
+  $('laterGrid').innerHTML=later.map(ledgerRow).join('');
+  $('laterBoardWrap').style.display=later.length?'':'none';
+  $('pulseTiles').innerHTML=D.pulse.map(t=>`<div class="tile"><b>${esc(t.k)}</b><strong>${esc(t.v)}</strong><p>${esc(t.s)}</p></div>`).join('');
+}
+function renderRoty(){
+  $('rotySrc').textContent=D.rotySource;
+  const max=roty[0].imp,OPEN=D.rotyOpen||{},GM=D.gmRoty||{};
+  $('rotyBody').innerHTML=roty.map((r,i)=>{const d=draftBy[r.name]||{};const o=OPEN[r.name];let mv='<span class="mv-pill nil">—</span>';
+    if(o){const dv=(r.imp-implied(o))*100;mv=Math.abs(dv)<0.05?'<span class="mv-pill nil">= 0.0</span>':`<span class="mv-pill ${dv>=0?'up':'dn'}">${dv>=0?'▲':'▼'}${Math.abs(dv).toFixed(1)}</span>`;}
+    const gm=GM[r.name];
+    return `<tr style="--accent:${accent(d.abbr)}"><td><span class="nm">${esc(r.name)}</span><span class="sm">${esc(d.pos||'')} &middot; ${esc(tname(d.abbr))}</span></td><td class="hide-sm mono">#${d.pick||'—'}</td><td class="r odds">${esc(r.odds)}</td><td class="r pct">${pct(r.imp)}</td><td class="r hide-sm mono" style="color:#8fa2b8">${o?esc(o):'—'}</td><td class="r">${mv}</td><td class="r hide-sm"><span class="gm${gm?'':' nil'}">${gm!=null?gm+'%':'—'}</span></td><td class="hide-sm"><div class="mini-bar"><i style="width:${(r.imp/max*100).toFixed(0)}%"></i></div></td></tr>`;}).join('');
+  $('rotyNote').innerHTML=esc(D.rotyNote).replace('{SUM}',pct(impSum,0));
+}
+
+function fcol(v){return v>=80?'#22c55e':v>=65?'#a3e635':v>=50?'#f4b942':v>=40?'#fb923c':'#ef4444';}
+function scol(s){return /out|inj|ankle|sprain/i.test(s||'')?'#ef4444':/start/i.test(s||'')?'#22c55e':/rotation|bench|minutes|fringe/i.test(s||'')?'#68c8ff':'#a78bfa';}
+function trio(a){const f=v=>v==null?'—':(Math.round(v*10)/10).toFixed(1);return `<div class="c-stats"><div><b>${f(a[0])}</b><small>Pts</small></div><div><b>${f(a[1])}</b><small>Reb</small></div><div><b>${f(a[2])}</b><small>Ast</small></div></div>`;}
+function rookieCard(r,i){
+  const d=draftBy[r.name]||{};const ab=r.team||d.abbr;const ac=accent(ab);const s=sig(r.trend);const ro=rotyOf(r.name);const fv=r.form!=null?r.form:0;
+  const pre=r.pre?`<div class="x-row"><span>Preseason</span><b>${esc(r.pre)}</b></div>`:'';
+  const body=r.ps?`${trio(r.ps)}<div class="c-cap">Preseason averages &middot; ${r.ps[3]} GP</div>`:`<div class="c-text">${esc(r.line)}</div>`;
+  return `<div class="card" style="--accent:${ac};--fc:${fcol(fv)};animation:fadeUp .35s ${Math.min(i*.03,.3)}s both" onclick="this.classList.toggle('open')">
+    <div class="card-mark">${jersey(ab,150)}</div>
+    <div class="card-body">
+      <div class="c-head"><div class="c-pick">${String(d.pick||r.pick).padStart(2,'0')}</div><div class="c-tag"><b>${esc(ab)} &middot; ${esc(d.pos||r.pos)}</b><span class="c-trend ${s[0]}">${s[1]}</span></div></div>
+      <div class="c-name">${esc(r.name)}</div>
+      <div class="c-sub">${esc(tname(ab))} &middot; ${esc(d.school||'')}</div>
+      <div class="c-status" style="--sc:${scol(r.status)}"><i></i>${esc(r.status||'')}</div>
+      ${body}
+      <div class="c-foot"><span class="c-form">Form <b>${r.form!=null?r.form:'—'}</b></span><span class="c-odds${ro?'':' none'}">${ro?esc(ro.odds)+' ROTY':'No ROTY price'}</span></div>
+      <div class="expand"><div class="expand-inner">
+        ${pre}
+        ${r.college?`<div class="x-row"><span>Last college/pro season</span><b>${esc(r.college)}</b></div>`:''}
+        ${d.ht?`<div class="x-row"><span>Height · age at draft</span><b>${esc(d.ht)} · ${esc(d.age)}</b></div>`:''}
+        ${r.archetype?`<div class="x-row"><span>Archetype</span><b>${esc(r.archetype)}</b></div>`:''}
+        <p class="x-note">${esc(r.note)}</p>
+        ${r.flag?`<div class="x-flag">! ${esc(r.flag)}</div>`:''}
+      </div></div>
+      <div class="hint">Notes <span>&#8964;</span></div>
+    </div><div class="c-bar"><i style="width:${fv}%"></i></div></div>`;
+}
+function moveCard(m,kind,i){
+  const d=draftBy[m.name]||{};const ab=m.team||d.abbr;const ro=rotyOf(m.name);const up=kind==='up';
+  return `<div class="card ${up?'up':'dn'}" style="--accent:${accent(ab)};--fc:${up?'#22c55e':'#ef4444'};animation:fadeUp .35s ${Math.min(i*.04,.3)}s both" onclick="this.classList.toggle('open')"><div class="card-mark">${jersey(ab,150)}</div><div class="card-body">
+    <div class="c-head"><div class="c-pick">${up?'▲':'▼'}${i+1}</div><div class="c-tag"><b>${esc(ab)} &middot; Pick ${d.pick||'—'}</b><span class="c-trend ${up?'up':'dn'}">${up?'Riser':'Flag'}</span></div></div>
+    <div class="c-name">${esc(m.name)}</div><div class="c-sub">${esc(tname(ab))} &middot; ${esc(d.pos||'')}</div>
+    <div class="c-text" style="font-family:var(--mono);color:${up?'#86efac':'#fca5a5'}">${esc(m.line||'')}</div>
+    <div class="c-foot"><span class="c-form">${up?'Outplaying the slot':'Ground to make up'}</span><span class="c-odds${ro?'':' none'}">${ro?esc(ro.odds)+' ROTY':''}</span></div>
+    <div class="expand"><div class="expand-inner"><p class="x-note">${esc(m.copy)}</p></div></div><div class="hint">Why <span>&#8964;</span></div></div><div class="c-bar"><i style="width:100%"></i></div></div>`;
+}
+function mockCard(slot,i){
+  const p=prospectAt(slot),o=ownerAt(slot);if(!passMockPos(p))return '';
+  const mv=lastMoves[o.pick];const mvh=(mv&&slot<=14)?`<span class="mv ${mv>0?'up':'dn'}">${mv>0?'▲':'▼'}${Math.abs(mv)}</span>`:'';
+  const mine=myTeam?(o.abbr===myTeam?' mine':' dim'):'';const s=p.stats||{};
+  const body=s.pts?`${trio([+s.pts,+s.reb,+s.ast])}<div class="c-cap">Last season per game${p.ts?' &middot; TS '+esc(p.ts):''}</div>`:`<div class="c-text" style="color:#6f7f93">${p.yr==='International'?'International':'Incoming freshman'} &middot; no ${p.yr==='International'?'club':'college'} stats yet</div>`;
+  return `<div class="card mock-card${mine}" style="--accent:${accent(o.abbr)};--fc:${accent(o.abbr)};animation:fadeUp .3s ${Math.min(i*.015,.3)}s both" onclick="this.classList.toggle('open')"><div class="card-mark">${jersey(o.abbr,150)}</div><div class="card-body">
+    <div class="c-head"><div class="c-pick">${String(slot).padStart(2,'0')}</div><div class="c-tag"><b>${esc(o.abbr)}${o.via?' · via '+esc(o.via):''}</b><span class="c-trend flat">${mvh||esc(p.pos)}</span></div></div>
+    <div class="c-name">${esc(p.name)}</div><div class="c-sub">${esc(p.pos)} &middot; ${esc(p.school)} &middot; ${esc(p.ht)} &middot; ${esc(p.age)}</div>
+    ${body}
+    <div class="expand"><div class="expand-inner"><div class="x-row"><span>Projected owner</span><b>${esc(tname(o.abbr))}</b></div>${o.via?`<div class="x-row"><span>Original pick</span><b>${esc(tname(o.via))}</b></div>`:''}<div class="x-row"><span>Class · weight</span><b>${esc(p.yr)} · ${esc(p.wt)}</b></div></div></div>
+    <div class="hint">Details <span>&#8964;</span></div></div><div class="c-bar"><i style="width:${Math.max(8,100-(slot-1)*3)}%"></i></div></div>`;
+}
+function renderSurprises(){
+  $('surpriseSrc').textContent=D.surpriseSrc;
+  const col=(list,up)=>list.map((m,i)=>{const d=draftBy[m.name]||{};const ab=m.team||d.abbr;const ro=rotyOf(m.name);
+    return `<div class="rm-row" style="--accent:${accent(ab)}" onclick="this.classList.toggle('open')"><span class="rm-n">${String(i+1).padStart(2,'0')}</span><span class="tm-chip">${esc(ab)}</span>
+    <div style="min-width:0"><div class="rm-name">${esc(m.name)}</div><div class="rm-meta">Pick ${d.pick||'—'} &middot; ${esc(d.pos||'')}${ro?' &middot; <span style="color:#f4b942">'+esc(ro.odds)+' ROTY</span>':''}</div><div class="rm-line">${esc(m.line||'')}</div></div>
+    <span class="rm-dir">${up?'&#9650;':'&#9660;'}</span><p class="rm-copy">${esc(m.copy)}</p></div>`;}).join('');
+  $('srPanel').innerHTML=`<div class="rm"><div class="rm-head"><div><div class="rm-kicker">2026 Rookies &middot; Camp &amp; preseason</div><div class="rm-title">Stock Report</div></div><div class="rm-kicker" style="letter-spacing:.08em;text-transform:none;font-weight:600;color:#56667a">Tap a row for the reasoning</div></div>
+  <div class="sr-cols"><div class="sr-col up"><div class="sr-col-head"><span>&#9650; Risers</span><b>${D.risers.length}</b></div><div class="sr-scroll">${col(D.risers,true)}</div></div><div class="sr-col dn"><div class="sr-col-head"><span>&#9660; Fades &amp; flags</span><b>${D.fallers.length}</b></div><div class="sr-scroll">${col(D.fallers,false)}</div></div></div>
+  <div class="rm-foot">Small samples &middot; scroll each side</div></div>`;
+}
+let bRound=1,bTeam='';
+function renderBoard(){
+  const has=Object.fromEntries(D.rookies.map(r=>[r.name,r]));
+  const rows=D.draft.filter(d=>(bRound===0||(bRound===1?d.pick<=30:d.pick>30))&&(!bTeam||d.abbr===bTeam));
+  $('draftBody').innerHTML=(rows.length?'':'<tr><td colspan="9" style="color:#5f6f84">No picks for this team in this round.</td></tr>')+rows.map(d=>{const r=has[d.name];const ro=rotyOf(d.name);return `<tr><td class="pk">${d.pick}</td><td><span class="tm" style="color:${accent(d.abbr)}">${esc(d.abbr)}</span>${d.via?` <span class="via">via ${esc(d.via)}</span>`:''}</td><td class="nm">${esc(d.name)}</td><td>${esc(d.pos)}</td><td class="hide-sm" style="color:#8b9aac">${esc(d.school)}</td><td class="hide-sm mono" style="color:#8b9aac">${esc(d.ht)}</td><td class="hide-sm mono" style="color:#8b9aac">${esc(d.age)}</td><td class="mono" style="color:#f4b942">${ro?esc(ro.odds):''}</td><td>${r?statusChip(r.status):''}</td></tr>`;}).join('');
+}
+function renderFeed(){
+  const g={bullish:'<svg viewBox="0 0 20 12"><path d="M2 10 9 5l3 2 6-5M14 2h4v4"/></svg>',bearish:'<svg viewBox="0 0 20 12"><path d="M2 2l7 5 3-2 6 5M14 10h4V6"/></svg>',watch:'<svg viewBox="0 0 20 12"><path d="M2 6h16"/></svg>'};
+  $('feedList').innerHTML=D.feed.map(f=>`<article class="feed-item"><div><b>${esc(f.name)}</b><span class="who">${esc(f.who)}</span><p>${esc(f.copy)}</p></div><span class="trend ${f.trend}">${g[f.trend]||''}<b>${esc(f.trend)}</b></span></article>`).join('');
+}
+
+/* MOCK + LOTTERY */
+const LOTTO=[140,140,140,125,105,90,75,60,45,30,20,15,10,5];
+const M=D.mock; // [{pick,abbr,via,name,pos,school,ht,yr,age,stats,ts}]
+let order=M.map(m=>m.pick); // current pick slot -> original pick number
+let round=1,myTeam='',lastMoves={},mockView='cards';
+function renderLottoOdds(){
+  const lot=M.slice(0,14);
+  $('lottoOdds').innerHTML=lot.map((m,i)=>`<div class="lotto-row"><span class="sl">${i+1}</span><span class="tm" style="color:${accent(m.abbr)}">${esc(m.abbr)}</span><div class="mini-bar"><i style="width:${(LOTTO[i]/140*100).toFixed(0)}%"></i></div><span class="pc">${(LOTTO[i]/10).toFixed(1)}%</span></div>`).join('');
+}
+function runLottery(){
+  const pool=[...Array(14).keys()];const top=[];
+  for(let k=0;k<4;k++){let tot=pool.reduce((s,i)=>s+LOTTO[i],0),x=Math.random()*tot;for(let j=0;j<pool.length;j++){x-=LOTTO[pool[j]];if(x<=0){top.push(pool[j]);pool.splice(j,1);break;}}}
+  const newLot=top.concat(pool); // indices of original slots 0..13
+  lastMoves={};
+  newLot.forEach((orig,slot)=>{lastMoves[orig+1]=(orig)-(slot);});
+  order=newLot.map(i=>i+1).concat(M.slice(14).map(m=>m.pick));
+  const w=M[newLot[0]];
+  const jumps=newLot.slice(0,4).map((o,s)=>({o:o+1,s:s+1})).filter(x=>x.o>4);
+  $('lottoMsg').innerHTML=`<b>${esc(w.abbr)}</b> wins the No. 1 pick${w.pick>1?` from the No. ${w.pick} slot`:''}${jumps.length?' · jumped into the top 4: '+jumps.map(j=>esc(M[j.o-1].abbr)+' ('+j.o+'→'+j.s+')').join(', '):''}.`;
+  renderMock();
+}
+function resetLottery(){order=M.map(m=>m.pick);lastMoves={};$('lottoMsg').textContent='Projected order, no lottery run yet.';renderMock();}
+function prospectAt(slot){return M[slot-1];} // prospects stay in board order
+function ownerAt(slot){return M[order[slot-1]-1];}
+function statLine(p){const s=p.stats||{};if(!s.pts)return `<div class="stat-strip" style="color:#6b7b90;font-family:Inter,sans-serif;font-size:.58rem">${p.yr==='International'?'Pro club stats':'No college stats yet'} &middot; ${esc(p.yr)}</div>`;return `<div class="stat-strip"><span><small>PTS</small>${esc(s.pts)}</span><span><small>REB</small>${esc(s.reb)}</span><span><small>AST</small>${esc(s.ast)}</span>${p.ts?`<span><small>TS%</small>${esc(p.ts)}</span>`:''}</div>`;}
+function passMockPos(p){return posFilter==='ALL'||POS_GROUP(p.pos)===posFilter;}
+function renderMock(){
+  const slots=round===1?[...Array(30).keys()].map(i=>i+1):[...Array(30).keys()].map(i=>i+31);
+  const el=$('mockBoard');
+  if(round===1&&mockView==='cards'){
+    el.innerHTML=`<div class="board-head"><div class="board-title">2027 Mock &middot; Round 1</div><div class="board-sub">${esc(D.mockMeta.source)} &middot; ${esc(D.mockMeta.asof)}</div></div><div class="grid">`+slots.map((slot,i)=>mockCard(slot,i)).join('')+'</div>';
+  }else{
+    el.innerHTML=`<div class="board-head"><div class="board-title">2027 Mock &middot; Round ${round}</div><div class="board-sub">${esc(D.mockMeta.source)} &middot; ${esc(D.mockMeta.asof)}</div></div><div class="r2-list${round===1?' r1-list':''}">`+slots.map(slot=>{const p=prospectAt(slot),o=ownerAt(slot);if(!passMockPos(p))return '';
+      const mv=lastMoves[o.pick];const mvh=(mv&&slot<=14)?` <span class="mvx mv ${mv>0?'up':'dn'}">${mv>0?'▲':'▼'}${Math.abs(mv)}</span>`:'';
+      const st=p.stats||{};const sty=myTeam?(o.abbr===myTeam?'box-shadow:0 0 0 1px rgba(244,185,66,.55);':'opacity:.38;'):'';
+      return `<div class="r2-row" style="--accent:${accent(o.abbr)};${sty}"><span class="p">${slot}</span><span class="t" style="color:${accent(o.abbr)}">${esc(o.abbr)}${mvh}</span><div style="min-width:0"><div class="n">${esc(p.name)}</div><div class="s">${esc(p.pos)} &middot; ${esc(p.school)} &middot; ${esc(p.ht)} &middot; ${esc(p.age)}${o.via?' &middot; via '+esc(o.via):''}</div></div>${round===1?`<span class="st">${st.pts?esc(st.pts)+' pts · '+esc(st.reb)+' reb · '+esc(st.ast)+' ast':'<span style="color:#5f6f84">'+esc(p.yr)+'</span>'}</span>`:`<span class="mono" style="font-size:.62rem;color:#8b9aac">${st.pts?esc(st.pts)+' ppg':esc(p.yr)}</span>`}</div>`;}).join('')+'</div>';
+  }
+}
+function initMock(){
+  $('mockSrc').textContent=D.mockMeta.note;
+  const teams=[...new Set(M.map(m=>m.abbr))].sort();
+  $('teamSel').innerHTML='<option value="">Highlight a team…</option>'+teams.map(a=>`<option value="${a}">${esc(tname(a))} (${M.filter(m=>m.abbr===a).length})</option>`).join('');
+  $('teamSel').addEventListener('change',e=>{myTeam=e.target.value;renderMock();});
+  $('roundSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;round=+b.dataset.r;[...$('roundSeg').children].forEach(x=>x.classList.toggle('on',x===b));renderMock();});
+  $('viewSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;mockView=b.dataset.v;[...$('viewSeg').children].forEach(x=>x.classList.toggle('on',x===b));renderMock();});
+  $('lottoBtn').addEventListener('click',runLottery);
+  $('resetBtn').addEventListener('click',resetLottery);
+  resetLottery();
+}
+
+/* nav + filter */
+window.go=function(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id==='sec-'+id));
+  document.querySelectorAll('.nav-btn').forEach(b=>{const on=b.dataset.sec===id;b.classList.toggle('on',on);if(on&&matchMedia('(max-width:860px)').matches)b.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});});
+  $('filterCard').style.display=(id==='tracker'||id==='mock')?'':'none';
+  try{history.replaceState(null,'','#'+id);}catch(e){}
+};
+function renderPills(){
+  const opts=[['ALL','All'],['GUARD','Guards'],['WING','Wings'],['BIG','Bigs']];
+  $('posPills').innerHTML=opts.map(([k,l])=>`<button class="pill${k===posFilter?' on':''}" data-p="${k}">${l}</button>`).join('');
+  $('posPills').onclick=e=>{const b=e.target.closest('.pill');if(!b)return;posFilter=b.dataset.p;renderPills();renderTracker();renderMock();};
+}
+$('sortSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;trSort=b.dataset.s;[...$('sortSeg').children].forEach(x=>x.classList.toggle('on',x===b));renderTracker();});
+$('bRoundSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;bRound=+b.dataset.r;[...$('bRoundSeg').children].forEach(x=>x.classList.toggle('on',x===b));renderBoard();});
+$('bTeamSel').innerHTML='<option value="">All teams</option>'+[...new Set(D.draft.map(d=>d.abbr))].sort().map(a=>`<option value="${a}">${esc(tname(a))} (${D.draft.filter(d=>d.abbr===a).length})</option>`).join('');
+$('bTeamSel').addEventListener('change',e=>{bTeam=e.target.value;renderBoard();});
+renderStrip();renderHero();renderPills();renderTracker();renderRoty();renderSurprises();renderBoard();renderFeed();renderLottoOdds();initMock();
+const h=(location.hash||'').slice(1);if(['tracker','roty','surprises','mock','board'].includes(h))go(h);
+})();
+</script>
+</body>
+</html>
