@@ -170,7 +170,437 @@ footer.so-footer .footer-copy{text-align:left!important;}
       '<span>'+r.tier+'</span></div></div></article>';
   }).join('');
 })();
-</script><script id="so-verdict-board">
+</script><script id="so-nflp-tools-20261022">
+/* ShortOpen NFL props - the front door, and the player browser.
+   Mirrors the NBA tools: same verdict vocabulary, same likelihood block, same
+   deep links. The model is the PAGE'S OWN, read off each row rather than
+   re-derived: Normal(ref, sig) for completions and the three yardage markets,
+   Poisson(ref) for passing touchdowns and receptions. Both were checked
+   against every graded row on the board before being used - median error 0.03
+   to 0.35 points on the Normal markets and 0.6 to 0.9 on the Poisson ones. */
+(function(){
+  var PD={};try{PD=JSON.parse(document.getElementById('props-data').textContent)}catch(e){}
+  var ORDER=['passyds','passtd','comps','recyds','recs','rushyds'];
+  ORDER=ORDER.filter(function(k){return PD[k]&&PD[k].rows&&PD[k].rows.length});
+  var SHORT={passyds:'PASS YDS',passtd:'PASS TD',comps:'COMP',
+             recyds:'REC YDS',recs:'REC',rushyds:'RUSH YDS'};
+  var NORMAL={comps:1,passyds:1,recyds:1,rushyds:1};   /* the rest are Poisson */
+  var YARDS={passyds:1,recyds:1,rushyds:1};
+  /* THE BOOK RULE. ShortOpen carries DraftKings, FanDuel, BetMGM and Caesars.
+     The board's own payload still has BetRivers and Betr columns and still
+     grades 80 of its 314 rows against them - that is this page's board to fix,
+     not the checker's - but the checker will not quote a price at a book the
+     site does not carry, and it will not borrow a grade that was struck
+     against one either (see judge). */
+  var BKN={dk:'DraftKings',fd:'FanDuel',mgm:'BetMGM',czr:'Caesars'};
+  var BKS={dk:'DK',fd:'FD',mgm:'MGM',czr:'CZR'};
+  var OK={dk:1,fd:1,mgm:1,czr:1};
+
+  function erf(x){var t=1/(1+.3275911*Math.abs(x)),
+    y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)
+      *t*Math.exp(-x*x);return x>=0?y:-y}
+  function pois(mu,l){var k=Math.floor(l),c=0,t=Math.exp(-mu);
+    for(var i=0;i<=k;i++){c+=t;t*=mu/(i+1)}return 1-c}
+  function pOver(k,mu,sig,line){
+    if(NORMAL[k])return 1-.5*(1+erf((line-mu)/((sig||1)*Math.SQRT2)));
+    return pois(Math.max(mu,0.01),line)}
+  function amer(p){p=Math.max(.004,Math.min(.996,p));
+    var v=p>=.5?-100*p/(1-p):100*(1-p)/p;v=Math.max(-2500,Math.min(2500,Math.round(v)));
+    return (v>0?'+':'')+v}
+  function dec(a){a=parseFloat(a);return a>0?1+a/100:1+100/-a}
+  function n1(v){return (Math.round(v*10)/10).toFixed(1)}
+  function nz(v){return YARDS[state0.k]?String(Math.round(v)):n1(v)}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function norm(s){return String(s==null?'':s).normalize('NFKD')
+    .replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9 ]+/g,'')}
+  var state0={k:null};
+
+  /* -------------------------------- indexes -------------------------------- */
+  var ROW={},NAMES=[],SEEN={},TEAM={};
+  ORDER.forEach(function(k){PD[k].rows.forEach(function(r){
+    ROW[k+'|'+r.n]=r;
+    if(!SEEN[r.n]){SEEN[r.n]=1;NAMES.push(r.n);TEAM[r.n]=r.t}})});
+  NAMES.sort();
+  function marketsFor(n){return ORDER.filter(function(k){return ROW[k+'|'+n]})}
+  function unit(k){return SHORT[k]||(PD[k].label||k).toUpperCase()}
+  function stepOf(k){return YARDS[k]?5:0.5}
+
+  function bestAt(r,line,side){
+    if(!r)return null;var best=null;
+    Object.keys(r.q).forEach(function(b){var c=r.q[b];
+      if(!OK[b])return;
+      if(Math.abs(c.l-line)>1e-9)return;
+      var px=side==='OVER'?c.o:c.u;if(px==null||px==='-')return;
+      var d=dec(px);if(!best||d>best.d)best={b:b,px:px,d:d}});
+    return best}
+
+  function judge(k,name,line,side){
+    var r=ROW[k+'|'+name];if(!r)return null;
+    var mean=r.ref,sig=r.sig;
+    var p=pOver(k,mean,sig,line);if(side==='UNDER')p=1-p;
+    var book=bestAt(r,line,side);
+    var out={k:k,n:name,r:r,line:line,side:side,p:p*100,fair:amer(p),book:book,
+             mu:mean,sig:sig};
+    if(book){
+      out.be=100/book.d;
+      out.ev=(p*book.d-1)*100;
+      /* On the row's OWN bet the page's stored numbers win: `ref` and `sig` are
+         rounded in the payload, and the box disagreeing with the board about
+         the same bet is worse than any rounding. */
+      if(side===r.bs&&Math.abs(line-r.bl)<1e-9&&OK[r.bk]){
+        out.p=r.bf;p=r.bf/100;out.fair=r.fp||amer(p);
+        out.ev=r.ev;out.exact=true;
+        if(r.be!=null)out.be=r.be;
+      }
+      out.word=out.ev>=1?'YES':(out.ev<=-1.5?'NO':'TOO CLOSE');
+      out.tone=out.ev>=1?'yes':(out.ev<=-1.5?'no':'close');
+    } else {out.word='NO PRICE';out.tone='none'}
+    return out}
+
+  /* ------------------------- likelihood, in words -------------------------- */
+  function dots(p){var n=Math.max(0,Math.min(10,Math.round(p/10))),h='';
+    for(var i=0;i<10;i++)h+='<i'+(i<n?' class="on"':'')+'></i>';
+    return '<span class="so-dots" aria-hidden="true">'+h+'</span>'}
+  function likely(p){
+    var n=Math.round(p/10);
+    if(p>=95)return 'all but certain — better than 19 Sundays in 20';
+    if(p>=90)return 'almost every week — about 9 in 10';
+    if(p<=5)return 'all but ruled out — fewer than 1 week in 20';
+    if(p<=10)return 'rarely — about 1 week in 10';
+    if(p>=47&&p<=53)return 'a coin flip — about 1 week in 2';
+    var w=p>=70?'most weeks':p>=58?'more often than not':p>=47?'a shade under half the time'
+      :p>=30?'the minority of weeks':'seldom';
+    return w+' — about '+n+' week'+(n===1?'':'s')+' in 10'}
+
+  /* ----------------------------- the player card --------------------------- */
+  var modal=null;
+  function closeModal(){if(modal){modal.classList.remove('on');
+    document.body.classList.remove('so-lock');
+    if(modal._last&&modal._last.focus)modal._last.focus()}}
+  function ensureModal(){
+    if(modal)return;
+    modal=document.createElement('div');modal.className='so-modal';
+    modal.innerHTML='<div class="so-mbg" data-close="1"></div><div class="so-mbox" '
+      +'role="dialog" aria-modal="true" aria-label="Player card"><button class="so-mx" '
+      +'type="button" data-close="1" aria-label="Close">×</button>'
+      +'<div class="so-mbody"></div></div>';
+    document.body.appendChild(modal);
+    modal.addEventListener('click',function(ev){
+      if(ev.target.closest('[data-close]'))closeModal()});
+    document.addEventListener('keydown',function(ev){
+      if(ev.key==='Escape'&&modal.classList.contains('on'))closeModal()});
+  }
+  function openPlayer(name,focusK){
+    var ms=marketsFor(name);if(!ms.length)return;
+    ensureModal();modal._last=document.activeElement;
+    var any=ROW[ms[0]+'|'+name];
+    var html='<div class="so-mh"><div><div class="so-mk">PLAYER CARD</div>'
+      +'<h3>'+esc(name)+'</h3><div class="so-msub">'+esc(any.t)+' vs '+esc(any.o)
+      +' · '+ms.length+' market'+(ms.length===1?'':'s')+' priced</div></div>'
+      +'<button class="so-mlink" type="button" data-share="'+esc(name)+'">COPY LINK</button>'
+      +'</div><div class="so-mgrid">';
+    ms.forEach(function(k){
+      var r=ROW[k+'|'+name];
+      html+='<section class="so-mm'+(k===focusK?' on':'')+'">'
+        +'<div class="so-mmh"><span class="cc-mk m-'+k+'">'+esc(PD[k].label)+'</span>'
+          +'<b>'+(YARDS[k]?Math.round(r.ref):n1(r.ref))+'</b><s>ShortOpen</s>'
+          +'<b class="c">'+(YARDS[k]?Math.round(r.mu):n1(r.mu))+'</b><s>market</s></div>'
+        +'<div class="so-mbet"><span class="sd '+r.bs.toLowerCase()+'">'+r.bs+' '
+          +(YARDS[k]?Math.round(r.bl):n1(r.bl))+'</span>'
+          +'<span class="so-mat">'+esc(r.bkn)+'</span>'
+          +'<span class="px">'+esc(r.bp)+'</span>'
+          +'<span class="so-mp">'+Math.round(r.bf)+'%</span>'
+          +'<span class="stamp s-'+String(r.tier).toLowerCase()+'">'+esc(r.tier)+'</span></div>'
+        +'<div class="so-mwhy">'+esc(r.why||'')+'</div></section>'});
+    html+='</div>';
+    modal.querySelector('.so-mbody').innerHTML=html;
+    modal.querySelector('.so-mbox').setAttribute('aria-label','Player card');
+    modal.classList.add('on');document.body.classList.add('so-lock');
+    var x=modal.querySelector('.so-mx');if(x)x.focus();
+    var sh=modal.querySelector('[data-share]');
+    if(sh)sh.onclick=function(){share({player:name},sh)};
+  }
+
+  /* ------------------------------ deep links ------------------------------- */
+  function share(obj,btn){
+    var h=Object.keys(obj).map(function(k){
+      return k+'='+encodeURIComponent(obj[k])}).join('&');
+    var url=location.href.split('#')[0]+'#'+h;
+    try{history.replaceState(null,'','#'+h)}catch(e){}
+    var done=function(){if(btn){var t=btn.textContent;btn.textContent='COPIED';
+      setTimeout(function(){btn.textContent=t},1400)}};
+    if(navigator.clipboard&&navigator.clipboard.writeText)
+      navigator.clipboard.writeText(url).then(done,done);
+    else done()}
+  function readHash(){
+    var h=(location.hash||'').replace(/^#/,'');if(!h)return null;
+    var o={};h.split('&').forEach(function(p){var i=p.indexOf('=');
+      if(i>0)o[p.slice(0,i)]=decodeURIComponent(p.slice(i+1))});
+    return o}
+
+  window.SO_NFLP={judge:judge,openPlayer:openPlayer,names:NAMES,markets:ORDER,
+    marketsFor:marketsFor,row:function(k,n){return ROW[k+'|'+n]},unit:unit,
+    share:share,label:function(k){return PD[k].label},team:function(n){return TEAM[n]}};
+
+  /* ============================== THE FRONT DOOR ============================= */
+  function build(){
+    var sec=document.querySelector('.props-board-section');if(!sec)return;
+    var head=sec.querySelector('.fh');if(!head)return;
+    var wrap=document.createElement('div');wrap.id='soFront';
+
+    var quick=[];ORDER.forEach(function(k){PD[k].rows.forEach(function(r){
+      if(r.tier&&r.tier!=='PASS')quick.push({n:r.n,k:k,ev:r.ev})})});
+    quick.sort(function(a,b){return b.ev-a.ev});
+    var qs={},qc=[];quick.forEach(function(x){
+      if(qs[x.n]||qc.length>=5)return;qs[x.n]=1;qc.push(x)});
+
+    wrap.innerHTML='<div class="so-ask">'
+      +'<div class="so-askh"><b>Prop checker</b>'
+        +'<span>Any player, any number — not only the ones a book has posted.</span></div>'
+      +'<div class="so-stage" id="soStage">'
+        +'<div class="so-pick">'
+          +'<div class="so-f so-f-p"><span>1 · PLAYER</span>'
+            +'<div class="so-prow"><input id="soAskP" autocomplete="off" spellcheck="false" '
+            +'placeholder="Start typing a name…">'
+            +'<button type="button" class="so-browse" id="soBrowse">BROWSE ALL</button></div>'
+            +'<div class="so-sug" id="soSug"></div></div>'
+          +'<div class="so-chip" id="soChip" hidden></div>'
+          +(qc.length?'<div class="so-quick"><u>TRY</u>'+qc.map(function(x){
+            return '<button type="button" data-q="'+esc(x.n)+'" data-qk="'+x.k+'">'
+              +esc(x.n)+'</button>'}).join('')+'</div>':'')
+        +'</div>'
+        +'<div class="so-mkrow"><span>2 · MARKET</span><div class="so-mkts" id="soMk"></div></div>'
+        +'<div class="so-lnrow"><span>3 · LINE</span>'
+          +'<div class="so-line">'
+            +'<button type="button" class="so-lb" data-d="-1" aria-label="Lower the line">−</button>'
+            +'<div class="so-lnum"><b id="soLv">—</b><s id="soLu"></s></div>'
+            +'<button type="button" class="so-lb" data-d="1" aria-label="Raise the line">+</button>'
+            +'<input type="range" id="soLr" aria-label="Line">'
+            +'<button type="button" class="so-lreset" id="soLreset" hidden></button>'
+          +'</div></div>'
+        +'<div class="so-sides" id="soSides"></div>'
+      +'</div><div class="so-out" id="soOut"></div></div>';
+    head.parentNode.insertBefore(wrap,head.nextSibling);
+
+    var $=function(i){return document.getElementById(i)};
+    var pIn=$('soAskP'),sug=$('soSug'),chip=$('soChip'),mkRow=$('soMk'),
+        lv=$('soLv'),lu=$('soLu'),lr=$('soLr'),lreset=$('soLreset'),
+        sides=$('soSides'),out=$('soOut'),stage=$('soStage');
+    var state={n:null,k:null,side:'OVER',line:null};
+    state0=state;
+
+    function postedLine(){var r=ROW[state.k+'|'+state.n];return r?r.bl:null}
+    function bounds(){
+      var r=ROW[state.k+'|'+state.n];if(!r)return [0.5,10.5];
+      var st=stepOf(state.k);
+      var lo=YARDS[state.k]?0:0.5, hi=Math.max(r.ref+3*r.sig,r.bl+2*st);
+      hi=Math.ceil(hi/st)*st+(YARDS[state.k]?0:0.5);
+      return [lo,hi]}
+    function fmt(v){return YARDS[state.k]?String(Math.round(v)):n1(v)}
+
+    function paintMarkets(){
+      var ms=state.n?marketsFor(state.n):[];
+      mkRow.innerHTML=ms.map(function(k){
+        return '<button type="button" data-k="'+k+'"'+(k===state.k?' class="on"':'')+'>'
+          +esc(unit(k))+'<i title="a book has posted this market"></i></button>'
+        }).join('')||'<em>pick a player first</em>'}
+    function paintLine(){
+      var b=bounds(),st=stepOf(state.k);
+      lr.min=b[0];lr.max=b[1];lr.step=st;
+      if(state.line!=null){lr.value=state.line;lv.textContent=fmt(state.line)}
+      else lv.textContent='—';
+      lu.textContent=state.k?unit(state.k):'';
+      var pl=postedLine();
+      if(pl!=null&&state.line!=null&&Math.abs(pl-state.line)>1e-9){
+        lreset.hidden=false;lreset.textContent='BACK TO '+fmt(pl)}
+      else lreset.hidden=true}
+    function sideCard(side){
+      if(!state.n||state.line==null)return '';
+      var v=judge(state.k,state.n,state.line,side);if(!v)return '';
+      return '<button type="button" class="so-side'+(side===state.side?' on':'')
+        +(v.tone==='yes'?' good':v.tone==='no'?' bad':'')+'" data-side="'+side+'">'
+        +'<u>'+side+' '+fmt(state.line)+'</u><b>'+Math.round(v.p)+'%</b>'+dots(v.p)
+        +'<s>'+(v.book?esc(v.book.px)+' at '+esc(BKS[v.book.b]||v.book.b)
+                      :'no book at this number')+'</s></button>'}
+    function paintSides(){
+      sides.innerHTML=(state.n&&state.line!=null)
+        ?sideCard('OVER')+sideCard('UNDER')
+        :'<div class="so-sideshint">Pick a player and a number — both sides get '
+         +'priced, and the board prices lines no book is offering.</div>'}
+
+    function suggest(){
+      var q=norm(pIn.value);
+      if(!q){sug.classList.remove('on');return}
+      var hits=NAMES.filter(function(n){return norm(n).indexOf(q)>=0}).slice(0,8);
+      if(!hits.length){sug.innerHTML='<em>No player by that name on this board. '
+        +'Try <b>Browse all</b>.</em>';sug.classList.add('on');return}
+      sug.innerHTML=hits.map(function(n,i){
+        var ms=marketsFor(n);
+        return '<button type="button" data-n="'+esc(n)+'"'+(i?'':' class="on"')+'>'
+          +'<span>'+esc(n)+'</span><s>'+esc(TEAM[n])+' · '
+          +ms.map(unit).join(' ')+'</s></button>'}).join('');
+      sug.classList.add('on')}
+
+    function setPlayer(n,wantK,keepLine){
+      state.n=n;sug.classList.remove('on');pIn.value='';
+      var ms=marketsFor(n);
+      state.k=(wantK&&ms.indexOf(wantK)>=0)?wantK:(ms.indexOf(state.k)>=0?state.k:ms[0]);
+      var r=ROW[state.k+'|'+n];
+      if(!keepLine){state.side=r.bs||'OVER';state.line=r.bl}
+      chip.hidden=false;
+      chip.innerHTML='<b>'+esc(n)+'</b><s>'+esc(r.t)+' vs '+esc(r.o)+' · '
+        +ms.length+' market'+(ms.length===1?'':'s')+'</s>'
+        +'<button type="button" class="so-chipb" data-browse="1">BROWSE</button>'
+        +'<button type="button" class="so-chipx" data-clearp="1" '
+        +'aria-label="Choose someone else">×</button>';
+      stage.classList.add('has');
+      paintMarkets();paintLine();paintSides();run()}
+    function clearPlayer(){
+      state.n=null;state.line=null;chip.hidden=true;stage.classList.remove('has');
+      paintMarkets();paintLine();paintSides();run();pIn.focus()}
+    function setLine(v){
+      var b=bounds(),st=stepOf(state.k);
+      state.line=Math.max(b[0],Math.min(b[1],Math.round(v/st)*st));
+      paintLine();paintSides();run()}
+
+    function run(){
+      if(!state.n||state.line==null){out.innerHTML='';return}
+      var v=judge(state.k,state.n,state.line,state.side);
+      if(!v){out.innerHTML='';return}
+      var u=unit(state.k),say;
+      if(v.tone==='yes')say='Take the '+v.side.toLowerCase()+' at '+esc(v.book.px)
+        +' — it clears '+Math.round(v.p)+'% of the time and only needs '+n1(v.be)+'%.';
+      else if(v.tone==='no')say='Leave it. At '+esc(v.book.px)+' you need '+n1(v.be)
+        +'% and the model has it at '+Math.round(v.p)+'%.';
+      else if(v.tone==='close')say='Too close to call. The price asks for '+n1(v.be)
+        +'% and the model has '+Math.round(v.p)+'% — inside the margin either way.';
+      else say='No book on this board is posting '+fmt(v.line)+' '+u
+        +', so there is no price to judge. The model’s read is below.';
+      out.innerHTML='<div class="so-verdict t-'+v.tone+'">'
+        +'<div class="so-vword"><b>'+v.word+'</b><span>'+esc(v.n)+' '
+          +v.side.toLowerCase()+' '+fmt(v.line)+' '+u+'</span></div>'
+        +'<div class="so-like"><div class="so-likeh"><b>'+Math.round(v.p)+'%</b>'
+          +'<span>'+likely(v.p)+'</span></div>'+dots(v.p)
+          +'<s>Out of ten games like this one, the model has this landing in '
+          +Math.round(v.p/10)+'.</s></div>'
+        +'<p class="so-vsay">'+say+'</p>'
+        +'<dl class="so-vkv">'
+          +'<div><dt>MODEL</dt><dd>'+Math.round(v.p)+'%</dd></div>'
+          +'<div><dt>FAIR</dt><dd>'+v.fair+'</dd></div>'
+          +(v.book?'<div><dt>BEST PRICE</dt><dd>'+esc(v.book.px)+' <i>'
+            +esc(BKS[v.book.b]||v.book.b)+'</i></dd></div>'
+            +'<div><dt>BREAK-EVEN</dt><dd>'+n1(v.be)+'%</dd></div>'
+            +'<div><dt>EDGE</dt><dd class="'+(v.ev>0?'pos':'neg')+'">'+(v.ev>0?'+':'')
+            +n1(v.ev)+'%</dd></div>':'')
+          +'<div><dt>SHORTOPEN</dt><dd>'+fmt(v.mu)+'</dd></div>'
+          +'<div><dt>MARKET</dt><dd>'+fmt(v.r.mu)+'</dd></div>'
+          +'<div><dt>SPREAD</dt><dd>±'+fmt(v.sig)+'</dd></div>'
+        +'</dl>'
+        +'<div class="so-vact"><button type="button" class="so-vb" data-open="'+esc(v.n)
+          +'">SEE EVERY MARKET</button>'
+          +'<button type="button" class="so-vb" data-sh="1">COPY LINK</button></div>'
+        +'</div>';
+      try{history.replaceState(null,'','#p='+encodeURIComponent(state.n)+'&m='+state.k
+        +'&s='+state.side.toLowerCase()+'&l='+state.line)}catch(e){}
+    }
+
+    /* ---------------------------- the browser ---------------------------- */
+    function openBrowse(){
+      ensureModal();modal._last=document.activeElement;
+      var byT={};NAMES.forEach(function(n){(byT[TEAM[n]]=byT[TEAM[n]]||[]).push(n)});
+      var teams=Object.keys(byT).sort();
+      var html='<div class="so-mh"><div><div class="so-mk">PLAYER BROWSER</div>'
+        +'<h3>Every player on the board</h3>'
+        +'<div class="so-msub">'+NAMES.length+' players · '+teams.length
+        +' teams · tap a name to load it into the checker</div></div></div>'
+        +'<div class="so-bw"><input id="soBrF" placeholder="Filter…" '
+        +'autocomplete="off" spellcheck="false">'
+        +'<div class="so-bt" id="soBrT">'+['ALL'].concat(teams).map(function(t,i){
+          return '<button type="button" data-t="'+esc(t)+'"'+(i?'':' class="on"')+'>'
+            +esc(t)+'</button>'}).join('')+'</div></div>'
+        +'<div class="so-blist" id="soBrL"></div>';
+      modal.querySelector('.so-mbody').innerHTML=html;
+      modal.querySelector('.so-mbox').setAttribute('aria-label','Player browser');
+      modal.classList.add('on');document.body.classList.add('so-lock');
+      var L=document.getElementById('soBrL'),F=document.getElementById('soBrF'),
+          T=document.getElementById('soBrT'),team='ALL';
+      function paint(){
+        var q=norm(F.value);
+        var out='';
+        teams.forEach(function(t){
+          if(team!=='ALL'&&t!==team)return;
+          var ns=byT[t].filter(function(n){return !q||norm(n).indexOf(q)>=0});
+          if(!ns.length)return;
+          out+='<section class="so-bg"><h4>'+esc(t)+'<i>'+ns.length+'</i></h4><div>'
+            +ns.map(function(n){
+              return '<button type="button" data-pick="'+esc(n)+'"><b>'+esc(n)+'</b>'
+                +'<s>'+marketsFor(n).map(unit).join(' · ')+'</s></button>'}).join('')
+            +'</div></section>'});
+        L.innerHTML=out||'<div class="so-bnone">Nothing matches that filter.</div>'}
+      F.addEventListener('input',paint);
+      T.addEventListener('click',function(ev){var b=ev.target.closest('button');
+        if(!b)return;team=b.dataset.t;
+        Array.prototype.forEach.call(T.querySelectorAll('button'),function(x){
+          x.classList.toggle('on',x===b)});paint()});
+      L.addEventListener('click',function(ev){var b=ev.target.closest('[data-pick]');
+        if(!b)return;closeModal();setPlayer(b.dataset.pick);
+        wrap.scrollIntoView({block:'center'})});
+      paint();F.focus()}
+    window.SO_NFLP.openBrowse=openBrowse;
+
+    /* ------------------------------- wiring ------------------------------- */
+    pIn.addEventListener('input',suggest);
+    pIn.addEventListener('keydown',function(ev){
+      if(!sug.classList.contains('on'))return;
+      var bs=Array.prototype.slice.call(sug.querySelectorAll('button')),
+          i=bs.map(function(b){return b.classList.contains('on')}).indexOf(true);
+      if(ev.key==='ArrowDown'||ev.key==='ArrowUp'){ev.preventDefault();if(!bs.length)return;
+        var j=(i+(ev.key==='ArrowDown'?1:-1)+bs.length)%bs.length;
+        bs.forEach(function(b,x){b.classList.toggle('on',x===j)})}
+      else if(ev.key==='Enter'){ev.preventDefault();if(bs[i<0?0:i])bs[i<0?0:i].click()}
+      else if(ev.key==='Escape')sug.classList.remove('on')});
+    sug.addEventListener('click',function(ev){var b=ev.target.closest('button');
+      if(b&&b.dataset.n)setPlayer(b.dataset.n)});
+    document.addEventListener('click',function(ev){
+      if(!ev.target.closest('.so-f-p'))sug.classList.remove('on')});
+    wrap.addEventListener('click',function(ev){
+      if(ev.target.closest('#soBrowse')||ev.target.closest('[data-browse]')){openBrowse();return}
+      var q=ev.target.closest('[data-q]');
+      if(q){setPlayer(q.dataset.q,q.dataset.qk);return}
+      if(ev.target.closest('[data-clearp]')){clearPlayer();return}
+      var mk=ev.target.closest('#soMk button');
+      if(mk){state.k=mk.dataset.k;var rr=ROW[state.k+'|'+state.n];
+        state.line=rr.bl;state.side=rr.bs||'OVER';
+        paintMarkets();paintLine();paintSides();run();return}
+      var lb=ev.target.closest('.so-lb');
+      if(lb){if(state.line!=null)setLine(state.line+parseFloat(lb.dataset.d)*stepOf(state.k));return}
+      if(ev.target.closest('#soLreset')){var pl=postedLine();if(pl!=null)setLine(pl);return}
+      var sd=ev.target.closest('.so-side');
+      if(sd){state.side=sd.dataset.side;paintSides();run();return}
+      var o=ev.target.closest('[data-open]');
+      if(o){openPlayer(o.dataset.open,state.k);return}
+      var sh=ev.target.closest('[data-sh]');
+      if(sh){share({p:state.n,m:state.k,s:state.side.toLowerCase(),l:state.line},sh);return}});
+    lr.addEventListener('input',function(){setLine(parseFloat(lr.value))});
+
+    paintMarkets();paintLine();paintSides();
+
+    var h=readHash();
+    if(h&&h.player)openPlayer(h.player);
+    else if(h&&h.p&&marketsFor(h.p).length){
+      state.side=(h.s||'over').toUpperCase()==='UNDER'?'UNDER':'OVER';
+      setPlayer(h.p,h.m,!!h.l);
+      if(h.l)setLine(parseFloat(h.l));
+      wrap.scrollIntoView({block:'center'})}
+  }
+  if(document.readyState==='loading')
+    document.addEventListener('DOMContentLoaded',build);
+  else build();
+})();
+
+</script>
+<script id="so-verdict-board">
 (function(){
   var raw=document.getElementById('props-data'); if(!raw) return;
   var B=JSON.parse(raw.textContent);
@@ -488,4 +918,292 @@ tr.t-lean td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
  .props-controls{grid-template-columns:1fr!important}
  .vfilter{width:100%;justify-content:space-between}
 }
-</style></body></html>
+</style><style id="so-nflp-front-20261022">
+/* tokens the NFL page never declared; same values as the NBA board so the
+   front door reads identically across the two sports */
+:root{--brown:#c9843f;--line2:rgba(255,255,255,.13);--muted2:#a2afbd}
+/* ============================= THE PROP CHECKER =========================== */
+.so-ask{margin-top:10px;border:1px solid rgba(201,132,63,.3);border-radius:16px;
+ padding:15px 16px 16px;background:radial-gradient(620px 240px at 8% 0,rgba(201,132,63,.1),
+ transparent 70%),linear-gradient(160deg,rgba(255,255,255,.03),rgba(4,8,13,.92))}
+.so-askh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:13px}
+.so-askh b{font-size:16px;font-weight:850;letter-spacing:-.015em;color:var(--text)}
+.so-askh span{color:var(--muted2);font-size:12px}
+/* the stage reads as three numbered steps, not one form */
+.so-stage{display:grid;gap:11px}
+.so-pick,.so-mkrow,.so-lnrow{display:grid;gap:7px}
+.so-mkrow>span,.so-lnrow>span,.so-f>span{font:800 7.5px var(--mono);letter-spacing:.14em;
+ color:var(--brown)}
+.so-f{position:relative;display:grid;gap:7px;min-width:0}
+.so-f input{height:42px;padding:0 13px;border:1px solid var(--line2);border-radius:11px;
+ background:#071019;color:var(--text);font:600 14px Inter,sans-serif;outline:none;width:100%}
+.so-f input:focus{border-color:rgba(201,132,63,.7);box-shadow:0 0 0 2px rgba(201,132,63,.18)}
+.so-stage.has .so-f-p{display:none}
+/* Steps two and three have nothing to act on until a player is chosen, and an
+   em-dash over a pinned slider reads as broken rather than as waiting. They
+   stay out of the way until step one is answered. */
+.so-stage:not(.has) .so-mkrow,.so-stage:not(.has) .so-lnrow{display:none}
+/* the chosen player becomes a chip, not a filled-in text box */
+.so-chip[hidden]{display:none}
+.so-chip{display:flex;align-items:center;gap:11px;padding:9px 12px;border:1px solid
+ rgba(201,132,63,.45);border-radius:12px;background:rgba(201,132,63,.1)}
+.so-chip b{font-size:15px;font-weight:850;letter-spacing:-.015em;color:var(--text)}
+.so-chip s{text-decoration:none;font:700 9px var(--mono);letter-spacing:.06em;color:var(--muted2)}
+.so-chipb{margin-left:auto;border:1px solid rgba(201,132,63,.45);border-radius:9px;
+ background:rgba(201,132,63,.14);color:#f0c58d;font:800 8px var(--mono);letter-spacing:.14em;
+ padding:0 10px;height:24px;cursor:pointer;white-space:nowrap}
+.so-chipb:hover{border-color:rgba(201,132,63,.85);background:rgba(201,132,63,.26)}
+.so-chipb+.so-chipx{margin-left:7px}
+.so-chipx{margin-left:auto;width:24px;height:24px;border:1px solid var(--line2);
+ border-radius:50%;background:rgba(255,255,255,.05);color:var(--muted2);
+ font:700 14px/1 Inter,sans-serif;cursor:pointer;flex:0 0 auto}
+.so-chipx:hover{background:rgba(201,132,63,.35);color:#fff3e7}
+.so-quick{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.so-stage.has .so-quick{display:none}
+.so-quick u{text-decoration:none;font:800 7.5px var(--mono);letter-spacing:.14em;
+ color:var(--muted);margin-right:2px}
+.so-quick button{border:1px solid var(--line);background:rgba(255,255,255,.025);
+ color:var(--muted2);border-radius:999px;padding:5px 11px;font:700 11px Inter,sans-serif;
+ cursor:pointer}
+.so-quick button:hover{border-color:rgba(201,132,63,.55);color:var(--text)}
+/* market chips */
+.so-mkts{display:flex;gap:6px;flex-wrap:wrap}
+.so-mkts em{font-style:normal;color:var(--muted);font-size:12px}
+.so-mkts button{position:relative;border:1px solid var(--line);background:rgba(255,255,255,.02);
+ color:var(--muted2);border-radius:10px;padding:9px 15px;font:800 10px var(--mono);
+ letter-spacing:.1em;cursor:pointer}
+.so-mkts button:hover{border-color:rgba(201,132,63,.5);color:var(--text)}
+.so-mkts button.on{border-color:#e8843d;background:rgba(232,132,61,.16);color:#ffd6ae}
+.so-mkts button i{position:absolute;top:5px;right:5px;width:5px;height:5px;border-radius:50%;
+ background:var(--green);box-shadow:0 0 7px rgba(34,217,126,.8)}
+/* the line: a real control, with a track */
+.so-line{display:grid;grid-template-columns:auto auto auto minmax(90px,1fr) auto;
+ align-items:center;gap:10px}
+.so-lb{width:38px;height:38px;border:1px solid var(--line2);border-radius:11px;
+ background:rgba(255,255,255,.03);color:var(--text);font:700 19px/1 Inter,sans-serif;
+ cursor:pointer}
+.so-lb:hover{border-color:rgba(201,132,63,.65);background:rgba(201,132,63,.16)}
+.so-lnum{display:flex;align-items:baseline;gap:6px;min-width:92px;justify-content:center}
+.so-lnum b{font:900 26px var(--mono);color:#ffd6ae;letter-spacing:-.02em;line-height:1}
+.so-lnum s{text-decoration:none;font:800 9px var(--mono);letter-spacing:.12em;color:var(--muted)}
+.so-line input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;
+ border-radius:3px;background:linear-gradient(90deg,rgba(201,132,63,.5),rgba(201,132,63,.15));
+ outline:none;cursor:pointer}
+.so-line input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;
+ border-radius:50%;background:#f7a35c;border:2px solid #1b1008;cursor:pointer;
+ box-shadow:0 2px 8px rgba(247,163,92,.5)}
+.so-line input[type=range]::-moz-range-thumb{width:17px;height:17px;border-radius:50%;
+ background:#f7a35c;border:2px solid #1b1008;cursor:pointer}
+.so-lreset{border:1px solid rgba(201,132,63,.45);background:rgba(201,132,63,.12);
+ color:#ffd6ae;border-radius:9px;padding:7px 11px;font:800 8px var(--mono);
+ letter-spacing:.1em;cursor:pointer;white-space:nowrap}
+/* both sides, priced, pick one */
+.so-sides{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.so-sideshint{grid-column:1/-1;color:var(--muted);font-size:12.5px;padding:4px 0}
+.so-side{display:grid;gap:7px;text-align:left;border:1px solid var(--line);border-radius:13px;
+ padding:12px 14px;background:rgba(255,255,255,.016);cursor:pointer;
+ transition:border-color .14s,background .14s,transform .14s}
+.so-side:hover{transform:translateY(-1px);border-color:rgba(201,132,63,.5)}
+.so-side u{text-decoration:none;font:800 8.5px var(--mono);letter-spacing:.13em;color:var(--muted)}
+.so-side b{font:900 27px var(--mono);color:#e9f1f7;line-height:1;letter-spacing:-.02em}
+.so-side s{text-decoration:none;font:700 8.5px var(--mono);letter-spacing:.05em;color:var(--muted)}
+.so-side.on{border-color:#e8843d;background:rgba(232,132,61,.1);
+ box-shadow:0 0 0 1px rgba(232,132,61,.35) inset}
+.so-side.on u{color:#ffd6ae}
+.so-side.good b{color:#7df0b7}.so-side.bad b{color:#ffa3ac}
+/* ten dots: the percentage for people who do not read percentages */
+.so-dots{display:flex;gap:3px}
+.so-dots i{width:100%;max-width:13px;height:7px;border-radius:2px;
+ background:rgba(255,255,255,.1);flex:1 1 0}
+.so-dots i.on{background:linear-gradient(90deg,#f7a35c,#ffd6ae)}
+.so-side.good .so-dots i.on{background:linear-gradient(90deg,#2fae74,#7df0b7)}
+.so-side.bad .so-dots i.on{background:linear-gradient(90deg,#b3545d,#ffa3ac)}
+/* the answer */
+.so-out:empty{display:none}
+.so-verdict{margin-top:13px;border:1px solid var(--line);border-radius:13px;
+ padding:14px 15px;background:rgba(255,255,255,.015)}
+.so-verdict.t-yes{border-color:rgba(34,217,126,.45);background:rgba(34,217,126,.06)}
+.so-verdict.t-no{border-color:rgba(255,93,108,.4);background:rgba(255,93,108,.05)}
+.so-verdict.t-close{border-color:rgba(244,185,66,.4);background:rgba(244,185,66,.05)}
+.so-verdict.t-none{border-color:rgba(87,167,255,.35);background:rgba(87,167,255,.04)}
+.so-vword{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.so-vword b{font-size:27px;font-weight:900;letter-spacing:-.03em;line-height:1}
+.t-yes .so-vword b{color:#7df0b7}.t-no .so-vword b{color:#ffa3ac}
+.t-close .so-vword b{color:#f6d38c}.t-none .so-vword b{color:#a8dcfb;font-size:21px}
+.so-vword span{font:700 10px var(--mono);letter-spacing:.09em;color:var(--muted2);
+ text-transform:uppercase}
+/* the likelihood block, led with */
+.so-like{margin-top:12px;padding:12px 13px;border:1px solid rgba(255,255,255,.08);
+ border-radius:12px;background:rgba(3,9,15,.45)}
+.so-likeh{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:9px}
+.so-likeh b{font:900 24px var(--mono);color:#ffd6ae;line-height:1}
+.so-likeh span{color:#dde6ee;font-size:14px;font-weight:600}
+.so-like .so-dots i{height:11px;border-radius:3px;max-width:none}
+.so-like s{display:block;margin-top:9px;text-decoration:none;color:var(--muted);
+ font-size:11.5px}
+.so-vsay{margin:11px 0 0;color:#dde6ee;font-size:13.5px;line-height:1.55;max-width:74ch}
+.so-vkv{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,auto));
+ justify-content:start;gap:2px 26px;margin:12px 0 0;padding:11px 0 0;
+ border-top:1px solid rgba(255,255,255,.07)}
+.so-vkv>div{display:flex;align-items:baseline;gap:9px;padding:3px 0}
+.so-vkv dt{font:800 7.5px var(--mono);letter-spacing:.11em;color:var(--muted)}
+.so-vkv dd{margin:0;font:900 13px var(--mono);color:#e6eef5}
+.so-vkv dd i{font-style:normal;font-size:9px;color:var(--muted);margin-left:3px}
+.so-vkv dd.pos{color:var(--green)}.so-vkv dd.neg{color:#ff8d99}
+.so-vmin{margin:11px 0 0;color:var(--muted2);font-size:12px;line-height:1.5}
+.so-vmin b{color:#ffd6ae}
+.so-vact{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.so-vb{border:1px solid var(--line2);background:rgba(255,255,255,.03);color:var(--muted2);
+ border-radius:9px;padding:7px 12px;font:800 8.5px var(--mono);letter-spacing:.1em;
+ cursor:pointer}
+.so-vb:hover{border-color:rgba(201,132,63,.6);color:var(--text)}
+/* suggestions */
+.so-sug{display:none;position:absolute;z-index:9;top:100%;left:0;right:0;margin-top:4px;
+ border:1px solid var(--line2);border-radius:11px;background:#07111a;overflow:hidden;
+ box-shadow:0 14px 38px rgba(0,0,0,.6)}
+.so-sug.on{display:block}
+.so-sug em{display:block;font-style:normal;padding:10px 12px;color:var(--muted);font-size:12px}
+.so-sug button{display:flex;justify-content:space-between;align-items:baseline;width:100%;
+ border:0;background:transparent;color:var(--text);padding:9px 12px;cursor:pointer;
+ font:700 13px Inter,sans-serif;text-align:left;gap:10px}
+.so-sug button s{text-decoration:none;font:700 8.5px var(--mono);color:var(--muted);
+ white-space:nowrap}
+.so-sug button.on,.so-sug button:hover{background:rgba(201,132,63,.16)}
+.so-ask button:focus-visible,.so-ask input:focus-visible{outline:2px solid rgba(201,132,63,.85);
+ outline-offset:2px}
+/* ========================= THE ROW LINE STEPPER ========================= */
+.pr .prstep{grid-column:1/-1;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+ margin-top:9px;padding-top:9px;border-top:1px dashed rgba(255,255,255,.07)}
+.pr .prstep.moved{border-top-color:rgba(201,132,63,.45)}
+.prs-t{font:800 7px var(--mono);letter-spacing:.13em;color:var(--muted)}
+.prstep.moved .prs-t{color:#ffbf86}
+.prs-b{width:21px;height:21px;border:1px solid var(--line2);border-radius:6px;
+ background:rgba(255,255,255,.03);color:var(--text);font:700 12px/1 Inter,sans-serif;
+ cursor:pointer;padding:0}
+.prs-b:hover{border-color:rgba(201,132,63,.65);background:rgba(201,132,63,.16)}
+.pr .prstep>b{font:900 11.5px var(--mono);color:#e6eef5;min-width:48px;text-align:center}
+.prs-p{font:900 11.5px var(--mono);color:#ffd6ae}
+.prs-f,.prs-k{font:700 8px var(--mono);letter-spacing:.05em;color:var(--muted)}
+.prs-k.none{color:#6a7d8f;font-style:italic}
+.prs-x{margin-left:auto;width:18px;height:18px;border:1px solid var(--line2);border-radius:50%;
+ background:rgba(255,255,255,.04);color:var(--muted2);font:700 11px/1 Inter,sans-serif;
+ cursor:pointer;padding:0}
+.prs-x:hover{background:rgba(201,132,63,.3);color:#fff3e7}
+.pr .prstep button:focus-visible{outline:2px solid rgba(201,132,63,.85);outline-offset:1px}
+/* the player's name is a button */
+.pl-n{border:0;background:transparent;padding:0;margin:0;color:inherit;font:inherit;
+ cursor:pointer;text-align:left}
+.pl-n:hover{color:#ffd6ae;text-decoration:underline;text-underline-offset:2px}
+.pl-n:focus-visible{outline:2px solid rgba(201,132,63,.85);outline-offset:2px;border-radius:3px}
+/* an empty tab that says where the quotes are */
+.nbp-rows .empty i{display:block;margin-top:7px;font-style:normal;font:500 11.5px
+ Inter,sans-serif;letter-spacing:0;color:var(--muted);text-transform:none}
+/* ============================ THE PLAYER CARD =========================== */
+body.so-lock{overflow:hidden}
+.so-modal{position:fixed;inset:0;z-index:999;display:none}
+.so-modal.on{display:block}
+.so-mbg{position:absolute;inset:0;background:rgba(2,5,9,.76);backdrop-filter:blur(3px)}
+.so-mbox{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(960px,94vw);
+ max-height:88vh;overflow:auto;border:1px solid rgba(201,132,63,.35);border-radius:18px;
+ padding:20px 22px 22px;background:linear-gradient(165deg,#0b1621,#060d14);
+ box-shadow:0 30px 90px rgba(0,0,0,.7)}
+.so-mx{position:absolute;right:14px;top:13px;width:28px;height:28px;border:1px solid var(--line2);
+ border-radius:50%;background:rgba(255,255,255,.05);color:var(--muted2);
+ font:700 16px/1 Inter,sans-serif;cursor:pointer}
+.so-mx:hover{background:rgba(201,132,63,.3);color:#fff3e7}
+.so-mh{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;
+ flex-wrap:wrap;padding-right:34px}
+.so-mk{font:800 8px var(--mono);letter-spacing:.17em;color:var(--brown)}
+.so-mbox h3{margin:5px 0 4px;font-size:1.5rem;font-weight:850;letter-spacing:-.03em}
+.so-msub{color:var(--muted2);font:700 9.5px var(--mono);letter-spacing:.06em}
+.so-mlink{border:1px solid var(--line2);background:rgba(255,255,255,.03);color:var(--muted2);
+ border-radius:9px;padding:7px 12px;font:800 8.5px var(--mono);letter-spacing:.1em;cursor:pointer}
+.so-mlink:hover{border-color:rgba(201,132,63,.6);color:var(--text)}
+.so-mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;
+ margin-top:16px}
+.so-mm{border:1px solid var(--line);border-radius:13px;padding:12px 13px;
+ background:rgba(255,255,255,.016)}
+.so-mm.on{border-color:rgba(201,132,63,.5);background:rgba(201,132,63,.05)}
+.so-mmh{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap}
+.so-mmh b{font:900 17px var(--mono);color:#ffc58f}
+.so-mmh b.c{font-size:13px;color:#f7a35c}
+.so-mmh s{text-decoration:none;font:700 7.5px var(--mono);letter-spacing:.1em;color:var(--muted)}
+.so-mbet{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:11px 0 10px}
+.so-mbet.none{color:var(--muted);font-size:11.5px}
+.so-mat{font:700 9.5px var(--mono);color:var(--muted2)}
+.so-mp{font:900 12px var(--mono);color:#ffd6ae}
+.so-mm .lad{display:grid;grid-template-columns:repeat(var(--rungs,5),minmax(0,1fr));gap:4px}
+.so-mm .lad span{display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 2px;
+ border:1px solid rgba(201,132,63,.2);border-radius:9px}
+.so-mm .lad span.tg{border-color:#f7a35c;box-shadow:0 0 0 1px rgba(247,163,92,.35) inset}
+.so-mm .lad u{text-decoration:none;color:#a9b6c2;font:800 7px var(--mono)}
+.so-mm .lad b{color:#ffe6cf;font:900 11px var(--mono)}
+.so-mm .lad s{text-decoration:none;color:var(--gold);font:800 8px var(--mono)}
+/* ============================= THE BROWSE BUTTON ========================== */
+.so-prow{display:flex;gap:8px;align-items:stretch}
+.so-prow input{flex:1 1 auto;min-width:0}
+.so-browse{flex:0 0 auto;border:1px solid rgba(201,132,63,.45);
+ background:rgba(201,132,63,.12);color:#ffd6ae;border-radius:11px;padding:0 15px;
+ font:800 9px var(--mono);letter-spacing:.11em;cursor:pointer;white-space:nowrap}
+.so-browse:hover{border-color:rgba(201,132,63,.8);background:rgba(201,132,63,.22)}
+/* ============================== THE BROWSER =============================== */
+.so-bw{position:sticky;top:0;z-index:3;display:grid;gap:9px;padding:14px 0 11px;
+ margin-top:14px;background:linear-gradient(180deg,#0b1621 78%,rgba(11,22,33,0));
+ border-top:1px solid rgba(255,255,255,.07)}
+.so-bw input{height:40px;padding:0 13px;border:1px solid var(--line2);border-radius:11px;
+ background:#071019;color:var(--text);font:600 14px Inter,sans-serif;outline:none;width:100%}
+.so-bw input:focus{border-color:rgba(201,132,63,.7);box-shadow:0 0 0 2px rgba(201,132,63,.18)}
+.so-bt{display:flex;gap:5px;flex-wrap:wrap}
+.so-bt button{border:1px solid var(--line);background:rgba(255,255,255,.02);
+ color:var(--muted2);border-radius:8px;padding:6px 10px;font:800 8.5px var(--mono);
+ letter-spacing:.08em;cursor:pointer}
+.so-bt button:hover{border-color:rgba(201,132,63,.5);color:var(--text)}
+.so-bt button.on{border-color:#e8843d;background:rgba(232,132,61,.16);color:#ffd6ae}
+.so-blist{display:grid;gap:14px;padding-bottom:4px}
+.so-bg h4{position:sticky;top:96px;z-index:2;margin:0 0 8px;padding:6px 2px;
+ font:800 9px var(--mono);letter-spacing:.16em;color:var(--brown);
+ background:linear-gradient(180deg,#0b1621 70%,rgba(11,22,33,0));
+ display:flex;align-items:center;gap:8px}
+.so-bg h4 i{font-style:normal;font-size:8px;color:var(--muted);letter-spacing:.1em}
+.so-bg>div{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
+.so-bg button{display:block;text-align:left;border:1px solid var(--line);border-radius:10px;
+ padding:9px 11px;background:rgba(255,255,255,.016);cursor:pointer;
+ transition:border-color .13s,background .13s,transform .13s}
+.so-bg button:hover{border-color:rgba(201,132,63,.55);background:rgba(201,132,63,.07);
+ transform:translateY(-1px)}
+.so-bg button:focus-visible{outline:2px solid rgba(201,132,63,.85);outline-offset:1px}
+.so-bg button b{display:block;font-size:13px;font-weight:800;color:var(--text);
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.so-bg button s{display:block;margin-top:3px;text-decoration:none;font:700 8px var(--mono);
+ letter-spacing:.07em;color:var(--muted)}
+.so-bnone{padding:26px 2px;color:var(--muted);font-size:13px}
+.so-mwhy{margin-top:9px;color:var(--muted2);font-size:11.5px;line-height:1.55}
+@media(max-width:560px){
+ .so-prow{flex-wrap:wrap}.so-browse{width:100%;padding:10px 0}
+ .so-bg>div{grid-template-columns:1fr}
+ .so-bg h4{top:104px}
+}
+@media(max-width:720px){
+ .so-line{grid-template-columns:auto auto auto;grid-template-areas:'a b c' 'd d d' 'e e e';
+  justify-content:center;gap:9px}
+ .so-line .so-lb:first-of-type{grid-area:a}.so-lnum{grid-area:b}
+ .so-line .so-lb:nth-of-type(2){grid-area:c}
+ .so-line input[type=range]{grid-area:d}.so-lreset{grid-area:e;justify-self:center}
+ .so-facts{grid-template-columns:1fr 1fr}
+ .so-fact b{font-size:13px}
+}
+@media(max-width:560px){
+ .so-sides{grid-template-columns:1fr}
+ .so-side b{font-size:24px}
+ .so-vword b{font-size:23px}
+ .so-likeh b{font-size:21px}
+ .so-mbox{width:96vw;padding:16px 14px 18px;max-height:92vh}
+ .so-mkts button{flex:1 1 auto;padding:9px 10px}
+ .so-chip{position:relative;flex-wrap:wrap;padding-right:42px}
+ .so-chip b{flex:1 1 100%}
+ .so-chip s{flex:1 1 auto}
+ .so-chipb{order:3;margin-left:0;flex:0 0 auto}
+ .so-chipx{position:absolute;right:10px;top:9px;margin-left:0}
+}
+</style>
+</body></html>

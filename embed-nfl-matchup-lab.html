@@ -432,11 +432,13 @@ function mx(p){
 }
 
 var f='all', sel=0, leagueMetric='overall', tableSort={key:'labScore',dir:-1};
+var gameSel=null; /* [a,b] when the slate rail has a game open */
 var body=document.getElementById('body'), search=document.getElementById('search');
 
 function rows(){
  var q=(search.value||'').toLowerCase().trim();
  var a=OFFENSE.filter(function(p){
+  if(gameSel && p.team!==gameSel[0] && p.team!==gameSel[1]) return false;
   if(f!=='all' && p.pos!==f) return false;
   if(q && p.name.toLowerCase().indexOf(q)<0 && p.team.toLowerCase().indexOf(q)<0) return false;
   return true;
@@ -697,6 +699,24 @@ document.querySelectorAll('th[data-sort]').forEach(function(th){
  th.onkeydown=function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } };
 });
 search.oninput=function(){ sel=0; draw(); };
+
+/* ---- the slate rail's handle on this closure. setGame narrows the table to a
+   matchup, selectName opens one player's card from the strip. Both go through
+   draw(), so the table, the selected panel, the league board and the analytics
+   all stay in step - there is no second render path. ---- */
+window.SO_NFLLAB={
+  week:(document.getElementById('pwSpan')||{}).textContent||'This week',
+  fixtures:FIXTURES, oppOf:OPP_OF, players:OFFENSE, defRaw:DEF_BY_TEAM,
+  opt:OPTIMIZER_BY_NAME,
+  setGame:function(g){gameSel=g;sel=0;draw()},
+  selectName:function(nm){
+    var a=rows();
+    for(var i=0;i<a.length;i++) if(a[i].name===nm){sel=i;draw();
+      var t=document.querySelector('.labgrid');
+      if(t)t.scrollIntoView({behavior:'smooth',block:'start'});return true}
+    return false},
+  redraw:function(){draw()}
+};
 
 draw();
 }catch(err){ console.warn('[NFL Matchup Lab] init error:', err); }
@@ -996,4 +1016,279 @@ footer.so-footer .footer-copy{text-align:left!important;}
  .labgrid{display:flex!important;grid-template-columns:none!important;flex-wrap:nowrap!important;overflow-x:auto!important;gap:12px!important;scroll-snap-type:x mandatory!important;-webkit-overflow-scrolling:touch!important;padding-bottom:6px!important;scrollbar-width:none!important}.labgrid::-webkit-scrollbar{display:none!important}.labgrid>.panel{flex:0 0 88vw!important;width:88vw!important;max-width:400px!important;min-width:0!important;scroll-snap-align:start!important}.panel,.selected,.league-panel{max-width:100%!important;min-width:0!important;border-radius:18px!important;overflow:hidden!important}.ph,.pw-wrap,.league-body{padding:12px!important}.controls{display:flex!important;gap:7px!important;max-width:100%!important;overflow-x:auto!important;overflow-y:hidden!important;flex-wrap:nowrap!important;scrollbar-width:none!important}.controls::-webkit-scrollbar{display:none!important}.controls>*{flex:0 0 auto!important}#search{flex:0 0 min(72vw,270px)!important;min-width:0!important}.table,.league-body,.chart-wrap{width:100%!important;max-width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}.table table{min-width:940px!important;font-size:8.5px!important}.table th,.table td{padding:7px 5px!important}.league-body canvas,.league-body svg,.chart-wrap canvas,.chart-wrap svg{min-width:520px!important;max-width:none!important}.radar-wrap{grid-template-columns:126px minmax(0,1fr)!important;gap:10px!important}.srcnote{font-size:.61rem!important;line-height:1.5!important}.so-shared-footer{padding:22px 14px max(24px,env(safe-area-inset-bottom))!important}.so-shared-footer-top{flex-direction:column!important;gap:8px!important}
 }
 @media(pointer:coarse) and (max-width:700px){.panel:hover,.intel-panel:hover{transform:none!important}.lab-ping{animation:none!important}}
-</style></body></html>
+</style><style id="so-nfl-lab-slate-20261022-css">
+/* The slate rail on the NFL Matchup Lab. Same geometry as the NBA lab's rail,
+   already sized one tick smaller at Q's request, in this page's blue/green
+   analytics palette rather than the NBA page's amber. */
+.tn-slate{margin:0 0 14px;padding:13px 15px 11px;border:1px solid rgba(255,255,255,.075);
+ border-radius:16px;background:radial-gradient(circle at 92% 0,rgba(87,167,255,.10),
+ transparent 42%),linear-gradient(155deg,rgba(255,255,255,.03),rgba(4,11,18,.96))}
+.tn-head{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;
+ margin-bottom:11px;flex-wrap:wrap}
+.tn-k{font:800 9px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#57a7ff}
+.tn-head h3{margin:4px 0 0;font-size:1.02rem;color:#eef3f7;font-weight:800}
+.tn-badge{all:unset;box-sizing:border-box;cursor:pointer;font:800 8.5px var(--mono);
+ letter-spacing:.12em;color:#8fc5ff;border:1px solid rgba(87,167,255,.4);border-radius:999px;
+ padding:5px 11px;white-space:nowrap;transition:background .14s,border-color .14s}
+.tn-badge:hover{background:rgba(87,167,255,.14);border-color:rgba(87,167,255,.8)}
+.tn-badge:focus-visible{outline:2px solid rgba(87,167,255,.8);outline-offset:2px}
+.tn-cards{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.tn-card{all:unset;box-sizing:border-box;cursor:pointer;padding:9px 10px;
+ border:1px solid rgba(255,255,255,.07);border-radius:11px;background:rgba(255,255,255,.02);
+ transition:border-color .15s,background .15s}
+.tn-card:hover{border-color:rgba(87,167,255,.45)}
+.tn-card:focus-visible{outline:2px solid rgba(87,167,255,.8);outline-offset:1px}
+.tn-card.on{border-color:#57a7ff;background:rgba(87,167,255,.09);
+ box-shadow:0 0 0 1px rgba(87,167,255,.25) inset}
+.tn-top{display:flex;justify-content:space-between;gap:6px;font:700 8px var(--mono);
+ letter-spacing:.07em;color:#7d8fa1;white-space:nowrap}
+.tn-teams{display:flex;align-items:baseline;justify-content:center;gap:6px;margin:5px 0 4px;
+ font-size:1.02rem;font-weight:900;color:#eef3f7;letter-spacing:-.02em}
+.tn-teams i{font-style:normal;font-size:.7rem;color:#5c6f80}
+.tn-imp,.tn-pace{display:flex;justify-content:space-between;align-items:center;
+ gap:5px;font:800 9.5px var(--mono);color:#dfe8ef;margin-top:2px}
+.tn-imp em,.tn-pace em{font:700 7px var(--mono);letter-spacing:.12em;text-transform:uppercase;
+ color:#5f7385;font-style:normal;white-space:nowrap}
+.tn-pace span{color:#9fb3c4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ max-width:52px}
+.tn-foot{margin-top:7px;font:700 7.5px var(--mono);line-height:1.5;color:#6a7d8f}
+/* a game the optimizer has not reached yet: same card, quieter numbers, so
+   the fallback reads as "not priced yet" rather than as a broken tile */
+.tn-card.thin .tn-imp span,.tn-card.thin .tn-pace span{color:#8a9bab}
+.tn-card.thin .tn-top{color:#6a7d8f}
+.tn-pl.prof b{color:#8fc5ff}
+.tn-pl.prof s{color:#6f8397}
+.tn-pl.prof>span:nth-child(2){font-size:9px;text-align:right;overflow:hidden;
+ text-overflow:ellipsis;white-space:nowrap}
+/* ------------------------------- the strip ------------------------------- */
+.tn-game{margin:0 0 14px}
+.tn-off{padding:11px 14px;border:1px dashed rgba(255,255,255,.12);border-radius:12px;
+ font:700 9.5px var(--mono);color:#8798a8}
+.tn-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.tn-tile{min-width:0;padding:10px 12px;border:1px solid rgba(255,255,255,.075);
+ border-radius:12px;background:rgba(255,255,255,.02)}
+.tn-tile span{display:block;font:800 7.5px var(--mono);letter-spacing:.14em;
+ text-transform:uppercase;color:#7d8fa1}
+.tn-tile b{display:block;margin:6px 0 3px;font:800 12px var(--mono);color:#8fc5ff;
+ overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tn-tile em{font-style:normal;font-size:10.5px;line-height:1.45;color:#8a9bab}
+.tn-sides{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}
+.tn-side{min-width:0;padding:10px 12px;border:1px solid rgba(255,255,255,.075);
+ border-radius:12px;background:rgba(255,255,255,.015)}
+.tn-sh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:5px}
+.tn-sh b{font-size:.95rem;color:#eef3f7}
+.tn-sh span{font:700 8.5px var(--mono);color:#7d8fa1;text-align:right}
+.tn-pl{display:grid;grid-template-columns:minmax(0,1fr) 50px 44px 42px;gap:8px;
+ align-items:center;padding:5px 0;border-top:1px solid rgba(255,255,255,.04);
+ font-size:12.5px;color:#d7e1ea;cursor:pointer}
+.tn-pl:hover{color:#fff}
+.tn-pl:focus-visible{outline:2px solid rgba(87,167,255,.8);outline-offset:1px}
+.tn-pl>span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tn-pl em.pos{font-style:normal;font:800 7.5px var(--mono);color:#7d8fa1;
+ border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:0 3px;margin-left:3px}
+.tn-pl>span:nth-child(2){font:700 10px var(--mono);color:#8a9bab;text-align:right}
+.tn-pl b{font:800 12px var(--mono);color:#22d97e;text-align:right}
+.tn-pl s{text-decoration:none;font:700 9.5px var(--mono);color:#57a7ff;text-align:right}
+.tn-none{padding:6px 0 2px;font:700 9px var(--mono);color:#8798a8}
+.tn-unit{margin-top:7px;padding-top:6px;border-top:1px solid rgba(255,255,255,.055);
+ font:700 8px var(--mono);letter-spacing:.06em;color:#6f8397;line-height:1.5}
+/* Fourteen games will never be a one-row carousel, so the rail reflows into
+   fewer, fluid columns instead of scrolling sideways - a grid that both wraps
+   AND scrolls horizontally hides a card in every row. */
+@media(max-width:1180px){
+ .tn-cards{grid-template-columns:repeat(5,minmax(0,1fr))}
+ .tn-tiles{grid-template-columns:1fr 1fr}
+}
+@media(max-width:960px){
+ .tn-cards{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:860px){
+ .tn-card{padding:8px 9px}
+ .tn-teams{font-size:.96rem;margin:4px 0 3px;gap:5px}
+ .tn-imp,.tn-pace{font-size:9px}
+ .tn-sides{grid-template-columns:1fr}
+ .tn-slate{padding:12px 13px 10px}
+}
+@media(max-width:700px){
+ .tn-cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+}
+@media(max-width:560px){
+ .tn-cards{grid-template-columns:1fr 1fr}
+ .tn-tiles{grid-template-columns:1fr}
+ .tn-pl{grid-template-columns:minmax(0,1fr) 46px 40px 38px;gap:6px;font-size:12px}
+ .tn-pace span{max-width:46px}
+}
+
+</style>
+<script id="so-nfl-lab-slate-20261022">
+/* ShortOpen NFL Matchup Lab - the week's slate as a game picker.
+   Q: "I really liked what you did with the NBA where you had the sorting of
+   games so it's easy to see just those matchups ... the pick a game is a nice
+   touch so I want something similar for the NFL matchup labs."
+
+   Picking a game filters the player table to the two teams in it and opens a
+   strip for that matchup. Every number on the cards and in the strip comes off
+   the page's own blocks - the fixture list, the optimizer rows (salary,
+   projection, value, market total) and the defensive unit ranks. Where the
+   page has no market total for a game the card says so rather than inventing
+   one, and the teams are joined with "vs" because the fixture list does not
+   record which side is at home. */
+(function(){
+  var L=window.SO_NFLLAB;if(!L)return;
+  /* Above the matchup panels, not above the table. The NBA lab reads slate ->
+     strip -> matchup grid, and Q wants the same order here: you pick the game
+     first and the panels under it are already about that game. */
+  var row=document.querySelector('.labgrid')||document.getElementById('filterRow');
+  if(!row)return;
+  var F=L.fixtures,OPT=L.opt,PL=L.players,DEF=L.defRaw;
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function f1(v){return (Math.round(v*10)/10).toFixed(1)}
+
+  /* ------------------------------- per-game index ------------------------- */
+  function priced(t){
+    return PL.filter(function(p){return p.team===t&&p.opt})
+             .sort(function(a,b){return b.opt.proj-a.opt.proj})}
+  function totalOf(t){
+    var v=null;priced(t).forEach(function(p){if(p.opt.total!=null)v=p.opt.total});
+    return v}
+  /* Four of the fourteen games have rosters on this page but no rows in the
+     optimizer block, which covers 78 of the 118 players. Those cards used to
+     read "no total / 0 in pool / - top proj", which looks broken rather than
+     uncovered. A card with no priced rows now falls back to the roster the
+     page DOES carry - how many players and the best offensive profile - and
+     relabels itself so you can see which source you are looking at. */
+  function roster(t){
+    return PL.filter(function(p){return p.team===t})
+             .sort(function(a,b){return b.ovr-a.ovr})}
+  var G=F.map(function(f,i){
+    var a=f[0],b=f[1],pa=priced(a),pb=priced(b);
+    var ra=roster(a),rb=roster(b),has=pa.length+pb.length>0;
+    return {i:i,a:a,b:b,pa:pa,pb:pb,ra:ra,rb:rb,priced:has,
+            ou:totalOf(a)!=null?totalOf(a):totalOf(b),
+            n:pa.length+pb.length,
+            nr:ra.length+rb.length,
+            proj:pa.concat(pb).reduce(function(s,p){return s+p.opt.proj},0)}});
+
+  /* ------------------------------- the rail ------------------------------- */
+  var rail=document.createElement('section');rail.className='tn-slate';
+  rail.innerHTML='<div class="tn-head"><div><span class="tn-k">'+esc(L.week)
+    +' Slate</span><h3>Pick a game</h3></div>'
+    +'<button type="button" class="tn-badge" id="tnAll">'+G.length
+    +' GAMES · SHOW ALL</button></div>'
+    +'<div class="tn-cards" id="tnCards">'+G.map(function(g){
+      var tp,lblA,lblB,va,vb,nm,val;
+      if(g.priced){
+        tp=g.pa.concat(g.pb).sort(function(x,y){return y.opt.proj-x.opt.proj})[0];
+        lblA='in pool';lblB='top proj';
+        va=g.pa.length;vb=g.pb.length;
+        nm=tp?tp.name:null;val=tp?f1(tp.opt.proj):'—';
+      } else {
+        tp=g.ra.concat(g.rb)[0];
+        lblA='on board';lblB='top profile';
+        va=g.ra.length;vb=g.rb.length;
+        nm=tp?tp.name:null;val=tp?String(tp.ovr):'—';
+      }
+      return '<button type="button" class="tn-card'+(g.priced?'':' thin')
+        +'" data-i="'+g.i+'">'
+        +'<div class="tn-top"><span>'+(g.ou!=null?'O/U '+f1(g.ou):'no total')
+        +'</span><span>'+(g.priced?g.n+' priced':g.nr+' listed')+'</span></div>'
+        +'<div class="tn-teams"><b>'+esc(g.a)+'</b><i>vs</i><b>'+esc(g.b)+'</b></div>'
+        +'<div class="tn-imp"><span>'+va+'</span><em>'+lblA+'</em><span>'+vb
+        +'</span></div>'
+        +'<div class="tn-pace"><span>'
+        +(nm?esc(nm.split(' ').slice(-1)[0]):'—')+'</span><em>'+lblB
+        +'</em><span>'+val+'</span></div>'
+        +'</button>'}).join('')+'</div>'
+    +(function(){var u=G.filter(function(g){return !g.priced});
+      if(!u.length)return '';
+      return '<div class="tn-foot">'+u.length+' of the '+G.length+' games have no '
+        +'optimizer rows on this page yet ('+u.map(function(g){
+          return g.a+'/'+g.b}).join(', ')+'), so those cards show the roster and '
+        +'the best offensive profile instead of the pool and the projection. '
+        +'They fill in with the next slate update.</div>'})();
+  row.parentNode.insertBefore(rail,row);
+
+  var strip=document.createElement('section');strip.className='tn-game';strip.id='tnGame';
+  rail.parentNode.insertBefore(strip,rail.nextSibling);
+
+  /* ------------------------------- the strip ------------------------------ */
+  function unitLine(t){
+    var d=DEF[t];if(!d)return '';
+    return esc(d.dlName)+' DL #'+d.dlRank+' · '+esc(d.cbName)+' CB #'+d.cbRank}
+  function side(g,t){
+    var list=t===g.a?g.pa:g.pb,ros=t===g.a?g.ra:g.rb,opp=t===g.a?g.b:g.a;
+    var pj=list.reduce(function(s,p){return s+p.opt.proj},0);
+    return '<div class="tn-side"><div class="tn-sh"><b>'+esc(t)+'</b><span>'
+      +(list.length?f1(pj)+' DK pts across '+list.length+' priced'
+        :(ros.length?ros.length+' listed, none priced yet':'not on this board'))
+      +'</span></div>'
+      +(list.length?list.slice(0,4).map(function(p){
+        return '<div class="tn-pl" data-name="'+esc(p.name)+'" role="button" tabindex="0">'
+          +'<span>'+esc(p.name)+' <em class="pos">'+esc(p.pos)+'</em></span>'
+          +'<span>$'+(p.opt.salary/1000).toFixed(1)+'k</span>'
+          +'<b>'+f1(p.opt.proj)+'</b><s>'+f1(p.opt.value)+'x</s></div>'}).join('')
+        :(ros.length?ros.slice(0,4).map(function(p){
+          return '<div class="tn-pl prof" data-name="'+esc(p.name)+'" role="button" '
+            +'tabindex="0"><span>'+esc(p.name)+' <em class="pos">'+esc(p.pos)
+            +'</em></span><span>'+esc(p.role||'')+'</span><b>'+p.ovr+'</b>'
+            +'<s>profile</s></div>'}).join('')
+          :'<div class="tn-none">No players listed for '+esc(t)+' on this page.</div>'))
+      +'<div class="tn-unit">vs '+esc(opp)+(unitLine(opp)?' · '+unitLine(opp):'')+'</div>'
+      +'</div>'}
+  function renderStrip(g){
+    if(!g){strip.innerHTML='<div class="tn-off">Showing every team. Pick a game '
+      +'above to narrow the table to that matchup.</div>';return}
+    if(!g.priced){
+      strip.innerHTML='<div class="tn-off">'+esc(g.a)+' vs '+esc(g.b)+' has '
+        +g.nr+' players listed on this page and none of them carry optimizer rows '
+        +'yet, so there is no pool, projection or value to show for it. The table '
+        +'below is narrowed to the two teams and the panels above read off their '
+        +'season profiles.</div><div class="tn-sides">'+side(g,g.a)+side(g,g.b)
+        +'</div>';return}
+    var all=g.pa.concat(g.pb).sort(function(x,y){return y.opt.proj-x.opt.proj});
+    var val=all.slice().sort(function(x,y){return y.opt.value-x.opt.value})[0];
+    strip.innerHTML='<div class="tn-tiles">'
+      +'<div class="tn-tile"><span>Market total</span><b>'
+      +(g.ou!=null?f1(g.ou):'—')+'</b><em>'
+      +(g.ou!=null?'as priced in this page’s optimizer block'
+                  :'no total carried for this game')+'</em></div>'
+      +'<div class="tn-tile"><span>DK pool</span><b>'+g.n+' priced</b><em>'
+      +f1(g.proj)+' projected points between them</em></div>'
+      +'<div class="tn-tile"><span>Top projection</span><b>'
+      +(all[0]?esc(all[0].name)+' '+f1(all[0].opt.proj):'—')+'</b><em>'
+      +(all[0]?esc(all[0].team)+' '+esc(all[0].pos)+' · $'
+        +(all[0].opt.salary/1000).toFixed(1)+'k':'')+'</em></div>'
+      +'<div class="tn-tile"><span>Best value</span><b>'
+      +(val?esc(val.name)+' '+f1(val.opt.value)+'x':'—')+'</b><em>'
+      +(val?'projected points per $1,000 of salary':'')+'</em></div>'
+      +'</div><div class="tn-sides">'+side(g,g.a)+side(g,g.b)+'</div>'}
+
+  function select(i){
+    var g=i==null?null:G[i];
+    Array.prototype.forEach.call(rail.querySelectorAll('.tn-card'),function(c){
+      c.classList.toggle('on',g!=null&&+c.dataset.i===i)});
+    L.setGame(g?[g.a,g.b]:null);
+    renderStrip(g)}
+
+  rail.querySelector('#tnCards').addEventListener('click',function(e){
+    var b=e.target.closest('.tn-card');if(!b)return;
+    var i=+b.dataset.i;
+    select(b.classList.contains('on')?null:i)});
+  rail.querySelector('#tnAll').addEventListener('click',function(){select(null)});
+  strip.addEventListener('click',function(e){
+    var r=e.target.closest('[data-name]');if(r)L.selectName(r.dataset.name)});
+  strip.addEventListener('keydown',function(e){
+    if(e.key!=='Enter'&&e.key!==' ')return;
+    var r=e.target.closest('[data-name]');if(r){e.preventDefault();L.selectName(r.dataset.name)}});
+
+  /* open on the slate's highest total, the way the NBA lab opens on its */
+  var withOU=G.filter(function(g){return g.ou!=null&&g.pa.length&&g.pb.length});
+  if(withOU.length){withOU.sort(function(a,b){return b.ou-a.ou});select(withOU[0].i)}
+  else select(null);
+  window.SO_NFLSLATE={select:select,games:G};
+})();
+
+</script>
+</body></html>
